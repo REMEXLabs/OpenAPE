@@ -1,4 +1,4 @@
-package org.openape.usercontext;
+package org.openape.api.usercontext;
 
 import javax.xml.bind.annotation.*;
 import java.util.ArrayList;

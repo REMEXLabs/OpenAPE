@@ -70,4 +70,8 @@
 
 		</plugins>
 	</build>
+	<modules>
+		<module>API</module>
+		<module>server</module>
+	</modules>
 </project>
