@@ -13,8 +13,15 @@ public class UserContextRESTInterface {
 
     public UserContextRESTInterface(
             final UserContextRequestHandler requestHandler) {
-        get("/hello", (req, res) -> "Hello World");
-        // get("/api/user-context/:user-context-id", (req, res) ->
-        // requestHandler.);
+        get("/hello", (req, res) -> "Hello World");// test, to be removed
+
+        /**
+         * 
+         */
+        get("/api/user-context/:user-context-id", (req, res) -> {
+            String userContextId = req.params(":user-context-id");
+            return requestHandler.getUserContextById(userContextId);
+        });
+
     }
 }
