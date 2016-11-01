@@ -11,7 +11,8 @@ public class UserContextRESTInterface {
         get("/hello", (req, res) -> "Hello World");// test, to be removed
 
         /**
-         * 
+         * Request 7.2.3 get user-context. Used to get a specific user context
+         * identified by ID.
          */
         get("/api/user-context/:user-context-id", (req, res) -> {
             String userContextId = req.params(":user-context-id");
