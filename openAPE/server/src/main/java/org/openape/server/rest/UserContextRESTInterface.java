@@ -1,4 +1,4 @@
-package org.openape.api.restInterfaces;
+package org.openape.server.rest;
 
 import org.openape.api.usercontext.UserContext;
 import org.openape.server.UserContextRequestHandler;
