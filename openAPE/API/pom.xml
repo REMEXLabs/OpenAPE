@@ -23,5 +23,6 @@
 			<version>3.8.1</version>
 			<scope>test</scope>
 		</dependency>
+		<!-- Don't add a dependency of the server module, cycling dependencies aren't working. --> 
 	</dependencies>
 </project>
