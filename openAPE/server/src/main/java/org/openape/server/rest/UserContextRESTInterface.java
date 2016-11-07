@@ -15,9 +15,6 @@ public class UserContextRESTInterface {
     public UserContextRESTInterface(
             final UserContextRequestHandler requestHandler) {
 
-        // Change port to default port.
-        port(8080);
-
         /**
          * test request to test if the server runs. Invoke locally using:
          * http://localhost:8080/hello
