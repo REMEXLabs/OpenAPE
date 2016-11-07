@@ -22,7 +22,7 @@ public class UserContextRequestHandler {
      *            to be stored.
      * @return the ID of the stored user context.
      * @throws IOException
-     *             if a storage problem occurs.
+     *             if a storage problem still occurs, after to many tries.
      * @throws IllegalArgumentException
      *             if the parameter is not a complete user context.
      */
@@ -40,7 +40,7 @@ public class UserContextRequestHandler {
      *            the ID of the requested user context.
      * @return requested user context.
      * @throws IOException
-     *             if a storage problem occurs.
+     *             if a storage problem still occurs, after to many tries.
      * @throws IllegalArgumentException
      *             if the id is no valid id or not assigned.
      */
@@ -60,7 +60,7 @@ public class UserContextRequestHandler {
      *            new version of the user context.
      * @return true if successful. Else an exception is thrown.
      * @throws IOException
-     *             if a storage problem occurs.
+     *             if a storage problem still occurs, after to many tries.
      * @throws IllegalArgumentException
      *             if the id is no valid id, not assigned or the user context is
      *             not valid.
@@ -79,7 +79,7 @@ public class UserContextRequestHandler {
      *            the ID of the user context to delete.
      * @return true if successful. Else an exception is thrown.
      * @throws IOException
-     *             if a storage problem occurs.
+     *             if a storage problem still occurs, after to many tries.
      * @throws IllegalArgumentException
      *             if the id is no valid id or not assigned.
      */

@@ -1,9 +1,12 @@
 package org.openape.server.rest;
 
+import java.io.IOException;
+
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.openape.api.usercontext.UserContext;
 import org.openape.server.UserContextRequestHandler;
+
 import static spark.Spark.*;
 
 public class UserContextRESTInterface {
@@ -53,11 +56,25 @@ public class UserContextRESTInterface {
          * Request 7.2.3 get user-context. Used to get a specific user context
          * identified by ID.
          */
-        get("/api/user-context/:user-context-id", (req, res) -> {
-            String userContextId = req.params(":user-context-id");
-            res.type("application/json");
-            return requestHandler.getUserContextById(userContextId);
-        });
+        get("/api/user-context/:user-context-id",
+                (req, res) -> {
+                    String userContextId = req.params(":user-context-id");
+
+                    try {
+                        UserContext userContext = requestHandler
+                                .getUserContextById(userContextId);
+                        res.status(HTTP_STATUS_OK);
+                        res.type("application/json");
+                        return userContext;
+                    } catch (IllegalArgumentException e) {
+                        res.status(HTTP_STATUS_BAD_REQUEST);
+                        return "";
+                    } catch (IOException e) {
+                        res.status(HTTP_STATUS_INTERNAL_SERVER_ERROR);
+                        return "";
+                    }
+
+                });
 
         /**
          * Request 7.2.4 update user-context.
