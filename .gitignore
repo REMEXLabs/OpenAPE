@@ -1,4 +1,10 @@
 context-server/target/*
 context-server/.settings/*
-context-server/.classpath
-context-server/.project
+*.classpath
+*.project
+openAPE/target/*
+openAPE/.settings/*
+openAPE/API/target/*
+openAPE/API/.settings/*
+openAPE/server/target/*
+openAPE/server/.settings/*
