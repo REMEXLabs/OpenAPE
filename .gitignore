@@ -1,3 +1,5 @@
+context-server/target/*
+context-server/.settings/*
 context-server/.project
 context-server/.classpath
 *.prefs
