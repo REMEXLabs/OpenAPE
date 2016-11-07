@@ -12,7 +12,8 @@ public class UserContextRESTInterface {
     public static final int HTTP_STATUS_NOT_FOUND = 404;
     public static final int HTTP_STATUS_INTERNAL_SERVER_ERROR = 500;
 
-    public UserContextRESTInterface(final UserContextRequestHandler requestHandler) {
+    public UserContextRESTInterface(
+            final UserContextRequestHandler requestHandler) {
 
         // Change port to default port.
         port(8080);
@@ -28,17 +29,24 @@ public class UserContextRESTInterface {
          */
         post("/api/user-context", (req, res) -> {
             try {
+                // Try to map the received json object to a userContext
+                // object.
                 ObjectMapper mapper = new ObjectMapper();
-                UserContext creation = mapper.readValue(req.body(), UserContext.class);
-                if (!creation.isValid()) {
+                UserContext recievedUserContext = mapper.readValue(req.body(),
+                        UserContext.class);
+                // Test the object for validity.
+                if (!recievedUserContext.isValid()) {
                     res.status(HTTP_STATUS_BAD_REQUEST);
                     return "";
                 }
-                int userContextId = 0; // TODO set.
+                // If the object is okay, save it and return the id.
+                String userContextId = requestHandler
+                        .createUserContext(recievedUserContext);
                 res.status(HTTP_STATUS_OK);
                 res.type("application/json");
                 return userContextId;
             } catch (JsonParseException jpe) {
+                // If the parse is not successful return bad request error code.
                 res.status(HTTP_STATUS_BAD_REQUEST);
                 return "";
             }
