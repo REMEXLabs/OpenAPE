@@ -13,7 +13,7 @@ public class UserContextRESTInterface {
         
         /**
          * test request to test if the server runs. Invoke locally using:
-         * http://localhost:4567/hello
+         * http://localhost:8080/hello
          */
         get("/hello", (req, res) -> "Hello World");
 
