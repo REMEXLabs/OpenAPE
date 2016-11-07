@@ -28,6 +28,24 @@ public class UserContextRESTInterface {
             return null;
         });
 
+        post("/api/user-context", (req, res) -> {
+            try {
+                ObjectMapper mapper = new ObjectMapper();
+                UserContext creation = mapper.readValue(req.body(), UserContext.class);
+                if (!creation.isValid()) {
+                    res.status(400);
+                    return "";
+                }
+                int userContextId = 0; // TODO set.
+                res.status(200);
+                res.type("application/json");
+                return userContextId;
+            } catch (JsonParseException jpe) {
+                res.status(400);
+                return "";
+            }
+        });
+
         /**
          * Request 7.2.3 get user-context. Used to get a specific user context
          * identified by ID.
