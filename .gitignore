@@ -1,0 +1,4 @@
+context-server/target/*
+context-server/.settings/*
+context-server/.classpath
+context-server/.project
