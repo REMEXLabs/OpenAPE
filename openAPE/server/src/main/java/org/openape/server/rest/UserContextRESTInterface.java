@@ -62,7 +62,7 @@ public class UserContextRESTInterface {
         /**
          * Request 7.2.4 update user-context.
          */
-        put("/api/user-context/user-context-id", (req, res) -> {
+        put("/api/user-context/:user-context-id", (req, res) -> {
             String userContextId = req.params(":user-context-id");
             Object useContext = req.params(":user-context");
             requestHandler.updateUserContextById(userContextId, useContext);
@@ -72,7 +72,7 @@ public class UserContextRESTInterface {
         /**
          * Request 7.2.5 delete user-context.
          */
-        delete("/api/user-context/user-context-id", (req, res) -> {
+        delete("/api/user-context/:user-context-id", (req, res) -> {
             String userContextId = req.params(":user-context-id");
             requestHandler.deleteUserContextById(userContextId);
             return null;
