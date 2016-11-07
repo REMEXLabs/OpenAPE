@@ -3,13 +3,18 @@ package org.openape.server;
 import java.io.IOException;
 
 import org.openape.api.usercontext.UserContext;
+import org.openape.server.database.DatabaseConnection;
 import org.openape.server.rest.UserContextRESTInterface;
 
+/**
+ * Class with methods
+ */
 public class UserContextRequestHandler {
 
     /**
      * Method to store a new user context into the server. It is used by the
-     * rest API {@link UserContextRESTInterface} and uses the server database.
+     * rest API {@link UserContextRESTInterface} and uses the server database
+     * {@link DatabaseConnection}.
      * 
      * @param userContext
      *            to be stored.
