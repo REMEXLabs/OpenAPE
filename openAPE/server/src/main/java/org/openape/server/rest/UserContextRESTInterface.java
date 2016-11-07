@@ -8,6 +8,9 @@ public class UserContextRESTInterface {
 
     public UserContextRESTInterface(final UserContextRequestHandler requestHandler) {
         
+        // Change port to default port.
+        port(8080);
+        
         /**
          * test request to test if the server runs. Invoke locally using:
          * http://localhost:4567/hello
@@ -20,6 +23,7 @@ public class UserContextRESTInterface {
          */
         get("/api/user-context/:user-context-id", (req, res) -> {
             String userContextId = req.params(":user-context-id");
+            res.type("application/json");
             return requestHandler.getUserContextById(userContextId);
         });
 
