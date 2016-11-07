@@ -29,4 +29,13 @@ public class UserContext {
 
     }
 
+    /**
+     * check if a given object is a valid user context. TODO implement.
+     * 
+     * @return
+     */
+    public boolean isValid() {
+        return false;
+    }
+
 }
