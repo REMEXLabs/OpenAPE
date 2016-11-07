@@ -6,9 +6,13 @@ import static spark.Spark.*;
 
 public class UserContextRESTInterface {
 
-    public UserContextRESTInterface(
-            final UserContextRequestHandler requestHandler) {
-        get("/hello", (req, res) -> "Hello World");// test, to be removed
+    public UserContextRESTInterface(final UserContextRequestHandler requestHandler) {
+        
+        /**
+         * test request to test if the server runs. Invoke locally using:
+         * http://localhost:4567/hello
+         */
+        get("/hello", (req, res) -> "Hello World");
 
         /**
          * Request 7.2.3 get user-context. Used to get a specific user context
