@@ -18,16 +18,10 @@ public class UserContextRESTInterface {
          * http://localhost:8080/hello
          */
         get("/hello", (req, res) -> "Hello World");
-        
+
         /**
          * Request 7.2.2 create user-context.
          */
-        post("/api/user-context/", (req, res) -> {
-            Object useContext = req.params(":user-context");
-            requestHandler.createUserContext(useContext);
-            return null;
-        });
-
         post("/api/user-context", (req, res) -> {
             try {
                 ObjectMapper mapper = new ObjectMapper();
@@ -55,7 +49,7 @@ public class UserContextRESTInterface {
             res.type("application/json");
             return requestHandler.getUserContextById(userContextId);
         });
-        
+
         /**
          * Request 7.2.4 update user-context.
          */
@@ -65,7 +59,7 @@ public class UserContextRESTInterface {
             requestHandler.updateUserContextById(userContextId, useContext);
             return null;
         });
-        
+
         /**
          * Request 7.2.5 delete user-context.
          */
