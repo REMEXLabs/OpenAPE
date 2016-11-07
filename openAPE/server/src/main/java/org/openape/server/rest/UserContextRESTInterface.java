@@ -7,6 +7,10 @@ import org.openape.server.UserContextRequestHandler;
 import static spark.Spark.*;
 
 public class UserContextRESTInterface {
+    public static final int HTTP_STATUS_OK = 200;
+    public static final int HTTP_STATUS_BAD_REQUEST = 400;
+    public static final int HTTP_STATUS_NOT_FOUND = 404;
+    public static final int HTTP_STATUS_INTERNAL_SERVER_ERROR = 500;
 
     public UserContextRESTInterface(final UserContextRequestHandler requestHandler) {
 
@@ -27,15 +31,15 @@ public class UserContextRESTInterface {
                 ObjectMapper mapper = new ObjectMapper();
                 UserContext creation = mapper.readValue(req.body(), UserContext.class);
                 if (!creation.isValid()) {
-                    res.status(400);
+                    res.status(HTTP_STATUS_BAD_REQUEST);
                     return "";
                 }
                 int userContextId = 0; // TODO set.
-                res.status(200);
+                res.status(HTTP_STATUS_OK);
                 res.type("application/json");
                 return userContextId;
             } catch (JsonParseException jpe) {
-                res.status(400);
+                res.status(HTTP_STATUS_BAD_REQUEST);
                 return "";
             }
         });
