@@ -3,7 +3,7 @@ package org.openape.server.rest;
 import java.io.IOException;
 
 import org.codehaus.jackson.JsonParseException;
-import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.map.JsonMappingException;
 import org.openape.api.usercontext.UserContext;
 import org.openape.server.UserContextRequestHandler;
 
@@ -26,8 +26,7 @@ public class UserContextRESTInterface extends SuperRestInterface {
             try {
                 // Try to map the received json object to a userContext
                 // object.
-                ObjectMapper mapper = new ObjectMapper();
-                UserContext recievedUserContext = mapper.readValue(req.body(), UserContext.class);
+                UserContext recievedUserContext = (UserContext) extractContentFromRequest(req, UserContext.class);
                 // Test the object for validity.
                 if (!recievedUserContext.isValid()) {
                     res.status(HTTP_STATUS_BAD_REQUEST);
@@ -38,9 +37,12 @@ public class UserContextRESTInterface extends SuperRestInterface {
                 res.status(HTTP_STATUS_OK);
                 res.type("application/json");
                 return userContextId;
-            } catch (JsonParseException jpe) {
+            } catch (JsonParseException | JsonMappingException e) {
                 // If the parse is not successful return bad request error code.
                 res.status(HTTP_STATUS_BAD_REQUEST);
+                return "";
+            } catch (IOException e) {
+                res.status(HTTP_STATUS_INTERNAL_SERVER_ERROR);
                 return "";
             }
         });
@@ -74,10 +76,7 @@ public class UserContextRESTInterface extends SuperRestInterface {
         put("/api/user-context/:user-context-id", (req, res) -> {
             String userContextId = req.params(":user-context-id");
             try {
-                // Try to map the received json object to a userContext
-                // object.
-                ObjectMapper mapper = new ObjectMapper();
-                UserContext recievedUserContext = mapper.readValue(req.body(), UserContext.class);
+                UserContext recievedUserContext = (UserContext) extractContentFromRequest(req, UserContext.class);
                 // Test the object for validity.
                 if (!recievedUserContext.isValid()) {
                     res.status(HTTP_STATUS_BAD_REQUEST);
@@ -87,7 +86,7 @@ public class UserContextRESTInterface extends SuperRestInterface {
                 requestHandler.updateUserContextById(userContextId, recievedUserContext);
                 res.status(HTTP_STATUS_OK);
                 return "";
-            } catch (JsonParseException | IllegalArgumentException e) {
+            } catch (JsonParseException | JsonMappingException | IllegalArgumentException e) {
                 // If the parse or update is not successful return bad request
                 // error code.
                 res.status(HTTP_STATUS_BAD_REQUEST);
@@ -119,4 +118,5 @@ public class UserContextRESTInterface extends SuperRestInterface {
         });
 
     }
+
 }
