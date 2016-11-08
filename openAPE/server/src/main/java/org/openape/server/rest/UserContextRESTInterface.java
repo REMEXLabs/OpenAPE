@@ -9,14 +9,9 @@ import org.openape.server.UserContextRequestHandler;
 
 import static spark.Spark.*;
 
-public class UserContextRESTInterface {
-    public static final int HTTP_STATUS_OK = 200;
-    public static final int HTTP_STATUS_BAD_REQUEST = 400;
-    public static final int HTTP_STATUS_NOT_FOUND = 404;
-    public static final int HTTP_STATUS_INTERNAL_SERVER_ERROR = 500;
+public class UserContextRESTInterface extends SuperRestInterface {
 
-    public UserContextRESTInterface(
-            final UserContextRequestHandler requestHandler) {
+    public UserContextRESTInterface(final UserContextRequestHandler requestHandler) {
 
         /**
          * test request to test if the server runs. Invoke locally using:
@@ -32,16 +27,14 @@ public class UserContextRESTInterface {
                 // Try to map the received json object to a userContext
                 // object.
                 ObjectMapper mapper = new ObjectMapper();
-                UserContext recievedUserContext = mapper.readValue(req.body(),
-                        UserContext.class);
+                UserContext recievedUserContext = mapper.readValue(req.body(), UserContext.class);
                 // Test the object for validity.
                 if (!recievedUserContext.isValid()) {
                     res.status(HTTP_STATUS_BAD_REQUEST);
                     return "";
                 }
                 // If the object is okay, save it and return the id.
-                String userContextId = requestHandler
-                        .createUserContext(recievedUserContext);
+                String userContextId = requestHandler.createUserContext(recievedUserContext);
                 res.status(HTTP_STATUS_OK);
                 res.type("application/json");
                 return userContextId;
@@ -56,26 +49,24 @@ public class UserContextRESTInterface {
          * Request 7.2.3 get user-context. Used to get a specific user context
          * identified by ID.
          */
-        get("/api/user-context/:user-context-id",
-                (req, res) -> {
-                    String userContextId = req.params(":user-context-id");
-                    try {
-                        // if it is successful return user context.
-                        UserContext userContext = requestHandler
-                                .getUserContextById(userContextId);
-                        res.status(HTTP_STATUS_OK);
-                        res.type("application/json");
-                        return userContext;
-                        // if not return corresponding error status.
-                    } catch (IllegalArgumentException e) {
-                        res.status(HTTP_STATUS_BAD_REQUEST);
-                        return "";
-                    } catch (IOException e) {
-                        res.status(HTTP_STATUS_INTERNAL_SERVER_ERROR);
-                        return "";
-                    }
+        get("/api/user-context/:user-context-id", (req, res) -> {
+            String userContextId = req.params(":user-context-id");
+            try {
+                // if it is successful return user context.
+                UserContext userContext = requestHandler.getUserContextById(userContextId);
+                res.status(HTTP_STATUS_OK);
+                res.type("application/json");
+                return userContext;
+                // if not return corresponding error status.
+            } catch (IllegalArgumentException e) {
+                res.status(HTTP_STATUS_BAD_REQUEST);
+                return "";
+            } catch (IOException e) {
+                res.status(HTTP_STATUS_INTERNAL_SERVER_ERROR);
+                return "";
+            }
 
-                });
+        });
 
         /**
          * Request 7.2.4 update user-context.
@@ -86,16 +77,14 @@ public class UserContextRESTInterface {
                 // Try to map the received json object to a userContext
                 // object.
                 ObjectMapper mapper = new ObjectMapper();
-                UserContext recievedUserContext = mapper.readValue(req.body(),
-                        UserContext.class);
+                UserContext recievedUserContext = mapper.readValue(req.body(), UserContext.class);
                 // Test the object for validity.
                 if (!recievedUserContext.isValid()) {
                     res.status(HTTP_STATUS_BAD_REQUEST);
                     return "";
                 }
                 // If the object is okay, update it.
-                requestHandler.updateUserContextById(userContextId,
-                        recievedUserContext);
+                requestHandler.updateUserContextById(userContextId, recievedUserContext);
                 res.status(HTTP_STATUS_OK);
                 res.type("application/json");
                 return "";
