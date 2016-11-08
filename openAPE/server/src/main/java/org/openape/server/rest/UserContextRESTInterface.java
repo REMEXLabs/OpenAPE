@@ -11,7 +11,9 @@ import static spark.Spark.*;
 
 public class UserContextRESTInterface extends SuperRestInterface {
 
-    public UserContextRESTInterface(final UserContextRequestHandler requestHandler) {
+    public UserContextRESTInterface(
+            final UserContextRequestHandler requestHandler) {
+        super();
 
         /**
          * test request to test if the server runs. Invoke locally using:
@@ -26,14 +28,16 @@ public class UserContextRESTInterface extends SuperRestInterface {
             try {
                 // Try to map the received json object to a userContext
                 // object.
-                UserContext recievedUserContext = (UserContext) extractContentFromRequest(req, UserContext.class);
+                UserContext recievedUserContext = (UserContext) extractContentFromRequest(
+                        req, UserContext.class);
                 // Test the object for validity.
                 if (!recievedUserContext.isValid()) {
                     res.status(HTTP_STATUS_BAD_REQUEST);
                     return "";
                 }
                 // If the object is okay, save it and return the id.
-                String userContextId = requestHandler.createUserContext(recievedUserContext);
+                String userContextId = requestHandler
+                        .createUserContext(recievedUserContext);
                 res.status(HTTP_STATUS_OK);
                 res.type("application/json");
                 return userContextId;
@@ -51,51 +55,58 @@ public class UserContextRESTInterface extends SuperRestInterface {
          * Request 7.2.3 get user-context. Used to get a specific user context
          * identified by ID.
          */
-        get("/api/user-context/:user-context-id", (req, res) -> {
-            String userContextId = req.params(":user-context-id");
-            try {
-                // if it is successful return user context.
-                UserContext userContext = requestHandler.getUserContextById(userContextId);
-                res.status(HTTP_STATUS_OK);
-                res.type("application/json");
-                return userContext;
-                // if not return corresponding error status.
-            } catch (IllegalArgumentException e) {
-                res.status(HTTP_STATUS_BAD_REQUEST);
-                return "";
-            } catch (IOException e) {
-                res.status(HTTP_STATUS_INTERNAL_SERVER_ERROR);
-                return "";
-            }
+        get("/api/user-context/:user-context-id",
+                (req, res) -> {
+                    String userContextId = req.params(":user-context-id");
+                    try {
+                        // if it is successful return user context.
+                        UserContext userContext = requestHandler
+                                .getUserContextById(userContextId);
+                        res.status(HTTP_STATUS_OK);
+                        res.type("application/json");
+                        return userContext;
+                        // if not return corresponding error status.
+                    } catch (IllegalArgumentException e) {
+                        res.status(HTTP_STATUS_BAD_REQUEST);
+                        return "";
+                    } catch (IOException e) {
+                        res.status(HTTP_STATUS_INTERNAL_SERVER_ERROR);
+                        return "";
+                    }
 
-        });
+                });
 
         /**
          * Request 7.2.4 update user-context.
          */
-        put("/api/user-context/:user-context-id", (req, res) -> {
-            String userContextId = req.params(":user-context-id");
-            try {
-                UserContext recievedUserContext = (UserContext) extractContentFromRequest(req, UserContext.class);
-                // Test the object for validity.
-                if (!recievedUserContext.isValid()) {
-                    res.status(HTTP_STATUS_BAD_REQUEST);
-                    return "";
-                }
-                // If the object is okay, update it.
-                requestHandler.updateUserContextById(userContextId, recievedUserContext);
-                res.status(HTTP_STATUS_OK);
-                return "";
-            } catch (JsonParseException | JsonMappingException | IllegalArgumentException e) {
-                // If the parse or update is not successful return bad request
-                // error code.
-                res.status(HTTP_STATUS_BAD_REQUEST);
-                return "";
-            } catch (IOException e) {
-                res.status(HTTP_STATUS_INTERNAL_SERVER_ERROR);
-                return "";
-            }
-        });
+        put("/api/user-context/:user-context-id",
+                (req, res) -> {
+                    String userContextId = req.params(":user-context-id");
+                    try {
+                        UserContext recievedUserContext = (UserContext) extractContentFromRequest(
+                                req, UserContext.class);
+                        // Test the object for validity.
+                        if (!recievedUserContext.isValid()) {
+                            res.status(HTTP_STATUS_BAD_REQUEST);
+                            return "";
+                        }
+                        // If the object is okay, update it.
+                        requestHandler.updateUserContextById(userContextId,
+                                recievedUserContext);
+                        res.status(HTTP_STATUS_OK);
+                        return "";
+                    } catch (JsonParseException | JsonMappingException
+                            | IllegalArgumentException e) {
+                        // If the parse or update is not successful return bad
+                        // request
+                        // error code.
+                        res.status(HTTP_STATUS_BAD_REQUEST);
+                        return "";
+                    } catch (IOException e) {
+                        res.status(HTTP_STATUS_INTERNAL_SERVER_ERROR);
+                        return "";
+                    }
+                });
 
         /**
          * Request 7.2.5 delete user-context.
