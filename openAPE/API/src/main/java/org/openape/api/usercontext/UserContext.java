@@ -41,10 +41,7 @@ public class UserContext {
             return false;
         }
         Context firstContext = this.getContexts().get(0);
-        if (firstContext.getPreferences().isEmpty()
-                || firstContext.getId() == "" || firstContext.getId() == null
-                || firstContext.getName() == ""
-                || firstContext.getName() == null) {
+        if (firstContext.getPreferences().isEmpty() || firstContext.getName() == "" || firstContext.getName() == null) {
             return false;
         }
         return true;

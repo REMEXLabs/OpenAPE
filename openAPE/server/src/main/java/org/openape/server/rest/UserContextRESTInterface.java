@@ -86,7 +86,6 @@ public class UserContextRESTInterface extends SuperRestInterface {
                 // If the object is okay, update it.
                 requestHandler.updateUserContextById(userContextId, recievedUserContext);
                 res.status(HTTP_STATUS_OK);
-                res.type("application/json");
                 return "";
             } catch (JsonParseException | IllegalArgumentException e) {
                 // If the parse or update is not successful return bad request
@@ -108,7 +107,6 @@ public class UserContextRESTInterface extends SuperRestInterface {
                 // if it is successful return user context.
                 requestHandler.deleteUserContextById(userContextId);
                 res.status(HTTP_STATUS_OK);
-                res.type("application/json");
                 return "";
                 // if not return corresponding error status.
             } catch (IllegalArgumentException e) {
