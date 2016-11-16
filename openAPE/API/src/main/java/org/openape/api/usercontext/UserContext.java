@@ -45,4 +45,21 @@ public class UserContext {
 
     }
 
+    /**
+     * check if a given object is a valid user context. Checks if at least one
+     * context is available. TODO implement.
+     * 
+     * @return true if a context is found, false if its empty or attributes are
+     *         missing.
+     */
+    public boolean isValid() {
+        if (this.getContexts().isEmpty()) {
+            return false;
+        }
+        Context firstContext = this.getContexts().get(0);
+        if (firstContext.getPreferences().isEmpty() || firstContext.getName() == "" || firstContext.getName() == null) {
+            return false;
+        }
+        return true;
+    }
 }
