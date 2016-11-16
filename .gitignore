@@ -1,12 +1,5 @@
-Standard/*
-*.prefs
+﻿*.prefs
 *.classpath
 *.project
-context-server/target/*
-context-server/.settings/*
-openAPE/target/*
-openAPE/.settings/*
-openAPE/API/target/*
-openAPE/API/.settings/*
-openAPE/server/target/*
-openAPE/server/.settings/*
+*.jar
+
