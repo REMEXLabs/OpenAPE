@@ -2,6 +2,11 @@ package org.openape.server.database;
 
 import java.util.Arrays;
 
+import org.openape.api.environmentcontext.EnvironmentContext;
+import org.openape.api.equipmentcontext.EquipmentContext;
+import org.openape.api.resource.Resource;
+import org.openape.api.taskcontext.TaskContext;
+import org.openape.api.usercontext.UserContext;
 import org.openape.server.EnvironmentContextRequestHandler;
 import org.openape.server.EquipmentContextRequestHandler;
 import org.openape.server.TaskContextRequestHandler;
@@ -10,6 +15,7 @@ import org.openape.server.UserContextRequestHandler;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoCredential;
 import com.mongodb.ServerAddress;
+import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 
 /**
@@ -62,6 +68,32 @@ public class DatabaseConnection {
     private MongoDatabase database;
 
     /**
+     * Database collection containing the user contexts.
+     */
+    private MongoCollection<UserContext> userContextCollection;
+    /**
+     * Database collection containing the environment contexts.
+     */
+    private MongoCollection<EnvironmentContext> environmentContextCollection;
+    /**
+     * Database collection containing the equipment contexts.
+     */
+    private MongoCollection<EquipmentContext> equipmentContextCollection;
+    /**
+     * Database collection containing the task contexts.
+     */
+    private MongoCollection<TaskContext> taskContextCollection;
+    /**
+     * Database collection containing the resources offered by the server.
+     */
+    private MongoCollection<Resource> resourceOfferContectCollection;
+    /**
+     * Database collection containing the incomplete request resources used by
+     * the client to search for fitting resource.
+     */
+    private MongoCollection<Resource> resourceRequestContextCollection;
+
+    /**
      * private constructor to create the singleton database connection instance.
      */
     private DatabaseConnection() {
@@ -75,6 +107,7 @@ public class DatabaseConnection {
 
         // Get a reference to the openAPE database.
         database = mongoClient.getDatabase(DATABASENAME);
+        database.getCollection("collection");
 
     }
 
