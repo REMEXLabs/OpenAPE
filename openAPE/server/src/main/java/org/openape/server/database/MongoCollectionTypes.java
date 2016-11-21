@@ -19,7 +19,7 @@ public enum MongoCollectionTypes {
             "resource_offers", Resource.class), RESOURCEREQUEST(
             "resource_requests", Resource.class);
 
-    private final Class objectType;
+    private final Class<?> objectType;
     private final String mongoCollectionName;
 
     private <T> MongoCollectionTypes(String collectionName, Class<T> objectType) {
@@ -45,7 +45,7 @@ public enum MongoCollectionTypes {
      *            of the collection.
      * @return class of the documents stored.
      */
-    public static Class getDocumentType(MongoCollectionTypes type) {
+    public static Class<?> getDocumentType(MongoCollectionTypes type) {
         return type.objectType;
     }
 

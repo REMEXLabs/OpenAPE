@@ -107,7 +107,13 @@ public class DatabaseConnection {
 
         // Get a reference to the openAPE database.
         database = mongoClient.getDatabase(DATABASENAME);
-        database.getCollection("collection");
+        userContextCollection = (MongoCollection<UserContext>) database
+                .getCollection(
+                        MongoCollectionTypes
+                                .getCollectionName(MongoCollectionTypes.USERCONTEXT),
+                        MongoCollectionTypes
+                                .getDocumentType(MongoCollectionTypes.USERCONTEXT));
+        // TODO for all
 
     }
 

@@ -1,6 +1,10 @@
 package org.openape.api.environmentcontext;
 
-public class EnvironmentContext {
+import org.openape.api.DatabaseObject;
+
+public class EnvironmentContext extends DatabaseObject {
+    private static final long serialVersionUID = -1706959529432920842L;
+
     /**
      * check if a given object is a valid user context. Checks if at least one
      * context is available. TODO implement.
