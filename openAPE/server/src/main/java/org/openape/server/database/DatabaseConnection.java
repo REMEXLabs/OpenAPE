@@ -112,14 +112,16 @@ public class DatabaseConnection {
     @SuppressWarnings("unchecked") // It is checked by the try catch block.
     private DatabaseConnection() {
         // Create credentials for the openAPE database
-        MongoCredential credential = MongoCredential.createCredential(DATABASUSERNAME, DATABASENAME,
-                DATABASEPASSWORD.toCharArray());
+        MongoCredential credential = MongoCredential.createCredential(DatabaseConnection.DATABASUSERNAME,
+                DatabaseConnection.DATABASENAME, DatabaseConnection.DATABASEPASSWORD.toCharArray());
 
         // Create database client for the openAPE database
-        this.mongoClient = new MongoClient(new ServerAddress(DATABASEURL, DATABASEPORT), Arrays.asList(credential));
+        this.mongoClient = new MongoClient(
+                new ServerAddress(DatabaseConnection.DATABASEURL, DatabaseConnection.DATABASEPORT),
+                Arrays.asList(credential));
 
         // Get a reference to the openAPE database.
-        this.database = this.mongoClient.getDatabase(DATABASENAME);
+        this.database = this.mongoClient.getDatabase(DatabaseConnection.DATABASENAME);
         // Get references to the database collections.
         try {
             this.userContextCollection = (MongoCollection<UserContext>) this.database.getCollection(
