@@ -1,7 +1,5 @@
 package org.openape.server.rest;
 
-import static spark.Spark.port;
-
 import java.io.IOException;
 
 import org.codehaus.jackson.JsonParseException;
@@ -9,6 +7,7 @@ import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import spark.Request;
+import spark.Spark;
 
 public class SuperRestInterface {
 
@@ -23,7 +22,7 @@ public class SuperRestInterface {
      */
     public SuperRestInterface() {
         // Change port to default port.
-        port(8080);
+        Spark.port(8080);
     }
 
     /**
