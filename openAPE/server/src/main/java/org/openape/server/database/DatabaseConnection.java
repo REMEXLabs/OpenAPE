@@ -2,6 +2,7 @@ package org.openape.server.database;
 
 import java.util.Arrays;
 
+import org.openape.api.DatabaseObject;
 import org.openape.api.environmentcontext.EnvironmentContext;
 import org.openape.api.equipmentcontext.EquipmentContext;
 import org.openape.api.resource.Resource;
@@ -168,6 +169,20 @@ public class DatabaseConnection {
             return this.resourceRequestContextCollection;
         else
             return null; // Should never occur.
+    }
+
+    /**
+     * TODO fix.
+     * @param type
+     * @param data
+     * @return
+     * @throws ClassCastException
+     */
+    public boolean saveData(MongoCollectionTypes type, DatabaseObject data) throws ClassCastException {
+        if (!type.getDocumentType().equals(data.getClass())) {
+            throw new ClassCastException();
+        }
+        this.getCollectionByType(type).insertOne((type.getDocumentType())data);
     }
 
 }
