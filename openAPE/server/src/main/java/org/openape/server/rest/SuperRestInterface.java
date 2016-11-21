@@ -38,9 +38,8 @@ public class SuperRestInterface {
      * @throws JsonParseException
      * @throws JsonMappingException
      */
-    protected <T> Object extractContentFromRequest(Request req,
-            Class<T> objectType) throws IOException, JsonParseException,
-            JsonMappingException {
+    protected <T> Object extractContentFromRequest(Request req, Class<T> objectType)
+            throws IOException, JsonParseException, JsonMappingException {
         ObjectMapper mapper = new ObjectMapper();
         Object recievedUserContext = mapper.readValue(req.body(), objectType);
         return recievedUserContext;
