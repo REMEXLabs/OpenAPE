@@ -18,8 +18,11 @@ limitations under the License.
 
 import javax.xml.bind.annotation.*;
 
-public class Preference {
+import org.openape.api.DatabaseObject;
 
+public class Preference extends DatabaseObject {
+    private static final long serialVersionUID = -8359653185563684514L;
+    
     private String key;
     private String value;
 

@@ -17,10 +17,14 @@ limitations under the License.
  
 import java.util.ArrayList;
 import javax.xml.bind.annotation.*;
+
+import org.openape.api.DatabaseObject;
+
 import java.util.List;
 
-public class Context {
-
+public class Context extends DatabaseObject {
+    private static final long serialVersionUID = -8602234372848554234L;
+    
     private String id;
     private String name;
     private List<Preference> preferences = new ArrayList<Preference>();
