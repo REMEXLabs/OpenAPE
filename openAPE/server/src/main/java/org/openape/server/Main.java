@@ -13,11 +13,9 @@ public class Main {
 
     public static void main(String[] args) {
         // Start rest api and database connection.
-        DatabaseConnection databaseConnection = DatabaseConnection
-                .getInstance();
+        DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
         new UserContextRESTInterface(new UserContextRequestHandler());
-        new EnvironmentContextRESTInterface(
-                new EnvironmentContextRequestHandler());
+        new EnvironmentContextRESTInterface(new EnvironmentContextRequestHandler());
         new EquipmentContextRESTInterface(new EquipmentContextRequestHandler());
         new TaskContextRESTInterface(new TaskContextRequestHandler());
 
