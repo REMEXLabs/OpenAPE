@@ -1,5 +1,6 @@
 package org.openape.server.database;
 
+import java.io.IOException;
 import java.util.Arrays;
 
 import org.openape.api.DatabaseObject;
@@ -32,7 +33,7 @@ public class DatabaseConnection {
      * The url to our mongo database server.
      */
     private static final String DATABASEURL = "localhost"; // TODO replace by
-                                                           // the mongoDB url.
+    // the mongoDB url.
     /**
      * The standard port for online mongo databases.
      */
@@ -61,7 +62,7 @@ public class DatabaseConnection {
 
     /**
      * Get the singleton database connection.
-     * 
+     *
      * @return the database connection.
      */
     public static DatabaseConnection getInstance() {
@@ -110,37 +111,49 @@ public class DatabaseConnection {
     /**
      * private constructor to create the singleton database connection instance.
      */
-    @SuppressWarnings("unchecked") // It is checked by the try catch block.
+    @SuppressWarnings("unchecked")
+    // It is checked by the try catch block.
     private DatabaseConnection() {
         // Create credentials for the openAPE database
-        MongoCredential credential = MongoCredential.createCredential(DatabaseConnection.DATABASUSERNAME,
-                DatabaseConnection.DATABASENAME, DatabaseConnection.DATABASEPASSWORD.toCharArray());
+        MongoCredential credential = MongoCredential.createCredential(
+                DatabaseConnection.DATABASUSERNAME,
+                DatabaseConnection.DATABASENAME,
+                DatabaseConnection.DATABASEPASSWORD.toCharArray());
 
         // Create database client for the openAPE database
         this.mongoClient = new MongoClient(
-                new ServerAddress(DatabaseConnection.DATABASEURL, DatabaseConnection.DATABASEPORT),
-                Arrays.asList(credential));
+                new ServerAddress(DatabaseConnection.DATABASEURL,
+                        DatabaseConnection.DATABASEPORT),
+                        Arrays.asList(credential));
 
         // Get a reference to the openAPE database.
-        this.database = this.mongoClient.getDatabase(DatabaseConnection.DATABASENAME);
+        this.database = this.mongoClient
+                .getDatabase(DatabaseConnection.DATABASENAME);
         // Get references to the database collections.
         try {
-            this.userContextCollection = (MongoCollection<UserContext>) this.database.getCollection(
-                    MongoCollectionTypes.USERCONTEXT.toString(), MongoCollectionTypes.USERCONTEXT.getDocumentType());
-            this.environmentContextCollection = (MongoCollection<EnvironmentContext>) this.database.getCollection(
-                    MongoCollectionTypes.ENVIRONMENTCONTEXT.toString(),
-                    MongoCollectionTypes.ENVIRONMENTCONTEXT.getDocumentType());
-            this.equipmentContextCollection = (MongoCollection<EquipmentContext>) this.database.getCollection(
-                    MongoCollectionTypes.EQUIPMENTCONTEXT.toString(),
-                    MongoCollectionTypes.EQUIPMENTCONTEXT.getDocumentType());
-            this.taskContextCollection = (MongoCollection<TaskContext>) this.database.getCollection(
-                    MongoCollectionTypes.TASKCONTEXT.toString(), MongoCollectionTypes.TASKCONTEXT.getDocumentType());
-            this.resourceOfferContectCollection = (MongoCollection<Resource>) this.database.getCollection(
-                    MongoCollectionTypes.RESOURCEOFFER.toString(),
-                    MongoCollectionTypes.RESOURCEOFFER.getDocumentType());
-            this.resourceRequestContextCollection = (MongoCollection<Resource>) this.database.getCollection(
-                    MongoCollectionTypes.RESOURCEREQUEST.toString(),
-                    MongoCollectionTypes.RESOURCEREQUEST.getDocumentType());
+            this.userContextCollection = (MongoCollection<UserContext>) this.database
+                    .getCollection(MongoCollectionTypes.USERCONTEXT.toString(),
+                            MongoCollectionTypes.USERCONTEXT.getDocumentType());
+            this.environmentContextCollection = (MongoCollection<EnvironmentContext>) this.database
+                    .getCollection(MongoCollectionTypes.ENVIRONMENTCONTEXT
+                            .toString(),
+                            MongoCollectionTypes.ENVIRONMENTCONTEXT
+                            .getDocumentType());
+            this.equipmentContextCollection = (MongoCollection<EquipmentContext>) this.database
+                    .getCollection(MongoCollectionTypes.EQUIPMENTCONTEXT
+                            .toString(), MongoCollectionTypes.EQUIPMENTCONTEXT
+                            .getDocumentType());
+            this.taskContextCollection = (MongoCollection<TaskContext>) this.database
+                    .getCollection(MongoCollectionTypes.TASKCONTEXT.toString(),
+                            MongoCollectionTypes.TASKCONTEXT.getDocumentType());
+            this.resourceOfferContectCollection = (MongoCollection<Resource>) this.database
+                    .getCollection(MongoCollectionTypes.RESOURCEOFFER
+                            .toString(), MongoCollectionTypes.RESOURCEOFFER
+                            .getDocumentType());
+            this.resourceRequestContextCollection = (MongoCollection<Resource>) this.database
+                    .getCollection(MongoCollectionTypes.RESOURCEREQUEST
+                            .toString(), MongoCollectionTypes.RESOURCEREQUEST
+                            .getDocumentType());
         } catch (ClassCastException e) {
             e.printStackTrace();
             System.exit(0);// TODO handle exception.
@@ -149,40 +162,112 @@ public class DatabaseConnection {
     }
 
     /**
+     * Delete a database object, either a context or a resource, from the
+     * database. Choose the object via id and the collection via the collection
+     * type.
+     *
+     * @param type
+     *            the collection in which the object is located.
+     * @param id
+     *            the database id within the collection of the object
+     * @return true if successful.
+     * @throws ClassCastException
+     *             if the object class doesn't match the given collection type.
+     * @throws IOException
+     *             if a database problem occurs.
+     */
+    public boolean deleteData(MongoCollectionTypes type, String id)
+            throws ClassCastException, IOException {
+        return false;
+    }
+
+    /**
      * Get a mongo collection reference by providing the collection type.
-     * 
+     *
      * @param type
      * @return the collection reference or null if the type is unknown.
      */
     private MongoCollection<?> getCollectionByType(MongoCollectionTypes type) {
-        if (type.equals(MongoCollectionTypes.USERCONTEXT))
+        if (type.equals(MongoCollectionTypes.USERCONTEXT)) {
             return this.userContextCollection;
-        else if (type.equals(MongoCollectionTypes.ENVIRONMENTCONTEXT))
+        } else if (type.equals(MongoCollectionTypes.ENVIRONMENTCONTEXT)) {
             return this.environmentContextCollection;
-        else if (type.equals(MongoCollectionTypes.EQUIPMENTCONTEXT))
+        } else if (type.equals(MongoCollectionTypes.EQUIPMENTCONTEXT)) {
             return this.equipmentContextCollection;
-        else if (type.equals(MongoCollectionTypes.TASKCONTEXT))
+        } else if (type.equals(MongoCollectionTypes.TASKCONTEXT)) {
             return this.taskContextCollection;
-        else if (type.equals(MongoCollectionTypes.RESOURCEOFFER))
+        } else if (type.equals(MongoCollectionTypes.RESOURCEOFFER)) {
             return this.resourceOfferContectCollection;
-        else if (type.equals(MongoCollectionTypes.RESOURCEREQUEST))
+        } else if (type.equals(MongoCollectionTypes.RESOURCEREQUEST)) {
             return this.resourceRequestContextCollection;
-        else
+        } else {
             return null; // Should never occur.
+        }
     }
 
     /**
-     * TODO fix.
+     * Request a database object, either a context or a resource, from the
+     * database. Choose the object via id and the collection via the collection
+     * type. The object will remain in the database.
+     *
      * @param type
-     * @param data
-     * @return
+     *            the collection in which the object is located.
+     * @param id
+     *            the database id within the collection of the object.
+     * @return the database object.
      * @throws ClassCastException
+     *             if the object class doesn't match the given collection type.
+     * @throws IOException
+     *             if a database problem occurs.
      */
-    public boolean saveData(MongoCollectionTypes type, DatabaseObject data) throws ClassCastException {
+    public DatabaseObject getData(MongoCollectionTypes type, String id)
+            throws ClassCastException, IOException {
+        return null;
+    }
+
+    /**
+     * Store a database object, either a context or a resource, into the
+     * database. Choose the collection via the collection type.
+     *
+     * @param type
+     *            the collection to store it into.
+     * @param data
+     *            the object to be stored.
+     * @return the id of the stored object within the collection.
+     * @throws ClassCastException
+     *             if the object class doesn't match the given collection type.
+     * @throws IOException
+     *             if a database problem occurs.
+     */
+    public String storeData(MongoCollectionTypes type, DatabaseObject data)
+            throws ClassCastException, IOException {
         if (!type.getDocumentType().equals(data.getClass())) {
             throw new ClassCastException();
         }
-        this.getCollectionByType(type).insertOne((type.getDocumentType())data);
+        // this.getCollectionByType(type).insertOne((type.getDocumentType())data);
+        return null;
+    }
+
+    /**
+     * Update a database object, either a context or a resource, in the
+     * database. Choose the object via id and the collection via the collection
+     * type.
+     *
+     * @param type
+     *            the collection in which the object is located.
+     * @param data
+     *            the new version of the object.
+     * @param id
+     *            the database id within the collection of the object.
+     * @return true if successful.
+     * @throws ClassCastException
+     *             if the object class doesn't match the given collection type.
+     * @throws IOException
+     *             if a database problem occurs.
+     */
+    public boolean updateData(MongoCollectionTypes type, DatabaseObject data,
+            String id) throws ClassCastException, IOException {
+        return false;
     }
 
 }
