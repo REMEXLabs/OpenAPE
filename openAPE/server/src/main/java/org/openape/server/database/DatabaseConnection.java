@@ -3,6 +3,9 @@ package org.openape.server.database;
 import java.io.IOException;
 import java.util.Arrays;
 
+import org.bson.BsonDocument;
+import org.bson.codecs.configuration.CodecRegistry;
+import org.bson.conversions.Bson;
 import org.openape.api.DatabaseObject;
 import org.openape.api.environmentcontext.EnvironmentContext;
 import org.openape.api.equipmentcontext.EquipmentContext;
@@ -168,7 +171,7 @@ public class DatabaseConnection {
      *             if a database problem occurs.
      */
     public boolean deleteData(MongoCollectionTypes type, String id) throws ClassCastException,
-    IOException {
+            IOException {
         return false;
     }
 
@@ -212,7 +215,7 @@ public class DatabaseConnection {
      *             if a database problem occurs.
      */
     public DatabaseObject getData(MongoCollectionTypes type, String id) throws ClassCastException,
-    IOException {
+            IOException {
         return null;
     }
 
@@ -235,7 +238,14 @@ public class DatabaseConnection {
         if (!type.getDocumentType().equals(data.getClass())) {
             throw new ClassCastException();
         }
-        // this.getCollectionByType(type).insertOne((type.getDocumentType())data);
+        switch (type) {
+        case USERCONTEXT:
+            userContextCollection.insertOne((UserContext) data);
+            break;
+        // http://stackoverflow.com/questions/36402690/how-to-insert-object-in-mongodb-3-2-document
+        default:
+            break;
+        }
         return null;
     }
 
