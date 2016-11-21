@@ -116,44 +116,35 @@ public class DatabaseConnection {
     private DatabaseConnection() {
         // Create credentials for the openAPE database
         MongoCredential credential = MongoCredential.createCredential(
-                DatabaseConnection.DATABASUSERNAME,
-                DatabaseConnection.DATABASENAME,
+                DatabaseConnection.DATABASUSERNAME, DatabaseConnection.DATABASENAME,
                 DatabaseConnection.DATABASEPASSWORD.toCharArray());
 
         // Create database client for the openAPE database
-        this.mongoClient = new MongoClient(
-                new ServerAddress(DatabaseConnection.DATABASEURL,
-                        DatabaseConnection.DATABASEPORT),
-                        Arrays.asList(credential));
+        this.mongoClient = new MongoClient(new ServerAddress(DatabaseConnection.DATABASEURL,
+                DatabaseConnection.DATABASEPORT), Arrays.asList(credential));
 
         // Get a reference to the openAPE database.
-        this.database = this.mongoClient
-                .getDatabase(DatabaseConnection.DATABASENAME);
+        this.database = this.mongoClient.getDatabase(DatabaseConnection.DATABASENAME);
         // Get references to the database collections.
         try {
             this.userContextCollection = (MongoCollection<UserContext>) this.database
                     .getCollection(MongoCollectionTypes.USERCONTEXT.toString(),
                             MongoCollectionTypes.USERCONTEXT.getDocumentType());
             this.environmentContextCollection = (MongoCollection<EnvironmentContext>) this.database
-                    .getCollection(MongoCollectionTypes.ENVIRONMENTCONTEXT
-                            .toString(),
-                            MongoCollectionTypes.ENVIRONMENTCONTEXT
-                            .getDocumentType());
+                    .getCollection(MongoCollectionTypes.ENVIRONMENTCONTEXT.toString(),
+                            MongoCollectionTypes.ENVIRONMENTCONTEXT.getDocumentType());
             this.equipmentContextCollection = (MongoCollection<EquipmentContext>) this.database
-                    .getCollection(MongoCollectionTypes.EQUIPMENTCONTEXT
-                            .toString(), MongoCollectionTypes.EQUIPMENTCONTEXT
-                            .getDocumentType());
+                    .getCollection(MongoCollectionTypes.EQUIPMENTCONTEXT.toString(),
+                            MongoCollectionTypes.EQUIPMENTCONTEXT.getDocumentType());
             this.taskContextCollection = (MongoCollection<TaskContext>) this.database
                     .getCollection(MongoCollectionTypes.TASKCONTEXT.toString(),
                             MongoCollectionTypes.TASKCONTEXT.getDocumentType());
             this.resourceOfferContectCollection = (MongoCollection<Resource>) this.database
-                    .getCollection(MongoCollectionTypes.RESOURCEOFFER
-                            .toString(), MongoCollectionTypes.RESOURCEOFFER
-                            .getDocumentType());
+                    .getCollection(MongoCollectionTypes.RESOURCEOFFER.toString(),
+                            MongoCollectionTypes.RESOURCEOFFER.getDocumentType());
             this.resourceRequestContextCollection = (MongoCollection<Resource>) this.database
-                    .getCollection(MongoCollectionTypes.RESOURCEREQUEST
-                            .toString(), MongoCollectionTypes.RESOURCEREQUEST
-                            .getDocumentType());
+                    .getCollection(MongoCollectionTypes.RESOURCEREQUEST.toString(),
+                            MongoCollectionTypes.RESOURCEREQUEST.getDocumentType());
         } catch (ClassCastException e) {
             e.printStackTrace();
             System.exit(0);// TODO handle exception.
@@ -176,8 +167,8 @@ public class DatabaseConnection {
      * @throws IOException
      *             if a database problem occurs.
      */
-    public boolean deleteData(MongoCollectionTypes type, String id)
-            throws ClassCastException, IOException {
+    public boolean deleteData(MongoCollectionTypes type, String id) throws ClassCastException,
+    IOException {
         return false;
     }
 
@@ -220,8 +211,8 @@ public class DatabaseConnection {
      * @throws IOException
      *             if a database problem occurs.
      */
-    public DatabaseObject getData(MongoCollectionTypes type, String id)
-            throws ClassCastException, IOException {
+    public DatabaseObject getData(MongoCollectionTypes type, String id) throws ClassCastException,
+    IOException {
         return null;
     }
 
@@ -265,8 +256,8 @@ public class DatabaseConnection {
      * @throws IOException
      *             if a database problem occurs.
      */
-    public boolean updateData(MongoCollectionTypes type, DatabaseObject data,
-            String id) throws ClassCastException, IOException {
+    public boolean updateData(MongoCollectionTypes type, DatabaseObject data, String id)
+            throws ClassCastException, IOException {
         return false;
     }
 
