@@ -2,4 +2,4 @@
 *.classpath
 *.project
 *.jar
-
+*.class
