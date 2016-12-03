@@ -58,7 +58,14 @@ public class UserContextRequestHandler {
      *             if the id is no valid id or not assigned.
      */
     public boolean deleteUserContextById(String id) throws IOException, IllegalArgumentException {
-        return false;
+        // get database connection.
+        DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
+
+        boolean success = databaseConnection.deleteData(MongoCollectionTypes.USERCONTEXT, id);
+        if (!success) {
+            throw new IllegalArgumentException();
+        }
+        return true;
     }
 
     /**

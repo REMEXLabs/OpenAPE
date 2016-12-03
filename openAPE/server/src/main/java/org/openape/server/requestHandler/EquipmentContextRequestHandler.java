@@ -59,7 +59,14 @@ public class EquipmentContextRequestHandler {
      */
     public boolean deleteEquipmentContextById(String id) throws IOException,
             IllegalArgumentException {
-        return false;
+        // get database connection.
+        DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
+
+        boolean success = databaseConnection.deleteData(MongoCollectionTypes.EQUIPMENTCONTEXT, id);
+        if (!success) {
+            throw new IllegalArgumentException();
+        }
+        return true;
     }
 
     /**

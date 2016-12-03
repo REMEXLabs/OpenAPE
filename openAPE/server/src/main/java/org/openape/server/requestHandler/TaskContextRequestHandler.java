@@ -58,7 +58,14 @@ public class TaskContextRequestHandler {
      *             if the id is no valid id or not assigned.
      */
     public boolean deleteTaskContextById(String id) throws IOException, IllegalArgumentException {
-        return false;
+        // get database connection.
+        DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
+
+        boolean success = databaseConnection.deleteData(MongoCollectionTypes.TASKCONTEXT, id);
+        if (!success) {
+            throw new IllegalArgumentException();
+        }
+        return true;
     }
 
     /**

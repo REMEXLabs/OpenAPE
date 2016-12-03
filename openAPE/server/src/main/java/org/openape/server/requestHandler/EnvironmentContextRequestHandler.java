@@ -31,12 +31,12 @@ public class EnvironmentContextRequestHandler {
     public String createEnvironmentContext(Object environmentContext) throws IOException,
             IllegalArgumentException {
         // get database connection.
-        DatabaseConnection databaseconnection = DatabaseConnection.getInstance();
+        DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
         // try to store data. Class cast exceptions will be thrown as illegal
         // argument exceptions. IO exceptions will just be thrown through.
         String id = null;
         try {
-            id = databaseconnection.storeData(MongoCollectionTypes.ENVIRONMENTCONTEXT,
+            id = databaseConnection.storeData(MongoCollectionTypes.ENVIRONMENTCONTEXT,
                     (DatabaseObject) environmentContext);
         } catch (ClassCastException e) {
             throw new IllegalArgumentException(e.getMessage());
@@ -59,7 +59,15 @@ public class EnvironmentContextRequestHandler {
      */
     public boolean deleteEnvironmentContextById(String id) throws IOException,
             IllegalArgumentException {
-        return false;
+        // get database connection.
+        DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
+
+        boolean success = databaseConnection
+                .deleteData(MongoCollectionTypes.ENVIRONMENTCONTEXT, id);
+        if (!success) {
+            throw new IllegalArgumentException();
+        }
+        return true;
     }
 
     /**
