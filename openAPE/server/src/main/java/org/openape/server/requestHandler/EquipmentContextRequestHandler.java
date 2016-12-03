@@ -126,6 +126,22 @@ public class EquipmentContextRequestHandler {
      */
     public boolean updateEquipmentContextById(String id, Object equipmentContext)
             throws IOException, IllegalArgumentException {
-        return false;
+        // get database connection.
+        DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
+
+        // Update data. If a class cast exception occurs or the return value is
+        // false the parameters is not valid and an illegal argument exception
+        // is thrown. IO exceptions are thrown through.
+        boolean success;
+        try {
+            success = databaseConnection.updateData(MongoCollectionTypes.EQUIPMENTCONTEXT,
+                    (DatabaseObject) equipmentContext, id);
+        } catch (ClassCastException e) {
+            throw new IllegalArgumentException(e.getMessage());
+        }
+        if (!success) {
+            throw new IllegalArgumentException();
+        }
+        return true;
     }
 }
