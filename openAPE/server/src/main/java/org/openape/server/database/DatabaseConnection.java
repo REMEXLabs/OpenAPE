@@ -157,8 +157,7 @@ public class DatabaseConnection {
      * @throws IOException
      *             if a database problem occurs.
      */
-    public boolean deleteData(MongoCollectionTypes type, String id) throws ClassCastException,
-            IOException {
+    public boolean deleteData(MongoCollectionTypes type, String id) throws IOException {
         return false;
     }
 
@@ -201,8 +200,7 @@ public class DatabaseConnection {
      * @throws IOException
      *             if a database problem occurs.
      */
-    public DatabaseObject getData(MongoCollectionTypes type, String id) throws ClassCastException,
-            IOException {
+    public DatabaseObject getData(MongoCollectionTypes type, String id) throws IOException {
         return null;
     }
 
