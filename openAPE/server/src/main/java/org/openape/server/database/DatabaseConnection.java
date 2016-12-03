@@ -274,6 +274,11 @@ public class DatabaseConnection {
      */
     public boolean updateData(MongoCollectionTypes type, DatabaseObject data, String id)
             throws ClassCastException, IOException {
+        // Check if data is of the correct type for the collection.
+        if (!type.getDocumentType().equals(data.getClass())) {
+            throw new ClassCastException();
+        }
+
         return false;
     }
 
