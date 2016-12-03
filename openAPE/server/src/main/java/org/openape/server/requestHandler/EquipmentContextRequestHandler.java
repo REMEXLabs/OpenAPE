@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import org.openape.api.DatabaseObject;
 import org.openape.api.equipmentcontext.EquipmentContext;
+import org.openape.api.usercontext.UserContext;
 import org.openape.server.database.DatabaseConnection;
 import org.openape.server.database.MongoCollectionTypes;
 import org.openape.server.rest.EquipmentContextRESTInterface;
@@ -84,7 +85,27 @@ public class EquipmentContextRequestHandler {
      */
     public EquipmentContext getEquipmentContextById(String id) throws IOException,
             IllegalArgumentException {
-        return null;
+        // get database connection.
+        DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
+
+        // Get the requested data.
+        DatabaseObject result = databaseConnection.getData(MongoCollectionTypes.EQUIPMENTCONTEXT,
+                id);
+
+        // If the result is null the id is not found.
+        if (result == null) {
+            throw new IllegalArgumentException();
+        }
+
+        // convert into correct type.
+        EquipmentContext returnObject;
+        try {
+            returnObject = (EquipmentContext) result;
+        } catch (ClassCastException e) {
+            e.printStackTrace();
+            throw new IOException(e.getMessage());
+        }
+        return returnObject;
     }
 
     /**

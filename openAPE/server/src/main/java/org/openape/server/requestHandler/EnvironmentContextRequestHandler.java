@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import org.openape.api.DatabaseObject;
 import org.openape.api.environmentcontext.EnvironmentContext;
+import org.openape.api.usercontext.UserContext;
 import org.openape.server.database.DatabaseConnection;
 import org.openape.server.database.MongoCollectionTypes;
 import org.openape.server.rest.EnvironmentContextRESTInterface;
@@ -85,7 +86,27 @@ public class EnvironmentContextRequestHandler {
      */
     public EnvironmentContext getEnvironmentContextById(String id) throws IOException,
             IllegalArgumentException {
-        return null;
+        // get database connection.
+        DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
+
+        // Get the requested data.
+        DatabaseObject result = databaseConnection.getData(MongoCollectionTypes.ENVIRONMENTCONTEXT,
+                id);
+
+        // If the result is null the id is not found.
+        if (result == null) {
+            throw new IllegalArgumentException();
+        }
+
+        // convert into correct type.
+        EnvironmentContext returnObject;
+        try {
+            returnObject = (EnvironmentContext) result;
+        } catch (ClassCastException e) {
+            e.printStackTrace();
+            throw new IOException(e.getMessage());
+        }
+        return returnObject;
     }
 
     /**

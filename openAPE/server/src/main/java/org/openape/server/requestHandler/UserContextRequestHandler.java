@@ -82,7 +82,27 @@ public class UserContextRequestHandler {
      *             if the id is no valid id or not assigned.
      */
     public UserContext getUserContextById(String id) throws IOException, IllegalArgumentException {
-        return null;
+        // get database connection.
+        DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
+
+        // Get the requested data.
+        DatabaseObject result = databaseConnection.getData(MongoCollectionTypes.USERCONTEXT, id);
+
+        // If the result is null the id is not found.
+        if (result == null) {
+            throw new IllegalArgumentException();
+        }
+
+        // convert into correct type.
+        UserContext returnObject;
+        try {
+            returnObject = (UserContext) result;
+        } catch (ClassCastException e) {
+            e.printStackTrace();
+            throw new IOException(e.getMessage());
+        }
+        return returnObject;
+
     }
 
     /**
