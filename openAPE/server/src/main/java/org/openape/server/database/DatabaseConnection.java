@@ -2,6 +2,7 @@ package org.openape.server.database;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Iterator;
 
 import org.bson.Document;
 import org.bson.types.ObjectId;
@@ -14,12 +15,14 @@ import org.openape.server.EquipmentContextRequestHandler;
 import org.openape.server.TaskContextRequestHandler;
 import org.openape.server.UserContextRequestHandler;
 
+import com.mongodb.BasicDBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoCredential;
 import com.mongodb.MongoException;
 import com.mongodb.MongoWriteConcernException;
 import com.mongodb.MongoWriteException;
 import com.mongodb.ServerAddress;
+import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 
@@ -199,7 +202,28 @@ public class DatabaseConnection {
      */
     public DatabaseObject getData(MongoCollectionTypes type, String id) throws IOException {
         MongoCollection<Document> collectionToWorkOn = this.getCollectionByType(type);
-        return null;
+
+        // Search for object in database.
+        BasicDBObject query = new BasicDBObject();
+        query.put("_id", new ObjectId(id));
+        FindIterable<Document> resultIteratable = collectionToWorkOn.find(query);
+
+        Iterator<Document> resultInterator = resultIteratable.iterator();
+        if (!resultInterator.hasNext()) {
+            // If no result is found return null.
+            return null;
+        } else {
+            // get the first result. Souldn't ever be more than one since _ids
+            // are supposed to be unique.
+            Document resultDocument = resultInterator.next();
+            // Remove the automatically added id.
+            resultDocument.remove("_id");
+            String jsonResult = resultDocument.toJson();
+            ObjectMapper mapper = new ObjectMapper();
+            DatabaseObject result = mapper.readValue(jsonResult, DatabaseObject.class);
+            return result;
+            // TODO exceptionhandling
+        }
     }
 
     /**
@@ -274,7 +298,7 @@ public class DatabaseConnection {
         if (!type.getDocumentType().equals(data.getClass())) {
             throw new ClassCastException();
         }
-        
+
         MongoCollection<Document> collectionToWorkOn = this.getCollectionByType(type);
 
         return false;
