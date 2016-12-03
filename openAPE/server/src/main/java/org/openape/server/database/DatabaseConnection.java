@@ -127,7 +127,6 @@ public class DatabaseConnection {
         // Get a reference to the openAPE database.
         this.database = this.mongoClient.getDatabase(DatabaseConnection.DATABASENAME);
         // Get references to the database collections.
-
         this.userContextCollection = this.database.getCollection(MongoCollectionTypes.USERCONTEXT
                 .toString());
         this.environmentContextCollection = this.database
