@@ -3,16 +3,12 @@ package org.openape.server.database;
 import java.io.IOException;
 import java.util.Arrays;
 
-import org.bson.BsonDocument;
 import org.bson.Document;
-import org.bson.codecs.configuration.CodecRegistry;
-import org.bson.conversions.Bson;
+import org.bson.types.ObjectId;
+import org.codehaus.jackson.JsonGenerationException;
+import org.codehaus.jackson.map.JsonMappingException;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.openape.api.DatabaseObject;
-import org.openape.api.environmentcontext.EnvironmentContext;
-import org.openape.api.equipmentcontext.EquipmentContext;
-import org.openape.api.resource.Resource;
-import org.openape.api.taskcontext.TaskContext;
-import org.openape.api.usercontext.UserContext;
 import org.openape.server.EnvironmentContextRequestHandler;
 import org.openape.server.EquipmentContextRequestHandler;
 import org.openape.server.TaskContextRequestHandler;
@@ -20,6 +16,9 @@ import org.openape.server.UserContextRequestHandler;
 
 import com.mongodb.MongoClient;
 import com.mongodb.MongoCredential;
+import com.mongodb.MongoException;
+import com.mongodb.MongoWriteConcernException;
+import com.mongodb.MongoWriteException;
 import com.mongodb.ServerAddress;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
@@ -32,7 +31,6 @@ import com.mongodb.client.MongoDatabase;
  * {@link UserContextRequestHandler}.
  */
 public class DatabaseConnection {
-
     /**
      * The url to our mongo database server.
      */
@@ -230,18 +228,36 @@ public class DatabaseConnection {
      */
     public String storeData(MongoCollectionTypes type, DatabaseObject data)
             throws ClassCastException, IOException {
+        // Check if data is of the correct type for the collection.
         if (!type.getDocumentType().equals(data.getClass())) {
             throw new ClassCastException();
         }
-        switch (type) {
-        case USERCONTEXT:
-            userContextCollection.insertOne(data);
-            break;
-        // http://stackoverflow.com/questions/36402690/how-to-insert-object-in-mongodb-3-2-document
-        default:
-            break;
+
+        MongoCollection<Document> collectionToWorkOn = this.getCollectionByType(type);
+
+        // Create Document from data.
+        Document dataDocument = null;
+        try {
+            final ObjectMapper mapper = new ObjectMapper();
+            final String jsonData = mapper.writeValueAsString(data);
+            dataDocument = Document.parse(jsonData);
+            // Insert the document.
+            collectionToWorkOn.insertOne(dataDocument);
+        } catch (IOException | MongoException e) {
+            e.printStackTrace();
+            throw new IOException(e.getMessage());
         }
-        return null;
+
+        // Get the automatically appended id.
+        ObjectId id = null;
+        try {
+            id = (ObjectId) dataDocument.get("_id");
+        } catch (ClassCastException e) {
+            e.printStackTrace();
+            // TODO handle exception.
+        }
+
+        return id.toHexString();
     }
 
     /**
