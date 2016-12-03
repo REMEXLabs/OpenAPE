@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Arrays;
 
 import org.bson.BsonDocument;
+import org.bson.Document;
 import org.bson.codecs.configuration.CodecRegistry;
 import org.bson.conversions.Bson;
 import org.openape.api.DatabaseObject;
@@ -87,29 +88,29 @@ public class DatabaseConnection {
     /**
      * Database collection containing the user contexts.
      */
-    private MongoCollection<UserContext> userContextCollection;
+    private MongoCollection<Document> userContextCollection;
     /**
      * Database collection containing the environment contexts.
      */
-    private MongoCollection<EnvironmentContext> environmentContextCollection;
+    private MongoCollection<Document> environmentContextCollection;
     /**
      * Database collection containing the equipment contexts.
      */
-    private MongoCollection<EquipmentContext> equipmentContextCollection;
+    private MongoCollection<Document> equipmentContextCollection;
     /**
      * Database collection containing the task contexts.
      */
-    private MongoCollection<TaskContext> taskContextCollection;
+    private MongoCollection<Document> taskContextCollection;
     /**
      * Database collection containing the resources offered by the server.
      */
-    private MongoCollection<Resource> resourceOfferContectCollection;
+    private MongoCollection<Document> resourceOfferContectCollection;
 
     /**
      * Database collection containing the incomplete request resources used by
      * the client to search for fitting resource.
      */
-    private MongoCollection<Resource> resourceRequestContextCollection;
+    private MongoCollection<Document> resourceRequestContextCollection;
 
     /**
      * private constructor to create the singleton database connection instance.
@@ -130,24 +131,18 @@ public class DatabaseConnection {
         this.database = this.mongoClient.getDatabase(DatabaseConnection.DATABASENAME);
         // Get references to the database collections.
         try {
-            this.userContextCollection = (MongoCollection<UserContext>) this.database
-                    .getCollection(MongoCollectionTypes.USERCONTEXT.toString(),
-                            MongoCollectionTypes.USERCONTEXT.getDocumentType());
-            this.environmentContextCollection = (MongoCollection<EnvironmentContext>) this.database
-                    .getCollection(MongoCollectionTypes.ENVIRONMENTCONTEXT.toString(),
-                            MongoCollectionTypes.ENVIRONMENTCONTEXT.getDocumentType());
-            this.equipmentContextCollection = (MongoCollection<EquipmentContext>) this.database
-                    .getCollection(MongoCollectionTypes.EQUIPMENTCONTEXT.toString(),
-                            MongoCollectionTypes.EQUIPMENTCONTEXT.getDocumentType());
-            this.taskContextCollection = (MongoCollection<TaskContext>) this.database
-                    .getCollection(MongoCollectionTypes.TASKCONTEXT.toString(),
-                            MongoCollectionTypes.TASKCONTEXT.getDocumentType());
-            this.resourceOfferContectCollection = (MongoCollection<Resource>) this.database
-                    .getCollection(MongoCollectionTypes.RESOURCEOFFER.toString(),
-                            MongoCollectionTypes.RESOURCEOFFER.getDocumentType());
-            this.resourceRequestContextCollection = (MongoCollection<Resource>) this.database
-                    .getCollection(MongoCollectionTypes.RESOURCEREQUEST.toString(),
-                            MongoCollectionTypes.RESOURCEREQUEST.getDocumentType());
+            this.userContextCollection = this.database
+                    .getCollection(MongoCollectionTypes.USERCONTEXT.toString());
+            this.environmentContextCollection = this.database
+                    .getCollection(MongoCollectionTypes.ENVIRONMENTCONTEXT.toString());
+            this.equipmentContextCollection = this.database
+                    .getCollection(MongoCollectionTypes.EQUIPMENTCONTEXT.toString());
+            this.taskContextCollection = this.database
+                    .getCollection(MongoCollectionTypes.TASKCONTEXT.toString());
+            this.resourceOfferContectCollection = this.database
+                    .getCollection(MongoCollectionTypes.RESOURCEOFFER.toString());
+            this.resourceRequestContextCollection = this.database
+                    .getCollection(MongoCollectionTypes.RESOURCEREQUEST.toString());
         } catch (ClassCastException e) {
             e.printStackTrace();
             System.exit(0);// TODO handle exception.
@@ -181,7 +176,7 @@ public class DatabaseConnection {
      * @param type
      * @return the collection reference or null if the type is unknown.
      */
-    private MongoCollection<?> getCollectionByType(MongoCollectionTypes type) {
+    private MongoCollection<Document> getCollectionByType(MongoCollectionTypes type) {
         if (type.equals(MongoCollectionTypes.USERCONTEXT)) {
             return this.userContextCollection;
         } else if (type.equals(MongoCollectionTypes.ENVIRONMENTCONTEXT)) {
@@ -240,7 +235,7 @@ public class DatabaseConnection {
         }
         switch (type) {
         case USERCONTEXT:
-            userContextCollection.insertOne((UserContext) data);
+            userContextCollection.insertOne(data);
             break;
         // http://stackoverflow.com/questions/36402690/how-to-insert-object-in-mongodb-3-2-document
         default:
