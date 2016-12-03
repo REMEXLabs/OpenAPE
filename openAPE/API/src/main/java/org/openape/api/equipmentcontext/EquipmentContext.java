@@ -1,6 +1,10 @@
 package org.openape.api.equipmentcontext;
 
-public class EquipmentContext {
+import org.openape.api.DatabaseObject;
+
+public class EquipmentContext extends DatabaseObject {
+    private static final long serialVersionUID = 4810176872836108065L;
+
     /**
      * check if a given object is a valid user context. Checks if at least one
      * context is available. TODO implement.

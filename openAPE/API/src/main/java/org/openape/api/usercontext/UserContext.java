@@ -12,18 +12,22 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
-*/
- 
+ */
+
 package org.openape.api.usercontext;
 
 import javax.xml.bind.annotation.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.openape.api.DatabaseObject;
+
 @XmlRootElement
-public class UserContext {
+public class UserContext extends DatabaseObject {
+    private static final long serialVersionUID = 5891055316807633786L;
 
     private List<Context> contexts;
 
@@ -57,7 +61,9 @@ public class UserContext {
             return false;
         }
         Context firstContext = this.getContexts().get(0);
-        if (firstContext.getPreferences().isEmpty() || firstContext.getName() == "" || firstContext.getName() == null) {
+        if (firstContext.getPreferences().isEmpty()
+                || firstContext.getName() == ""
+                || firstContext.getName() == null) {
             return false;
         }
         return true;
