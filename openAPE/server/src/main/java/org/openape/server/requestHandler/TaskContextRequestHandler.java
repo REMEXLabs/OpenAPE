@@ -2,8 +2,10 @@ package org.openape.server.requestHandler;
 
 import java.io.IOException;
 
+import org.openape.api.DatabaseObject;
 import org.openape.api.taskcontext.TaskContext;
 import org.openape.server.database.DatabaseConnection;
+import org.openape.server.database.MongoCollectionTypes;
 import org.openape.server.rest.TaskContextRESTInterface;
 
 /**
@@ -28,7 +30,18 @@ public class TaskContextRequestHandler {
      */
     public String createTaskContext(Object taskContext) throws IOException,
             IllegalArgumentException {
-        return null;
+        // get database connection.
+        DatabaseConnection databaseconnection = DatabaseConnection.getInstance();
+        // try to store data. Class cast exceptions will be thrown as illegal
+        // argument exceptions. IO exceptions will just be thrown through.
+        String id = null;
+        try {
+            id = databaseconnection.storeData(MongoCollectionTypes.TASKCONTEXT,
+                    (DatabaseObject) taskContext);
+        } catch (ClassCastException e) {
+            throw new IllegalArgumentException(e.getMessage());
+        }
+        return id;
     }
 
     /**

@@ -2,8 +2,10 @@ package org.openape.server.requestHandler;
 
 import java.io.IOException;
 
+import org.openape.api.DatabaseObject;
 import org.openape.api.usercontext.UserContext;
 import org.openape.server.database.DatabaseConnection;
+import org.openape.server.database.MongoCollectionTypes;
 import org.openape.server.rest.UserContextRESTInterface;
 
 /**
@@ -28,7 +30,18 @@ public class UserContextRequestHandler {
      */
     public String createUserContext(Object userContext) throws IOException,
             IllegalArgumentException {
-        return null;
+        // get database connection.
+        DatabaseConnection databaseconnection = DatabaseConnection.getInstance();
+        // try to store data. Class cast exceptions will be thrown as illegal
+        // argument exceptions. IO exceptions will just be thrown through.
+        String id = null;
+        try {
+            id = databaseconnection.storeData(MongoCollectionTypes.USERCONTEXT,
+                    (DatabaseObject) userContext);
+        } catch (ClassCastException e) {
+            throw new IllegalArgumentException(e.getMessage());
+        }
+        return id;
     }
 
     /**
