@@ -21,7 +21,7 @@ public enum MongoCollectionTypes {
 
     /**
      * Get the collection type of a mongo database collection by its name.
-     * 
+     *
      * @param collectionName
      * @return type of the collection.
      */
@@ -51,7 +51,7 @@ public enum MongoCollectionTypes {
     /**
      * Constructor to create a mongo collection type, which contains the name of
      * the collection and the data type stored within the collection.
-     * 
+     *
      * @param collectionName
      * @param objectType
      */
@@ -62,7 +62,7 @@ public enum MongoCollectionTypes {
 
     /**
      * Get the class of documents stored in the collection from the given type.
-     * 
+     *
      * @param type
      *            of the collection.
      * @return class of the documents stored.
@@ -73,7 +73,7 @@ public enum MongoCollectionTypes {
 
     /**
      * Get the collection name used within the database from the type.
-     * 
+     *
      * @param type
      *            of the collection.
      * @return name of the collection used within the database.

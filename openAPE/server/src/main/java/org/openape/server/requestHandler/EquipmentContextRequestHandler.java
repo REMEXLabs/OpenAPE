@@ -1,4 +1,4 @@
-package org.openape.server;
+package org.openape.server.requestHandler;
 
 import java.io.IOException;
 
@@ -17,7 +17,7 @@ public class EquipmentContextRequestHandler {
      * Method to store a new equipment context into the server. It is used by
      * the rest API {@link EquipmentContextRESTInterface} and uses the server
      * database {@link DatabaseConnection}.
-     * 
+     *
      * @param equipmentContext
      *            to be stored.
      * @return the ID of the stored equipment context.
@@ -26,7 +26,8 @@ public class EquipmentContextRequestHandler {
      * @throws IllegalArgumentException
      *             if the parameter is not a complete equipment context.
      */
-    public String createEquipmentContext(Object equipmentContext) throws IOException, IllegalArgumentException {
+    public String createEquipmentContext(Object equipmentContext) throws IOException,
+            IllegalArgumentException {
         return null;
     }
 
@@ -34,7 +35,7 @@ public class EquipmentContextRequestHandler {
      * Method to delete an existing equipment context from the server. It is
      * used by the rest API {@link EquipmentContextRESTInterface} and uses the
      * server database {@link DatabaseConnection}.
-     * 
+     *
      * @param id
      *            the ID of the equipment context to delete.
      * @return true if successful. Else an exception is thrown.
@@ -43,7 +44,8 @@ public class EquipmentContextRequestHandler {
      * @throws IllegalArgumentException
      *             if the id is no valid id or not assigned.
      */
-    public boolean deleteEquipmentContextById(String id) throws IOException, IllegalArgumentException {
+    public boolean deleteEquipmentContextById(String id) throws IOException,
+            IllegalArgumentException {
         return false;
     }
 
@@ -51,7 +53,7 @@ public class EquipmentContextRequestHandler {
      * Method to get an existing equipment context from the server. It is used
      * by the rest API {@link EquipmentContextRESTInterface} and uses the server
      * database {@link DatabaseConnection}.
-     * 
+     *
      * @param id
      *            the ID of the requested equipment context.
      * @return requested equipment context.
@@ -60,7 +62,8 @@ public class EquipmentContextRequestHandler {
      * @throws IllegalArgumentException
      *             if the id is no valid id or not assigned.
      */
-    public EquipmentContext getEquipmentContextById(String id) throws IOException, IllegalArgumentException {
+    public EquipmentContext getEquipmentContextById(String id) throws IOException,
+            IllegalArgumentException {
         return null;
     }
 
@@ -68,7 +71,7 @@ public class EquipmentContextRequestHandler {
      * Method to update an existing equipment context on the server. It is used
      * by the rest API {@link EquipmentContextRESTInterface} and uses the server
      * database {@link DatabaseConnection}.
-     * 
+     *
      * @param id
      *            the ID of the equipment context to update.
      * @param equipmentContext

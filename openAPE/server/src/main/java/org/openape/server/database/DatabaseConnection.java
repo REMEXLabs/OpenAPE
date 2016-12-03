@@ -10,10 +10,10 @@ import org.bson.json.JsonParseException;
 import org.bson.types.ObjectId;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.openape.api.DatabaseObject;
-import org.openape.server.EnvironmentContextRequestHandler;
-import org.openape.server.EquipmentContextRequestHandler;
-import org.openape.server.TaskContextRequestHandler;
-import org.openape.server.UserContextRequestHandler;
+import org.openape.server.requestHandler.EnvironmentContextRequestHandler;
+import org.openape.server.requestHandler.EquipmentContextRequestHandler;
+import org.openape.server.requestHandler.TaskContextRequestHandler;
+import org.openape.server.requestHandler.UserContextRequestHandler;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.MongoClient;

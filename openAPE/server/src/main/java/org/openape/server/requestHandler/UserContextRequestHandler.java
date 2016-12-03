@@ -1,4 +1,4 @@
-package org.openape.server;
+package org.openape.server.requestHandler;
 
 import java.io.IOException;
 
@@ -17,7 +17,7 @@ public class UserContextRequestHandler {
      * Method to store a new user context into the server. It is used by the
      * rest API {@link UserContextRESTInterface} and uses the server database
      * {@link DatabaseConnection}.
-     * 
+     *
      * @param userContext
      *            to be stored.
      * @return the ID of the stored user context.
@@ -26,7 +26,8 @@ public class UserContextRequestHandler {
      * @throws IllegalArgumentException
      *             if the parameter is not a complete user context.
      */
-    public String createUserContext(Object userContext) throws IOException, IllegalArgumentException {
+    public String createUserContext(Object userContext) throws IOException,
+            IllegalArgumentException {
         return null;
     }
 
@@ -34,7 +35,7 @@ public class UserContextRequestHandler {
      * Method to delete an existing user context from the server. It is used by
      * the rest API {@link UserContextRESTInterface} and uses the server
      * database {@link DatabaseConnection}.
-     * 
+     *
      * @param id
      *            the ID of the user context to delete.
      * @return true if successful. Else an exception is thrown.
@@ -51,7 +52,7 @@ public class UserContextRequestHandler {
      * Method to get an existing user context from the server. It is used by the
      * rest API {@link UserContextRESTInterface} and uses the server database
      * {@link DatabaseConnection}.
-     * 
+     *
      * @param id
      *            the ID of the requested user context.
      * @return requested user context.
@@ -68,7 +69,7 @@ public class UserContextRequestHandler {
      * Method to update an existing user context on the server. It is used by
      * the rest API {@link UserContextRESTInterface} and uses the server
      * database {@link DatabaseConnection}.
-     * 
+     *
      * @param id
      *            the ID of the user context to update.
      * @param userContext
@@ -80,7 +81,8 @@ public class UserContextRequestHandler {
      *             if the id is no valid id, not assigned or the user context is
      *             not valid.
      */
-    public boolean updateUserContextById(String id, Object userContext) throws IOException, IllegalArgumentException {
+    public boolean updateUserContextById(String id, Object userContext) throws IOException,
+            IllegalArgumentException {
         return false;
     }
 }

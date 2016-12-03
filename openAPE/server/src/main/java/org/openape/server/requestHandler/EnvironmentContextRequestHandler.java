@@ -1,4 +1,4 @@
-package org.openape.server;
+package org.openape.server.requestHandler;
 
 import java.io.IOException;
 
@@ -17,7 +17,7 @@ public class EnvironmentContextRequestHandler {
      * Method to store a new environment context into the server. It is used by
      * the rest API {@link EnvironmentContextRESTInterface} and uses the server
      * database {@link DatabaseConnection}.
-     * 
+     *
      * @param environmentContext
      *            to be stored.
      * @return the ID of the stored environment context.
@@ -26,7 +26,8 @@ public class EnvironmentContextRequestHandler {
      * @throws IllegalArgumentException
      *             if the parameter is not a complete environment context.
      */
-    public String createEnvironmentContext(Object environmentContext) throws IOException, IllegalArgumentException {
+    public String createEnvironmentContext(Object environmentContext) throws IOException,
+            IllegalArgumentException {
         return null;
     }
 
@@ -34,7 +35,7 @@ public class EnvironmentContextRequestHandler {
      * Method to delete an existing environment context from the server. It is
      * used by the rest API {@link EnvironmentContextRESTInterface} and uses the
      * server database {@link DatabaseConnection}.
-     * 
+     *
      * @param id
      *            the ID of the environment context to delete.
      * @return true if successful. Else an exception is thrown.
@@ -43,7 +44,8 @@ public class EnvironmentContextRequestHandler {
      * @throws IllegalArgumentException
      *             if the id is no valid id or not assigned.
      */
-    public boolean deleteEnvironmentContextById(String id) throws IOException, IllegalArgumentException {
+    public boolean deleteEnvironmentContextById(String id) throws IOException,
+            IllegalArgumentException {
         return false;
     }
 
@@ -51,7 +53,7 @@ public class EnvironmentContextRequestHandler {
      * Method to get an existing environment context from the server. It is used
      * by the rest API {@link EnvironmentContextRESTInterface} and uses the
      * server database {@link DatabaseConnection}.
-     * 
+     *
      * @param id
      *            the ID of the requested environment context.
      * @return requested environment context.
@@ -60,7 +62,8 @@ public class EnvironmentContextRequestHandler {
      * @throws IllegalArgumentException
      *             if the id is no valid id or not assigned.
      */
-    public EnvironmentContext getEnvironmentContextById(String id) throws IOException, IllegalArgumentException {
+    public EnvironmentContext getEnvironmentContextById(String id) throws IOException,
+            IllegalArgumentException {
         return null;
     }
 
@@ -68,7 +71,7 @@ public class EnvironmentContextRequestHandler {
      * Method to update an existing environment context on the server. It is
      * used by the rest API {@link EnvironmentContextRESTInterface} and uses the
      * server database {@link DatabaseConnection}.
-     * 
+     *
      * @param id
      *            the ID of the environment context to update.
      * @param environmentContext

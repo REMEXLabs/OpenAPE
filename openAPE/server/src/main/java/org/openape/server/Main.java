@@ -1,6 +1,10 @@
 package org.openape.server;
 
 import org.openape.server.database.DatabaseConnection;
+import org.openape.server.requestHandler.EnvironmentContextRequestHandler;
+import org.openape.server.requestHandler.EquipmentContextRequestHandler;
+import org.openape.server.requestHandler.TaskContextRequestHandler;
+import org.openape.server.requestHandler.UserContextRequestHandler;
 import org.openape.server.rest.EnvironmentContextRESTInterface;
 import org.openape.server.rest.EquipmentContextRESTInterface;
 import org.openape.server.rest.TaskContextRESTInterface;
@@ -13,7 +17,7 @@ public class Main {
 
     public static void main(String[] args) {
         // Start rest api and database connection.
-        DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
+        DatabaseConnection.getInstance();
         new UserContextRESTInterface(new UserContextRequestHandler());
         new EnvironmentContextRESTInterface(new EnvironmentContextRequestHandler());
         new EquipmentContextRESTInterface(new EquipmentContextRequestHandler());

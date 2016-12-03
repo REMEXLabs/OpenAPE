@@ -1,4 +1,4 @@
-package org.openape.server;
+package org.openape.server.requestHandler;
 
 import java.io.IOException;
 
@@ -17,7 +17,7 @@ public class TaskContextRequestHandler {
      * Method to store a new task context into the server. It is used by the
      * rest API {@link TaskContextRESTInterface} and uses the server database
      * {@link DatabaseConnection}.
-     * 
+     *
      * @param taskContext
      *            to be stored.
      * @return the ID of the stored task context.
@@ -26,7 +26,8 @@ public class TaskContextRequestHandler {
      * @throws IllegalArgumentException
      *             if the parameter is not a complete task context.
      */
-    public String createTaskContext(Object taskContext) throws IOException, IllegalArgumentException {
+    public String createTaskContext(Object taskContext) throws IOException,
+            IllegalArgumentException {
         return null;
     }
 
@@ -34,7 +35,7 @@ public class TaskContextRequestHandler {
      * Method to delete an existing task context from the server. It is used by
      * the rest API {@link TaskContextRESTInterface} and uses the server
      * database {@link DatabaseConnection}.
-     * 
+     *
      * @param id
      *            the ID of the task context to delete.
      * @return true if successful. Else an exception is thrown.
@@ -51,7 +52,7 @@ public class TaskContextRequestHandler {
      * Method to get an existing task context from the server. It is used by the
      * rest API {@link TaskContextRESTInterface} and uses the server database
      * {@link DatabaseConnection}.
-     * 
+     *
      * @param id
      *            the ID of the requested task context.
      * @return requested task context.
@@ -68,7 +69,7 @@ public class TaskContextRequestHandler {
      * Method to update an existing task context on the server. It is used by
      * the rest API {@link TaskContextRESTInterface} and uses the server
      * database {@link DatabaseConnection}.
-     * 
+     *
      * @param id
      *            the ID of the task context to update.
      * @param taskContext
@@ -80,7 +81,8 @@ public class TaskContextRequestHandler {
      *             if the id is no valid id, not assigned or the task context is
      *             not valid.
      */
-    public boolean updateTaskContextById(String id, Object taskContext) throws IOException, IllegalArgumentException {
+    public boolean updateTaskContextById(String id, Object taskContext) throws IOException,
+            IllegalArgumentException {
         return false;
     }
 }

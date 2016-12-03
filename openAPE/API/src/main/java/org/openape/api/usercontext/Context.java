@@ -18,9 +18,9 @@ package org.openape.api.usercontext;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-
-import javax.xml.bind.annotation.*;
 import java.util.List;
+
+import javax.xml.bind.annotation.XmlAttribute;
 
 public class Context implements Serializable {
     private static final long serialVersionUID = -8602234372848554234L;
@@ -34,34 +34,34 @@ public class Context implements Serializable {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+    public void addPreference(String key, String value) {
+        Preference newPreference = new Preference(key, value);
+        this.preferences.add(newPreference);
     }
 
     @XmlAttribute(name = "id")
     public String getId() {
-        return id;
+        return this.id;
+    }
+
+    public String getName() {
+        return this.name;
+    }
+
+    public List<Preference> getPreferences() {
+        return this.preferences;
     }
 
     public void setId(String id) {
         this.id = id;
     }
 
-    public List<Preference> getPreferences() {
-        return preferences;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public void setPreferences(List<Preference> preferences) {
         this.preferences = preferences;
-    }
-
-    public void addPreference(String key, String value) {
-        Preference newPreference = new Preference(key, value);
-        preferences.add(newPreference);
     }
 
 }
