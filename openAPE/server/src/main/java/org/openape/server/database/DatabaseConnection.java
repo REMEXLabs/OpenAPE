@@ -156,6 +156,7 @@ public class DatabaseConnection {
      *             if a database problem occurs.
      */
     public boolean deleteData(MongoCollectionTypes type, String id) throws IOException {
+        MongoCollection<Document> collectionToWorkOn = this.getCollectionByType(type);
         return false;
     }
 
@@ -197,6 +198,7 @@ public class DatabaseConnection {
      *             if a database problem occurs.
      */
     public DatabaseObject getData(MongoCollectionTypes type, String id) throws IOException {
+        MongoCollection<Document> collectionToWorkOn = this.getCollectionByType(type);
         return null;
     }
 
@@ -272,6 +274,8 @@ public class DatabaseConnection {
         if (!type.getDocumentType().equals(data.getClass())) {
             throw new ClassCastException();
         }
+        
+        MongoCollection<Document> collectionToWorkOn = this.getCollectionByType(type);
 
         return false;
     }
