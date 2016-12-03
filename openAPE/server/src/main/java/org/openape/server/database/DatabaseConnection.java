@@ -5,8 +5,9 @@ import java.util.Arrays;
 import java.util.Iterator;
 
 import org.bson.Document;
+import org.bson.codecs.configuration.CodecConfigurationException;
+import org.bson.json.JsonParseException;
 import org.bson.types.ObjectId;
-import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.openape.api.DatabaseObject;
@@ -19,8 +20,6 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoCredential;
 import com.mongodb.MongoException;
-import com.mongodb.MongoWriteConcernException;
-import com.mongodb.MongoWriteException;
 import com.mongodb.ServerAddress;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
@@ -216,13 +215,19 @@ public class DatabaseConnection {
             // get the first result. Souldn't ever be more than one since _ids
             // are supposed to be unique.
             Document resultDocument = resultInterator.next();
-            // Remove the automatically added id.
-            resultDocument.remove("_id");
-            String jsonResult = resultDocument.toJson();
-            ObjectMapper mapper = new ObjectMapper();
-            DatabaseObject result = mapper.readValue(jsonResult, DatabaseObject.class);
+
+            DatabaseObject result = null;
+            try {
+                // Remove the automatically added id.
+                resultDocument.remove("_id");
+                String jsonResult = resultDocument.toJson();
+                ObjectMapper mapper = new ObjectMapper();
+                result = mapper.readValue(jsonResult, DatabaseObject.class);
+            } catch (CodecConfigurationException | IOException | JsonParseException e) {
+                e.printStackTrace();
+                throw new IOException(e.getMessage());
+            }
             return result;
-            // TODO exceptionhandling
         }
     }
 
@@ -268,7 +273,7 @@ public class DatabaseConnection {
             id = (ObjectId) dataDocument.get("_id");
         } catch (ClassCastException e) {
             e.printStackTrace();
-            // TODO handle exception.
+            throw new IOException(e.getMessage());
         }
 
         return id.toHexString();
