@@ -273,7 +273,7 @@ public class DatabaseConnection {
             dataDocument = Document.parse(jsonData);
             // Insert the document.
             collectionToWorkOn.insertOne(dataDocument);
-        } catch (IOException | MongoException e) {
+        } catch (IOException | JsonParseException | MongoException e) {
             e.printStackTrace();
             throw new IOException(e.getMessage());
         }
@@ -317,7 +317,24 @@ public class DatabaseConnection {
 
         MongoCollection<Document> collectionToWorkOn = this.getCollectionByType(type);
 
-        return false;
+        // Create search query.
+        BasicDBObject query = new BasicDBObject();
+        query.put("_id", new ObjectId(id));
+
+        try {
+            // Create document object from data.
+            final ObjectMapper mapper = new ObjectMapper();
+            final String jsonData = mapper.writeValueAsString(data);
+            Document dataDocument = Document.parse(jsonData);
+
+            // update data.
+            collectionToWorkOn.findOneAndReplace(query, dataDocument);
+        } catch (IOException | JsonParseException | MongoException e) {
+            e.printStackTrace();
+            throw new IOException(e.getMessage());
+        }
+
+        return true;
     }
 
 }
