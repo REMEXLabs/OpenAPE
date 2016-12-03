@@ -5,7 +5,7 @@ import java.io.IOException;
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.openape.api.taskcontext.TaskContext;
-import org.openape.server.TaskContextRequestHandler;
+import org.openape.server.requestHandler.TaskContextRequestHandler;
 
 import spark.Spark;
 
@@ -21,7 +21,8 @@ public class TaskContextRESTInterface extends SuperRestInterface {
             try {
                 // Try to map the received json object to a taskContext
                 // object.
-                TaskContext recievedTaskContext = (TaskContext) this.extractContentFromRequest(req, TaskContext.class);
+                TaskContext recievedTaskContext = (TaskContext) this.extractContentFromRequest(req,
+                        TaskContext.class);
                 // Test the object for validity.
                 if (!recievedTaskContext.isValid()) {
                     res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
@@ -68,30 +69,33 @@ public class TaskContextRESTInterface extends SuperRestInterface {
         /**
          * Request 7.3.4 update task-context.
          */
-        Spark.put("/api/task-context/:task-context-id", (req, res) -> {
-            String taskContextId = req.params(":task-context-id");
-            try {
-                TaskContext recievedTaskContext = (TaskContext) this.extractContentFromRequest(req, TaskContext.class);
-                // Test the object for validity.
-                if (!recievedTaskContext.isValid()) {
-                    res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
-                    return "";
-                }
-                // If the object is okay, update it.
-                requestHandler.updateTaskContextById(taskContextId, recievedTaskContext);
-                res.status(SuperRestInterface.HTTP_STATUS_OK);
-                return "";
-            } catch (JsonParseException | JsonMappingException | IllegalArgumentException e) {
-                // If the parse or update is not successful return bad
-                // request
-                // error code.
-                res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
-                return "";
-            } catch (IOException e) {
-                res.status(SuperRestInterface.HTTP_STATUS_INTERNAL_SERVER_ERROR);
-                return "";
-            }
-        });
+        Spark.put(
+                "/api/task-context/:task-context-id",
+                (req, res) -> {
+                    String taskContextId = req.params(":task-context-id");
+                    try {
+                        TaskContext recievedTaskContext = (TaskContext) this
+                                .extractContentFromRequest(req, TaskContext.class);
+                        // Test the object for validity.
+                        if (!recievedTaskContext.isValid()) {
+                            res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
+                            return "";
+                        }
+                        // If the object is okay, update it.
+                        requestHandler.updateTaskContextById(taskContextId, recievedTaskContext);
+                        res.status(SuperRestInterface.HTTP_STATUS_OK);
+                        return "";
+                    } catch (JsonParseException | JsonMappingException | IllegalArgumentException e) {
+                        // If the parse or update is not successful return bad
+                        // request
+                        // error code.
+                        res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
+                        return "";
+                    } catch (IOException e) {
+                        res.status(SuperRestInterface.HTTP_STATUS_INTERNAL_SERVER_ERROR);
+                        return "";
+                    }
+                });
 
         /**
          * Request 7.3.5 delete task-context.

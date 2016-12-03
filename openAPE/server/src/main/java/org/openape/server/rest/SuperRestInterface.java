@@ -27,7 +27,7 @@ public class SuperRestInterface {
 
     /**
      * Get a sent json object from a request.
-     * 
+     *
      * @param req
      *            spark request containing the object.
      * @param objectType

@@ -2,8 +2,6 @@ package org.openape.api;
 
 import java.io.Serializable;
 
-import com.mongodb.BasicDBObject;
-
 /**
  * Abstract class used to identify object types that can be stored in the
  * database.

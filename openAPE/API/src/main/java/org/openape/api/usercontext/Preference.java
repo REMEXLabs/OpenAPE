@@ -18,7 +18,7 @@ package org.openape.api.usercontext;
 
 import java.io.Serializable;
 
-import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.XmlAttribute;
 
 public class Preference implements Serializable {
     private static final long serialVersionUID = -8359653185563684514L;
@@ -26,26 +26,26 @@ public class Preference implements Serializable {
     private String key;
     private String value;
 
+    public Preference(String key, String value) {
+        this.key = key;
+        this.value = value;
+    }
+
     @XmlAttribute(name = "key")
     public String getKey() {
-        return key;
+        return this.key;
+    }
+
+    @XmlAttribute(name = "value")
+    public String getValue() {
+        return this.value;
     }
 
     public void setKey(String key) {
         this.key = key;
     }
 
-    @XmlAttribute(name = "value")
-    public String getValue() {
-        return value;
-    }
-
     public void setValue(String value) {
-        this.value = value;
-    }
-
-    public Preference(String key, String value) {
-        this.key = key;
         this.value = value;
     }
 
