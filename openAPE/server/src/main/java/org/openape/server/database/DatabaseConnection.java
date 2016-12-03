@@ -151,9 +151,7 @@ public class DatabaseConnection {
      *            the collection in which the object is located.
      * @param id
      *            the database id within the collection of the object
-     * @return true if successful.
-     * @throws ClassCastException
-     *             if the object class doesn't match the given collection type.
+     * @return true if successful of false if the object is not found.
      * @throws IOException
      *             if a database problem occurs.
      */
@@ -194,9 +192,7 @@ public class DatabaseConnection {
      *            the collection in which the object is located.
      * @param id
      *            the database id within the collection of the object.
-     * @return the database object.
-     * @throws ClassCastException
-     *             if the object class doesn't match the given collection type.
+     * @return the database object or null if no data with that id is found.
      * @throws IOException
      *             if a database problem occurs.
      */
@@ -263,7 +259,8 @@ public class DatabaseConnection {
      *            the new version of the object.
      * @param id
      *            the database id within the collection of the object.
-     * @return true if successful.
+     * @return true if successful of false if no object with that id is found
+     *         and nothing is stored.
      * @throws ClassCastException
      *             if the object class doesn't match the given collection type.
      * @throws IOException
