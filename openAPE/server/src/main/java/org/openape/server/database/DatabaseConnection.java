@@ -8,7 +8,6 @@ import org.bson.Document;
 import org.bson.codecs.configuration.CodecConfigurationException;
 import org.bson.json.JsonParseException;
 import org.bson.types.ObjectId;
-import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.openape.api.DatabaseObject;
 import org.openape.server.EnvironmentContextRequestHandler;
@@ -159,7 +158,19 @@ public class DatabaseConnection {
      */
     public boolean deleteData(MongoCollectionTypes type, String id) throws IOException {
         MongoCollection<Document> collectionToWorkOn = this.getCollectionByType(type);
-        return false;
+
+        // Create search query.
+        BasicDBObject query = new BasicDBObject();
+        query.put("_id", new ObjectId(id));
+
+        // deleted will be null if no data with the given id is found.
+        Document deleted = collectionToWorkOn.findOneAndDelete(query);
+        if (deleted == null) {
+            return false;
+        } else {
+            return true;
+        }
+
     }
 
     /**
