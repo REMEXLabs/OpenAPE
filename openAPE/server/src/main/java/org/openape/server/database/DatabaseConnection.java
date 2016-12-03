@@ -301,7 +301,7 @@ public class DatabaseConnection {
      *            the new version of the object.
      * @param id
      *            the database id within the collection of the object.
-     * @return true if successful of false if no object with that id is found
+     * @return true if successful or false if no object with that id is found
      *         and nothing is stored.
      * @throws ClassCastException
      *             if the object class doesn't match the given collection type.
