@@ -113,7 +113,6 @@ public class DatabaseConnection {
     /**
      * private constructor to create the singleton database connection instance.
      */
-    @SuppressWarnings("unchecked")
     // It is checked by the try catch block.
     private DatabaseConnection() {
         // Create credentials for the openAPE database
@@ -128,23 +127,19 @@ public class DatabaseConnection {
         // Get a reference to the openAPE database.
         this.database = this.mongoClient.getDatabase(DatabaseConnection.DATABASENAME);
         // Get references to the database collections.
-        try {
-            this.userContextCollection = this.database
-                    .getCollection(MongoCollectionTypes.USERCONTEXT.toString());
-            this.environmentContextCollection = this.database
-                    .getCollection(MongoCollectionTypes.ENVIRONMENTCONTEXT.toString());
-            this.equipmentContextCollection = this.database
-                    .getCollection(MongoCollectionTypes.EQUIPMENTCONTEXT.toString());
-            this.taskContextCollection = this.database
-                    .getCollection(MongoCollectionTypes.TASKCONTEXT.toString());
-            this.resourceOfferContectCollection = this.database
-                    .getCollection(MongoCollectionTypes.RESOURCEOFFER.toString());
-            this.resourceRequestContextCollection = this.database
-                    .getCollection(MongoCollectionTypes.RESOURCEREQUEST.toString());
-        } catch (ClassCastException e) {
-            e.printStackTrace();
-            System.exit(0);// TODO handle exception.
-        }
+
+        this.userContextCollection = this.database.getCollection(MongoCollectionTypes.USERCONTEXT
+                .toString());
+        this.environmentContextCollection = this.database
+                .getCollection(MongoCollectionTypes.ENVIRONMENTCONTEXT.toString());
+        this.equipmentContextCollection = this.database
+                .getCollection(MongoCollectionTypes.EQUIPMENTCONTEXT.toString());
+        this.taskContextCollection = this.database.getCollection(MongoCollectionTypes.TASKCONTEXT
+                .toString());
+        this.resourceOfferContectCollection = this.database
+                .getCollection(MongoCollectionTypes.RESOURCEOFFER.toString());
+        this.resourceRequestContextCollection = this.database
+                .getCollection(MongoCollectionTypes.RESOURCEREQUEST.toString());
 
     }
 
