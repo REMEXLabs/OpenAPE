@@ -4,7 +4,6 @@ import java.io.IOException;
 
 import org.openape.api.DatabaseObject;
 import org.openape.api.taskcontext.TaskContext;
-import org.openape.api.usercontext.UserContext;
 import org.openape.server.database.DatabaseConnection;
 import org.openape.server.database.MongoCollectionTypes;
 import org.openape.server.rest.TaskContextRESTInterface;
@@ -15,6 +14,8 @@ import org.openape.server.rest.TaskContextRESTInterface;
  * {@link DatabaseConnection}.
  */
 public class TaskContextRequestHandler {
+
+    private static final MongoCollectionTypes COLLECTIONTOUSE = MongoCollectionTypes.TASKCONTEXT;
 
     /**
      * Method to store a new task context into the server. It is used by the
@@ -30,14 +31,14 @@ public class TaskContextRequestHandler {
      *             if the parameter is not a complete task context.
      */
     public String createTaskContext(Object taskContext) throws IOException,
-            IllegalArgumentException {
+    IllegalArgumentException {
         // get database connection.
         DatabaseConnection databaseconnection = DatabaseConnection.getInstance();
         // try to store data. Class cast exceptions will be thrown as illegal
         // argument exceptions. IO exceptions will just be thrown through.
         String id = null;
         try {
-            id = databaseconnection.storeData(MongoCollectionTypes.TASKCONTEXT,
+            id = databaseconnection.storeData(TaskContextRequestHandler.COLLECTIONTOUSE,
                     (DatabaseObject) taskContext);
         } catch (ClassCastException e) {
             throw new IllegalArgumentException(e.getMessage());
@@ -62,7 +63,8 @@ public class TaskContextRequestHandler {
         // get database connection.
         DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
 
-        boolean success = databaseConnection.deleteData(MongoCollectionTypes.TASKCONTEXT, id);
+        boolean success = databaseConnection.deleteData(TaskContextRequestHandler.COLLECTIONTOUSE,
+                id);
         if (!success) {
             throw new IllegalArgumentException();
         }
@@ -87,7 +89,8 @@ public class TaskContextRequestHandler {
         DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
 
         // Get the requested data.
-        DatabaseObject result = databaseConnection.getData(MongoCollectionTypes.TASKCONTEXT, id);
+        DatabaseObject result = databaseConnection.getData(
+                TaskContextRequestHandler.COLLECTIONTOUSE, id);
 
         // If the result is null the id is not found.
         if (result == null) {
@@ -122,7 +125,7 @@ public class TaskContextRequestHandler {
      *             not valid.
      */
     public boolean updateTaskContextById(String id, Object taskContext) throws IOException,
-            IllegalArgumentException {
+    IllegalArgumentException {
         // get database connection.
         DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
 
@@ -131,7 +134,7 @@ public class TaskContextRequestHandler {
         // is thrown. IO exceptions are thrown through.
         boolean success;
         try {
-            success = databaseConnection.updateData(MongoCollectionTypes.TASKCONTEXT,
+            success = databaseConnection.updateData(TaskContextRequestHandler.COLLECTIONTOUSE,
                     (DatabaseObject) taskContext, id);
         } catch (ClassCastException e) {
             throw new IllegalArgumentException(e.getMessage());

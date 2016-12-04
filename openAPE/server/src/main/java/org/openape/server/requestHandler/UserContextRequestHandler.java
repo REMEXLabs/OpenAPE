@@ -15,6 +15,8 @@ import org.openape.server.rest.UserContextRESTInterface;
  */
 public class UserContextRequestHandler {
 
+    private static final MongoCollectionTypes COLLECTIONTOUSE = MongoCollectionTypes.USERCONTEXT;
+
     /**
      * Method to store a new user context into the server. It is used by the
      * rest API {@link UserContextRESTInterface} and uses the server database
@@ -29,14 +31,14 @@ public class UserContextRequestHandler {
      *             if the parameter is not a complete user context.
      */
     public String createUserContext(Object userContext) throws IOException,
-            IllegalArgumentException {
+    IllegalArgumentException {
         // get database connection.
         DatabaseConnection databaseconnection = DatabaseConnection.getInstance();
         // try to store data. Class cast exceptions will be thrown as illegal
         // argument exceptions. IO exceptions will just be thrown through.
         String id = null;
         try {
-            id = databaseconnection.storeData(MongoCollectionTypes.USERCONTEXT,
+            id = databaseconnection.storeData(UserContextRequestHandler.COLLECTIONTOUSE,
                     (DatabaseObject) userContext);
         } catch (ClassCastException e) {
             throw new IllegalArgumentException(e.getMessage());
@@ -61,7 +63,8 @@ public class UserContextRequestHandler {
         // get database connection.
         DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
 
-        boolean success = databaseConnection.deleteData(MongoCollectionTypes.USERCONTEXT, id);
+        boolean success = databaseConnection.deleteData(UserContextRequestHandler.COLLECTIONTOUSE,
+                id);
         if (!success) {
             throw new IllegalArgumentException();
         }
@@ -86,7 +89,8 @@ public class UserContextRequestHandler {
         DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
 
         // Get the requested data.
-        DatabaseObject result = databaseConnection.getData(MongoCollectionTypes.USERCONTEXT, id);
+        DatabaseObject result = databaseConnection.getData(
+                UserContextRequestHandler.COLLECTIONTOUSE, id);
 
         // If the result is null the id is not found.
         if (result == null) {
@@ -122,7 +126,7 @@ public class UserContextRequestHandler {
      *             not valid.
      */
     public boolean updateUserContextById(String id, Object userContext) throws IOException,
-            IllegalArgumentException {
+    IllegalArgumentException {
         // get database connection.
         DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
 
@@ -131,7 +135,7 @@ public class UserContextRequestHandler {
         // is thrown. IO exceptions are thrown through.
         boolean success;
         try {
-            success = databaseConnection.updateData(MongoCollectionTypes.USERCONTEXT,
+            success = databaseConnection.updateData(UserContextRequestHandler.COLLECTIONTOUSE,
                     (DatabaseObject) userContext, id);
         } catch (ClassCastException e) {
             throw new IllegalArgumentException(e.getMessage());

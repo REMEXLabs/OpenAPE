@@ -4,7 +4,6 @@ import java.io.IOException;
 
 import org.openape.api.DatabaseObject;
 import org.openape.api.equipmentcontext.EquipmentContext;
-import org.openape.api.usercontext.UserContext;
 import org.openape.server.database.DatabaseConnection;
 import org.openape.server.database.MongoCollectionTypes;
 import org.openape.server.rest.EquipmentContextRESTInterface;
@@ -15,6 +14,8 @@ import org.openape.server.rest.EquipmentContextRESTInterface;
  * database {@link DatabaseConnection}.
  */
 public class EquipmentContextRequestHandler {
+
+    private static final MongoCollectionTypes COLLECTIONTOUSE = MongoCollectionTypes.EQUIPMENTCONTEXT;
 
     /**
      * Method to store a new equipment context into the server. It is used by
@@ -37,7 +38,7 @@ public class EquipmentContextRequestHandler {
         // argument exceptions. IO exceptions will just be thrown through.
         String id = null;
         try {
-            id = databaseconnection.storeData(MongoCollectionTypes.EQUIPMENTCONTEXT,
+            id = databaseconnection.storeData(EquipmentContextRequestHandler.COLLECTIONTOUSE,
                     (DatabaseObject) equipmentContext);
         } catch (ClassCastException e) {
             throw new IllegalArgumentException(e.getMessage());
@@ -63,7 +64,8 @@ public class EquipmentContextRequestHandler {
         // get database connection.
         DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
 
-        boolean success = databaseConnection.deleteData(MongoCollectionTypes.EQUIPMENTCONTEXT, id);
+        boolean success = databaseConnection.deleteData(
+                EquipmentContextRequestHandler.COLLECTIONTOUSE, id);
         if (!success) {
             throw new IllegalArgumentException();
         }
@@ -89,8 +91,8 @@ public class EquipmentContextRequestHandler {
         DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
 
         // Get the requested data.
-        DatabaseObject result = databaseConnection.getData(MongoCollectionTypes.EQUIPMENTCONTEXT,
-                id);
+        DatabaseObject result = databaseConnection.getData(
+                EquipmentContextRequestHandler.COLLECTIONTOUSE, id);
 
         // If the result is null the id is not found.
         if (result == null) {
@@ -134,7 +136,7 @@ public class EquipmentContextRequestHandler {
         // is thrown. IO exceptions are thrown through.
         boolean success;
         try {
-            success = databaseConnection.updateData(MongoCollectionTypes.EQUIPMENTCONTEXT,
+            success = databaseConnection.updateData(EquipmentContextRequestHandler.COLLECTIONTOUSE,
                     (DatabaseObject) equipmentContext, id);
         } catch (ClassCastException e) {
             throw new IllegalArgumentException(e.getMessage());

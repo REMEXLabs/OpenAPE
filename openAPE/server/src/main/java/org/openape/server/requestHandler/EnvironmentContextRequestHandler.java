@@ -4,7 +4,6 @@ import java.io.IOException;
 
 import org.openape.api.DatabaseObject;
 import org.openape.api.environmentcontext.EnvironmentContext;
-import org.openape.api.usercontext.UserContext;
 import org.openape.server.database.DatabaseConnection;
 import org.openape.server.database.MongoCollectionTypes;
 import org.openape.server.rest.EnvironmentContextRESTInterface;
@@ -15,6 +14,8 @@ import org.openape.server.rest.EnvironmentContextRESTInterface;
  * database {@link DatabaseConnection}.
  */
 public class EnvironmentContextRequestHandler {
+
+    private static final MongoCollectionTypes COLLECTIONTOUSE = MongoCollectionTypes.ENVIRONMENTCONTEXT;
 
     /**
      * Method to store a new environment context into the server. It is used by
@@ -37,7 +38,7 @@ public class EnvironmentContextRequestHandler {
         // argument exceptions. IO exceptions will just be thrown through.
         String id = null;
         try {
-            id = databaseConnection.storeData(MongoCollectionTypes.ENVIRONMENTCONTEXT,
+            id = databaseConnection.storeData(EnvironmentContextRequestHandler.COLLECTIONTOUSE,
                     (DatabaseObject) environmentContext);
         } catch (ClassCastException e) {
             throw new IllegalArgumentException(e.getMessage());
@@ -63,8 +64,8 @@ public class EnvironmentContextRequestHandler {
         // get database connection.
         DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
 
-        boolean success = databaseConnection
-                .deleteData(MongoCollectionTypes.ENVIRONMENTCONTEXT, id);
+        boolean success = databaseConnection.deleteData(
+                EnvironmentContextRequestHandler.COLLECTIONTOUSE, id);
         if (!success) {
             throw new IllegalArgumentException();
         }
@@ -90,8 +91,8 @@ public class EnvironmentContextRequestHandler {
         DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
 
         // Get the requested data.
-        DatabaseObject result = databaseConnection.getData(MongoCollectionTypes.ENVIRONMENTCONTEXT,
-                id);
+        DatabaseObject result = databaseConnection.getData(
+                EnvironmentContextRequestHandler.COLLECTIONTOUSE, id);
 
         // If the result is null the id is not found.
         if (result == null) {
@@ -135,7 +136,8 @@ public class EnvironmentContextRequestHandler {
         // is thrown. IO exceptions are thrown through.
         boolean success;
         try {
-            success = databaseConnection.updateData(MongoCollectionTypes.ENVIRONMENTCONTEXT,
+            success = databaseConnection.updateData(
+                    EnvironmentContextRequestHandler.COLLECTIONTOUSE,
                     (DatabaseObject) environmentContext, id);
         } catch (ClassCastException e) {
             throw new IllegalArgumentException(e.getMessage());
