@@ -3,3 +3,4 @@
 *.project
 *.jar
 *.class
+*/target/
