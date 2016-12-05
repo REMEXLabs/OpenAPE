@@ -17,7 +17,7 @@ public class TaskContextRESTInterface extends SuperRestInterface {
         /**
          * Request 7.3.2 create task-context.
          */
-        Spark.post("/api/task-context", (req, res) -> {
+        Spark.post("/api/task-contexts", (req, res) -> {
             try {
                 // Try to map the received json object to a taskContext
                 // object.
@@ -47,7 +47,7 @@ public class TaskContextRESTInterface extends SuperRestInterface {
          * Request 7.3.3 get task-context. Used to get a specific task context
          * identified by ID.
          */
-        Spark.get("/api/task-context/:task-context-id", (req, res) -> {
+        Spark.get("/api/task-contexts/:task-context-id", (req, res) -> {
             String taskContextId = req.params(":task-context-id");
             try {
                 // if it is successful return task context.
@@ -70,7 +70,7 @@ public class TaskContextRESTInterface extends SuperRestInterface {
          * Request 7.3.4 update task-context.
          */
         Spark.put(
-                "/api/task-context/:task-context-id",
+                "/api/task-contexts/:task-context-id",
                 (req, res) -> {
                     String taskContextId = req.params(":task-context-id");
                     try {
@@ -100,7 +100,7 @@ public class TaskContextRESTInterface extends SuperRestInterface {
         /**
          * Request 7.3.5 delete task-context.
          */
-        Spark.delete("/api/task-context/:task-context-id", (req, res) -> {
+        Spark.delete("/api/task-contexts/:task-context-id", (req, res) -> {
             String taskContextId = req.params(":task-context-id");
             try {
                 // if it is successful return task context.

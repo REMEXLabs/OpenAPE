@@ -23,7 +23,7 @@ public class UserContextRESTInterface extends SuperRestInterface {
         /**
          * Request 7.2.2 create user-context.
          */
-        Spark.post("/api/user-context", (req, res) -> {
+        Spark.post("/api/user-contexts", (req, res) -> {
             try {
                 // Try to map the received json object to a userContext
                 // object.
@@ -53,7 +53,7 @@ public class UserContextRESTInterface extends SuperRestInterface {
          * Request 7.2.3 get user-context. Used to get a specific user context
          * identified by ID.
          */
-        Spark.get("/api/user-context/:user-context-id", (req, res) -> {
+        Spark.get("/api/user-contexts/:user-context-id", (req, res) -> {
             String userContextId = req.params(":user-context-id");
             try {
                 // if it is successful return user context.
@@ -76,7 +76,7 @@ public class UserContextRESTInterface extends SuperRestInterface {
          * Request 7.2.4 update user-context.
          */
         Spark.put(
-                "/api/user-context/:user-context-id",
+                "/api/user-contexts/:user-context-id",
                 (req, res) -> {
                     String userContextId = req.params(":user-context-id");
                     try {
@@ -106,7 +106,7 @@ public class UserContextRESTInterface extends SuperRestInterface {
         /**
          * Request 7.2.5 delete user-context.
          */
-        Spark.delete("/api/user-context/:user-context-id", (req, res) -> {
+        Spark.delete("/api/user-contexts/:user-context-id", (req, res) -> {
             String userContextId = req.params(":user-context-id");
             try {
                 // if it is successful return user context.

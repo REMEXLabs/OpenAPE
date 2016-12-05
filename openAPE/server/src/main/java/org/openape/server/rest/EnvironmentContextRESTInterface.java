@@ -17,7 +17,7 @@ public class EnvironmentContextRESTInterface extends SuperRestInterface {
         /**
          * Request 7.5.2 create environment-context.
          */
-        Spark.post("/api/environment-context", (req, res) -> {
+        Spark.post("/api/environment-contexts", (req, res) -> {
             try {
                 // Try to map the received json object to a environmentContext
                 // object.
@@ -49,7 +49,7 @@ public class EnvironmentContextRESTInterface extends SuperRestInterface {
          * environment context identified by ID.
          */
         Spark.get(
-                "/api/environment-context/:environment-context-id",
+                "/api/environment-contexts/:environment-context-id",
                 (req, res) -> {
                     String environmentContextId = req.params(":environment-context-id");
                     try {
@@ -74,7 +74,7 @@ public class EnvironmentContextRESTInterface extends SuperRestInterface {
          * Request 7.5.4 update environment-context.
          */
         Spark.put(
-                "/api/environment-context/:environment-context-id",
+                "/api/environment-contexts/:environment-context-id",
                 (req, res) -> {
                     String environmentContextId = req.params(":environment-context-id");
                     try {
@@ -105,7 +105,7 @@ public class EnvironmentContextRESTInterface extends SuperRestInterface {
         /**
          * Request 7.5.5 delete environment-context.
          */
-        Spark.delete("/api/environment-context/:environment-context-id", (req, res) -> {
+        Spark.delete("/api/environment-contexts/:environment-context-id", (req, res) -> {
             String environmentContextId = req.params(":environment-context-id");
             try {
                 // if it is successful return environment context.

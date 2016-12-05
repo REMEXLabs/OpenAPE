@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Built-By: Manuel
+Class-Path: lib/jaxb-impl-2.2.11.jar lib/jaxb-core-2.2.11.jar lib/spar
+ k-core-2.5.jar lib/slf4j-api-1.7.13.jar lib/jetty-server-9.3.6.v20151
+ 106.jar lib/javax.servlet-api-3.1.0.jar lib/jetty-http-9.3.6.v2015110
+ 6.jar lib/jetty-util-9.3.6.v20151106.jar lib/jetty-io-9.3.6.v20151106
+ .jar lib/jetty-webapp-9.3.6.v20151106.jar lib/jetty-xml-9.3.6.v201511
+ 06.jar lib/jetty-servlet-9.3.6.v20151106.jar lib/jetty-security-9.3.6
+ .v20151106.jar lib/websocket-server-9.3.6.v20151106.jar lib/websocket
+ -common-9.3.6.v20151106.jar lib/websocket-client-9.3.6.v20151106.jar 
+ lib/websocket-servlet-9.3.6.v20151106.jar lib/websocket-api-9.3.6.v20
+ 151106.jar
+Build-Jdk: 1.8.0_111
+Created-By: Maven Integration for Eclipse
+Main-Class: org.opengpii.preferenceserver.RestServer
+

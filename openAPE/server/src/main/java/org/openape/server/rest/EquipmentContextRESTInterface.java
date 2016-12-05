@@ -17,7 +17,7 @@ public class EquipmentContextRESTInterface extends SuperRestInterface {
         /**
          * Request 7.4.2 create equipment-context.
          */
-        Spark.post("/api/equipment-context", (req, res) -> {
+        Spark.post("/api/equipment-contexts", (req, res) -> {
             try {
                 // Try to map the received json object to a equipmentContext
                 // object.
@@ -49,7 +49,7 @@ public class EquipmentContextRESTInterface extends SuperRestInterface {
          * context identified by ID.
          */
         Spark.get(
-                "/api/equipment-context/:equipment-context-id",
+                "/api/equipment-contexts/:equipment-context-id",
                 (req, res) -> {
                     String equipmentContextId = req.params(":equipment-context-id");
                     try {
@@ -74,7 +74,7 @@ public class EquipmentContextRESTInterface extends SuperRestInterface {
          * Request 7.4.4 update equipment-context.
          */
         Spark.put(
-                "/api/equipment-context/:equipment-context-id",
+                "/api/equipment-contexts/:equipment-context-id",
                 (req, res) -> {
                     String equipmentContextId = req.params(":equipment-context-id");
                     try {
@@ -105,7 +105,7 @@ public class EquipmentContextRESTInterface extends SuperRestInterface {
         /**
          * Request 7.4.5 delete equipment-context.
          */
-        Spark.delete("/api/equipment-context/:equipment-context-id", (req, res) -> {
+        Spark.delete("/api/equipment-contexts/:equipment-context-id", (req, res) -> {
             String equipmentContextId = req.params(":equipment-context-id");
             try {
                 // if it is successful return equipment context.
