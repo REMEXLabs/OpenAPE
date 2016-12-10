@@ -15,14 +15,14 @@ import org.openape.server.rest.UserContextRESTInterface;
  */
 public class MainTest {
 
-    public static void main(String[] args) {
-        // Start rest api and database connection.
-        DatabaseConnection.getInstance();
-        new UserContextRESTInterface(new UserContextRequestHandler());
-        new EnvironmentContextRESTInterface(new EnvironmentContextRequestHandler());
-        new EquipmentContextRESTInterface(new EquipmentContextRequestHandler());
-        new TaskContextRESTInterface(new TaskContextRequestHandler());
-
-    }
+//    public static void main(String[] args) {
+//        // Start rest api and database connection.
+//        DatabaseConnection.getInstance();
+//        new UserContextRESTInterface(new UserContextRequestHandler());
+//        new EnvironmentContextRESTInterface(new EnvironmentContextRequestHandler());
+//        new EquipmentContextRESTInterface(new EquipmentContextRequestHandler());
+//        new TaskContextRESTInterface(new TaskContextRequestHandler());
+//
+//    }
 
 }
