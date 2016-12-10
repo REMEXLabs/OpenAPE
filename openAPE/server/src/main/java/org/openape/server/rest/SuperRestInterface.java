@@ -22,7 +22,7 @@ public class SuperRestInterface {
      */
     public SuperRestInterface() {
         // Change port to default port.
-        Spark.port(8080);
+        Spark.port(4040);
     }
 
     /**
