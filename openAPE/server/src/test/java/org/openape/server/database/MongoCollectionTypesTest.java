@@ -11,7 +11,7 @@ import org.openape.api.usercontext.UserContext;
  * {@link DatabaseConnection}. Contains the names of the collections used by the
  * database and the class of the documents within the collections.
  */
-public enum MongoCollectionTypes {
+public enum MongoCollectionTypesTest {
     USERCONTEXT("user_contexts", UserContext.class), //
     ENVIRONMENTCONTEXT("environment_contexts", EnvironmentContext.class), //
     EQUIPMENTCONTEXT("equipment_contexts", EquipmentContext.class), //
@@ -25,7 +25,7 @@ public enum MongoCollectionTypes {
      * @param collectionName
      * @return type of the collection.
      */
-    public static MongoCollectionTypes getTypeFromCollectionName(String collectionName) {
+    public static MongoCollectionTypesTest getTypeFromCollectionName(String collectionName) {
         switch (collectionName) {
         case "user_contexts":
             return USERCONTEXT;
@@ -55,7 +55,7 @@ public enum MongoCollectionTypes {
      * @param collectionName
      * @param objectType
      */
-    private <T> MongoCollectionTypes(String collectionName, Class<T> objectType) {
+    private <T> MongoCollectionTypesTest(String collectionName, Class<T> objectType) {
         this.objectType = objectType;
         this.mongoCollectionName = collectionName;
     }

@@ -9,9 +9,9 @@ import org.openape.server.requestHandler.EquipmentContextRequestHandler;
 
 import spark.Spark;
 
-public class EquipmentContextRESTInterface extends SuperRestInterface {
+public class EquipmentContextRESTInterfaceTest extends SuperRestInterface {
 
-    public EquipmentContextRESTInterface(final EquipmentContextRequestHandler requestHandler) {
+    public EquipmentContextRESTInterfaceTest(final EquipmentContextRequestHandler requestHandler) {
         super();
 
         /**

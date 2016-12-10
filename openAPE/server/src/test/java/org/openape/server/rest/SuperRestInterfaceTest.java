@@ -9,7 +9,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 import spark.Request;
 import spark.Spark;
 
-public class SuperRestInterface {
+public class SuperRestInterfaceTest {
 
     public static final int HTTP_STATUS_OK = 200;
     public static final int HTTP_STATUS_BAD_REQUEST = 400;
@@ -20,7 +20,7 @@ public class SuperRestInterface {
      * Constructor for the rest interface super class. Sets the server port to
      * 8080.
      */
-    public SuperRestInterface() {
+    public SuperRestInterfaceTest() {
         // Change port to default port.
         Spark.port(8080);
     }

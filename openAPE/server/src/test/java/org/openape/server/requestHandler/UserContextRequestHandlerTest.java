@@ -13,7 +13,7 @@ import org.openape.server.rest.UserContextRESTInterface;
  * rest API {@link UserContextRESTInterface} and uses the server database
  * {@link DatabaseConnection}.
  */
-public class UserContextRequestHandler {
+public class UserContextRequestHandlerTest {
 
     private static final MongoCollectionTypes COLLECTIONTOUSE = MongoCollectionTypes.USERCONTEXT;
 
@@ -38,7 +38,7 @@ public class UserContextRequestHandler {
         // argument exceptions. IO exceptions will just be thrown through.
         String id = null;
         try {
-            id = databaseconnection.storeData(UserContextRequestHandler.COLLECTIONTOUSE,
+            id = databaseconnection.storeData(UserContextRequestHandlerTest.COLLECTIONTOUSE,
                     (DatabaseObject) userContext);
         } catch (ClassCastException e) {
             throw new IllegalArgumentException(e.getMessage());
@@ -63,7 +63,7 @@ public class UserContextRequestHandler {
         // get database connection.
         DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
 
-        boolean success = databaseConnection.deleteData(UserContextRequestHandler.COLLECTIONTOUSE,
+        boolean success = databaseConnection.deleteData(UserContextRequestHandlerTest.COLLECTIONTOUSE,
                 id);
         if (!success) {
             throw new IllegalArgumentException();
@@ -90,7 +90,7 @@ public class UserContextRequestHandler {
 
         // Get the requested data.
         DatabaseObject result = databaseConnection.getData(
-                UserContextRequestHandler.COLLECTIONTOUSE, id);
+                UserContextRequestHandlerTest.COLLECTIONTOUSE, id);
 
         // If the result is null the id is not found.
         if (result == null) {
@@ -135,7 +135,7 @@ public class UserContextRequestHandler {
         // is thrown. IO exceptions are thrown through.
         boolean success;
         try {
-            success = databaseConnection.updateData(UserContextRequestHandler.COLLECTIONTOUSE,
+            success = databaseConnection.updateData(UserContextRequestHandlerTest.COLLECTIONTOUSE,
                     (DatabaseObject) userContext, id);
         } catch (ClassCastException e) {
             throw new IllegalArgumentException(e.getMessage());

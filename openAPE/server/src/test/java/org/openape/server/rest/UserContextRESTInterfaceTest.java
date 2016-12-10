@@ -9,9 +9,9 @@ import org.openape.server.requestHandler.UserContextRequestHandler;
 
 import spark.Spark;
 
-public class UserContextRESTInterface extends SuperRestInterface {
+public class UserContextRESTInterfaceTest extends SuperRestInterface {
 
-    public UserContextRESTInterface(final UserContextRequestHandler requestHandler) {
+    public UserContextRESTInterfaceTest(final UserContextRequestHandler requestHandler) {
         super();
 
         /**

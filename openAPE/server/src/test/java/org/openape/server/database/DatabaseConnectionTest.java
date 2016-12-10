@@ -31,7 +31,7 @@ import com.mongodb.client.MongoDatabase;
  * {@link EquipmentContextRequestHandler}, {@link TaskContextRequestHandler},
  * {@link UserContextRequestHandler}.
  */
-public class DatabaseConnection {
+public class DatabaseConnectionTest {
     /**
      * The url to our mongo database server.
      */
@@ -61,18 +61,18 @@ public class DatabaseConnection {
     /**
      * Singleton instance of this class.
      */
-    private static DatabaseConnection databaseConnectionInstance;
+    private static DatabaseConnectionTest databaseConnectionInstance;
 
     /**
      * Get the singleton database connection.
      *
      * @return the database connection.
      */
-    public static DatabaseConnection getInstance() {
-        if (DatabaseConnection.databaseConnectionInstance == null) {
-            DatabaseConnection.databaseConnectionInstance = new DatabaseConnection();
+    public static DatabaseConnectionTest getInstance() {
+        if (DatabaseConnectionTest.databaseConnectionInstance == null) {
+            DatabaseConnectionTest.databaseConnectionInstance = new DatabaseConnectionTest();
         }
-        return DatabaseConnection.databaseConnectionInstance;
+        return DatabaseConnectionTest.databaseConnectionInstance;
     }
 
     /**
@@ -115,18 +115,18 @@ public class DatabaseConnection {
      * private constructor to create the singleton database connection instance.
      */
     // It is checked by the try catch block.
-    private DatabaseConnection() {
+    private DatabaseConnectionTest() {
         // Create credentials for the openAPE database
         MongoCredential credential = MongoCredential.createCredential(
-                DatabaseConnection.DATABASUSERNAME, DatabaseConnection.DATABASENAME,
-                DatabaseConnection.DATABASEPASSWORD.toCharArray());
+                DatabaseConnectionTest.DATABASUSERNAME, DatabaseConnectionTest.DATABASENAME,
+                DatabaseConnectionTest.DATABASEPASSWORD.toCharArray());
 
         // Create database client for the openAPE database
-        this.mongoClient = new MongoClient(new ServerAddress(DatabaseConnection.DATABASEURL,
-                DatabaseConnection.DATABASEPORT), Arrays.asList(credential));
+        this.mongoClient = new MongoClient(new ServerAddress(DatabaseConnectionTest.DATABASEURL,
+                DatabaseConnectionTest.DATABASEPORT), Arrays.asList(credential));
 
         // Get a reference to the openAPE database.
-        this.database = this.mongoClient.getDatabase(DatabaseConnection.DATABASENAME);
+        this.database = this.mongoClient.getDatabase(DatabaseConnectionTest.DATABASENAME);
         // Get references to the database collections.
         this.userContextCollection = this.database.getCollection(MongoCollectionTypes.USERCONTEXT
                 .toString());

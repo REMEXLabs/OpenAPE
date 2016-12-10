@@ -13,7 +13,7 @@ import org.openape.server.rest.UserContextRESTInterface;
 /**
  * Starting class of the project. Creates REST APIs.
  */
-public class Main {
+public class MainTest {
 
     public static void main(String[] args) {
         // Start rest api and database connection.

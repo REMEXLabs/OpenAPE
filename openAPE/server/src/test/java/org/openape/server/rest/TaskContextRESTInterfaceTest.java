@@ -9,9 +9,9 @@ import org.openape.server.requestHandler.TaskContextRequestHandler;
 
 import spark.Spark;
 
-public class TaskContextRESTInterface extends SuperRestInterface {
+public class TaskContextRESTInterfaceTest extends SuperRestInterface {
 
-    public TaskContextRESTInterface(final TaskContextRequestHandler requestHandler) {
+    public TaskContextRESTInterfaceTest(final TaskContextRequestHandler requestHandler) {
         super();
 
         /**

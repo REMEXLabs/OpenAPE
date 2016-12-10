@@ -13,7 +13,7 @@ import org.openape.server.rest.EnvironmentContextRESTInterface;
  * the rest API {@link EnvironmentContextRESTInterface} and uses the server
  * database {@link DatabaseConnection}.
  */
-public class EnvironmentContextRequestHandler {
+public class EnvironmentContextRequestHandlerTest {
 
     private static final MongoCollectionTypes COLLECTIONTOUSE = MongoCollectionTypes.ENVIRONMENTCONTEXT;
 
@@ -38,7 +38,7 @@ public class EnvironmentContextRequestHandler {
         // argument exceptions. IO exceptions will just be thrown through.
         String id = null;
         try {
-            id = databaseConnection.storeData(EnvironmentContextRequestHandler.COLLECTIONTOUSE,
+            id = databaseConnection.storeData(EnvironmentContextRequestHandlerTest.COLLECTIONTOUSE,
                     (DatabaseObject) environmentContext);
         } catch (ClassCastException e) {
             throw new IllegalArgumentException(e.getMessage());
@@ -65,7 +65,7 @@ public class EnvironmentContextRequestHandler {
         DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
 
         boolean success = databaseConnection.deleteData(
-                EnvironmentContextRequestHandler.COLLECTIONTOUSE, id);
+                EnvironmentContextRequestHandlerTest.COLLECTIONTOUSE, id);
         if (!success) {
             throw new IllegalArgumentException();
         }
@@ -92,7 +92,7 @@ public class EnvironmentContextRequestHandler {
 
         // Get the requested data.
         DatabaseObject result = databaseConnection.getData(
-                EnvironmentContextRequestHandler.COLLECTIONTOUSE, id);
+                EnvironmentContextRequestHandlerTest.COLLECTIONTOUSE, id);
 
         // If the result is null the id is not found.
         if (result == null) {
@@ -137,7 +137,7 @@ public class EnvironmentContextRequestHandler {
         boolean success;
         try {
             success = databaseConnection.updateData(
-                    EnvironmentContextRequestHandler.COLLECTIONTOUSE,
+                    EnvironmentContextRequestHandlerTest.COLLECTIONTOUSE,
                     (DatabaseObject) environmentContext, id);
         } catch (ClassCastException e) {
             throw new IllegalArgumentException(e.getMessage());

@@ -13,7 +13,7 @@ import org.openape.server.rest.EquipmentContextRESTInterface;
  * the rest API {@link EquipmentContextRESTInterface} and uses the server
  * database {@link DatabaseConnection}.
  */
-public class EquipmentContextRequestHandler {
+public class EquipmentContextRequestHandlerTest {
 
     private static final MongoCollectionTypes COLLECTIONTOUSE = MongoCollectionTypes.EQUIPMENTCONTEXT;
 
@@ -38,7 +38,7 @@ public class EquipmentContextRequestHandler {
         // argument exceptions. IO exceptions will just be thrown through.
         String id = null;
         try {
-            id = databaseconnection.storeData(EquipmentContextRequestHandler.COLLECTIONTOUSE,
+            id = databaseconnection.storeData(EquipmentContextRequestHandlerTest.COLLECTIONTOUSE,
                     (DatabaseObject) equipmentContext);
         } catch (ClassCastException e) {
             throw new IllegalArgumentException(e.getMessage());
@@ -65,7 +65,7 @@ public class EquipmentContextRequestHandler {
         DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
 
         boolean success = databaseConnection.deleteData(
-                EquipmentContextRequestHandler.COLLECTIONTOUSE, id);
+                EquipmentContextRequestHandlerTest.COLLECTIONTOUSE, id);
         if (!success) {
             throw new IllegalArgumentException();
         }
@@ -92,7 +92,7 @@ public class EquipmentContextRequestHandler {
 
         // Get the requested data.
         DatabaseObject result = databaseConnection.getData(
-                EquipmentContextRequestHandler.COLLECTIONTOUSE, id);
+                EquipmentContextRequestHandlerTest.COLLECTIONTOUSE, id);
 
         // If the result is null the id is not found.
         if (result == null) {
@@ -136,7 +136,7 @@ public class EquipmentContextRequestHandler {
         // is thrown. IO exceptions are thrown through.
         boolean success;
         try {
-            success = databaseConnection.updateData(EquipmentContextRequestHandler.COLLECTIONTOUSE,
+            success = databaseConnection.updateData(EquipmentContextRequestHandlerTest.COLLECTIONTOUSE,
                     (DatabaseObject) equipmentContext, id);
         } catch (ClassCastException e) {
             throw new IllegalArgumentException(e.getMessage());
