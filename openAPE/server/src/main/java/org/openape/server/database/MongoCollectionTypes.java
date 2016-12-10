@@ -12,12 +12,18 @@ import org.openape.api.usercontext.UserContext;
  * database and the class of the documents within the collections.
  */
 public enum MongoCollectionTypes {
-    USERCONTEXT("user_contexts", UserContext.class), //
-    ENVIRONMENTCONTEXT("environment_contexts", EnvironmentContext.class), //
-    EQUIPMENTCONTEXT("equipment_contexts", EquipmentContext.class), //
-    TASKCONTEXT("task_contexts", TaskContext.class), //
-    RESOURCEOFFER("resource_offers", Resource.class), //
-    RESOURCEREQUEST("resource_requests", Resource.class); //
+    USERCONTEXT(
+            Messages.getString("MongoCollectionTypes.userContextsCollectionName"), UserContext.class), // //$NON-NLS-1$
+    ENVIRONMENTCONTEXT(
+            Messages.getString("MongoCollectionTypes.environmentContextsCollectionName"), EnvironmentContext.class), // //$NON-NLS-1$
+    EQUIPMENTCONTEXT(
+            Messages.getString("MongoCollectionTypes.equipmentContextsCollectionName"), EquipmentContext.class), // //$NON-NLS-1$
+    TASKCONTEXT(
+            Messages.getString("MongoCollectionTypes.taskContextsCollectionName"), TaskContext.class), // //$NON-NLS-1$
+    RESOURCEOFFER(
+            Messages.getString("MongoCollectionTypes.resourceOffersCollectionName"), Resource.class), // //$NON-NLS-1$
+    RESOURCEREQUEST(
+            Messages.getString("MongoCollectionTypes.resourceRequestsCollectionName"), Resource.class); // //$NON-NLS-1$
 
     /**
      * Get the collection type of a mongo database collection by its name.
@@ -26,22 +32,28 @@ public enum MongoCollectionTypes {
      * @return type of the collection.
      */
     public static MongoCollectionTypes getTypeFromCollectionName(String collectionName) {
-        switch (collectionName) {
-        case "user_contexts":
+        if (collectionName.equals(Messages
+                .getString("MongoCollectionTypes.userContextsCollectionName"))) { //$NON-NLS-1$
             return USERCONTEXT;
-        case "environment_contexts":
+        } else if (collectionName.equals(Messages
+                .getString("MongoCollectionTypes.environmentContextsCollectionName"))) { //$NON-NLS-1$
             return ENVIRONMENTCONTEXT;
-        case "equipment_contexts":
+        } else if (collectionName.equals(Messages
+                .getString("MongoCollectionTypes.equipmentContextsCollectionName"))) { //$NON-NLS-1$
             return EQUIPMENTCONTEXT;
-        case "task_contexts":
+        } else if (collectionName.equals(Messages
+                .getString("MongoCollectionTypes.taskContextsCollectionName"))) { //$NON-NLS-1$
             return TASKCONTEXT;
-        case "resource_offers":
+        } else if (collectionName.equals(Messages
+                .getString("MongoCollectionTypes.resourceOffersCollectionName"))) { //$NON-NLS-1$
             return RESOURCEOFFER;
-        case "resource_requests":
+        } else if (collectionName.equals(Messages
+                .getString("MongoCollectionTypes.resourceRequestsCollectionName"))) { //$NON-NLS-1$
             return RESOURCEREQUEST;
-        default:
+        } else {
             return null;
         }
+
     }
 
     private final Class<?> objectType;

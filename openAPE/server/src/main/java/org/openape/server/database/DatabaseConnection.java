@@ -35,7 +35,8 @@ public class DatabaseConnection {
     /**
      * The url to our mongo database server.
      */
-    private static final String DATABASEURL = "localhost"; // TODO replace by
+    private static final String DATABASEURL = Messages
+            .getString("DatabaseConnection.MongoDBServerAddress"); // TODO replace by //$NON-NLS-1$
     // the mongoDB url.
     /**
      * The standard port for online mongo databases.
@@ -46,17 +47,20 @@ public class DatabaseConnection {
      * The name of the mongo database holding the relevant data for this
      * application.
      */
-    private static final String DATABASENAME = "openAPE";
+    private static final String DATABASENAME = Messages
+            .getString("DatabaseConnection.MongoDBDatabaseName"); //$NON-NLS-1$
 
     /**
      * The user name used by this application to connect to the mongo database.
      */
-    private static final String DATABASUSERNAME = "openAPE";
+    private static final String DATABASUSERNAME = Messages
+            .getString("DatabaseConnection.MongoDBDatabaseUsername"); //$NON-NLS-1$
 
     /**
      * The password used by this application to connect to the mongo database.
      */
-    private static final String DATABASEPASSWORD = "1234";
+    private static final String DATABASEPASSWORD = Messages
+            .getString("DatabaseConnection.MongoDBDatabaseUserPassword"); //$NON-NLS-1$
 
     /**
      * Singleton instance of this class.
@@ -161,7 +165,7 @@ public class DatabaseConnection {
 
         // Create search query.
         BasicDBObject query = new BasicDBObject();
-        query.put("_id", new ObjectId(id));
+        query.put(Messages.getString("DatabaseConnection._id"), new ObjectId(id)); //$NON-NLS-1$
 
         // deleted will be null if no data with the given id is found.
         Document deleted = collectionToWorkOn.findOneAndDelete(query);
@@ -215,7 +219,7 @@ public class DatabaseConnection {
 
         // Search for object in database.
         BasicDBObject query = new BasicDBObject();
-        query.put("_id", new ObjectId(id));
+        query.put(Messages.getString("DatabaseConnection._id"), new ObjectId(id)); //$NON-NLS-1$
         FindIterable<Document> resultIteratable = collectionToWorkOn.find(query);
 
         Iterator<Document> resultInterator = resultIteratable.iterator();
@@ -230,7 +234,7 @@ public class DatabaseConnection {
             DatabaseObject result = null;
             try {
                 // Remove the automatically added id.
-                resultDocument.remove("_id");
+                resultDocument.remove(Messages.getString("DatabaseConnection._id")); //$NON-NLS-1$
                 String jsonResult = resultDocument.toJson();
                 ObjectMapper mapper = new ObjectMapper();
                 result = mapper.readValue(jsonResult, DatabaseObject.class);
@@ -281,7 +285,7 @@ public class DatabaseConnection {
         // Get the automatically appended id.
         ObjectId id = null;
         try {
-            id = (ObjectId) dataDocument.get("_id");
+            id = (ObjectId) dataDocument.get(Messages.getString("DatabaseConnection._id")); //$NON-NLS-1$
         } catch (ClassCastException e) {
             e.printStackTrace();
             throw new IOException(e.getMessage());
@@ -319,7 +323,7 @@ public class DatabaseConnection {
 
         // Create search query.
         BasicDBObject query = new BasicDBObject();
-        query.put("_id", new ObjectId(id));
+        query.put(Messages.getString("DatabaseConnection._id"), new ObjectId(id)); //$NON-NLS-1$
 
         try {
             // Create document object from data.

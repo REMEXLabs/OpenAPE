@@ -31,7 +31,7 @@ public class EnvironmentContextRequestHandler {
      *             if the parameter is not a complete environment context.
      */
     public String createEnvironmentContext(Object environmentContext) throws IOException,
-            IllegalArgumentException {
+    IllegalArgumentException {
         // get database connection.
         DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
         // try to store data. Class cast exceptions will be thrown as illegal
@@ -60,7 +60,7 @@ public class EnvironmentContextRequestHandler {
      *             if the id is no valid id or not assigned.
      */
     public boolean deleteEnvironmentContextById(String id) throws IOException,
-            IllegalArgumentException {
+    IllegalArgumentException {
         // get database connection.
         DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
 
@@ -86,7 +86,7 @@ public class EnvironmentContextRequestHandler {
      *             if the id is no valid id or not assigned.
      */
     public EnvironmentContext getEnvironmentContextById(String id) throws IOException,
-            IllegalArgumentException {
+    IllegalArgumentException {
         // get database connection.
         DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
 

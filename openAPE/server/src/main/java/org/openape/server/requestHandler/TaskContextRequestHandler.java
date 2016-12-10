@@ -31,7 +31,7 @@ public class TaskContextRequestHandler {
      *             if the parameter is not a complete task context.
      */
     public String createTaskContext(Object taskContext) throws IOException,
-    IllegalArgumentException {
+            IllegalArgumentException {
         // get database connection.
         DatabaseConnection databaseconnection = DatabaseConnection.getInstance();
         // try to store data. Class cast exceptions will be thrown as illegal
@@ -125,7 +125,7 @@ public class TaskContextRequestHandler {
      *             not valid.
      */
     public boolean updateTaskContextById(String id, Object taskContext) throws IOException,
-    IllegalArgumentException {
+            IllegalArgumentException {
         // get database connection.
         DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
 

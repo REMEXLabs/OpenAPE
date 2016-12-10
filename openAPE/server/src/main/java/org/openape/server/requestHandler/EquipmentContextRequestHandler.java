@@ -31,7 +31,7 @@ public class EquipmentContextRequestHandler {
      *             if the parameter is not a complete equipment context.
      */
     public String createEquipmentContext(Object equipmentContext) throws IOException,
-            IllegalArgumentException {
+    IllegalArgumentException {
         // get database connection.
         DatabaseConnection databaseconnection = DatabaseConnection.getInstance();
         // try to store data. Class cast exceptions will be thrown as illegal
@@ -60,7 +60,7 @@ public class EquipmentContextRequestHandler {
      *             if the id is no valid id or not assigned.
      */
     public boolean deleteEquipmentContextById(String id) throws IOException,
-            IllegalArgumentException {
+    IllegalArgumentException {
         // get database connection.
         DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
 
@@ -86,7 +86,7 @@ public class EquipmentContextRequestHandler {
      *             if the id is no valid id or not assigned.
      */
     public EquipmentContext getEquipmentContextById(String id) throws IOException,
-            IllegalArgumentException {
+    IllegalArgumentException {
         // get database connection.
         DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
 
