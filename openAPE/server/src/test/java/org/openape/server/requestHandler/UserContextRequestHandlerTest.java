@@ -7,7 +7,8 @@ import org.openape.api.usercontext.UserContext;
 import org.openape.server.database.DatabaseConnection;
 import org.openape.server.database.MongoCollectionTypes;
 import org.openape.server.rest.UserContextRESTInterface;
-
+import org.junit.*;
+import static org.junit.Assert.*;
 /**
  * Class with methods to manage user context on the server. It is used by the
  * rest API {@link UserContextRESTInterface} and uses the server database
@@ -15,6 +16,13 @@ import org.openape.server.rest.UserContextRESTInterface;
  */
 public class UserContextRequestHandlerTest {
 
+	@BeforeClass
+		
+	
+	@AfterClass
+		
+	
+	@Test
 //    private static final MongoCollectionTypes COLLECTIONTOUSE = MongoCollectionTypes.USERCONTEXT;
 //
 //    /**
@@ -30,6 +38,10 @@ public class UserContextRequestHandlerTest {
 //     * @throws IllegalArgumentException
 //     *             if the parameter is not a complete user context.
 //     */
+	
+	public void testCreateUserContext(){
+		
+	}
 //    public String createUserContext(Object userContext) throws IOException,
 //    IllegalArgumentException {
 //        // get database connection.
@@ -59,6 +71,9 @@ public class UserContextRequestHandlerTest {
 //     * @throws IllegalArgumentException
 //     *             if the id is no valid id or not assigned.
 //     */
+	public void testDeleteUserContextById(){
+		
+	}
 //    public boolean deleteUserContextById(String id) throws IOException, IllegalArgumentException {
 //        // get database connection.
 //        DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
@@ -84,6 +99,10 @@ public class UserContextRequestHandlerTest {
 //     * @throws IllegalArgumentException
 //     *             if the id is no valid id or not assigned.
 //     */
+	
+	public void testGetUserContextById(){
+		
+	}
 //    public UserContext getUserContextById(String id) throws IOException, IllegalArgumentException {
 //        // get database connection.
 //        DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
@@ -125,6 +144,9 @@ public class UserContextRequestHandlerTest {
 //     *             if the id is no valid id, not assigned or the user context is
 //     *             not valid.
 //     */
+	public void testUpdateUserContextById() {
+		
+	}
 //    public boolean updateUserContextById(String id, Object userContext) throws IOException,
 //    IllegalArgumentException {
 //        // get database connection.
