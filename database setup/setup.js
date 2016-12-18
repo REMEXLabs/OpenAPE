@@ -1,4 +1,4 @@
-﻿var connection = new Mongo(<address>:27017);
+﻿var connection = new Mongo(<serverAddress>:27017);
 var database = conn.getDatabase("openAPE");
 database.addUser("openAPE", "<password>");
 database.createCollection("environment_contexts");
