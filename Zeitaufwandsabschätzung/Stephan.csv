@@ -1,5 +1,5 @@
 Datum,Zeit in Stunden,Aktivität,,Summe
-12.10,1,Initialer Projekttreff,,
+12.10,1,Initialer Projekttreff,,"56,5"
 18.10,1,2. Teambesprechung,,
 18.10,2,Issues erstellen und Projekt bei mir einrichten,,
 25.10,"0,5",3. Teambesprechung,,
@@ -28,3 +28,4 @@ Datum,Zeit in Stunden,Aktivität,,Summe
 18.12,3,"Information über mongo server und java script, einrichten vün robomongo und beifügen der setup.js",,
 19.12,"1,5",Lokaler mongo db server installieren und einrichten um darauf das probramm zu testen.,,
 20.12,1,Teambesprechung,,
+27.12,2,Javascript lauffähig machen,,
