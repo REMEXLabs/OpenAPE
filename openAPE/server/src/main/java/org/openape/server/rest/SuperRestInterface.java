@@ -21,8 +21,8 @@ public class SuperRestInterface {
      * 8080.
      */
     public SuperRestInterface() {
-        // Change port to default port.
-        Spark.port(4040);
+        // Change port to default port. Not 4040 the standard spark port.
+        Spark.port(80);
     }
 
     /**
