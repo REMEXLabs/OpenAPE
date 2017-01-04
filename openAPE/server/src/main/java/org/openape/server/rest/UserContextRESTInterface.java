@@ -38,7 +38,7 @@ public class UserContextRESTInterface extends SuperRestInterface {
                         // If the object is okay, save it and return the id.
                         String userContextId = requestHandler
                                 .createUserContext(recievedUserContext);
-                        res.status(SuperRestInterface.HTTP_STATUS_OK);
+                        res.status(SuperRestInterface.HTTP_STATUS_CREATED);
                         res.type(Messages.getString("UserContextRESTInterface.JsonMimeType")); //$NON-NLS-1$
                         return userContextId;
                     } catch (JsonParseException | JsonMappingException e) {
@@ -68,7 +68,7 @@ public class UserContextRESTInterface extends SuperRestInterface {
                         return userContext;
                         // if not return corresponding error status.
                     } catch (IllegalArgumentException e) {
-                        res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
+                        res.status(SuperRestInterface.HTTP_STATUS_NOT_FOUND);
                         return Messages.getString("UserContextRESTInterface.EmptyString"); //$NON-NLS-1$
                     } catch (IOException e) {
                         res.status(SuperRestInterface.HTTP_STATUS_INTERNAL_SERVER_ERROR);
@@ -123,7 +123,7 @@ public class UserContextRESTInterface extends SuperRestInterface {
                         return Messages.getString("UserContextRESTInterface.EmptyString"); //$NON-NLS-1$
                         // if not return corresponding error status.
                     } catch (IllegalArgumentException e) {
-                        res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
+                        res.status(SuperRestInterface.HTTP_STATUS_NOT_FOUND);
                         return Messages.getString("UserContextRESTInterface.EmptyString"); //$NON-NLS-1$
                     } catch (IOException e) {
                         res.status(SuperRestInterface.HTTP_STATUS_INTERNAL_SERVER_ERROR);

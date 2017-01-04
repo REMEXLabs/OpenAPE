@@ -34,7 +34,7 @@ public class EnvironmentContextRESTInterface extends SuperRestInterface {
                         // If the object is okay, save it and return the id.
                         String environmentContextId = requestHandler
                                 .createEnvironmentContext(recievedEnvironmentContext);
-                        res.status(SuperRestInterface.HTTP_STATUS_OK);
+                        res.status(SuperRestInterface.HTTP_STATUS_CREATED);
                         res.type(Messages.getString("EnvironmentContextRESTInterface.JsonMimeType")); //$NON-NLS-1$
                         return environmentContextId;
                     } catch (JsonParseException | JsonMappingException e) {
@@ -66,7 +66,7 @@ public class EnvironmentContextRESTInterface extends SuperRestInterface {
                         return environmentContext;
                         // if not return corresponding error status.
                     } catch (IllegalArgumentException e) {
-                        res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
+                        res.status(SuperRestInterface.HTTP_STATUS_NOT_FOUND);
                         return Messages.getString("EnvironmentContextRESTInterface.EmptyString"); //$NON-NLS-1$
                     } catch (IOException e) {
                         res.status(SuperRestInterface.HTTP_STATUS_INTERNAL_SERVER_ERROR);
@@ -123,7 +123,7 @@ public class EnvironmentContextRESTInterface extends SuperRestInterface {
                         return Messages.getString("EnvironmentContextRESTInterface.EmptyString"); //$NON-NLS-1$
                         // if not return corresponding error status.
                     } catch (IllegalArgumentException e) {
-                        res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
+                        res.status(SuperRestInterface.HTTP_STATUS_NOT_FOUND);
                         return Messages.getString("EnvironmentContextRESTInterface.EmptyString"); //$NON-NLS-1$
                     } catch (IOException e) {
                         res.status(SuperRestInterface.HTTP_STATUS_INTERNAL_SERVER_ERROR);
