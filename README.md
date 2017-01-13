@@ -12,6 +12,6 @@ Finally, as a mix of the above use cases, OpenAPE could be used to **transfer ru
 
 ## Licence and Copyright 
 
-Coyright: 2016 Research group REMEX, Hochschule der Medien (Stuttgart, Germany).
+Coyright: 2016-2017 Research group REMEX, Hochschule der Medien (Stuttgart, Germany).
 
 Licence: [Apache 2.0](https://github.com/REMEXLabs/OpenAPE/blob/master/openAPE/license.txt).
