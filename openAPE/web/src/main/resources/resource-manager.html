@@ -6,8 +6,9 @@
     <script src="jquery-3.1.1.min.js"></script>
     <script>
         $(document).ready(function() {
-            $('button').click(function () {
-                var json = [];
+            $('#saveJSONbutton').click(function () {
+                var json = [],
+                	resource = document.getElementById('resourceFile');
                 $('tbody tr').each(function () {
                     var data = {},
                         $td = $(this).find('td input'),
@@ -16,6 +17,7 @@
                     data[name] = value;
                     json.push(data);
                 });
+                alert(resource);
                 alert(JSON.stringify(json));
             })
         })
@@ -26,8 +28,12 @@
 <table>
     <thead>
         <tr>
-            <td>Name</td>
+            <td>Key</td>
             <td>Value</td>
+        </tr>
+        <tr>
+            <td>File:</td>
+            <td><input type="file" id="resourceFile"></td>
         </tr>
     </thead>
     <tbody>
@@ -53,6 +59,6 @@
         </tr>
     </tbody>
 </table>
-<button type="button" id="createJson">Speichern</button>
+<button type="button" id="saveJSONbutton">Speichern</button>
 </body>
 </html>
