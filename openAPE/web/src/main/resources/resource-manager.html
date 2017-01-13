@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>openAPE</title>
+    <script src="jquery-3.1.1.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('button').click(function () {
+                var json = [];
+                $('tbody tr').each(function () {
+                    var data = {},
+                        $td = $(this).find('td input'),
+                        name = $td.eq(0).val(),
+                        value = $td.eq(1).val();
+                    data[name] = value;
+                    json.push(data);
+                });
+                alert(JSON.stringify(json));
+            })
+        })
+
+    </script>
+</head>
+<body>
+<table>
+    <thead>
+        <tr>
+            <td>Name</td>
+            <td>Value</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><input type="text"></td>
+            <td><input type="text"></td>
+        </tr>
+        <tr>
+            <td><input type="text"></td>
+            <td><input type="text"></td>
+        </tr>
+        <tr>
+            <td><input type="text"></td>
+            <td><input type="text"></td>
+        </tr>
+        <tr>
+            <td><input type="text"></td>
+            <td><input type="text"></td>
+        </tr>
+        <tr>
+            <td><input type="text"></td>
+            <td><input type="text"></td>
+        </tr>
+    </tbody>
+</table>
+<button type="button" id="createJson">Speichern</button>
+</body>
+</html>
