@@ -98,9 +98,9 @@ public class ResourceRequestHandler {
         }
 
         // convert into correct type.
-        UserContext returnObject;
+        Resource returnObject;
         try {
-            returnObject = (UserContext) result;
+            returnObject = (Resource) result;
         } catch (ClassCastException e) {
             e.printStackTrace();
             throw new IOException(e.getMessage());
