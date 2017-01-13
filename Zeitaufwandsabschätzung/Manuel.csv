@@ -1,0 +1,30 @@
+Datum;Zeit in Stunden;Aktivität;;Summe
+12. Okt;1;Initialer Projekttreff;;46,5
+18. Okt;1;2. Teambesprechung;;
+20. Okt;2,5;Stage Projekt anmelden und Texte übersetzten;;
+21. Okt;3;Standard einarbeiten;;
+25. Okt;0,5;3. Teambesprechung;;
+25. Okt;1,5;Mit Stephan zusammen Git und das Projekt einrichten;;
+28. Okt;1,5;Issues durchlesen, mit Projekt vertraut machen;;
+03. Nov;2;;;
+07. Nov;2;user context requests, mit Stefan;;
+14. Nov;2;task, equipment, environment endpoints implementiert;;
+16. Nov;1;Teambesprechung;;
+21. Nov;2,5;Einarbeiten in Testing;;
+22. Nov;1;Teambesprechung;;
+25. Nov;3;Vertraut machen mit Junit Tests;;
+28. Nov;1,5;Recherche;;
+04. Dez;1;erste Testimplementation;;
+06. Dez;1;Teambesprechung;;
+09. Dez;0,5;Kleinere Änderungen;;
+12. Dez;2;Tests;;
+13. Dez;1,5;Sicherheitsunterweisung;;
+19. Dez;3;;;
+29. Dez;1,5;Tests;;
+02. Jan;1;openHAB und eclipse smarthome einrichten;;
+06. Jan;2,5;openHAB demo und dokumentation;;
+10. Jan;0,5;Spark statik html research;;
+12. Jan;2,5;HTML Interface erstellen, wie funktioniert jquery;;
+13. Jan;1,5;erstellen von REST Endpunkt resource-manager;;
+13. Jan;1;Hilfe von Stephan bei Projekt starten;;
+13. Jan;1;Versucht Endpunkt zu testen;;
