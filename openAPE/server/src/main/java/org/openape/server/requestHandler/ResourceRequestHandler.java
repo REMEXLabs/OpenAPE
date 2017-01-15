@@ -2,11 +2,10 @@ package org.openape.server.requestHandler;
 
 import java.io.IOException;
 
-import org.openape.api.DatabaseObject;
-import org.openape.api.resource.Resource;
-import org.openape.api.usercontext.UserContext;
+import javassist.NotFoundException;
+
+import org.openape.api.listing.Listing;
 import org.openape.server.database.DatabaseConnection;
-import org.openape.server.database.MongoCollectionTypes;
 import org.openape.server.rest.ResourceRESTInterface;
 
 /**
@@ -15,8 +14,6 @@ import org.openape.server.rest.ResourceRESTInterface;
  * {@link DatabaseConnection}.
  */
 public class ResourceRequestHandler {
-    private static final MongoCollectionTypes REQUESTCOLLECTIONTOUSE = MongoCollectionTypes.RESOURCEREQUEST;
-    private static final MongoCollectionTypes OFFERCOLLECTIONTOUSE = MongoCollectionTypes.RESOURCEOFFER;
 
     /**
      * Method to store a new resource into the server. It is used by the rest
@@ -29,20 +26,10 @@ public class ResourceRequestHandler {
      * @throws IOException
      *             if a storage problem still occurs, after to many tries.
      * @throws IllegalArgumentException
-     *             if the parameter is not a complete resource.
+     *             if the resource name is already taken.
      */
     public String createResource(Object resource) throws IOException, IllegalArgumentException {
-        // get database connection.
-        DatabaseConnection databaseconnection = DatabaseConnection.getInstance();
-        // try to store data. Class cast exceptions will be thrown as illegal
-        // argument exceptions. IO exceptions will just be thrown through.
-        String id = null;
-        try {
-            id = databaseconnection.storeData(ResourceRequestHandler.OFFERCOLLECTIONTOUSE,
-                    (DatabaseObject) resource);
-        } catch (ClassCastException e) {
-            throw new IllegalArgumentException(e.getMessage());
-        }
+        String id = "";
         return id;
     }
 
@@ -60,14 +47,6 @@ public class ResourceRequestHandler {
      *             if the id is no valid id or not assigned.
      */
     public boolean deleteResourceById(String id) throws IOException, IllegalArgumentException {
-        // get database connection.
-        DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
-
-        boolean success = databaseConnection.deleteData(
-                ResourceRequestHandler.OFFERCOLLECTIONTOUSE, id);
-        if (!success) {
-            throw new IllegalArgumentException();
-        }
         return true;
     }
 
@@ -84,29 +63,32 @@ public class ResourceRequestHandler {
      * @throws IllegalArgumentException
      *             if the id is no valid id or not assigned.
      */
-    public Resource getResourceById(String id) throws IOException, IllegalArgumentException {
-        // get database connection.
-        DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
-
-        // Get the requested data.
-        DatabaseObject result = databaseConnection.getData(
-                ResourceRequestHandler.OFFERCOLLECTIONTOUSE, id);
-
-        // If the result is null the id is not found.
-        if (result == null) {
-            throw new IllegalArgumentException();
-        }
-
-        // convert into correct type.
-        Resource returnObject;
-        try {
-            returnObject = (Resource) result;
-        } catch (ClassCastException e) {
-            e.printStackTrace();
-            throw new IOException(e.getMessage());
-        }
+    public Object getResourceById(String id) throws IOException, IllegalArgumentException {
+        Object returnObject = null;
         return returnObject;
 
+    }
+
+    /**
+     * Method to get an existing resource from the server using a listing. It is
+     * used by the rest API {@link ResourceRESTInterface} and uses the server
+     * database {@link DatabaseConnection}.
+     *
+     * @param listing
+     *            listing used to choose a fitting resource. Has to be a valid
+     *            {@link Listing}.
+     * @return requested resource.
+     * @throws IOException
+     *             if a storage problem still occurs, after to many tries.
+     * @throws IllegalArgumentException
+     *             if the listing is no valid listing.
+     * @throws NotFoundException
+     *             if no fitting resource is found.
+     */
+    public Object getResourceByListing(Object listing) throws IOException,
+            IllegalArgumentException, NotFoundException {
+        Object returnObject = null;
+        return returnObject;
     }
 
 }
