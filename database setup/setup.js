@@ -6,9 +6,9 @@ database.createUser({
      roles: [ "readWrite", "dbAdmin" ]});
 database.createCollection("environment_contexts");
 database.createCollection("equipment_contexts");
-database.createCollection("resource_offers");
-database.createCollection("resource_requests");
-database.createCollection("task_contextss");
+database.createCollection("resource_description");
+database.createCollection("listing");
+database.createCollection("task_contexts");
 database.createCollection("user_contexts");
 database.createCollection("test");
 database.test.insert( { x: 1 } );

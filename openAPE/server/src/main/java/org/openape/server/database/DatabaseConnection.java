@@ -143,7 +143,7 @@ public class DatabaseConnection {
         this.resourceOfferContectCollection = this.database
                 .getCollection(MongoCollectionTypes.RESOURCEOFFER.toString());
         this.resourceRequestContextCollection = this.database
-                .getCollection(MongoCollectionTypes.RESOURCEREQUEST.toString());
+                .getCollection(MongoCollectionTypes.LISTING.toString());
 
     }
 
@@ -194,7 +194,7 @@ public class DatabaseConnection {
             return this.taskContextCollection;
         } else if (type.equals(MongoCollectionTypes.RESOURCEOFFER)) {
             return this.resourceOfferContectCollection;
-        } else if (type.equals(MongoCollectionTypes.RESOURCEREQUEST)) {
+        } else if (type.equals(MongoCollectionTypes.LISTING)) {
             return this.resourceRequestContextCollection;
         } else {
             return null; // Should never occur.

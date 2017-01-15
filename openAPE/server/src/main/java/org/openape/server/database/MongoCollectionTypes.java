@@ -2,7 +2,9 @@ package org.openape.server.database;
 
 import org.openape.api.environmentcontext.EnvironmentContext;
 import org.openape.api.equipmentcontext.EquipmentContext;
-import org.openape.api.resource.Resource;
+import org.openape.api.listing.Listing;
+import org.openape.api.resourceDescription.Resource;
+import org.openape.api.resourceDescription.ResourceDescription;
 import org.openape.api.taskcontext.TaskContext;
 import org.openape.api.usercontext.UserContext;
 
@@ -20,10 +22,9 @@ public enum MongoCollectionTypes {
             Messages.getString("MongoCollectionTypes.equipmentContextsCollectionName"), EquipmentContext.class), // //$NON-NLS-1$
     TASKCONTEXT(
             Messages.getString("MongoCollectionTypes.taskContextsCollectionName"), TaskContext.class), // //$NON-NLS-1$
-    RESOURCEOFFER(
-            Messages.getString("MongoCollectionTypes.resourceOffersCollectionName"), Resource.class), // //$NON-NLS-1$
-    RESOURCEREQUEST(
-            Messages.getString("MongoCollectionTypes.resourceRequestsCollectionName"), Resource.class); // //$NON-NLS-1$
+    RESOURCEDESCRIPTION(
+            Messages.getString("MongoCollectionTypes.resourceDescriptionCollectionName"), ResourceDescription.class), //$NON-NLS-1$
+    LISTING(Messages.getString("MongoCollectionTypes.lstingCollectionName"), Listing.class); // //$NON-NLS-1$
 
     /**
      * Get the collection type of a mongo database collection by its name.
@@ -45,11 +46,11 @@ public enum MongoCollectionTypes {
                 .getString("MongoCollectionTypes.taskContextsCollectionName"))) { //$NON-NLS-1$
             return TASKCONTEXT;
         } else if (collectionName.equals(Messages
-                .getString("MongoCollectionTypes.resourceOffersCollectionName"))) { //$NON-NLS-1$
-            return RESOURCEOFFER;
+                .getString("MongoCollectionTypes.resourceDescriptionCollectionName"))) { //$NON-NLS-1$
+            return RESOURCEDESCRIPTION;
         } else if (collectionName.equals(Messages
-                .getString("MongoCollectionTypes.resourceRequestsCollectionName"))) { //$NON-NLS-1$
-            return RESOURCEREQUEST;
+                .getString("MongoCollectionTypes.lstingCollectionName"))) { //$NON-NLS-1$
+            return LISTING;
         } else {
             return null;
         }
