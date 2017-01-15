@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
-import org.openape.api.resource.Resource;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.openape.server.requestHandler.ResourceRequestHandler;
 
 import spark.Spark;
@@ -18,17 +18,11 @@ public class ResourceRESTInterface extends SuperRestInterface {
          */
         Spark.post("/api/resource", (req, res) -> {
             try {
-                // Try to map the received json object to a userContext
-                // object.
-                Resource recievedResource = (Resource) this.extractContentFromRequest(req,
-                        Resource.class);
-                // Test the object for validity.
-                if (!recievedResource.isValid()) {
-                    res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
-                    return Messages.getString("");
-                }
+                // try to extract the received object.
+                ObjectMapper mapper = new ObjectMapper();
+                Object recievedObject = mapper.readValue(req.body(), Object.class);
                 // If the object is okay, save it and return the id.
-                String resourceId = requestHandler.createResource(recievedResource);
+                String resourceId = requestHandler.createResource(recievedObject);
                 res.status(SuperRestInterface.HTTP_STATUS_CREATED);
                 res.type("application/json");
                 return resourceId;
@@ -51,7 +45,7 @@ public class ResourceRESTInterface extends SuperRestInterface {
             String resourceId = req.params(":resource-id");
             try {
                 // if it is successful return user context.
-                Resource resource = requestHandler.getResourceById(resourceId);
+                Object resource = requestHandler.getResourceById(resourceId);
                 res.status(SuperRestInterface.HTTP_STATUS_OK);
                 res.type("application/json");
                 return resource;
