@@ -55,7 +55,7 @@ public class ListingRESTInterface extends SuperRestInterface {
                 // if it is successful return listing.
                 final Listing listing = requestHandler.getListingById(environmentContextId);
                 res.status(SuperRestInterface.HTTP_STATUS_OK);
-                res.type("application/json"); //$NON-NLS-1$
+                res.type("application/json");
                 final ObjectMapper mapper = new ObjectMapper();
                 final String jsonData = mapper.writeValueAsString(listing);
                 return jsonData;

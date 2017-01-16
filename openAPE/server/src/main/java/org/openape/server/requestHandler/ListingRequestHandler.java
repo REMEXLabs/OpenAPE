@@ -108,4 +108,13 @@ public class ListingRequestHandler {
         }
         return returnObject;
     }
+    
+    /**
+     * TODO implement
+     * @param value
+     * @return
+     */
+    public boolean confirmUserRating(float value) {
+        return false;
+    }
 }
