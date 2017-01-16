@@ -201,6 +201,7 @@ public class ResourceList {
     public boolean deleteResource(String fileName) throws IllegalArgumentException, IOException {
         if (resourceExists(fileName)) {
             new File(RESOURCEFOLDERPATH + File.separator + fileName).delete();
+            resourceNameList.remove(fileName);
         } else {
             throw new IllegalArgumentException("File not found");
         }
