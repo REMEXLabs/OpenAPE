@@ -141,20 +141,20 @@ public class ResourceRESTInterface extends SuperRestInterface {
          */
         Spark.delete("/api/resource/resource-id", (req, res) -> {
             final String resourceId = req.params(":resource-id");
-            // try {
-            // // if it is successful return user context.
-            // requestHandler.deleteResourceById(resourceId);
-            // res.status(SuperRestInterface.HTTP_STATUS_OK);
-            // return "";
-            // // if not return corresponding error status.
-            // } catch (IllegalArgumentException e) {
-            // res.status(SuperRestInterface.HTTP_STATUS_NOT_FOUND);
-            // return "";
-            // } catch (IOException e) {
-            // res.status(SuperRestInterface.HTTP_STATUS_INTERNAL_SERVER_ERROR);
-                return "";
+            try {
+                requestHandler.deleteResourceById(resourceId);
 
-            });
+            } catch (IllegalArgumentException e) {
+                res.status(SuperRestInterface.HTTP_STATUS_NOT_FOUND);
+                return "";
+            } catch (IOException e) {
+                res.status(SuperRestInterface.HTTP_STATUS_INTERNAL_SERVER_ERROR);
+                return "";
+            }
+            res.status(SuperRestInterface.HTTP_STATUS_OK);
+            return "";
+
+        });
 
     }
 

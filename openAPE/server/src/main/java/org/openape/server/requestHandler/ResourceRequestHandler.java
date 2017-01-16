@@ -2,6 +2,7 @@ package org.openape.server.requestHandler;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 import javassist.NotFoundException;
 
@@ -9,6 +10,7 @@ import javax.servlet.http.Part;
 
 import org.openape.api.listing.Listing;
 import org.openape.server.database.mongoDB.DatabaseConnection;
+import org.openape.server.database.resources.ListingManager;
 import org.openape.server.database.resources.ResourceList;
 import org.openape.server.rest.ResourceRESTInterface;
 
@@ -50,7 +52,7 @@ public class ResourceRequestHandler {
      *             if the id is no valid id or not assigned.
      */
     public boolean deleteResourceById(String id) throws IOException, IllegalArgumentException {
-        return true;
+        return ResourceList.getInstance().deleteResource(id);
     }
 
     /**
@@ -86,10 +88,9 @@ public class ResourceRequestHandler {
      * @throws NotFoundException
      *             if no fitting resource is found.
      */
-    public Object getResourceByListing(Object listing) throws IOException,
-    IllegalArgumentException, NotFoundException {
-        final Object returnObject = null;
-        return returnObject;
+    public List<File> getResourceByListing(Listing listing) throws IOException,
+            IllegalArgumentException, NotFoundException {
+        return ListingManager.getResourcesFromListing(listing);
     }
 
 }

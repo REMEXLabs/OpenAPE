@@ -6,6 +6,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.file.DirectoryNotEmptyException;
+import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
+import java.nio.file.Path;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -184,4 +188,23 @@ public class ResourceList {
         }
     }
 
+    /**
+     * If found the method deletes the resource with the given name.
+     * 
+     * @param fileName
+     *            name of the resource including file ending.
+     * @return true if successful.
+     * @throws IllegalArgumentException
+     *             if the file is not found.
+     * @throws IOException
+     */
+    public boolean deleteResource(String fileName) throws IllegalArgumentException, IOException {
+        if (resourceExists(fileName)) {
+            new File(RESOURCEFOLDERPATH + File.separator + fileName).delete();
+        } else {
+            throw new IllegalArgumentException("File not found");
+        }
+        return true;
+
+    }
 }
