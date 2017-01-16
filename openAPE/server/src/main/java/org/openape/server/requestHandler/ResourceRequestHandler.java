@@ -8,8 +8,10 @@ import javassist.NotFoundException;
 
 import javax.servlet.http.Part;
 
+import org.openape.api.DatabaseObject;
 import org.openape.api.listing.Listing;
 import org.openape.server.database.mongoDB.DatabaseConnection;
+import org.openape.server.database.mongoDB.MongoCollectionTypes;
 import org.openape.server.database.resources.ListingManager;
 import org.openape.server.database.resources.ResourceList;
 import org.openape.server.rest.ResourceRESTInterface;
@@ -91,6 +93,43 @@ public class ResourceRequestHandler {
     public List<File> getResourceByListing(Listing listing) throws IOException,
             IllegalArgumentException, NotFoundException {
         return ListingManager.getResourcesFromListing(listing);
+    }
+
+    /**
+     * Method to get an existing listing from the server. It is used by the rest
+     * API {@link ResourceRESTInterface} and uses the server database
+     * {@link DatabaseConnection}.
+     *
+     * @param id
+     *            the ID of the requested listing.
+     * @return requested listing.
+     * @throws IOException
+     *             if a storage problem still occurs, after to many tries.
+     * @throws IllegalArgumentException
+     *             if the id is no valid id or not assigned.
+     */
+    public Listing getUserContextById(String id) throws IOException, IllegalArgumentException {
+        // get database connection.
+        final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
+
+        // Get the requested data.
+        final DatabaseObject result = databaseConnection.getData(MongoCollectionTypes.LISTING, id);
+
+        // If the result is null the id is not found.
+        if (result == null) {
+            throw new IllegalArgumentException();
+        }
+
+        // convert into correct type.
+        Listing returnObject;
+        try {
+            returnObject = (Listing) result;
+        } catch (final ClassCastException e) {
+            e.printStackTrace();
+            throw new IOException(e.getMessage());
+        }
+        return returnObject;
+
     }
 
 }
