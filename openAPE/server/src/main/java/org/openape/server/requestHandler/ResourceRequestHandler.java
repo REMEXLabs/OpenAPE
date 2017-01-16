@@ -108,7 +108,7 @@ public class ResourceRequestHandler {
      * @throws IllegalArgumentException
      *             if the id is no valid id or not assigned.
      */
-    public Listing getUserContextById(String id) throws IOException, IllegalArgumentException {
+    public Listing getListingById(String id) throws IOException, IllegalArgumentException {
         // get database connection.
         final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
 
