@@ -6,10 +6,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.nio.file.DirectoryNotEmptyException;
-import java.nio.file.Files;
-import java.nio.file.NoSuchFileException;
-import java.nio.file.Path;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -131,6 +127,27 @@ public class ResourceList {
     }
 
     /**
+     * If found the method deletes the resource with the given name.
+     *
+     * @param fileName
+     *            name of the resource including file ending.
+     * @return true if successful.
+     * @throws IllegalArgumentException
+     *             if the file is not found.
+     * @throws IOException
+     */
+    public boolean deleteResource(String fileName) throws IllegalArgumentException, IOException {
+        if (this.resourceExists(fileName)) {
+            new File(ResourceList.RESOURCEFOLDERPATH + File.separator + fileName).delete();
+            this.resourceNameList.remove(fileName);
+        } else {
+            throw new IllegalArgumentException("File not found");
+        }
+        return true;
+
+    }
+
+    /**
      * Returns string file name of a {@link Part} or null if no file header or
      * file name is fund.
      *
@@ -186,26 +203,5 @@ public class ResourceList {
         } else {
             return false;
         }
-    }
-
-    /**
-     * If found the method deletes the resource with the given name.
-     * 
-     * @param fileName
-     *            name of the resource including file ending.
-     * @return true if successful.
-     * @throws IllegalArgumentException
-     *             if the file is not found.
-     * @throws IOException
-     */
-    public boolean deleteResource(String fileName) throws IllegalArgumentException, IOException {
-        if (resourceExists(fileName)) {
-            new File(RESOURCEFOLDERPATH + File.separator + fileName).delete();
-            resourceNameList.remove(fileName);
-        } else {
-            throw new IllegalArgumentException("File not found");
-        }
-        return true;
-
     }
 }
