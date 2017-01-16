@@ -1,10 +1,13 @@
 package org.openape.server.rest;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
-import org.codehaus.jackson.JsonParseException;
-import org.codehaus.jackson.map.JsonMappingException;
-import org.codehaus.jackson.map.ObjectMapper;
+import javax.servlet.MultipartConfigElement;
+import javax.servlet.http.Part;
+
 import org.openape.server.requestHandler.ResourceRequestHandler;
 
 import spark.Spark;
@@ -16,48 +19,56 @@ public class ResourceRESTInterface extends SuperRestInterface {
         /**
          * Request 7.6.2 create resource.
          */
-        Spark.post("/api/resource", (req, res) -> {
-            try {
-                // try to extract the received object.
-                ObjectMapper mapper = new ObjectMapper();
-                Object recievedObject = mapper.readValue(req.body(), Object.class);
-                // If the object is okay, save it and return the id.
-                String resourceId = requestHandler.createResource(recievedObject);
-                res.status(SuperRestInterface.HTTP_STATUS_CREATED);
-                res.type("application/json");
-                return resourceId;
-            } catch (JsonParseException | JsonMappingException e) {
-                // If the parse is not successful return bad request
-                // error code.
-                res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
-                return "";
-            } catch (IOException e) {
-                res.status(SuperRestInterface.HTTP_STATUS_INTERNAL_SERVER_ERROR);
-                return "";
-            }
-        });
+        Spark.post("/api/resource",
+                "multipart/form-data",
+                (req, res) -> {
+                    String id = "";
+                    try {
+                        // try to receive the sent resource
+                        req.raw().setAttribute("org.eclipse.jetty.multipartConfig",
+                                new MultipartConfigElement("/tmp", 100000000, 100000000, 1024));
+                        final String filename = req.raw().getPart("file").getSubmittedFileName();
+                        final Part uploadedFile = req.raw().getPart("file");
+                        try (final InputStream in = uploadedFile.getInputStream()) {
+                            Files.copy(in, Paths.get("/tmp/" + filename));
+                            in.close();
+                        }
+                        // handle the resource
+                        id = requestHandler.createResource(uploadedFile);
+                        uploadedFile.delete();
+                    } catch (final IOException e) {
+                        res.status(SuperRestInterface.HTTP_STATUS_INTERNAL_SERVER_ERROR);
+                        return "";
+                    } catch (final IllegalArgumentException e) {
+                        // occurs if the filename is taken or its not a file.
+                        res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
+                        return "";
+                    }
+                    res.status(SuperRestInterface.HTTP_STATUS_CREATED);
+                    return id;
+                });
 
         /**
          * Request 7.6.3 get resource by ID. Used to get a specific resource
          * identified by ID.
          */
         Spark.get("/api/resource/resource-id", (req, res) -> {
-            String resourceId = req.params(":resource-id");
-            try {
-                // if it is successful return user context.
-                Object resource = requestHandler.getResourceById(resourceId);
-                res.status(SuperRestInterface.HTTP_STATUS_OK);
-                res.type("application/json");
-                return resource;
-                // if not return corresponding error status.
-            } catch (IllegalArgumentException e) {
-                res.status(SuperRestInterface.HTTP_STATUS_NOT_FOUND);
-                return "";
-            } catch (IOException e) {
-                res.status(SuperRestInterface.HTTP_STATUS_INTERNAL_SERVER_ERROR);
-                return "";
-            }
-
+            final String resourceId = req.params(":resource-id");
+            // try {
+            // // if it is successful return user context.
+            // Object resource = requestHandler.getResourceById(resourceId);
+            // res.status(SuperRestInterface.HTTP_STATUS_OK);
+            // res.type("application/json");
+            // return resource;
+            // // if not return corresponding error status.
+            // } catch (IllegalArgumentException e) {
+            // res.status(SuperRestInterface.HTTP_STATUS_NOT_FOUND);
+            // return "";
+            // } catch (IOException e) {
+            // res.status(SuperRestInterface.HTTP_STATUS_INTERNAL_SERVER_ERROR);
+            // return "";
+            // }
+            return "";
         });
 
         /**
@@ -91,26 +102,26 @@ public class ResourceRESTInterface extends SuperRestInterface {
             // res.status(SuperRestInterface.HTTP_STATUS_INTERNAL_SERVER_ERROR);
             //                        return Messages.getString("UserContextRESTInterface.EmptyString"); //$NON-NLS-1$
             // }
-            });
+        });
 
         /**
          * Request 7.6.5 delete resource.
          */
         Spark.delete("/api/resource/resource-id", (req, res) -> {
-            String resourceId = req.params(":resource-id");
-            try {
-                // if it is successful return user context.
-                requestHandler.deleteResourceById(resourceId);
-                res.status(SuperRestInterface.HTTP_STATUS_OK);
-                return "";
-                // if not return corresponding error status.
-            } catch (IllegalArgumentException e) {
-                res.status(SuperRestInterface.HTTP_STATUS_NOT_FOUND);
-                return "";
-            } catch (IOException e) {
-                res.status(SuperRestInterface.HTTP_STATUS_INTERNAL_SERVER_ERROR);
-                return "";
-            }
+            final String resourceId = req.params(":resource-id");
+            // try {
+            // // if it is successful return user context.
+            // requestHandler.deleteResourceById(resourceId);
+            // res.status(SuperRestInterface.HTTP_STATUS_OK);
+            // return "";
+            // // if not return corresponding error status.
+            // } catch (IllegalArgumentException e) {
+            // res.status(SuperRestInterface.HTTP_STATUS_NOT_FOUND);
+            // return "";
+            // } catch (IOException e) {
+            // res.status(SuperRestInterface.HTTP_STATUS_INTERNAL_SERVER_ERROR);
+            return "";
+
         });
 
     }

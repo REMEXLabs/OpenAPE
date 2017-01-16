@@ -2,10 +2,13 @@ package org.openape.server.requestHandler;
 
 import java.io.IOException;
 
+import javax.servlet.http.Part;
+
 import javassist.NotFoundException;
 
 import org.openape.api.listing.Listing;
 import org.openape.server.database.DatabaseConnection;
+import org.openape.server.database.ResourceList;
 import org.openape.server.rest.ResourceRESTInterface;
 
 /**
@@ -28,9 +31,8 @@ public class ResourceRequestHandler {
      * @throws IllegalArgumentException
      *             if the resource name is already taken.
      */
-    public String createResource(Object resource) throws IOException, IllegalArgumentException {
-        String id = "";
-        return id;
+    public String createResource(Part resource) throws IOException, IllegalArgumentException {
+        return ResourceList.getInstance().addResource(resource);
     }
 
     /**
