@@ -1,6 +1,6 @@
 package org.openape.web;
 
-import org.openape.server.database.DatabaseConnection;
+import org.openape.server.database.mongoDB.DatabaseConnection;
 import org.openape.server.requestHandler.EnvironmentContextRequestHandler;
 import org.openape.server.requestHandler.EquipmentContextRequestHandler;
 import org.openape.server.requestHandler.TaskContextRequestHandler;

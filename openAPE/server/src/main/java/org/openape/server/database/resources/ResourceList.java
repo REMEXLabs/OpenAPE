@@ -1,4 +1,4 @@
-package org.openape.server.database;
+package org.openape.server.database.resources;
 
 import java.io.File;
 import java.io.FileNotFoundException;

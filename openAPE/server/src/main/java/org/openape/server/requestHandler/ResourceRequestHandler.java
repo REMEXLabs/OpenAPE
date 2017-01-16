@@ -8,8 +8,8 @@ import javassist.NotFoundException;
 import javax.servlet.http.Part;
 
 import org.openape.api.listing.Listing;
-import org.openape.server.database.DatabaseConnection;
-import org.openape.server.database.ResourceList;
+import org.openape.server.database.mongoDB.DatabaseConnection;
+import org.openape.server.database.resources.ResourceList;
 import org.openape.server.rest.ResourceRESTInterface;
 
 /**

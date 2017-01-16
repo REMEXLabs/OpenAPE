@@ -1,4 +1,4 @@
-package org.openape.server.database;
+package org.openape.server.database.mongoDB;
 
 import org.openape.api.environmentcontext.EnvironmentContext;
 import org.openape.api.equipmentcontext.EquipmentContext;

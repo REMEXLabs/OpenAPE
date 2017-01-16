@@ -4,8 +4,8 @@ import java.io.IOException;
 
 import org.openape.api.DatabaseObject;
 import org.openape.api.usercontext.UserContext;
-import org.openape.server.database.DatabaseConnection;
-import org.openape.server.database.MongoCollectionTypes;
+import org.openape.server.database.mongoDB.DatabaseConnection;
+import org.openape.server.database.mongoDB.MongoCollectionTypes;
 import org.openape.server.rest.UserContextRESTInterface;
 
 /**

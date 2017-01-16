@@ -1,4 +1,4 @@
-package org.openape.server.database;
+package org.openape.server.database.mongoDB;
 
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
