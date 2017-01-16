@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.openape.api.usercontext.UserContext;
 import org.openape.server.requestHandler.UserContextRequestHandler;
 
@@ -39,7 +40,6 @@ public class UserContextRESTInterface extends SuperRestInterface {
                         final String userContextId = requestHandler
                                 .createUserContext(recievedUserContext);
                         res.status(SuperRestInterface.HTTP_STATUS_CREATED);
-                        res.type(Messages.getString("UserContextRESTInterface.JsonMimeType")); //$NON-NLS-1$
                         return userContextId;
                     } catch (JsonParseException | JsonMappingException e) {
                         // If the parse is not successful return bad request
@@ -66,7 +66,9 @@ public class UserContextRESTInterface extends SuperRestInterface {
                                 .getUserContextById(userContextId);
                         res.status(SuperRestInterface.HTTP_STATUS_OK);
                         res.type(Messages.getString("UserContextRESTInterface.JsonMimeType")); //$NON-NLS-1$
-                        return userContext;
+                        final ObjectMapper mapper = new ObjectMapper();
+                        final String jsonData = mapper.writeValueAsString(userContext);
+                        return jsonData;
                         // if not return corresponding error status.
                     } catch (final IllegalArgumentException e) {
                         res.status(SuperRestInterface.HTTP_STATUS_NOT_FOUND);
@@ -118,7 +120,7 @@ public class UserContextRESTInterface extends SuperRestInterface {
                     final String userContextId = req.params(Messages
                             .getString("UserContextRESTInterface.IDParam")); //$NON-NLS-1$
                     try {
-                        // if it is successful return user context.
+                        // if it is successful return empty string.
                         requestHandler.deleteUserContextById(userContextId);
                         res.status(SuperRestInterface.HTTP_STATUS_NO_CONTENT);
                         return Messages.getString("UserContextRESTInterface.EmptyString"); //$NON-NLS-1$
