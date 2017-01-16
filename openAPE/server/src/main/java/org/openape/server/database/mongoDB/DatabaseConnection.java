@@ -263,7 +263,8 @@ public class DatabaseConnection {
             throws ClassCastException, IOException {
         // Check if data is of the correct type for the collection.
         if (!type.getDocumentType().equals(data.getClass())) {
-            throw new ClassCastException();
+            throw new ClassCastException("Wrong documenttype, type does not equal "
+                    + type.getDocumentType().getName());
         }
 
         final MongoCollection<Document> collectionToWorkOn = this.getCollectionByType(type);
@@ -315,7 +316,8 @@ public class DatabaseConnection {
             throws ClassCastException, IOException {
         // Check if data is of the correct type for the collection.
         if (!type.getDocumentType().equals(data.getClass())) {
-            throw new ClassCastException();
+            throw new ClassCastException("Wrong documenttype, type does not equal "
+                    + type.getDocumentType().getName());
         }
 
         final MongoCollection<Document> collectionToWorkOn = this.getCollectionByType(type);

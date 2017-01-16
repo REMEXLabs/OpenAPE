@@ -67,7 +67,7 @@ public class EquipmentContextRequestHandler {
         final boolean success = databaseConnection.deleteData(
                 EquipmentContextRequestHandler.COLLECTIONTOUSE, id);
         if (!success) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("No object with that id");
         }
         return true;
     }
@@ -96,7 +96,7 @@ public class EquipmentContextRequestHandler {
 
         // If the result is null the id is not found.
         if (result == null) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("No object with that id");
         }
 
         // convert into correct type.
@@ -142,7 +142,7 @@ public class EquipmentContextRequestHandler {
             throw new IllegalArgumentException(e.getMessage());
         }
         if (!success) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("No object with that id");
         }
         return true;
     }

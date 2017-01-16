@@ -27,7 +27,7 @@ public class TaskContextRESTInterface extends SuperRestInterface {
                         // Test the object for validity.
                         if (!recievedTaskContext.isValid()) {
                             res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
-                            return Messages.getString("TaskContextRESTInterface.EmptyString"); //$NON-NLS-1$
+                            return "No valid context object";
                         }
                         // If the object is okay, save it and return the id.
                         final String taskContextId = requestHandler
@@ -39,10 +39,10 @@ public class TaskContextRESTInterface extends SuperRestInterface {
                         // If the parse is not successful return bad request
                         // error code.
                         res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
-                        return Messages.getString("TaskContextRESTInterface.EmptyString"); //$NON-NLS-1$
+                        return e.getMessage();
                     } catch (final IOException e) {
                         res.status(SuperRestInterface.HTTP_STATUS_INTERNAL_SERVER_ERROR);
-                        return Messages.getString("TaskContextRESTInterface.EmptyString"); //$NON-NLS-1$
+                        return e.getMessage();
                     }
                 });
 
@@ -64,10 +64,10 @@ public class TaskContextRESTInterface extends SuperRestInterface {
                         // if not return corresponding error status.
                     } catch (final IllegalArgumentException e) {
                         res.status(SuperRestInterface.HTTP_STATUS_NOT_FOUND);
-                        return Messages.getString("TaskContextRESTInterface.EmptyString"); //$NON-NLS-1$
+                        return e.getMessage();
                     } catch (final IOException e) {
                         res.status(SuperRestInterface.HTTP_STATUS_INTERNAL_SERVER_ERROR);
-                        return Messages.getString("TaskContextRESTInterface.EmptyString"); //$NON-NLS-1$
+                        return e.getMessage();
                     }
 
                 });
@@ -86,21 +86,21 @@ public class TaskContextRESTInterface extends SuperRestInterface {
                         // Test the object for validity.
                         if (!recievedTaskContext.isValid()) {
                             res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
-                            return Messages.getString("TaskContextRESTInterface.EmptyString"); //$NON-NLS-1$
+                            return "No valid context object";
                         }
                         // If the object is okay, update it.
                         requestHandler.updateTaskContextById(taskContextId, recievedTaskContext);
                         res.status(SuperRestInterface.HTTP_STATUS_OK);
-                        return Messages.getString("TaskContextRESTInterface.EmptyString"); //$NON-NLS-1$
+                        return Messages.getString("TaskContextRESTInterface.EmptyString"); //$NON-NLS-1$ //TODO return right statuscode
                     } catch (JsonParseException | JsonMappingException | IllegalArgumentException e) {
                         // If the parse or update is not successful return bad
                         // request
                         // error code.
                         res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
-                        return Messages.getString("TaskContextRESTInterface.EmptyString"); //$NON-NLS-1$
+                        return e.getMessage();
                     } catch (final IOException e) {
                         res.status(SuperRestInterface.HTTP_STATUS_INTERNAL_SERVER_ERROR);
-                        return Messages.getString("TaskContextRESTInterface.EmptyString"); //$NON-NLS-1$
+                        return e.getMessage();
                     }
                 });
 
@@ -114,15 +114,15 @@ public class TaskContextRESTInterface extends SuperRestInterface {
                     try {
                         // if it is successful return task context.
                         requestHandler.deleteTaskContextById(taskContextId);
-                        res.status(SuperRestInterface.HTTP_STATUS_OK);
+                        res.status(SuperRestInterface.HTTP_STATUS_NO_CONTENT);
                         return Messages.getString("TaskContextRESTInterface.EmptyString"); //$NON-NLS-1$
                         // if not return corresponding error status.
                     } catch (final IllegalArgumentException e) {
                         res.status(SuperRestInterface.HTTP_STATUS_NOT_FOUND);
-                        return Messages.getString("TaskContextRESTInterface.EmptyString"); //$NON-NLS-1$
+                        return e.getMessage();
                     } catch (final IOException e) {
                         res.status(SuperRestInterface.HTTP_STATUS_INTERNAL_SERVER_ERROR);
-                        return Messages.getString("TaskContextRESTInterface.EmptyString"); //$NON-NLS-1$
+                        return e.getMessage();
                     }
                 });
 

@@ -66,7 +66,7 @@ public class UserContextRequestHandler {
         final boolean success = databaseConnection.deleteData(
                 UserContextRequestHandler.COLLECTIONTOUSE, id);
         if (!success) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("No object with that id");
         }
         return true;
     }
@@ -94,7 +94,7 @@ public class UserContextRequestHandler {
 
         // If the result is null the id is not found.
         if (result == null) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("No object with that id");
         }
 
         // convert into correct type.
@@ -141,7 +141,7 @@ public class UserContextRequestHandler {
             throw new IllegalArgumentException(e.getMessage());
         }
         if (!success) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("No object with that id");
         }
         return true;
     }
