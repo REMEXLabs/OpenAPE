@@ -6,7 +6,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.PrintWriter;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -27,17 +26,6 @@ import org.openape.server.rest.ResourceRESTInterface;
 public class ResourceList {
     private static final String RESOURCEFOLDERPATH = "src" + File.separator + "resources";
 
-    // List containing all resources stored on the file system.
-    private List<String> resourceNameList = new LinkedList<String>();
-
-    /**
-     * @return the list containing all names of resources stored on the file
-     *         system.
-     */
-    public List<String> getResourceNameList() {
-        return resourceNameList;
-    }
-
     /**
      * Singleton instance of this class.
      */
@@ -55,6 +43,9 @@ public class ResourceList {
         return ResourceList.resourceListInstance;
     }
 
+    // List containing all resources stored on the file system.
+    private List<String> resourceNameList = new LinkedList<String>();
+
     /**
      * Private constructor, filling the resourceList with the filenames of the
      * resources already in the resource directory.
@@ -62,8 +53,8 @@ public class ResourceList {
     private ResourceList() {
         // Add all filenames of resources in the resource folder to resource
         // list.
-        File folder = new File(RESOURCEFOLDERPATH);
-        File[] listOfFiles = folder.listFiles();
+        final File folder = new File(ResourceList.RESOURCEFOLDERPATH);
+        final File[] listOfFiles = folder.listFiles();
         for (int i = 0; i < listOfFiles.length; i++) {
             // There can be directories that would be listed, too. Therefore
             // check if file.
@@ -75,7 +66,7 @@ public class ResourceList {
 
     /**
      * Adds resource to file system and resource list.
-     * 
+     *
      * @param resource
      *            received file from the rest interface
      * @return filename.
@@ -86,7 +77,7 @@ public class ResourceList {
      */
     public String addResource(Part resource) throws IllegalArgumentException, IOException {
         final Part filePart = resource;
-        final String fileName = getFileName(filePart);
+        final String fileName = this.getFileName(filePart);
 
         // Check if filename exists.
         if (fileName == null) {
@@ -98,10 +89,11 @@ public class ResourceList {
 
         try {
             // Specify where to store the file.
-            File fileToWrite = new File(RESOURCEFOLDERPATH + File.separator + fileName);
+            final File fileToWrite = new File(ResourceList.RESOURCEFOLDERPATH + File.separator
+                    + fileName);
 
             // Check if file already exists.
-            if (fileToWrite.exists() && !fileToWrite.isDirectory()) {
+            if (!resourceExists(fileName)) {
                 throw new IllegalArgumentException("Filename is in use.");
             }
 
@@ -114,7 +106,7 @@ public class ResourceList {
                 out.write(bytes, 0, read);
             }
 
-        } catch (FileNotFoundException fne) {
+        } catch (final FileNotFoundException fne) {
             throw new IllegalArgumentException("You did not specify a file to upload.");
         } finally {
             // try to close streams.
@@ -125,31 +117,71 @@ public class ResourceList {
                 if (filecontent != null) {
                     filecontent.close();
                 }
-            } catch (IOException e) {
+            } catch (final IOException e) {
                 System.err.println("Resource file creation streams could not be closed.");
             }
 
         }
-        resourceNameList.add(fileName);
+        this.resourceNameList.add(fileName);
         return fileName;
+    }
+
+    /**
+     * Checks if resource is available on the file system.
+     * 
+     * @param resourceName
+     *            name of the resource containing the file ending.
+     * @return true if file is false false if not.
+     */
+    private boolean resourceExists(final String resourceName) {
+        File file = new File(RESOURCEFOLDERPATH + File.separator + resourceName);
+        if (file.exists() && !file.isDirectory()) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**
      * Returns string file name of a {@link Part} or null if no file header or
      * file name is fund.
-     * 
+     *
      * @param part
      *            to get the filename from.
      * @return string file name of a {@link Part} or null if no file header or
      *         file name is fund.
      */
     private String getFileName(final Part part) {
-        for (String content : part.getHeader("content-disposition").split(";")) {
+        for (final String content : part.getHeader("content-disposition").split(";")) {
             if (content.trim().startsWith("filename")) {
                 return content.substring(content.indexOf('=') + 1).trim().replace("\"", "");
             }
         }
         return null;
+    }
+
+    /**
+     * Returns resource file of the given name.
+     * 
+     * @param fileName
+     * @return resource file of the given name.
+     * @throws IllegalArgumentException
+     *             if file is non existent.
+     */
+    public File getResoureFile(String fileName) throws IllegalArgumentException {
+        if (resourceExists(fileName)) {
+            return new File(RESOURCEFOLDERPATH + File.separator + fileName);
+        } else {
+            throw new IllegalArgumentException("File not found.");
+        }
+    }
+
+    /**
+     * @return the list containing all names of resources stored on the file
+     *         system.
+     */
+    public List<String> getResourceNameList() {
+        return this.resourceNameList;
     }
 
 }

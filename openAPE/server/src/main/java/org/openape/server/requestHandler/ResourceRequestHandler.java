@@ -1,5 +1,6 @@
 package org.openape.server.requestHandler;
 
+import java.io.File;
 import java.io.IOException;
 
 import javax.servlet.http.Part;
@@ -65,10 +66,8 @@ public class ResourceRequestHandler {
      * @throws IllegalArgumentException
      *             if the id is no valid id or not assigned.
      */
-    public Object getResourceById(String id) throws IOException, IllegalArgumentException {
-        Object returnObject = null;
-        return returnObject;
-
+    public File getResourceById(String id) throws IOException, IllegalArgumentException {
+        return ResourceList.getInstance().getResoureFile(id);
     }
 
     /**
