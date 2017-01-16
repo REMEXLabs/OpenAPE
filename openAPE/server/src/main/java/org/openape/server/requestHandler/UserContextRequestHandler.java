@@ -31,16 +31,16 @@ public class UserContextRequestHandler {
      *             if the parameter is not a complete user context.
      */
     public String createUserContext(Object userContext) throws IOException,
-            IllegalArgumentException {
+    IllegalArgumentException {
         // get database connection.
-        DatabaseConnection databaseconnection = DatabaseConnection.getInstance();
+        final DatabaseConnection databaseconnection = DatabaseConnection.getInstance();
         // try to store data. Class cast exceptions will be thrown as illegal
         // argument exceptions. IO exceptions will just be thrown through.
         String id = null;
         try {
             id = databaseconnection.storeData(UserContextRequestHandler.COLLECTIONTOUSE,
                     (DatabaseObject) userContext);
-        } catch (ClassCastException e) {
+        } catch (final ClassCastException e) {
             throw new IllegalArgumentException(e.getMessage());
         }
         return id;
@@ -61,10 +61,10 @@ public class UserContextRequestHandler {
      */
     public boolean deleteUserContextById(String id) throws IOException, IllegalArgumentException {
         // get database connection.
-        DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
+        final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
 
-        boolean success = databaseConnection.deleteData(UserContextRequestHandler.COLLECTIONTOUSE,
-                id);
+        final boolean success = databaseConnection.deleteData(
+                UserContextRequestHandler.COLLECTIONTOUSE, id);
         if (!success) {
             throw new IllegalArgumentException();
         }
@@ -86,10 +86,10 @@ public class UserContextRequestHandler {
      */
     public UserContext getUserContextById(String id) throws IOException, IllegalArgumentException {
         // get database connection.
-        DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
+        final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
 
         // Get the requested data.
-        DatabaseObject result = databaseConnection.getData(
+        final DatabaseObject result = databaseConnection.getData(
                 UserContextRequestHandler.COLLECTIONTOUSE, id);
 
         // If the result is null the id is not found.
@@ -101,7 +101,7 @@ public class UserContextRequestHandler {
         UserContext returnObject;
         try {
             returnObject = (UserContext) result;
-        } catch (ClassCastException e) {
+        } catch (final ClassCastException e) {
             e.printStackTrace();
             throw new IOException(e.getMessage());
         }
@@ -126,9 +126,9 @@ public class UserContextRequestHandler {
      *             not valid.
      */
     public boolean updateUserContextById(String id, Object userContext) throws IOException,
-            IllegalArgumentException {
+    IllegalArgumentException {
         // get database connection.
-        DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
+        final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
 
         // Update data. If a class cast exception occurs or the return value is
         // false the parameters is not valid and an illegal argument exception
@@ -137,7 +137,7 @@ public class UserContextRequestHandler {
         try {
             success = databaseConnection.updateData(UserContextRequestHandler.COLLECTIONTOUSE,
                     (DatabaseObject) userContext, id);
-        } catch (ClassCastException e) {
+        } catch (final ClassCastException e) {
             throw new IllegalArgumentException(e.getMessage());
         }
         if (!success) {

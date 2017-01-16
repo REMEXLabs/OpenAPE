@@ -20,7 +20,7 @@
 //import spark.Spark;
 //
 //public class UserContextRESTInterfaceTest extends SuperRestInterface {
-//	
+//
 //	@Path("myresource")
 //    public static class MyResource {
 //
@@ -33,30 +33,30 @@
 ////        }
 //
 //	}
-//	
+//
 //	static TJWSEmbeddedJaxrsServer server = new TJWSEmbeddedJaxrsServer();
-//	
-//	
+//
+//
 //	@BeforeClass
 //	public static void setup() throws Exception {
 //		server.setPort(12345);
-//		
+//
 //		server.getDeployment().getResources().add(new UserContextRESTInterface(new UserContextRequestHandler()));
 //		server.getDeployment().getResources().add(new EnvironmentContextRESTInterface(new EnvironmentContextRequestHandler()));
 //		server.getDeployment().getResources().add(new EquipmentContextRESTInterface(new EquipmentContextRequestHandler()));
 //		server.getDeployment().getResources().add(new TaskContextRESTInterface(new TaskContextRequestHandler()));
-//		
+//
 //		server.start();
 //	}
 //	@AfterClass
 //	public static void close() throws Exception {
 //		server.stop();
 //	}
-//	
+//
 ////	@Test
-//	
-//	
+//
+//
 ////
 ////    }
 //
-//}
+// }

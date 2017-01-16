@@ -93,7 +93,7 @@ public class ResourceList {
                     + fileName);
 
             // Check if file already exists.
-            if (!resourceExists(fileName)) {
+            if (!this.resourceExists(fileName)) {
                 throw new IllegalArgumentException("Filename is in use.");
             }
 
@@ -127,22 +127,6 @@ public class ResourceList {
     }
 
     /**
-     * Checks if resource is available on the file system.
-     * 
-     * @param resourceName
-     *            name of the resource containing the file ending.
-     * @return true if file is false false if not.
-     */
-    private boolean resourceExists(final String resourceName) {
-        File file = new File(RESOURCEFOLDERPATH + File.separator + resourceName);
-        if (file.exists() && !file.isDirectory()) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    /**
      * Returns string file name of a {@link Part} or null if no file header or
      * file name is fund.
      *
@@ -161,27 +145,43 @@ public class ResourceList {
     }
 
     /**
+     * @return the list containing all names of resources stored on the file
+     *         system.
+     */
+    public List<String> getResourceNameList() {
+        return this.resourceNameList;
+    }
+
+    /**
      * Returns resource file of the given name.
-     * 
+     *
      * @param fileName
      * @return resource file of the given name.
      * @throws IllegalArgumentException
      *             if file is non existent.
      */
     public File getResoureFile(String fileName) throws IllegalArgumentException {
-        if (resourceExists(fileName)) {
-            return new File(RESOURCEFOLDERPATH + File.separator + fileName);
+        if (this.resourceExists(fileName)) {
+            return new File(ResourceList.RESOURCEFOLDERPATH + File.separator + fileName);
         } else {
             throw new IllegalArgumentException("File not found.");
         }
     }
 
     /**
-     * @return the list containing all names of resources stored on the file
-     *         system.
+     * Checks if resource is available on the file system.
+     *
+     * @param resourceName
+     *            name of the resource containing the file ending.
+     * @return true if file is false false if not.
      */
-    public List<String> getResourceNameList() {
-        return this.resourceNameList;
+    private boolean resourceExists(final String resourceName) {
+        final File file = new File(ResourceList.RESOURCEFOLDERPATH + File.separator + resourceName);
+        if (file.exists() && !file.isDirectory()) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
 }

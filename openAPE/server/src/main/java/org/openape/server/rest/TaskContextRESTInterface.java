@@ -22,7 +22,7 @@ public class TaskContextRESTInterface extends SuperRestInterface {
                     try {
                         // Try to map the received json object to a taskContext
                         // object.
-                        TaskContext recievedTaskContext = (TaskContext) this
+                        final TaskContext recievedTaskContext = (TaskContext) this
                                 .extractContentFromRequest(req, TaskContext.class);
                         // Test the object for validity.
                         if (!recievedTaskContext.isValid()) {
@@ -30,7 +30,7 @@ public class TaskContextRESTInterface extends SuperRestInterface {
                             return Messages.getString("TaskContextRESTInterface.EmptyString"); //$NON-NLS-1$
                         }
                         // If the object is okay, save it and return the id.
-                        String taskContextId = requestHandler
+                        final String taskContextId = requestHandler
                                 .createTaskContext(recievedTaskContext);
                         res.status(SuperRestInterface.HTTP_STATUS_CREATED);
                         res.type(Messages.getString("TaskContextRESTInterface.JsonMimeType")); //$NON-NLS-1$
@@ -40,7 +40,7 @@ public class TaskContextRESTInterface extends SuperRestInterface {
                         // error code.
                         res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
                         return Messages.getString("TaskContextRESTInterface.EmptyString"); //$NON-NLS-1$
-                    } catch (IOException e) {
+                    } catch (final IOException e) {
                         res.status(SuperRestInterface.HTTP_STATUS_INTERNAL_SERVER_ERROR);
                         return Messages.getString("TaskContextRESTInterface.EmptyString"); //$NON-NLS-1$
                     }
@@ -52,19 +52,20 @@ public class TaskContextRESTInterface extends SuperRestInterface {
          */
         Spark.get(
                 Messages.getString("TaskContextRESTInterface.TastContextURLWithID"), (req, res) -> { //$NON-NLS-1$
-                    String taskContextId = req.params(Messages
+                    final String taskContextId = req.params(Messages
                             .getString("TaskContextRESTInterface.IDParam")); //$NON-NLS-1$
                     try {
                         // if it is successful return task context.
-                        TaskContext taskContext = requestHandler.getTaskContextById(taskContextId);
+                        final TaskContext taskContext = requestHandler
+                                .getTaskContextById(taskContextId);
                         res.status(SuperRestInterface.HTTP_STATUS_OK);
                         res.type(Messages.getString("TaskContextRESTInterface.JsonMimeType")); //$NON-NLS-1$
                         return taskContext;
                         // if not return corresponding error status.
-                    } catch (IllegalArgumentException e) {
+                    } catch (final IllegalArgumentException e) {
                         res.status(SuperRestInterface.HTTP_STATUS_NOT_FOUND);
                         return Messages.getString("TaskContextRESTInterface.EmptyString"); //$NON-NLS-1$
-                    } catch (IOException e) {
+                    } catch (final IOException e) {
                         res.status(SuperRestInterface.HTTP_STATUS_INTERNAL_SERVER_ERROR);
                         return Messages.getString("TaskContextRESTInterface.EmptyString"); //$NON-NLS-1$
                     }
@@ -77,10 +78,10 @@ public class TaskContextRESTInterface extends SuperRestInterface {
         Spark.put(
                 Messages.getString("TaskContextRESTInterface.TastContextURLWithID"), //$NON-NLS-1$
                 (req, res) -> {
-                    String taskContextId = req.params(Messages
+                    final String taskContextId = req.params(Messages
                             .getString("TaskContextRESTInterface.IDParam")); //$NON-NLS-1$
                     try {
-                        TaskContext recievedTaskContext = (TaskContext) this
+                        final TaskContext recievedTaskContext = (TaskContext) this
                                 .extractContentFromRequest(req, TaskContext.class);
                         // Test the object for validity.
                         if (!recievedTaskContext.isValid()) {
@@ -97,7 +98,7 @@ public class TaskContextRESTInterface extends SuperRestInterface {
                         // error code.
                         res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
                         return Messages.getString("TaskContextRESTInterface.EmptyString"); //$NON-NLS-1$
-                    } catch (IOException e) {
+                    } catch (final IOException e) {
                         res.status(SuperRestInterface.HTTP_STATUS_INTERNAL_SERVER_ERROR);
                         return Messages.getString("TaskContextRESTInterface.EmptyString"); //$NON-NLS-1$
                     }
@@ -108,7 +109,7 @@ public class TaskContextRESTInterface extends SuperRestInterface {
          */
         Spark.delete(
                 Messages.getString("TaskContextRESTInterface.TastContextURLWithID"), (req, res) -> { //$NON-NLS-1$
-                    String taskContextId = req.params(Messages
+                    final String taskContextId = req.params(Messages
                             .getString("TaskContextRESTInterface.IDParam")); //$NON-NLS-1$
                     try {
                         // if it is successful return task context.
@@ -116,10 +117,10 @@ public class TaskContextRESTInterface extends SuperRestInterface {
                         res.status(SuperRestInterface.HTTP_STATUS_OK);
                         return Messages.getString("TaskContextRESTInterface.EmptyString"); //$NON-NLS-1$
                         // if not return corresponding error status.
-                    } catch (IllegalArgumentException e) {
+                    } catch (final IllegalArgumentException e) {
                         res.status(SuperRestInterface.HTTP_STATUS_NOT_FOUND);
                         return Messages.getString("TaskContextRESTInterface.EmptyString"); //$NON-NLS-1$
-                    } catch (IOException e) {
+                    } catch (final IOException e) {
                         res.status(SuperRestInterface.HTTP_STATUS_INTERNAL_SERVER_ERROR);
                         return Messages.getString("TaskContextRESTInterface.EmptyString"); //$NON-NLS-1$
                     }

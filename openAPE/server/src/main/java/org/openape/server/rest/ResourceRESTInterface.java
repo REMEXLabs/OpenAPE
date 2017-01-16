@@ -86,14 +86,14 @@ public class ResourceRESTInterface extends SuperRestInterface {
                     try {
                         zipOutputStream.close();
                         bufferedInputStream.close();
-                    } catch (IOException e) {
+                    } catch (final IOException e) {
                         System.err.println("Resource file creation streams could not be closed.");
                     }
 
                 } catch (final IOException e) {
                     res.status(SuperRestInterface.HTTP_STATUS_INTERNAL_SERVER_ERROR);
                     return "";
-                } catch (IllegalArgumentException e) {
+                } catch (final IllegalArgumentException e) {
                     // file by this name is not found.
                     res.status(SuperRestInterface.HTTP_STATUS_NOT_FOUND);
                     return "";

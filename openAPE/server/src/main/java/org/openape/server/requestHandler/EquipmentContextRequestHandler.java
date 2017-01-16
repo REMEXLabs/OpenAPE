@@ -31,16 +31,16 @@ public class EquipmentContextRequestHandler {
      *             if the parameter is not a complete equipment context.
      */
     public String createEquipmentContext(Object equipmentContext) throws IOException,
-    IllegalArgumentException {
+            IllegalArgumentException {
         // get database connection.
-        DatabaseConnection databaseconnection = DatabaseConnection.getInstance();
+        final DatabaseConnection databaseconnection = DatabaseConnection.getInstance();
         // try to store data. Class cast exceptions will be thrown as illegal
         // argument exceptions. IO exceptions will just be thrown through.
         String id = null;
         try {
             id = databaseconnection.storeData(EquipmentContextRequestHandler.COLLECTIONTOUSE,
                     (DatabaseObject) equipmentContext);
-        } catch (ClassCastException e) {
+        } catch (final ClassCastException e) {
             throw new IllegalArgumentException(e.getMessage());
         }
         return id;
@@ -60,11 +60,11 @@ public class EquipmentContextRequestHandler {
      *             if the id is no valid id or not assigned.
      */
     public boolean deleteEquipmentContextById(String id) throws IOException,
-    IllegalArgumentException {
+            IllegalArgumentException {
         // get database connection.
-        DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
+        final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
 
-        boolean success = databaseConnection.deleteData(
+        final boolean success = databaseConnection.deleteData(
                 EquipmentContextRequestHandler.COLLECTIONTOUSE, id);
         if (!success) {
             throw new IllegalArgumentException();
@@ -86,12 +86,12 @@ public class EquipmentContextRequestHandler {
      *             if the id is no valid id or not assigned.
      */
     public EquipmentContext getEquipmentContextById(String id) throws IOException,
-    IllegalArgumentException {
+            IllegalArgumentException {
         // get database connection.
-        DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
+        final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
 
         // Get the requested data.
-        DatabaseObject result = databaseConnection.getData(
+        final DatabaseObject result = databaseConnection.getData(
                 EquipmentContextRequestHandler.COLLECTIONTOUSE, id);
 
         // If the result is null the id is not found.
@@ -103,7 +103,7 @@ public class EquipmentContextRequestHandler {
         EquipmentContext returnObject;
         try {
             returnObject = (EquipmentContext) result;
-        } catch (ClassCastException e) {
+        } catch (final ClassCastException e) {
             e.printStackTrace();
             throw new IOException(e.getMessage());
         }
@@ -129,7 +129,7 @@ public class EquipmentContextRequestHandler {
     public boolean updateEquipmentContextById(String id, Object equipmentContext)
             throws IOException, IllegalArgumentException {
         // get database connection.
-        DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
+        final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
 
         // Update data. If a class cast exception occurs or the return value is
         // false the parameters is not valid and an illegal argument exception
@@ -138,7 +138,7 @@ public class EquipmentContextRequestHandler {
         try {
             success = databaseConnection.updateData(EquipmentContextRequestHandler.COLLECTIONTOUSE,
                     (DatabaseObject) equipmentContext, id);
-        } catch (ClassCastException e) {
+        } catch (final ClassCastException e) {
             throw new IllegalArgumentException(e.getMessage());
         }
         if (!success) {

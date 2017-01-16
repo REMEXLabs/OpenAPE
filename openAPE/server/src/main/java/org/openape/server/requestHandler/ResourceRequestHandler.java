@@ -3,9 +3,9 @@ package org.openape.server.requestHandler;
 import java.io.File;
 import java.io.IOException;
 
-import javax.servlet.http.Part;
-
 import javassist.NotFoundException;
+
+import javax.servlet.http.Part;
 
 import org.openape.api.listing.Listing;
 import org.openape.server.database.DatabaseConnection;
@@ -87,8 +87,8 @@ public class ResourceRequestHandler {
      *             if no fitting resource is found.
      */
     public Object getResourceByListing(Object listing) throws IOException,
-            IllegalArgumentException, NotFoundException {
-        Object returnObject = null;
+    IllegalArgumentException, NotFoundException {
+        final Object returnObject = null;
         return returnObject;
     }
 

@@ -31,16 +31,16 @@ public class TaskContextRequestHandler {
      *             if the parameter is not a complete task context.
      */
     public String createTaskContext(Object taskContext) throws IOException,
-            IllegalArgumentException {
+    IllegalArgumentException {
         // get database connection.
-        DatabaseConnection databaseconnection = DatabaseConnection.getInstance();
+        final DatabaseConnection databaseconnection = DatabaseConnection.getInstance();
         // try to store data. Class cast exceptions will be thrown as illegal
         // argument exceptions. IO exceptions will just be thrown through.
         String id = null;
         try {
             id = databaseconnection.storeData(TaskContextRequestHandler.COLLECTIONTOUSE,
                     (DatabaseObject) taskContext);
-        } catch (ClassCastException e) {
+        } catch (final ClassCastException e) {
             throw new IllegalArgumentException(e.getMessage());
         }
         return id;
@@ -61,10 +61,10 @@ public class TaskContextRequestHandler {
      */
     public boolean deleteTaskContextById(String id) throws IOException, IllegalArgumentException {
         // get database connection.
-        DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
+        final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
 
-        boolean success = databaseConnection.deleteData(TaskContextRequestHandler.COLLECTIONTOUSE,
-                id);
+        final boolean success = databaseConnection.deleteData(
+                TaskContextRequestHandler.COLLECTIONTOUSE, id);
         if (!success) {
             throw new IllegalArgumentException();
         }
@@ -86,10 +86,10 @@ public class TaskContextRequestHandler {
      */
     public TaskContext getTaskContextById(String id) throws IOException, IllegalArgumentException {
         // get database connection.
-        DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
+        final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
 
         // Get the requested data.
-        DatabaseObject result = databaseConnection.getData(
+        final DatabaseObject result = databaseConnection.getData(
                 TaskContextRequestHandler.COLLECTIONTOUSE, id);
 
         // If the result is null the id is not found.
@@ -101,7 +101,7 @@ public class TaskContextRequestHandler {
         TaskContext returnObject;
         try {
             returnObject = (TaskContext) result;
-        } catch (ClassCastException e) {
+        } catch (final ClassCastException e) {
             e.printStackTrace();
             throw new IOException(e.getMessage());
         }
@@ -125,9 +125,9 @@ public class TaskContextRequestHandler {
      *             not valid.
      */
     public boolean updateTaskContextById(String id, Object taskContext) throws IOException,
-            IllegalArgumentException {
+    IllegalArgumentException {
         // get database connection.
-        DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
+        final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
 
         // Update data. If a class cast exception occurs or the return value is
         // false the parameters is not valid and an illegal argument exception
@@ -136,7 +136,7 @@ public class TaskContextRequestHandler {
         try {
             success = databaseConnection.updateData(TaskContextRequestHandler.COLLECTIONTOUSE,
                     (DatabaseObject) taskContext, id);
-        } catch (ClassCastException e) {
+        } catch (final ClassCastException e) {
             throw new IllegalArgumentException(e.getMessage());
         }
         if (!success) {

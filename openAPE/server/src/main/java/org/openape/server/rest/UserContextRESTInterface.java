@@ -28,7 +28,7 @@ public class UserContextRESTInterface extends SuperRestInterface {
                     try {
                         // Try to map the received json object to a userContext
                         // object.
-                        UserContext recievedUserContext = (UserContext) this
+                        final UserContext recievedUserContext = (UserContext) this
                                 .extractContentFromRequest(req, UserContext.class);
                         // Test the object for validity.
                         if (!recievedUserContext.isValid()) {
@@ -36,7 +36,7 @@ public class UserContextRESTInterface extends SuperRestInterface {
                             return Messages.getString("UserContextRESTInterface.EmptyString"); //$NON-NLS-1$
                         }
                         // If the object is okay, save it and return the id.
-                        String userContextId = requestHandler
+                        final String userContextId = requestHandler
                                 .createUserContext(recievedUserContext);
                         res.status(SuperRestInterface.HTTP_STATUS_CREATED);
                         res.type(Messages.getString("UserContextRESTInterface.JsonMimeType")); //$NON-NLS-1$
@@ -46,7 +46,7 @@ public class UserContextRESTInterface extends SuperRestInterface {
                         // error code.
                         res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
                         return Messages.getString("UserContextRESTInterface.EmptyString"); //$NON-NLS-1$
-                    } catch (IOException e) {
+                    } catch (final IOException e) {
                         res.status(SuperRestInterface.HTTP_STATUS_INTERNAL_SERVER_ERROR);
                         return Messages.getString("UserContextRESTInterface.EmptyString"); //$NON-NLS-1$
                     }
@@ -58,19 +58,20 @@ public class UserContextRESTInterface extends SuperRestInterface {
          */
         Spark.get(
                 Messages.getString("UserContextRESTInterface.UserContextURLWithID"), (req, res) -> { //$NON-NLS-1$
-                    String userContextId = req.params(Messages
+                    final String userContextId = req.params(Messages
                             .getString("UserContextRESTInterface.IDParam")); //$NON-NLS-1$
                     try {
                         // if it is successful return user context.
-                        UserContext userContext = requestHandler.getUserContextById(userContextId);
+                        final UserContext userContext = requestHandler
+                                .getUserContextById(userContextId);
                         res.status(SuperRestInterface.HTTP_STATUS_OK);
                         res.type(Messages.getString("UserContextRESTInterface.JsonMimeType")); //$NON-NLS-1$
                         return userContext;
                         // if not return corresponding error status.
-                    } catch (IllegalArgumentException e) {
+                    } catch (final IllegalArgumentException e) {
                         res.status(SuperRestInterface.HTTP_STATUS_NOT_FOUND);
                         return Messages.getString("UserContextRESTInterface.EmptyString"); //$NON-NLS-1$
-                    } catch (IOException e) {
+                    } catch (final IOException e) {
                         res.status(SuperRestInterface.HTTP_STATUS_INTERNAL_SERVER_ERROR);
                         return Messages.getString("UserContextRESTInterface.EmptyString"); //$NON-NLS-1$
                     }
@@ -83,10 +84,10 @@ public class UserContextRESTInterface extends SuperRestInterface {
         Spark.put(
                 Messages.getString("UserContextRESTInterface.UserContextURLWithID"), //$NON-NLS-1$
                 (req, res) -> {
-                    String userContextId = req.params(Messages
+                    final String userContextId = req.params(Messages
                             .getString("UserContextRESTInterface.IDParam")); //$NON-NLS-1$
                     try {
-                        UserContext recievedUserContext = (UserContext) this
+                        final UserContext recievedUserContext = (UserContext) this
                                 .extractContentFromRequest(req, UserContext.class);
                         // Test the object for validity.
                         if (!recievedUserContext.isValid()) {
@@ -103,7 +104,7 @@ public class UserContextRESTInterface extends SuperRestInterface {
                         // error code.
                         res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
                         return Messages.getString("UserContextRESTInterface.EmptyString"); //$NON-NLS-1$
-                    } catch (IOException e) {
+                    } catch (final IOException e) {
                         res.status(SuperRestInterface.HTTP_STATUS_INTERNAL_SERVER_ERROR);
                         return Messages.getString("UserContextRESTInterface.EmptyString"); //$NON-NLS-1$
                     }
@@ -114,7 +115,7 @@ public class UserContextRESTInterface extends SuperRestInterface {
          */
         Spark.delete(
                 Messages.getString("UserContextRESTInterface.UserContextURLWithID"), (req, res) -> { //$NON-NLS-1$
-                    String userContextId = req.params(Messages
+                    final String userContextId = req.params(Messages
                             .getString("UserContextRESTInterface.IDParam")); //$NON-NLS-1$
                     try {
                         // if it is successful return user context.
@@ -122,10 +123,10 @@ public class UserContextRESTInterface extends SuperRestInterface {
                         res.status(SuperRestInterface.HTTP_STATUS_OK);
                         return Messages.getString("UserContextRESTInterface.EmptyString"); //$NON-NLS-1$
                         // if not return corresponding error status.
-                    } catch (IllegalArgumentException e) {
+                    } catch (final IllegalArgumentException e) {
                         res.status(SuperRestInterface.HTTP_STATUS_NOT_FOUND);
                         return Messages.getString("UserContextRESTInterface.EmptyString"); //$NON-NLS-1$
-                    } catch (IOException e) {
+                    } catch (final IOException e) {
                         res.status(SuperRestInterface.HTTP_STATUS_INTERNAL_SERVER_ERROR);
                         return Messages.getString("UserContextRESTInterface.EmptyString"); //$NON-NLS-1$
                     }

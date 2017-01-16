@@ -23,7 +23,7 @@ public class EnvironmentContextRESTInterface extends SuperRestInterface {
                         // Try to map the received json object to a
                         // environmentContext
                         // object.
-                        EnvironmentContext recievedEnvironmentContext = (EnvironmentContext) this
+                        final EnvironmentContext recievedEnvironmentContext = (EnvironmentContext) this
                                 .extractContentFromRequest(req, EnvironmentContext.class);
                         // Test the object for validity.
                         if (!recievedEnvironmentContext.isValid()) {
@@ -32,7 +32,7 @@ public class EnvironmentContextRESTInterface extends SuperRestInterface {
                                     .getString("EnvironmentContextRESTInterface.EmptyString"); //$NON-NLS-1$
                         }
                         // If the object is okay, save it and return the id.
-                        String environmentContextId = requestHandler
+                        final String environmentContextId = requestHandler
                                 .createEnvironmentContext(recievedEnvironmentContext);
                         res.status(SuperRestInterface.HTTP_STATUS_CREATED);
                         res.type(Messages.getString("EnvironmentContextRESTInterface.JsonMimeType")); //$NON-NLS-1$
@@ -42,7 +42,7 @@ public class EnvironmentContextRESTInterface extends SuperRestInterface {
                         // error code.
                         res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
                         return Messages.getString("EnvironmentContextRESTInterface.EmptyString"); //$NON-NLS-1$
-                    } catch (IOException e) {
+                    } catch (final IOException e) {
                         res.status(SuperRestInterface.HTTP_STATUS_INTERNAL_SERVER_ERROR);
                         return Messages.getString("EnvironmentContextRESTInterface.EmptyString"); //$NON-NLS-1$
                     }
@@ -55,20 +55,20 @@ public class EnvironmentContextRESTInterface extends SuperRestInterface {
         Spark.get(
                 Messages.getString("EnvironmentContextRESTInterface.EnvironmentContextsURLWithID"), //$NON-NLS-1$
                 (req, res) -> {
-                    String environmentContextId = req.params(Messages
+                    final String environmentContextId = req.params(Messages
                             .getString("EnvironmentContextRESTInterface.IDParam")); //$NON-NLS-1$
                     try {
                         // if it is successful return environment context.
-                        EnvironmentContext environmentContext = requestHandler
+                        final EnvironmentContext environmentContext = requestHandler
                                 .getEnvironmentContextById(environmentContextId);
                         res.status(SuperRestInterface.HTTP_STATUS_OK);
                         res.type(Messages.getString("EnvironmentContextRESTInterface.JsonMimeType")); //$NON-NLS-1$
                         return environmentContext;
                         // if not return corresponding error status.
-                    } catch (IllegalArgumentException e) {
+                    } catch (final IllegalArgumentException e) {
                         res.status(SuperRestInterface.HTTP_STATUS_NOT_FOUND);
                         return Messages.getString("EnvironmentContextRESTInterface.EmptyString"); //$NON-NLS-1$
-                    } catch (IOException e) {
+                    } catch (final IOException e) {
                         res.status(SuperRestInterface.HTTP_STATUS_INTERNAL_SERVER_ERROR);
                         return Messages.getString("EnvironmentContextRESTInterface.EmptyString"); //$NON-NLS-1$
                     }
@@ -81,10 +81,10 @@ public class EnvironmentContextRESTInterface extends SuperRestInterface {
         Spark.put(
                 Messages.getString("EnvironmentContextRESTInterface.EnvironmentContextsURLWithID"), //$NON-NLS-1$
                 (req, res) -> {
-                    String environmentContextId = req.params(Messages
+                    final String environmentContextId = req.params(Messages
                             .getString("EnvironmentContextRESTInterface.IDParam")); //$NON-NLS-1$
                     try {
-                        EnvironmentContext recievedEnvironmentContext = (EnvironmentContext) this
+                        final EnvironmentContext recievedEnvironmentContext = (EnvironmentContext) this
                                 .extractContentFromRequest(req, EnvironmentContext.class);
                         // Test the object for validity.
                         if (!recievedEnvironmentContext.isValid()) {
@@ -103,7 +103,7 @@ public class EnvironmentContextRESTInterface extends SuperRestInterface {
                         // error code.
                         res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
                         return Messages.getString("EnvironmentContextRESTInterface.EmptyString"); //$NON-NLS-1$
-                    } catch (IOException e) {
+                    } catch (final IOException e) {
                         res.status(SuperRestInterface.HTTP_STATUS_INTERNAL_SERVER_ERROR);
                         return Messages.getString("EnvironmentContextRESTInterface.EmptyString"); //$NON-NLS-1$
                     }
@@ -114,7 +114,7 @@ public class EnvironmentContextRESTInterface extends SuperRestInterface {
          */
         Spark.delete(
                 Messages.getString("EnvironmentContextRESTInterface.EnvironmentContextsURLWithID"), (req, res) -> { //$NON-NLS-1$
-                    String environmentContextId = req.params(Messages
+                    final String environmentContextId = req.params(Messages
                             .getString("EnvironmentContextRESTInterface.IDParam")); //$NON-NLS-1$
                     try {
                         // if it is successful return environment context.
@@ -122,10 +122,10 @@ public class EnvironmentContextRESTInterface extends SuperRestInterface {
                         res.status(SuperRestInterface.HTTP_STATUS_OK);
                         return Messages.getString("EnvironmentContextRESTInterface.EmptyString"); //$NON-NLS-1$
                         // if not return corresponding error status.
-                    } catch (IllegalArgumentException e) {
+                    } catch (final IllegalArgumentException e) {
                         res.status(SuperRestInterface.HTTP_STATUS_NOT_FOUND);
                         return Messages.getString("EnvironmentContextRESTInterface.EmptyString"); //$NON-NLS-1$
-                    } catch (IOException e) {
+                    } catch (final IOException e) {
                         res.status(SuperRestInterface.HTTP_STATUS_INTERNAL_SERVER_ERROR);
                         return Messages.getString("EnvironmentContextRESTInterface.EmptyString"); //$NON-NLS-1$
                     }

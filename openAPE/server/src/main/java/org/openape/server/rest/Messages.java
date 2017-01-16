@@ -12,7 +12,7 @@ public class Messages {
     public static String getString(String key) {
         try {
             return Messages.RESOURCE_BUNDLE.getString(key);
-        } catch (MissingResourceException e) {
+        } catch (final MissingResourceException e) {
             return '!' + key + '!';
         }
     }

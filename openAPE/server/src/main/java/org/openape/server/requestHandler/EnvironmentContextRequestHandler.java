@@ -31,16 +31,16 @@ public class EnvironmentContextRequestHandler {
      *             if the parameter is not a complete environment context.
      */
     public String createEnvironmentContext(Object environmentContext) throws IOException,
-    IllegalArgumentException {
+            IllegalArgumentException {
         // get database connection.
-        DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
+        final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
         // try to store data. Class cast exceptions will be thrown as illegal
         // argument exceptions. IO exceptions will just be thrown through.
         String id = null;
         try {
             id = databaseConnection.storeData(EnvironmentContextRequestHandler.COLLECTIONTOUSE,
                     (DatabaseObject) environmentContext);
-        } catch (ClassCastException e) {
+        } catch (final ClassCastException e) {
             throw new IllegalArgumentException(e.getMessage());
         }
         return id;
@@ -60,11 +60,11 @@ public class EnvironmentContextRequestHandler {
      *             if the id is no valid id or not assigned.
      */
     public boolean deleteEnvironmentContextById(String id) throws IOException,
-    IllegalArgumentException {
+            IllegalArgumentException {
         // get database connection.
-        DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
+        final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
 
-        boolean success = databaseConnection.deleteData(
+        final boolean success = databaseConnection.deleteData(
                 EnvironmentContextRequestHandler.COLLECTIONTOUSE, id);
         if (!success) {
             throw new IllegalArgumentException();
@@ -86,12 +86,12 @@ public class EnvironmentContextRequestHandler {
      *             if the id is no valid id or not assigned.
      */
     public EnvironmentContext getEnvironmentContextById(String id) throws IOException,
-    IllegalArgumentException {
+            IllegalArgumentException {
         // get database connection.
-        DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
+        final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
 
         // Get the requested data.
-        DatabaseObject result = databaseConnection.getData(
+        final DatabaseObject result = databaseConnection.getData(
                 EnvironmentContextRequestHandler.COLLECTIONTOUSE, id);
 
         // If the result is null the id is not found.
@@ -103,7 +103,7 @@ public class EnvironmentContextRequestHandler {
         EnvironmentContext returnObject;
         try {
             returnObject = (EnvironmentContext) result;
-        } catch (ClassCastException e) {
+        } catch (final ClassCastException e) {
             e.printStackTrace();
             throw new IOException(e.getMessage());
         }
@@ -129,7 +129,7 @@ public class EnvironmentContextRequestHandler {
     public boolean updateEnvironmentContextById(String id, Object environmentContext)
             throws IOException, IllegalArgumentException {
         // get database connection.
-        DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
+        final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
 
         // Update data. If a class cast exception occurs or the return value is
         // false the parameters is not valid and an illegal argument exception
@@ -139,7 +139,7 @@ public class EnvironmentContextRequestHandler {
             success = databaseConnection.updateData(
                     EnvironmentContextRequestHandler.COLLECTIONTOUSE,
                     (DatabaseObject) environmentContext, id);
-        } catch (ClassCastException e) {
+        } catch (final ClassCastException e) {
             throw new IllegalArgumentException(e.getMessage());
         }
         if (!success) {

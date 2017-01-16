@@ -120,7 +120,7 @@ public class DatabaseConnection {
      */
     private DatabaseConnection() {
         // Create credentials for the openAPE database
-        MongoCredential credential = MongoCredential.createCredential(
+        final MongoCredential credential = MongoCredential.createCredential(
                 DatabaseConnection.DATABASUSERNAME, DatabaseConnection.DATABASENAME,
                 DatabaseConnection.DATABASEPASSWORD.toCharArray());
 
@@ -160,14 +160,14 @@ public class DatabaseConnection {
      *             if a database problem occurs.
      */
     public boolean deleteData(MongoCollectionTypes type, String id) throws IOException {
-        MongoCollection<Document> collectionToWorkOn = this.getCollectionByType(type);
+        final MongoCollection<Document> collectionToWorkOn = this.getCollectionByType(type);
 
         // Create search query.
-        BasicDBObject query = new BasicDBObject();
+        final BasicDBObject query = new BasicDBObject();
         query.put(Messages.getString("DatabaseConnection._id"), new ObjectId(id)); //$NON-NLS-1$
 
         // deleted will be null if no data with the given id is found.
-        Document deleted = collectionToWorkOn.findOneAndDelete(query);
+        final Document deleted = collectionToWorkOn.findOneAndDelete(query);
         if (deleted == null) {
             return false;
         } else {
@@ -214,28 +214,28 @@ public class DatabaseConnection {
      *             if a database problem occurs.
      */
     public DatabaseObject getData(MongoCollectionTypes type, String id) throws IOException {
-        MongoCollection<Document> collectionToWorkOn = this.getCollectionByType(type);
+        final MongoCollection<Document> collectionToWorkOn = this.getCollectionByType(type);
 
         // Search for object in database.
-        BasicDBObject query = new BasicDBObject();
+        final BasicDBObject query = new BasicDBObject();
         query.put(Messages.getString("DatabaseConnection._id"), new ObjectId(id)); //$NON-NLS-1$
-        FindIterable<Document> resultIteratable = collectionToWorkOn.find(query);
+        final FindIterable<Document> resultIteratable = collectionToWorkOn.find(query);
 
-        Iterator<Document> resultInterator = resultIteratable.iterator();
+        final Iterator<Document> resultInterator = resultIteratable.iterator();
         if (!resultInterator.hasNext()) {
             // If no result is found return null.
             return null;
         } else {
             // get the first result. Souldn't ever be more than one since _ids
             // are supposed to be unique.
-            Document resultDocument = resultInterator.next();
+            final Document resultDocument = resultInterator.next();
 
             DatabaseObject result = null;
             try {
                 // Remove the automatically added id.
                 resultDocument.remove(Messages.getString("DatabaseConnection._id")); //$NON-NLS-1$
-                String jsonResult = resultDocument.toJson();
-                ObjectMapper mapper = new ObjectMapper();
+                final String jsonResult = resultDocument.toJson();
+                final ObjectMapper mapper = new ObjectMapper();
                 result = mapper.readValue(jsonResult, DatabaseObject.class);
             } catch (CodecConfigurationException | IOException | JsonParseException e) {
                 e.printStackTrace();
@@ -266,7 +266,7 @@ public class DatabaseConnection {
             throw new ClassCastException();
         }
 
-        MongoCollection<Document> collectionToWorkOn = this.getCollectionByType(type);
+        final MongoCollection<Document> collectionToWorkOn = this.getCollectionByType(type);
 
         // Create Document from data.
         Document dataDocument = null;
@@ -285,7 +285,7 @@ public class DatabaseConnection {
         ObjectId id = null;
         try {
             id = (ObjectId) dataDocument.get(Messages.getString("DatabaseConnection._id")); //$NON-NLS-1$
-        } catch (ClassCastException e) {
+        } catch (final ClassCastException e) {
             e.printStackTrace();
             throw new IOException(e.getMessage());
         }
@@ -318,17 +318,17 @@ public class DatabaseConnection {
             throw new ClassCastException();
         }
 
-        MongoCollection<Document> collectionToWorkOn = this.getCollectionByType(type);
+        final MongoCollection<Document> collectionToWorkOn = this.getCollectionByType(type);
 
         // Create search query.
-        BasicDBObject query = new BasicDBObject();
+        final BasicDBObject query = new BasicDBObject();
         query.put(Messages.getString("DatabaseConnection._id"), new ObjectId(id)); //$NON-NLS-1$
 
         try {
             // Create document object from data.
             final ObjectMapper mapper = new ObjectMapper();
             final String jsonData = mapper.writeValueAsString(data);
-            Document dataDocument = Document.parse(jsonData);
+            final Document dataDocument = Document.parse(jsonData);
 
             // update data.
             collectionToWorkOn.findOneAndReplace(query, dataDocument);
