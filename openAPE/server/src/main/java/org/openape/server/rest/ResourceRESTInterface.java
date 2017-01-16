@@ -91,7 +91,7 @@ public class ResourceRESTInterface extends SuperRestInterface {
                         zipOutputStream.close();
                         bufferedInputStream.close();
                     } catch (final IOException e) {
-                        System.err.println("Resource file creation streams could not be closed.");
+                        System.err.println("Resource output creation streams could not be closed.");
                     }
 
                 } catch (final IOException e) {
@@ -156,7 +156,7 @@ public class ResourceRESTInterface extends SuperRestInterface {
                     zipOutputStream.close();
                     bufferedInputStream.close();
                 } catch (final IOException e) {
-                    System.err.println("Resource file creation streams could not be closed.");
+                    System.err.println("Resource output creation streams could not be closed.");
                 }
 
             } catch (final IOException e) {

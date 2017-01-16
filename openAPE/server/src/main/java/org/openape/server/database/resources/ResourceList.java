@@ -105,6 +105,7 @@ public class ResourceList {
             while ((read = filecontent.read(bytes)) != -1) {
                 out.write(bytes, 0, read);
             }
+            out.flush();
 
         } catch (final FileNotFoundException fne) {
             throw new IllegalArgumentException("You did not specify a file to upload.");
