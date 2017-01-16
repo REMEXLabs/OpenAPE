@@ -8,12 +8,16 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
+
+import javassist.NotFoundException;
 
 import javax.servlet.MultipartConfigElement;
 import javax.servlet.http.Part;
 
+import org.openape.api.listing.Listing;
 import org.openape.server.requestHandler.ResourceRequestHandler;
 
 import spark.Spark;
@@ -44,11 +48,11 @@ public class ResourceRESTInterface extends SuperRestInterface {
                 uploadedFile.delete();
             } catch (final IOException e) {
                 res.status(SuperRestInterface.HTTP_STATUS_INTERNAL_SERVER_ERROR);
-                return "";
+                return e.getMessage();
             } catch (final IllegalArgumentException e) {
                 // occurs if the filename is taken or its not a file.
                 res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
-                return "";
+                return e.getMessage();
             }
             res.status(SuperRestInterface.HTTP_STATUS_CREATED);
             return id;
@@ -92,11 +96,11 @@ public class ResourceRESTInterface extends SuperRestInterface {
 
                 } catch (final IOException e) {
                     res.status(SuperRestInterface.HTTP_STATUS_INTERNAL_SERVER_ERROR);
-                    return "";
+                    return e.getMessage();
                 } catch (final IllegalArgumentException e) {
                     // file by this name is not found.
                     res.status(SuperRestInterface.HTTP_STATUS_NOT_FOUND);
-                    return "";
+                    return e.getMessage();
                 }
                 res.type("application/zip");
                 res.status(SuperRestInterface.HTTP_STATUS_OK);
@@ -107,34 +111,66 @@ public class ResourceRESTInterface extends SuperRestInterface {
          * Request 7.6.4 get resource from listing.
          */
         Spark.get("/api/resource?listing-id=listing-id&index=index", (req, res) -> {
-            return "";
-            // String userContextId = req.params(Messages
-            //                            .getString("UserContextRESTInterface.IDParam")); //$NON-NLS-1$
-            // try {
-            // UserContext recievedUserContext = (UserContext) this
-            // .extractContentFromRequest(req, UserContext.class);
-            // // Test the object for validity.
-            // if (!recievedUserContext.isValid()) {
-            // res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
-            //                            return Messages.getString("UserContextRESTInterface.EmptyString"); //$NON-NLS-1$
-            // }
-            // // If the object is okay, update it.
-            // requestHandler.updateUserContextById(userContextId,
-            // recievedUserContext);
-            // res.status(SuperRestInterface.HTTP_STATUS_OK);
-            //                        return Messages.getString("UserContextRESTInterface.EmptyString"); //$NON-NLS-1$
-            // } catch (JsonParseException | JsonMappingException |
-            // IllegalArgumentException e) {
-            // // If the parse or update is not successful return bad
-            // // request
-            // // error code.
-            // res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
-            //                        return Messages.getString("UserContextRESTInterface.EmptyString"); //$NON-NLS-1$
-            // } catch (IOException e) {
-            // res.status(SuperRestInterface.HTTP_STATUS_INTERNAL_SERVER_ERROR);
-            //                        return Messages.getString("UserContextRESTInterface.EmptyString"); //$NON-NLS-1$
-            // }
-            });
+
+            // get the parameters;
+                final String listingId = req.params(":listing-id");
+                final String listingIndex = req.params(":index");
+
+                File file = null;
+                try {
+                    // get listing
+                final Listing listing = requestHandler.getListingById(listingId);
+                // get the files from server.
+                final List<File> files = requestHandler.getResourceByListing(listing);
+                // get the requested resource.
+                final int index = Integer.parseInt(listingIndex);
+                file = files.get(index);
+            } catch (NotFoundException | IllegalArgumentException | IndexOutOfBoundsException e) {
+                res.status(SuperRestInterface.HTTP_STATUS_NOT_FOUND);
+                return e.getMessage();
+            } catch (final IOException e) {
+                res.status(SuperRestInterface.HTTP_STATUS_INTERNAL_SERVER_ERROR);
+                return e.getMessage();
+            }
+
+            // Add file contents as zip to response.
+            res.raw().setContentType("application/octet-stream");
+
+            res.raw().setHeader("Content-Disposition",
+                    "attachment; filename=" + file.getName() + ".zip");
+            try (ZipOutputStream zipOutputStream = new ZipOutputStream(new BufferedOutputStream(res
+                    .raw().getOutputStream()));
+                    BufferedInputStream bufferedInputStream = new BufferedInputStream(
+                            new FileInputStream(file))) {
+                final ZipEntry zipEntry = new ZipEntry(file.getName());
+                zipOutputStream.putNextEntry(zipEntry);
+                final byte[] buffer = new byte[1024];
+                int len;
+                while ((len = bufferedInputStream.read(buffer)) > 0) {
+                    zipOutputStream.write(buffer, 0, len);
+                }
+                zipOutputStream.flush();
+
+                // try to close streams.
+                try {
+                    zipOutputStream.close();
+                    bufferedInputStream.close();
+                } catch (final IOException e) {
+                    System.err.println("Resource file creation streams could not be closed.");
+                }
+
+            } catch (final IOException e) {
+                res.status(SuperRestInterface.HTTP_STATUS_INTERNAL_SERVER_ERROR);
+                return e.getMessage();
+            } catch (final IllegalArgumentException e) {
+                // file by this name is not found.
+                res.status(SuperRestInterface.HTTP_STATUS_NOT_FOUND);
+                return e.getMessage();
+            }
+            res.type("application/zip");
+            res.status(SuperRestInterface.HTTP_STATUS_OK);
+            return res.raw();
+        });
 
         /**
          * Request 7.6.5 delete resource.
@@ -144,14 +180,14 @@ public class ResourceRESTInterface extends SuperRestInterface {
             try {
                 requestHandler.deleteResourceById(resourceId);
 
-            } catch (IllegalArgumentException e) {
+            } catch (final IllegalArgumentException e) {
                 res.status(SuperRestInterface.HTTP_STATUS_NOT_FOUND);
-                return "";
-            } catch (IOException e) {
+                return e.getMessage();
+            } catch (final IOException e) {
                 res.status(SuperRestInterface.HTTP_STATUS_INTERNAL_SERVER_ERROR);
-                return "";
+                return e.getMessage();
             }
-            res.status(SuperRestInterface.HTTP_STATUS_OK);
+            res.status(SuperRestInterface.HTTP_STATUS_NO_CONTENT);
             return "";
 
         });
