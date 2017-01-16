@@ -118,7 +118,6 @@ public class DatabaseConnection {
     /**
      * private constructor to create the singleton database connection instance.
      */
-    // It is checked by the try catch block.
     private DatabaseConnection() {
         // Create credentials for the openAPE database
         MongoCredential credential = MongoCredential.createCredential(
@@ -141,7 +140,7 @@ public class DatabaseConnection {
         this.taskContextCollection = this.database.getCollection(MongoCollectionTypes.TASKCONTEXT
                 .toString());
         this.resourceOfferContectCollection = this.database
-                .getCollection(MongoCollectionTypes.RESOURCEOFFER.toString());
+                .getCollection(MongoCollectionTypes.RESOURCEDESCRIPTION.toString());
         this.resourceRequestContextCollection = this.database
                 .getCollection(MongoCollectionTypes.LISTING.toString());
 
@@ -192,7 +191,7 @@ public class DatabaseConnection {
             return this.equipmentContextCollection;
         } else if (type.equals(MongoCollectionTypes.TASKCONTEXT)) {
             return this.taskContextCollection;
-        } else if (type.equals(MongoCollectionTypes.RESOURCEOFFER)) {
+        } else if (type.equals(MongoCollectionTypes.RESOURCEDESCRIPTION)) {
             return this.resourceOfferContectCollection;
         } else if (type.equals(MongoCollectionTypes.LISTING)) {
             return this.resourceRequestContextCollection;
