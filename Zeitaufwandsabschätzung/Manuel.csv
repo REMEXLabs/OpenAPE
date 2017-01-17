@@ -1,5 +1,5 @@
 Datum;Zeit in Stunden;Aktivität;;Summe
-12. Okt;1;Initialer Projekttreff;;46,5
+12. Okt;1;Initialer Projekttreff;;47
 18. Okt;1;2. Teambesprechung;;
 20. Okt;2,5;Stage Projekt anmelden und Texte übersetzten;;
 21. Okt;3;Standard einarbeiten;;
@@ -25,6 +25,6 @@ Datum;Zeit in Stunden;Aktivität;;Summe
 06. Jan;2,5;openHAB demo und dokumentation;;
 10. Jan;0,5;Spark statik html research;;
 12. Jan;2,5;HTML Interface erstellen, wie funktioniert jquery;;
-13. Jan;1,5;erstellen von REST Endpunkt resource-manager;;
-13. Jan;1;Hilfe von Stephan bei Projekt starten;;
-13. Jan;1;Versucht Endpunkt zu testen;;
+13. Jan;3,5;REST Endpunkt resource-manager;;
+15. Jan;0,5;openAPE Logo;;
+;;;;
