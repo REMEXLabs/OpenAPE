@@ -14,6 +14,7 @@ import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
 
 import org.glassfish.jersey.client.ClientConfig;
+import org.openape.api.usercontext.UserContext;
 
 
 
@@ -27,7 +28,7 @@ public OpenAPEClient(String uri) {
 webResource = client.target(uri);
 }
 	
-public URI createUserContext(){
+public URI createUserContext(UserContext userContext){
 	Invocation.Builder invocationBuilder = webResource.request();
 
 return null;
