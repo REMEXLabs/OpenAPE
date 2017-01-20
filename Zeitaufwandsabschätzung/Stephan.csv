@@ -1,5 +1,5 @@
 Datum,Zeit in Stunden,Aktivität,Summe
-12.10,1,Initialer Projekttreff,"72,5"
+12.10,1,Initialer Projekttreff,"73,5"
 18.10,1,2. Teambesprechung,
 18.10,2,Issues erstellen und Projekt bei mir einrichten,
 25.10,"0,5",3. Teambesprechung,
@@ -36,5 +36,6 @@ Datum,Zeit in Stunden,Aktivität,Summe
 16.01,"2,5",Create resource.,
 16.01,2,rest des resource rest interface,
 16.01,2,Rest interface für listings und resource descriptions,
+17.01,1,teambesprechung,
 19.01,"0,5",Besprechung Plakatinhalt,
 20.01,1,merge client module,
