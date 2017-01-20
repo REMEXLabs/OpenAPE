@@ -1,6 +1,7 @@
 package org.openape.server.database.resources;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,8 +17,10 @@ public class ListingManager {
      * @param listing
      * @return a list containing all resources which names where contained in
      *         the query string.
+     * @throws IOException
+     *             if unable to create resource folder.
      */
-    public static List<File> getResourcesFromListing(Listing listing) {
+    public static List<File> getResourcesFromListing(Listing listing) throws IOException {
         String query = listing.getQuery();
         ResourceList resourceList = ResourceList.getInstance();
         List<String> allResourceNames = resourceList.getResourceNameList();

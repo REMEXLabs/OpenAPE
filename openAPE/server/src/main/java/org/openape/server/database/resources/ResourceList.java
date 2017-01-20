@@ -35,8 +35,10 @@ public class ResourceList {
      * Get the singleton database connection.
      *
      * @return the database connection.
+     * @throws IOException
+     *             if unable to create resource folder.
      */
-    public static ResourceList getInstance() {
+    public static ResourceList getInstance() throws IOException {
         if (ResourceList.resourceListInstance == null) {
             ResourceList.resourceListInstance = new ResourceList();
         }
@@ -49,12 +51,23 @@ public class ResourceList {
     /**
      * Private constructor, filling the resourceList with the filenames of the
      * resources already in the resource directory.
+     * 
+     * @throws IOException
+     *             if unable to create resource folder.
      */
-    private ResourceList() {
+    private ResourceList() throws IOException {
         // Add all filenames of resources in the resource folder to resource
         // list.
         final File folder = new File(ResourceList.RESOURCEFOLDERPATH);
         final File[] listOfFiles = folder.listFiles();
+        if (listOfFiles == null) {
+            // If directory does not exist, create
+            boolean success = (new File(RESOURCEFOLDERPATH)).mkdirs();
+            if (!success) {
+                throw new IOException("could not create resource folder");
+            }
+            return;
+        }
         for (int i = 0; i < listOfFiles.length; i++) {
             // There can be directories that would be listed, too. Therefore
             // check if file.
