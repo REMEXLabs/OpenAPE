@@ -9,7 +9,7 @@ public class ResourceManagerRESTInterface extends SuperRestInterface {
         /**
          * Get HTML interface.
          */
-        Spark.get("/api/resource-manager", (req, res) -> {
+        Spark.get(Messages.getString("ResourceManagerRESTInterface.ResourceManagerURL"), (req, res) -> { //$NON-NLS-1$
             // try {
             // URL url = getClass().getResource("resource-manager.html");
             // // Return a String which has all

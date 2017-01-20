@@ -28,7 +28,7 @@ public class ResourceDescriptionRESTInterface extends SuperRestInterface {
                 // Test the object for validity.
                 if (!recievedResourceDescription.isValid()) {
                     res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
-                    return "No valid context object";
+                    return Messages.getString("ResourceDescriptionRESTInterface.NoValidObjectErrorMassage"); //$NON-NLS-1$
                 }
                 // If the object is okay, save it and return the id.
                 final String resourceDescriptionId = requestHandler
@@ -58,7 +58,7 @@ public class ResourceDescriptionRESTInterface extends SuperRestInterface {
                     final ResourceDescription resourceDescription = requestHandler
                             .getResourceDescriptionById(resourceDescriptionId);
                     res.status(SuperRestInterface.HTTP_STATUS_OK);
-                    res.type("application/json");
+                    res.type(Messages.getString("ResourceDescriptionRESTInterface.jsonMimeType")); //$NON-NLS-1$
                     final ObjectMapper mapper = new ObjectMapper();
                     final String jsonData = mapper.writeValueAsString(resourceDescription);
                     return jsonData;
@@ -77,31 +77,31 @@ public class ResourceDescriptionRESTInterface extends SuperRestInterface {
          * Request 7.7.4 get resource description. Used to get a specific
          * resource description identified by Listing.
          */
-        Spark.get("/api/resource-description?listing-id=listing-id&index=index", (req, res) -> {
+        Spark.get(Messages.getString("ResourceDescriptionRESTInterface.ResourceDescriptionFromListingURL"), (req, res) -> { //$NON-NLS-1$
             // TODO implement
-                return "";
+                return Messages.getString("ResourceDescriptionRESTInterface.EmptyString"); //$NON-NLS-1$
             });
 
         /**
          * Request 7.7.5 update resource description.
          */
         Spark.put(
-                "/api/resource-description/resource-description-id",
+                Messages.getString("ResourceDescriptionRESTInterface.ResourceDescriptionURLWithID"), //$NON-NLS-1$
                 (req, res) -> {
-                    final String resourceDescriptionId = req.params(":resource-description-id");
+                    final String resourceDescriptionId = req.params(Messages.getString("ResourceDescriptionRESTInterface.IDParam")); //$NON-NLS-1$
                     try {
                         final ResourceDescription recievedResourceDescription = (ResourceDescription) this
                                 .extractContentFromRequest(req, ResourceDescription.class);
                         // Test the object for validity.
                         if (!recievedResourceDescription.isValid()) {
                             res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
-                            return "No valid context object";
+                            return Messages.getString("ResourceDescriptionRESTInterface.NoValidObjectErrorMassage"); //$NON-NLS-1$
                         }
                         // If the object is okay, update it.
                         requestHandler.updateResourceDescriptionById(resourceDescriptionId,
                                 recievedResourceDescription);
                         res.status(SuperRestInterface.HTTP_STATUS_OK);
-                        return ""; // TODO return right statuscode
+                        return Messages.getString("ResourceDescriptionRESTInterface.EmptyString"); // TODO return right statuscode //$NON-NLS-1$
                     } catch (JsonParseException | JsonMappingException | IllegalArgumentException e) {
                         // If the parse or update is not successful return bad
                         // request
@@ -117,13 +117,13 @@ public class ResourceDescriptionRESTInterface extends SuperRestInterface {
         /**
          * Request 7.7.6 delete resource description.
          */
-        Spark.delete("/api/resource-description/resource-description-id", (req, res) -> {
-            final String resourceDescriptionId = req.params(":resource-description-id");
+        Spark.delete(Messages.getString("ResourceDescriptionRESTInterface.ResourceDescriptionURLWithID"), (req, res) -> { //$NON-NLS-1$
+            final String resourceDescriptionId = req.params(Messages.getString("ResourceDescriptionRESTInterface.IDParam")); //$NON-NLS-1$
             try {
                 // if it is successful return empty string.
                 requestHandler.deleteResourceDescriptionById(resourceDescriptionId);
                 res.status(SuperRestInterface.HTTP_STATUS_NO_CONTENT);
-                return "";
+                return Messages.getString("ResourceDescriptionRESTInterface.EmptyString"); //$NON-NLS-1$
                 // if not return corresponding error status.
             } catch (final IllegalArgumentException e) {
                 res.status(SuperRestInterface.HTTP_STATUS_NOT_FOUND);

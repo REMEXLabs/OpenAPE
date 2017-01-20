@@ -68,7 +68,7 @@ public class ResourceDescriptionRequestHandler {
         final boolean success = databaseConnection.deleteData(
                 ResourceDescriptionRequestHandler.COLLECTIONTOUSE, id);
         if (!success) {
-            throw new IllegalArgumentException("No object with that id");
+            throw new IllegalArgumentException(Messages.getString("ResourceDescriptionRequestHandler.NoObjectWithThatIDErrorMsg")); //$NON-NLS-1$
         }
         return true;
     }
@@ -97,7 +97,7 @@ public class ResourceDescriptionRequestHandler {
 
         // If the result is null the id is not found.
         if (result == null) {
-            throw new IllegalArgumentException("No object with that id");
+            throw new IllegalArgumentException(Messages.getString("ResourceDescriptionRequestHandler.NoObjectWithThatIDErrorMsg")); //$NON-NLS-1$
         }
 
         // convert into correct type.
@@ -153,7 +153,7 @@ public class ResourceDescriptionRequestHandler {
             throw new IllegalArgumentException(e.getMessage());
         }
         if (!success) {
-            throw new IllegalArgumentException("No object with that id");
+            throw new IllegalArgumentException(Messages.getString("ResourceDescriptionRequestHandler.NoObjectWithThatIDErrorMsg")); //$NON-NLS-1$
         }
         return true;
     }

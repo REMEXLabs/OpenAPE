@@ -18,7 +18,7 @@ public class ListingRESTInterface extends SuperRestInterface {
         /**
          * Request 7.8.2 create listing.
          */
-        Spark.post("/api/listing", (req, res) -> {
+        Spark.post(Messages.getString("ListingRESTInterface.ListingURLWithoutID"), (req, res) -> { //$NON-NLS-1$
             try {
                 // Try to map the received json object to a
                 // environmentContext
@@ -28,7 +28,7 @@ public class ListingRESTInterface extends SuperRestInterface {
                 // Test the object for validity.
                 if (!recievedListing.isValid()) {
                     res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
-                    return "No valid context object";
+                    return Messages.getString("ListingRESTInterface.NoValidObjectErrorMassage"); //$NON-NLS-1$
                 }
                 // If the object is okay, save it and return the id.
                 final String listingId = requestHandler.createListing(recievedListing);
@@ -49,13 +49,13 @@ public class ListingRESTInterface extends SuperRestInterface {
          * Request 7.8.3 get listing. Used to get a specific listing identified
          * by ID.
          */
-        Spark.get("/api/listing/listing-id", (req, res) -> {
-            final String environmentContextId = req.params(":listing-id");
+        Spark.get(Messages.getString("ListingRESTInterface.ListingURLWithID"), (req, res) -> { //$NON-NLS-1$
+            final String environmentContextId = req.params(Messages.getString("ListingRESTInterface.IDParam")); //$NON-NLS-1$
             try {
                 // if it is successful return listing.
                 final Listing listing = requestHandler.getListingById(environmentContextId);
                 res.status(SuperRestInterface.HTTP_STATUS_OK);
-                res.type("application/json");
+                res.type(Messages.getString("ListingRESTInterface.JsonMimeType")); //$NON-NLS-1$
                 final ObjectMapper mapper = new ObjectMapper();
                 final String jsonData = mapper.writeValueAsString(listing);
                 return jsonData;
@@ -73,13 +73,13 @@ public class ListingRESTInterface extends SuperRestInterface {
         /**
          * Request 7.8.4 delete listing.
          */
-        Spark.delete("/api/listing/listing-id", (req, res) -> {
-            final String listingId = req.params(":listing-id");
+        Spark.delete(Messages.getString("ListingRESTInterface.ListingURLWithID"), (req, res) -> { //$NON-NLS-1$
+            final String listingId = req.params(Messages.getString("ListingRESTInterface.IDParam")); //$NON-NLS-1$
             try {
                 // if it is successful return empty string.
                 requestHandler.deleteListingById(listingId);
                 res.status(SuperRestInterface.HTTP_STATUS_NO_CONTENT);
-                return "";
+                return Messages.getString("ListingRESTInterface.EmptyString"); //$NON-NLS-1$
                 // if not return corresponding error status.
             } catch (final IllegalArgumentException e) {
                 res.status(SuperRestInterface.HTTP_STATUS_NOT_FOUND);

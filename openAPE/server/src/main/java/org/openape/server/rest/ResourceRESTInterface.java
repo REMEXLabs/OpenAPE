@@ -29,18 +29,18 @@ public class ResourceRESTInterface extends SuperRestInterface {
         /**
          * Request 7.6.2 create resource.
          */
-        Spark.post("/api/resource",
-                "multipart/form-data",
+        Spark.post(Messages.getString("ResourceRESTInterface.ResourcesURLWithoutID"), //$NON-NLS-1$
+                Messages.getString("ResourceRESTInterface.MultipartFormatDataMimeType"), //$NON-NLS-1$
                 (req, res) -> {
-                    String id = "";
+                    String id = Messages.getString("ResourceRESTInterface.EmptyString"); //$NON-NLS-1$
                     try {
                         // try to receive the sent resource
-                req.raw().setAttribute("org.eclipse.jetty.multipartConfig",
-                        new MultipartConfigElement("/tmp", 100000000, 100000000, 1024));
-                final String filename = req.raw().getPart("file").getSubmittedFileName();
-                final Part uploadedFile = req.raw().getPart("file");
+                req.raw().setAttribute(Messages.getString("ResourceRESTInterface.jettyMultipartConfig"), //$NON-NLS-1$
+                        new MultipartConfigElement(Messages.getString("ResourceRESTInterface.temporaryDiractory"), 100000000, 100000000, 1024)); //$NON-NLS-1$
+                final String filename = req.raw().getPart(Messages.getString("ResourceRESTInterface.File")).getSubmittedFileName(); //$NON-NLS-1$
+                final Part uploadedFile = req.raw().getPart(Messages.getString("ResourceRESTInterface.File")); //$NON-NLS-1$
                 try (final InputStream in = uploadedFile.getInputStream()) {
-                    Files.copy(in, Paths.get("/tmp/" + filename));
+                    Files.copy(in, Paths.get(Messages.getString("ResourceRESTInterface.temporaryDiractoryWithFileseperator") + filename)); //$NON-NLS-1$
                     in.close();
                 }
                 // handle the resource
@@ -62,17 +62,17 @@ public class ResourceRESTInterface extends SuperRestInterface {
          * Request 7.6.3 get resource by ID. Used to get a specific resource
          * identified by ID.
          */
-        Spark.get("/api/resource/resource-id", (req, res) -> {
+        Spark.get(Messages.getString("ResourceRESTInterface.ResourcesURLWithID"), (req, res) -> { //$NON-NLS-1$
             // get the id;
-                final String resourceId = req.params(":resource-id");
+                final String resourceId = req.params(Messages.getString("ResourceRESTInterface.IDParam")); //$NON-NLS-1$
 
                 // get the file from server.
                 final File file = requestHandler.getResourceById(resourceId);
 
                 // Add file contents as zip to response.
-                res.raw().setContentType("application/octet-stream");
-                res.raw().setHeader("Content-Disposition",
-                        "attachment; filename=" + file.getName() + ".zip");
+                res.raw().setContentType(Messages.getString("ResourceRESTInterface.Octet-streamMimeType")); //$NON-NLS-1$
+                res.raw().setHeader(Messages.getString("ResourceRESTInterface.ContentDistribution"), //$NON-NLS-1$
+                        Messages.getString("ResourceRESTInterface.attatchment,Filename") + file.getName() + Messages.getString("ResourceRESTInterface.ZipFileEnding")); //$NON-NLS-1$ //$NON-NLS-2$
                 try (ZipOutputStream zipOutputStream = new ZipOutputStream(
                         new BufferedOutputStream(res.raw().getOutputStream()));
                         BufferedInputStream bufferedInputStream = new BufferedInputStream(
@@ -91,7 +91,7 @@ public class ResourceRESTInterface extends SuperRestInterface {
                         zipOutputStream.close();
                         bufferedInputStream.close();
                     } catch (final IOException e) {
-                        System.err.println("Resource output creation streams could not be closed.");
+                        System.err.println(Messages.getString("ResourceRESTInterface.StreamsCouldNotBeClosedErrorMassage")); //$NON-NLS-1$
                     }
 
                 } catch (final IOException e) {
@@ -102,7 +102,7 @@ public class ResourceRESTInterface extends SuperRestInterface {
                     res.status(SuperRestInterface.HTTP_STATUS_NOT_FOUND);
                     return e.getMessage();
                 }
-                res.type("application/zip");
+                res.type(Messages.getString("ResourceRESTInterface.ZipMimeType")); //$NON-NLS-1$
                 res.status(SuperRestInterface.HTTP_STATUS_OK);
                 return res.raw();
             });
@@ -110,11 +110,11 @@ public class ResourceRESTInterface extends SuperRestInterface {
         /**
          * Request 7.6.4 get resource from listing.
          */
-        Spark.get("/api/resource?listing-id=listing-id&index=index", (req, res) -> {
+        Spark.get(Messages.getString("ResourceRESTInterface.ResourcesFromListingURL"), (req, res) -> { //$NON-NLS-1$
 
             // get the parameters;
-                final String listingId = req.params(":listing-id");
-                final String listingIndex = req.params(":index");
+                final String listingId = req.params(Messages.getString("ResourceRESTInterface.ListingIDParam")); //$NON-NLS-1$
+                final String listingIndex = req.params(Messages.getString("ResourceRESTInterface.IndexParam")); //$NON-NLS-1$
 
                 File file = null;
                 try {
@@ -134,10 +134,10 @@ public class ResourceRESTInterface extends SuperRestInterface {
             }
 
             // Add file contents as zip to response.
-            res.raw().setContentType("application/octet-stream");
+            res.raw().setContentType(Messages.getString("ResourceRESTInterface.Octet-streamMimeType")); //$NON-NLS-1$
 
-            res.raw().setHeader("Content-Disposition",
-                    "attachment; filename=" + file.getName() + ".zip");
+            res.raw().setHeader(Messages.getString("ResourceRESTInterface.ContentDistribution"), //$NON-NLS-1$
+                    Messages.getString("ResourceRESTInterface.attatchment,Filename") + file.getName() + Messages.getString("ResourceRESTInterface.ZipFileEnding")); //$NON-NLS-1$ //$NON-NLS-2$
             try (ZipOutputStream zipOutputStream = new ZipOutputStream(new BufferedOutputStream(res
                     .raw().getOutputStream()));
                     BufferedInputStream bufferedInputStream = new BufferedInputStream(
@@ -156,7 +156,7 @@ public class ResourceRESTInterface extends SuperRestInterface {
                     zipOutputStream.close();
                     bufferedInputStream.close();
                 } catch (final IOException e) {
-                    System.err.println("Resource output creation streams could not be closed.");
+                    System.err.println(Messages.getString("ResourceRESTInterface.StreamsCouldNotBeClosedErrorMassage")); //$NON-NLS-1$
                 }
 
             } catch (final IOException e) {
@@ -167,7 +167,7 @@ public class ResourceRESTInterface extends SuperRestInterface {
                 res.status(SuperRestInterface.HTTP_STATUS_NOT_FOUND);
                 return e.getMessage();
             }
-            res.type("application/zip");
+            res.type(Messages.getString("ResourceRESTInterface.ZipMimeType")); //$NON-NLS-1$
             res.status(SuperRestInterface.HTTP_STATUS_OK);
             return res.raw();
         });
@@ -175,8 +175,8 @@ public class ResourceRESTInterface extends SuperRestInterface {
         /**
          * Request 7.6.5 delete resource.
          */
-        Spark.delete("/api/resource/resource-id", (req, res) -> {
-            final String resourceId = req.params(":resource-id");
+        Spark.delete(Messages.getString("ResourceRESTInterface.ResourcesURLWithID"), (req, res) -> { //$NON-NLS-1$
+            final String resourceId = req.params(Messages.getString("ResourceRESTInterface.IDParam")); //$NON-NLS-1$
             try {
                 requestHandler.deleteResourceById(resourceId);
 
@@ -188,7 +188,7 @@ public class ResourceRESTInterface extends SuperRestInterface {
                 return e.getMessage();
             }
             res.status(SuperRestInterface.HTTP_STATUS_NO_CONTENT);
-            return "";
+            return Messages.getString("ResourceRESTInterface.EmptyString"); //$NON-NLS-1$
 
         });
 

@@ -29,7 +29,7 @@ public class EquipmentContextRESTInterface extends SuperRestInterface {
                         // Test the object for validity.
                         if (!recievedEquipmentContext.isValid()) {
                             res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
-                            return "No valid context object";
+                            return Messages.getString("EquipmentContextRESTInterface.NoValidObjectErrorMassage"); //$NON-NLS-1$
                         }
                         // If the object is okay, save it and return the id.
                         final String equipmentContextId = requestHandler
@@ -90,7 +90,7 @@ public class EquipmentContextRESTInterface extends SuperRestInterface {
                         // Test the object for validity.
                         if (!recievedEquipmentContext.isValid()) {
                             res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
-                            return "No valid context object";
+                            return Messages.getString("EquipmentContextRESTInterface.NoValidObjectErrorMassage"); //$NON-NLS-1$
                         }
                         // If the object is okay, update it.
                         requestHandler.updateEquipmentContextById(equipmentContextId,

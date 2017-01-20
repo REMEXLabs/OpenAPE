@@ -14,12 +14,17 @@ public class UserContextRESTInterface extends SuperRestInterface {
 
     public UserContextRESTInterface(final UserContextRequestHandler requestHandler) {
         super();
+        
+        /**
+         * Set Port to default port.
+         */
+      //  Spark.port(80);
 
         /**
          * test request to test if the server runs. Invoke locally using:
          * http://localhost:4040/hello todo Remove
          */
-        Spark.get("/hello", (req, res) -> "Hello World");
+        Spark.get(Messages.getString("UserContextRESTInterface.HelloWorldURL"), (req, res) -> Messages.getString("UserContextRESTInterface.HelloWorld")); //$NON-NLS-1$ //$NON-NLS-2$
 
         /**
          * Request 7.2.2 create user-context.
@@ -34,7 +39,7 @@ public class UserContextRESTInterface extends SuperRestInterface {
                         // Test the object for validity.
                         if (!recievedUserContext.isValid()) {
                             res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
-                            return "No valid context object";
+                            return Messages.getString("UserContextRESTInterface.NoValidObjectErrorMassage"); //$NON-NLS-1$
                         }
                         // If the object is okay, save it and return the id.
                         final String userContextId = requestHandler
@@ -94,7 +99,7 @@ public class UserContextRESTInterface extends SuperRestInterface {
                         // Test the object for validity.
                         if (!recievedUserContext.isValid()) {
                             res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
-                            return "No valid context object";
+                            return Messages.getString("UserContextRESTInterface.NoValidObjectErrorMassage"); //$NON-NLS-1$
                         }
                         // If the object is okay, update it.
                         requestHandler.updateUserContextById(userContextId, recievedUserContext);

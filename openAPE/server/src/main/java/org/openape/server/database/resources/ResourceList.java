@@ -24,7 +24,7 @@ import org.openape.server.rest.ResourceRESTInterface;
  *
  */
 public class ResourceList {
-    private static final String RESOURCEFOLDERPATH = "src" + File.separator + "resources";
+    private static final String RESOURCEFOLDERPATH = Messages.getString("ResourceList.rootFolder") + File.separator + Messages.getString("ResourceList.ResourceFolder"); //$NON-NLS-1$ //$NON-NLS-2$
 
     /**
      * Singleton instance of this class.
@@ -64,7 +64,7 @@ public class ResourceList {
             // If directory does not exist, create
             boolean success = (new File(RESOURCEFOLDERPATH)).mkdirs();
             if (!success) {
-                throw new IOException("could not create resource folder");
+                throw new IOException(Messages.getString("ResourceList.CouldNotCreateResourceFolderErrorMassage")); //$NON-NLS-1$
             }
             return;
         }
@@ -94,7 +94,7 @@ public class ResourceList {
 
         // Check if filename exists.
         if (fileName == null) {
-            throw new IllegalArgumentException("Filename could not be determined.");
+            throw new IllegalArgumentException(Messages.getString("ResourceList.NoFileNameErrorMassage")); //$NON-NLS-1$
         }
 
         OutputStream out = null;
@@ -107,7 +107,7 @@ public class ResourceList {
 
             // Check if file already exists.
             if (!this.resourceExists(fileName)) {
-                throw new IllegalArgumentException("Filename is in use.");
+                throw new IllegalArgumentException(Messages.getString("ResourceList.FilenameInUseErrorMassage")); //$NON-NLS-1$
             }
 
             // Read file content and write it inot resource file.
@@ -121,7 +121,7 @@ public class ResourceList {
             out.flush();
 
         } catch (final FileNotFoundException fne) {
-            throw new IllegalArgumentException("You did not specify a file to upload.");
+            throw new IllegalArgumentException(Messages.getString("ResourceList.NoUploadFileErrorMassage")); //$NON-NLS-1$
         } finally {
             // try to close streams.
             try {
@@ -132,7 +132,7 @@ public class ResourceList {
                     filecontent.close();
                 }
             } catch (final IOException e) {
-                System.err.println("Resource file creation streams could not be closed.");
+                System.err.println(Messages.getString("ResourceList.StreamsCouldNotBeClousedErrorMassage")); //$NON-NLS-1$
             }
 
         }
@@ -155,7 +155,7 @@ public class ResourceList {
             new File(ResourceList.RESOURCEFOLDERPATH + File.separator + fileName).delete();
             this.resourceNameList.remove(fileName);
         } else {
-            throw new IllegalArgumentException("File not found");
+            throw new IllegalArgumentException(Messages.getString("ResourceList.FileNotFoundErrorMassage")); //$NON-NLS-1$
         }
         return true;
 
@@ -171,9 +171,9 @@ public class ResourceList {
      *         file name is fund.
      */
     private String getFileName(final Part part) {
-        for (final String content : part.getHeader("content-disposition").split(";")) {
-            if (content.trim().startsWith("filename")) {
-                return content.substring(content.indexOf('=') + 1).trim().replace("\"", "");
+        for (final String content : part.getHeader(Messages.getString("ResourceList.content-distribution")).split(Messages.getString("ResourceList.spitter"))) { //$NON-NLS-1$ //$NON-NLS-2$
+            if (content.trim().startsWith(Messages.getString("ResourceList.filename"))) { //$NON-NLS-1$
+                return content.substring(content.indexOf('=') + 1).trim().replace(Messages.getString("ResourceList.invertedCommas"), Messages.getString("ResourceList.EmptyString")); //$NON-NLS-1$ //$NON-NLS-2$
             }
         }
         return null;
@@ -199,7 +199,7 @@ public class ResourceList {
         if (this.resourceExists(fileName)) {
             return new File(ResourceList.RESOURCEFOLDERPATH + File.separator + fileName);
         } else {
-            throw new IllegalArgumentException("File not found.");
+            throw new IllegalArgumentException(Messages.getString("ResourceList.FileNotFoundErrorMassage")); //$NON-NLS-1$
         }
     }
 

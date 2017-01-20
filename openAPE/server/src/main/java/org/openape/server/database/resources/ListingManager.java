@@ -33,8 +33,8 @@ public class ListingManager {
                 try {
                     resources.add(resourceList.getResoureFile(name));
                 } catch (IllegalArgumentException e) {
-                    System.err.println("Resource contained in the resource list "
-                            + "has been removed from the file system");
+                    System.err.println(Messages.getString("ListingManager.ResourceNotFoundErrorMsgPart1") //$NON-NLS-1$
+                            + Messages.getString("ListingManager.ResourceNotFoundErrorMsgPart2")); //$NON-NLS-1$
                 }
             }
         }

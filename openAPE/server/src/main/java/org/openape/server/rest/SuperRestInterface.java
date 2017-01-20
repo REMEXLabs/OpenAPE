@@ -7,7 +7,6 @@ import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import spark.Request;
-import spark.Spark;
 
 public class SuperRestInterface {
 
@@ -19,12 +18,10 @@ public class SuperRestInterface {
     public static final int HTTP_STATUS_INTERNAL_SERVER_ERROR = 500;
 
     /**
-     * Constructor for the rest interface super class. Sets the server port to
-     * 8080.
+     * Constructor for the rest interface super class.
      */
     public SuperRestInterface() {
-        // Change port to default port. Not 4040 the standard spark port.
-        Spark.port(80);
+
     }
 
     /**

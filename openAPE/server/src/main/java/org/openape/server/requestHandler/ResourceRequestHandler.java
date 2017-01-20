@@ -117,7 +117,7 @@ public class ResourceRequestHandler {
 
         // If the result is null the id is not found.
         if (result == null) {
-            throw new IllegalArgumentException("No object with that id");
+            throw new IllegalArgumentException(Messages.getString("ResourceRequestHandler.NoObjectWithThatIDErrorMsg")); //$NON-NLS-1$
         }
 
         // convert into correct type.

@@ -28,7 +28,7 @@ public class TaskContextRESTInterface extends SuperRestInterface {
                         // Test the object for validity.
                         if (!recievedTaskContext.isValid()) {
                             res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
-                            return "No valid context object";
+                            return Messages.getString("TaskContextRESTInterface.NoValidObjectErrorMassage"); //$NON-NLS-1$
                         }
                         // If the object is okay, save it and return the id.
                         final String taskContextId = requestHandler
@@ -88,7 +88,7 @@ public class TaskContextRESTInterface extends SuperRestInterface {
                         // Test the object for validity.
                         if (!recievedTaskContext.isValid()) {
                             res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
-                            return "No valid context object";
+                            return Messages.getString("TaskContextRESTInterface.NoValidObjectErrorMassage"); //$NON-NLS-1$
                         }
                         // If the object is okay, update it.
                         requestHandler.updateTaskContextById(taskContextId, recievedTaskContext);

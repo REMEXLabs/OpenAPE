@@ -263,7 +263,7 @@ public class DatabaseConnection {
             throws ClassCastException, IOException {
         // Check if data is of the correct type for the collection.
         if (!type.getDocumentType().equals(data.getClass())) {
-            throw new ClassCastException("Wrong documenttype, type does not equal "
+            throw new ClassCastException(Messages.getString("DatabaseConnection.doctypeErrorMassage") //$NON-NLS-1$
                     + type.getDocumentType().getName());
         }
 
@@ -316,7 +316,7 @@ public class DatabaseConnection {
             throws ClassCastException, IOException {
         // Check if data is of the correct type for the collection.
         if (!type.getDocumentType().equals(data.getClass())) {
-            throw new ClassCastException("Wrong documenttype, type does not equal "
+            throw new ClassCastException(Messages.getString("DatabaseConnection.doctypeErrorMassage") //$NON-NLS-1$
                     + type.getDocumentType().getName());
         }
 
