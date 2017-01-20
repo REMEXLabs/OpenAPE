@@ -1,6 +1,7 @@
 package org.openape.client;
 import static org.junit.Assert.assertFalse;
 import static spark.Spark.get;
+import static spark.Spark.post;
 import static spark.Spark.staticFiles;
 import static spark.Spark.awaitInitialization;
 import static spark.Spark.stop;
@@ -12,6 +13,7 @@ import java.net.URISyntaxException;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.openape.api.rest.RESTPaths;
 
 import spark.Spark;
 
@@ -22,6 +24,7 @@ public class ClientTest {
 //		 staticFiles.location("/webcontent"); // Static files
 		
 		 get("/hello", (req, res) -> "Hello World");
+		 post (RESTPaths.USER_CONTEXTS,	(req, res) -> TestServer.createUserContext(req.body())  );
         awaitInitialization();
 
 	  }

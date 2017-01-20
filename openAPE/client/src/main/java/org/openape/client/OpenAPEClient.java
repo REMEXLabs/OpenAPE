@@ -9,13 +9,15 @@ import java.nio.file.Files;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.Invocation;
 import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.glassfish.jersey.client.ClientConfig;
 import org.openape.api.usercontext.UserContext;
-
+import org.openape.api.rest.*;
 
 
 public class OpenAPEClient {
@@ -28,10 +30,22 @@ public OpenAPEClient(String uri) {
 webResource = client.target(uri);
 }
 	
-public URI createUserContext(UserContext userContext){
-	Invocation.Builder invocationBuilder = webResource.request();
+public URI createUserContext(UserContext userContext) throws URISyntaxException{
+	return createContext(RESTPaths.USER_CONTEXTS, userContext);
+}
 
-return null;
+private URI createContext(String path,Object uploadContext ) throws URISyntaxException{
+	webResource.path(path);
+	Response response = webResource.request(MediaType.APPLICATION_JSON_TYPE)
+    .post(Entity.entity(uploadContext,MediaType.APPLICATION_JSON));
+    		
+	if (response.getStatus() != 201){
+		throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
+	}
+	
+    String output = response.readEntity(String.class);
+ 
+return new URI(response.getHeaderString("Location"));
 }
 
 
