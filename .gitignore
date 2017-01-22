@@ -3,7 +3,10 @@
 *.project
 *.jar
 *.class
-*/target/
-bin
 *.classpath
+*settings
+target
+bin
+!openAPE/web/target/
+openAPE/web/target/*
 !openAPE/web/target/*.war
