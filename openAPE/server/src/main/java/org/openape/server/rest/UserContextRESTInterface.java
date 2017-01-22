@@ -22,7 +22,7 @@ public class UserContextRESTInterface extends SuperRestInterface {
 
         /**
          * test request to test if the server runs. Invoke locally using:
-         * http://localhost:4040/hello todo Remove
+         * http://localhost:4567/hello todo Remove
          */
         Spark.get(Messages.getString("UserContextRESTInterface.HelloWorldURL"), (req, res) -> Messages.getString("UserContextRESTInterface.HelloWorld")); //$NON-NLS-1$ //$NON-NLS-2$
 
