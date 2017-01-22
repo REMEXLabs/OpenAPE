@@ -35,8 +35,8 @@ public URI createUserContext(UserContext userContext) throws URISyntaxException{
 }
 
 private URI createContext(String path,Object uploadContext ) throws URISyntaxException{
-	webResource.path(path);
-	Response response = webResource.request(MediaType.APPLICATION_JSON_TYPE)
+	
+	Response response = webResource.path(path).request(MediaType.APPLICATION_JSON_TYPE)
     .post(Entity.entity(uploadContext,MediaType.APPLICATION_JSON));
     		
 	if (response.getStatus() != 201){
@@ -60,8 +60,8 @@ return new URI(response.getHeaderString("Location"));
 	
 	
 	public File getResource(URI uri, String targetFile){
-		
-        Invocation.Builder invocationBuilder = webResource.request();
+
+        Invocation.Builder invocationBuilder = webResource.path(uri.getPath()).request();
 
 Response response = invocationBuilder.get();
 
@@ -70,7 +70,7 @@ Response response = invocationBuilder.get();
 			}
 			
 			InputStream in = (InputStream) response.readEntity(InputStream.class);
-//			
+			
 			File tf = new File(targetFile);
 					try {
 						Files.copy(in, tf.toPath());
