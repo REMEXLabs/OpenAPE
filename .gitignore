@@ -3,6 +3,5 @@
 *.project
 *.jar
 *.class
-*/target/
 bin
 *.classpath
