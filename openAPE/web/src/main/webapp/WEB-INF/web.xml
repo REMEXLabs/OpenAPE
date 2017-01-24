@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app>
 	<!-- TODO add options -->
+	<display-name>openAPE</display-name>
 	<filter>
 		<filter-name>SparkFilter</filter-name>
 		<filter-class>spark.servlet.SparkFilter</filter-class>
