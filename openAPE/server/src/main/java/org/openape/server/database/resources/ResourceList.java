@@ -11,6 +11,7 @@ import java.util.List;
 
 import javax.servlet.http.Part;
 
+import org.openape.api.Messages;
 import org.openape.server.requestHandler.ResourceRequestHandler;
 import org.openape.server.rest.ResourceRESTInterface;
 

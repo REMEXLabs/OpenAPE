@@ -5,6 +5,7 @@ import java.io.IOException;
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.openape.api.Messages;
 import org.openape.api.usercontext.UserContext;
 import org.openape.server.requestHandler.UserContextRequestHandler;
 

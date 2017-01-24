@@ -17,6 +17,7 @@ import javassist.NotFoundException;
 import javax.servlet.MultipartConfigElement;
 import javax.servlet.http.Part;
 
+import org.openape.api.Messages;
 import org.openape.api.listing.Listing;
 import org.openape.server.requestHandler.ResourceRequestHandler;
 

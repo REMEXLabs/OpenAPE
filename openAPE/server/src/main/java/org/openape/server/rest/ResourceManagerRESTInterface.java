@@ -1,5 +1,7 @@
 package org.openape.server.rest;
 
+import org.openape.api.Messages;
+
 import spark.Spark;
 
 public class ResourceManagerRESTInterface extends SuperRestInterface {
