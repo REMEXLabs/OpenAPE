@@ -1,5 +1,5 @@
 Datum,Zeit in Stunden,Aktivität,Summe
-12.10,1,Initialer Projekttreff,"83,5"
+12.10,1,Initialer Projekttreff,84
 18.10,1,2. Teambesprechung,
 18.10,2,Issues erstellen und Projekt bei mir einrichten,
 25.10,"0,5",3. Teambesprechung,
@@ -44,3 +44,4 @@ Datum,Zeit in Stunden,Aktivität,Summe
 24.01,1,Teambesprechung,
 24.01,1,move Messages.java and change server application path,
 24.01,1,help manuel setup local application server,
+24.1,"0,5",setup tomcat on laptop,
