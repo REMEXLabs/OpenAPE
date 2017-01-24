@@ -6,7 +6,7 @@
 
 	<persistence-unit name="tryAll" transaction-type="RESOURCE_LOCAL">
 		<provider>org.hibernate.ogm.jpa.HibernateOgmPersistence</provider>
-		<class>org.openape.server.database.DatabaseConnection</class>
+		<class>org.openape.server.database.mongoDB.DatabaseConnection</class>
 		<properties>
 			<!-- <property name="hibernate.ogm.datastore.provider" value="MONGODB"/> 
 				<property name="hibernate.ogm.datastore.provider" value="org.hibernate.ogm.datastore.mongodb.impl.MongoDBDatastoreProvider"/> 
