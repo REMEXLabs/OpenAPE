@@ -18,7 +18,8 @@ import javax.ws.rs.core.Response;
 import org.glassfish.jersey.client.ClientConfig;
 import org.openape.api.usercontext.UserContext;
 import org.openape.api.rest.*;
-
+/** @author Lukas Smirek
+*/
 
 public class OpenAPEClient {
 private Client client;
