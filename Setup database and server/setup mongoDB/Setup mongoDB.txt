@@ -2,7 +2,7 @@ To use the setup.js:
 1. Change <serverAddress> and <password> to valide strings.
 2. If not installed, install mongoDB as stated here: https://docs.mongodb.com/v3.4/installation/ 
 to the server the database should run on.
-3. If you are on Windows you may have to create the folder C:\data.
+3. If you are on Windows you may have to create the folder "C:\data\db".
 4. Start the mongo Database.
 5. Start the mongo shell as stated here: https://docs.mongodb.com/manual/mongo/ 
 6. Copy setup.js into the mongo installation bin folder.
