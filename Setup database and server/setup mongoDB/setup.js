@@ -1,4 +1,4 @@
-﻿var connection = new Mongo("<serverAddress>:27017");
+﻿var connection = new Mongo("localhost:27017");
 var database = connection.getDB("openAPE");
 database.createUser({
      user: "openAPE",
