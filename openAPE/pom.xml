@@ -15,6 +15,14 @@
 	<name>re-gpii</name>
 	<dependencies>
 
+		<!-- https://mvnrepository.com/artifact/com.thetransactioncompany/cors-filter -->
+		<dependency>
+			<groupId>com.thetransactioncompany</groupId>
+			<artifactId>cors-filter</artifactId>
+			<version>2.5</version>
+		</dependency>
+
+
 		<!-- https://mvnrepository.com/artifact/com.sun.xml.bind/jaxb-impl -->
 		<dependency>
 			<groupId>com.sun.xml.bind</groupId>
