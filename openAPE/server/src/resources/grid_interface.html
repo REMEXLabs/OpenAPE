@@ -1,0 +1,336 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+        "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Grid Interface</title>
+
+    <style type="text/css">
+        .grid {
+            border-style: solid;
+            border-width: 2px;
+            border-collapse: collapse;
+        }
+        tr{
+            outline: solid;
+        }
+        td{
+            width: 200px;
+            height: 150px;
+
+            border-style: solid;
+            border-width: 8px;
+            border-color: black;
+
+            text-align: center;
+        }
+    </style>
+    <script src="jquery-3.1.1.min.js"></script>
+</head>
+<body>
+<div id="hueDiv" style="display: block">
+    <h1 align="center">Wähle eine Farbe</h1>
+    <table class="grid" align="center">
+        <tbody>
+        <tr>
+            <td style="background: #ffffff" onclick="cell1()">Weiß</td>
+            <td style="background: #ff0000" onclick="cell2()">Rot</td>
+            <td style="background: #ff5d00" onclick="cell3()">Orange</td>
+            <td style="background: #ffa000" onclick="cell4()">Hellorange</td>
+        </tr>
+        <tr>
+            <td style="background: #edff00" onclick="cell5()">Gelb</td>
+            <td style="background: #80ff00" onclick="cell6()">Hellgrün</td>
+            <td style="background: #12ff00" onclick="cell7()">Grün</td>
+            <td style="background: #00ff78" onclick="cell8()">Türkis</td>
+        </tr>
+        <tr>
+            <td style="background: #00ffaa" onclick="cell9()">Türkisgrün</td>
+            <td style="background: #00f6ff" onclick="cell10()">Türkisblau</td>
+            <td style="background: #0061ff" onclick="cell11()">Blau</td>
+            <td style="background: #1100ff" onclick="cell12()">Dunkelblau</td>
+
+        </tr>
+        <tr>
+            <td style="background: #7700ff" onclick="cell13()">Lila</td>
+            <td style="background: #ff00f8" onclick="cell14()">Magenta</td>
+            <td style="background: #ff00a1" onclick="cell15()">Pink</td>
+            <td style="background: #ff0053" onclick="cell16()">Pinkrot</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<div id="satDiv" style="display: none">
+    <h1 align="center">Wähle eine Sättigung</h1>
+    <table class="grid" align="center"  >
+        <tbody>
+        <tr>
+            <td style="background: #fff" onclick="cell1()"></td>
+            <td style="background: #eee" onclick="cell2()"></td>
+            <td style="background: #ddd" onclick="cell3()"></td>
+            <td style="background: #ccc" onclick="cell4()"></td>
+        </tr>
+        <tr>
+            <td style="background: #bbb" onclick="cell5()"></td>
+            <td style="background: #aaa" onclick="cell6()"></td>
+            <td style="background: #999" onclick="cell7()"></td>
+            <td style="background: #888" onclick="cell8()"></td>
+        </tr>
+        <tr>
+            <td style="background: #777" onclick="cell9()"></td>
+            <td style="background: #666" onclick="cell10()"></td>
+            <td style="background: #555" onclick="cell11()"></td>
+            <td style="background: #444" onclick="cell12()"></td>
+
+        </tr>
+        <tr>
+            <td style="background: #333" onclick="cell13()"></td>
+            <td style="background: #222" onclick="cell14()"></td>
+            <td style="background: #111" onclick="cell15()"></td>
+            <td style="background: #000" onclick="cell16()"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+
+<script type="text/javascript">
+    var hueDiv = document.getElementById("hueDiv"),
+        satDiv = document.getElementById("satDiv");
+    var chooseHue = true;
+    var url = "http://100.70.56.182:8080/rest/items/hue1";
+    var hue = 360, sat = 0, bri = 100;
+
+    function cell1() {
+        if(chooseHue) {
+            hue = 360;
+            sat = 0;
+            httpReq();
+        } else {
+            sat = 0;
+            hueDiv.style.display = "block";
+            satDiv.style.display = "none";
+            chooseHue = true;
+            httpReq();
+        }
+    }
+    function cell2() {
+        if(chooseHue) {
+            hue = 0;
+            hueDiv.style.display = "none";
+            satDiv.style.display = "block";
+            chooseHue = false;
+        } else {
+            sat = 6.25;
+            hueDiv.style.display = "block";
+            satDiv.style.display = "none";
+            chooseHue = true;
+            httpReq();
+        }
+    }
+    function cell3() {
+        if(chooseHue) {
+            hue = 24;
+            hueDiv.style.display = "none";
+            satDiv.style.display = "block";
+            chooseHue = false;
+        } else {
+            sat = 12.5;
+            hueDiv.style.display = "block";
+            satDiv.style.display = "none";
+            chooseHue = true;
+            httpReq();
+        }
+    }
+    function cell4() {
+        if(chooseHue) {
+            hue = 48;
+            hueDiv.style.display = "none";
+            satDiv.style.display = "block";
+            chooseHue = false;
+        } else {
+            sat = 18.75;
+            hueDiv.style.display = "block";
+            satDiv.style.display = "none";
+            chooseHue = true;
+            httpReq();
+        }
+    }
+    function cell5() {
+        if(chooseHue) {
+            hue = 72;
+            hueDiv.style.display = "none";
+            satDiv.style.display = "block";
+            chooseHue = false;
+        } else {
+            sat = 25;
+            hueDiv.style.display = "block";
+            satDiv.style.display = "none";
+            chooseHue = true;
+            httpReq();
+        }
+    }
+    function cell6() {
+        if(chooseHue) {
+            hue = 96;
+            hueDiv.style.display = "none";
+            satDiv.style.display = "block";
+            chooseHue = false;
+        } else {
+            sat = 31.25;
+            hueDiv.style.display = "block";
+            satDiv.style.display = "none";
+            chooseHue = true;
+            httpReq();
+        }
+    }
+    function cell7() {
+        if(chooseHue) {
+            hue = 120;
+            hueDiv.style.display = "none";
+            satDiv.style.display = "block";
+            chooseHue = false;
+        } else {
+            sat = 37.5;
+            hueDiv.style.display = "block";
+            satDiv.style.display = "none";
+            chooseHue = true;
+            httpReq();
+        }
+    }
+    function cell8() {
+        if(chooseHue) {
+            hue = 144;
+            hueDiv.style.display = "none";
+            satDiv.style.display = "block";
+            chooseHue = false;
+        } else {
+            sat = 43.75;
+            hueDiv.style.display = "block";
+            satDiv.style.display = "none";
+            chooseHue = true;
+            httpReq();
+        }
+    }
+    function cell9() {
+        if(chooseHue) {
+            hue = 168;
+            hueDiv.style.display = "none";
+            satDiv.style.display = "block";
+            chooseHue = false;
+        } else {
+            sat = 50;
+            hueDiv.style.display = "block";
+            satDiv.style.display = "none";
+            chooseHue = true;
+            httpReq();
+        }
+    }
+    function cell10() {
+        if(chooseHue) {
+            hue = 192;
+            hueDiv.style.display = "none";
+            satDiv.style.display = "block";
+            chooseHue = false;
+        } else {
+            sat = 59.5;
+            hueDiv.style.display = "block";
+            satDiv.style.display = "none";
+            chooseHue = true;
+            httpReq();
+        }
+    }
+    function cell11() {
+        if(chooseHue) {
+            hue = 216;
+            hueDiv.style.display = "none";
+            satDiv.style.display = "block";
+            chooseHue = false;
+        } else {
+            sat = 68.75;
+            hueDiv.style.display = "block";
+            satDiv.style.display = "none";
+            chooseHue = true;
+            httpReq();
+        }
+    }
+    function cell12() {
+        if(chooseHue) {
+            hue = 240;
+            hueDiv.style.display = "none";
+            satDiv.style.display = "block";
+            chooseHue = false;
+        } else {
+            sat = 75;
+            hueDiv.style.display = "block";
+            satDiv.style.display = "none";
+            chooseHue = true;
+            httpReq();
+        }
+    }
+    function cell13() {
+        if(chooseHue) {
+            hue = 264;
+            hueDiv.style.display = "none";
+            satDiv.style.display = "block";
+            chooseHue = false;
+        } else {
+            sat = 81.25;
+            hueDiv.style.display = "block";
+            satDiv.style.display = "none";
+            chooseHue = true;
+            httpReq();
+        }
+    }
+    function cell14() {
+        if(chooseHue) {
+            hue = 288;
+            hueDiv.style.display = "none";
+            satDiv.style.display = "block";
+            chooseHue = false;
+        } else {
+            sat = 87.5;
+            hueDiv.style.display = "block";
+            satDiv.style.display = "none";
+            chooseHue = true;
+            httpReq();
+        }
+    }
+    function cell15() {
+        if(chooseHue) {
+            hue = 312;
+            hueDiv.style.display = "none";
+            satDiv.style.display = "block";
+            chooseHue = false;
+        } else {
+            sat = 93.75;
+            hueDiv.style.display = "block";
+            satDiv.style.display = "none";
+            chooseHue = true;
+            httpReq();
+        }
+    }
+    function cell16() {
+        if(chooseHue) {
+            hue = 336;
+            hueDiv.style.display = "none";
+            satDiv.style.display = "block";
+            chooseHue = false;
+        } else {
+            sat = 100;
+            hueDiv.style.display = "block";
+            satDiv.style.display = "none";
+            chooseHue = true;
+            httpReq();
+        }
+    }
+
+    function httpReq() {
+        var req = new XMLHttpRequest();
+        req.open('POST', url, true);
+        req.send(hue + "," + sat + "," + bri);
+    }
+
+</script>
+</html>                                                                                                                                                                                                                                                                                                                               
