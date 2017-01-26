@@ -5,22 +5,43 @@
     <title>openAPE</title>
     <script src="jquery-3.1.1.min.js"></script>
     <script>
-        $(document).ready(function() {
-            $('#saveJSONbutton').click(function () {
-                var json = [],
-                	resource = document.getElementById('resourceFile');
-                $('tbody tr').each(function () {
-                    var data = {},
-                        $td = $(this).find('td input'),
-                        name = $td.eq(0).val(),
-                        value = $td.eq(1).val();
-                    data[name] = value;
-                    json.push(data);
-                });
-                alert(resource);
-                alert(JSON.stringify(json));
-            })
-        })
+        url = "http://100.70.56.187:8080/openape/api/resource";
+//        $(document).ready(function() {
+//            $('#saveJSONbutton').click(function () {
+//                var json = [],
+//                	resource = document.getElementById('resourceFile');
+//                $('tbody tr').each(function () {
+//                    var data = {},
+//                        $td = $(this).find('td input'),
+//                        name = $td.eq(0).val(),
+//                        value = $td.eq(1).val();
+//                    data[name] = value;
+//                    json.push(data);
+//                });
+//                alert(resource);
+//                alert(JSON.stringify(json));
+//            })
+//        })
+
+        function getHttp(res) {
+            var req = new XMLHttpRequest();
+            req.open('GET', url + res , true);
+            req.send();
+
+            req.onreadystatechange = processRequest;
+            function processRequest(e) {
+                if (req.status == 200) {
+//                var response = JSON.parse(req.responseText);
+                    alert("GET successful");
+                }
+            }
+        }
+
+        function postHttp() {
+            var req = new XMLHttpRequest();
+            req.open('POST', url , true);
+            req.send();
+        }
 
     </script>
 </head>
@@ -59,6 +80,9 @@
         </tr>
     </tbody>
 </table>
-<button type="button" id="saveJSONbutton">Speichern</button>
+<button type="button" id="saveJSONbutton">Speichern</button><br>
+<button type="button" onclick="getHttp('/grid_interface.html')">GET grid_interface.html</button>
+<button type="button" onclick="getHttp('/scan_interface.html')">GET scan_interface.html</button>
+<button type="button" id="Podtreq" onclick="postHttp()">POST</button>
 </body>
 </html>
