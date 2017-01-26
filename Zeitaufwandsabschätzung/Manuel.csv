@@ -1,7 +1,7 @@
-Datum;Zeit in Stunden;Aktivit‰t;;Summe
-12. Okt;1;Initialer Projekttreff;;47
+Datum;Zeit in Stunden;AktivitÑt;;Summe
+12. Okt;1;Initialer Projekttreff;;78
 18. Okt;1;2. Teambesprechung;;
-20. Okt;2,5;Stage Projekt anmelden und Texte ¸bersetzten;;
+20. Okt;2,5;Stage Projekt anmelden und Texte Åbersetzten;;
 21. Okt;3;Standard einarbeiten;;
 25. Okt;0,5;3. Teambesprechung;;
 25. Okt;1,5;Mit Stephan zusammen Git und das Projekt einrichten;;
@@ -16,7 +16,7 @@ Datum;Zeit in Stunden;Aktivit‰t;;Summe
 28. Nov;1,5;Recherche;;
 04. Dez;1;erste Testimplementation;;
 06. Dez;1;Teambesprechung;;
-09. Dez;0,5;Kleinere ƒnderungen;;
+09. Dez;0,5;Kleinere énderungen;;
 12. Dez;2;Tests;;
 13. Dez;1,5;Sicherheitsunterweisung;;
 19. Dez;3;;;
@@ -25,6 +25,14 @@ Datum;Zeit in Stunden;Aktivit‰t;;Summe
 06. Jan;2,5;openHAB demo und dokumentation;;
 10. Jan;0,5;Spark statik html research;;
 12. Jan;2,5;HTML Interface erstellen, wie funktioniert jquery;;
-13. Jan;3,5;REST Endpunkt resource-manager;;
-15. Jan;0,5;openAPE Logo;;
-;;;;
+13. Jan;1,5;erstellen von REST Endpunkt resource-manager;;
+13. Jan;1;Hilfe von Stephan bei Projekt starten;;
+13. Jan;1;Versucht Endpunkt zu testen;;
+16. Jan;0,5;resource-manager;;
+19. Jan;5;Plakat OpenAPE;;
+20. Jan;2,5;Philips Hue setup + openHAB + HTML Interfaces;;
+21. Jan;7;Interface Erstellung;;
+22. Jan;2;PrÑsentationsfolie;;
+23. Jan;0,5;OpenHAB + Hue in Stuttgart neu einrichten;;
+24. Jan;5;Interfaces, HTTP Requests + Mit Stephan Server aufsetzten;;
+25. Jan;9;Interfaces mit openHAB rest API verbinden + Mit Stephan Server zugriffe;;
