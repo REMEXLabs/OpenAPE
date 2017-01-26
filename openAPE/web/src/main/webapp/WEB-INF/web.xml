@@ -9,6 +9,10 @@
 			<param-name>applicationClass</param-name>
 			<param-value>org.openape.web.Init</param-value>
 		</init-param>
+		<init-param>
+			<param-name>cors.allowed.headers</param-name>
+			<param-value>/*</param-value>
+		</init-param>
 	</filter>
 
 	<filter-mapping>
