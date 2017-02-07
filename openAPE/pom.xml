@@ -78,10 +78,14 @@
 				<configuration>
 					<archive>
 						<manifest>
+
+<addDefaultImplementationEntries>true</addDefaultImplementationEntries> 
+
 							<addClasspath>true</addClasspath>
 							<classpathPrefix>lib/</classpathPrefix>
 
-							<mainClass>org.opengpii.preferenceserver.RestServer</mainClass>
+							<mainClass>org.openape.server.RestServer</mainClass>
+
 						</manifest>
 					</archive>
 				</configuration>
