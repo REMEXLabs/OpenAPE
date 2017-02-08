@@ -63,10 +63,13 @@ public class UserContextRESTInterface extends SuperRestInterface {
                          * Sample user context of a person with restricted viewing ability.
                          */
                         UserContext restrictedVision = new UserContext();
-                        Context restrictedViewPc = new Context("computerOperationSystem", "0");
+                        Context restrictedViewPc = new Context("computer operation system", "0");
+                        Context restrictedViewTicketMachine = new Context("ticket machine","1");
                         restrictedVision.addContext(restrictedViewPc);
+                        restrictedVision.addContext(restrictedViewTicketMachine);
                         restrictedViewPc.addPreference("/smalltext", "screen magnifier");
-                        restrictedViewPc.addPreference("/longtext", "screen magnifier");
+                        restrictedViewPc.addPreference("/longtext", "screen reader");
+                        restrictedViewTicketMachine.addPreference("/text", "high contrast");
                         res.status(SuperRestInterface.HTTP_STATUS_OK);
                         res.type(Messages.getString("UserContextRESTInterface.JsonMimeType")); //$NON-NLS-1$
                         final ObjectMapper mapper = new ObjectMapper();
