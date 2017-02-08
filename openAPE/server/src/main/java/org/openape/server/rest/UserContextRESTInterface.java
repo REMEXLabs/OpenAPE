@@ -69,7 +69,8 @@ public class UserContextRESTInterface extends SuperRestInterface {
                         restrictedVision.addContext(restrictedViewTicketMachine);
                         restrictedViewPc.addPreference("/smalltext", "screen magnifier");
                         restrictedViewPc.addPreference("/longtext", "screen reader");
-                        restrictedViewTicketMachine.addPreference("/text", "high contrast");
+                        restrictedViewTicketMachine.addPreference("/all", "high contrast");
+                        restrictedViewTicketMachine.addPreference("/text", "large font");
                         res.status(SuperRestInterface.HTTP_STATUS_OK);
                         res.type(Messages.getString("UserContextRESTInterface.JsonMimeType")); //$NON-NLS-1$
                         final ObjectMapper mapper = new ObjectMapper();
