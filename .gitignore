@@ -10,3 +10,4 @@ bin
 !openAPE/web/target/
 openAPE/web/target/*
 !openAPE/web/target/*.war
+openAPE/web/target/*.war
