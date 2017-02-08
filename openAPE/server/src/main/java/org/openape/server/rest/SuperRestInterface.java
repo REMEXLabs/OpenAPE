@@ -5,8 +5,17 @@ import java.io.IOException;
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.openape.api.Messages;
+import org.openape.server.requestHandler.EnvironmentContextRequestHandler;
+import org.openape.server.requestHandler.EquipmentContextRequestHandler;
+import org.openape.server.requestHandler.ListingRequestHandler;
+import org.openape.server.requestHandler.ResourceDescriptionRequestHandler;
+import org.openape.server.requestHandler.ResourceRequestHandler;
+import org.openape.server.requestHandler.TaskContextRequestHandler;
+import org.openape.server.requestHandler.UserContextRequestHandler;
 
 import spark.Request;
+import spark.Spark;
 
 public class SuperRestInterface {
 
@@ -16,13 +25,6 @@ public class SuperRestInterface {
     public static final int HTTP_STATUS_BAD_REQUEST = 400;
     public static final int HTTP_STATUS_NOT_FOUND = 404;
     public static final int HTTP_STATUS_INTERNAL_SERVER_ERROR = 500;
-
-    /**
-     * Constructor for the rest interface super class.
-     */
-    public SuperRestInterface() {
-
-    }
 
     /**
      * Get a sent json object from a request.
@@ -36,11 +38,36 @@ public class SuperRestInterface {
      * @throws JsonParseException
      * @throws JsonMappingException
      */
-    protected <T> Object extractContentFromRequest(Request req, Class<T> objectType)
+    protected static <T> Object extractContentFromRequest(Request req, Class<T> objectType)
             throws IOException, JsonParseException, JsonMappingException {
         final ObjectMapper mapper = new ObjectMapper();
         final Object recievedObject = mapper.readValue(req.body(), objectType);
         return recievedObject;
+    }
+
+    /**
+     * Constructor for the rest interface super class. Creates all rest end
+     * points of the application.
+     */
+    public SuperRestInterface() {
+        /**
+         * test request to test if the server runs. Invoke locally using:
+         * http://localhost:4567/hello if started from main.
+         */
+        Spark.get(
+                Messages.getString("UserContextRESTInterface.HelloWorldURL"), (req, res) -> Messages.getString("UserContextRESTInterface.HelloWorld")); //$NON-NLS-1$ //$NON-NLS-2$
+
+        EnvironmentContextRESTInterface
+                .setupEnvironmentContextRESTInterface(new EnvironmentContextRequestHandler());
+        EquipmentContextRESTInterface
+                .setupEquipmentContextRESTInterface(new EquipmentContextRequestHandler());
+        ListingRESTInterface.setupListingRESTInterface(new ListingRequestHandler());
+        ResourceDescriptionRESTInterface
+                .setupResourceDescriptionRESTInterface(new ResourceDescriptionRequestHandler());
+        ResourceManagerRESTInterface.setupResourceManagerRESTInterface();
+        ResourceRESTInterface.setupResourceRESTInterface(new ResourceRequestHandler());
+        TaskContextRESTInterface.setupTaskContextRESTInterface(new TaskContextRequestHandler());
+        UserContextRESTInterface.setupUserContextRESTInterface(new UserContextRequestHandler());
     }
 
 }

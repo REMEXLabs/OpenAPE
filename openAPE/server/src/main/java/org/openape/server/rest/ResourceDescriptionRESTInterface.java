@@ -13,9 +13,8 @@ import spark.Spark;
 
 public class ResourceDescriptionRESTInterface extends SuperRestInterface {
 
-    public ResourceDescriptionRESTInterface(final ResourceDescriptionRequestHandler requestHandler) {
-        super();
-
+    public static void setupResourceDescriptionRESTInterface(
+            final ResourceDescriptionRequestHandler requestHandler) {
         /**
          * Request 7.7.2 create resource description.
          */
@@ -24,12 +23,13 @@ public class ResourceDescriptionRESTInterface extends SuperRestInterface {
                         // Try to map the received json object to a
                         // resource description
                         // object.
-                final ResourceDescription recievedResourceDescription = (ResourceDescription) this
+                final ResourceDescription recievedResourceDescription = (ResourceDescription) SuperRestInterface
                         .extractContentFromRequest(req, ResourceDescription.class);
                 // Test the object for validity.
                 if (!recievedResourceDescription.isValid()) {
                     res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
-                    return Messages.getString("ResourceDescriptionRESTInterface.NoValidObjectErrorMassage"); //$NON-NLS-1$
+                    return Messages
+                            .getString("ResourceDescriptionRESTInterface.NoValidObjectErrorMassage"); //$NON-NLS-1$
                 }
                 // If the object is okay, save it and return the id.
                 final String resourceDescriptionId = requestHandler
@@ -78,10 +78,11 @@ public class ResourceDescriptionRESTInterface extends SuperRestInterface {
          * Request 7.7.4 get resource description. Used to get a specific
          * resource description identified by Listing.
          */
-        Spark.get(Messages.getString("ResourceDescriptionRESTInterface.ResourceDescriptionFromListingURL"), (req, res) -> { //$NON-NLS-1$
-            // TODO implement
-                return Messages.getString("ResourceDescriptionRESTInterface.EmptyString"); //$NON-NLS-1$
-            });
+        Spark.get(
+                Messages.getString("ResourceDescriptionRESTInterface.ResourceDescriptionFromListingURL"), (req, res) -> { //$NON-NLS-1$
+                    // TODO implement
+                    return Messages.getString("ResourceDescriptionRESTInterface.EmptyString"); //$NON-NLS-1$
+                });
 
         /**
          * Request 7.7.5 update resource description.
@@ -89,14 +90,16 @@ public class ResourceDescriptionRESTInterface extends SuperRestInterface {
         Spark.put(
                 Messages.getString("ResourceDescriptionRESTInterface.ResourceDescriptionURLWithID"), //$NON-NLS-1$
                 (req, res) -> {
-                    final String resourceDescriptionId = req.params(Messages.getString("ResourceDescriptionRESTInterface.IDParam")); //$NON-NLS-1$
+                    final String resourceDescriptionId = req.params(Messages
+                            .getString("ResourceDescriptionRESTInterface.IDParam")); //$NON-NLS-1$
                     try {
-                        final ResourceDescription recievedResourceDescription = (ResourceDescription) this
+                        final ResourceDescription recievedResourceDescription = (ResourceDescription) SuperRestInterface
                                 .extractContentFromRequest(req, ResourceDescription.class);
                         // Test the object for validity.
                         if (!recievedResourceDescription.isValid()) {
                             res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
-                            return Messages.getString("ResourceDescriptionRESTInterface.NoValidObjectErrorMassage"); //$NON-NLS-1$
+                            return Messages
+                                    .getString("ResourceDescriptionRESTInterface.NoValidObjectErrorMassage"); //$NON-NLS-1$
                         }
                         // If the object is okay, update it.
                         requestHandler.updateResourceDescriptionById(resourceDescriptionId,
@@ -118,22 +121,24 @@ public class ResourceDescriptionRESTInterface extends SuperRestInterface {
         /**
          * Request 7.7.6 delete resource description.
          */
-        Spark.delete(Messages.getString("ResourceDescriptionRESTInterface.ResourceDescriptionURLWithID"), (req, res) -> { //$NON-NLS-1$
-            final String resourceDescriptionId = req.params(Messages.getString("ResourceDescriptionRESTInterface.IDParam")); //$NON-NLS-1$
-            try {
-                // if it is successful return empty string.
-                requestHandler.deleteResourceDescriptionById(resourceDescriptionId);
-                res.status(SuperRestInterface.HTTP_STATUS_NO_CONTENT);
-                return Messages.getString("ResourceDescriptionRESTInterface.EmptyString"); //$NON-NLS-1$
-                // if not return corresponding error status.
-            } catch (final IllegalArgumentException e) {
-                res.status(SuperRestInterface.HTTP_STATUS_NOT_FOUND);
-                return e.getMessage();
-            } catch (final IOException e) {
-                res.status(SuperRestInterface.HTTP_STATUS_INTERNAL_SERVER_ERROR);
-                return e.getMessage();
-            }
-        });
+        Spark.delete(
+                Messages.getString("ResourceDescriptionRESTInterface.ResourceDescriptionURLWithID"), (req, res) -> { //$NON-NLS-1$
+                    final String resourceDescriptionId = req.params(Messages
+                            .getString("ResourceDescriptionRESTInterface.IDParam")); //$NON-NLS-1$
+                    try {
+                        // if it is successful return empty string.
+                        requestHandler.deleteResourceDescriptionById(resourceDescriptionId);
+                        res.status(SuperRestInterface.HTTP_STATUS_NO_CONTENT);
+                        return Messages.getString("ResourceDescriptionRESTInterface.EmptyString"); //$NON-NLS-1$
+                        // if not return corresponding error status.
+                    } catch (final IllegalArgumentException e) {
+                        res.status(SuperRestInterface.HTTP_STATUS_NOT_FOUND);
+                        return e.getMessage();
+                    } catch (final IOException e) {
+                        res.status(SuperRestInterface.HTTP_STATUS_INTERNAL_SERVER_ERROR);
+                        return e.getMessage();
+                    }
+                });
 
     }
 

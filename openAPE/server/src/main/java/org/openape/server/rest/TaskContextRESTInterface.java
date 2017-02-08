@@ -13,9 +13,7 @@ import spark.Spark;
 
 public class TaskContextRESTInterface extends SuperRestInterface {
 
-    public TaskContextRESTInterface(final TaskContextRequestHandler requestHandler) {
-        super();
-
+    public static void setupTaskContextRESTInterface(final TaskContextRequestHandler requestHandler) {
         /**
          * Request 7.3.2 create task-context.
          */
@@ -24,12 +22,13 @@ public class TaskContextRESTInterface extends SuperRestInterface {
                     try {
                         // Try to map the received json object to a taskContext
                         // object.
-                        final TaskContext recievedTaskContext = (TaskContext) this
+                        final TaskContext recievedTaskContext = (TaskContext) SuperRestInterface
                                 .extractContentFromRequest(req, TaskContext.class);
                         // Test the object for validity.
                         if (!recievedTaskContext.isValid()) {
                             res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
-                            return Messages.getString("TaskContextRESTInterface.NoValidObjectErrorMassage"); //$NON-NLS-1$
+                            return Messages
+                                    .getString("TaskContextRESTInterface.NoValidObjectErrorMassage"); //$NON-NLS-1$
                         }
                         // If the object is okay, save it and return the id.
                         final String taskContextId = requestHandler
@@ -84,12 +83,13 @@ public class TaskContextRESTInterface extends SuperRestInterface {
                     final String taskContextId = req.params(Messages
                             .getString("TaskContextRESTInterface.IDParam")); //$NON-NLS-1$
                     try {
-                        final TaskContext recievedTaskContext = (TaskContext) this
+                        final TaskContext recievedTaskContext = (TaskContext) SuperRestInterface
                                 .extractContentFromRequest(req, TaskContext.class);
                         // Test the object for validity.
                         if (!recievedTaskContext.isValid()) {
                             res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
-                            return Messages.getString("TaskContextRESTInterface.NoValidObjectErrorMassage"); //$NON-NLS-1$
+                            return Messages
+                                    .getString("TaskContextRESTInterface.NoValidObjectErrorMassage"); //$NON-NLS-1$
                         }
                         // If the object is okay, update it.
                         requestHandler.updateTaskContextById(taskContextId, recievedTaskContext);

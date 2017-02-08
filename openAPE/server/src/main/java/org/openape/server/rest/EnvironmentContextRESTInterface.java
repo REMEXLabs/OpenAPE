@@ -13,9 +13,8 @@ import spark.Spark;
 
 public class EnvironmentContextRESTInterface extends SuperRestInterface {
 
-    public EnvironmentContextRESTInterface(final EnvironmentContextRequestHandler requestHandler) {
-        super();
-
+    public static void setupEnvironmentContextRESTInterface(
+            final EnvironmentContextRequestHandler requestHandler) {
         /**
          * Request 7.5.2 create environment-context.
          */
@@ -25,12 +24,13 @@ public class EnvironmentContextRESTInterface extends SuperRestInterface {
                         // Try to map the received json object to a
                         // environmentContext
                         // object.
-                        final EnvironmentContext recievedEnvironmentContext = (EnvironmentContext) this
+                        final EnvironmentContext recievedEnvironmentContext = (EnvironmentContext) SuperRestInterface
                                 .extractContentFromRequest(req, EnvironmentContext.class);
                         // Test the object for validity.
                         if (!recievedEnvironmentContext.isValid()) {
                             res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
-                            return Messages.getString("EnvironmentContextRESTInterface.NoValidObjectErrorMassage"); //$NON-NLS-1$
+                            return Messages
+                                    .getString("EnvironmentContextRESTInterface.NoValidObjectErrorMassage"); //$NON-NLS-1$
                         }
                         // If the object is okay, save it and return the id.
                         final String environmentContextId = requestHandler
@@ -86,12 +86,13 @@ public class EnvironmentContextRESTInterface extends SuperRestInterface {
                     final String environmentContextId = req.params(Messages
                             .getString("EnvironmentContextRESTInterface.IDParam")); //$NON-NLS-1$
                     try {
-                        final EnvironmentContext recievedEnvironmentContext = (EnvironmentContext) this
+                        final EnvironmentContext recievedEnvironmentContext = (EnvironmentContext) SuperRestInterface
                                 .extractContentFromRequest(req, EnvironmentContext.class);
                         // Test the object for validity.
                         if (!recievedEnvironmentContext.isValid()) {
                             res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
-                            return Messages.getString("EnvironmentContextRESTInterface.NoValidObjectErrorMassage"); //$NON-NLS-1$
+                            return Messages
+                                    .getString("EnvironmentContextRESTInterface.NoValidObjectErrorMassage"); //$NON-NLS-1$
                         }
                         // If the object is okay, update it.
                         requestHandler.updateEnvironmentContextById(environmentContextId,

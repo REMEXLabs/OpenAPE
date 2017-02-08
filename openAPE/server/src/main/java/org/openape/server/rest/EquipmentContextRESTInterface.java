@@ -13,9 +13,8 @@ import spark.Spark;
 
 public class EquipmentContextRESTInterface extends SuperRestInterface {
 
-    public EquipmentContextRESTInterface(final EquipmentContextRequestHandler requestHandler) {
-        super();
-
+    public static void setupEquipmentContextRESTInterface(
+            final EquipmentContextRequestHandler requestHandler) {
         /**
          * Request 7.4.2 create equipment-context.
          */
@@ -25,12 +24,13 @@ public class EquipmentContextRESTInterface extends SuperRestInterface {
                         // Try to map the received json object to a
                         // equipmentContext
                         // object.
-                        final EquipmentContext recievedEquipmentContext = (EquipmentContext) this
+                        final EquipmentContext recievedEquipmentContext = (EquipmentContext) SuperRestInterface
                                 .extractContentFromRequest(req, EquipmentContext.class);
                         // Test the object for validity.
                         if (!recievedEquipmentContext.isValid()) {
                             res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
-                            return Messages.getString("EquipmentContextRESTInterface.NoValidObjectErrorMassage"); //$NON-NLS-1$
+                            return Messages
+                                    .getString("EquipmentContextRESTInterface.NoValidObjectErrorMassage"); //$NON-NLS-1$
                         }
                         // If the object is okay, save it and return the id.
                         final String equipmentContextId = requestHandler
@@ -86,12 +86,13 @@ public class EquipmentContextRESTInterface extends SuperRestInterface {
                     final String equipmentContextId = req.params(Messages
                             .getString("EquipmentContextRESTInterface.IDParam")); //$NON-NLS-1$
                     try {
-                        final EquipmentContext recievedEquipmentContext = (EquipmentContext) this
+                        final EquipmentContext recievedEquipmentContext = (EquipmentContext) SuperRestInterface
                                 .extractContentFromRequest(req, EquipmentContext.class);
                         // Test the object for validity.
                         if (!recievedEquipmentContext.isValid()) {
                             res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
-                            return Messages.getString("EquipmentContextRESTInterface.NoValidObjectErrorMassage"); //$NON-NLS-1$
+                            return Messages
+                                    .getString("EquipmentContextRESTInterface.NoValidObjectErrorMassage"); //$NON-NLS-1$
                         }
                         // If the object is okay, update it.
                         requestHandler.updateEquipmentContextById(equipmentContextId,
