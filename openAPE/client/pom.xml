@@ -7,20 +7,20 @@
 	</properties>
 
 	<parent>
-		<groupId>re-gpii</groupId>
-		<artifactId>preference-server</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
+		<groupId>openape</groupId>
+		<version>${ProjectVersion}</version>
+		<artifactId>framework</artifactId>
 	</parent>
 	<artifactId>client</artifactId>
 	<name>client</name>
-	<version>0.0.1-SNAPSHOT</version>
-	<groupId>re-gpii</groupId>
+	<version>${ProjectVersion}</version>
+	<groupId>openape</groupId>
 
 	<dependencies>
 		<dependency>
-			<groupId>re-gpii</groupId>
+			<groupId>openape</groupId>
 			<artifactId>API</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>${ProjectVersion}</version>
 		</dependency>
 		<dependency>
 			<groupId>javax.ws.rs</groupId>

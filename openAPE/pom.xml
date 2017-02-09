@@ -6,13 +6,14 @@
 	<properties>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
-	</properties>
+		<ProjectVersion>0.1-SNAPSHOT</ProjectVersion>
 
-	<groupId>re-gpii</groupId>
-	<artifactId>preference-server</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	</properties>
+	<groupId>openape</groupId>
+	<artifactId>framework</artifactId>
+	<version>${ProjectVersion}</version>
 	<packaging>pom</packaging>
-	<name>re-gpii</name>
+	<name>openape</name>
 	<dependencies>
 
 		<!-- https://mvnrepository.com/artifact/com.thetransactioncompany/cors-filter -->
@@ -85,10 +86,14 @@
 				<configuration>
 					<archive>
 						<manifest>
+
+<addDefaultImplementationEntries>true</addDefaultImplementationEntries> 
+
 							<addClasspath>true</addClasspath>
 							<classpathPrefix>lib/</classpathPrefix>
 
-							<mainClass>org.opengpii.preferenceserver.RestServer</mainClass>
+							<mainClass>org.openape.server.RestServer</mainClass>
+
 						</manifest>
 					</archive>
 				</configuration>
@@ -135,6 +140,6 @@
 		<module>API</module>
 		<module>server</module>
 		<module>web</module>
-		<module>client</module>
+<!--		<module>client</module>-->
 	</modules>
 </project>

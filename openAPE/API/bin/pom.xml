@@ -4,9 +4,9 @@
 	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>re-gpii</groupId>
-		<artifactId>preference-server</artifactId>
+		<artifactId>preference-serverframework</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
+		<groupId>openape</groupId>
 	</parent>
 	<groupId>re-gpii</groupId>
 	<artifactId>API</artifactId>
@@ -17,12 +17,6 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 	<dependencies>
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>3.8.1</version>
-			<scope>test</scope>
-		</dependency>
 		<!-- Don't add a dependency of the server module, cycling dependencies aren't working. --> 
 	</dependencies>
 </project>
