@@ -2,6 +2,8 @@ package org.openape.server;
 
 import java.io.IOException;
 
+import org.openape.api.usercontext.Context;
+import org.openape.api.usercontext.UserContext;
 import org.openape.server.database.mongoDB.DatabaseConnection;
 import org.openape.server.database.resources.ResourceList;
 import org.openape.server.rest.SuperRestInterface;
@@ -20,6 +22,22 @@ public class Main {
             e.printStackTrace();
         }
         new SuperRestInterface();
+    }
+
+    /**
+     * @return a sample user context representing someone with restriced vision.
+     */
+    public static UserContext sampleUserContextRestricedVision() {
+        UserContext restrictedVision = new UserContext();
+        Context restrictedViewPc = new Context("computer operation system", "0");
+        Context restrictedViewTicketMachine = new Context("ticket machine", "1");
+        restrictedVision.addContext(restrictedViewPc);
+        restrictedVision.addContext(restrictedViewTicketMachine);
+        restrictedViewPc.addPreference("/smalltext", "screen magnifier");
+        restrictedViewPc.addPreference("/longtext", "screen reader");
+        restrictedViewTicketMachine.addPreference("/all", "high contrast");
+        restrictedViewTicketMachine.addPreference("/text", "large font");
+        return restrictedVision;
     }
 
 }

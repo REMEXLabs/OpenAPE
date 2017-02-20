@@ -6,7 +6,6 @@ import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.openape.api.Messages;
-import org.openape.api.usercontext.Context;
 import org.openape.api.usercontext.UserContext;
 import org.openape.server.Main;
 import org.openape.server.requestHandler.UserContextRequestHandler;
@@ -60,17 +59,10 @@ public class UserContextRESTInterface extends SuperRestInterface {
                     // user context.
                     if (userContextId.equals("restricted_vision")) {
                         /**
-                         * Sample user context of a person with restricted viewing ability.
+                         * Sample user context of a person with restricted
+                         * viewing ability.
                          */
-                        UserContext restrictedVision = new UserContext();
-                        Context restrictedViewPc = new Context("computer operation system", "0");
-                        Context restrictedViewTicketMachine = new Context("ticket machine","1");
-                        restrictedVision.addContext(restrictedViewPc);
-                        restrictedVision.addContext(restrictedViewTicketMachine);
-                        restrictedViewPc.addPreference("/smalltext", "screen magnifier");
-                        restrictedViewPc.addPreference("/longtext", "screen reader");
-                        restrictedViewTicketMachine.addPreference("/all", "high contrast");
-                        restrictedViewTicketMachine.addPreference("/text", "large font");
+                        UserContext restrictedVision = Main.sampleUserContextRestricedVision();
                         res.status(SuperRestInterface.HTTP_STATUS_OK);
                         res.type(Messages.getString("UserContextRESTInterface.JsonMimeType")); //$NON-NLS-1$
                         final ObjectMapper mapper = new ObjectMapper();
