@@ -4,9 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import org.openape.api.DatabaseObject;
+import org.openape.api.Property;
 
+/**
+ * Resource description object defined in 7.7.1
+ */
+@XmlRootElement
 public class ResourceDescription extends DatabaseObject {
     private static final long serialVersionUID = -3341210067495347309L;
 

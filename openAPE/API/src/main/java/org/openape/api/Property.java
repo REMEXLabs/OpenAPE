@@ -1,4 +1,4 @@
-package org.openape.api.resourceDescription;
+package org.openape.api;
 
 import java.io.Serializable;
 import java.util.ArrayList;
