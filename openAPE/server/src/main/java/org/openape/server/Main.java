@@ -25,7 +25,7 @@ public class Main {
     }
 
     /**
-     * @return a sample user context representing someone with restriced vision.
+     * @return a sample user context representing someone with restricted vision.
      */
     public static UserContext sampleUserContextRestricedVision() {
         UserContext restrictedVision = new UserContext();
