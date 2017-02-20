@@ -1,5 +1,6 @@
 package org.openape.server.database.mongoDB;
 
+import org.openape.api.DatabaseObject;
 import org.openape.api.Messages;
 import org.openape.api.environmentcontext.EnvironmentContext;
 import org.openape.api.equipmentcontext.EquipmentContext;
@@ -57,7 +58,7 @@ public enum MongoCollectionTypes {
 
     }
 
-    private final Class<?> objectType;
+    private final Class<? extends DatabaseObject> objectType;
 
     private final String mongoCollectionName;
 
@@ -68,7 +69,8 @@ public enum MongoCollectionTypes {
      * @param collectionName
      * @param objectType
      */
-    private <T> MongoCollectionTypes(String collectionName, Class<T> objectType) {
+    private <T extends DatabaseObject> MongoCollectionTypes(String collectionName,
+            Class<? extends DatabaseObject> objectType) {
         this.objectType = objectType;
         this.mongoCollectionName = collectionName;
     }
@@ -80,7 +82,7 @@ public enum MongoCollectionTypes {
      *            of the collection.
      * @return class of the documents stored.
      */
-    public Class<?> getDocumentType() {
+    public Class<? extends DatabaseObject> getDocumentType() {
         return this.objectType;
     }
 

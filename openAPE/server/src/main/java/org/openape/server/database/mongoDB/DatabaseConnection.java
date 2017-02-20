@@ -237,7 +237,7 @@ public class DatabaseConnection {
                 resultDocument.remove(Messages.getString("DatabaseConnection._id")); //$NON-NLS-1$
                 final String jsonResult = resultDocument.toJson();
                 final ObjectMapper mapper = new ObjectMapper();
-                result = mapper.readValue(jsonResult, DatabaseObject.class);
+                result = mapper.readValue(jsonResult, type.getDocumentType());
             } catch (CodecConfigurationException | IOException | JsonParseException e) {
                 e.printStackTrace();
                 throw new IOException(e.getMessage());
