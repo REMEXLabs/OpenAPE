@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
 
@@ -105,10 +106,12 @@ public class Context implements Serializable {
         return this.id;
     }
 
+    @XmlElement(name = "name")
     public String getName() {
         return this.name;
     }
 
+    @XmlElement(name = "preference")
     public List<Preference> getPreferences() {
         return this.preferences;
     }
