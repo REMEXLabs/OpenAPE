@@ -33,7 +33,7 @@ public class TaskContext extends DatabaseObject {
             for (final Property compareContext : compare.getPropertys()) {
                 // if id fits check if property fits.
                 if (baseProperty.getName().equals(compareContext.getName())) {
-                    if (!baseProperty.equals(compareContext)) {
+                    if (baseProperty.equals(compareContext)) {
                         match = true;
                     }
                 }
