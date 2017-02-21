@@ -22,6 +22,7 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.openape.api.DatabaseObject;
 
 /**
@@ -30,6 +31,36 @@ import org.openape.api.DatabaseObject;
 @XmlRootElement
 public class UserContext extends DatabaseObject {
     private static final long serialVersionUID = 5891055316807633786L;
+
+    /**
+     * Checks if a compare user context has the same contexts as a base context.
+     * Does return true if it has MORE contexts.
+     *
+     * @param base
+     * @param compare
+     * @return true, if compare has the same contexts as base, false if not.
+     */
+    private static boolean hasUserContextTheSameContexts(UserContext base, UserContext compare) {
+        for (final Context baseContext : base.getContexts()) {
+            // Match checks if for each context in this there is one in
+            // compare.
+            boolean match = false;
+            for (final Context compareContext : compare.getContexts()) {
+                // if id fits check if context fits.
+                if (baseContext.getId().equals(compareContext.getId())) {
+                    match = true;
+                    if (!baseContext.equals(compareContext)) {
+                        return false;
+                    }
+                }
+            }
+            // no matching context
+            if (match != true) {
+                return false;
+            }
+        }
+        return true;
+    }
 
     private List<Context> contexts;
 
@@ -42,12 +73,27 @@ public class UserContext extends DatabaseObject {
 
     }
 
+    /**
+     * Checks if user contexts are equal in field values.
+     *
+     * @param compare
+     *            user context to compare with.
+     * @return true if contexts are equal in field values, false else.
+     */
+    @JsonIgnore
+    public boolean equals(UserContext compare) {
+        return (UserContext.hasUserContextTheSameContexts(compare, this) && UserContext
+                .hasUserContextTheSameContexts(this, compare));
+
+    }
+
     @XmlElement(name = "context")
     public List<Context> getContexts() {
         return this.contexts;
     }
 
     @Override
+    @JsonIgnore
     public boolean isValid() {
         return true;
     }
@@ -55,4 +101,5 @@ public class UserContext extends DatabaseObject {
     public void setContexts(List<Context> contexts) {
         this.contexts = contexts;
     }
+
 }

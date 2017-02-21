@@ -2,6 +2,7 @@ package org.openape.api.listing;
 
 import javax.xml.bind.annotation.XmlAttribute;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.openape.api.DatabaseObject;
 
 public class Listing extends DatabaseObject {
@@ -9,13 +10,14 @@ public class Listing extends DatabaseObject {
 
     private String query = "";
 
-    @Override
-    public boolean isValid() {
-        return true;
+    public String getQuery() {
+        return this.query;
     }
 
-    public String getQuery() {
-        return query;
+    @Override
+    @JsonIgnore
+    public boolean isValid() {
+        return true;
     }
 
     @XmlAttribute(name = "query")

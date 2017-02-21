@@ -2,6 +2,8 @@ package org.openape.api;
 
 import java.io.Serializable;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 /**
  * Abstract class used to identify object types that can be stored in the
  * database.
@@ -15,7 +17,9 @@ public abstract class DatabaseObject implements Serializable {
      *
      * @return true if valid.
      */
+    @JsonIgnore
     public boolean isValid() {
         return false;
     }
+
 }

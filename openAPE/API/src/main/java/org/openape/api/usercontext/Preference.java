@@ -20,15 +20,42 @@ import java.io.Serializable;
 
 import javax.xml.bind.annotation.XmlAttribute;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 public class Preference implements Serializable {
     private static final long serialVersionUID = -8359653185563684514L;
 
     private String key;
     private String value;
 
+    /**
+     * Default Constructor needed for json object mapper.
+     */
+    public Preference() {
+
+    }
+
     public Preference(String key, String value) {
         this.key = key;
         this.value = value;
+    }
+
+    /**
+     * Compares the values of key and value and returns true if there are equal,
+     * false else.
+     *
+     * @param compare
+     *            preference to compare with.
+     * @return true if compare preference has the same values in key and value,
+     *         false else.
+     */
+    @JsonIgnore
+    public boolean equals(Preference compare) {
+        if (this.getKey().equals(compare.getKey()) && this.getValue().equals(compare.getValue())) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @XmlAttribute(name = "key")

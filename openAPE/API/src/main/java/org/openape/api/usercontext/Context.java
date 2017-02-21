@@ -22,12 +22,52 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlAttribute;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 public class Context implements Serializable {
     private static final long serialVersionUID = -8602234372848554234L;
 
+    /**
+     * Checks if a compare context has the same preferences as a base context.
+     * Does return true if it has MORE preferences.
+     *
+     * @param base
+     * @param compare
+     * @return true, if compare has the same preferences as base, false if not.
+     */
+    private static boolean hasContextTheSamePreferences(Context base, Context compare) {
+        for (final Preference basePreference : base.getPreferences()) {
+            // Match checks if for each preference in this there is one in
+            // compare.
+            boolean match = false;
+            for (final Preference comparePreference : compare.getPreferences()) {
+                // if key fits check if value fits.
+                if (basePreference.getKey().equals(comparePreference.getKey())) {
+                    match = true;
+                    if (!basePreference.equals(comparePreference)) {
+                        return false;
+                    }
+                }
+            }
+            // no matching preference
+            if (match != true) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     private String id;
     private String name;
+
     private List<Preference> preferences = new ArrayList<Preference>();
+
+    /**
+     * Default Constructor needed for json object mapper.
+     */
+    public Context() {
+
+    }
 
     public Context(String name, String id) {
         this.name = name;
@@ -35,8 +75,29 @@ public class Context implements Serializable {
     }
 
     public void addPreference(String key, String value) {
-        Preference newPreference = new Preference(key, value);
+        final Preference newPreference = new Preference(key, value);
         this.preferences.add(newPreference);
+    }
+
+    /**
+     * Compares the values of key and value and preferences and returns true if
+     * there are equal, false else.
+     *
+     * @param compare
+     *            context to compare with.
+     * @return true if compare context has the same values in key and value and
+     *         the same preferences, false else.
+     */
+    @JsonIgnore
+    public boolean equals(Context compare) {
+        // check if context attributes are equal.
+        if (!(this.getId().equals(compare.getId()) && this.getName().equals(compare.getName()))) {
+            return false;
+        } else {
+            // check if preferences are equal
+            return (Context.hasContextTheSamePreferences(compare, this) && Context
+                    .hasContextTheSamePreferences(this, compare));
+        }
     }
 
     @XmlAttribute(name = "id")
