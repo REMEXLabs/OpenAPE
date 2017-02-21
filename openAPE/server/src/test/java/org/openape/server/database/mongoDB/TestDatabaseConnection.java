@@ -31,22 +31,26 @@ public class TestDatabaseConnection {
                             sampleContext));
             System.out.println(id);
             // test get.
-            Assert.assertEquals(sampleContext,
-                    dataBaseConnection.getData(MongoCollectionTypes.USERCONTEXT, id));
+            UserContext recievedContext = (UserContext) dataBaseConnection.getData(
+                    MongoCollectionTypes.USERCONTEXT, id);
+            Assert.assertTrue(sampleContext.equals(recievedContext));
             // remove second context.
             List<Context> newContexts = new ArrayList<Context>();
             newContexts.add(sampleContext.getContexts().get(0));
             sampleContext.setContexts(newContexts);
             // test update
             dataBaseConnection.updateData(MongoCollectionTypes.USERCONTEXT, sampleContext, id);
-            Assert.assertEquals(sampleContext,
-                    dataBaseConnection.getData(MongoCollectionTypes.USERCONTEXT, id));
+            UserContext updatetContext = (UserContext) dataBaseConnection.getData(
+                    MongoCollectionTypes.USERCONTEXT, id);
+            Assert.assertTrue(sampleContext.equals(updatetContext));
+            Assert.assertFalse(Main.sampleUserContextRestricedVision().equals(updatetContext));
             // test delete
             Assert.assertTrue(dataBaseConnection.deleteData(MongoCollectionTypes.USERCONTEXT, id));
 
         } catch (ClassCastException | IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
+            Assert.assertTrue(false);
         }
 
     }
