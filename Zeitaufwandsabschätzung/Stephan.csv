@@ -1,5 +1,5 @@
 Datum,Zeit in Stunden,Aktivität,Summe
-12.10,1,Initialer Projekttreff,"111,5"
+12.10,1,Initialer Projekttreff,"113,5"
 18.10,1,2. Teambesprechung,
 18.10,2,Issues erstellen und Projekt bei mir einrichten,
 25.10,"0,5",3. Teambesprechung,
@@ -56,4 +56,5 @@ Datum,Zeit in Stunden,Aktivität,Summe
 09.02,1,"Kommunikation, kleine fixes und beheben einens Merge conflikts",
 16.02,1,Projekttreffen,
 20.02,1,Kontexte erstellen,
-21.02,4,test and fix database connection,
+20.02,4,test and fix database connection,
+21.02,2,Listing klasse updaten,
