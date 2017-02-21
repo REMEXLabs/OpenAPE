@@ -36,9 +36,8 @@ public class Property implements Serializable {
             for (final Descriptor compareDescriptor : compare.getDescriptors()) {
                 // if name fits check if value fits.
                 if (baseDescriptor.getName().equals(compareDescriptor.getName())) {
-                    match = true;
                     if (!baseDescriptor.equals(compareDescriptor)) {
-                        return false;
+                        match = true;
                     }
                 }
             }

@@ -34,9 +34,8 @@ public class ResourceDescription extends DatabaseObject {
             for (final Property compareContext : compare.getPropertys()) {
                 // if id fits check if property fits.
                 if (baseProperty.getName().equals(compareContext.getName())) {
-                    match = true;
                     if (!baseProperty.equals(compareContext)) {
-                        return false;
+                        match = true;
                     }
                 }
             }
