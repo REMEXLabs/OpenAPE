@@ -9,10 +9,11 @@ import org.openape.api.resourceDescription.ResourceDescription;
 import org.openape.server.database.mongoDB.DatabaseConnection;
 import org.openape.server.database.mongoDB.MongoCollectionTypes;
 import org.openape.server.rest.ResourceDescriptionRESTInterface;
+import org.openape.server.rest.ResourceRESTInterface;
 
 /**
- * Class with methods to manage resource descriptions on the server. It is used by
- * the rest API {@link ResourceDescriptionRESTInterface} and uses the server
+ * Class with methods to manage resource descriptions on the server. It is used
+ * by the rest API {@link ResourceDescriptionRESTInterface} and uses the server
  * database {@link DatabaseConnection}.
  */
 public class ResourceDescriptionRequestHandler {
@@ -69,15 +70,34 @@ public class ResourceDescriptionRequestHandler {
         final boolean success = databaseConnection.deleteData(
                 ResourceDescriptionRequestHandler.COLLECTIONTOUSE, id);
         if (!success) {
-            throw new IllegalArgumentException(Messages.getString("ResourceDescriptionRequestHandler.NoObjectWithThatIDErrorMsg")); //$NON-NLS-1$
+            throw new IllegalArgumentException(
+                    Messages.getString("ResourceDescriptionRequestHandler.NoObjectWithThatIDErrorMsg")); //$NON-NLS-1$
         }
         return true;
     }
 
     /**
-     * Method to get an existing resource description from the server. It is used
-     * by the rest API {@link ResourceDescriptionRESTInterface} and uses the
-     * server database {@link DatabaseConnection}.
+     * Method to get an existing listing from the server. It is used by the rest
+     * API {@link ResourceRESTInterface} and uses the server database
+     * {@link DatabaseConnection}.
+     *
+     * @param id
+     *            the ID of the requested listing.
+     * @return requested listing.
+     * @throws IOException
+     *             if a storage problem still occurs, after to many tries.
+     * @throws IllegalArgumentException
+     *             if the id is no valid id or not assigned.
+     */
+    public Listing getListingById(String id) throws IOException, IllegalArgumentException {
+        final ListingRequestHandler listingRequestHandler = new ListingRequestHandler();
+        return listingRequestHandler.getListingById(id);
+    }
+
+    /**
+     * Method to get an existing resource description from the server. It is
+     * used by the rest API {@link ResourceDescriptionRESTInterface} and uses
+     * the server database {@link DatabaseConnection}.
      *
      * @param id
      *            the ID of the requested environment context.
@@ -98,7 +118,8 @@ public class ResourceDescriptionRequestHandler {
 
         // If the result is null the id is not found.
         if (result == null) {
-            throw new IllegalArgumentException(Messages.getString("ResourceDescriptionRequestHandler.NoObjectWithThatIDErrorMsg")); //$NON-NLS-1$
+            throw new IllegalArgumentException(
+                    Messages.getString("ResourceDescriptionRequestHandler.NoObjectWithThatIDErrorMsg")); //$NON-NLS-1$
         }
 
         // convert into correct type.
@@ -114,6 +135,7 @@ public class ResourceDescriptionRequestHandler {
 
     /**
      * TODO implement
+     *
      * @param listing
      * @return
      */
@@ -154,7 +176,8 @@ public class ResourceDescriptionRequestHandler {
             throw new IllegalArgumentException(e.getMessage());
         }
         if (!success) {
-            throw new IllegalArgumentException(Messages.getString("ResourceDescriptionRequestHandler.NoObjectWithThatIDErrorMsg")); //$NON-NLS-1$
+            throw new IllegalArgumentException(
+                    Messages.getString("ResourceDescriptionRequestHandler.NoObjectWithThatIDErrorMsg")); //$NON-NLS-1$
         }
         return true;
     }

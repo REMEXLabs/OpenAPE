@@ -110,27 +110,8 @@ public class ResourceRequestHandler {
      *             if the id is no valid id or not assigned.
      */
     public Listing getListingById(String id) throws IOException, IllegalArgumentException {
-        // get database connection.
-        final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
-
-        // Get the requested data.
-        final DatabaseObject result = databaseConnection.getData(MongoCollectionTypes.LISTING, id);
-
-        // If the result is null the id is not found.
-        if (result == null) {
-            throw new IllegalArgumentException(Messages.getString("ResourceRequestHandler.NoObjectWithThatIDErrorMsg")); //$NON-NLS-1$
-        }
-
-        // convert into correct type.
-        Listing returnObject;
-        try {
-            returnObject = (Listing) result;
-        } catch (final ClassCastException e) {
-            e.printStackTrace();
-            throw new IOException(e.getMessage());
-        }
-        return returnObject;
-
+        ListingRequestHandler listingRequestHandler = new ListingRequestHandler();
+        return listingRequestHandler.getListingById(id);
     }
 
 }
