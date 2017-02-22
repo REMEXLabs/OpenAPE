@@ -1,0 +1,102 @@
+@startuml
+abstract class org.openape.api.DatabaseObject
+annotation java.lang.Override
+annotation javax.xml.bind.annotation.XmlAttribute
+annotation javax.xml.bind.annotation.XmlElement
+annotation javax.xml.bind.annotation.XmlRootElement
+annotation org.codehaus.jackson.annotate.JsonIgnore
+class java.util.ArrayList
+class java.util.List
+class java.util.MissingResourceException
+class java.util.ResourceBundle
+class org.openape.api.Descriptor
+class org.openape.api.Messages
+class org.openape.api.Property
+class org.openape.api.environmentcontext.EnvironmentContext
+class org.openape.api.equipmentcontext.EquipmentContext
+class org.openape.api.listing.Listing
+class org.openape.api.resourceDescription.ResourceDescription
+class org.openape.api.rest.RESTPaths
+class org.openape.api.taskcontext.TaskContext
+class org.openape.api.usercontext.Context
+class org.openape.api.usercontext.Preference
+class org.openape.api.usercontext.UserContext
+interface java.io.Serializable
+org.openape.api.DatabaseObject ..> org.codehaus.jackson.annotate.JsonIgnore
+org.openape.api.DatabaseObject --|> java.io.Serializable
+org.openape.api.Descriptor ..> javax.xml.bind.annotation.XmlAttribute
+org.openape.api.Descriptor ..> org.codehaus.jackson.annotate.JsonIgnore
+org.openape.api.Descriptor ..> org.openape.api.environmentcontext.EnvironmentContext
+org.openape.api.Descriptor ..> org.openape.api.equipmentcontext.EquipmentContext
+org.openape.api.Descriptor ..> org.openape.api.resourceDescription.ResourceDescription
+org.openape.api.Descriptor ..> org.openape.api.taskcontext.TaskContext
+org.openape.api.Descriptor --|> java.io.Serializable
+org.openape.api.Messages ..> java.util.MissingResourceException
+org.openape.api.Messages ..> java.util.ResourceBundle
+org.openape.api.Property ..> javax.xml.bind.annotation.XmlAttribute
+org.openape.api.Property ..> javax.xml.bind.annotation.XmlElement
+org.openape.api.Property ..> org.codehaus.jackson.annotate.JsonIgnore
+org.openape.api.Property ..> java.util.ArrayList
+org.openape.api.Property ..> java.util.List
+org.openape.api.Property ..> org.openape.api.environmentcontext.EnvironmentContext
+org.openape.api.Property ..> org.openape.api.equipmentcontext.EquipmentContext
+org.openape.api.Property ..> org.openape.api.resourceDescription.ResourceDescription
+org.openape.api.Property ..> org.openape.api.taskcontext.TaskContext
+org.openape.api.Property --|> java.io.Serializable
+org.openape.api.environmentcontext.EnvironmentContext --|> org.openape.api.DatabaseObject
+org.openape.api.environmentcontext.EnvironmentContext ..> java.lang.Override
+org.openape.api.environmentcontext.EnvironmentContext ..> javax.xml.bind.annotation.XmlElement
+org.openape.api.environmentcontext.EnvironmentContext ..> javax.xml.bind.annotation.XmlRootElement
+org.openape.api.environmentcontext.EnvironmentContext ..> org.codehaus.jackson.annotate.JsonIgnore
+org.openape.api.environmentcontext.EnvironmentContext ..> java.util.ArrayList
+org.openape.api.environmentcontext.EnvironmentContext ..> java.util.List
+org.openape.api.environmentcontext.EnvironmentContext ..> org.openape.api.Property
+org.openape.api.equipmentcontext.EquipmentContext --|> org.openape.api.DatabaseObject
+org.openape.api.equipmentcontext.EquipmentContext ..> java.lang.Override
+org.openape.api.equipmentcontext.EquipmentContext ..> javax.xml.bind.annotation.XmlElement
+org.openape.api.equipmentcontext.EquipmentContext ..> javax.xml.bind.annotation.XmlRootElement
+org.openape.api.equipmentcontext.EquipmentContext ..> org.codehaus.jackson.annotate.JsonIgnore
+org.openape.api.equipmentcontext.EquipmentContext ..> java.util.ArrayList
+org.openape.api.equipmentcontext.EquipmentContext ..> java.util.List
+org.openape.api.equipmentcontext.EquipmentContext ..> org.openape.api.Property
+org.openape.api.listing.Listing --|> org.openape.api.DatabaseObject
+org.openape.api.listing.Listing ..> java.lang.Override
+org.openape.api.listing.Listing ..> javax.xml.bind.annotation.XmlElement
+org.openape.api.listing.Listing ..> javax.xml.bind.annotation.XmlRootElement
+org.openape.api.listing.Listing ..> org.codehaus.jackson.annotate.JsonIgnore
+org.openape.api.listing.Listing ..> java.util.ArrayList
+org.openape.api.listing.Listing ..> java.util.List
+org.openape.api.listing.Listing ..> org.openape.api.resourceDescription.ResourceDescription
+org.openape.api.resourceDescription.ResourceDescription --|> org.openape.api.DatabaseObject
+org.openape.api.resourceDescription.ResourceDescription ..> java.lang.Override
+org.openape.api.resourceDescription.ResourceDescription ..> javax.xml.bind.annotation.XmlElement
+org.openape.api.resourceDescription.ResourceDescription ..> javax.xml.bind.annotation.XmlRootElement
+org.openape.api.resourceDescription.ResourceDescription ..> org.codehaus.jackson.annotate.JsonIgnore
+org.openape.api.resourceDescription.ResourceDescription ..> java.util.ArrayList
+org.openape.api.resourceDescription.ResourceDescription ..> java.util.List
+org.openape.api.resourceDescription.ResourceDescription ..> org.openape.api.Property
+org.openape.api.taskcontext.TaskContext --|> org.openape.api.DatabaseObject
+org.openape.api.taskcontext.TaskContext ..> java.lang.Override
+org.openape.api.taskcontext.TaskContext ..> javax.xml.bind.annotation.XmlElement
+org.openape.api.taskcontext.TaskContext ..> javax.xml.bind.annotation.XmlRootElement
+org.openape.api.taskcontext.TaskContext ..> org.codehaus.jackson.annotate.JsonIgnore
+org.openape.api.taskcontext.TaskContext ..> java.util.ArrayList
+org.openape.api.taskcontext.TaskContext ..> java.util.List
+org.openape.api.taskcontext.TaskContext ..> org.openape.api.Property
+org.openape.api.usercontext.Context ..> javax.xml.bind.annotation.XmlAttribute
+org.openape.api.usercontext.Context ..> javax.xml.bind.annotation.XmlElement
+org.openape.api.usercontext.Context ..> org.codehaus.jackson.annotate.JsonIgnore
+org.openape.api.usercontext.Context ..> java.util.ArrayList
+org.openape.api.usercontext.Context ..> java.util.List
+org.openape.api.usercontext.Context --|> java.io.Serializable
+org.openape.api.usercontext.Preference ..> javax.xml.bind.annotation.XmlAttribute
+org.openape.api.usercontext.Preference ..> org.codehaus.jackson.annotate.JsonIgnore
+org.openape.api.usercontext.Preference --|> java.io.Serializable
+org.openape.api.usercontext.UserContext --|> org.openape.api.DatabaseObject
+org.openape.api.usercontext.UserContext ..> java.lang.Override
+org.openape.api.usercontext.UserContext ..> javax.xml.bind.annotation.XmlElement
+org.openape.api.usercontext.UserContext ..> javax.xml.bind.annotation.XmlRootElement
+org.openape.api.usercontext.UserContext ..> org.codehaus.jackson.annotate.JsonIgnore
+org.openape.api.usercontext.UserContext ..> java.util.ArrayList
+org.openape.api.usercontext.UserContext ..> java.util.List
+@enduml
