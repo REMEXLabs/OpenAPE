@@ -1,50 +1,4 @@
 @startuml
-annotation java.lang.Override
-class com.mongodb.BasicDBObject
-class com.mongodb.MongoClient
-class com.mongodb.MongoCredential
-class com.mongodb.MongoException
-class com.mongodb.ServerAddress
-class com.mongodb.client.FindIterable
-class com.mongodb.client.MongoCollection
-class com.mongodb.client.MongoDatabase
-class java.io.BufferedInputStream
-class java.io.BufferedOutputStream
-class java.io.File
-class java.io.FileInputStream
-class java.io.FileNotFoundException
-class java.io.FileOutputStream
-class java.io.IOException
-class java.io.InputStream
-class java.io.OutputStream
-class java.nio.file.Files
-class java.nio.file.Paths
-class java.util.ArrayList
-class java.util.Arrays
-class java.util.Iterator
-class java.util.LinkedList
-class java.util.List
-class java.util.zip.ZipEntry
-class java.util.zip.ZipOutputStream
-class javassist.NotFoundException
-class javax.servlet.MultipartConfigElement
-class javax.servlet.http.Part
-class org.bson.Document
-class org.bson.codecs.configuration.CodecConfigurationException
-class org.bson.json.JsonParseException
-class org.bson.types.ObjectId
-class org.codehaus.jackson.JsonParseException
-class org.codehaus.jackson.map.JsonMappingException
-class org.codehaus.jackson.map.ObjectMapper
-class org.openape.api.DatabaseObject
-class org.openape.api.Messages
-class org.openape.api.environmentcontext.EnvironmentContext
-class org.openape.api.equipmentcontext.EquipmentContext
-class org.openape.api.listing.Listing
-class org.openape.api.resourceDescription.ResourceDescription
-class org.openape.api.taskcontext.TaskContext
-class org.openape.api.usercontext.Context
-class org.openape.api.usercontext.UserContext
 class org.openape.server.Main
 class org.openape.server.MainSimple
 class org.openape.server.database.mongoDB.DatabaseConnection
@@ -66,178 +20,52 @@ class org.openape.server.rest.ResourceRESTInterface
 class org.openape.server.rest.SuperRestInterface
 class org.openape.server.rest.TaskContextRESTInterface
 class org.openape.server.rest.UserContextRESTInterface
-class spark.Request
-class spark.Spark
 enum org.openape.server.database.mongoDB.MongoCollectionTypes
-org.openape.server.Main ..> java.io.IOException
-org.openape.server.Main ..> org.openape.api.usercontext.Context
-org.openape.server.Main ..> org.openape.api.usercontext.UserContext
 org.openape.server.Main ..> org.openape.server.database.mongoDB.DatabaseConnection
 org.openape.server.Main ..> org.openape.server.database.resources.ResourceList
 org.openape.server.Main ..> org.openape.server.rest.SuperRestInterface
 org.openape.server.MainSimple ..> org.openape.server.rest.ResourceManagerRESTInterface
-org.openape.server.database.mongoDB.DatabaseConnection ..> com.mongodb.BasicDBObject
-org.openape.server.database.mongoDB.DatabaseConnection ..> com.mongodb.MongoClient
-org.openape.server.database.mongoDB.DatabaseConnection ..> com.mongodb.MongoCredential
-org.openape.server.database.mongoDB.DatabaseConnection ..> com.mongodb.MongoException
-org.openape.server.database.mongoDB.DatabaseConnection ..> com.mongodb.ServerAddress
-org.openape.server.database.mongoDB.DatabaseConnection ..> com.mongodb.client.FindIterable
-org.openape.server.database.mongoDB.DatabaseConnection ..> com.mongodb.client.MongoCollection
-org.openape.server.database.mongoDB.DatabaseConnection ..> com.mongodb.client.MongoDatabase
-org.openape.server.database.mongoDB.DatabaseConnection ..> java.io.IOException
-org.openape.server.database.mongoDB.DatabaseConnection ..> java.util.Arrays
-org.openape.server.database.mongoDB.DatabaseConnection ..> java.util.Iterator
-org.openape.server.database.mongoDB.DatabaseConnection ..> org.bson.Document
-org.openape.server.database.mongoDB.DatabaseConnection ..> org.bson.codecs.configuration.CodecConfigurationException
-org.openape.server.database.mongoDB.DatabaseConnection ..> org.bson.json.JsonParseException
-org.openape.server.database.mongoDB.DatabaseConnection ..> org.bson.types.ObjectId
-org.openape.server.database.mongoDB.DatabaseConnection ..> org.codehaus.jackson.map.ObjectMapper
-org.openape.server.database.mongoDB.DatabaseConnection ..> org.openape.api.DatabaseObject
-org.openape.server.database.mongoDB.DatabaseConnection ..> org.openape.api.Messages
 org.openape.server.database.mongoDB.DatabaseConnection ..> org.openape.server.requestHandler.EnvironmentContextRequestHandler
 org.openape.server.database.mongoDB.DatabaseConnection ..> org.openape.server.requestHandler.EquipmentContextRequestHandler
 org.openape.server.database.mongoDB.DatabaseConnection ..> org.openape.server.requestHandler.TaskContextRequestHandler
 org.openape.server.database.mongoDB.DatabaseConnection ..> org.openape.server.requestHandler.UserContextRequestHandler
-org.openape.server.database.resources.ListingManager ..> java.io.File
-org.openape.server.database.resources.ListingManager ..> java.io.IOException
-org.openape.server.database.resources.ListingManager ..> java.util.ArrayList
-org.openape.server.database.resources.ListingManager ..> java.util.List
-org.openape.server.database.resources.ListingManager ..> org.openape.api.Messages
-org.openape.server.database.resources.ListingManager ..> org.openape.api.listing.Listing
-org.openape.server.database.resources.ListingManager ..> org.openape.api.resourceDescription.ResourceDescription
-org.openape.server.database.resources.ResourceList ..> java.io.File
-org.openape.server.database.resources.ResourceList ..> java.io.FileNotFoundException
-org.openape.server.database.resources.ResourceList ..> java.io.FileOutputStream
-org.openape.server.database.resources.ResourceList ..> java.io.IOException
-org.openape.server.database.resources.ResourceList ..> java.io.InputStream
-org.openape.server.database.resources.ResourceList ..> java.io.OutputStream
-org.openape.server.database.resources.ResourceList ..> java.util.LinkedList
-org.openape.server.database.resources.ResourceList ..> java.util.List
-org.openape.server.database.resources.ResourceList ..> javax.servlet.http.Part
-org.openape.server.database.resources.ResourceList ..> org.openape.api.Messages
 org.openape.server.database.resources.ResourceList ..> org.openape.server.requestHandler.ResourceRequestHandler
 org.openape.server.database.resources.ResourceList ..> org.openape.server.rest.ResourceRESTInterface
-org.openape.server.requestHandler.EnvironmentContextRequestHandler ..> java.io.IOException
-org.openape.server.requestHandler.EnvironmentContextRequestHandler ..> org.openape.api.DatabaseObject
-org.openape.server.requestHandler.EnvironmentContextRequestHandler ..> org.openape.api.Messages
-org.openape.server.requestHandler.EnvironmentContextRequestHandler ..> org.openape.api.environmentcontext.EnvironmentContext
 org.openape.server.requestHandler.EnvironmentContextRequestHandler ..> org.openape.server.database.mongoDB.DatabaseConnection
 org.openape.server.requestHandler.EnvironmentContextRequestHandler ..> org.openape.server.rest.EnvironmentContextRESTInterface
 org.openape.server.requestHandler.EnvironmentContextRequestHandler ..> org.openape.server.database.mongoDB.MongoCollectionTypes
-org.openape.server.requestHandler.EquipmentContextRequestHandler ..> java.io.IOException
-org.openape.server.requestHandler.EquipmentContextRequestHandler ..> org.openape.api.DatabaseObject
-org.openape.server.requestHandler.EquipmentContextRequestHandler ..> org.openape.api.Messages
-org.openape.server.requestHandler.EquipmentContextRequestHandler ..> org.openape.api.equipmentcontext.EquipmentContext
 org.openape.server.requestHandler.EquipmentContextRequestHandler ..> org.openape.server.database.mongoDB.DatabaseConnection
 org.openape.server.requestHandler.EquipmentContextRequestHandler ..> org.openape.server.rest.EquipmentContextRESTInterface
 org.openape.server.requestHandler.EquipmentContextRequestHandler ..> org.openape.server.database.mongoDB.MongoCollectionTypes
-org.openape.server.requestHandler.ListingRequestHandler ..> java.io.IOException
-org.openape.server.requestHandler.ListingRequestHandler ..> org.openape.api.DatabaseObject
-org.openape.server.requestHandler.ListingRequestHandler ..> org.openape.api.Messages
-org.openape.server.requestHandler.ListingRequestHandler ..> org.openape.api.listing.Listing
 org.openape.server.requestHandler.ListingRequestHandler ..> org.openape.server.database.mongoDB.DatabaseConnection
 org.openape.server.requestHandler.ListingRequestHandler ..> org.openape.server.database.mongoDB.MongoCollectionTypes
-org.openape.server.requestHandler.ResourceDescriptionRequestHandler ..> java.io.IOException
-org.openape.server.requestHandler.ResourceDescriptionRequestHandler ..> org.openape.api.DatabaseObject
-org.openape.server.requestHandler.ResourceDescriptionRequestHandler ..> org.openape.api.Messages
-org.openape.server.requestHandler.ResourceDescriptionRequestHandler ..> org.openape.api.listing.Listing
-org.openape.server.requestHandler.ResourceDescriptionRequestHandler ..> org.openape.api.resourceDescription.ResourceDescription
 org.openape.server.requestHandler.ResourceDescriptionRequestHandler ..> org.openape.server.database.mongoDB.DatabaseConnection
 org.openape.server.requestHandler.ResourceDescriptionRequestHandler ..> org.openape.server.rest.ResourceDescriptionRESTInterface
 org.openape.server.requestHandler.ResourceDescriptionRequestHandler ..> org.openape.server.rest.ResourceRESTInterface
 org.openape.server.requestHandler.ResourceDescriptionRequestHandler ..> org.openape.server.database.mongoDB.MongoCollectionTypes
-org.openape.server.requestHandler.ResourceRequestHandler ..> java.io.File
-org.openape.server.requestHandler.ResourceRequestHandler ..> java.io.IOException
-org.openape.server.requestHandler.ResourceRequestHandler ..> java.util.List
-org.openape.server.requestHandler.ResourceRequestHandler ..> javassist.NotFoundException
-org.openape.server.requestHandler.ResourceRequestHandler ..> javax.servlet.http.Part
-org.openape.server.requestHandler.ResourceRequestHandler ..> org.openape.api.DatabaseObject
-org.openape.server.requestHandler.ResourceRequestHandler ..> org.openape.api.Messages
-org.openape.server.requestHandler.ResourceRequestHandler ..> org.openape.api.listing.Listing
 org.openape.server.requestHandler.ResourceRequestHandler ..> org.openape.server.database.mongoDB.DatabaseConnection
 org.openape.server.requestHandler.ResourceRequestHandler ..> org.openape.server.database.resources.ListingManager
 org.openape.server.requestHandler.ResourceRequestHandler ..> org.openape.server.database.resources.ResourceList
 org.openape.server.requestHandler.ResourceRequestHandler ..> org.openape.server.rest.ResourceRESTInterface
 org.openape.server.requestHandler.ResourceRequestHandler ..> org.openape.server.database.mongoDB.MongoCollectionTypes
-org.openape.server.requestHandler.TaskContextRequestHandler ..> java.io.IOException
-org.openape.server.requestHandler.TaskContextRequestHandler ..> org.openape.api.DatabaseObject
-org.openape.server.requestHandler.TaskContextRequestHandler ..> org.openape.api.Messages
-org.openape.server.requestHandler.TaskContextRequestHandler ..> org.openape.api.taskcontext.TaskContext
 org.openape.server.requestHandler.TaskContextRequestHandler ..> org.openape.server.database.mongoDB.DatabaseConnection
 org.openape.server.requestHandler.TaskContextRequestHandler ..> org.openape.server.rest.TaskContextRESTInterface
 org.openape.server.requestHandler.TaskContextRequestHandler ..> org.openape.server.database.mongoDB.MongoCollectionTypes
-org.openape.server.requestHandler.UserContextRequestHandler ..> java.io.IOException
-org.openape.server.requestHandler.UserContextRequestHandler ..> org.openape.api.DatabaseObject
-org.openape.server.requestHandler.UserContextRequestHandler ..> org.openape.api.Messages
-org.openape.server.requestHandler.UserContextRequestHandler ..> org.openape.api.usercontext.UserContext
 org.openape.server.requestHandler.UserContextRequestHandler ..> org.openape.server.database.mongoDB.DatabaseConnection
 org.openape.server.requestHandler.UserContextRequestHandler ..> org.openape.server.rest.UserContextRESTInterface
 org.openape.server.requestHandler.UserContextRequestHandler ..> org.openape.server.database.mongoDB.MongoCollectionTypes
-org.openape.server.rest.EnvironmentContextRESTInterface ..> java.io.IOException
-org.openape.server.rest.EnvironmentContextRESTInterface ..> org.codehaus.jackson.JsonParseException
-org.openape.server.rest.EnvironmentContextRESTInterface ..> org.codehaus.jackson.map.JsonMappingException
-org.openape.server.rest.EnvironmentContextRESTInterface ..> org.codehaus.jackson.map.ObjectMapper
-org.openape.server.rest.EnvironmentContextRESTInterface ..> org.openape.api.Messages
-org.openape.server.rest.EnvironmentContextRESTInterface ..> org.openape.api.environmentcontext.EnvironmentContext
 org.openape.server.rest.EnvironmentContextRESTInterface ..> org.openape.server.requestHandler.EnvironmentContextRequestHandler
 org.openape.server.rest.EnvironmentContextRESTInterface --|> org.openape.server.rest.SuperRestInterface
-org.openape.server.rest.EnvironmentContextRESTInterface ..> spark.Spark
-org.openape.server.rest.EquipmentContextRESTInterface ..> java.io.IOException
-org.openape.server.rest.EquipmentContextRESTInterface ..> org.codehaus.jackson.JsonParseException
-org.openape.server.rest.EquipmentContextRESTInterface ..> org.codehaus.jackson.map.JsonMappingException
-org.openape.server.rest.EquipmentContextRESTInterface ..> org.codehaus.jackson.map.ObjectMapper
-org.openape.server.rest.EquipmentContextRESTInterface ..> org.openape.api.Messages
-org.openape.server.rest.EquipmentContextRESTInterface ..> org.openape.api.equipmentcontext.EquipmentContext
 org.openape.server.rest.EquipmentContextRESTInterface ..> org.openape.server.requestHandler.EquipmentContextRequestHandler
 org.openape.server.rest.EquipmentContextRESTInterface --|> org.openape.server.rest.SuperRestInterface
-org.openape.server.rest.EquipmentContextRESTInterface ..> spark.Spark
-org.openape.server.rest.ListingRESTInterface ..> java.io.IOException
-org.openape.server.rest.ListingRESTInterface ..> org.codehaus.jackson.JsonParseException
-org.openape.server.rest.ListingRESTInterface ..> org.codehaus.jackson.map.JsonMappingException
-org.openape.server.rest.ListingRESTInterface ..> org.codehaus.jackson.map.ObjectMapper
-org.openape.server.rest.ListingRESTInterface ..> org.openape.api.Messages
-org.openape.server.rest.ListingRESTInterface ..> org.openape.api.listing.Listing
 org.openape.server.rest.ListingRESTInterface ..> org.openape.server.requestHandler.ListingRequestHandler
 org.openape.server.rest.ListingRESTInterface --|> org.openape.server.rest.SuperRestInterface
-org.openape.server.rest.ListingRESTInterface ..> spark.Spark
-org.openape.server.rest.ResourceDescriptionRESTInterface ..> java.io.IOException
-org.openape.server.rest.ResourceDescriptionRESTInterface ..> org.codehaus.jackson.JsonParseException
-org.openape.server.rest.ResourceDescriptionRESTInterface ..> org.codehaus.jackson.map.JsonMappingException
-org.openape.server.rest.ResourceDescriptionRESTInterface ..> org.codehaus.jackson.map.ObjectMapper
-org.openape.server.rest.ResourceDescriptionRESTInterface ..> org.openape.api.Messages
-org.openape.server.rest.ResourceDescriptionRESTInterface ..> org.openape.api.listing.Listing
-org.openape.server.rest.ResourceDescriptionRESTInterface ..> org.openape.api.resourceDescription.ResourceDescription
 org.openape.server.rest.ResourceDescriptionRESTInterface ..> org.openape.server.requestHandler.ListingRequestHandler
 org.openape.server.rest.ResourceDescriptionRESTInterface ..> org.openape.server.requestHandler.ResourceDescriptionRequestHandler
 org.openape.server.rest.ResourceDescriptionRESTInterface --|> org.openape.server.rest.SuperRestInterface
-org.openape.server.rest.ResourceDescriptionRESTInterface ..> spark.Spark
-org.openape.server.rest.ResourceManagerRESTInterface ..> org.openape.api.Messages
 org.openape.server.rest.ResourceManagerRESTInterface --|> org.openape.server.rest.SuperRestInterface
-org.openape.server.rest.ResourceManagerRESTInterface ..> spark.Spark
-org.openape.server.rest.ResourceRESTInterface ..> java.io.BufferedInputStream
-org.openape.server.rest.ResourceRESTInterface ..> java.io.BufferedOutputStream
-org.openape.server.rest.ResourceRESTInterface ..> java.io.File
-org.openape.server.rest.ResourceRESTInterface ..> java.io.FileInputStream
-org.openape.server.rest.ResourceRESTInterface ..> java.io.IOException
-org.openape.server.rest.ResourceRESTInterface ..> java.io.InputStream
-org.openape.server.rest.ResourceRESTInterface ..> java.nio.file.Files
-org.openape.server.rest.ResourceRESTInterface ..> java.nio.file.Paths
-org.openape.server.rest.ResourceRESTInterface ..> java.util.List
-org.openape.server.rest.ResourceRESTInterface ..> java.util.zip.ZipEntry
-org.openape.server.rest.ResourceRESTInterface ..> java.util.zip.ZipOutputStream
-org.openape.server.rest.ResourceRESTInterface ..> javassist.NotFoundException
-org.openape.server.rest.ResourceRESTInterface ..> javax.servlet.MultipartConfigElement
-org.openape.server.rest.ResourceRESTInterface ..> javax.servlet.http.Part
-org.openape.server.rest.ResourceRESTInterface ..> org.openape.api.Messages
-org.openape.server.rest.ResourceRESTInterface ..> org.openape.api.listing.Listing
 org.openape.server.rest.ResourceRESTInterface ..> org.openape.server.requestHandler.ResourceRequestHandler
 org.openape.server.rest.ResourceRESTInterface --|> org.openape.server.rest.SuperRestInterface
-org.openape.server.rest.ResourceRESTInterface ..> spark.Spark
-org.openape.server.rest.SuperRestInterface ..> java.io.IOException
-org.openape.server.rest.SuperRestInterface ..> org.codehaus.jackson.JsonParseException
-org.openape.server.rest.SuperRestInterface ..> org.codehaus.jackson.map.JsonMappingException
-org.openape.server.rest.SuperRestInterface ..> org.codehaus.jackson.map.ObjectMapper
-org.openape.server.rest.SuperRestInterface ..> org.openape.api.Messages
 org.openape.server.rest.SuperRestInterface ..> org.openape.server.requestHandler.EnvironmentContextRequestHandler
 org.openape.server.rest.SuperRestInterface ..> org.openape.server.requestHandler.EquipmentContextRequestHandler
 org.openape.server.rest.SuperRestInterface ..> org.openape.server.requestHandler.ListingRequestHandler
@@ -245,34 +73,9 @@ org.openape.server.rest.SuperRestInterface ..> org.openape.server.requestHandler
 org.openape.server.rest.SuperRestInterface ..> org.openape.server.requestHandler.ResourceRequestHandler
 org.openape.server.rest.SuperRestInterface ..> org.openape.server.requestHandler.TaskContextRequestHandler
 org.openape.server.rest.SuperRestInterface ..> org.openape.server.requestHandler.UserContextRequestHandler
-org.openape.server.rest.SuperRestInterface ..> spark.Request
-org.openape.server.rest.SuperRestInterface ..> spark.Spark
-org.openape.server.rest.TaskContextRESTInterface ..> java.io.IOException
-org.openape.server.rest.TaskContextRESTInterface ..> org.codehaus.jackson.JsonParseException
-org.openape.server.rest.TaskContextRESTInterface ..> org.codehaus.jackson.map.JsonMappingException
-org.openape.server.rest.TaskContextRESTInterface ..> org.codehaus.jackson.map.ObjectMapper
-org.openape.server.rest.TaskContextRESTInterface ..> org.openape.api.Messages
-org.openape.server.rest.TaskContextRESTInterface ..> org.openape.api.taskcontext.TaskContext
 org.openape.server.rest.TaskContextRESTInterface ..> org.openape.server.requestHandler.TaskContextRequestHandler
 org.openape.server.rest.TaskContextRESTInterface --|> org.openape.server.rest.SuperRestInterface
-org.openape.server.rest.TaskContextRESTInterface ..> spark.Spark
-org.openape.server.rest.UserContextRESTInterface ..> java.io.IOException
-org.openape.server.rest.UserContextRESTInterface ..> org.codehaus.jackson.JsonParseException
-org.openape.server.rest.UserContextRESTInterface ..> org.codehaus.jackson.map.JsonMappingException
-org.openape.server.rest.UserContextRESTInterface ..> org.codehaus.jackson.map.ObjectMapper
-org.openape.server.rest.UserContextRESTInterface ..> org.openape.api.Messages
-org.openape.server.rest.UserContextRESTInterface ..> org.openape.api.usercontext.UserContext
 org.openape.server.rest.UserContextRESTInterface ..> org.openape.server.Main
 org.openape.server.rest.UserContextRESTInterface ..> org.openape.server.requestHandler.UserContextRequestHandler
 org.openape.server.rest.UserContextRESTInterface --|> org.openape.server.rest.SuperRestInterface
-org.openape.server.rest.UserContextRESTInterface ..> spark.Spark
-org.openape.server.database.mongoDB.MongoCollectionTypes ..> java.lang.Override
-org.openape.server.database.mongoDB.MongoCollectionTypes ..> org.openape.api.DatabaseObject
-org.openape.server.database.mongoDB.MongoCollectionTypes ..> org.openape.api.Messages
-org.openape.server.database.mongoDB.MongoCollectionTypes ..> org.openape.api.environmentcontext.EnvironmentContext
-org.openape.server.database.mongoDB.MongoCollectionTypes ..> org.openape.api.equipmentcontext.EquipmentContext
-org.openape.server.database.mongoDB.MongoCollectionTypes ..> org.openape.api.listing.Listing
-org.openape.server.database.mongoDB.MongoCollectionTypes ..> org.openape.api.resourceDescription.ResourceDescription
-org.openape.server.database.mongoDB.MongoCollectionTypes ..> org.openape.api.taskcontext.TaskContext
-org.openape.server.database.mongoDB.MongoCollectionTypes ..> org.openape.api.usercontext.UserContext
 @enduml
