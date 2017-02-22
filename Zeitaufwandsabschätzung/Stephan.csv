@@ -1,5 +1,5 @@
 Datum,Zeit in Stunden,Aktivität,Summe
-12.10,1,Initialer Projekttreff,"115,5"
+12.10,1,Initialer Projekttreff,"116,5"
 18.10,1,2. Teambesprechung,
 18.10,2,Issues erstellen und Projekt bei mir einrichten,
 25.10,"0,5",3. Teambesprechung,
@@ -59,3 +59,4 @@ Datum,Zeit in Stunden,Aktivität,Summe
 20.02,4,test and fix database connection,
 21.02,2,Listing klasse updaten,
 22.02,2,Listing rest und listing manager fixen,
+22.02,1,planeuml intallieren und einarbeiten. Generieren von umls aus code als startpunkt,
