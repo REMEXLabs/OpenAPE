@@ -27,6 +27,4 @@ end note
 [web] --> [API]
 [web] --> [server]
 [client] --> [API]
-
 @enduml
-
