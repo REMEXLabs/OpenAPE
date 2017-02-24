@@ -50,7 +50,6 @@ public class TestDatabaseConnection {
         } catch (ClassCastException | IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
-            Assert.assertTrue(false);
         }
 
     }
