@@ -36,31 +36,30 @@ public class DatabaseConnection {
     /**
      * The url to our mongo database server.
      */
-    private static final String DATABASEURL = Messages
-            .getString("DatabaseConnection.MongoDBServerAddress"); // TODO replace by //$NON-NLS-1$
-    // the mongoDB url.
+    private static String DATABASEURL = Messages
+            .getString("DatabaseConnection.MongoDBServerAddress"); //$NON-NLS-1$
     /**
      * The standard port for online mongo databases.
      */
-    private static final int DATABASEPORT = 27017;
+    private static String DATABASEPORT = Messages.getString("DatabaseConnection.MongoDBServerPort"); //$NON-NLS-1$
 
     /**
      * The name of the mongo database holding the relevant data for this
      * application.
      */
-    private static final String DATABASENAME = Messages
+    private static String DATABASENAME = Messages
             .getString("DatabaseConnection.MongoDBDatabaseName"); //$NON-NLS-1$
 
     /**
      * The user name used by this application to connect to the mongo database.
      */
-    private static final String DATABASUSERNAME = Messages
+    private static String DATABASEUSERNAME = Messages
             .getString("DatabaseConnection.MongoDBDatabaseUsername"); //$NON-NLS-1$
 
     /**
      * The password used by this application to connect to the mongo database.
      */
-    private static final String DATABASEPASSWORD = Messages
+    private static String DATABASEPASSWORD = Messages
             .getString("DatabaseConnection.MongoDBDatabaseUserPassword"); //$NON-NLS-1$
 
     /**
@@ -122,12 +121,12 @@ public class DatabaseConnection {
     private DatabaseConnection() {
         // Create credentials for the openAPE database
         final MongoCredential credential = MongoCredential.createCredential(
-                DatabaseConnection.DATABASUSERNAME, DatabaseConnection.DATABASENAME,
+                DatabaseConnection.DATABASEUSERNAME, DatabaseConnection.DATABASENAME,
                 DatabaseConnection.DATABASEPASSWORD.toCharArray());
 
         // Create database client for the openAPE database
         this.mongoClient = new MongoClient(new ServerAddress(DatabaseConnection.DATABASEURL,
-                DatabaseConnection.DATABASEPORT), Arrays.asList(credential));
+                Integer.parseInt(DatabaseConnection.DATABASEPORT)), Arrays.asList(credential));
 
         // Get a reference to the openAPE database.
         this.database = this.mongoClient.getDatabase(DatabaseConnection.DATABASENAME);
@@ -317,8 +316,9 @@ public class DatabaseConnection {
             throws ClassCastException, IOException {
         // Check if data is of the correct type for the collection.
         if (!type.getDocumentType().equals(data.getClass())) {
-            throw new ClassCastException(Messages.getString("DatabaseConnection.doctypeErrorMassage") //$NON-NLS-1$
-                    + type.getDocumentType().getName());
+            throw new ClassCastException(
+                    Messages.getString("DatabaseConnection.doctypeErrorMassage") //$NON-NLS-1$
+                            + type.getDocumentType().getName());
         }
 
         final MongoCollection<Document> collectionToWorkOn = this.getCollectionByType(type);
