@@ -3,6 +3,7 @@ package org.openape.server.database.mongoDB;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.Properties;
 
 import org.bson.Document;
 import org.bson.codecs.configuration.CodecConfigurationException;
@@ -73,6 +74,35 @@ public class DatabaseConnection {
      * @return the database connection.
      */
     public static DatabaseConnection getInstance() {
+        // import configuration file
+        Properties props = new Properties();
+        try {
+            props.load(DatabaseConnection.class
+                    .getResourceAsStream("../../config/mongo.properties"));
+            String name = props.getProperty("databaseName");
+            if (name != null) {
+                DATABASENAME = name;
+            }
+            String address = props.getProperty("databaseURL");
+            if (address != null) {
+                DATABASEURL = address;
+            }
+            String port = props.getProperty("databasePort");
+            if (port != null) {
+                DATABASEPORT = port;
+            }
+            String password = props.getProperty("databasePassword");
+            if (password != null) {
+                DATABASEPASSWORD = password;
+            }
+            String userName = props.getProperty("databaseUsername");
+            if (userName != null) {
+                DATABASEUSERNAME = userName;
+            }
+            System.out.println(DATABASEPORT);
+        } catch (IOException | NullPointerException e) {
+            System.err.println("Could not find configuartion file.");
+        }
         if (DatabaseConnection.databaseConnectionInstance == null) {
             DatabaseConnection.databaseConnectionInstance = new DatabaseConnection();
         }
@@ -263,8 +293,9 @@ public class DatabaseConnection {
             throws ClassCastException, IOException {
         // Check if data is of the correct type for the collection.
         if (!type.getDocumentType().equals(data.getClass())) {
-            throw new ClassCastException(Messages.getString("DatabaseConnection.doctypeErrorMassage") //$NON-NLS-1$
-                    + type.getDocumentType().getName());
+            throw new ClassCastException(
+                    Messages.getString("DatabaseConnection.doctypeErrorMassage") //$NON-NLS-1$
+                            + type.getDocumentType().getName());
         }
 
         final MongoCollection<Document> collectionToWorkOn = this.getCollectionByType(type);
