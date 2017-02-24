@@ -139,7 +139,6 @@
 	<modules>
 		<module>API</module>
 		<module>server</module>
-		<module>web</module>
 <!--		<module>client</module>-->
 	</modules>
 </project>
