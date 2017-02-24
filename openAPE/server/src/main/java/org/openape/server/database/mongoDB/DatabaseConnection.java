@@ -3,8 +3,6 @@ package org.openape.server.database.mongoDB;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Iterator;
-import java.util.Properties;
-
 import org.bson.Document;
 import org.bson.codecs.configuration.CodecConfigurationException;
 import org.bson.json.JsonParseException;
@@ -12,6 +10,7 @@ import org.bson.types.ObjectId;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.openape.api.DatabaseObject;
 import org.openape.api.Messages;
+import org.openape.server.MongoConfig;
 import org.openape.server.requestHandler.EnvironmentContextRequestHandler;
 import org.openape.server.requestHandler.EquipmentContextRequestHandler;
 import org.openape.server.requestHandler.TaskContextRequestHandler;
@@ -75,34 +74,38 @@ public class DatabaseConnection {
      */
     public static DatabaseConnection getInstance() {
         // import configuration file
-        Properties props = new Properties();
-        try {
-            props.load(DatabaseConnection.class
-                    .getResourceAsStream("../../config/mongo.properties"));
-            String name = props.getProperty("databaseName");
-            if (name != null) {
-                DATABASENAME = name;
-            }
-            String address = props.getProperty("databaseURL");
-            if (address != null) {
-                DATABASEURL = address;
-            }
-            String port = props.getProperty("databasePort");
-            if (port != null) {
-                DATABASEPORT = port;
-            }
-            String password = props.getProperty("databasePassword");
-            if (password != null) {
-                DATABASEPASSWORD = password;
-            }
-            String userName = props.getProperty("databaseUsername");
-            if (userName != null) {
-                DATABASEUSERNAME = userName;
-            }
-            System.out.println(DATABASEPORT);
-        } catch (IOException | NullPointerException e) {
-            System.err.println("Could not find configuartion file.");
+        String name = MongoConfig.getString("databaseName");//$NON-NLS-1$
+        if (name != null) {
+            DATABASENAME = name;
+        } else {
+            DATABASENAME = Messages.getString("DatabaseConnection.MongoDBDatabaseName"); //$NON-NLS-1$
         }
+        String address = MongoConfig.getString("databaseURL");//$NON-NLS-1$
+        if (address != null) {
+            DATABASEURL = address;
+        } else {
+            DATABASEURL = Messages.getString("DatabaseConnection.MongoDBServerAddress"); //$NON-NLS-1$
+        }
+        String port = MongoConfig.getString("databasePort");//$NON-NLS-1$
+        if (port != null) {
+            DATABASEPORT = port;
+            System.out.println(port);
+        } else {
+            DATABASEPORT = Messages.getString("DatabaseConnection.MongoDBServerPort"); //$NON-NLS-1$
+        }
+        String password = MongoConfig.getString("databasePassword");//$NON-NLS-1$
+        if (password != null) {
+            DATABASEPASSWORD = password;
+        } else {
+            DATABASEPASSWORD = Messages.getString("DatabaseConnection.MongoDBDatabaseUserPassword"); //$NON-NLS-1$
+        }
+        String userName = MongoConfig.getString("databaseUsername");//$NON-NLS-1$
+        if (userName != null) {
+            DATABASEUSERNAME = userName;
+        } else {
+            DATABASEUSERNAME = Messages.getString("DatabaseConnection.MongoDBDatabaseUsername"); //$NON-NLS-1$
+        }
+
         if (DatabaseConnection.databaseConnectionInstance == null) {
             DatabaseConnection.databaseConnectionInstance = new DatabaseConnection();
         }
