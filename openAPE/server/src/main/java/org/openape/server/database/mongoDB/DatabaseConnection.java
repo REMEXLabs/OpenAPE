@@ -75,32 +75,32 @@ public class DatabaseConnection {
     public static DatabaseConnection getInstance() {
         // import configuration file
         String name = MongoConfig.getString("databaseName");//$NON-NLS-1$
-        if (name != null) {
+        if (name != null && !name.equals("")) {
             DATABASENAME = name;
         } else {
             DATABASENAME = Messages.getString("DatabaseConnection.MongoDBDatabaseName"); //$NON-NLS-1$
         }
         String address = MongoConfig.getString("databaseURL");//$NON-NLS-1$
-        if (address != null) {
+        if (address != null && !address.equals("")) {
             DATABASEURL = address;
         } else {
             DATABASEURL = Messages.getString("DatabaseConnection.MongoDBServerAddress"); //$NON-NLS-1$
         }
         String port = MongoConfig.getString("databasePort");//$NON-NLS-1$
-        if (port != null) {
+        if (port != null && !port.equals("")) {
             DATABASEPORT = port;
             System.out.println(port);
         } else {
             DATABASEPORT = Messages.getString("DatabaseConnection.MongoDBServerPort"); //$NON-NLS-1$
         }
         String password = MongoConfig.getString("databasePassword");//$NON-NLS-1$
-        if (password != null) {
+        if (password != null && !password.equals("")) {
             DATABASEPASSWORD = password;
         } else {
             DATABASEPASSWORD = Messages.getString("DatabaseConnection.MongoDBDatabaseUserPassword"); //$NON-NLS-1$
         }
         String userName = MongoConfig.getString("databaseUsername");//$NON-NLS-1$
-        if (userName != null) {
+        if (userName != null && !userName.equals("")) {
             DATABASEUSERNAME = userName;
         } else {
             DATABASEUSERNAME = Messages.getString("DatabaseConnection.MongoDBDatabaseUsername"); //$NON-NLS-1$
