@@ -1,7 +1,6 @@
 @startuml
 [API]
 [server]
-[web]
 [client]
 note left of [API]
 	Contains all classes defined
@@ -13,18 +12,10 @@ note left of [server]
 	database connection. Main 
 	module of the program.
 end note
-note left of [web]
-	Compilation module of the
-	program. Contains initialize
-	class and produces the
-	deployable war.
-end note
 note top of [client]
 	Stand alone client. Uses the
 	rest interfaces.
 end note
 [server] --> [API]
-[web] --> [API]
-[web] --> [server]
 [client] --> [API]
 @enduml
