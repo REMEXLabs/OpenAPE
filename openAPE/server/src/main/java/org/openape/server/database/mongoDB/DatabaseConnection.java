@@ -89,7 +89,6 @@ public class DatabaseConnection {
         String port = MongoConfig.getString("databasePort");//$NON-NLS-1$
         if (port != null && !port.equals("")) {
             DATABASEPORT = port;
-            System.out.println(port);
         } else {
             DATABASEPORT = Messages.getString("DatabaseConnection.MongoDBServerPort"); //$NON-NLS-1$
         }
