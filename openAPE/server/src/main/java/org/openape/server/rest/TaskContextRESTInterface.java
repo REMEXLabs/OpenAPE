@@ -23,7 +23,7 @@ public class TaskContextRESTInterface extends SuperRestInterface {
                         // Try to map the received json object to a taskContext
                         // object.
                         final TaskContext recievedTaskContext = (TaskContext) SuperRestInterface
-                                .extractContentFromRequest(req, TaskContext.class);
+                                .extractObjectFromRequest(req, TaskContext.class);
                         // Test the object for validity.
                         if (!recievedTaskContext.isValid()) {
                             res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
@@ -84,7 +84,7 @@ public class TaskContextRESTInterface extends SuperRestInterface {
                             .getString("TaskContextRESTInterface.IDParam")); //$NON-NLS-1$
                     try {
                         final TaskContext recievedTaskContext = (TaskContext) SuperRestInterface
-                                .extractContentFromRequest(req, TaskContext.class);
+                                .extractObjectFromRequest(req, TaskContext.class);
                         // Test the object for validity.
                         if (!recievedTaskContext.isValid()) {
                             res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);

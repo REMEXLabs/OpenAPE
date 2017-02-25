@@ -24,7 +24,7 @@ public class UserContextRESTInterface extends SuperRestInterface {
                         // Try to map the received json object to a userContext
                         // object.
                         final UserContext recievedUserContext = (UserContext) SuperRestInterface
-                                .extractContentFromRequest(req, UserContext.class);
+                                .extractObjectFromRequest(req, UserContext.class);
                         // Test the object for validity.
                         if (!recievedUserContext.isValid()) {
                             res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
@@ -100,7 +100,7 @@ public class UserContextRESTInterface extends SuperRestInterface {
                             .getString("UserContextRESTInterface.IDParam")); //$NON-NLS-1$
                     try {
                         final UserContext recievedUserContext = (UserContext) SuperRestInterface
-                                .extractContentFromRequest(req, UserContext.class);
+                                .extractObjectFromRequest(req, UserContext.class);
                         // Test the object for validity.
                         if (!recievedUserContext.isValid()) {
                             res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);

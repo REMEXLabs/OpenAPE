@@ -25,15 +25,37 @@ class org.openape.server.database.resources.ResourceList <<Singleton>> {
 }
 class org.openape.server.requestHandler.TypeRequestHandler {
 +createType(type: Object): String
-+deleteEnvironmentContextById(id: String): Boolean
++deleteTypeById(id: String): Boolean
++getTypeById(id: String): Type
++updateTypeById(id: String, type: Object): Boolean
 }
 note left: exists for each context type,\nresource descriptions and listings.
-class org.openape.server.requestHandler.ResourceRequestHandler
-class org.openape.server.rest.TypeRESTInterface
+class org.openape.server.requestHandler.ResourceRequestHandler {
++createResource(resource: Part): String
++deleteResourceById(id: String): Boolean
++getListingById(id: String): Listing
++getResourceById(String id): File
++getResourceByListing(listing: Listing): List<File>
+}
+class org.openape.server.rest.TypeRESTInterface {
++<u>setupTypeRESTInterface(requestHandler: TypeRequestHandler)
+}
 note left: exists for each context type,\nresource descriptions and listings.
-class org.openape.server.rest.ResourceManagerRESTInterface
-class org.openape.server.rest.ResourceRESTInterface
-class org.openape.server.rest.SuperRestInterface
+class org.openape.server.rest.ResourceManagerRESTInterface {
++<u>setupResourceManagerRESTInterface()
+}
+class org.openape.server.rest.ResourceRESTInterface {
++<u>setupResourceRESTInterface(requestHandler: ResourceRequestHandler)
+}
+class org.openape.server.rest.SuperRestInterface{
++<u>HTTP_STATUS_BAD_REQUEST
++<u>HTTP_STATUS_CREATED
++<u>HTTP_STATUS_INTERNAL_SERVER_ERROR
++<u>HTTP_STATUS_NO_CONTENT
++<u>HTTP_STATUS_NOT_FOUND
++<u>HTTP_STATUS_OK
+#<u>extractObjectFromRequest(req: Request, objectType: Class<T>): Object
+}
 enum org.openape.server.database.mongoDB.MongoCollectionTypes {
 ENVIRONMENTCONTEXT
 EQUIPMENTCONTEXT
@@ -68,6 +90,7 @@ org.openape.server.rest.ResourceRESTInterface --|> org.openape.server.rest.Super
 
 org.openape.server.rest.SuperRestInterface --> org.openape.server.rest.TypeRESTInterface :uses
 org.openape.server.rest.SuperRestInterface --> org.openape.server.rest.ResourceRESTInterface :uses
+org.openape.server.rest.SuperRestInterface --> org.openape.server.rest.ResourceManagerRESTInterface :uses
 
 org.openape.server.requestHandler.ResourceRequestHandler --> org.openape.server.database.resources.ListingManager :uses
 @enduml

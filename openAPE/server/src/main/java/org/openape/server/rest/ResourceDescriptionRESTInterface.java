@@ -25,7 +25,7 @@ public class ResourceDescriptionRESTInterface extends SuperRestInterface {
                         // resource description
                         // object.
                 final ResourceDescription recievedResourceDescription = (ResourceDescription) SuperRestInterface
-                        .extractContentFromRequest(req, ResourceDescription.class);
+                        .extractObjectFromRequest(req, ResourceDescription.class);
                 // Test the object for validity.
                 if (!recievedResourceDescription.isValid()) {
                     res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
@@ -121,7 +121,7 @@ public class ResourceDescriptionRESTInterface extends SuperRestInterface {
                             .getString("ResourceDescriptionRESTInterface.IDParam")); //$NON-NLS-1$
                     try {
                         final ResourceDescription recievedResourceDescription = (ResourceDescription) SuperRestInterface
-                                .extractContentFromRequest(req, ResourceDescription.class);
+                                .extractObjectFromRequest(req, ResourceDescription.class);
                         // Test the object for validity.
                         if (!recievedResourceDescription.isValid()) {
                             res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);

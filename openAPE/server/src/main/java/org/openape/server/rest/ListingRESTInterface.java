@@ -23,7 +23,7 @@ public class ListingRESTInterface extends SuperRestInterface {
                         // environmentContext
                         // object.
                 final Listing recievedListing = (Listing) SuperRestInterface
-                        .extractContentFromRequest(req, Listing.class);
+                        .extractObjectFromRequest(req, Listing.class);
                 // Test the object for validity.
                 if (!recievedListing.isValid()) {
                     res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);

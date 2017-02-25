@@ -25,7 +25,7 @@ public class EquipmentContextRESTInterface extends SuperRestInterface {
                         // equipmentContext
                         // object.
                         final EquipmentContext recievedEquipmentContext = (EquipmentContext) SuperRestInterface
-                                .extractContentFromRequest(req, EquipmentContext.class);
+                                .extractObjectFromRequest(req, EquipmentContext.class);
                         // Test the object for validity.
                         if (!recievedEquipmentContext.isValid()) {
                             res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
@@ -87,7 +87,7 @@ public class EquipmentContextRESTInterface extends SuperRestInterface {
                             .getString("EquipmentContextRESTInterface.IDParam")); //$NON-NLS-1$
                     try {
                         final EquipmentContext recievedEquipmentContext = (EquipmentContext) SuperRestInterface
-                                .extractContentFromRequest(req, EquipmentContext.class);
+                                .extractObjectFromRequest(req, EquipmentContext.class);
                         // Test the object for validity.
                         if (!recievedEquipmentContext.isValid()) {
                             res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);

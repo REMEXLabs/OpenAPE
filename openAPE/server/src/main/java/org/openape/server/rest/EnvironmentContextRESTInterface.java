@@ -25,7 +25,7 @@ public class EnvironmentContextRESTInterface extends SuperRestInterface {
                         // environmentContext
                         // object.
                         final EnvironmentContext recievedEnvironmentContext = (EnvironmentContext) SuperRestInterface
-                                .extractContentFromRequest(req, EnvironmentContext.class);
+                                .extractObjectFromRequest(req, EnvironmentContext.class);
                         // Test the object for validity.
                         if (!recievedEnvironmentContext.isValid()) {
                             res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
@@ -87,7 +87,7 @@ public class EnvironmentContextRESTInterface extends SuperRestInterface {
                             .getString("EnvironmentContextRESTInterface.IDParam")); //$NON-NLS-1$
                     try {
                         final EnvironmentContext recievedEnvironmentContext = (EnvironmentContext) SuperRestInterface
-                                .extractContentFromRequest(req, EnvironmentContext.class);
+                                .extractObjectFromRequest(req, EnvironmentContext.class);
                         // Test the object for validity.
                         if (!recievedEnvironmentContext.isValid()) {
                             res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
