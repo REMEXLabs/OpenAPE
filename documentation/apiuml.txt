@@ -2,6 +2,7 @@
 abstract class org.openape.api.DatabaseObject
 class org.openape.api.Descriptor
 class org.openape.api.Messages
+note left: Holds references to external file\ncontaining all strings in\nthe projekt
 class org.openape.api.Property
 class org.openape.api.environmentcontext.EnvironmentContext
 class org.openape.api.equipmentcontext.EquipmentContext
@@ -12,23 +13,18 @@ class org.openape.api.taskcontext.TaskContext
 class org.openape.api.usercontext.Context
 class org.openape.api.usercontext.Preference
 class org.openape.api.usercontext.UserContext
-org.openape.api.Descriptor ..> org.openape.api.environmentcontext.EnvironmentContext
-org.openape.api.Descriptor ..> org.openape.api.equipmentcontext.EquipmentContext
-org.openape.api.Descriptor ..> org.openape.api.resourceDescription.ResourceDescription
-org.openape.api.Descriptor ..> org.openape.api.taskcontext.TaskContext
-org.openape.api.Property ..> org.openape.api.environmentcontext.EnvironmentContext
-org.openape.api.Property ..> org.openape.api.equipmentcontext.EquipmentContext
-org.openape.api.Property ..> org.openape.api.resourceDescription.ResourceDescription
-org.openape.api.Property ..> org.openape.api.taskcontext.TaskContext
+org.openape.api.usercontext.Preference "*" --* "1" org.openape.api.usercontext.Context
+org.openape.api.usercontext.Context "*" --* "1" org.openape.api.usercontext.UserContext
+org.openape.api.Descriptor "*" --* "1" org.openape.api.Property
+org.openape.api.Property "*" --* "1" org.openape.api.environmentcontext.EnvironmentContext
+org.openape.api.Property "*" --* "1" org.openape.api.equipmentcontext.EquipmentContext
+org.openape.api.Property "*" --* "1" org.openape.api.resourceDescription.ResourceDescription
+org.openape.api.Property "*" --* "1" org.openape.api.taskcontext.TaskContext
 org.openape.api.environmentcontext.EnvironmentContext --|> org.openape.api.DatabaseObject
-org.openape.api.environmentcontext.EnvironmentContext ..> org.openape.api.Property
 org.openape.api.equipmentcontext.EquipmentContext --|> org.openape.api.DatabaseObject
-org.openape.api.equipmentcontext.EquipmentContext ..> org.openape.api.Property
 org.openape.api.listing.Listing --|> org.openape.api.DatabaseObject
-org.openape.api.listing.Listing ..> org.openape.api.resourceDescription.ResourceDescription
+org.openape.api.resourceDescription.ResourceDescription "1" --o "1" org.openape.api.listing.Listing 
 org.openape.api.resourceDescription.ResourceDescription --|> org.openape.api.DatabaseObject
-org.openape.api.resourceDescription.ResourceDescription ..> org.openape.api.Property
 org.openape.api.taskcontext.TaskContext --|> org.openape.api.DatabaseObject
-org.openape.api.taskcontext.TaskContext ..> org.openape.api.Property
 org.openape.api.usercontext.UserContext --|> org.openape.api.DatabaseObject
 @enduml

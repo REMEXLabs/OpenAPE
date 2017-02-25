@@ -8,7 +8,6 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.openape.api.Messages;
 import org.openape.api.listing.Listing;
 import org.openape.api.resourceDescription.ResourceDescription;
-import org.openape.server.requestHandler.ListingRequestHandler;
 import org.openape.server.requestHandler.ResourceDescriptionRequestHandler;
 
 import spark.Spark;
