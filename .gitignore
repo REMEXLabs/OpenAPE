@@ -4,11 +4,15 @@
 *.jar
 *.class
 *.classpath
-*settings
+*.settings
 target
 bin
+
 !openAPE/web/target/
 openAPE/web/target/*
 !openAPE/web/target/*.war
-
 openAPE/web/target/*.war
+
+documentation/build/*
+!documentation/build/*.pdf
+documentation/build/*.pdf
