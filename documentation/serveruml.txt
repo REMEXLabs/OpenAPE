@@ -29,10 +29,10 @@ org.openape.server.requestHandler.TypeRequestHandler --> org.openape.server.data
 org.openape.server.requestHandler.ResourceRequestHandler --> org.openape.server.database.mongoDB.DatabaseConnection :uses
 org.openape.server.requestHandler.ResourceRequestHandler --> org.openape.server.database.resources.ResourceList :uses
 
-org.openape.server.rest.TypeRESTInterface "1" *-- "1" org.openape.server.requestHandler.TypeRequestHandler
+org.openape.server.requestHandler.TypeRequestHandler "1" --* "1" org.openape.server.rest.TypeRESTInterface
 org.openape.server.rest.TypeRESTInterface --|> org.openape.server.rest.SuperRestInterface
 org.openape.server.rest.ResourceManagerRESTInterface --|> org.openape.server.rest.SuperRestInterface
-org.openape.server.rest.ResourceRESTInterface "1" *-- "1" org.openape.server.requestHandler.ResourceRequestHandler
+org.openape.server.requestHandler.ResourceRequestHandler "1" --* "1" org.openape.server.rest.ResourceRESTInterface
 org.openape.server.rest.ResourceRESTInterface --|> org.openape.server.rest.SuperRestInterface
 
 org.openape.server.rest.SuperRestInterface --> org.openape.server.rest.TypeRESTInterface :uses
