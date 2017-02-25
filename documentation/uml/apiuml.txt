@@ -8,7 +8,7 @@ class org.openape.api.Descriptor {
 +equals(compare: Descriptor): Boolean
 }
 class org.openape.api.Messages {
-<u>+getString(key: String): String
++<u>getString(key: String): String
 }
 note left: Holds references to external file\ncontaining all strings in\nthe projekt
 class org.openape.api.Property {

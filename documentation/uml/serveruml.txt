@@ -1,11 +1,32 @@
 @startuml
-class org.openape.server.Main
-class org.openape.server.MongoConfig
-class org.openape.web.Init
-class org.openape.server.database.mongoDB.DatabaseConnection <<Singleton>>
-class org.openape.server.database.resources.ListingManager
-class org.openape.server.database.resources.ResourceList <<Singleton>>
-class org.openape.server.requestHandler.TypeRequestHandler 
+class org.openape.server.Main{
++<u>main(args: String[])
+}
+class org.openape.server.MongoConfig {
++<u>getString(key: String): String
+}
+class org.openape.web.Init{
++init()
+}
+class org.openape.server.database.mongoDB.DatabaseConnection <<Singleton>> {
++deleteData(type: MongoCollectionTypes, id: String): Boolean
++getData(type: MongoCollectionTypes, id: String): DatabaseObject
++storeData(type: MongoCollectionTypes, data: DatabaseObject): String
++updateData(type: MongoCollectionTypes, data: DatabaseObject, id: String): Boolean
+}
+class org.openape.server.database.resources.ListingManager {
++<u>getResourcesFromListing(listing: Listing): List<File>
+}
+class org.openape.server.database.resources.ResourceList <<Singleton>> {
++addResource(resource: Part): String
++deleteResource(fileName: String): Boolean
++getResourceNameList(): List<String>
++getResoureFile(fileName: String): File
+}
+class org.openape.server.requestHandler.TypeRequestHandler {
++createType(type: Object): String
++deleteEnvironmentContextById(id: String): Boolean
+}
 note left: exists for each context type,\nresource descriptions and listings.
 class org.openape.server.requestHandler.ResourceRequestHandler
 class org.openape.server.rest.TypeRESTInterface
@@ -13,7 +34,17 @@ note left: exists for each context type,\nresource descriptions and listings.
 class org.openape.server.rest.ResourceManagerRESTInterface
 class org.openape.server.rest.ResourceRESTInterface
 class org.openape.server.rest.SuperRestInterface
-enum org.openape.server.database.mongoDB.MongoCollectionTypes
+enum org.openape.server.database.mongoDB.MongoCollectionTypes {
+ENVIRONMENTCONTEXT
+EQUIPMENTCONTEXT
+LISTING
+RESOURCEDESCRIPTION
+TASKCONTEXT
+USERCONTEXT
++<u>getTypeFromCollectionName(collectionName: String): MongoCollectionTypes
++getDocumentType(): Class<? extends DatabaseObject>
++toString(): String
+}
 org.openape.server.database.mongoDB.DatabaseConnection --> org.openape.server.database.mongoDB.MongoCollectionTypes :uses
 
 org.openape.server.Main --> org.openape.server.database.mongoDB.DatabaseConnection :uses
