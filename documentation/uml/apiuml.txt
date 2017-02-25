@@ -1,18 +1,53 @@
 @startuml
-abstract class org.openape.api.DatabaseObject
-class org.openape.api.Descriptor
-class org.openape.api.Messages
+abstract class org.openape.api.DatabaseObject <<Serializable>> {
++isValid(): Boolean
+}
+class org.openape.api.Descriptor {
+-name: String
+-value: String
++equals(compare: Descriptor): Boolean
+}
+class org.openape.api.Messages {
++getString(key: String): String
+}
 note left: Holds references to external file\ncontaining all strings in\nthe projekt
-class org.openape.api.Property
-class org.openape.api.environmentcontext.EnvironmentContext
-class org.openape.api.equipmentcontext.EquipmentContext
-class org.openape.api.listing.Listing
-class org.openape.api.resourceDescription.ResourceDescription
+class org.openape.api.Property {
+-name: String
+-value: String
++equals(compare: Property): Boolean
+}
+class org.openape.api.environmentcontext.EnvironmentContext {
++equals(compare: EnvironmentContext): Boolean
+}
+class org.openape.api.equipmentcontext.EquipmentContext {
++equals(compare: EquipmentContext): Boolean
+}
+class org.openape.api.listing.Listing {
+-userContextUris: List<String>
+-taskContextUris: List<String>
+-equipmentContextUris: List<String>
+-environmantContextUris: List<String>
+}
+class org.openape.api.resourceDescription.ResourceDescription {
++equals(compare: ResourceDescription): Boolean
+}
 class org.openape.api.rest.RESTPaths
-class org.openape.api.taskcontext.TaskContext
-class org.openape.api.usercontext.Context
-class org.openape.api.usercontext.Preference
-class org.openape.api.usercontext.UserContext
+class org.openape.api.taskcontext.TaskContext {
++equals(compare: TaskContext): Boolean
+}
+class org.openape.api.usercontext.Context {
+-id: String
+-name: String
++equals(compare: Context): Boolean
+}
+class org.openape.api.usercontext.Preference {
+-key: String
+-value: String
++equals(compare: Preference): Boolean
+}
+class org.openape.api.usercontext.UserContext {
++equals(compare: UserContext): Boolean
+}
 org.openape.api.usercontext.Preference "*" --* "1" org.openape.api.usercontext.Context
 org.openape.api.usercontext.Context "*" --* "1" org.openape.api.usercontext.UserContext
 org.openape.api.Descriptor "*" --* "1" org.openape.api.Property

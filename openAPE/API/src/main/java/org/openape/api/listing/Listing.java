@@ -17,11 +17,11 @@ import org.openape.api.resourceDescription.ResourceDescription;
 public class Listing extends DatabaseObject {
     private static final long serialVersionUID = 6662310079884980939L;
 
-    List<String> userContextUris = new ArrayList<String>();
-    List<String> taskContextUris = new ArrayList<String>();
-    List<String> equipmentContextUris = new ArrayList<String>();
-    List<String> environmantContextUris = new ArrayList<String>();
-    ResourceDescription resourceDescriptionQurey = new ResourceDescription();
+    private List<String> userContextUris = new ArrayList<String>();
+    private List<String> taskContextUris = new ArrayList<String>();
+    private List<String> equipmentContextUris = new ArrayList<String>();
+    private List<String> environmantContextUris = new ArrayList<String>();
+    private ResourceDescription resourceDescriptionQurey = new ResourceDescription();
 
     @XmlElement(name = "environment-context-uri")
     public List<String> getEnvironmantContextUris() {

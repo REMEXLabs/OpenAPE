@@ -2,9 +2,9 @@
 class org.openape.server.Main
 class org.openape.server.MongoConfig
 class org.openape.web.Init
-class org.openape.server.database.mongoDB.DatabaseConnection
+class org.openape.server.database.mongoDB.DatabaseConnection <<Singleton>>
 class org.openape.server.database.resources.ListingManager
-class org.openape.server.database.resources.ResourceList
+class org.openape.server.database.resources.ResourceList <<Singleton>>
 class org.openape.server.requestHandler.TypeRequestHandler 
 note left: exists for each context type,\nresource descriptions and listings.
 class org.openape.server.requestHandler.ResourceRequestHandler
