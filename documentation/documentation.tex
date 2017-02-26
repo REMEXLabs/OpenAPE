@@ -56,8 +56,17 @@ The project is developed in \emph{Eclipse} and so here is described how to use i
 \paragraph{Install Java} To develop this project with \emph{Eclipse} you need a current \emph{Java Development Kit}. Use the download button under \emph{JDK} \href{http://www.oracle.com/technetwork/java/javase/downloads/index.html}{here} to get the current version.
 \paragraph{Import project} It is recommended not to use the project folder as workspace for \emph{Eclipse} but to import the project. To do so start \emph{Eclipse} and navigate $File \rightarrow Import... \rightarrow Maven \rightarrow \text{\emph{Existing Maven Projects}} \rightarrow Next \rightarrow Browse... \rightarrow \text{browse the folder OpenAPE/openAPE} \rightarrow -> Finish$. Now you should have the main project plus the modules \emph{API} \emph{client} and \emph{server} in your navigation.
 \paragraph{Ensure the right Java version is used} The project will not work correctly if \emph{Eclipse} doesn't use the previously installed \emph{Java JDK} but a \emph{Java RE}. To change the used \emph{Java version} mark a module and navigate $Project \rightarrow Properties \rightarrow \text{emph{Java Build Path}} \rightarrow Libraries \rightarrow \text{mark the used system library} \rightarrow Edit... \rightarrow \text{emph{Execution environment}} \rightarrow \text{Choose a Java 1.8 JDK or newer from the list and klick finish. If none is available navigate \emph{Installed JREs…}} \rightarrow Search... \rightarrow  \text{Choose the installation path of the previously installed Java JDK. It should now be available in the execution environment list}.$ Repeat this process for each module containing source code.
+\subsection{Maven} \emph{Maven} is a build automation tool used to compile the project and create the deployable \emph{war file}. Next is the order in which \emph{Maven} commands are used to create the \emph{war}. After importing the project this should be done once to update the projects \emph{build path} and get rid of errors regarding it. 
+\paragraph{Maven deployment commands} $\text{Right click on the main project} \rightarrow Maven \rightarrow \text{\emph{Update Project...}}$
+
+$\text{Right click on the main project} \rightarrow \text{\emph{Run As}} \rightarrow \text{\emph{Maven clean}}$
+
+$\text{Right click on the main project} \rightarrow \text{\emph{Run As}} \rightarrow \text{\emph{Maven install}}$
+
+After each command wait for the IDE to finish. After the last command there should be a deployable \emph{war} file in \directory{server/target}.
 \section{Set up application}
 \label{sec:setupapp}
+The application needs an installed and running \emph{mongoDB} to work. So first it is described how to set up that. The application itself can run on any web server capable of deploying a \emph{war} file. Here is described how to deploy it onto a tomcat server.
 \subsection{Set up MonoDB}
 \subsection{Set up tomcat server}
 \end{document}
