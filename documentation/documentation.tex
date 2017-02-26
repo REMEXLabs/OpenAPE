@@ -87,6 +87,9 @@ database.createCollection("test");
 database.test.insert( { x: 1 } );
 \end{lstlisting}
 With your choice for the \texttt{<userPassword>}. That password must also be set in the \emph{MongoDB} configuration file mentioned in \nameref{subsec:server}. In the same way other parameters of the \emph{monoDB} can be adjusted.
-\paragraph{Install MongoDB} 
-\subsection{Set up tomcat server} At this point in time the current version of 
+\paragraph{Install MongoDB} The used version of \emph{MongoDB Server} can be found\href{https://docs.mongodb.com/v3.4/installation/}{here}. If you are working on \emph{Windows}, after installing you may have to create the folder \directory{C:/data/db}. This folder is used by \emph{MongoDB} to run its databases in.
+\paragraph{Start MognoDB} To start \emph{MongoDB} open a console, navigate into its installation directory and use the command \texttt{mongod}.
+\paragraph{Set up Database} To set up the database you have to run the previously created \emph{setup.js} file. To do so you have to use the \emph{mogno shell}. Copy the \emph{setup.js} file into the installation directory of \emph{MongoDB}. Open a console, navigate into its installation directory and use the command \texttt{mongo}. Then use the command \texttt{load("setup.js")}. Now your database should be running, you can close the console containing the \emph{mongo shell}. Closing the other console containing the \emph{Mongo} application will stop you database. To start it again simply restart the \emph{Mongo} Application. You don't have to run the \emph{setup.js} again.
+\paragraph{Robomongo} If you want to monitor your database you can use the tool \href{https://robomongo.org/}{Robomongo}.
+\subsection{Set up tomcat server}
 \end{document}
