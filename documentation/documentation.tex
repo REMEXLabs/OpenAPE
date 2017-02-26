@@ -9,7 +9,7 @@
 \usepackage{listings}
 \usepackage{scrpage2}
 \pagestyle{scrheadings}
-\ifoot{\textsuperscript{\textcopyright} 2016-2017 Research group REMEX, Hochschule der Medien (Stuttgart, Germany) Licence: [Apache 2.0] found \href{https://github.com/REMEXLabs/OpenAPE/blob/master/openAPE/license.txt}{here}.}
+\ifoot{\textsuperscript{\textcopyright} 2016-2017 Research group REMEX, Hochschule der Medien (Stuttgart, Germany) Licence: Apache 2.0 found \href{https://github.com/REMEXLabs/OpenAPE/blob/master/openAPE/license.txt}{here}.}
 \title{OpenAPE}
 \author{Stephan Unfried}
 \date{\today} 
@@ -48,7 +48,7 @@ API contains classes and class structure used by the application server and clie
 The Server module is the main module of the application. It contains the web application used to up- and download contents. It provides an rest interface for access and uses a MongoDB and the file system to store data. The \emph{MongoDB} access can be configured in \directory{tomcat/webapps/<current application name on the server>/classes/config/mongo.properties}. For using the rest paths see the \emph{ISO-IEC\_CD\_24752-8} Standard. For the module structure see figure \ref{fig:serveruml}.
 \begin{figure}[b]
 \centering
-\makebox[\textwidth][c]{\includegraphics[width=1.5\textwidth]{uml/serveruml.png}}
+\makebox[\textwidth][c]{\includegraphics[width=1.6\textwidth]{uml/serveruml.png}}
 \caption{Server module structure diagram.}
 \label{fig:serveruml}
 \end{figure}
@@ -107,7 +107,7 @@ With your choice for the \texttt{<userPassword>}. That password must also be set
 You can start the server by simply starting the execution file in \directory{tomcat/bin}. To stop it simply close the console that opens itself.
 \subsubsection{Deploy war file} To deploy the \emph{war} file onto the server simply place it into \directory{tomcat/webapps}. After restarting \emph{Tomcat} will create a Folder in there which is named after the war file and holds the currently executed application.
 
-To check if it is working properly open a web browser and go to \href{http://localhost:8080/}{localhost:8080/<war file name>/hello}. You should receive Hello World.
+To check if it is working properly open a web browser and go to \href{http://localhost:8080/}{localhost:8080/war file name/hello}. You should receive Hello World.
 \subsubsection{Changing the application name on the server} The application is usually named after the name of the war file. To change it to \emph{openape} place your war file outside of the tomcat server. Create a file named \texttt{openape.xml} in \directory{tomcat/conf/Catalina/localhost}, with the following contents.
 \begin{lstlisting}
 <Context 
