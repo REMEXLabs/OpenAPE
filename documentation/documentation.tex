@@ -34,7 +34,8 @@ API contains classes and class structure used by the application server and clie
 \label{fig:apiuml}
 \end{figure}
 \subsection{Server}
-The Server module is the main module of the application. It contains the web application used to up- and download contents. It provides an rest interface for access and uses a mongoDB and the file system to store data. The \emph{mongoDB} access can be configured in \directory{classes/config/mongo.properties}. For using the rest paths see the \emph{ISO-IEC\_CD\_24752-8} Standard. For the module structure see figure \ref{fig:serveruml}.
+\label{subsec:server}
+The Server module is the main module of the application. It contains the web application used to up- and download contents. It provides an rest interface for access and uses a MongoDB and the file system to store data. The \emph{MongoDB} access can be configured in \directory{classes/config/mongo.properties}. For using the rest paths see the \emph{ISO-IEC\_CD\_24752-8} Standard. For the module structure see figure \ref{fig:serveruml}.
 \begin{figure}[b]
 \centering
 \makebox[\textwidth][c]{\includegraphics[width=1.5\textwidth]{uml/serveruml.png}}
@@ -66,7 +67,26 @@ $\text{Right click on the main project} \rightarrow \text{\emph{Run As}} \righta
 After each command wait for the IDE to finish. After the last command there should be a deployable \emph{war} file in \directory{server/target}.
 \section{Set up application}
 \label{sec:setupapp}
-The application needs an installed and running \emph{mongoDB} to work. So first it is described how to set up that. The application itself can run on any web server capable of deploying a \emph{war} file. Here is described how to deploy it onto a tomcat server.
+The application needs an installed and running \emph{MongoDB} to work. So first it is described how to set up that. The application itself can run on any web server capable of deploying a \emph{war} file. Here is described how to deploy it onto a tomcat server.
 \subsection{Set up MonoDB}
-\subsection{Set up tomcat server}
+\paragraph{setup.js} You will need a \emph{setup.js} file containing the following lines.
+\begin{lstlisting}
+var connection = new Mongo("localhost:27017");
+var database = connection.getDB("openAPE");
+database.createUser({
+     user: "openAPE",
+     pwd: "<userPassword>",
+     roles: [ "readWrite", "dbAdmin" ]});
+database.createCollection("environment_contexts");
+database.createCollection("equipment_contexts");
+database.createCollection("resource_descriptions");
+database.createCollection("listings");
+database.createCollection("task_contexts");
+database.createCollection("user_contexts");
+database.createCollection("test");
+database.test.insert( { x: 1 } );
+\end{lstlisting}
+With your choice for the \texttt{<userPassword>}. That password must also be set in the \emph{MongoDB} configuration file mentioned in \nameref{subsec:server}. In the same way other parameters of the \emph{monoDB} can be adjusted.
+\paragraph{Install MongoDB} 
+\subsection{Set up tomcat server} At this point in time the current version of 
 \end{document}
