@@ -14,12 +14,13 @@ public class Main {
     }
 
     /**
-     * @return a sample user context representing someone with restricted vision.
+     * @return a sample user context representing someone with restricted
+     *         vision.
      */
     public static UserContext sampleUserContextRestricedVision() {
-        UserContext restrictedVision = new UserContext();
-        Context restrictedViewPc = new Context("computer operation system", "0");
-        Context restrictedViewTicketMachine = new Context("ticket machine", "1");
+        final UserContext restrictedVision = new UserContext();
+        final Context restrictedViewPc = new Context("computer operation system", "0");
+        final Context restrictedViewTicketMachine = new Context("ticket machine", "1");
         restrictedVision.addContext(restrictedViewPc);
         restrictedVision.addContext(restrictedViewTicketMachine);
         restrictedViewPc.addPreference("/smalltext", "screen magnifier");

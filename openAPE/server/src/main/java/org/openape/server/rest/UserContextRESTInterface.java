@@ -62,7 +62,8 @@ public class UserContextRESTInterface extends SuperRestInterface {
                          * Sample user context of a person with restricted
                          * viewing ability.
                          */
-                        UserContext restrictedVision = Main.sampleUserContextRestricedVision();
+                        final UserContext restrictedVision = Main
+                                .sampleUserContextRestricedVision();
                         res.status(SuperRestInterface.HTTP_STATUS_OK);
                         res.type(Messages.getString("UserContextRESTInterface.JsonMimeType")); //$NON-NLS-1$
                         final ObjectMapper mapper = new ObjectMapper();

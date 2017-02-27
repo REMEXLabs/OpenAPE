@@ -12,11 +12,11 @@ public class MongoConfig {
     /**
      * Gets a string for the given key from this resource bundle or one of its
      * parents. Calling this method is equivalent to calling
-     * 
+     *
      * @param key
      *            the key for the desired string
      * @return the string for the given key or null if none found
-     * 
+     *
      */
     public static String getString(String key) {
         try {

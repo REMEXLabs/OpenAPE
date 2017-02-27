@@ -68,7 +68,8 @@ public class EnvironmentContextRequestHandler {
         final boolean success = databaseConnection.deleteData(
                 EnvironmentContextRequestHandler.COLLECTIONTOUSE, id);
         if (!success) {
-            throw new IllegalArgumentException(Messages.getString("EnvironmentContextRequestHandler.NoObjectWithThatIDErrorMsg")); //$NON-NLS-1$
+            throw new IllegalArgumentException(
+                    Messages.getString("EnvironmentContextRequestHandler.NoObjectWithThatIDErrorMsg")); //$NON-NLS-1$
         }
         return true;
     }
@@ -97,7 +98,8 @@ public class EnvironmentContextRequestHandler {
 
         // If the result is null the id is not found.
         if (result == null) {
-            throw new IllegalArgumentException(Messages.getString("EnvironmentContextRequestHandler.NoObjectWithThatIDErrorMsg")); //$NON-NLS-1$
+            throw new IllegalArgumentException(
+                    Messages.getString("EnvironmentContextRequestHandler.NoObjectWithThatIDErrorMsg")); //$NON-NLS-1$
         }
 
         // convert into correct type.
@@ -144,7 +146,8 @@ public class EnvironmentContextRequestHandler {
             throw new IllegalArgumentException(e.getMessage());
         }
         if (!success) {
-            throw new IllegalArgumentException(Messages.getString("EnvironmentContextRequestHandler.NoObjectWithThatIDErrorMsg")); //$NON-NLS-1$
+            throw new IllegalArgumentException(
+                    Messages.getString("EnvironmentContextRequestHandler.NoObjectWithThatIDErrorMsg")); //$NON-NLS-1$
         }
         return true;
     }

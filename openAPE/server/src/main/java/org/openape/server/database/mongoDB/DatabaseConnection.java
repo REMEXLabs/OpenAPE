@@ -3,6 +3,7 @@ package org.openape.server.database.mongoDB;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Iterator;
+
 import org.bson.Document;
 import org.bson.codecs.configuration.CodecConfigurationException;
 import org.bson.json.JsonParseException;
@@ -74,35 +75,40 @@ public class DatabaseConnection {
      */
     public static DatabaseConnection getInstance() {
         // import configuration file
-        String name = MongoConfig.getString("databaseName");//$NON-NLS-1$
+        final String name = MongoConfig.getString("databaseName");//$NON-NLS-1$
         if (name != null && !name.equals("")) {
-            DATABASENAME = name;
+            DatabaseConnection.DATABASENAME = name;
         } else {
-            DATABASENAME = Messages.getString("DatabaseConnection.MongoDBDatabaseName"); //$NON-NLS-1$
+            DatabaseConnection.DATABASENAME = Messages
+                    .getString("DatabaseConnection.MongoDBDatabaseName"); //$NON-NLS-1$
         }
-        String address = MongoConfig.getString("databaseURL");//$NON-NLS-1$
+        final String address = MongoConfig.getString("databaseURL");//$NON-NLS-1$
         if (address != null && !address.equals("")) {
-            DATABASEURL = address;
+            DatabaseConnection.DATABASEURL = address;
         } else {
-            DATABASEURL = Messages.getString("DatabaseConnection.MongoDBServerAddress"); //$NON-NLS-1$
+            DatabaseConnection.DATABASEURL = Messages
+                    .getString("DatabaseConnection.MongoDBServerAddress"); //$NON-NLS-1$
         }
-        String port = MongoConfig.getString("databasePort");//$NON-NLS-1$
+        final String port = MongoConfig.getString("databasePort");//$NON-NLS-1$
         if (port != null && !port.equals("")) {
-            DATABASEPORT = port;
+            DatabaseConnection.DATABASEPORT = port;
         } else {
-            DATABASEPORT = Messages.getString("DatabaseConnection.MongoDBServerPort"); //$NON-NLS-1$
+            DatabaseConnection.DATABASEPORT = Messages
+                    .getString("DatabaseConnection.MongoDBServerPort"); //$NON-NLS-1$
         }
-        String password = MongoConfig.getString("databasePassword");//$NON-NLS-1$
+        final String password = MongoConfig.getString("databasePassword");//$NON-NLS-1$
         if (password != null && !password.equals("")) {
-            DATABASEPASSWORD = password;
+            DatabaseConnection.DATABASEPASSWORD = password;
         } else {
-            DATABASEPASSWORD = Messages.getString("DatabaseConnection.MongoDBDatabaseUserPassword"); //$NON-NLS-1$
+            DatabaseConnection.DATABASEPASSWORD = Messages
+                    .getString("DatabaseConnection.MongoDBDatabaseUserPassword"); //$NON-NLS-1$
         }
-        String userName = MongoConfig.getString("databaseUsername");//$NON-NLS-1$
+        final String userName = MongoConfig.getString("databaseUsername");//$NON-NLS-1$
         if (userName != null && !userName.equals("")) {
-            DATABASEUSERNAME = userName;
+            DatabaseConnection.DATABASEUSERNAME = userName;
         } else {
-            DATABASEUSERNAME = Messages.getString("DatabaseConnection.MongoDBDatabaseUsername"); //$NON-NLS-1$
+            DatabaseConnection.DATABASEUSERNAME = Messages
+                    .getString("DatabaseConnection.MongoDBDatabaseUsername"); //$NON-NLS-1$
         }
 
         if (DatabaseConnection.databaseConnectionInstance == null) {

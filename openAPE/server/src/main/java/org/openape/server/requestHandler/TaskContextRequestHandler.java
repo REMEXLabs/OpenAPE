@@ -32,7 +32,7 @@ public class TaskContextRequestHandler {
      *             if the parameter is not a complete task context.
      */
     public String createTaskContext(Object taskContext) throws IOException,
-    IllegalArgumentException {
+            IllegalArgumentException {
         // get database connection.
         final DatabaseConnection databaseconnection = DatabaseConnection.getInstance();
         // try to store data. Class cast exceptions will be thrown as illegal
@@ -67,7 +67,8 @@ public class TaskContextRequestHandler {
         final boolean success = databaseConnection.deleteData(
                 TaskContextRequestHandler.COLLECTIONTOUSE, id);
         if (!success) {
-            throw new IllegalArgumentException(Messages.getString("TaskContextRequestHandler.NoObjectWithThatIDErrorMsg")); //$NON-NLS-1$
+            throw new IllegalArgumentException(
+                    Messages.getString("TaskContextRequestHandler.NoObjectWithThatIDErrorMsg")); //$NON-NLS-1$
         }
         return true;
     }
@@ -95,7 +96,8 @@ public class TaskContextRequestHandler {
 
         // If the result is null the id is not found.
         if (result == null) {
-            throw new IllegalArgumentException(Messages.getString("TaskContextRequestHandler.NoObjectWithThatIDErrorMsg")); //$NON-NLS-1$
+            throw new IllegalArgumentException(
+                    Messages.getString("TaskContextRequestHandler.NoObjectWithThatIDErrorMsg")); //$NON-NLS-1$
         }
 
         // convert into correct type.
@@ -126,7 +128,7 @@ public class TaskContextRequestHandler {
      *             not valid.
      */
     public boolean updateTaskContextById(String id, Object taskContext) throws IOException,
-    IllegalArgumentException {
+            IllegalArgumentException {
         // get database connection.
         final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
 
@@ -141,7 +143,8 @@ public class TaskContextRequestHandler {
             throw new IllegalArgumentException(e.getMessage());
         }
         if (!success) {
-            throw new IllegalArgumentException(Messages.getString("TaskContextRequestHandler.NoObjectWithThatIDErrorMsg")); //$NON-NLS-1$
+            throw new IllegalArgumentException(
+                    Messages.getString("TaskContextRequestHandler.NoObjectWithThatIDErrorMsg")); //$NON-NLS-1$
         }
         return true;
     }

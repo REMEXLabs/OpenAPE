@@ -89,10 +89,10 @@ public class ResourceDescriptionRESTInterface extends SuperRestInterface {
 
                     try {
                         // get listing from id.
-                        Listing listing = requestHandler.getListingById(listingId);
+                        final Listing listing = requestHandler.getListingById(listingId);
                         // get resource description from listing. If no listing
                         // is found an exception will be thrown.
-                        ResourceDescription resourceDescription = listing
+                        final ResourceDescription resourceDescription = listing
                                 .getResourceDescriptionQurey();
                         // json map the resource description, set return status
                         // and mime type and return the resource description.

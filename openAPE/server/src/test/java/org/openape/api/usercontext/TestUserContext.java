@@ -8,9 +8,9 @@ public class TestUserContext {
 
     @Test
     public void testEquals() {
-        UserContext sample = Main.sampleUserContextRestricedVision();
-        for (Context context : sample.getContexts()) {
-            for (Preference preference : context.getPreferences()) {
+        final UserContext sample = Main.sampleUserContextRestricedVision();
+        for (final Context context : sample.getContexts()) {
+            for (final Preference preference : context.getPreferences()) {
                 Assert.assertTrue(preference.equals(preference));
             }
             Assert.assertTrue(context.equals(context));

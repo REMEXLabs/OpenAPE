@@ -32,7 +32,7 @@ public class UserContextRequestHandler {
      *             if the parameter is not a complete user context.
      */
     public String createUserContext(Object userContext) throws IOException,
-    IllegalArgumentException {
+            IllegalArgumentException {
         // get database connection.
         final DatabaseConnection databaseconnection = DatabaseConnection.getInstance();
         // try to store data. Class cast exceptions will be thrown as illegal
@@ -67,7 +67,8 @@ public class UserContextRequestHandler {
         final boolean success = databaseConnection.deleteData(
                 UserContextRequestHandler.COLLECTIONTOUSE, id);
         if (!success) {
-            throw new IllegalArgumentException(Messages.getString("UserContextRequestHandler.NoObjectWithThatIDErrorMsg")); //$NON-NLS-1$
+            throw new IllegalArgumentException(
+                    Messages.getString("UserContextRequestHandler.NoObjectWithThatIDErrorMsg")); //$NON-NLS-1$
         }
         return true;
     }
@@ -95,7 +96,8 @@ public class UserContextRequestHandler {
 
         // If the result is null the id is not found.
         if (result == null) {
-            throw new IllegalArgumentException(Messages.getString("UserContextRequestHandler.NoObjectWithThatIDErrorMsg")); //$NON-NLS-1$
+            throw new IllegalArgumentException(
+                    Messages.getString("UserContextRequestHandler.NoObjectWithThatIDErrorMsg")); //$NON-NLS-1$
         }
 
         // convert into correct type.
@@ -127,7 +129,7 @@ public class UserContextRequestHandler {
      *             not valid.
      */
     public boolean updateUserContextById(String id, Object userContext) throws IOException,
-    IllegalArgumentException {
+            IllegalArgumentException {
         // get database connection.
         final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
 
@@ -142,7 +144,8 @@ public class UserContextRequestHandler {
             throw new IllegalArgumentException(e.getMessage());
         }
         if (!success) {
-            throw new IllegalArgumentException(Messages.getString("UserContextRequestHandler.NoObjectWithThatIDErrorMsg")); //$NON-NLS-1$
+            throw new IllegalArgumentException(
+                    Messages.getString("UserContextRequestHandler.NoObjectWithThatIDErrorMsg")); //$NON-NLS-1$
         }
         return true;
     }

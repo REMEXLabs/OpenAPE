@@ -56,6 +56,24 @@ public class ResourceRequestHandler {
     }
 
     /**
+     * Method to get an existing listing from the server. It is used by the rest
+     * API {@link ResourceRESTInterface} and uses the server database
+     * {@link DatabaseConnection}.
+     *
+     * @param id
+     *            the ID of the requested listing.
+     * @return requested listing.
+     * @throws IOException
+     *             if a storage problem still occurs, after to many tries.
+     * @throws IllegalArgumentException
+     *             if the id is no valid id or not assigned.
+     */
+    public Listing getListingById(String id) throws IOException, IllegalArgumentException {
+        final ListingRequestHandler listingRequestHandler = new ListingRequestHandler();
+        return listingRequestHandler.getListingById(id);
+    }
+
+    /**
      * Method to get an existing resource from the server. It is used by the
      * rest API {@link ResourceRESTInterface} and uses the server database
      * {@link DatabaseConnection}.
@@ -91,24 +109,6 @@ public class ResourceRequestHandler {
     public List<File> getResourceByListing(Listing listing) throws IOException,
             IllegalArgumentException, NotFoundException {
         return ListingManager.getResourcesFromListing(listing);
-    }
-
-    /**
-     * Method to get an existing listing from the server. It is used by the rest
-     * API {@link ResourceRESTInterface} and uses the server database
-     * {@link DatabaseConnection}.
-     *
-     * @param id
-     *            the ID of the requested listing.
-     * @return requested listing.
-     * @throws IOException
-     *             if a storage problem still occurs, after to many tries.
-     * @throws IllegalArgumentException
-     *             if the id is no valid id or not assigned.
-     */
-    public Listing getListingById(String id) throws IOException, IllegalArgumentException {
-        ListingRequestHandler listingRequestHandler = new ListingRequestHandler();
-        return listingRequestHandler.getListingById(id);
     }
 
 }
