@@ -8,9 +8,7 @@
 		<artifactId>framework</artifactId>
 		<version>${ProjectVersion}</version>
 	</parent>
-	<groupId>openape</groupId>
 	<artifactId>API</artifactId>
-	<version>${ProjectVersion}</version>
 	<url>http://maven.apache.org</url>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

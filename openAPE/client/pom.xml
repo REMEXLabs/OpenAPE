@@ -13,8 +13,6 @@
 	</parent>
 	<artifactId>client</artifactId>
 	<name>client</name>
-	<version>${ProjectVersion}</version>
-	<groupId>openape</groupId>
 
 	<dependencies>
 		<dependency>

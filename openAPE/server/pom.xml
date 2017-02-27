@@ -9,12 +9,10 @@
 		<artifactId>framework</artifactId>
 		<version>${ProjectVersion}</version>
 	</parent>
-	<groupId>openape</groupId>
 	<artifactId>server</artifactId>
 	<name>server</name>
 	<packaging>war</packaging>
 	<url>http://maven.apache.org</url>
-	<version>0.0.1-SNAPSHOT</version>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
