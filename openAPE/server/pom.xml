@@ -20,7 +20,7 @@
 		<dependency>
 			<groupId>openape</groupId>
 			<artifactId>API</artifactId>
-			<version>${ProjectVersion}</version>
+			<version>${project.version}</version>
 		</dependency>
 	</dependencies>
 	<build>
