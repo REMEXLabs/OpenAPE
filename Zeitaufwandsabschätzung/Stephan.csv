@@ -1,5 +1,5 @@
 Datum,Zeit in Stunden,Aktivität,Summe
-12.10,1,Initialer Projekttreff,136
+12.10,1,Initialer Projekttreff,137
 18.10,1,2. Teambesprechung,
 18.10,2,Issues erstellen und Projekt bei mir einrichten,
 25.10,"0,5",3. Teambesprechung,
@@ -63,7 +63,7 @@ Datum,Zeit in Stunden,Aktivität,Summe
 23.02,1,leichte fixes an den umls + moduldiagramm,
 23.02,"1,5",Teambesprechung,
 23.02,"0,5",recherche zu java config dateien,
-24.02,2,Versuch mongoconfig zum laufen zu bekommen. Hier fortfahren: ,
+24.02,2,Versuch mongoconfig zum laufen zu bekommen.,
 24.02,"1,5","loöschen von web modul, einstellen von server als deploymentmodul, erstellen von mongo config file",
 25.02,"1,5",cleanup der uml diagramme,
 25.02,2,"add fileds to uml, little fixes",
@@ -72,3 +72,4 @@ Datum,Zeit in Stunden,Aktivität,Summe
 26.02,"0,5",finish docu,
 26.02,"0,5",cleanup docu,
 27.02,1,little cleanups,
+27.02,1,Erstellen der Folien für die Abschlusspräsentation,
