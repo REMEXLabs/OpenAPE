@@ -7,7 +7,6 @@
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<ProjectVersion>0.1-SNAPSHOT</ProjectVersion>
-
 	</properties>
 	<groupId>openape</groupId>
 	<artifactId>framework</artifactId>
