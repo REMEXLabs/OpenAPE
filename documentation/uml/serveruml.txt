@@ -69,12 +69,8 @@ USERCONTEXT
 }
 org.openape.server.database.mongoDB.DatabaseConnection --> org.openape.server.database.mongoDB.MongoCollectionTypes :uses
 
-org.openape.server.database.mongoDB.DatabaseConnection <-- org.openape.server.Main :uses
-org.openape.server.database.resources.ResourceList <-- org.openape.server.Main :uses
-org.openape.server.rest.SuperRestInterface <-- org.openape.server.Main :uses
-org.openape.server.database.mongoDB.DatabaseConnection <-- org.openape.web.Init :uses
-org.openape.server.database.resources.ResourceList <-- org.openape.web.Init :uses
-org.openape.server.rest.SuperRestInterface <-- org.openape.web.Init :uses
+org.openape.server.Main --> org.openape.server.rest.SuperRestInterface :uses
+org.openape.web.Init --> org.openape.server.rest.SuperRestInterface :uses
 
 org.openape.server.database.mongoDB.DatabaseConnection --> org.openape.server.MongoConfig :uses
 

@@ -55,7 +55,7 @@ public class SuperRestInterface {
          * http://localhost:4567/hello if started from main.
          */
         Spark.get(
-                Messages.getString("UserContextRESTInterface.HelloWorldURL"), (req, res) -> Messages.getString("UserContextRESTInterface.HelloWorld")); //$NON-NLS-1$ //$NON-NLS-2$
+                Messages.getString("SuperRestInterface.HelloWorldURL"), (req, res) -> Messages.getString("SuperRestInterface.HelloWorld")); //$NON-NLS-1$ //$NON-NLS-2$
 
         EnvironmentContextRESTInterface
                 .setupEnvironmentContextRESTInterface(new EnvironmentContextRequestHandler());
