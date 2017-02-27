@@ -74,43 +74,6 @@ public class DatabaseConnection {
      * @return the database connection.
      */
     public static DatabaseConnection getInstance() {
-        // import configuration file
-        final String name = MongoConfig.getString("databaseName");//$NON-NLS-1$
-        if (name != null && !name.equals("")) {
-            DatabaseConnection.DATABASENAME = name;
-        } else {
-            DatabaseConnection.DATABASENAME = Messages
-                    .getString("DatabaseConnection.MongoDBDatabaseName"); //$NON-NLS-1$
-        }
-        final String address = MongoConfig.getString("databaseURL");//$NON-NLS-1$
-        if (address != null && !address.equals("")) {
-            DatabaseConnection.DATABASEURL = address;
-        } else {
-            DatabaseConnection.DATABASEURL = Messages
-                    .getString("DatabaseConnection.MongoDBServerAddress"); //$NON-NLS-1$
-        }
-        final String port = MongoConfig.getString("databasePort");//$NON-NLS-1$
-        if (port != null && !port.equals("")) {
-            DatabaseConnection.DATABASEPORT = port;
-        } else {
-            DatabaseConnection.DATABASEPORT = Messages
-                    .getString("DatabaseConnection.MongoDBServerPort"); //$NON-NLS-1$
-        }
-        final String password = MongoConfig.getString("databasePassword");//$NON-NLS-1$
-        if (password != null && !password.equals("")) {
-            DatabaseConnection.DATABASEPASSWORD = password;
-        } else {
-            DatabaseConnection.DATABASEPASSWORD = Messages
-                    .getString("DatabaseConnection.MongoDBDatabaseUserPassword"); //$NON-NLS-1$
-        }
-        final String userName = MongoConfig.getString("databaseUsername");//$NON-NLS-1$
-        if (userName != null && !userName.equals("")) {
-            DatabaseConnection.DATABASEUSERNAME = userName;
-        } else {
-            DatabaseConnection.DATABASEUSERNAME = Messages
-                    .getString("DatabaseConnection.MongoDBDatabaseUsername"); //$NON-NLS-1$
-        }
-
         if (DatabaseConnection.databaseConnectionInstance == null) {
             DatabaseConnection.databaseConnectionInstance = new DatabaseConnection();
         }
@@ -157,6 +120,42 @@ public class DatabaseConnection {
      * private constructor to create the singleton database connection instance.
      */
     private DatabaseConnection() {
+        // import configuration file
+        final String name = MongoConfig.getString("databaseName");//$NON-NLS-1$
+        if (name != null && !name.equals("")) {
+            DatabaseConnection.DATABASENAME = name;
+        } else {
+            DatabaseConnection.DATABASENAME = Messages
+                    .getString("DatabaseConnection.MongoDBDatabaseName"); //$NON-NLS-1$
+        }
+        final String address = MongoConfig.getString("databaseURL");//$NON-NLS-1$
+        if (address != null && !address.equals("")) {
+            DatabaseConnection.DATABASEURL = address;
+        } else {
+            DatabaseConnection.DATABASEURL = Messages
+                    .getString("DatabaseConnection.MongoDBServerAddress"); //$NON-NLS-1$
+        }
+        final String port = MongoConfig.getString("databasePort");//$NON-NLS-1$
+        if (port != null && !port.equals("")) {
+            DatabaseConnection.DATABASEPORT = port;
+        } else {
+            DatabaseConnection.DATABASEPORT = Messages
+                    .getString("DatabaseConnection.MongoDBServerPort"); //$NON-NLS-1$
+        }
+        final String password = MongoConfig.getString("databasePassword");//$NON-NLS-1$
+        if (password != null && !password.equals("")) {
+            DatabaseConnection.DATABASEPASSWORD = password;
+        } else {
+            DatabaseConnection.DATABASEPASSWORD = Messages
+                    .getString("DatabaseConnection.MongoDBDatabaseUserPassword"); //$NON-NLS-1$
+        }
+        final String userName = MongoConfig.getString("databaseUsername");//$NON-NLS-1$
+        if (userName != null && !userName.equals("")) {
+            DatabaseConnection.DATABASEUSERNAME = userName;
+        } else {
+            DatabaseConnection.DATABASEUSERNAME = Messages
+                    .getString("DatabaseConnection.MongoDBDatabaseUsername"); //$NON-NLS-1$
+        }
         // Create credentials for the openAPE database
         final MongoCredential credential = MongoCredential.createCredential(
                 DatabaseConnection.DATABASEUSERNAME, DatabaseConnection.DATABASENAME,
