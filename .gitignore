@@ -15,4 +15,3 @@ openAPE/web/target/*.war
 
 documentation/build/*
 !documentation/build/*.pdf
-
