@@ -1,5 +1,5 @@
 Datum,Zeit in Stunden,Aktivität,Summe
-12.10,1,Initialer Projekttreff,138
+12.10,1,Initialer Projekttreff,"140,5"
 18.10,1,2. Teambesprechung,
 18.10,2,Issues erstellen und Projekt bei mir einrichten,
 25.10,"0,5",3. Teambesprechung,
@@ -75,3 +75,4 @@ Datum,Zeit in Stunden,Aktivität,Summe
 27.02,1,Erstellen der Folien für die Abschlusspräsentation,
 28.02,"0,5",Korrespondenz und git merging,
 01.03,"0,5",Teambesprechung,
+03.03,"2,5",helping manuel with resource manager,

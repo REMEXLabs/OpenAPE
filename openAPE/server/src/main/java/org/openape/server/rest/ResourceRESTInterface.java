@@ -54,14 +54,14 @@ public class ResourceRESTInterface extends SuperRestInterface {
                     // handle the resource
                     id = requestHandler.createResource(uploadedFile);
                     uploadedFile.delete();
-                } catch (final IOException e) {
-                    res.status(SuperRestInterface.HTTP_STATUS_INTERNAL_SERVER_ERROR);
-                    return e.getMessage();
                 } catch (final IllegalArgumentException e) {
                     // occurs if the filename is taken or its not a file.
                     res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
                     return e.getMessage();
-                }
+                } catch (final Exception e) {
+                    res.status(SuperRestInterface.HTTP_STATUS_INTERNAL_SERVER_ERROR);
+                    return e.getMessage();
+                } 
                 res.status(SuperRestInterface.HTTP_STATUS_CREATED);
                 return id;
             });
