@@ -3,44 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <title>openAPE</title>
-    <script src="jquery-3.1.1.min.js"></script>
     <script>
-        url = "http://100.70.56.187:8080/openape/api/resource";
-//        $(document).ready(function() {
-//            $('#saveJSONbutton').click(function () {
-//                var json = [],
-//                	resource = document.getElementById('resourceFile');
-//                $('tbody tr').each(function () {
-//                    var data = {},
-//                        $td = $(this).find('td input'),
-//                        name = $td.eq(0).val(),
-//                        value = $td.eq(1).val();
-//                    data[name] = value;
-//                    json.push(data);
-//                });
-//                alert(resource);
-//                alert(JSON.stringify(json));
-//            })
-//        })
+        var serveraddress = "http://localhost:8080/server-0.1-SNAPSHOT";
 
-        function getHttp(res) {
+        function uploadFile() {
+            var resData = new FormData();
+            resData.append("resourceFile", document.getElementById("resourceInput").files[0]);
+
             var req = new XMLHttpRequest();
-            req.open('GET', url + res , true);
-            req.send();
-
-            req.onreadystatechange = processRequest;
-            function processRequest(e) {
-                if (req.status == 200) {
-//                var response = JSON.parse(req.responseText);
-                    alert("GET successful");
+            req.open("POST", serveraddress + "/api/resource", true);
+            req.send(resData);
+            console.log("resource sent");
+            req.onreadystatechange = function () {
+                console.log("Point1");
+                console.log("Status: ",req.status);
+                console.log("readyState: ",req.readyState);
+                if (req.readyState === 4 && req.status === 201) {
+                    console.log("Point2");
+                    var resourceName = req.getResponseHeader('Location');
+                    console.log("resource name: ", resourceName);
+                    uploadDescription(resourceName);
                 }
             }
         }
 
-        function postHttp() {
+        function uploadDescription(resourceName) {
+            var json = [];
+            var resName = {"name": resourceName};
+            json.push(resName);
+            $('tbody tr').each(function () {
+                var data = {},
+                    $td = $(this).find('td input'),
+                    key = $td.eq(0).val(),
+                    value = $td.eq(1).val();
+                data[key] = value;
+                json.push(data);
+            });
+            alert(JSON.stringify(json));
+
             var req = new XMLHttpRequest();
-            req.open('POST', url , true);
-            req.send();
+            req.open("POST", serveraddress + "/api/resource-description", true);
+            req.send(JSON.stringify(json));
+            console.log("description sent: ", JSON.stringify(json));
         }
 
     </script>
@@ -49,12 +53,8 @@
 <table>
     <thead>
         <tr>
-            <td>Key</td>
+            <td>Name</td>
             <td>Value</td>
-        </tr>
-        <tr>
-            <td>File:</td>
-            <td><input type="file" id="resourceFile"></td>
         </tr>
     </thead>
     <tbody>
@@ -80,9 +80,9 @@
         </tr>
     </tbody>
 </table>
-<button type="button" id="saveJSONbutton">Speichern</button><br>
-<button type="button" onclick="getHttp('/grid_interface.html')">GET grid_interface.html</button>
-<button type="button" onclick="getHttp('/scan_interface.html')">GET scan_interface.html</button>
-<button type="button" id="Podtreq" onclick="postHttp()">POST</button>
+<button type="button" id="createJson" onclick="uploadFile()">Speichern</button><br>
+<input type="file" id="resourceInput" name="resourceFile">
+
+<!--<button onclick="showName()">ShowName</button>-->
 </body>
 </html>
