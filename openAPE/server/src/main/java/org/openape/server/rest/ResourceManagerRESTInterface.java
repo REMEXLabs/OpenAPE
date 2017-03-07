@@ -24,7 +24,7 @@ public class ResourceManagerRESTInterface extends SuperRestInterface {
 			// e.printStackTrace();
 			// System.out.println(e.getClass());
 			// }
-			// res.status(SuperRestInterface.HTTP_STATUS_OK);
+			res.status(SuperRestInterface.HTTP_STATUS_OK);
 			String resourceManager = "<!DOCTYPE html>" + "\n<html lang='de'>" + "\n<head>" + "\n<meta charset='UTF-8'>"
 					+ "\n<title>openAPE</title>" + "\n<script>"
 					+ "\nvar serveraddress = 'http://localhost:8080/server-0.1-SNAPSHOT';" + "\nfunction uploadFile() {"
