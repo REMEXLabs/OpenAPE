@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>openAPE</title>
+    <script>
+        var serveraddress = "http://localhost:8080/openape/api/user-contexts";
+		var sampleUserContext = '{"contexts":[{"id":"0","name":"computer operation system","preferences":[{"key":"/smalltext","value":"screen magnifier"},{"key":"/longtext","value":"screen reader"}]},{"id":"1","name":"ticket machine","preferences":[{"key":"/all","value":"high contrast"},{"key":"/text","value":"large font"}]}]}';
+		var id;
+		
+        function saveData() {
+            var req = new XMLHttpRequest();
+            req.open("POST", serveraddress, true);
+            req.send(sampleUserContext);
+            req.onreadystatechange = function () {
+                if (req.readyState == 4) {
+					document.getElementById("saveStatus").textContent = req.status;
+					console.log(req.response);
+					if (req.status === 201) {
+						id = req.response;
+					}
+                }
+            }
+        }
+		
+		function loadData() {
+            var req = new XMLHttpRequest();
+            req.open("GET", serveraddress + "/" + id, true);
+            req.send();
+            req.onreadystatechange = function () {
+                if (req.readyState == 4) {
+					document.getElementById("loadStatus").textContent = req.status;
+					console.log(req.response);
+                }
+            }
+        }
+		
+		function updateData() {
+            var req = new XMLHttpRequest();
+            req.open("PUT", serveraddress + "/" + id, true);
+            req.send(sampleUserContext);
+            req.onreadystatechange = function () {
+                if (req.readyState == 4) {
+					document.getElementById("updateStatus").textContent = req.status;
+					console.log(req.response);
+                }
+            }
+        }
+		
+		function loadData() {
+            var req = new XMLHttpRequest();
+            req.open("DELETE", serveraddress + "/" + id, true);
+            req.send();
+            req.onreadystatechange = function () {
+                if (req.readyState == 4) {
+					document.getElementById("deleteStatus").textContent = req.status;
+					console.log(req.response);
+                }
+            }
+        }
+
+</script>
+</head>
+<body>
+<button type="button" id="saveData" onclick="saveData()">Speichern</button>
+<label>Status:<input type="text" id="saveStatus"/></label><br>
+<button type="button" id="loadData" onclick="loadData()">Laden</button>
+<label>Status:<input type="text" id="loadStatus"/></label><br>
+<button type="button" id="updateData" onclick="updateData()">Updaten</button>
+<label>Status:<input type="text" id="updateStatus"/></label><br>
+<button type="button" id="deleteData" onclick="deleteData()">Löschen</button>
+<label>Status:<input type="text" id="deleteStatus"/></label><br>
+</body>
+</html>
