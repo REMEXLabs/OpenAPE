@@ -14,7 +14,7 @@
             req.send(sampleUserContext);
             req.onreadystatechange = function () {
                 if (req.readyState == 4) {
-					document.getElementById("saveStatus").textContent = req.status;
+					document.getElementById("saveStatus").value = req.status;
 					console.log(req.response);
 					if (req.status === 201) {
 						id = req.response;
@@ -29,7 +29,7 @@
             req.send();
             req.onreadystatechange = function () {
                 if (req.readyState == 4) {
-					document.getElementById("loadStatus").textContent = req.status;
+					document.getElementById("loadStatus").value = req.status;
 					console.log(req.response);
                 }
             }
@@ -41,7 +41,7 @@
             req.send(sampleUserContext);
             req.onreadystatechange = function () {
                 if (req.readyState == 4) {
-					document.getElementById("updateStatus").textContent = req.status;
+					document.getElementById("updateStatus").value = req.status;
 					console.log(req.response);
                 }
             }
@@ -53,7 +53,7 @@
             req.send();
             req.onreadystatechange = function () {
                 if (req.readyState == 4) {
-					document.getElementById("deleteStatus").textContent = req.status;
+					document.getElementById("deleteStatus").value = req.status;
 					console.log(req.response);
                 }
             }
