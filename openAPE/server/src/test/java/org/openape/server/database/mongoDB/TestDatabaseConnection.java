@@ -9,7 +9,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.openape.api.usercontext.Context;
 import org.openape.api.usercontext.UserContext;
-import org.openape.server.Main;
 
 public class TestDatabaseConnection {
     private DatabaseConnection dataBaseConnection;
@@ -21,7 +20,7 @@ public class TestDatabaseConnection {
 
     @Test
     public void testDataStoreage() {
-        final UserContext sampleContext = Main.sampleUserContextRestricedVision();
+        final UserContext sampleContext = TestDatabaseConnection.sampleUserContextRestricedVision();
         try {
             // test insert.
             String id;
@@ -43,7 +42,8 @@ public class TestDatabaseConnection {
             final UserContext updatetContext = (UserContext) this.dataBaseConnection.getData(
                     MongoCollectionTypes.USERCONTEXT, id);
             Assert.assertTrue(sampleContext.equals(updatetContext));
-            Assert.assertFalse(Main.sampleUserContextRestricedVision().equals(updatetContext));
+            Assert.assertFalse(TestDatabaseConnection.sampleUserContextRestricedVision().equals(
+                    updatetContext));
             // test delete
             Assert.assertTrue(this.dataBaseConnection.deleteData(MongoCollectionTypes.USERCONTEXT,
                     id));
@@ -53,6 +53,23 @@ public class TestDatabaseConnection {
             e.printStackTrace();
         }
 
+    }
+
+    /**
+     * @return a sample user context representing someone with restricted
+     *         vision.
+     */
+    public static UserContext sampleUserContextRestricedVision() {
+        final UserContext restrictedVision = new UserContext();
+        final Context restrictedViewPc = new Context("computer operation system", "0");
+        final Context restrictedViewTicketMachine = new Context("ticket machine", "1");
+        restrictedVision.addContext(restrictedViewPc);
+        restrictedVision.addContext(restrictedViewTicketMachine);
+        restrictedViewPc.addPreference("/smalltext", "screen magnifier");
+        restrictedViewPc.addPreference("/longtext", "screen reader");
+        restrictedViewTicketMachine.addPreference("/all", "high contrast");
+        restrictedViewTicketMachine.addPreference("/text", "large font");
+        return restrictedVision;
     }
 
 }

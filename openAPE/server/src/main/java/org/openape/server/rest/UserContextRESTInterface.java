@@ -55,21 +55,6 @@ public class UserContextRESTInterface extends SuperRestInterface {
                 Messages.getString("UserContextRESTInterface.UserContextURLWithID"), (req, res) -> { //$NON-NLS-1$
                     final String userContextId = req.params(Messages
                             .getString("UserContextRESTInterface.IDParam")); //$NON-NLS-1$
-                    // If the id restricted_vision is given, return the sample
-                    // user context.
-                    if (userContextId.equals("restricted_vision")) {
-                        /**
-                         * Sample user context of a person with restricted
-                         * viewing ability.
-                         */
-                        final UserContext restrictedVision = Main
-                                .sampleUserContextRestricedVision();
-                        res.status(SuperRestInterface.HTTP_STATUS_OK);
-                        res.type(Messages.getString("UserContextRESTInterface.JsonMimeType")); //$NON-NLS-1$
-                        final ObjectMapper mapper = new ObjectMapper();
-                        final String jsonData = mapper.writeValueAsString(restrictedVision);
-                        return jsonData;
-                    }
 
                     try {
                         // if it is successful return user context.
