@@ -24,7 +24,7 @@ public class TestRESTInterface extends SuperRestInterface {
                                         File.separator + "webcontent" + File.separator
                                                 + "restTests.html");
                         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(
-                                inputStream));
+                                inputStream, "UTF-8"));
                         StringBuilder fullContents = new StringBuilder();
                         String line;
                         while ((line = bufferedReader.readLine()) != null) {
