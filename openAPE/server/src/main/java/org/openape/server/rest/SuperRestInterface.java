@@ -68,6 +68,7 @@ public class SuperRestInterface {
         ResourceRESTInterface.setupResourceRESTInterface(new ResourceRequestHandler());
         TaskContextRESTInterface.setupTaskContextRESTInterface(new TaskContextRequestHandler());
         UserContextRESTInterface.setupUserContextRESTInterface(new UserContextRequestHandler());
+        TestRESTInterface.setupTestRESTInterface();
     }
 
 }
