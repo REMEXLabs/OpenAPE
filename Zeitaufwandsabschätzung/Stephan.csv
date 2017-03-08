@@ -1,5 +1,5 @@
 Datum,Zeit in Stunden,Aktivität,Summe
-12.10,1,Initialer Projekttreff,"143,5"
+12.10,1,Initialer Projekttreff,"144,5"
 18.10,1,2. Teambesprechung,
 18.10,2,Issues erstellen und Projekt bei mir einrichten,
 25.10,"0,5",3. Teambesprechung,
@@ -78,3 +78,4 @@ Datum,Zeit in Stunden,Aktivität,Summe
 03.03,"2,5",helping manuel with resource manager,
 07.03,1,manuel bei multi part zeug helfen,
 07.03,2,tests für rest interface schreiben,
+08.03,1,build rest test interface,
