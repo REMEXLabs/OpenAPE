@@ -352,6 +352,8 @@ public class DatabaseConnection {
      */
     public boolean updateData(MongoCollectionTypes type, DatabaseObject data, String id)
             throws ClassCastException, IOException {
+        //test if data can be found. Throws exceptions if not.
+        this.getData(type, id);
         // Check if data is of the correct type for the collection.
         if (!type.getDocumentType().equals(data.getClass())) {
             throw new ClassCastException(
