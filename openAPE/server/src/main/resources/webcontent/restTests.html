@@ -90,23 +90,23 @@
 </script>
 </head>
 <body>
-<button type="button" id="saveData" onclick="saveData()">Kontext speichern</button>
+<button type="button" id="saveData" onclick="saveData()">store context</button>
 <label>Status:<input type="text" id="saveStatus"/></label><br>
-<button type="button" id="loadData" onclick="loadData()">Kontext laden</button>
+<button type="button" id="loadData" onclick="loadData()">load context</button>
 <label>Status:<input type="text" id="loadStatus"/></label><br>
-<button type="button" id="updateData" onclick="updateData()">Kontext updaten</button>
+<button type="button" id="updateData" onclick="updateData()">update context</button>
 <label>Status:<input type="text" id="updateStatus"/></label><br>
-<button type="button" id="deleteData" onclick="deleteData()">Kontext löschen</button>
+<button type="button" id="deleteData" onclick="deleteData()">delete context</button>
 <label>Status:<input type="text" id="deleteStatus"/></label><br>
 <br>
 <form action="http://localhost:8080/openape/api/resource" method="post" enctype="multipart/form-data">
 	<input name="file" id="filename" type="file" /><br><br>
-	<button name="submit" type="submit">Resource speichern</button>
+	<button name="submit" type="submit">store resource</button>
 </form>
-<label>Resourcen Name:<input type="text" id="resourceName"/></label><br>
-<button type="button" id="loadRes" onclick="loadRes()">Resource laden</button>
+<label>resource name<input type="text" id="resourceName"/></label><br>
+<button type="button" id="loadRes" onclick="loadRes()">load resource</button>
 <label>Status:<input type="text" id="resLoadStatus"/></label><br>
-<button type="button" id="deleteRes" onclick="deleteRes()">Resource löschen</button>
+<button type="button" id="deleteRes" onclick="deleteRes()">delete resource</button>
 <label>Status:<input type="text" id="resDeleteStatus"/></label><br>
 </body>
 </html>
