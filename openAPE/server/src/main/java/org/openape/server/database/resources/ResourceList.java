@@ -11,6 +11,7 @@ import java.util.List;
 
 import javax.servlet.http.Part;
 
+import org.apache.commons.fileupload.FileItem;
 import org.openape.api.Messages;
 import org.openape.server.requestHandler.ResourceRequestHandler;
 import org.openape.server.rest.ResourceRESTInterface;
@@ -90,9 +91,8 @@ public class ResourceList {
      * @throws IOException
      *             if a storing error occurs.
      */
-    public String addResource(Part resource) throws IllegalArgumentException, IOException {
-        final Part filePart = resource;
-        final String fileName = this.getFileName(filePart);
+    public String addResource(FileItem resource) throws IllegalArgumentException, IOException {
+        final String fileName = resource.getName();
 
         // Check if filename exists.
         if (fileName == null) {
@@ -114,19 +114,14 @@ public class ResourceList {
                         Messages.getString("ResourceList.FilenameInUseErrorMassage")); //$NON-NLS-1$
             }
 
-            // Read file content and write it inot resource file.
-            out = new FileOutputStream(fileToWrite);
-            filecontent = filePart.getInputStream();
-            int read = 0;
-            final byte[] bytes = new byte[1024];
-            while ((read = filecontent.read(bytes)) != -1) {
-                out.write(bytes, 0, read);
-            }
-            out.flush();
+            // Read file content and write it into resource file.
+            resource.write(fileToWrite);
 
         } catch (final FileNotFoundException fne) {
             throw new IllegalArgumentException(
                     Messages.getString("ResourceList.NoUploadFileErrorMassage")); //$NON-NLS-1$
+        } catch (Exception e) {
+            throw new IOException(e.getMessage());
         } finally {
             // try to close streams.
             try {

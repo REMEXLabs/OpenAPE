@@ -8,6 +8,7 @@ import javassist.NotFoundException;
 
 import javax.servlet.http.Part;
 
+import org.apache.commons.fileupload.FileItem;
 import org.openape.api.listing.Listing;
 import org.openape.server.database.mongoDB.DatabaseConnection;
 import org.openape.server.database.resources.ListingManager;
@@ -34,7 +35,7 @@ public class ResourceRequestHandler {
      * @throws IllegalArgumentException
      *             if the resource name is already taken.
      */
-    public String createResource(Part resource) throws IOException, IllegalArgumentException {
+    public String createResource(FileItem resource) throws IOException, IllegalArgumentException {
         return ResourceList.getInstance().addResource(resource);
     }
 
