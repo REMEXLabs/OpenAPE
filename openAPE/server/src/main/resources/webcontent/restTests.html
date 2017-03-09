@@ -8,7 +8,6 @@
         var resourceServeraddress = "http://localhost:8080/openape/api/resource";
 		var sampleUserContext = '{"contexts":[{"id":"0","name":"computer operation system","preferences":[{"key":"/smalltext","value":"screen magnifier"},{"key":"/longtext","value":"screen reader"}]},{"id":"1","name":"ticket machine","preferences":[{"key":"/all","value":"high contrast"},{"key":"/text","value":"large font"}]}]}';
 		var id;
-		var resourceName = "All.txt";
 		
         function saveData() {
             var req = new XMLHttpRequest();
@@ -64,6 +63,7 @@
 		
 		function loadRes() {
             var req = new XMLHttpRequest();
+            var resourceName = document.getElementById("resourceName").value;
             req.open("GET", resourceServeraddress + "/" + resourceName, true);
             req.send();
             req.onreadystatechange = function () {
@@ -76,6 +76,7 @@
 		
 		function deleteRes() {
             var req = new XMLHttpRequest();
+            var resourceName = document.getElementById("resourceName").value;
             req.open("DELETE", resourceServeraddress + "/" + resourceName, true);
             req.send();
             req.onreadystatechange = function () {
@@ -102,7 +103,7 @@
 	<input name="file" id="filename" type="file" /><br><br>
 	<button name="submit" type="submit">Resource speichern</button>
 </form>
-<!-- <label>Status:<input type="text" id="resSaveStatus"/></label> --><br>
+<label>Resourcen Name:<input type="text" id="resourceName"/></label><br>
 <button type="button" id="loadRes" onclick="loadRes()">Resource laden</button>
 <label>Status:<input type="text" id="resLoadStatus"/></label><br>
 <button type="button" id="deleteRes" onclick="deleteRes()">Resource löschen</button>
