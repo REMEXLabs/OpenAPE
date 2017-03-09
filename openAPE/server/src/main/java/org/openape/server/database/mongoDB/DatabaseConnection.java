@@ -122,40 +122,38 @@ public class DatabaseConnection {
     private DatabaseConnection() {
         // import configuration file
         final String name = MongoConfig.getString("databaseName");//$NON-NLS-1$
-        if (name != null && !name.equals(Messages
-                .getString("DatabaseConnection.EmptyString"))) {//$NON-NLS-1$
+        if (name != null && !name.equals(Messages.getString("DatabaseConnection.EmptyString"))) {//$NON-NLS-1$
             DatabaseConnection.DATABASENAME = name;
         } else {
             DatabaseConnection.DATABASENAME = Messages
                     .getString("DatabaseConnection.MongoDBDatabaseName"); //$NON-NLS-1$
         }
         final String address = MongoConfig.getString("databaseURL");//$NON-NLS-1$
-        if (address != null && !address.equals(Messages
-                .getString("DatabaseConnection.EmptyString"))) {//$NON-NLS-1$
+        if (address != null
+                && !address.equals(Messages.getString("DatabaseConnection.EmptyString"))) {//$NON-NLS-1$
             DatabaseConnection.DATABASEURL = address;
         } else {
             DatabaseConnection.DATABASEURL = Messages
                     .getString("DatabaseConnection.MongoDBServerAddress"); //$NON-NLS-1$
         }
         final String port = MongoConfig.getString("databasePort");//$NON-NLS-1$
-        if (port != null && !port.equals(Messages
-                .getString("DatabaseConnection.EmptyString"))) {//$NON-NLS-1$
+        if (port != null && !port.equals(Messages.getString("DatabaseConnection.EmptyString"))) {//$NON-NLS-1$
             DatabaseConnection.DATABASEPORT = port;
         } else {
             DatabaseConnection.DATABASEPORT = Messages
                     .getString("DatabaseConnection.MongoDBServerPort"); //$NON-NLS-1$
         }
         final String password = MongoConfig.getString("databasePassword");//$NON-NLS-1$
-        if (password != null && !password.equals(Messages
-                .getString("DatabaseConnection.EmptyString"))) {//$NON-NLS-1$
+        if (password != null
+                && !password.equals(Messages.getString("DatabaseConnection.EmptyString"))) {//$NON-NLS-1$
             DatabaseConnection.DATABASEPASSWORD = password;
         } else {
             DatabaseConnection.DATABASEPASSWORD = Messages
                     .getString("DatabaseConnection.MongoDBDatabaseUserPassword"); //$NON-NLS-1$
         }
         final String userName = MongoConfig.getString("databaseUsername");//$NON-NLS-1$
-        if (userName != null && !userName.equals(Messages
-                .getString("DatabaseConnection.EmptyString"))) {//$NON-NLS-1$
+        if (userName != null
+                && !userName.equals(Messages.getString("DatabaseConnection.EmptyString"))) {//$NON-NLS-1$
             DatabaseConnection.DATABASEUSERNAME = userName;
         } else {
             DatabaseConnection.DATABASEUSERNAME = Messages
