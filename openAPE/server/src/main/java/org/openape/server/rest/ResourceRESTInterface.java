@@ -28,13 +28,15 @@ public class ResourceRESTInterface extends SuperRestInterface {
         Spark.post(Messages.getString("ResourceRESTInterface.ResourcesURLWithoutID"), //$NON-NLS-1$
                 (req, res) -> {
                     // Return value.
-                String fileName = "";
+                String fileName = Messages.getString("EmptyString"); //$NON-NLS-1$
 
                 // Needed to process input file.
-                final File tmpFile = new File("tmp");
+                final File tmpFile = new File(Messages
+                        .getString("ResourceRESTInterface.tmpFileName")); //$NON-NLS-1$
                 try {
                     if (!tmpFile.exists() && !tmpFile.mkdirs()) {
-                        throw new RuntimeException("Failed to create directory "
+                        throw new RuntimeException(Messages
+                                .getString("ResourceRESTInterface.FailedToCreateDirError") //$NON-NLS-1$
                                 + tmpFile.getAbsolutePath());
                     }
                     // apache commons-fileupload to handle file upload

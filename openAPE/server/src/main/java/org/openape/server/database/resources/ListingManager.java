@@ -14,7 +14,7 @@ import org.openape.api.resourceDescription.ResourceDescription;
  * fitting resources to a {@link Listing}.
  */
 public class ListingManager {
-    protected static String query = "";
+    protected static String query = Messages.getString("EmptyString"); //$NON-NLS-1$
 
     /**
      * Looks for resource names that are represented in the resource description
@@ -29,7 +29,7 @@ public class ListingManager {
      */
     public static List<File> getResourcesFromListing(Listing listing) throws IOException {
         // reset query
-        ListingManager.query = "";
+        ListingManager.query = Messages.getString("EmptyString"); //$NON-NLS-1$
         final ResourceList resourceList = ResourceList.getInstance();
         final List<String> allResourceNames = resourceList.getResourceNameList();
         final List<File> resources = new ArrayList<File>();
