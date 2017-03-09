@@ -5,8 +5,10 @@
     <title>openAPE</title>
     <script>
         var serveraddress = "http://localhost:8080/openape/api/user-contexts";
+        var resourceServeraddress = "http://localhost:8080/openape/api/resource";
 		var sampleUserContext = '{"contexts":[{"id":"0","name":"computer operation system","preferences":[{"key":"/smalltext","value":"screen magnifier"},{"key":"/longtext","value":"screen reader"}]},{"id":"1","name":"ticket machine","preferences":[{"key":"/all","value":"high contrast"},{"key":"/text","value":"large font"}]}]}';
 		var id;
+		var resourceName;
 		
         function saveData() {
             var req = new XMLHttpRequest();
@@ -58,25 +60,66 @@
                 }
             }
         }
+		//------------------------------------------------------------
+/*         function saveRes() {
+            var req = new XMLHttpRequest();
+            req.open("POST", resourceServeraddress, true);
+            req.send(sampleUserContext);
+            req.onreadystatechange = function () {
+                if (req.readyState == 4) {
+					document.getElementById("resSaveStatus").value = req.status;
+					console.log(req.response);
+					if (req.status === 201) {
+						resourceName = req.response;
+					}
+                }
+            }
+        } */
+		
+		function loadRes() {
+            var req = new XMLHttpRequest();
+            req.open("GET", resourceServeraddress + "/" + resourceName, true);
+            req.send();
+            req.onreadystatechange = function () {
+                if (req.readyState == 4) {
+					document.getElementById("resLoadStatus").value = req.status;
+					console.log(req.response);
+                }
+            }
+        }
+		
+		function deleteRes() {
+            var req = new XMLHttpRequest();
+            req.open("DELETE", resourceServeraddress + "/" + resourceName, true);
+            req.send();
+            req.onreadystatechange = function () {
+                if (req.readyState == 4) {
+					document.getElementById("resDeleteStatus").value = req.status;
+					console.log(req.response);
+                }
+            }
+        }
 
 </script>
 </head>
 <body>
-<button type="button" id="saveData" onclick="saveData()">Kontext Speichern</button>
+<button type="button" id="saveData" onclick="saveData()">Kontext speichern</button>
 <label>Status:<input type="text" id="saveStatus"/></label><br>
-<button type="button" id="loadData" onclick="loadData()">Kontext Laden</button>
+<button type="button" id="loadData" onclick="loadData()">Kontext laden</button>
 <label>Status:<input type="text" id="loadStatus"/></label><br>
-<button type="button" id="updateData" onclick="updateData()">Kontext Updaten</button>
+<button type="button" id="updateData" onclick="updateData()">Kontext updaten</button>
 <label>Status:<input type="text" id="updateStatus"/></label><br>
-<button type="button" id="deleteData" onclick="deleteData()">Kontext Löschen</button>
+<button type="button" id="deleteData" onclick="deleteData()">Kontext löschen</button>
 <label>Status:<input type="text" id="deleteStatus"/></label><br>
 <br>
-<input type="file" id="resourceInput" name="resourceFile"><br>
-<button type="button" id="saveRes" onclick="saveRes()">Resource Speichern</button>
-<label>Status:<input type="text" id="resSaveStatus"/></label><br>
-<button type="button" id="loadRes" onclick="loadRes()">Resource Laden</button>
-<label>Status:<input type="text" id="resRoadStatus"/></label><br>
-<button type="button" id="deleteRes" onclick="deleteRes()">Resource Löschen</button>
+<form action="http://localhost:8080/openape/api/resource" method="post" enctype="multipart/form-data">
+	<input name="file" id="filename" type="file" /><br><br>
+	<button name="submit" type="submit">Resource speichern</button>
+</form>
+<!-- <label>Status:<input type="text" id="resSaveStatus"/></label> --><br>
+<button type="button" id="loadRes" onclick="loadRes()">Resource laden</button>
+<label>Status:<input type="text" id="resLoadStatus"/></label><br>
+<button type="button" id="deleteRes" onclick="deleteRes()">Resource löschen</button>
 <label>Status:<input type="text" id="resDeleteStatus"/></label><br>
 </body>
 </html>
