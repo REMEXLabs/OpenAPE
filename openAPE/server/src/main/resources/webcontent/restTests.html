@@ -62,13 +62,21 @@
 </script>
 </head>
 <body>
-<button type="button" id="saveData" onclick="saveData()">Speichern</button>
+<button type="button" id="saveData" onclick="saveData()">Kontext Speichern</button>
 <label>Status:<input type="text" id="saveStatus"/></label><br>
-<button type="button" id="loadData" onclick="loadData()">Laden</button>
+<button type="button" id="loadData" onclick="loadData()">Kontext Laden</button>
 <label>Status:<input type="text" id="loadStatus"/></label><br>
-<button type="button" id="updateData" onclick="updateData()">Updaten</button>
+<button type="button" id="updateData" onclick="updateData()">Kontext Updaten</button>
 <label>Status:<input type="text" id="updateStatus"/></label><br>
-<button type="button" id="deleteData" onclick="deleteData()">Löschen</button>
+<button type="button" id="deleteData" onclick="deleteData()">Kontext Löschen</button>
 <label>Status:<input type="text" id="deleteStatus"/></label><br>
+<br>
+<input type="file" id="resourceInput" name="resourceFile"><br>
+<button type="button" id="saveRes" onclick="saveRes()">Resource Speichern</button>
+<label>Status:<input type="text" id="resSaveStatus"/></label><br>
+<button type="button" id="loadRes" onclick="loadRes()">Resource Laden</button>
+<label>Status:<input type="text" id="resRoadStatus"/></label><br>
+<button type="button" id="deleteRes" onclick="deleteRes()">Resource Löschen</button>
+<label>Status:<input type="text" id="resDeleteStatus"/></label><br>
 </body>
 </html>
