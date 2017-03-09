@@ -8,8 +8,6 @@ import java.io.OutputStream;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.servlet.http.Part;
-
 import org.apache.commons.fileupload.FileItem;
 import org.openape.api.Messages;
 import org.openape.server.requestHandler.ResourceRequestHandler;
@@ -25,7 +23,7 @@ import org.openape.server.rest.ResourceRESTInterface;
  *
  */
 public class ResourceList {
-    private static final String RESOURCEFOLDERPATH = Messages.getString("ResourceList.rootFolder1") + File.separator + Messages.getString("ResourceList.rootFolder2") + File.separator + Messages.getString("ResourceList.ResourceFolder"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+    private static final String RESOURCEFOLDERPATH = Messages.getString("ResourceList.rootFolder") + File.separator + Messages.getString("ResourceList.ResourceFolder"); //$NON-NLS-1$ //$NON-NLS-2$
 
     /**
      * Singleton instance of this class.
@@ -108,7 +106,7 @@ public class ResourceList {
                 throw new IllegalArgumentException(
                         Messages.getString("ResourceList.FilenameInUseErrorMassage")); //$NON-NLS-1$
             }
-            
+
             // Specify where to store the file.
             final File fileToWrite = new File(ResourceList.RESOURCEFOLDERPATH + File.separator
                     + fileName);
@@ -163,29 +161,6 @@ public class ResourceList {
     }
 
     /**
-     * Returns string file name of a {@link Part} or null if no file header or
-     * file name is fund.
-     *
-     * @param part
-     *            to get the filename from.
-     * @return string file name of a {@link Part} or null if no file header or
-     *         file name is fund.
-     */
-    private String getFileName(final Part part) {
-        for (final String content : part
-                .getHeader(Messages.getString("ResourceList.content-distribution")).split(Messages.getString("ResourceList.spitter"))) { //$NON-NLS-1$ //$NON-NLS-2$
-            if (content.trim().startsWith(Messages.getString("ResourceList.filename"))) { //$NON-NLS-1$
-                return content
-                        .substring(content.indexOf('=') + 1)
-                        .trim()
-                        .replace(
-                                Messages.getString("ResourceList.invertedCommas"), Messages.getString("ResourceList.EmptyString")); //$NON-NLS-1$ //$NON-NLS-2$
-            }
-        }
-        return null;
-    }
-
-    /**
      * @return the list containing all names of resources stored on the file
      *         system.
      */
@@ -201,13 +176,14 @@ public class ResourceList {
      * @throws IllegalArgumentException
      *             if file is non existent.
      */
-    public File getResoureFile(String fileName) throws IllegalArgumentException {
+    public File getResoureFile(String fileName) throws IllegalArgumentException, IOException {
         if (this.resourceExists(fileName)) {
             return new File(ResourceList.RESOURCEFOLDERPATH + File.separator + fileName);
         } else {
             throw new IllegalArgumentException(
                     Messages.getString("ResourceList.FileNotFoundErrorMassage")); //$NON-NLS-1$
         }
+
     }
 
     /**

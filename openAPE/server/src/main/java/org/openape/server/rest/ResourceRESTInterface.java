@@ -32,7 +32,6 @@ public class ResourceRESTInterface extends SuperRestInterface {
 
                 // Needed to process input file.
                 final File tmpFile = new File("tmp");
-                System.out.println(tmpFile.getAbsolutePath());
                 try {
                     if (!tmpFile.exists() && !tmpFile.mkdirs()) {
                         throw new RuntimeException("Failed to create directory "
@@ -42,7 +41,7 @@ public class ResourceRESTInterface extends SuperRestInterface {
                     final DiskFileItemFactory factory = new DiskFileItemFactory();
                     factory.setRepository(tmpFile);
                     final ServletFileUpload fileUpload = new ServletFileUpload(factory);
-                    @SuppressWarnings("unchecked")
+                    @SuppressWarnings("unchecked")//$NON-NLS-1$
                     // parseRequest() always reruns a List<FileItem>
                     final List<FileItem> items = fileUpload.parseRequest(req.raw());
                     final FileItem item = items.get(0);
@@ -67,20 +66,21 @@ public class ResourceRESTInterface extends SuperRestInterface {
                 final String resourceId = req.params(Messages
                         .getString("ResourceRESTInterface.IDParam")); //$NON-NLS-1$
 
-                // get the file from server.
-                final File file = requestHandler.getResourceById(resourceId);
+                try {
+                    // get the file from server.
+                    final File file = requestHandler.getResourceById(resourceId);
 
-                // Add file contents as zip to response.
-                res.raw().setContentType(
-                        Messages.getString("ResourceRESTInterface.Octet-streamMimeType")); //$NON-NLS-1$
-                res.raw()
-                        .setHeader(
-                                Messages.getString("ResourceRESTInterface.ContentDistribution"), //$NON-NLS-1$
-                                Messages.getString("ResourceRESTInterface.attatchment,Filename") + file.getName() + Messages.getString("ResourceRESTInterface.ZipFileEnding")); //$NON-NLS-1$ //$NON-NLS-2$
-                try (ZipOutputStream zipOutputStream = new ZipOutputStream(
-                        new BufferedOutputStream(res.raw().getOutputStream()));
-                        BufferedInputStream bufferedInputStream = new BufferedInputStream(
-                                new FileInputStream(file))) {
+                    // Add file contents as zip to response.
+                    res.raw().setContentType(
+                            Messages.getString("ResourceRESTInterface.Octet-streamMimeType")); //$NON-NLS-1$
+                    res.raw()
+                            .setHeader(
+                                    Messages.getString("ResourceRESTInterface.ContentDistribution"), //$NON-NLS-1$
+                                    Messages.getString("ResourceRESTInterface.attatchment,Filename") + file.getName() + Messages.getString("ResourceRESTInterface.ZipFileEnding")); //$NON-NLS-1$ //$NON-NLS-2$
+                    ZipOutputStream zipOutputStream = new ZipOutputStream(new BufferedOutputStream(
+                            res.raw().getOutputStream()));
+                    BufferedInputStream bufferedInputStream = new BufferedInputStream(
+                            new FileInputStream(file));
                     final ZipEntry zipEntry = new ZipEntry(file.getName());
                     zipOutputStream.putNextEntry(zipEntry);
                     final byte[] buffer = new byte[1024];
@@ -99,12 +99,12 @@ public class ResourceRESTInterface extends SuperRestInterface {
                                 .getString("ResourceRESTInterface.StreamsCouldNotBeClosedErrorMassage")); //$NON-NLS-1$
                     }
 
-                } catch (final IOException e) {
-                    res.status(SuperRestInterface.HTTP_STATUS_INTERNAL_SERVER_ERROR);
-                    return e.getMessage();
                 } catch (final IllegalArgumentException e) {
                     // file by this name is not found.
                     res.status(SuperRestInterface.HTTP_STATUS_NOT_FOUND);
+                    return e.getMessage();
+                } catch (final Exception e) {
+                    res.status(SuperRestInterface.HTTP_STATUS_INTERNAL_SERVER_ERROR);
                     return e.getMessage();
                 }
                 res.type(Messages.getString("ResourceRESTInterface.ZipMimeType")); //$NON-NLS-1$
@@ -172,12 +172,12 @@ public class ResourceRESTInterface extends SuperRestInterface {
                                     .getString("ResourceRESTInterface.StreamsCouldNotBeClosedErrorMassage")); //$NON-NLS-1$
                         }
 
-                    } catch (final IOException e) {
-                        res.status(SuperRestInterface.HTTP_STATUS_INTERNAL_SERVER_ERROR);
-                        return e.getMessage();
                     } catch (final IllegalArgumentException e) {
                         // file by this name is not found.
                         res.status(SuperRestInterface.HTTP_STATUS_NOT_FOUND);
+                        return e.getMessage();
+                    } catch (final IOException e) {
+                        res.status(SuperRestInterface.HTTP_STATUS_INTERNAL_SERVER_ERROR);
                         return e.getMessage();
                     }
                     res.type(Messages.getString("ResourceRESTInterface.ZipMimeType")); //$NON-NLS-1$
