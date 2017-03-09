@@ -41,7 +41,7 @@ public class ResourceRESTInterface extends SuperRestInterface {
                     final DiskFileItemFactory factory = new DiskFileItemFactory();
                     factory.setRepository(tmpFile);
                     final ServletFileUpload fileUpload = new ServletFileUpload(factory);
-                    @SuppressWarnings("unchecked")//$NON-NLS-1$
+                    @SuppressWarnings("unchecked")
                     // parseRequest() always reruns a List<FileItem>
                     final List<FileItem> items = fileUpload.parseRequest(req.raw());
                     final FileItem item = items.get(0);
@@ -77,9 +77,9 @@ public class ResourceRESTInterface extends SuperRestInterface {
                             .setHeader(
                                     Messages.getString("ResourceRESTInterface.ContentDistribution"), //$NON-NLS-1$
                                     Messages.getString("ResourceRESTInterface.attatchment,Filename") + file.getName() + Messages.getString("ResourceRESTInterface.ZipFileEnding")); //$NON-NLS-1$ //$NON-NLS-2$
-                    ZipOutputStream zipOutputStream = new ZipOutputStream(new BufferedOutputStream(
-                            res.raw().getOutputStream()));
-                    BufferedInputStream bufferedInputStream = new BufferedInputStream(
+                    final ZipOutputStream zipOutputStream = new ZipOutputStream(
+                            new BufferedOutputStream(res.raw().getOutputStream()));
+                    final BufferedInputStream bufferedInputStream = new BufferedInputStream(
                             new FileInputStream(file));
                     final ZipEntry zipEntry = new ZipEntry(file.getName());
                     zipOutputStream.putNextEntry(zipEntry);
