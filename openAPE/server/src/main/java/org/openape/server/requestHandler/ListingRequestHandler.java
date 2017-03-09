@@ -20,7 +20,7 @@ public class ListingRequestHandler {
 
     /**
      * TODO implement
-     * 
+     *
      * @param value
      * @return
      */

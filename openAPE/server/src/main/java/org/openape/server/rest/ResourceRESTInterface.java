@@ -25,39 +25,39 @@ public class ResourceRESTInterface extends SuperRestInterface {
         /**
          * Request 7.6.2 create resource.
          */
-        Spark.post(
-                Messages.getString("ResourceRESTInterface.ResourcesURLWithoutID"), //$NON-NLS-1$
+        Spark.post(Messages.getString("ResourceRESTInterface.ResourcesURLWithoutID"), //$NON-NLS-1$
                 (req, res) -> {
                     // Return value.
-                    String fileName = "";
-                    
-                    // Needed to process input file.
-                    final File tmpFile = new File("tmp");
-                    System.out.println(tmpFile.getAbsolutePath());
-                    try {
-                        if (!tmpFile.exists() && !tmpFile.mkdirs()) {
-                            throw new RuntimeException("Failed to create directory "
-                                    + tmpFile.getAbsolutePath());
-                        }
-                        // apache commons-fileupload to handle file upload
-                        DiskFileItemFactory factory = new DiskFileItemFactory();
-                        factory.setRepository(tmpFile);
-                        ServletFileUpload fileUpload = new ServletFileUpload(factory);
-                        @SuppressWarnings("unchecked") // parseRequest() always reruns a List<FileItem>
-                        List<FileItem> items = fileUpload.parseRequest(req.raw());
-                        FileItem item = items.get(0);
-                        // hand off file to handler.
-                        fileName = requestHandler.createResource(item);
-                    } catch (final IllegalArgumentException e) {
-                        // occurs if the filename is taken or its not a file.
-                        res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
-                        return e.getMessage();
-                    } catch (final Exception e) {
-                        res.status(SuperRestInterface.HTTP_STATUS_INTERNAL_SERVER_ERROR);
-                        return e.getMessage();
+                String fileName = "";
+
+                // Needed to process input file.
+                final File tmpFile = new File("tmp");
+                System.out.println(tmpFile.getAbsolutePath());
+                try {
+                    if (!tmpFile.exists() && !tmpFile.mkdirs()) {
+                        throw new RuntimeException("Failed to create directory "
+                                + tmpFile.getAbsolutePath());
                     }
-                    return fileName;
-                });
+                    // apache commons-fileupload to handle file upload
+                    final DiskFileItemFactory factory = new DiskFileItemFactory();
+                    factory.setRepository(tmpFile);
+                    final ServletFileUpload fileUpload = new ServletFileUpload(factory);
+                    @SuppressWarnings("unchecked")
+                    // parseRequest() always reruns a List<FileItem>
+                    final List<FileItem> items = fileUpload.parseRequest(req.raw());
+                    final FileItem item = items.get(0);
+                    // hand off file to handler.
+                    fileName = requestHandler.createResource(item);
+                } catch (final IllegalArgumentException e) {
+                    // occurs if the filename is taken or its not a file.
+                    res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
+                    return e.getMessage();
+                } catch (final Exception e) {
+                    res.status(SuperRestInterface.HTTP_STATUS_INTERNAL_SERVER_ERROR);
+                    return e.getMessage();
+                }
+                return fileName;
+            });
         /**
          * Request 7.6.3 get resource by ID. Used to get a specific resource
          * identified by ID.

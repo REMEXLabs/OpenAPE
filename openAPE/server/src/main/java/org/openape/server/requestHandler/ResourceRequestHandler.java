@@ -6,8 +6,6 @@ import java.util.List;
 
 import javassist.NotFoundException;
 
-import javax.servlet.http.Part;
-
 import org.apache.commons.fileupload.FileItem;
 import org.openape.api.listing.Listing;
 import org.openape.server.database.mongoDB.DatabaseConnection;

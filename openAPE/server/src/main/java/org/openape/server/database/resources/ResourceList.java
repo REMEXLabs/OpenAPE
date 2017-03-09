@@ -2,7 +2,6 @@ package org.openape.server.database.resources;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -100,8 +99,8 @@ public class ResourceList {
                     Messages.getString("ResourceList.NoFileNameErrorMassage")); //$NON-NLS-1$
         }
 
-        OutputStream out = null;
-        InputStream filecontent = null;
+        final OutputStream out = null;
+        final InputStream filecontent = null;
 
         try {
             // Specify where to store the file.
@@ -120,7 +119,7 @@ public class ResourceList {
         } catch (final FileNotFoundException fne) {
             throw new IllegalArgumentException(
                     Messages.getString("ResourceList.NoUploadFileErrorMassage")); //$NON-NLS-1$
-        } catch (Exception e) {
+        } catch (final Exception e) {
             throw new IOException(e.getMessage());
         } finally {
             // try to close streams.

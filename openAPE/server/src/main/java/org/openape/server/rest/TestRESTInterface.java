@@ -18,22 +18,21 @@ public class TestRESTInterface extends SuperRestInterface {
                     String htmlInterface = "";
                     try {
                         // Get file contents of the html file to send.
-                        InputStream inputStream = TestRESTInterface.class
-                                .getClassLoader()
+                        final InputStream inputStream = TestRESTInterface.class.getClassLoader()
                                 .getResourceAsStream(
                                         File.separator + "webcontent" + File.separator
                                                 + "restTests.html");
-                        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(
-                                inputStream, "UTF-8"));
-                        StringBuilder fullContents = new StringBuilder();
+                        final BufferedReader bufferedReader = new BufferedReader(
+                                new InputStreamReader(inputStream, "UTF-8"));
+                        final StringBuilder fullContents = new StringBuilder();
                         String line;
                         while ((line = bufferedReader.readLine()) != null) {
                             fullContents.append(line);
                         }
                         htmlInterface = fullContents.toString();
-                    } catch (Exception e) {
+                    } catch (final Exception e) {
                         e.printStackTrace();
-                        res.status(HTTP_STATUS_INTERNAL_SERVER_ERROR);
+                        res.status(SuperRestInterface.HTTP_STATUS_INTERNAL_SERVER_ERROR);
                         return e.getMessage();
                     }
                     res.type("text/html");
