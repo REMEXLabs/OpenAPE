@@ -25,7 +25,7 @@ import org.openape.server.rest.ResourceRESTInterface;
  *
  */
 public class ResourceList {
-    private static final String RESOURCEFOLDERPATH = Messages.getString("ResourceList.rootFolder") + File.separator + Messages.getString("ResourceList.ResourceFolder"); //$NON-NLS-1$ //$NON-NLS-2$
+    private static final String RESOURCEFOLDERPATH = Messages.getString("ResourceList.rootFolder1") + File.separator + Messages.getString("ResourceList.rootFolder2") + File.separator + Messages.getString("ResourceList.ResourceFolder"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
     /**
      * Singleton instance of this class.
@@ -103,15 +103,15 @@ public class ResourceList {
         final InputStream filecontent = null;
 
         try {
-            // Specify where to store the file.
-            final File fileToWrite = new File(ResourceList.RESOURCEFOLDERPATH + File.separator
-                    + fileName);
-
             // Check if file already exists.
-            if (!this.resourceExists(fileName)) {
+            if (this.resourceExists(fileName)) {
                 throw new IllegalArgumentException(
                         Messages.getString("ResourceList.FilenameInUseErrorMassage")); //$NON-NLS-1$
             }
+            
+            // Specify where to store the file.
+            final File fileToWrite = new File(ResourceList.RESOURCEFOLDERPATH + File.separator
+                    + fileName);
 
             // Read file content and write it into resource file.
             resource.write(fileToWrite);
