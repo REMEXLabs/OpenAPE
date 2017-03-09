@@ -36,6 +36,20 @@
 				<version>2.6</version>
 				<configuration>
 					<webXml>src\main\webapp\WEB-INF\web.xml</webXml>
+					
+					<archive>
+						<manifest>
+							<addClasspath>true</addClasspath>
+							<classpathPrefix>lib/</classpathPrefix>
+						</manifest>
+					</archive>
+					<webResources>
+						<resource>
+							<!-- this is relative to the pom.xml directory -->
+							<directory>${project.basedir}/src/main/resources
+							</directory>
+						</resource>
+					</webResources>
 				</configuration>
 			</plugin>
 		</plugins>
