@@ -68,7 +68,7 @@ public class SuperRestInterface {
         ResourceRESTInterface.setupResourceRESTInterface(new ResourceRequestHandler());
         TaskContextRESTInterface.setupTaskContextRESTInterface(new TaskContextRequestHandler());
         UserContextRESTInterface.setupUserContextRESTInterface(new UserContextRequestHandler());
-        TestRESTInterface.setupTestRESTInterface();
+        //TestRESTInterface.setupTestRESTInterface(); // test html interface found under .../api/tests.
     }
 
 }
