@@ -29,16 +29,27 @@
 
         function uploadDescription(resourceName) {
             var json = [];
+            var data = {};
             var resName = {"name": resourceName};
             json.push(resName);
-            $('tbody tr').each(function () {
-                var data = {},
-                    $td = $(this).find('td input'),
-                    key = $td.eq(0).val(),
-                    value = $td.eq(1).val();
+
+            var tableBody = document.getElementById("keyValues");
+            var tablerows = tableBody.childNodes;
+            tablerows.forEach(function (tablerow){
+                var key = tablerow.childNodes[0].value;
+                var value = tablerow.childNodes[1].value;
                 data[key] = value;
                 json.push(data);
             });
+
+//            $('tbody tr').each(function () {
+//                var data = {},
+//                    $td = $(this).find('td input'),
+//                    key = $td.eq(0).val(),
+//                    value = $td.eq(1).val();
+//                data[key] = value;
+//                json.push(data);
+//            });
             alert(JSON.stringify(json));
 
             var req = new XMLHttpRequest();
@@ -57,7 +68,7 @@
             <td>Value</td>
         </tr>
     </thead>
-    <tbody>
+    <tbody id="keyValues">
         <tr>
             <td><input type="text"></td>
             <td><input type="text"></td>
