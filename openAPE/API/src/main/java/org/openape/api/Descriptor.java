@@ -24,6 +24,10 @@ public class Descriptor implements Serializable {
         this.name = name;
         this.value = value;
     }
+    
+    public Descriptor() {
+	
+    }
 
     /**
      * Compares the values of name and value and returns true if there are

@@ -54,6 +54,10 @@ public class Property implements Serializable {
 
     private List<Descriptor> descriptors = new ArrayList<Descriptor>();
 
+    public Property(){
+    	
+    }
+    
     public Property(String name, String value) {
         this.name = name;
         this.value = value;
