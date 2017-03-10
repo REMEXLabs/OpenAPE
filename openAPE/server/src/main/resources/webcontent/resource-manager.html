@@ -15,12 +15,8 @@
             req.send(resData);
             console.log("resource sent");
             req.onreadystatechange = function () {
-                console.log("Point1");
-                console.log("Status: ",req.status);
-                console.log("readyState: ",req.readyState);
                 if (req.readyState === 4 && req.status === 201) {
-                    console.log("Point2");
-                    var resourceName = req.getResponseHeader('Location');
+                    var resourceName = JSON.parse(req.responseText);
                     console.log("resource name: ", resourceName);
                     uploadDescription(resourceName);
                 }
