@@ -57,6 +57,7 @@ public class ResourceRESTInterface extends SuperRestInterface {
                     res.status(SuperRestInterface.HTTP_STATUS_INTERNAL_SERVER_ERROR);
                     return e.getMessage();
                 }
+                res.status(SuperRestInterface.HTTP_STATUS_CREATED);
                 return fileName;
             });
         /**
