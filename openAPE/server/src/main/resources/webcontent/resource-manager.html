@@ -15,8 +15,9 @@
             req.send(resData);
             console.log("resource sent");
             req.onreadystatechange = function () {
+                console.log(req.readyState, ", ", req.status);
                 if (req.readyState === 4 && req.status === 201) {
-                    var resourceName = JSON.parse(req.responseText);
+                    var resourceName = req.responseText;
                     console.log("resource name: ", resourceName);
                     uploadDescription(resourceName);
                 }
@@ -24,34 +25,28 @@
         }
 
         function uploadDescription(resourceName) {
-            var json = [];
+
+            var json = '{"propertys":[{"name": "resource_name","value": "'+resourceName+'}';
+            var properties = "";
             var data = {};
-            var resName = {"name": resourceName};
-            json.push(resName);
-
             var tableBody = document.getElementById("keyValues");
-            var tablerows = tableBody.childNodes;
-            tablerows.forEach(function (tablerow){
-                var key = tablerow.childNodes[0].value;
-                var value = tablerow.childNodes[1].value;
-                data[key] = value;
-                json.push(data);
-            });
-
-//            $('tbody tr').each(function () {
-//                var data = {},
-//                    $td = $(this).find('td input'),
-//                    key = $td.eq(0).val(),
-//                    value = $td.eq(1).val();
-//                data[key] = value;
-//                json.push(data);
-//            });
-            alert(JSON.stringify(json));
+            var tablerows = Array.prototype.slice.call(tableBody.getElementsByTagName("tr"));
+            console.log("tablerows: ", tablerows);
+            for (var i=0; i< tablerows.length; i++){
+                var tabled = Array.prototype.slice.call(tablerows[i].getElementsByTagName("td"));
+                console.log(tabled);
+                var name = tabled[0].getElementsByTagName("input")[0].value;
+                var value = tabled[1].getElementsByTagName("input")[0].value;
+                console.log(name, value);
+                json += ',{"name": "'+name+'","value": "'+value+'"}';
+            }
+            json += ']}';
+            alert(json);
 
             var req = new XMLHttpRequest();
             req.open("POST", serveraddress + "/api/resource-description", true);
-            req.send(JSON.stringify(json));
-            console.log("description sent: ", JSON.stringify(json));
+            req.send(json);
+            console.log("description sent: ", json);
         }
 
     </script>
