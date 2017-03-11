@@ -9,14 +9,18 @@ import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+
 import javassist.NotFoundException;
+
 
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.openape.api.Messages;
 import org.openape.api.listing.Listing;
+import org.openape.server.database.resources.GetResourceReturnType;
 import org.openape.server.requestHandler.ResourceRequestHandler;
+
 
 import spark.Spark;
 
@@ -27,6 +31,8 @@ public class ResourceRESTInterface extends SuperRestInterface {
          */
         Spark.post(Messages.getString("ResourceRESTInterface.ResourcesURLWithoutID"), //$NON-NLS-1$
                 (req, res) -> {
+
+                    final String mimeType = req.contentType();
                     // Return value.
                 String fileName = Messages.getString("EmptyString"); //$NON-NLS-1$
 
@@ -44,11 +50,11 @@ public class ResourceRESTInterface extends SuperRestInterface {
                     factory.setRepository(tmpFile);
                     final ServletFileUpload fileUpload = new ServletFileUpload(factory);
                     @SuppressWarnings("unchecked")
-                    // parseRequest() always reruns a List<FileItem>
+                    // parseRequest() always returns a List<FileItem>
                     final List<FileItem> items = fileUpload.parseRequest(req.raw());
                     final FileItem item = items.get(0);
                     // hand off file to handler.
-                    fileName = requestHandler.createResource(item);
+                    fileName = requestHandler.createResource(item, mimeType);
                 } catch (final IllegalArgumentException e) {
                     // occurs if the filename is taken or its not a file.
                     res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
@@ -71,7 +77,8 @@ public class ResourceRESTInterface extends SuperRestInterface {
 
                 try {
                     // get the file from server.
-                    final File file = requestHandler.getResourceById(resourceId);
+                    GetResourceReturnType serverReturn = requestHandler.getResourceById(resourceId);
+                    final File file = serverReturn.getFile();
 
                     // Add file contents as zip to response.
                     res.raw().setContentType(

@@ -82,13 +82,16 @@ public class ResourceList {
      *
      * @param resource
      *            received file from the rest interface
+     * @param mimeType
+     *            mime type of the data to store
      * @return filename.
      * @throws IllegalArgumentException
      *             if the file name is taken or no file is sent.
      * @throws IOException
      *             if a storing error occurs.
      */
-    public String addResource(FileItem resource) throws IllegalArgumentException, IOException {
+    public String addResource(FileItem resource, String mimeType) throws IllegalArgumentException,
+            IOException {
         final String fileName = resource.getName();
 
         // Check if filename exists.
@@ -176,9 +179,12 @@ public class ResourceList {
      * @throws IllegalArgumentException
      *             if file is non existent.
      */
-    public File getResoureFile(String fileName) throws IllegalArgumentException, IOException {
+    public GetResourceReturnType getResoureFile(String fileName) throws IllegalArgumentException,
+            IOException {
         if (this.resourceExists(fileName)) {
-            return new File(ResourceList.RESOURCEFOLDERPATH + File.separator + fileName);
+            File file = new File(ResourceList.RESOURCEFOLDERPATH + File.separator + fileName);
+            String mimeType = null;
+            return new GetResourceReturnType(file, mimeType);
         } else {
             throw new IllegalArgumentException(
                     Messages.getString("ResourceList.FileNotFoundErrorMassage")); //$NON-NLS-1$
