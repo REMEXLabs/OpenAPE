@@ -1,5 +1,5 @@
 Datum,Zeit in Stunden,Aktivität,Summe
-12.10,1,Initialer Projekttreff,158
+12.10,1,Initialer Projekttreff,160
 18.10,1,2. Teambesprechung,
 18.10,2,Issues erstellen und Projekt bei mir einrichten,
 25.10,"0,5",3. Teambesprechung,
@@ -84,3 +84,4 @@ Datum,Zeit in Stunden,Aktivität,Summe
 09.03,1,finish presentation,
 10.03,4,"Stuff pre presentation (cleanups, presenteationsüberarbeitung, doku, manuel mit zeuch hefen)",
 10.03,1,Präsentation,
+11.03,2,erweiterung der rest tests,
