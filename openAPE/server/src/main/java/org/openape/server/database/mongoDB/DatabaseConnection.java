@@ -421,8 +421,15 @@ public class DatabaseConnection {
      *            string mime type of the resource with the given name.
      * @return true if successful else a exception will be thrown.
      * @throws IOException
+     * @throws IllegalArgumentException
+     *             if filename is arlready in use as a key.
      */
     public boolean storeMimeType(String fileName, String mimeType) throws IOException {
+        // check if key is in use.
+        if (this.getMimeType(fileName) != null) {
+            throw new IllegalArgumentException(
+                    Messages.getString("ResourceList.FilenameInUseErrorMassage"));
+        }
         final MongoCollection<Document> collectionToWorkOn = this
                 .getCollectionByType(MongoCollectionTypes.RESOURCEMIMETYPES);
         // Object representation of the string. Needed for storage.
