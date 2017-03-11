@@ -106,15 +106,18 @@ public class DatabaseConnection {
      */
     private MongoCollection<Document> taskContextCollection;
     /**
-     * Database collection containing the resources offered by the server.
+     * Database collection containing the resources descriptions by the server.
      */
-    private MongoCollection<Document> resourceOfferContectCollection;
-
+    private MongoCollection<Document> resourceDescriptionContectCollection;
     /**
-     * Database collection containing the incomplete request resources used by
-     * the client to search for fitting resource.
+     * Database collection containing the listings used by the client to search
+     * for fitting resource.
      */
-    private MongoCollection<Document> resourceRequestContextCollection;
+    private MongoCollection<Document> listingContextCollection;
+    /**
+     * Database collection holding the mime types of the stored resources.
+     */
+    private MongoCollection<Document> resourceMimeTypesCollection;
 
     /**
      * private constructor to create the singleton database connection instance.
@@ -179,10 +182,12 @@ public class DatabaseConnection {
                 .getCollection(MongoCollectionTypes.EQUIPMENTCONTEXT.toString());
         this.taskContextCollection = this.database.getCollection(MongoCollectionTypes.TASKCONTEXT
                 .toString());
-        this.resourceOfferContectCollection = this.database
+        this.resourceDescriptionContectCollection = this.database
                 .getCollection(MongoCollectionTypes.RESOURCEDESCRIPTION.toString());
-        this.resourceRequestContextCollection = this.database
-                .getCollection(MongoCollectionTypes.LISTING.toString());
+        this.listingContextCollection = this.database.getCollection(MongoCollectionTypes.LISTING
+                .toString());
+        this.resourceMimeTypesCollection = this.database
+                .getCollection(MongoCollectionTypes.RESOURCEMIMETYPES.toString());
 
     }
 
@@ -217,6 +222,33 @@ public class DatabaseConnection {
     }
 
     /**
+     * Delete a mime type of a stored resource.
+     *
+     * @param fileName
+     *            file name of the resource, used as id.
+     * @return true if successful of false if the object is not found.
+     * @throws IOException
+     *             if a database problem occurs.
+     */
+    public boolean deleteMimeType(String fileName) throws IOException {
+        final MongoCollection<Document> collectionToWorkOn = this
+                .getCollectionByType(MongoCollectionTypes.RESOURCEMIMETYPES);
+
+        // Create search query.
+        final BasicDBObject query = new BasicDBObject();
+        query.put(Messages.getString("DatabaseConnection._id"), fileName); //$NON-NLS-1$
+
+        // deleted will be null if no data with the given id is found.
+        final Document deleted = collectionToWorkOn.findOneAndDelete(query);
+        if (deleted == null) {
+            return false;
+        } else {
+            return true;
+        }
+
+    }
+
+    /**
      * Get a mongo collection reference by providing the collection type.
      *
      * @param type
@@ -232,9 +264,11 @@ public class DatabaseConnection {
         } else if (type.equals(MongoCollectionTypes.TASKCONTEXT)) {
             return this.taskContextCollection;
         } else if (type.equals(MongoCollectionTypes.RESOURCEDESCRIPTION)) {
-            return this.resourceOfferContectCollection;
+            return this.resourceDescriptionContectCollection;
         } else if (type.equals(MongoCollectionTypes.LISTING)) {
-            return this.resourceRequestContextCollection;
+            return this.listingContextCollection;
+        } else if (type.equals(MongoCollectionTypes.RESOURCEMIMETYPES)) {
+            return this.resourceMimeTypesCollection;
         } else {
             return null; // Should never occur.
         }
@@ -286,6 +320,49 @@ public class DatabaseConnection {
     }
 
     /**
+     * Get stored mime type of a resource stored in the file system.
+     *
+     * @param fileName
+     *            of the resource, used as id.
+     * @return mime type as string or null if none is found.
+     * @throws IOException
+     *             if an error arouses.
+     */
+    public String getMimeType(String fileName) throws IOException {
+        final MongoCollection<Document> collectionToWorkOn = this
+                .getCollectionByType(MongoCollectionTypes.RESOURCEMIMETYPES);
+
+        // Search for object in database.
+        final BasicDBObject query = new BasicDBObject();
+        query.put(Messages.getString("DatabaseConnection._id"), fileName); //$NON-NLS-1$
+        final FindIterable<Document> resultIteratable = collectionToWorkOn.find(query);
+
+        final Iterator<Document> resultInterator = resultIteratable.iterator();
+        if (!resultInterator.hasNext()) {
+            // If no result is found return null.
+            return null;
+        } else {
+            // get the first result. Souldn't ever be more than one since _ids
+            // are supposed to be unique.
+            final Document resultDocument = resultInterator.next();
+            String mimetype = null;
+            try {
+                // Remove the automatically added id.
+                resultDocument.remove(Messages.getString("DatabaseConnection._id")); //$NON-NLS-1$
+                final String jsonResult = resultDocument.toJson();
+                final ObjectMapper mapper = new ObjectMapper();
+                final DatabaseObject mimeTypeObject = mapper.readValue(jsonResult,
+                        MimeTypeDatabaseObject.class);
+                mimetype = ((MimeTypeDatabaseObject) mimeTypeObject).getMimeType();
+            } catch (CodecConfigurationException | IOException | JsonParseException e) {
+                e.printStackTrace();
+                throw new IOException(e.getMessage());
+            }
+            return mimetype;
+        }
+    }
+
+    /**
      * Store a database object, either a context or a resource, into the
      * database. Choose the collection via the collection type.
      *
@@ -333,6 +410,37 @@ public class DatabaseConnection {
         }
 
         return id.toHexString();
+    }
+
+    /**
+     * Used to store a string mime type of a stored resource.
+     *
+     * @param fileName
+     *            name of the file, used as id.
+     * @param mimeType
+     *            string mime type of the resource with the given name.
+     * @return true if successful else a exception will be thrown.
+     * @throws IOException
+     */
+    public boolean storeMimeType(String fileName, String mimeType) throws IOException {
+        final MongoCollection<Document> collectionToWorkOn = this
+                .getCollectionByType(MongoCollectionTypes.RESOURCEMIMETYPES);
+        // Object representation of the string. Needed for storage.
+        final MimeTypeDatabaseObject data = new MimeTypeDatabaseObject(mimeType);
+        // Create Document from data.
+        Document dataDocument = null;
+        try {
+            final ObjectMapper mapper = new ObjectMapper();
+            final String jsonData = mapper.writeValueAsString(data);
+            dataDocument = Document.parse(jsonData);
+            dataDocument.append("_id", fileName);
+            // Insert the document.
+            collectionToWorkOn.insertOne(dataDocument);
+        } catch (IOException | JsonParseException | MongoException e) {
+            e.printStackTrace();
+            throw new IOException(e.getMessage());
+        }
+        return true;
     }
 
     /**
@@ -388,5 +496,4 @@ public class DatabaseConnection {
 
         return true;
     }
-
 }

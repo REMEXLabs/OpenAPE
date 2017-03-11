@@ -25,7 +25,9 @@ public enum MongoCollectionTypes {
             Messages.getString("MongoCollectionTypes.taskContextsCollectionName"), TaskContext.class), //$NON-NLS-1$
     RESOURCEDESCRIPTION(
             Messages.getString("MongoCollectionTypes.resourceDescriptionCollectionName"), ResourceDescription.class), //$NON-NLS-1$
-    LISTING(Messages.getString("MongoCollectionTypes.lstingCollectionName"), Listing.class); //$NON-NLS-1$
+    LISTING(Messages.getString("MongoCollectionTypes.lstingCollectionName"), Listing.class), //$NON-NLS-1$
+    RESOURCEMIMETYPES(
+            Messages.getString("MongoCollectionTypes.resourceMimeTypesCollectionName"), null);//$NON-NLS-1$
 
     /**
      * Get the collection type of a mongo database collection by its name.
@@ -52,6 +54,9 @@ public enum MongoCollectionTypes {
         } else if (collectionName.equals(Messages
                 .getString("MongoCollectionTypes.lstingCollectionName"))) { //$NON-NLS-1$
             return LISTING;
+        } else if (collectionName.endsWith(Messages
+                .getString("MongoCollectionTypes.resourceMimeTypesCollectionName"))) {
+            return RESOURCEMIMETYPES;
         } else {
             return null;
         }
@@ -77,6 +82,7 @@ public enum MongoCollectionTypes {
 
     /**
      * Get the class of documents stored in the collection from the given type.
+     * Null for RESOURCEMIMETYPES.
      *
      * @param type
      *            of the collection.

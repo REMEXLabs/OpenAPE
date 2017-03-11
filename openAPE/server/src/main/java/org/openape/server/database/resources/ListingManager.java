@@ -1,6 +1,5 @@
 package org.openape.server.database.resources;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,12 +26,13 @@ public class ListingManager {
      * @throws IOException
      *             if unable to create resource folder.
      */
-    public static List<File> getResourcesFromListing(Listing listing) throws IOException {
+    public static List<GetResourceReturnType> getResourcesFromListing(Listing listing)
+            throws IOException {
         // reset query
         ListingManager.query = Messages.getString("EmptyString"); //$NON-NLS-1$
         final ResourceList resourceList = ResourceList.getInstance();
         final List<String> allResourceNames = resourceList.getResourceNameList();
-        final List<File> resources = new ArrayList<File>();
+        final List<GetResourceReturnType> resources = new ArrayList<GetResourceReturnType>();
         final ResourceDescription resourceDescription = listing.getResourceDescriptionQurey();
         // if no resource description if found return empty list.
         if (resourceDescription == null) {
