@@ -4,15 +4,17 @@
     <meta charset="UTF-8">
     <title>openAPE</title>
     <script>
-        var serveraddress = "http://localhost:8080/openape/api/user-contexts";
-        var resourceServeraddress = "http://localhost:8080/openape/api/resource";
+        var serveraddress = "http://localhost:8080/openape/";
 		var sampleUserContext = '{"contexts":[{"id":"0","name":"computer operation system","preferences":[{"key":"/smalltext","value":"screen magnifier"},{"key":"/longtext","value":"screen reader"}]},{"id":"1","name":"ticket machine","preferences":[{"key":"/all","value":"high contrast"},{"key":"/text","value":"large font"}]}]}';
 		var id;
+		document.getElementById("dataInput").value = sampleUserContext;
 		
         function saveData() {
+			var data = document.getElementById("dataInput").value;
+        	var selectedAddress = document.querySelector('input[name="dataType"]:checked').value;
             var req = new XMLHttpRequest();
-            req.open("POST", serveraddress, true);
-            req.send(sampleUserContext);
+            req.open("POST", serveraddress + selectedAddress, true);
+            req.send(data);
             req.onreadystatechange = function () {
                 if (req.readyState == 4) {
 					document.getElementById("saveStatus").value = req.status;
@@ -25,8 +27,9 @@
         }
 		
 		function loadData() {
+        	var selectedAddress = document.querySelector('input[name="dataType"]:checked').value;
             var req = new XMLHttpRequest();
-            req.open("GET", serveraddress + "/" + id, true);
+            req.open("GET", serveraddress + selectedAddress + "/" + id, true);
             req.send();
             req.onreadystatechange = function () {
                 if (req.readyState == 4) {
@@ -37,9 +40,11 @@
         }
 		
 		function updateData() {
+			var data = document.getElementById("dataInput").value;
+        	var selectedAddress = document.querySelector('input[name="dataType"]:checked').value;
             var req = new XMLHttpRequest();
-            req.open("PUT", serveraddress + "/" + id, true);
-            req.send(sampleUserContext);
+            req.open("PUT", serveraddress + selectedAddress + "/" + id, true);
+            req.send(data);
             req.onreadystatechange = function () {
                 if (req.readyState == 4) {
 					document.getElementById("updateStatus").value = req.status;
@@ -49,8 +54,9 @@
         }
 		
 		function deleteData() {
+        	var selectedAddress = document.querySelector('input[name="dataType"]:checked').value;
             var req = new XMLHttpRequest();
-            req.open("DELETE", serveraddress + "/" + id, true);
+            req.open("DELETE", serveraddress + selectedAddress + "/" + id, true);
             req.send();
             req.onreadystatechange = function () {
                 if (req.readyState == 4) {
@@ -64,7 +70,7 @@
 		function loadRes() {
             var req = new XMLHttpRequest();
             var resourceName = document.getElementById("resourceName").value;
-            req.open("GET", resourceServeraddress + "/" + resourceName, true);
+            req.open("GET", serverAddress + "api/resources" + "/" + resourceName, true);
             req.send();
             req.onreadystatechange = function () {
                 if (req.readyState == 4) {
@@ -77,7 +83,7 @@
 		function deleteRes() {
             var req = new XMLHttpRequest();
             var resourceName = document.getElementById("resourceName").value;
-            req.open("DELETE", resourceServeraddress + "/" + resourceName, true);
+            req.open("DELETE", serveraddress + "api/resources" + "/" + resourceName, true);
             req.send();
             req.onreadystatechange = function () {
                 if (req.readyState == 4) {
@@ -90,6 +96,15 @@
 </script>
 </head>
 <body>
+<fieldset> 
+<input type="radio" id="EnC" name="dataType" value="api/environment-contexts"> <label for="EnC"> environment context</label><br> 
+<input type="radio" id="EqC" name="dataType" value="api/equipment-contexts"> <label for="EqC"> equipment context</label><br> 
+<input type="radio" id="TC" name="dataType" value="api/task-contexts"> <label for="TC"> task contexts</label><br>
+<input type="radio" id="UC" name="dataType" value="api/user-contexts" checked="checked"> <label for="UC"> user contexts</label><br>
+<input type="radio" id="RD" name="dataType" value="api/resource-descriptions"> <label for="RD"> resource description</label><br>
+<input type="radio" id="L" name="dataType" value="api/listings"> <label for="L"> listing</label><br>
+</fieldset>
+<textarea id="dataInput" name="dataInput" cols="100" rows="4"></textarea> <br>
 <button type="button" id="saveData" onclick="saveData()">store context</button>
 <label>Status:<input type="text" id="saveStatus"/></label><br>
 <button type="button" id="loadData" onclick="loadData()">load context</button>
@@ -99,7 +114,7 @@
 <button type="button" id="deleteData" onclick="deleteData()">delete context</button>
 <label>Status:<input type="text" id="deleteStatus"/></label><br>
 <br>
-<form action="http://localhost:8080/openape/api/resource" method="post" enctype="multipart/form-data">
+<form action="http://localhost:8080/openape/api/resources" method="post" enctype="multipart/form-data">
 	<input name="file" id="filename" type="file" /><br><br>
 	<button name="submit" type="submit">store resource</button>
 </form>

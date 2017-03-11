@@ -19,7 +19,7 @@ public class ResourceDescriptionRESTInterface extends SuperRestInterface {
         /**
          * Request 7.7.2 create resource description.
          */
-        Spark.post("/api/resource-description", (req, res) -> { //$NON-NLS-1$
+        Spark.post(Messages.getString("ResourceDescriptionRESTInterface.ResourceDescriptionURLWithoutID"), (req, res) -> { //$NON-NLS-1$
                     try {
                         // Try to map the received json object to a
                         // resource description
@@ -52,7 +52,7 @@ public class ResourceDescriptionRESTInterface extends SuperRestInterface {
          * Request 7.7.3 get resource description. Used to get a specific
          * resource description identified by ID.
          */
-        Spark.get("/api/resource-description/resource-description-id", //$NON-NLS-1$
+        Spark.get(Messages.getString("ResourceDescriptionRESTInterface.ResourceDescriptionURLWithID"), //$NON-NLS-1$
                 (req, res) -> {
                     final String resourceDescriptionId = req.params(":resource-description-id"); //$NON-NLS-1$
                 try {
