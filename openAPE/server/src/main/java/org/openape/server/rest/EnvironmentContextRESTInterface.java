@@ -89,7 +89,7 @@ public class EnvironmentContextRESTInterface extends SuperRestInterface {
                 (req, res) -> {
                     if (!req.contentType().equals(Messages.getString("MimeTypeJson"))) {//$NON-NLS-1$
                     res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
-                    return "Wrong mime type. Has to be application/json.";
+                    return Messages.getString("Contexts.WrongMimeTypeErrorMsg");//$NON-NLS-1$
                 }
                 final String environmentContextId = req.params(Messages
                         .getString("EnvironmentContextRESTInterface.IDParam")); //$NON-NLS-1$

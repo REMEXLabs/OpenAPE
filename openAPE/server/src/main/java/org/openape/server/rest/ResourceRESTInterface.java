@@ -73,42 +73,43 @@ public class ResourceRESTInterface extends SuperRestInterface {
                 (req, res) -> {
 
                     final String mimeType = req.contentType();
-                    if (mimeType == null || mimeType.equals("")) {
-                        res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
-                        return Messages.getString("ResourceRESTInterface.NoMimeTypeErrorMsg");//$NON-NLS-1$
-            }
-            // Return value.
-            String fileName = Messages.getString("EmptyString"); //$NON-NLS-1$
-
-            // Needed to process input file.
-            final File tmpFile = new File(Messages.getString("ResourceRESTInterface.tmpFileName")); //$NON-NLS-1$
-            try {
-                if (!tmpFile.exists() && !tmpFile.mkdirs()) {
-                    throw new RuntimeException(Messages
-                            .getString("ResourceRESTInterface.FailedToCreateDirError") //$NON-NLS-1$
-                            + tmpFile.getAbsolutePath());
+                    if (mimeType == null || mimeType.equals(Messages.getString("EmptyString"))) { //$NON-NLS-1$
+                    res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
+                    return Messages.getString("ResourceRESTInterface.NoMimeTypeErrorMsg");//$NON-NLS-1$
                 }
-                // apache commons-fileupload to handle file upload
-                final DiskFileItemFactory factory = new DiskFileItemFactory();
-                factory.setRepository(tmpFile);
-                final ServletFileUpload fileUpload = new ServletFileUpload(factory);
-                @SuppressWarnings("unchecked")
-                // parseRequest() always returns a List<FileItem>
-                final List<FileItem> items = fileUpload.parseRequest(req.raw());
-                final FileItem item = items.get(0);
-                // hand off file to handler.
-                fileName = requestHandler.createResource(item, mimeType);
-            } catch (final IllegalArgumentException e) {
-                // occurs if the filename is taken or its not a file.
-                res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
-                return e.getMessage();
-            } catch (final Exception e) {
-                res.status(SuperRestInterface.HTTP_STATUS_INTERNAL_SERVER_ERROR);
-                return e.getMessage();
-            }
-            res.status(SuperRestInterface.HTTP_STATUS_CREATED);
-            return fileName;
-        });
+                // Return value.
+                String fileName = Messages.getString("EmptyString"); //$NON-NLS-1$
+
+                // Needed to process input file.
+                final File tmpFile = new File(Messages
+                        .getString("ResourceRESTInterface.tmpFileName")); //$NON-NLS-1$
+                try {
+                    if (!tmpFile.exists() && !tmpFile.mkdirs()) {
+                        throw new RuntimeException(Messages
+                                .getString("ResourceRESTInterface.FailedToCreateDirError") //$NON-NLS-1$
+                                + tmpFile.getAbsolutePath());
+                    }
+                    // apache commons-fileupload to handle file upload
+                    final DiskFileItemFactory factory = new DiskFileItemFactory();
+                    factory.setRepository(tmpFile);
+                    final ServletFileUpload fileUpload = new ServletFileUpload(factory);
+                    @SuppressWarnings("unchecked")
+                    // parseRequest() always returns a List<FileItem>
+                    final List<FileItem> items = fileUpload.parseRequest(req.raw());
+                    final FileItem item = items.get(0);
+                    // hand off file to handler.
+                    fileName = requestHandler.createResource(item, mimeType);
+                } catch (final IllegalArgumentException e) {
+                    // occurs if the filename is taken or its not a file.
+                    res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
+                    return e.getMessage();
+                } catch (final Exception e) {
+                    res.status(SuperRestInterface.HTTP_STATUS_INTERNAL_SERVER_ERROR);
+                    return e.getMessage();
+                }
+                res.status(SuperRestInterface.HTTP_STATUS_CREATED);
+                return fileName;
+            });
 
         /**
          * Request 7.6.3 get resource by ID. Used to get a specific resource
@@ -129,8 +130,10 @@ public class ResourceRESTInterface extends SuperRestInterface {
                     // create response from file.
                     final ResponseBuilder response = ResourceRESTInterface.createFileResponse(file);
                     // Set meta information.
-                    response.header("Content-Type", mimeType);
-                    response.header("Content-Disposition", "inline; filename=" + file.getName());
+                    response.header(
+                            Messages.getString("ResourceRESTInterface.ceontentTypeString"), mimeType); //$NON-NLS-1$
+                    response.header(
+                            Messages.getString("ResourceRESTInterface.contentDistributionString"), Messages.getString("ResourceRESTInterface.inlineFilename") + file.getName()); //$NON-NLS-1$ //$NON-NLS-2$
                     res.status(SuperRestInterface.HTTP_STATUS_OK);
                     // return file.
                     return response.build();
@@ -182,8 +185,10 @@ public class ResourceRESTInterface extends SuperRestInterface {
                         final ResponseBuilder response = ResourceRESTInterface
                                 .createFileResponse(file);
                         // Set meta information.
-                        response.header("Content-Type", mimeType);
-                        response.header("Content-Disposition", "inline; filename=" + file.getName());
+                        response.header(
+                                Messages.getString("ResourceRESTInterface.ceontentTypeString"), mimeType); //$NON-NLS-1$
+                        response.header(
+                                Messages.getString("ResourceRESTInterface.contentDistributionString"), Messages.getString("ResourceRESTInterface.inlineFilename") + file.getName()); //$NON-NLS-1$ //$NON-NLS-2$
                         res.status(SuperRestInterface.HTTP_STATUS_OK);
                         // return file.
                         return response.build();

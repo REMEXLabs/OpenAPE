@@ -103,7 +103,8 @@ public class ResourceList {
         // store mime type
         DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
         if (!databaseConnection.storeMimeType(fileName, mimeType)) {
-            throw new IOException("Mime type could not be stored.");
+            throw new IOException(
+                    Messages.getString("ResourceList.MimeTypeCouldNotBeStoredErrorMsg"));//$NON-NLS-1$
         }
 
         final OutputStream out = null;
