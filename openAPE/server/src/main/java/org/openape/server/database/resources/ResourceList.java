@@ -10,6 +10,7 @@ import java.util.List;
 
 import org.apache.commons.fileupload.FileItem;
 import org.openape.api.Messages;
+import org.openape.server.database.mongoDB.DatabaseConnection;
 import org.openape.server.requestHandler.ResourceRequestHandler;
 import org.openape.server.rest.ResourceRESTInterface;
 
@@ -99,6 +100,11 @@ public class ResourceList {
             throw new IllegalArgumentException(
                     Messages.getString("ResourceList.NoFileNameErrorMassage")); //$NON-NLS-1$
         }
+        // store mime type
+        DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
+        if (!databaseConnection.storeMimeType(fileName, mimeType)) {
+            throw new IOException("Mime type could not be stored.");
+        }
 
         final OutputStream out = null;
         final InputStream filecontent = null;
@@ -155,6 +161,9 @@ public class ResourceList {
         if (this.resourceExists(fileName)) {
             new File(ResourceList.RESOURCEFOLDERPATH + File.separator + fileName).delete();
             this.resourceNameList.remove(fileName);
+            // delete mime type from database.
+            DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
+            databaseConnection.deleteMimeType(fileName);
         } else {
             throw new IllegalArgumentException(
                     Messages.getString("ResourceList.FileNotFoundErrorMassage")); //$NON-NLS-1$
@@ -183,7 +192,9 @@ public class ResourceList {
             IOException {
         if (this.resourceExists(fileName)) {
             final File file = new File(ResourceList.RESOURCEFOLDERPATH + File.separator + fileName);
-            final String mimeType = null;
+            // Get mime type from database
+            DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
+            final String mimeType = databaseConnection.getMimeType(fileName);
             return new GetResourceReturnType(file, mimeType);
         } else {
             throw new IllegalArgumentException(
