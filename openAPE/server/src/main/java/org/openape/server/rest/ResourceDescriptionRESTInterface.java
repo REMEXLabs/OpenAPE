@@ -19,40 +19,46 @@ public class ResourceDescriptionRESTInterface extends SuperRestInterface {
         /**
          * Request 7.7.2 create resource description.
          */
-        Spark.post(Messages.getString("ResourceDescriptionRESTInterface.ResourceDescriptionURLWithoutID"), (req, res) -> { //$NON-NLS-1$
+        Spark.post(
+                Messages.getString("ResourceDescriptionRESTInterface.ResourceDescriptionURLWithoutID"), (req, res) -> { //$NON-NLS-1$
                     try {
+                        if (!req.contentType().equals(Messages.getString("MimeTypeJson"))) {//$NON-NLS-1$
+                            res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
+                            return Messages.getString("Contexts.WrongMimeTypeErrorMsg");//$NON-NLS-1$
+                        }
                         // Try to map the received json object to a
                         // resource description
                         // object.
-                final ResourceDescription recievedResourceDescription = (ResourceDescription) SuperRestInterface
-                        .extractObjectFromRequest(req, ResourceDescription.class);
-                // Test the object for validity.
-                if (!recievedResourceDescription.isValid()) {
-                    res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
-                    return Messages
-                            .getString("ResourceDescriptionRESTInterface.NoValidObjectErrorMassage"); //$NON-NLS-1$
-                }
-                // If the object is okay, save it and return the id.
-                final String resourceDescriptionId = requestHandler
-                        .createResourceDescription(recievedResourceDescription);
-                res.status(SuperRestInterface.HTTP_STATUS_CREATED);
-                return resourceDescriptionId;
-            } catch (JsonParseException | JsonMappingException e) {
-                // If the parse is not successful return bad request
-                // error code.
-                res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
-                return e.getMessage();
-            } catch (final IOException e) {
-                res.status(SuperRestInterface.HTTP_STATUS_INTERNAL_SERVER_ERROR);
-                return e.getMessage();
-            }
-        });
+                        final ResourceDescription recievedResourceDescription = (ResourceDescription) SuperRestInterface
+                                .extractObjectFromRequest(req, ResourceDescription.class);
+                        // Test the object for validity.
+                        if (!recievedResourceDescription.isValid()) {
+                            res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
+                            return Messages
+                                    .getString("ResourceDescriptionRESTInterface.NoValidObjectErrorMassage"); //$NON-NLS-1$
+                        }
+                        // If the object is okay, save it and return the id.
+                        final String resourceDescriptionId = requestHandler
+                                .createResourceDescription(recievedResourceDescription);
+                        res.status(SuperRestInterface.HTTP_STATUS_CREATED);
+                        return resourceDescriptionId;
+                    } catch (JsonParseException | JsonMappingException e) {
+                        // If the parse is not successful return bad request
+                        // error code.
+                        res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
+                        return e.getMessage();
+                    } catch (final IOException e) {
+                        res.status(SuperRestInterface.HTTP_STATUS_INTERNAL_SERVER_ERROR);
+                        return e.getMessage();
+                    }
+                });
 
         /**
          * Request 7.7.3 get resource description. Used to get a specific
          * resource description identified by ID.
          */
-        Spark.get(Messages.getString("ResourceDescriptionRESTInterface.ResourceDescriptionURLWithID"), //$NON-NLS-1$
+        Spark.get(Messages
+                .getString("ResourceDescriptionRESTInterface.ResourceDescriptionURLWithID"), //$NON-NLS-1$
                 (req, res) -> {
                     final String resourceDescriptionId = req.params(":resource-description-id"); //$NON-NLS-1$
                 try {
@@ -117,6 +123,10 @@ public class ResourceDescriptionRESTInterface extends SuperRestInterface {
         Spark.put(
                 Messages.getString("ResourceDescriptionRESTInterface.ResourceDescriptionURLWithID"), //$NON-NLS-1$
                 (req, res) -> {
+                    if(!req.contentType().equals(Messages.getString("MimeTypeJson"))) {//$NON-NLS-1$
+                        res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
+                        return Messages.getString("Contexts.WrongMimeTypeErrorMsg");//$NON-NLS-1$
+                    }
                     final String resourceDescriptionId = req.params(Messages
                             .getString("ResourceDescriptionRESTInterface.IDParam")); //$NON-NLS-1$
                     try {
