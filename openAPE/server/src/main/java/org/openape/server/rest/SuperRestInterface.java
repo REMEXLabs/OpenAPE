@@ -25,6 +25,7 @@ public class SuperRestInterface {
     public static final int HTTP_STATUS_BAD_REQUEST = 400;
     public static final int HTTP_STATUS_NOT_FOUND = 404;
     public static final int HTTP_STATUS_INTERNAL_SERVER_ERROR = 500;
+    private static final boolean TEST_ENVIRONMENT = true;
 
     /**
      * Get a sent json object from a request.
@@ -68,7 +69,9 @@ public class SuperRestInterface {
         ResourceRESTInterface.setupResourceRESTInterface(new ResourceRequestHandler());
         TaskContextRESTInterface.setupTaskContextRESTInterface(new TaskContextRequestHandler());
         UserContextRESTInterface.setupUserContextRESTInterface(new UserContextRequestHandler());
-        //TestRESTInterface.setupTestRESTInterface(); // test html interface found under .../api/tests.
+        if (TEST_ENVIRONMENT) {// test html interface found under .../api/tests.
+            TestRESTInterface.setupTestRESTInterface();
+        }
     }
 
 }
