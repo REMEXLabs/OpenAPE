@@ -1,5 +1,5 @@
 Datum,Zeit in Stunden,Aktivität,Summe
-12.10,1,Initialer Projekttreff,162
+12.10,1,Initialer Projekttreff,"167,5"
 18.10,1,2. Teambesprechung,
 18.10,2,Issues erstellen und Projekt bei mir einrichten,
 25.10,"0,5",3. Teambesprechung,
@@ -86,4 +86,4 @@ Datum,Zeit in Stunden,Aktivität,Summe
 10.03,1,Präsentation,
 11.03,2,erweiterung der rest tests,
 11.03,2,add mime type checking und video konzept ausarbeitung mit manuel,
-11.03,5,resource mime type storage,
+11.03,"5,5",resource mime type storage,
