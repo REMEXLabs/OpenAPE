@@ -3,11 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <title>openAPE</title>
-    <script>
+    <script type="application/javascript">
         var serveraddress = "http://localhost:8080/openape/";
 		var sampleUserContext = '{"contexts":[{"id":"0","name":"computer operation system","preferences":[{"key":"/smalltext","value":"screen magnifier"},{"key":"/longtext","value":"screen reader"}]},{"id":"1","name":"ticket machine","preferences":[{"key":"/all","value":"high contrast"},{"key":"/text","value":"large font"}]}]}';
 		var id;
-		document.getElementById("dataInput").value = sampleUserContext;
+		
+		function loadPage() {
+			document.getElementById("dataInput").value = sampleUserContext;
+		}
 		
         function saveData() {
 			var data = document.getElementById("dataInput").value;
@@ -95,33 +98,49 @@
 
 </script>
 </head>
-<body>
-<fieldset> 
+<body onload="loadPage()">
+<h2>Data storage</h2>
 <input type="radio" id="EnC" name="dataType" value="api/environment-contexts"> <label for="EnC"> environment context</label><br> 
 <input type="radio" id="EqC" name="dataType" value="api/equipment-contexts"> <label for="EqC"> equipment context</label><br> 
 <input type="radio" id="TC" name="dataType" value="api/task-contexts"> <label for="TC"> task contexts</label><br>
 <input type="radio" id="UC" name="dataType" value="api/user-contexts" checked="checked"> <label for="UC"> user contexts</label><br>
 <input type="radio" id="RD" name="dataType" value="api/resource-descriptions"> <label for="RD"> resource description</label><br>
 <input type="radio" id="L" name="dataType" value="api/listings"> <label for="L"> listing</label><br>
-</fieldset>
-<textarea id="dataInput" name="dataInput" cols="100" rows="4"></textarea> <br>
-<button type="button" id="saveData" onclick="saveData()">store context</button>
-<label>Status:<input type="text" id="saveStatus"/></label><br>
-<button type="button" id="loadData" onclick="loadData()">load context</button>
-<label>Status:<input type="text" id="loadStatus"/></label><br>
-<button type="button" id="updateData" onclick="updateData()">update context</button>
-<label>Status:<input type="text" id="updateStatus"/></label><br>
-<button type="button" id="deleteData" onclick="deleteData()">delete context</button>
-<label>Status:<input type="text" id="deleteStatus"/></label><br>
-<br>
+<textarea id="dataInput" name="dataInput" cols="100" rows="8"></textarea> <br>
+<table>
+	<tr>
+		<td><button type="button" id="saveData" onclick="saveData()">store data</button></td>
+		<td><label>Status:<input type="text" id="saveStatus"/></label></td>
+	</tr>
+	<tr>
+		<td><button type="button" id="loadData" onclick="loadData()">load data</button></td>
+		<td><label>Status:<input type="text" id="loadStatus"/></label></td>
+	</tr>
+	<tr>
+		<td><button type="button" id="updateData" onclick="updateData()">update data</button></td>
+		<td><label>Status:<input type="text" id="updateStatus"/></label></td>
+	</tr>
+	<tr>
+		<td><button type="button" id="deleteData" onclick="deleteData()">delete data</button></td>
+		<td><label>Status:<input type="text" id="deleteStatus"/></label></td>
+	</tr>
+</table><br>
+
+<h2>Resource Storage</h2>
 <form action="http://localhost:8080/openape/api/resources" method="post" enctype="multipart/form-data">
-	<input name="file" id="filename" type="file" /><br><br>
+	<input name="file" id="filename" type="file" />
 	<button name="submit" type="submit">store resource</button>
 </form>
-<label>resource name<input type="text" id="resourceName"/></label><br>
-<button type="button" id="loadRes" onclick="loadRes()">load resource</button>
-<label>Status:<input type="text" id="resLoadStatus"/></label><br>
-<button type="button" id="deleteRes" onclick="deleteRes()">delete resource</button>
-<label>Status:<input type="text" id="resDeleteStatus"/></label><br>
+<label>resource name: <input type="text" id="resourceName"/></label><br>
+<table>
+	<tr>
+		<td><button type="button" id="loadRes" onclick="loadRes()">load resource</button></td>
+		<td><label>Status:<input type="text" id="resLoadStatus"/></label></td>
+	</tr>
+	<tr>
+		<td><button type="button" id="deleteRes" onclick="deleteRes()">delete resource</button></td>
+		<td><label>Status:<input type="text" id="resDeleteStatus"/></label></td>
+	</tr>
+</table>
 </body>
 </html>
