@@ -55,7 +55,7 @@ public enum MongoCollectionTypes {
                 .getString("MongoCollectionTypes.lstingCollectionName"))) { //$NON-NLS-1$
             return LISTING;
         } else if (collectionName.endsWith(Messages
-                .getString("MongoCollectionTypes.resourceMimeTypesCollectionName"))) {
+                .getString("MongoCollectionTypes.resourceMimeTypesCollectionName"))) {//$NON-NLS-1$
             return RESOURCEMIMETYPES;
         } else {
             return null;

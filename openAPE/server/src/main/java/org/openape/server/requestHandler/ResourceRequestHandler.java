@@ -110,7 +110,7 @@ public class ResourceRequestHandler {
      * @throws NotFoundException
      *             if no fitting resource is found.
      */
-    public List<File> getResourceByListing(Listing listing) throws IOException,
+    public List<GetResourceReturnType> getResourceByListing(Listing listing) throws IOException,
             IllegalArgumentException, NotFoundException {
         return ListingManager.getResourcesFromListing(listing);
     }

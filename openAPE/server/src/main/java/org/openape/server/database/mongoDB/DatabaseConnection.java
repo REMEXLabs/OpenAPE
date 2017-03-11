@@ -433,7 +433,7 @@ public class DatabaseConnection {
             final ObjectMapper mapper = new ObjectMapper();
             final String jsonData = mapper.writeValueAsString(data);
             dataDocument = Document.parse(jsonData);
-            dataDocument.append("_id", fileName);
+            dataDocument.append(Messages.getString("DatabaseConnection._id"), fileName);//$NON-NLS-1$
             // Insert the document.
             collectionToWorkOn.insertOne(dataDocument);
         } catch (IOException | JsonParseException | MongoException e) {
