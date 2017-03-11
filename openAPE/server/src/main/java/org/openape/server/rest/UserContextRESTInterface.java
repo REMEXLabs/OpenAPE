@@ -19,6 +19,10 @@ public class UserContextRESTInterface extends SuperRestInterface {
          */
         Spark.post(
                 Messages.getString("UserContextRESTInterface.UserContextURLWithoutID"), (req, res) -> { //$NON-NLS-1$
+                    if(!req.contentType().equals(Messages.getString("MimeTypeJson"))) {//$NON-NLS-1$
+                        res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
+                        return Messages.getString("Contexts.WrongMimeTypeErrorMsg");//$NON-NLS-1$
+                    }
                     try {
                         // Try to map the received json object to a userContext
                         // object.
@@ -81,6 +85,10 @@ public class UserContextRESTInterface extends SuperRestInterface {
         Spark.put(
                 Messages.getString("UserContextRESTInterface.UserContextURLWithID"), //$NON-NLS-1$
                 (req, res) -> {
+                    if(!req.contentType().equals(Messages.getString("MimeTypeJson"))) {//$NON-NLS-1$
+                        res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
+                        return Messages.getString("Contexts.WrongMimeTypeErrorMsg");//$NON-NLS-1$
+                    }
                     final String userContextId = req.params(Messages
                             .getString("UserContextRESTInterface.IDParam")); //$NON-NLS-1$
                     try {

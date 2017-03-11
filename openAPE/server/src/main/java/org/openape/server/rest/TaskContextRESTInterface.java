@@ -19,6 +19,10 @@ public class TaskContextRESTInterface extends SuperRestInterface {
          */
         Spark.post(
                 Messages.getString("TaskContextRESTInterface.TastContextURLWithoutID"), (req, res) -> { //$NON-NLS-1$
+                    if(!req.contentType().equals(Messages.getString("MimeTypeJson"))) {//$NON-NLS-1$
+                        res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
+                        return Messages.getString("Contexts.WrongMimeTypeErrorMsg");//$NON-NLS-1$
+                    }
                     try {
                         // Try to map the received json object to a taskContext
                         // object.
@@ -80,6 +84,10 @@ public class TaskContextRESTInterface extends SuperRestInterface {
         Spark.put(
                 Messages.getString("TaskContextRESTInterface.TastContextURLWithID"), //$NON-NLS-1$
                 (req, res) -> {
+                    if(!req.contentType().equals(Messages.getString("MimeTypeJson"))) {//$NON-NLS-1$
+                        res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
+                        return Messages.getString("Contexts.WrongMimeTypeErrorMsg");//$NON-NLS-1$
+                    }
                     final String taskContextId = req.params(Messages
                             .getString("TaskContextRESTInterface.IDParam")); //$NON-NLS-1$
                     try {
