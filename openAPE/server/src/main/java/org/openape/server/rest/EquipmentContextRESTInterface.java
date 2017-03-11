@@ -20,7 +20,7 @@ public class EquipmentContextRESTInterface extends SuperRestInterface {
          */
         Spark.post(
                 Messages.getString("EquipmentContextRESTInterface.EquipmentContextURLWithoutID"), (req, res) -> { //$NON-NLS-1$
-                    if(!req.contentType().equals(Messages.getString("MimeTypeJson"))) {//$NON-NLS-1$
+                    if (!req.contentType().equals(Messages.getString("MimeTypeJson"))) {//$NON-NLS-1$
                         res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
                         return Messages.getString("Contexts.WrongMimeTypeErrorMsg");//$NON-NLS-1$
                     }
@@ -84,40 +84,39 @@ public class EquipmentContextRESTInterface extends SuperRestInterface {
         /**
          * Request 7.4.4 update equipment-context.
          */
-        Spark.put(
-                Messages.getString("EquipmentContextRESTInterface.EquipmentContextURLWithID"), //$NON-NLS-1$
+        Spark.put(Messages.getString("EquipmentContextRESTInterface.EquipmentContextURLWithID"), //$NON-NLS-1$
                 (req, res) -> {
-                    if(!req.contentType().equals(Messages.getString("MimeTypeJson"))) {//$NON-NLS-1$
+                    if (!req.contentType().equals(Messages.getString("MimeTypeJson"))) {//$NON-NLS-1$
+                    res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
+                    return Messages.getString("Contexts.WrongMimeTypeErrorMsg");//$NON-NLS-1$
+                }
+                final String equipmentContextId = req.params(Messages
+                        .getString("EquipmentContextRESTInterface.IDParam")); //$NON-NLS-1$
+                try {
+                    final EquipmentContext recievedEquipmentContext = (EquipmentContext) SuperRestInterface
+                            .extractObjectFromRequest(req, EquipmentContext.class);
+                    // Test the object for validity.
+                    if (!recievedEquipmentContext.isValid()) {
                         res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
-                        return Messages.getString("Contexts.WrongMimeTypeErrorMsg");//$NON-NLS-1$
+                        return Messages
+                                .getString("EquipmentContextRESTInterface.NoValidObjectErrorMassage"); //$NON-NLS-1$
                     }
-                    final String equipmentContextId = req.params(Messages
-                            .getString("EquipmentContextRESTInterface.IDParam")); //$NON-NLS-1$
-                    try {
-                        final EquipmentContext recievedEquipmentContext = (EquipmentContext) SuperRestInterface
-                                .extractObjectFromRequest(req, EquipmentContext.class);
-                        // Test the object for validity.
-                        if (!recievedEquipmentContext.isValid()) {
-                            res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
-                            return Messages
-                                    .getString("EquipmentContextRESTInterface.NoValidObjectErrorMassage"); //$NON-NLS-1$
-                        }
-                        // If the object is okay, update it.
-                        requestHandler.updateEquipmentContextById(equipmentContextId,
-                                recievedEquipmentContext);
-                        res.status(SuperRestInterface.HTTP_STATUS_OK);
-                        return Messages.getString("EquipmentContextRESTInterface.EmptyString"); //$NON-NLS-1$ //TODO return right statuscode
-                    } catch (JsonParseException | JsonMappingException | IllegalArgumentException e) {
-                        // If the parse or update is not successful return bad
-                        // request
-                        // error code.
-                        res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
-                        return e.getMessage();
-                    } catch (final IOException e) {
-                        res.status(SuperRestInterface.HTTP_STATUS_INTERNAL_SERVER_ERROR);
-                        return e.getMessage();
-                    }
-                });
+                    // If the object is okay, update it.
+                    requestHandler.updateEquipmentContextById(equipmentContextId,
+                            recievedEquipmentContext);
+                    res.status(SuperRestInterface.HTTP_STATUS_OK);
+                    return Messages.getString("EquipmentContextRESTInterface.EmptyString"); //$NON-NLS-1$ //TODO return right statuscode
+                } catch (JsonParseException | JsonMappingException | IllegalArgumentException e) {
+                    // If the parse or update is not successful return bad
+                    // request
+                    // error code.
+                    res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
+                    return e.getMessage();
+                } catch (final IOException e) {
+                    res.status(SuperRestInterface.HTTP_STATUS_INTERNAL_SERVER_ERROR);
+                    return e.getMessage();
+                }
+            });
 
         /**
          * Request 7.4.5 delete equipment-context.

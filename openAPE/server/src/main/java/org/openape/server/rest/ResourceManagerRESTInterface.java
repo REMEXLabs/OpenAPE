@@ -27,7 +27,7 @@ public class ResourceManagerRESTInterface extends SuperRestInterface {
                         final StringBuilder fullContents = new StringBuilder();
                         String line;
                         while ((line = bufferedReader.readLine()) != null) {
-                            fullContents.append(line+"\n");
+                            fullContents.append(line + "\n");
                         }
                         htmlInterface = fullContents.toString();
                     } catch (final Exception e) {

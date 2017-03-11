@@ -20,7 +20,7 @@ public class EnvironmentContextRESTInterface extends SuperRestInterface {
          */
         Spark.post(
                 Messages.getString("EnvironmentContextRESTInterface.EnvironmentContextsURLWithoutID"), (req, res) -> { //$NON-NLS-1$
-                    if(!req.contentType().equals(Messages.getString("MimeTypeJson"))) {//$NON-NLS-1$
+                    if (!req.contentType().equals(Messages.getString("MimeTypeJson"))) {//$NON-NLS-1$
                         res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
                         return Messages.getString("Contexts.WrongMimeTypeErrorMsg");//$NON-NLS-1$
                     }
@@ -84,40 +84,40 @@ public class EnvironmentContextRESTInterface extends SuperRestInterface {
         /**
          * Request 7.5.4 update environment-context.
          */
-        Spark.put(
-                Messages.getString("EnvironmentContextRESTInterface.EnvironmentContextsURLWithID"), //$NON-NLS-1$
+        Spark.put(Messages
+                .getString("EnvironmentContextRESTInterface.EnvironmentContextsURLWithID"), //$NON-NLS-1$
                 (req, res) -> {
-                    if(!req.contentType().equals(Messages.getString("MimeTypeJson"))) {//$NON-NLS-1$
+                    if (!req.contentType().equals(Messages.getString("MimeTypeJson"))) {//$NON-NLS-1$
+                    res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
+                    return "Wrong mime type. Has to be application/json.";
+                }
+                final String environmentContextId = req.params(Messages
+                        .getString("EnvironmentContextRESTInterface.IDParam")); //$NON-NLS-1$
+                try {
+                    final EnvironmentContext recievedEnvironmentContext = (EnvironmentContext) SuperRestInterface
+                            .extractObjectFromRequest(req, EnvironmentContext.class);
+                    // Test the object for validity.
+                    if (!recievedEnvironmentContext.isValid()) {
                         res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
-                        return "Wrong mime type. Has to be application/json.";
+                        return Messages
+                                .getString("EnvironmentContextRESTInterface.NoValidObjectErrorMassage"); //$NON-NLS-1$
                     }
-                    final String environmentContextId = req.params(Messages
-                            .getString("EnvironmentContextRESTInterface.IDParam")); //$NON-NLS-1$
-                    try {
-                        final EnvironmentContext recievedEnvironmentContext = (EnvironmentContext) SuperRestInterface
-                                .extractObjectFromRequest(req, EnvironmentContext.class);
-                        // Test the object for validity.
-                        if (!recievedEnvironmentContext.isValid()) {
-                            res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
-                            return Messages
-                                    .getString("EnvironmentContextRESTInterface.NoValidObjectErrorMassage"); //$NON-NLS-1$
-                        }
-                        // If the object is okay, update it.
-                        requestHandler.updateEnvironmentContextById(environmentContextId,
-                                recievedEnvironmentContext);
-                        res.status(SuperRestInterface.HTTP_STATUS_OK);
-                        return Messages.getString("EnvironmentContextRESTInterface.EmptyString"); //$NON-NLS-1$ //TODO return right statuscode
-                    } catch (JsonParseException | JsonMappingException | IllegalArgumentException e) {
-                        // If the parse or update is not successful return bad
-                        // request
-                        // error code.
-                        res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
-                        return e.getMessage();
-                    } catch (final IOException e) {
-                        res.status(SuperRestInterface.HTTP_STATUS_INTERNAL_SERVER_ERROR);
-                        return e.getMessage();
-                    }
-                });
+                    // If the object is okay, update it.
+                    requestHandler.updateEnvironmentContextById(environmentContextId,
+                            recievedEnvironmentContext);
+                    res.status(SuperRestInterface.HTTP_STATUS_OK);
+                    return Messages.getString("EnvironmentContextRESTInterface.EmptyString"); //$NON-NLS-1$ //TODO return right statuscode
+                } catch (JsonParseException | JsonMappingException | IllegalArgumentException e) {
+                    // If the parse or update is not successful return bad
+                    // request
+                    // error code.
+                    res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
+                    return e.getMessage();
+                } catch (final IOException e) {
+                    res.status(SuperRestInterface.HTTP_STATUS_INTERNAL_SERVER_ERROR);
+                    return e.getMessage();
+                }
+            });
 
         /**
          * Request 7.5.5 delete environment-context.

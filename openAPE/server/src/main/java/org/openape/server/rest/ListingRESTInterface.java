@@ -19,7 +19,7 @@ public class ListingRESTInterface extends SuperRestInterface {
          */
         Spark.post(Messages.getString("ListingRESTInterface.ListingURLWithoutID"), (req, res) -> { //$NON-NLS-1$
                     try {
-                if (!req.contentType().equals(Messages.getString("MimeTypeJson"))) {//$NON-NLS-1$
+                        if (!req.contentType().equals(Messages.getString("MimeTypeJson"))) {//$NON-NLS-1$
                     res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
                     return Messages.getString("Contexts.WrongMimeTypeErrorMsg");//$NON-NLS-1$
                 }

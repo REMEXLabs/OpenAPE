@@ -9,9 +9,7 @@ import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-
 import javassist.NotFoundException;
-
 
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
@@ -20,7 +18,6 @@ import org.openape.api.Messages;
 import org.openape.api.listing.Listing;
 import org.openape.server.database.resources.GetResourceReturnType;
 import org.openape.server.requestHandler.ResourceRequestHandler;
-
 
 import spark.Spark;
 
@@ -77,7 +74,8 @@ public class ResourceRESTInterface extends SuperRestInterface {
 
                 try {
                     // get the file from server.
-                    GetResourceReturnType serverReturn = requestHandler.getResourceById(resourceId);
+                    final GetResourceReturnType serverReturn = requestHandler
+                            .getResourceById(resourceId);
                     final File file = serverReturn.getFile();
 
                     // Add file contents as zip to response.

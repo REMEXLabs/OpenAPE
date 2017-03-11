@@ -182,8 +182,8 @@ public class ResourceList {
     public GetResourceReturnType getResoureFile(String fileName) throws IllegalArgumentException,
             IOException {
         if (this.resourceExists(fileName)) {
-            File file = new File(ResourceList.RESOURCEFOLDERPATH + File.separator + fileName);
-            String mimeType = null;
+            final File file = new File(ResourceList.RESOURCEFOLDERPATH + File.separator + fileName);
+            final String mimeType = null;
             return new GetResourceReturnType(file, mimeType);
         } else {
             throw new IllegalArgumentException(

@@ -120,40 +120,40 @@ public class ResourceDescriptionRESTInterface extends SuperRestInterface {
         /**
          * Request 7.7.5 update resource description.
          */
-        Spark.put(
-                Messages.getString("ResourceDescriptionRESTInterface.ResourceDescriptionURLWithID"), //$NON-NLS-1$
+        Spark.put(Messages
+                .getString("ResourceDescriptionRESTInterface.ResourceDescriptionURLWithID"), //$NON-NLS-1$
                 (req, res) -> {
-                    if(!req.contentType().equals(Messages.getString("MimeTypeJson"))) {//$NON-NLS-1$
+                    if (!req.contentType().equals(Messages.getString("MimeTypeJson"))) {//$NON-NLS-1$
+                    res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
+                    return Messages.getString("Contexts.WrongMimeTypeErrorMsg");//$NON-NLS-1$
+                }
+                final String resourceDescriptionId = req.params(Messages
+                        .getString("ResourceDescriptionRESTInterface.IDParam")); //$NON-NLS-1$
+                try {
+                    final ResourceDescription recievedResourceDescription = (ResourceDescription) SuperRestInterface
+                            .extractObjectFromRequest(req, ResourceDescription.class);
+                    // Test the object for validity.
+                    if (!recievedResourceDescription.isValid()) {
                         res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
-                        return Messages.getString("Contexts.WrongMimeTypeErrorMsg");//$NON-NLS-1$
+                        return Messages
+                                .getString("ResourceDescriptionRESTInterface.NoValidObjectErrorMassage"); //$NON-NLS-1$
                     }
-                    final String resourceDescriptionId = req.params(Messages
-                            .getString("ResourceDescriptionRESTInterface.IDParam")); //$NON-NLS-1$
-                    try {
-                        final ResourceDescription recievedResourceDescription = (ResourceDescription) SuperRestInterface
-                                .extractObjectFromRequest(req, ResourceDescription.class);
-                        // Test the object for validity.
-                        if (!recievedResourceDescription.isValid()) {
-                            res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
-                            return Messages
-                                    .getString("ResourceDescriptionRESTInterface.NoValidObjectErrorMassage"); //$NON-NLS-1$
-                        }
-                        // If the object is okay, update it.
-                        requestHandler.updateResourceDescriptionById(resourceDescriptionId,
-                                recievedResourceDescription);
-                        res.status(SuperRestInterface.HTTP_STATUS_OK);
-                        return Messages.getString("ResourceDescriptionRESTInterface.EmptyString"); // TODO return right statuscode //$NON-NLS-1$
-                    } catch (JsonParseException | JsonMappingException | IllegalArgumentException e) {
-                        // If the parse or update is not successful return bad
-                        // request
-                        // error code.
-                        res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
-                        return e.getMessage();
-                    } catch (final IOException e) {
-                        res.status(SuperRestInterface.HTTP_STATUS_INTERNAL_SERVER_ERROR);
-                        return e.getMessage();
-                    }
-                });
+                    // If the object is okay, update it.
+                    requestHandler.updateResourceDescriptionById(resourceDescriptionId,
+                            recievedResourceDescription);
+                    res.status(SuperRestInterface.HTTP_STATUS_OK);
+                    return Messages.getString("ResourceDescriptionRESTInterface.EmptyString"); // TODO return right statuscode //$NON-NLS-1$
+                } catch (JsonParseException | JsonMappingException | IllegalArgumentException e) {
+                    // If the parse or update is not successful return bad
+                    // request
+                    // error code.
+                    res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
+                    return e.getMessage();
+                } catch (final IOException e) {
+                    res.status(SuperRestInterface.HTTP_STATUS_INTERNAL_SERVER_ERROR);
+                    return e.getMessage();
+                }
+            });
 
         /**
          * Request 7.7.6 delete resource description.
