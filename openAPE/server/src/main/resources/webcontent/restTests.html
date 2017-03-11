@@ -75,7 +75,7 @@
 		function loadRes() {
             var req = new XMLHttpRequest();
             var resourceName = document.getElementById("resourceName").value;
-            req.open("GET", serverAddress + "api/resources" + "/" + resourceName, true);
+            req.open("GET", serveraddress + "api/resources" + "/" + resourceName, true);
             req.send();
             req.onreadystatechange = function () {
                 if (req.readyState == 4) {
