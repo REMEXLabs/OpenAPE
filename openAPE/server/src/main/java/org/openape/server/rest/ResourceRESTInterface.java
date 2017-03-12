@@ -80,7 +80,6 @@ public class ResourceRESTInterface extends SuperRestInterface {
                         res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
                         return Messages.getString("ResourceRESTInterface.NoMimeTypeErrorMsg");//$NON-NLS-1$
                     }
-                    System.out.println(mimeType);
                     // Return value.
                     String fileName = Messages.getString("EmptyString"); //$NON-NLS-1$
 
