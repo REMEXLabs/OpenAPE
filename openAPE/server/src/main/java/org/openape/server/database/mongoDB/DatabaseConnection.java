@@ -8,7 +8,6 @@ import org.bson.Document;
 import org.bson.codecs.configuration.CodecConfigurationException;
 import org.bson.json.JsonParseException;
 import org.bson.types.ObjectId;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.openape.api.DatabaseObject;
 import org.openape.api.Messages;
 import org.openape.server.MongoConfig;
@@ -17,6 +16,7 @@ import org.openape.server.requestHandler.EquipmentContextRequestHandler;
 import org.openape.server.requestHandler.TaskContextRequestHandler;
 import org.openape.server.requestHandler.UserContextRequestHandler;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mongodb.BasicDBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoCredential;

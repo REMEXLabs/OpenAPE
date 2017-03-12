@@ -10,6 +10,8 @@ import org.junit.Test;
 import org.openape.api.usercontext.Context;
 import org.openape.api.usercontext.UserContext;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 public class TestDatabaseConnection {
     /**
      * @return a sample user context representing someone with restricted

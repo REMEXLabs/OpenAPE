@@ -101,7 +101,7 @@ public class ResourceList {
                     Messages.getString("ResourceList.NoFileNameErrorMassage")); //$NON-NLS-1$
         }
         // store mime type
-        DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
+        final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
         if (!databaseConnection.storeMimeType(fileName, mimeType)) {
             throw new IOException(
                     Messages.getString("ResourceList.MimeTypeCouldNotBeStoredErrorMsg"));//$NON-NLS-1$
@@ -163,7 +163,7 @@ public class ResourceList {
             new File(ResourceList.RESOURCEFOLDERPATH + File.separator + fileName).delete();
             this.resourceNameList.remove(fileName);
             // delete mime type from database.
-            DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
+            final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
             databaseConnection.deleteMimeType(fileName);
         } else {
             throw new IllegalArgumentException(
@@ -194,7 +194,7 @@ public class ResourceList {
         if (this.resourceExists(fileName)) {
             final File file = new File(ResourceList.RESOURCEFOLDERPATH + File.separator + fileName);
             // Get mime type from database
-            DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
+            final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
             final String mimeType = databaseConnection.getMimeType(fileName);
             return new GetResourceReturnType(file, mimeType);
         } else {

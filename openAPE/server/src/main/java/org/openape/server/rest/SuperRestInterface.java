@@ -2,9 +2,6 @@ package org.openape.server.rest;
 
 import java.io.IOException;
 
-import org.codehaus.jackson.JsonParseException;
-import org.codehaus.jackson.map.JsonMappingException;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.openape.api.Messages;
 import org.openape.server.requestHandler.EnvironmentContextRequestHandler;
 import org.openape.server.requestHandler.EquipmentContextRequestHandler;
@@ -16,6 +13,10 @@ import org.openape.server.requestHandler.UserContextRequestHandler;
 
 import spark.Request;
 import spark.Spark;
+
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class SuperRestInterface {
 

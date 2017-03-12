@@ -6,9 +6,10 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.codehaus.jackson.annotate.JsonIgnore;
 import org.openape.api.DatabaseObject;
 import org.openape.api.resourceDescription.ResourceDescription;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  * Listing object defined in A.8.2

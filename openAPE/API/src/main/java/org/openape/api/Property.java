@@ -7,11 +7,12 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 
-import org.codehaus.jackson.annotate.JsonIgnore;
 import org.openape.api.environmentcontext.EnvironmentContext;
 import org.openape.api.equipmentcontext.EquipmentContext;
 import org.openape.api.resourceDescription.ResourceDescription;
 import org.openape.api.taskcontext.TaskContext;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  * Property Object used by {@link ResourceDescription}, {@link TaskContext},
@@ -54,10 +55,10 @@ public class Property implements Serializable {
 
     private List<Descriptor> descriptors = new ArrayList<Descriptor>();
 
-    public Property(){
-    	
+    public Property() {
+
     }
-    
+
     public Property(String name, String value) {
         this.name = name;
         this.value = value;

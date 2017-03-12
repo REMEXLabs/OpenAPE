@@ -4,11 +4,12 @@ import java.io.Serializable;
 
 import javax.xml.bind.annotation.XmlAttribute;
 
-import org.codehaus.jackson.annotate.JsonIgnore;
 import org.openape.api.environmentcontext.EnvironmentContext;
 import org.openape.api.equipmentcontext.EquipmentContext;
 import org.openape.api.resourceDescription.ResourceDescription;
 import org.openape.api.taskcontext.TaskContext;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  * Descriptor Object used by {@link ResourceDescription}, {@link TaskContext},
@@ -20,13 +21,13 @@ public class Descriptor implements Serializable {
     private String name;
     private String value;
 
+    public Descriptor() {
+
+    }
+
     public Descriptor(String name, String value) {
         this.name = name;
         this.value = value;
-    }
-    
-    public Descriptor() {
-	
     }
 
     /**

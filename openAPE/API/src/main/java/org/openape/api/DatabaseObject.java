@@ -2,7 +2,7 @@ package org.openape.api;
 
 import java.io.Serializable;
 
-import org.codehaus.jackson.annotate.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  * Abstract class used to identify object types that can be stored in the
