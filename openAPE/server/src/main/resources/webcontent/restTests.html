@@ -101,15 +101,19 @@
 </script>
 </head>
 <body onload="loadPage()">
-<h2>Data storage</h2>
+<h2 style="text-align: center;">Data storage</h2>
+<div style="width: 10em; margin: 0px auto 0px auto;">
 <input type="radio" id="EnC" name="dataType" value="api/environment-contexts"> <label for="EnC"> environment context</label><br> 
 <input type="radio" id="EqC" name="dataType" value="api/equipment-contexts"> <label for="EqC"> equipment context</label><br> 
 <input type="radio" id="TC" name="dataType" value="api/task-contexts"> <label for="TC"> task context</label><br>
 <input type="radio" id="UC" name="dataType" value="api/user-contexts" checked="checked"> <label for="UC"> user context</label><br>
 <input type="radio" id="RD" name="dataType" value="api/resource-descriptions"> <label for="RD"> resource description</label><br>
 <input type="radio" id="L" name="dataType" value="api/listings"> <label for="L"> listing</label><br>
+</div><br>
+<div style="text-align: center;">
 <textarea id="dataInput" name="dataInput" cols="100" rows="8"></textarea> <br>
-<table>
+</div><br>
+<table style="margin-left:auto; margin-right:auto;">
 	<tr>
 		<td><button type="button" id="saveData" onclick="saveData()">store data</button></td>
 		<td><label>Status:<input type="text" id="saveStatus"/></label></td>
@@ -127,14 +131,15 @@
 		<td><label>Status:<input type="text" id="deleteStatus"/></label></td>
 	</tr>
 </table><br>
-
+<div style="text-align: center;">
 <h2>Resource Storage</h2>
 <form action="http://localhost:8080/openape/api/resources" method="post" enctype="multipart/form-data">
 	<input name="file" id="filename" type="file" />
 	<button name="submit" type="submit">store resource</button>
 </form>
 <label>resource name: <input type="text" id="resourceName"/></label><br>
-<table>
+</div><br>
+<table style="margin-left:auto; margin-right:auto;">
 	<tr>
 		<td><button type="button" id="loadRes" onclick="loadRes()">load resource</button></td>
 		<td><label>Status:<input type="text" id="resLoadStatus"/></label></td>
