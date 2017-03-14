@@ -10,6 +10,7 @@ import org.junit.Test;
 import org.openape.api.usercontext.Context;
 import org.openape.api.usercontext.UserContext;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class TestDatabaseConnection {
@@ -27,6 +28,13 @@ public class TestDatabaseConnection {
         restrictedViewPc.addPreference("/longtext", "screen reader");
         restrictedViewTicketMachine.addPreference("/all", "high contrast");
         restrictedViewTicketMachine.addPreference("/text", "large font");
+//        final ObjectMapper mapper = new ObjectMapper();
+//        try {
+//            final String jsonData = mapper.writeValueAsString(restrictedVision);
+//            System.out.println(jsonData);
+//        } catch (JsonProcessingException e) {
+//            e.printStackTrace();
+//        }
         return restrictedVision;
     }
 
@@ -66,9 +74,7 @@ public class TestDatabaseConnection {
             // test delete
             Assert.assertTrue(this.dataBaseConnection.deleteData(MongoCollectionTypes.USERCONTEXT,
                     id));
-
         } catch (ClassCastException | IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
 
