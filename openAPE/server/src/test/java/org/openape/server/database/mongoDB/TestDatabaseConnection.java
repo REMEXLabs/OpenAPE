@@ -20,21 +20,26 @@ public class TestDatabaseConnection {
      */
     public static UserContext sampleUserContextRestricedVision() {
         final UserContext restrictedVision = new UserContext();
-        final Context restrictedViewPc = new Context("computer operation system", "0");
-        final Context restrictedViewTicketMachine = new Context("ticket machine", "1");
+        final Context restrictedViewPc = new Context("Default preferences", "default");
+        final Context restrictedViewTicketMachine = new Context("little environmental light",
+                "dark");
         restrictedVision.addContext(restrictedViewPc);
         restrictedVision.addContext(restrictedViewTicketMachine);
-        restrictedViewPc.addPreference("/smalltext", "screen magnifier");
-        restrictedViewPc.addPreference("/longtext", "screen reader");
-        restrictedViewTicketMachine.addPreference("/all", "high contrast");
-        restrictedViewTicketMachine.addPreference("/text", "large font");
-//        final ObjectMapper mapper = new ObjectMapper();
-//        try {
-//            final String jsonData = mapper.writeValueAsString(restrictedVision);
-//            System.out.println(jsonData);
-//        } catch (JsonProcessingException e) {
-//            e.printStackTrace();
-//        }
+        restrictedViewPc.addPreference("http://registry.gpii.net/common/magnifierEnabled", "false");
+        restrictedViewPc.addPreference(
+                "http://registry.gpii.net/applications/org.chrome.cloud4chrome/invertColours",
+                "false");
+        restrictedViewTicketMachine.addPreference(
+                "http://registry.gpii.net/common/magnifierEnabled", "true");
+        restrictedViewTicketMachine.addPreference("http://registry.gpii.net/common/magnification",
+                "2");
+        final ObjectMapper mapper = new ObjectMapper();
+        try {
+            final String jsonData = mapper.writeValueAsString(restrictedVision);
+            System.out.println(jsonData);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
         return restrictedVision;
     }
 

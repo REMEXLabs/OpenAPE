@@ -5,7 +5,7 @@
     <title>openAPE</title>
     <script type="application/javascript">
         var serveraddress = "http://localhost:8080/openape/";
-		var sampleUserContext = '{"contexts":[{"id":"0","name":"computer operation system","preferences":[{"key":"/smalltext","value":"screen magnifier"},{"key":"/longtext","value":"screen reader"}]},{"id":"1","name":"ticket machine","preferences":[{"key":"/all","value":"high contrast"},{"key":"/text","value":"large font"}]}]}';
+		var sampleUserContext = '{"contexts":[{"id":"default","name":"Default preferences","preferences":{"http://registry.gpii.net/common/magnifierEnabled":"false","http://registry.gpii.net/applications/org.chrome.cloud4chrome/invertColours":"false"}},{"id":"dark","name":"little environmental light","preferences":{"http://registry.gpii.net/common/magnifierEnabled":"true","http://registry.gpii.net/common/magnification":"2"}}]}';
 		var id;
 		
 		function loadPage() {
