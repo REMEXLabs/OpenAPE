@@ -18,29 +18,29 @@ public class TestDatabaseConnection {
      * @return a sample user context representing someone with restricted
      *         vision.
      */
-    public static UserContext sampleUserContextRestricedVision() {
-        final UserContext restrictedVision = new UserContext();
-        final Context restrictedViewPc = new Context("Default preferences", "default");
-        final Context restrictedViewTicketMachine = new Context("little environmental light",
+    public static UserContext sampleUserContext() {
+        final UserContext userContext = new UserContext();
+        final Context defaultPreference = new Context("Default preferences", "default");
+        final Context darkPreference = new Context("little environmental light",
                 "dark");
-        restrictedVision.addContext(restrictedViewPc);
-        restrictedVision.addContext(restrictedViewTicketMachine);
-        restrictedViewPc.addPreference("http://registry.gpii.net/common/magnifierEnabled", "false");
-        restrictedViewPc.addPreference(
+        userContext.addContext(defaultPreference);
+        userContext.addContext(darkPreference);
+        defaultPreference.addPreference("http://registry.gpii.net/common/magnifierEnabled", "false");
+        defaultPreference.addPreference(
                 "http://registry.gpii.net/applications/org.chrome.cloud4chrome/invertColours",
                 "false");
-        restrictedViewTicketMachine.addPreference(
+        darkPreference.addPreference(
                 "http://registry.gpii.net/common/magnifierEnabled", "true");
-        restrictedViewTicketMachine.addPreference("http://registry.gpii.net/common/magnification",
+        darkPreference.addPreference("http://registry.gpii.net/common/magnification",
                 "2");
         final ObjectMapper mapper = new ObjectMapper();
         try {
-            final String jsonData = mapper.writeValueAsString(restrictedVision);
+            final String jsonData = mapper.writeValueAsString(userContext);
             System.out.println(jsonData);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
-        return restrictedVision;
+        return userContext;
     }
 
     private DatabaseConnection dataBaseConnection;
@@ -52,7 +52,7 @@ public class TestDatabaseConnection {
 
     @Test
     public void testDataStoreage() {
-        final UserContext sampleContext = TestDatabaseConnection.sampleUserContextRestricedVision();
+        final UserContext sampleContext = TestDatabaseConnection.sampleUserContext();
         try {
             // test insert.
             String id;
@@ -74,7 +74,7 @@ public class TestDatabaseConnection {
             final UserContext updatetContext = (UserContext) this.dataBaseConnection.getData(
                     MongoCollectionTypes.USERCONTEXT, id);
             Assert.assertTrue(sampleContext.equals(updatetContext));
-            Assert.assertFalse(TestDatabaseConnection.sampleUserContextRestricedVision().equals(
+            Assert.assertFalse(TestDatabaseConnection.sampleUserContext().equals(
                     updatetContext));
             // test delete
             Assert.assertTrue(this.dataBaseConnection.deleteData(MongoCollectionTypes.USERCONTEXT,
