@@ -133,15 +133,6 @@ public class ResourceDescriptionRequestHandler {
         return returnObject;
     }
 
-    /**
-     * TODO implement
-     *
-     * @param listing
-     * @return
-     */
-    public ResourceDescription getResourceDescriptionFromListing(Listing listing) {
-        return null;
-    }
 
     /**
      * Method to update an existing resource description on the server. It is
