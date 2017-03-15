@@ -133,7 +133,6 @@ public class ResourceDescriptionRequestHandler {
         return returnObject;
     }
 
-
     /**
      * Method to update an existing resource description on the server. It is
      * used by the rest API {@link ResourceDescriptionRESTInterface} and uses

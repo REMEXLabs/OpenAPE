@@ -21,23 +21,21 @@ public class TestDatabaseConnection {
     public static UserContext sampleUserContext() {
         final UserContext userContext = new UserContext();
         final Context defaultPreference = new Context("Default preferences", "default");
-        final Context darkPreference = new Context("little environmental light",
-                "dark");
+        final Context darkPreference = new Context("little environmental light", "dark");
         userContext.addContext(defaultPreference);
         userContext.addContext(darkPreference);
-        defaultPreference.addPreference("http://registry.gpii.net/common/magnifierEnabled", "false");
+        defaultPreference
+                .addPreference("http://registry.gpii.net/common/magnifierEnabled", "false");
         defaultPreference.addPreference(
                 "http://registry.gpii.net/applications/org.chrome.cloud4chrome/invertColours",
                 "false");
-        darkPreference.addPreference(
-                "http://registry.gpii.net/common/magnifierEnabled", "true");
-        darkPreference.addPreference("http://registry.gpii.net/common/magnification",
-                "2");
+        darkPreference.addPreference("http://registry.gpii.net/common/magnifierEnabled", "true");
+        darkPreference.addPreference("http://registry.gpii.net/common/magnification", "2");
         final ObjectMapper mapper = new ObjectMapper();
         try {
             final String jsonData = mapper.writeValueAsString(userContext);
             System.out.println(jsonData);
-        } catch (JsonProcessingException e) {
+        } catch (final JsonProcessingException e) {
             e.printStackTrace();
         }
         return userContext;
@@ -74,8 +72,7 @@ public class TestDatabaseConnection {
             final UserContext updatetContext = (UserContext) this.dataBaseConnection.getData(
                     MongoCollectionTypes.USERCONTEXT, id);
             Assert.assertTrue(sampleContext.equals(updatetContext));
-            Assert.assertFalse(TestDatabaseConnection.sampleUserContext().equals(
-                    updatetContext));
+            Assert.assertFalse(TestDatabaseConnection.sampleUserContext().equals(updatetContext));
             // test delete
             Assert.assertTrue(this.dataBaseConnection.deleteData(MongoCollectionTypes.USERCONTEXT,
                     id));
