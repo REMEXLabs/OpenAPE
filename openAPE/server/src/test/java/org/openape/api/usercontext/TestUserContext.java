@@ -9,9 +9,6 @@ public class TestUserContext {
     @Test
     public void testEquals() {
         final UserContext sample = TestDatabaseConnection.sampleUserContext();
-        for (final Context context : sample.getContexts()) {
-            Assert.assertTrue(context.equals(context));
-        }
         Assert.assertTrue(sample.equals(sample));
     }
 

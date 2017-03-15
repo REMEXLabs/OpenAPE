@@ -1,8 +1,8 @@
 package org.openape.server.database.mongoDB;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -20,10 +20,10 @@ public class TestDatabaseConnection {
      */
     public static UserContext sampleUserContext() {
         final UserContext userContext = new UserContext();
-        final Context defaultPreference = new Context("Default preferences", "default");
-        final Context darkPreference = new Context("little environmental light", "dark");
-        userContext.addContext(defaultPreference);
-        userContext.addContext(darkPreference);
+        final Context defaultPreference = new Context("Default preferences");
+        final Context darkPreference = new Context("little environmental light");
+        userContext.addContext("default", defaultPreference);
+        userContext.addContext("dark", darkPreference);
         defaultPreference
                 .addPreference("http://registry.gpii.net/common/magnifierEnabled", "false");
         defaultPreference.addPreference(
@@ -64,8 +64,8 @@ public class TestDatabaseConnection {
                     MongoCollectionTypes.USERCONTEXT, id);
             Assert.assertTrue(sampleContext.equals(recievedContext));
             // remove second context.
-            final List<Context> newContexts = new ArrayList<Context>();
-            newContexts.add(sampleContext.getContexts().get(0));
+            final Map<String, Context> newContexts = new HashMap<String, Context>();
+            newContexts.put("default", sampleContext.getContexts().get("default"));
             sampleContext.setContexts(newContexts);
             // test update
             this.dataBaseConnection.updateData(MongoCollectionTypes.USERCONTEXT, sampleContext, id);

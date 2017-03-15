@@ -1,5 +1,5 @@
 Datum,Zeit in Stunden,Aktivität,Summe
-12.10,1,Initialer Projekttreff,"175,5"
+12.10,1,Initialer Projekttreff,"176,5"
 18.10,1,2. Teambesprechung,
 18.10,2,Issues erstellen und Projekt bei mir einrichten,
 25.10,"0,5",3. Teambesprechung,
@@ -90,3 +90,4 @@ Datum,Zeit in Stunden,Aktivität,Summe
 12.03,4,Suche nach einer Lösung für das json Problem und kleine fixes.,
 14.03,2,umstellen von precernece und descriptor objekten auf maps und kleine fixes.,
 15.03,2,mongo special char replacement,
+15.03,1,replace context list by map,

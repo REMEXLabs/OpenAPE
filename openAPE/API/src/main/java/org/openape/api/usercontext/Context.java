@@ -72,7 +72,7 @@ public class Context implements Serializable {
 
     }
 
-    public Context(String name, String id) {
+    public Context(String name) {
         this.name = name;
     }
 
