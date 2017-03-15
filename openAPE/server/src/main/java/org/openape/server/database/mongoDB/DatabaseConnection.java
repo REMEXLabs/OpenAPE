@@ -374,16 +374,15 @@ public class DatabaseConnection {
      * @throws IllegalArgumentException
      *             if it already contains '#046' or '#036".
      */
-    private String replaceMongoSpecialChars(final String jsonToStore)
-            throws IllegalArgumentException {
+    private String replaceMongoSpecialChars(String jsonToStore) throws IllegalArgumentException {
         if (jsonToStore.contains(Messages.getString("DatabaseConnection.pointAsciiCode")) || jsonToStore.contains(Messages.getString("DatabaseConnection.$AsciiCode"))) { //$NON-NLS-1$ //$NON-NLS-2$
             throw new IllegalArgumentException(
                     Messages.getString("DatabaseConnection.specialCharReplacementInUseErrorMsg")); //$NON-NLS-1$
         } else if (jsonToStore.contains(Messages.getString("DatabaseConnection.point")) || jsonToStore.contains(Messages.getString("DatabaseConnection.$"))) { //$NON-NLS-1$ //$NON-NLS-2$
-            jsonToStore
+            jsonToStore = jsonToStore
                     .replace(
                             Messages.getString("DatabaseConnection.point"), Messages.getString("DatabaseConnection.pointAsciiCode")); //$NON-NLS-1$ //$NON-NLS-2$
-            jsonToStore
+            jsonToStore = jsonToStore
                     .replace(
                             Messages.getString("DatabaseConnection.$"), Messages.getString("DatabaseConnection.$AsciiCode")); //$NON-NLS-1$ //$NON-NLS-2$
         }
@@ -396,13 +395,13 @@ public class DatabaseConnection {
      * @param jsonFromStorage
      * @return The modified string.
      */
-    private String reverseMongoSpecialCharsReplacement(final String jsonFromStorage)
+    private String reverseMongoSpecialCharsReplacement(String jsonFromStorage)
             throws IllegalArgumentException {
         if (jsonFromStorage.contains(Messages.getString("DatabaseConnection.pointAsciiCode")) || jsonFromStorage.contains(Messages.getString("DatabaseConnection.$AsciiCode"))) { //$NON-NLS-1$ //$NON-NLS-2$
-            jsonFromStorage
+            jsonFromStorage = jsonFromStorage
                     .replace(
                             Messages.getString("DatabaseConnection.pointAsciiCode"), Messages.getString("DatabaseConnection.point")); //$NON-NLS-1$ //$NON-NLS-2$
-            jsonFromStorage
+            jsonFromStorage = jsonFromStorage
                     .replace(
                             Messages.getString("DatabaseConnection.$AsciiCode"), Messages.getString("DatabaseConnection.$")); //$NON-NLS-1$ //$NON-NLS-2$
         }
@@ -441,6 +440,7 @@ public class DatabaseConnection {
             String jsonData = mapper.writeValueAsString(data);
             // Deal with special mongoDB characters '.' and '$'.
             jsonData = this.replaceMongoSpecialChars(jsonData);
+            System.out.println(jsonData);
             dataDocument = Document.parse(jsonData);
             // Insert the document.
             collectionToWorkOn.insertOne(dataDocument);
