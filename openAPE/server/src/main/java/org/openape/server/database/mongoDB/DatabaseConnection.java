@@ -309,6 +309,8 @@ public class DatabaseConnection {
                 // Remove the automatically added id.
                 resultDocument.remove(Messages.getString("DatabaseConnection._id")); //$NON-NLS-1$
                 final String jsonResult = resultDocument.toJson();
+                // reverse mongo special character replacement.
+                jsonResult = this.reverseMongoSpecialCharsReplacement(jsonResult);
                 final ObjectMapper mapper = new ObjectMapper();
                 result = mapper.readValue(jsonResult, type.getDocumentType());
             } catch (CodecConfigurationException | IOException | JsonParseException e) {
