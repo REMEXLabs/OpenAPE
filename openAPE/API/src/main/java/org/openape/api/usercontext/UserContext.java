@@ -16,8 +16,9 @@ limitations under the License.
 
 package org.openape.api.usercontext;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -42,15 +43,17 @@ public class UserContext extends DatabaseObject {
      * @return true, if compare has the same contexts as base, false if not.
      */
     private static boolean hasUserContextTheSameContexts(UserContext base, UserContext compare) {
-        for (final Context baseContext : base.getContexts()) {
+        final Set<String> baseKeySet = base.getContexts().keySet();
+        final Set<String> compareKeySet = compare.getContexts().keySet();
+        for (final String baseKey : baseKeySet) {
             // Match checks if for each context in this there is one in
             // compare.
             boolean match = false;
-            for (final Context compareContext : compare.getContexts()) {
+            for (final String compareKey : compareKeySet) {
                 // if id fits check if context fits.
-                if (baseContext.getId().equals(compareContext.getId())) {
+                if (baseKey.equals(compareKey)) {
                     match = true;
-                    if (!baseContext.equals(compareContext)) {
+                    if (!base.getContext(baseKey).equals(compare.getContext(compareKey))) {
                         return false;
                     }
                 }
@@ -63,14 +66,14 @@ public class UserContext extends DatabaseObject {
         return true;
     }
 
-    private List<Context> contexts;
+    private Map<String, Context> contexts;
 
     public UserContext() {
-        this.contexts = new ArrayList<Context>();
+        this.contexts = new HashMap<String, Context>();
     }
 
-    public void addContext(Context c) {
-        this.contexts.add(c);
+    public void addContext(String id, Context c) {
+        this.contexts.put(id, c);
 
     }
 
@@ -88,8 +91,17 @@ public class UserContext extends DatabaseObject {
 
     }
 
+    /**
+     * @param id
+     * @return null if not found.
+     */
+    @JsonIgnore
+    public Context getContext(String id) {
+        return this.getContexts().get(id);
+    }
+
     @XmlElement(name = "context")
-    public List<Context> getContexts() {
+    public Map<String, Context> getContexts() {
         return this.contexts;
     }
 
@@ -99,7 +111,7 @@ public class UserContext extends DatabaseObject {
         return true;
     }
 
-    public void setContexts(List<Context> contexts) {
+    public void setContexts(Map<String, Context> contexts) {
         this.contexts = contexts;
     }
 

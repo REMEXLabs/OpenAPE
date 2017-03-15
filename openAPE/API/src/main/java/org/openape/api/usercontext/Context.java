@@ -21,7 +21,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -38,8 +37,8 @@ public class Context implements Serializable {
      * @return true, if compare has the same preferences as base, false if not.
      */
     private static boolean hasContextTheSamePreferences(Context base, Context compare) {
-        Set<String> baseKeySet = base.getPreferences().keySet();
-        Set<String> compareKeySet = compare.getPreferences().keySet();
+        final Set<String> baseKeySet = base.getPreferences().keySet();
+        final Set<String> compareKeySet = compare.getPreferences().keySet();
         for (final String baseKey : baseKeySet) {
             // Match checks if for each preference in this there is one in
             // compare.
@@ -62,7 +61,6 @@ public class Context implements Serializable {
         return true;
     }
 
-    private String id;
     private String name;
 
     private Map<String, String> preferences = new HashMap<String, String>();
@@ -76,7 +74,6 @@ public class Context implements Serializable {
 
     public Context(String name, String id) {
         this.name = name;
-        this.id = id;
     }
 
     public void addPreference(String key, String value) {
@@ -94,19 +91,9 @@ public class Context implements Serializable {
      */
     @JsonIgnore
     public boolean equals(Context compare) {
-        // check if context attributes are equal.
-        if (!(this.getId().equals(compare.getId()) && this.getName().equals(compare.getName()))) {
-            return false;
-        } else {
-            // check if preferences are equal
-            return (Context.hasContextTheSamePreferences(compare, this) && Context
-                    .hasContextTheSamePreferences(this, compare));
-        }
-    }
-
-    @XmlAttribute(name = "id")
-    public String getId() {
-        return this.id;
+        // check if preferences are equal
+        return (Context.hasContextTheSamePreferences(compare, this) && Context
+                .hasContextTheSamePreferences(this, compare));
     }
 
     @XmlElement(name = "name")
@@ -117,10 +104,6 @@ public class Context implements Serializable {
     @XmlElement(name = "preference")
     public Map<String, String> getPreferences() {
         return this.preferences;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public void setName(String name) {
