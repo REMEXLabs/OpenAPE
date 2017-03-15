@@ -16,6 +16,13 @@
 
 package org.openape.api.usercontext;
 
+import java.util.List;
+
 public class Condition {
+    String type;
+    /**
+     * Either Condition or Map<String, int>.
+     */
+    List<Object> operands;
 
 }
