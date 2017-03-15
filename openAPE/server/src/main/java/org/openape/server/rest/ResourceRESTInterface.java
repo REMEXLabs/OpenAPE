@@ -74,7 +74,7 @@ public class ResourceRESTInterface extends SuperRestInterface {
                 (req, res) -> {
 
                     final String mimeType = req.headers(Messages
-                            .getString("ResourceRESTInterface.ceontentTypeString"));
+                            .getString("ResourceRESTInterface.contentTypeString"));//$NON-NLS-1$
                     // req.contentType();
                     if (mimeType == null || mimeType.equals(Messages.getString("EmptyString"))) { //$NON-NLS-1$
                         res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);

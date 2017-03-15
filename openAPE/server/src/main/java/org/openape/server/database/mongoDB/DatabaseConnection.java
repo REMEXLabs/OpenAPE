@@ -350,6 +350,8 @@ public class DatabaseConnection {
                 // Remove the automatically added id.
                 resultDocument.remove(Messages.getString("DatabaseConnection._id")); //$NON-NLS-1$
                 final String jsonResult = resultDocument.toJson();
+                // reverse mongo special character replacement.
+                jsonResult = this.reverseMongoSpecialCharsReplacement(jsonResult);
                 final ObjectMapper mapper = new ObjectMapper();
                 final DatabaseObject mimeTypeObject = mapper.readValue(jsonResult,
                         MimeTypeDatabaseObject.class);
@@ -377,7 +379,7 @@ public class DatabaseConnection {
      *             if a database problem occurs.
      */
     public String storeData(MongoCollectionTypes type, DatabaseObject data)
-            throws ClassCastException, IOException {
+            throws ClassCastException, IOException, IllegalArgumentException {
         // Check if data is of the correct type for the collection.
         if (!type.getDocumentType().equals(data.getClass())) {
             throw new ClassCastException(
@@ -391,7 +393,9 @@ public class DatabaseConnection {
         Document dataDocument = null;
         try {
             final ObjectMapper mapper = new ObjectMapper();
-            final String jsonData = mapper.writeValueAsString(data);
+            String jsonData = mapper.writeValueAsString(data);
+            // Deal with special mongoDB characters '.' and '$'.
+            jsonData = replaceMongoSpecialChars(jsonData);
             dataDocument = Document.parse(jsonData);
             // Insert the document.
             collectionToWorkOn.insertOne(dataDocument);
@@ -413,6 +417,40 @@ public class DatabaseConnection {
     }
 
     /**
+     * Replaces special chars '.' and '$' with '#046' and '#036".
+     * 
+     * @param jsonToStore
+     * @return The modified string.
+     * @throws IllegalArgumentException
+     *             if it already contains '#046' or '#036".
+     */
+    private String replaceMongoSpecialChars(final String jsonToStore)
+            throws IllegalArgumentException {
+        if (jsonToStore.contains(Messages.getString("DatabaseConnection.pointAsciiCode")) || jsonToStore.contains(Messages.getString("DatabaseConnection.$AsciiCode"))) { //$NON-NLS-1$ //$NON-NLS-2$
+            throw new IllegalArgumentException(Messages.getString("DatabaseConnection.specialCharReplacementInUseErrorMsg")); //$NON-NLS-1$
+        } else if (jsonToStore.contains(Messages.getString("DatabaseConnection.point")) || jsonToStore.contains(Messages.getString("DatabaseConnection.$"))) { //$NON-NLS-1$ //$NON-NLS-2$
+            jsonToStore.replace(Messages.getString("DatabaseConnection.point"), Messages.getString("DatabaseConnection.pointAsciiCode")); //$NON-NLS-1$ //$NON-NLS-2$
+            jsonToStore.replace(Messages.getString("DatabaseConnection.$"), Messages.getString("DatabaseConnection.$AsciiCode")); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+        return jsonToStore;
+    }
+
+    /**
+     * Replaces '#046' and '#036" with '.' and '$'.
+     * 
+     * @param jsonFromStorage
+     * @return The modified string.
+     */
+    private String reverseMongoSpecialCharsReplacement(final String jsonFromStorage)
+            throws IllegalArgumentException {
+        if (jsonFromStorage.contains(Messages.getString("DatabaseConnection.pointAsciiCode")) || jsonFromStorage.contains(Messages.getString("DatabaseConnection.$AsciiCode"))) { //$NON-NLS-1$ //$NON-NLS-2$
+            jsonFromStorage.replace(Messages.getString("DatabaseConnection.pointAsciiCode"), Messages.getString("DatabaseConnection.point")); //$NON-NLS-1$ //$NON-NLS-2$
+            jsonFromStorage.replace(Messages.getString("DatabaseConnection.$AsciiCode"), Messages.getString("DatabaseConnection.$")); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+        return jsonFromStorage;
+    }
+
+    /**
      * Used to store a string mime type of a stored resource.
      *
      * @param fileName
@@ -422,9 +460,10 @@ public class DatabaseConnection {
      * @return true if successful else a exception will be thrown.
      * @throws IOException
      * @throws IllegalArgumentException
-     *             if filename is arlready in use as a key.
+     *             if filename is already in use as a key.
      */
-    public boolean storeMimeType(String fileName, String mimeType) throws IOException {
+    public boolean storeMimeType(String fileName, String mimeType) throws IOException,
+            IllegalArgumentException {
         // check if key is in use.
         if (this.getMimeType(fileName) != null) {
             throw new IllegalArgumentException(
@@ -438,7 +477,9 @@ public class DatabaseConnection {
         Document dataDocument = null;
         try {
             final ObjectMapper mapper = new ObjectMapper();
-            final String jsonData = mapper.writeValueAsString(data);
+            String jsonData = mapper.writeValueAsString(data);
+            // Deal with special mongoDB characters '.' and '$'.
+            jsonData = replaceMongoSpecialChars(jsonData);
             dataDocument = Document.parse(jsonData);
             dataDocument.append(Messages.getString("DatabaseConnection._id"), fileName);//$NON-NLS-1$
             // Insert the document.
@@ -491,7 +532,9 @@ public class DatabaseConnection {
         try {
             // Create document object from data.
             final ObjectMapper mapper = new ObjectMapper();
-            final String jsonData = mapper.writeValueAsString(data);
+            String jsonData = mapper.writeValueAsString(data);
+            // Deal with special mongoDB characters '.' and '$'.
+            jsonData = replaceMongoSpecialChars(jsonData);
             final Document dataDocument = Document.parse(jsonData);
 
             // update data.
