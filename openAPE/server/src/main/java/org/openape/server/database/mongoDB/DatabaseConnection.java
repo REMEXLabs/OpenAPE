@@ -308,7 +308,7 @@ public class DatabaseConnection {
             try {
                 // Remove the automatically added id.
                 resultDocument.remove(Messages.getString("DatabaseConnection._id")); //$NON-NLS-1$
-                final String jsonResult = resultDocument.toJson();
+                String jsonResult = resultDocument.toJson();
                 // reverse mongo special character replacement.
                 jsonResult = this.reverseMongoSpecialCharsReplacement(jsonResult);
                 final ObjectMapper mapper = new ObjectMapper();
@@ -351,7 +351,7 @@ public class DatabaseConnection {
             try {
                 // Remove the automatically added id.
                 resultDocument.remove(Messages.getString("DatabaseConnection._id")); //$NON-NLS-1$
-                final String jsonResult = resultDocument.toJson();
+                String jsonResult = resultDocument.toJson();
                 // reverse mongo special character replacement.
                 jsonResult = this.reverseMongoSpecialCharsReplacement(jsonResult);
                 final ObjectMapper mapper = new ObjectMapper();
@@ -364,6 +364,49 @@ public class DatabaseConnection {
             }
             return mimetype;
         }
+    }
+
+    /**
+     * Replaces special chars '.' and '$' with '#046' and '#036".
+     *
+     * @param jsonToStore
+     * @return The modified string.
+     * @throws IllegalArgumentException
+     *             if it already contains '#046' or '#036".
+     */
+    private String replaceMongoSpecialChars(final String jsonToStore)
+            throws IllegalArgumentException {
+        if (jsonToStore.contains(Messages.getString("DatabaseConnection.pointAsciiCode")) || jsonToStore.contains(Messages.getString("DatabaseConnection.$AsciiCode"))) { //$NON-NLS-1$ //$NON-NLS-2$
+            throw new IllegalArgumentException(
+                    Messages.getString("DatabaseConnection.specialCharReplacementInUseErrorMsg")); //$NON-NLS-1$
+        } else if (jsonToStore.contains(Messages.getString("DatabaseConnection.point")) || jsonToStore.contains(Messages.getString("DatabaseConnection.$"))) { //$NON-NLS-1$ //$NON-NLS-2$
+            jsonToStore
+                    .replace(
+                            Messages.getString("DatabaseConnection.point"), Messages.getString("DatabaseConnection.pointAsciiCode")); //$NON-NLS-1$ //$NON-NLS-2$
+            jsonToStore
+                    .replace(
+                            Messages.getString("DatabaseConnection.$"), Messages.getString("DatabaseConnection.$AsciiCode")); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+        return jsonToStore;
+    }
+
+    /**
+     * Replaces '#046' and '#036" with '.' and '$'.
+     *
+     * @param jsonFromStorage
+     * @return The modified string.
+     */
+    private String reverseMongoSpecialCharsReplacement(final String jsonFromStorage)
+            throws IllegalArgumentException {
+        if (jsonFromStorage.contains(Messages.getString("DatabaseConnection.pointAsciiCode")) || jsonFromStorage.contains(Messages.getString("DatabaseConnection.$AsciiCode"))) { //$NON-NLS-1$ //$NON-NLS-2$
+            jsonFromStorage
+                    .replace(
+                            Messages.getString("DatabaseConnection.pointAsciiCode"), Messages.getString("DatabaseConnection.point")); //$NON-NLS-1$ //$NON-NLS-2$
+            jsonFromStorage
+                    .replace(
+                            Messages.getString("DatabaseConnection.$AsciiCode"), Messages.getString("DatabaseConnection.$")); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+        return jsonFromStorage;
     }
 
     /**
@@ -397,7 +440,7 @@ public class DatabaseConnection {
             final ObjectMapper mapper = new ObjectMapper();
             String jsonData = mapper.writeValueAsString(data);
             // Deal with special mongoDB characters '.' and '$'.
-            jsonData = replaceMongoSpecialChars(jsonData);
+            jsonData = this.replaceMongoSpecialChars(jsonData);
             dataDocument = Document.parse(jsonData);
             // Insert the document.
             collectionToWorkOn.insertOne(dataDocument);
@@ -416,40 +459,6 @@ public class DatabaseConnection {
         }
 
         return id.toHexString();
-    }
-
-    /**
-     * Replaces special chars '.' and '$' with '#046' and '#036".
-     * 
-     * @param jsonToStore
-     * @return The modified string.
-     * @throws IllegalArgumentException
-     *             if it already contains '#046' or '#036".
-     */
-    private String replaceMongoSpecialChars(final String jsonToStore)
-            throws IllegalArgumentException {
-        if (jsonToStore.contains(Messages.getString("DatabaseConnection.pointAsciiCode")) || jsonToStore.contains(Messages.getString("DatabaseConnection.$AsciiCode"))) { //$NON-NLS-1$ //$NON-NLS-2$
-            throw new IllegalArgumentException(Messages.getString("DatabaseConnection.specialCharReplacementInUseErrorMsg")); //$NON-NLS-1$
-        } else if (jsonToStore.contains(Messages.getString("DatabaseConnection.point")) || jsonToStore.contains(Messages.getString("DatabaseConnection.$"))) { //$NON-NLS-1$ //$NON-NLS-2$
-            jsonToStore.replace(Messages.getString("DatabaseConnection.point"), Messages.getString("DatabaseConnection.pointAsciiCode")); //$NON-NLS-1$ //$NON-NLS-2$
-            jsonToStore.replace(Messages.getString("DatabaseConnection.$"), Messages.getString("DatabaseConnection.$AsciiCode")); //$NON-NLS-1$ //$NON-NLS-2$
-        }
-        return jsonToStore;
-    }
-
-    /**
-     * Replaces '#046' and '#036" with '.' and '$'.
-     * 
-     * @param jsonFromStorage
-     * @return The modified string.
-     */
-    private String reverseMongoSpecialCharsReplacement(final String jsonFromStorage)
-            throws IllegalArgumentException {
-        if (jsonFromStorage.contains(Messages.getString("DatabaseConnection.pointAsciiCode")) || jsonFromStorage.contains(Messages.getString("DatabaseConnection.$AsciiCode"))) { //$NON-NLS-1$ //$NON-NLS-2$
-            jsonFromStorage.replace(Messages.getString("DatabaseConnection.pointAsciiCode"), Messages.getString("DatabaseConnection.point")); //$NON-NLS-1$ //$NON-NLS-2$
-            jsonFromStorage.replace(Messages.getString("DatabaseConnection.$AsciiCode"), Messages.getString("DatabaseConnection.$")); //$NON-NLS-1$ //$NON-NLS-2$
-        }
-        return jsonFromStorage;
     }
 
     /**
@@ -481,7 +490,7 @@ public class DatabaseConnection {
             final ObjectMapper mapper = new ObjectMapper();
             String jsonData = mapper.writeValueAsString(data);
             // Deal with special mongoDB characters '.' and '$'.
-            jsonData = replaceMongoSpecialChars(jsonData);
+            jsonData = this.replaceMongoSpecialChars(jsonData);
             dataDocument = Document.parse(jsonData);
             dataDocument.append(Messages.getString("DatabaseConnection._id"), fileName);//$NON-NLS-1$
             // Insert the document.
@@ -536,7 +545,7 @@ public class DatabaseConnection {
             final ObjectMapper mapper = new ObjectMapper();
             String jsonData = mapper.writeValueAsString(data);
             // Deal with special mongoDB characters '.' and '$'.
-            jsonData = replaceMongoSpecialChars(jsonData);
+            jsonData = this.replaceMongoSpecialChars(jsonData);
             final Document dataDocument = Document.parse(jsonData);
 
             // update data.
