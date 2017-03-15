@@ -1,5 +1,3 @@
-package org.openape.api.usercontext;
-
 /**
  Copyright 2016 Hochschule der Medien - Stuttgart Media University
 
@@ -15,6 +13,8 @@ package org.openape.api.usercontext;
  See the License for the specific language governing permissions and
  limitations under the License.
  */
+
+package org.openape.api.usercontext;
 
 import java.io.Serializable;
 import java.util.HashMap;
