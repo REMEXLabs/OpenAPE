@@ -3,22 +3,28 @@
         var openhab = {};
 
         openhab.getAllThings = function (thingtype) {
-            getSource("http://localhost:8080/rest/things", function (resThings) {
-                var allThings = [];
-                for (var i = 0; i < resThings.length; i++) {
-                    if (resThings[i].UID.split(":")[1] == thingtype) {
-                        allThings.push(resThings[i].UID.split(":")[2]);
+            var allThings = [];
+            if (typeof(thingtype) === 'undefined') {
+                console.log("Please specify a thingtype");
+            } else {
+                getSource("http://localhost:8080/rest/things", function (resThings) {
+                    for (var i = 0; i < resThings.length; i++) {
+                        if (resThings[i].UID.split(":")[1] == thingtype) {
+                            allThings.push(resThings[i].UID.split(":")[2]);
+                        }
                     }
+                })
+                if(allThings.length == 0){
+                    console.log("No things found to thingtype: " + thingtype);
+                } else {
+                    this.things = allThings;
                 }
-                openhab = allThings;
-            })
-            this.things = openhab;
+            }
         }
 
         openhab.connect = function (thingtype, thing) {
             var allLinkedItems = [];
-            getSource("http://localhost:8080/rest/things", function (resThingsNew) {
-                var resThings = resThingsNew;
+            getSource("http://localhost:8080/rest/things", function (resThings) {
                 if (typeof(thing) === 'undefined') {
                     console.log("Please specify the thing you want to get");
                 } else if (typeof(thingtype) === 'undefined') {
@@ -35,6 +41,11 @@
                             }
                         }
                     }
+                }
+                if (allLinkedItems.length == 0){
+                    console.log("No channels found for thing: " + thing);
+                } else {
+                    this.linkedItems = allLinkedItems;
                 }
             })
 
@@ -64,8 +75,8 @@
             var url = this.urls[key];
 
             var req = new XMLHttpRequest();
-            req.open("POST", url, true);
-            req.send(key, value);
+            req.open("GET", url, true);
+            req.send();
         }
 
         return openhab;

@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>My Testing Space</title>
-    <script src="jquery-3.1.1.min.js"></script>
-    <script src="myLibrary.js" type="text/javascript"></script>
+    <script src="openhab_library.js" type="text/javascript"></script>
     <script>
 
     function test() {
@@ -13,7 +12,8 @@
 
         var berlin = new openhab.connect("weather", "berlin");
         alert("Berlin " + JSON.stringify(berlin));
-        berlin.setValue("Weather_Temperature", "12");
+        var temp = berlin.getValue("Weather_Temperature");
+        alert(temp.state);
 
     }
     </script>
