@@ -1,5 +1,5 @@
 Datum;Zeit in Stunden;AktivitÑt;;Summe
-12. Okt;1;Initialer Projekttreff;;78
+12. Okt;1;Initialer Projekttreff;;177
 18. Okt;1;2. Teambesprechung;;
 20. Okt;2,5;Stage Projekt anmelden und Texte Åbersetzten;;
 21. Okt;3;Standard einarbeiten;;
@@ -24,15 +24,44 @@ Datum;Zeit in Stunden;AktivitÑt;;Summe
 02. Jan;1;openHAB und eclipse smarthome einrichten;;
 06. Jan;2,5;openHAB demo und dokumentation;;
 10. Jan;0,5;Spark statik html research;;
+10. Jan;1;Teambesprechung;;
 12. Jan;2,5;HTML Interface erstellen, wie funktioniert jquery;;
 13. Jan;1,5;erstellen von REST Endpunkt resource-manager;;
 13. Jan;1;Hilfe von Stephan bei Projekt starten;;
 13. Jan;1;Versucht Endpunkt zu testen;;
 16. Jan;0,5;resource-manager;;
+17. Jan;1;Teambesprechung;;
 19. Jan;5;Plakat OpenAPE;;
 20. Jan;2,5;Philips Hue setup + openHAB + HTML Interfaces;;
 21. Jan;7;Interface Erstellung;;
 22. Jan;2;PrÑsentationsfolie;;
 23. Jan;0,5;OpenHAB + Hue in Stuttgart neu einrichten;;
+24. Jan;1;Teambesprechung;;
 24. Jan;5;Interfaces, HTTP Requests + Mit Stephan Server aufsetzten;;
 25. Jan;9;Interfaces mit openHAB rest API verbinden + Mit Stephan Server zugriffe;;
+26. Jan;4;Letzte Fehler beheben und Testlauf Medianight;;
+26. Jan;6;Media Night;;
+07. Feb;1,5;Teambesprechung;;
+08. Feb;1;Persona;;
+12. Feb;1;resource-manager;;
+16. Feb;1;Teambesprechung;;
+22. Feb;8;Javascript Library;;
+23. Feb;1,5;Teambesprechung;;
+23. Feb;3,5;Javascript Library;;
+25. Feb;1,5;Javascript Library;;
+26. Feb;1;Javascript Library;;
+28. Feb;5;Javascript Library;;
+01. Mrz;2,5;Javascript Library;;
+02. Mrz;6;Javascript Library;;
+04. Mrz;4,5;Javascript Library;;
+05. Mrz;1,5;Javascript Library;;
+06. Mrz;6;Javascript Library;;
+07. Mrz;2;Javascript Library;;
+08. Mrz;6;Javascript Library;;
+09. Mrz;8;Javascript Library, PrÑsentation;;
+10. Mrz;5;PrÑsentationsvorbereitung, library fixes;;
+12. Mrz;3;Screencapture Programm suchen und testen;;
+13. Mrz;5;Aufnahme und Schnitt - Verworfen da Freeware Wasserzeichen drÅber legt;;
+14. Mrz;3,5;Neues Programm gesucht;;
+15. Mrz;5;Aufnahme Video, Schnitt, Upload;;
+16. Mrz;3;Video Untertitel, Library final version fix;;
