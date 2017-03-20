@@ -18,6 +18,8 @@ package org.openape.api.usercontext;
 
 import java.util.List;
 
+import org.openape.api.Messages;
+
 public class Condition {
     /**
      * must be 'not', 'eq', 'ne', 'lt', 'le', 'gt', 'ge', and or 'or'. <br>
@@ -67,7 +69,7 @@ public class Condition {
         for (final Object operand : operands) {
             if (!(operand instanceof Condition) && !(operand instanceof String)) {
                 throw new IllegalArgumentException(
-                        "operands must be a list of either conditions or strings.");
+                        Messages.getString("Condition.wrongOperandTypesErrorMsg")); //$NON-NLS-1$
             }
         }
     }
@@ -83,33 +85,27 @@ public class Condition {
      */
     private void checkOpernadListLength(String type, List<Object> operands)
             throws IllegalArgumentException {
-        switch (type) {
-        case "not":
+        if (type.equals(Messages.getString("Condition.not"))) { //$NON-NLS-1$
             if (operands.size() != 1) {
                 throw new IllegalArgumentException(
-                        "If type is 'not', operands shall have exactly one element.");
+                        Messages.getString("Condition.wrongNumberOfOperandsTypeNot")); //$NON-NLS-1$
             }
-            break;
-        case "eq":
-        case "ne":
-        case "lt":
-        case "le":
-        case "gt":
-        case "ge":
+        } else if (type.equals(Messages.getString("Condition.equal")) //$NON-NLS-1$
+                || type.equals(Messages.getString("Condition.notEqual")) //$NON-NLS-1$
+                || type.equals(Messages.getString("Condition.lessThen")) //$NON-NLS-1$
+                || type.equals(Messages.getString("Condition.lessThenOrEqual")) //$NON-NLS-1$
+                || type.equals(Messages.getString("Condition.greaterThen")) //$NON-NLS-1$
+                || type.equals(Messages.getString("Condition.greaterThenOrEqual"))) { //$NON-NLS-1$
             if (operands.size() != 2) {
                 throw new IllegalArgumentException(
-                        "If type is 'eq', 'ne', 'lt', 'le', 'gt', or 'ge', operands shall have exactly two elements.");
+                        Messages.getString("Condition.wrongNumberOfOperands")); //$NON-NLS-1$
             }
-            break;
-        case "and":
-        case "or":
+        } else if (type.equals(Messages.getString("Condition.and")) //$NON-NLS-1$
+                || type.equals(Messages.getString("Condition.or"))) { //$NON-NLS-1$
             if (operands.size() < 2) {
                 throw new IllegalArgumentException(
-                        "If type is 'and' or 'or', operands shall have at least two elements.");
+                        Messages.getString("Condition.wrongNumberOfOperandsTypeAndOrOr")); //$NON-NLS-1$
             }
-            break;
-        default:
-            break;
         }
     }
 
@@ -121,11 +117,10 @@ public class Condition {
      *             if this is not the case.
      */
     private void checkType(String type) throws IllegalArgumentException {
-        if (!(type.equals("not") || type.equals("eq") || type.equals("ne") || type.equals("lt")
-                || type.equals("le") || type.equals("gt") || type.equals("ge")
-                || type.equals("and") || type.equals("or"))) {
-            throw new IllegalArgumentException(
-                    "Type must be 'not', 'eq', 'ne', 'lt', 'le', 'gt', 'ge', 'and' or 'or'.");
+        if (!(type.equals(Messages.getString("Condition.not")) || type.equals(Messages.getString("Condition.equal")) || type.equals(Messages.getString("Condition.notEqual")) || type.equals(Messages.getString("Condition.lessThen")) //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+                || type.equals(Messages.getString("Condition.lessThenOrEqual")) || type.equals(Messages.getString("Condition.greaterThen")) || type.equals(Messages.getString("Condition.greaterThenOrEqual")) //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                || type.equals(Messages.getString("Condition.and")) || type.equals(Messages.getString("Condition.or")))) { //$NON-NLS-1$ //$NON-NLS-2$
+            throw new IllegalArgumentException(Messages.getString("Condition.wrongTypeErrorMsg")); //$NON-NLS-1$
         }
     }
 
