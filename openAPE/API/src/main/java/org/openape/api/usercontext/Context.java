@@ -18,6 +18,7 @@ package org.openape.api.usercontext;
 
 import java.io.Serializable;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -61,6 +62,7 @@ public class Context implements Serializable {
         return true;
     }
 
+    private List<Condition> conditions;
     private String name;
 
     private Map<String, String> preferences = new HashMap<String, String>();
@@ -74,6 +76,10 @@ public class Context implements Serializable {
 
     public Context(String name) {
         this.name = name;
+    }
+
+    public void addCondition(Condition condition) {
+        this.conditions.add(condition);
     }
 
     public void addPreference(String key, String value) {
@@ -96,6 +102,10 @@ public class Context implements Serializable {
                 .hasContextTheSamePreferences(this, compare));
     }
 
+    public List<Condition> getConditions() {
+        return this.conditions;
+    }
+
     @XmlElement(name = "name")
     public String getName() {
         return this.name;
@@ -104,6 +114,10 @@ public class Context implements Serializable {
     @XmlElement(name = "preference")
     public Map<String, String> getPreferences() {
         return this.preferences;
+    }
+
+    public void setConditions(List<Condition> conditions) {
+        this.conditions = conditions;
     }
 
     public void setName(String name) {

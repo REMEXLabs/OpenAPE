@@ -19,10 +19,18 @@ package org.openape.api.usercontext;
 import java.util.List;
 
 public class Condition {
+    /**
+     * must be 'not', 'eq', 'ne', 'lt', 'le', 'gt', 'ge', and or 'or'. <br>
+     * If type is "not", operands shall have exactly one element. <br>
+     * If type is "eq", "ne", "lt", "le", "gt", or "ge", operands shall have
+     * exactly two elements. <br>
+     * If type is "and" or "or", operands shall have at least two elements.
+     */
     String type;
     /**
      * Either Condition or Map<String, int>.
      */
     List<Object> operands;
 
+    
 }
