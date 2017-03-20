@@ -32,5 +32,59 @@ public class Condition {
      */
     List<Object> operands;
 
-    
+    public Condition() {
+    }
+
+    /**
+     * @param type
+     *            must be 'not', 'eq', 'ne', 'lt', 'le', 'gt', 'ge', 'and' or
+     *            'or'. <br>
+     *            If type is "not", operands shall have exactly one element. <br>
+     *            If type is "eq", "ne", "lt", "le", "gt", or "ge", operands
+     *            shall have exactly two elements. <br>
+     *            If type is "and" or "or", operands shall have at least two
+     *            elements.
+     * @param operands
+     *            must be a list of either conditions or a Map<String, int>.
+     * @throws IllegalArgumentException
+     */
+    public Condition(String type, List<Object> operands) throws IllegalArgumentException {
+        if (!(type.equals("not") || type.equals("eq") || type.equals("ne") || type.equals("lt")
+                || type.equals("le") || type.equals("gt") || type.equals("ge")
+                || type.equals("and") || type.equals("or"))) {
+            throw new IllegalArgumentException(
+                    "Type must be 'not', 'eq', 'ne', 'lt', 'le', 'gt', 'ge', 'and' or 'or'.");
+        }
+        switch (type) {
+        case "not":
+            if (operands.size() != 1) {
+                throw new IllegalArgumentException(
+                        "If type is 'not', operands shall have exactly one element.");
+            }
+            break;
+        case "eq":
+        case "ne":
+        case "lt":
+        case "le":
+        case "gt":
+        case "ge":
+            if (operands.size() != 2) {
+                throw new IllegalArgumentException(
+                        "If type is 'eq', 'ne', 'lt', 'le', 'gt', or 'ge', operands shall have exactly two elements.");
+            }
+            break;
+        case "and":
+        case "or":
+            if (operands.size() < 2) {
+                throw new IllegalArgumentException(
+                        "If type is 'and' or 'or', operands shall have at least two elements.");
+            }
+            break;
+        default:
+            break;
+        }
+        this.type = type;
+        this.operands = operands;
+    }
+
 }
