@@ -17,6 +17,7 @@
 package org.openape.api.usercontext;
 
 import java.util.List;
+import java.util.Map;
 
 public class Condition {
     /**
@@ -26,11 +27,11 @@ public class Condition {
      * exactly two elements. <br>
      * If type is "and" or "or", operands shall have at least two elements.
      */
-    String type;
+    private String type = null;
     /**
-     * Either Condition or Map<String, int>.
+     * Either Condition or Map<String, String>.
      */
-    List<Object> operands;
+    private List<Object> operands = null;
 
     public Condition() {
     }
@@ -45,16 +46,54 @@ public class Condition {
      *            If type is "and" or "or", operands shall have at least two
      *            elements.
      * @param operands
-     *            must be a list of either conditions or a Map<String, int>.
+     *            must be a list of either conditions or a Map<String, String>
+     *            with exactly one key value pair.
      * @throws IllegalArgumentException
+     *             if this is not the case.
      */
     public Condition(String type, List<Object> operands) throws IllegalArgumentException {
-        if (!(type.equals("not") || type.equals("eq") || type.equals("ne") || type.equals("lt")
-                || type.equals("le") || type.equals("gt") || type.equals("ge")
-                || type.equals("and") || type.equals("or"))) {
-            throw new IllegalArgumentException(
-                    "Type must be 'not', 'eq', 'ne', 'lt', 'le', 'gt', 'ge', 'and' or 'or'.");
+        this.checkType(type);
+        this.checkOpernadListLength(type, operands);
+        this.checkOperandClasses(operands);
+        this.type = type;
+        this.operands = operands;
+    }
+
+    /**
+     * @param operands
+     *            must be a list of either conditions or a Map<String, String>
+     *            with exactly one key value pair.
+     * @throws IllegalArgumentException
+     *             if this is not the case.
+     */
+    private void checkOperandClasses(List<Object> operands) {
+        for (final Object operand : operands) {
+            if (!(operand instanceof Condition || operand instanceof Map<?, ?>)) {
+                throw new IllegalArgumentException(
+                        "operands must be a list of either conditions or a Map<String, String> with exactly one key value pair.");
+            } else if (operand instanceof Map<?, ?>) {
+                final Map<?, ?> map = (Map<?, ?>) operand;
+                if (map.size() != 1
+                        || !map.keySet().iterator().next().getClass().equals(String.class)
+                        || map.get(map.keySet().iterator().next()).getClass().equals(String.class)) {
+                    throw new IllegalArgumentException(
+                            "operands must be a list of either conditions or a Map<String, String> with exactly one key value pair.");
+                }
+            }
         }
+    }
+
+    /**
+     * If type is "not", operands shall have exactly one element. <br>
+     * If type is "eq", "ne", "lt", "le", "gt", or "ge", operands shall have
+     * exactly two elements. <br>
+     * If type is "and" or "or", operands shall have at least two elements.
+     *
+     * @throws IllegalArgumentException
+     *             if this is not the case.
+     */
+    private void checkOpernadListLength(String type, List<Object> operands)
+            throws IllegalArgumentException {
         switch (type) {
         case "not":
             if (operands.size() != 1) {
@@ -83,8 +122,72 @@ public class Condition {
         default:
             break;
         }
-        this.type = type;
+    }
+
+    /**
+     * @param type
+     *            must be 'not', 'eq', 'ne', 'lt', 'le', 'gt', 'ge', 'and' or
+     *            'or'. <br>
+     * @throws IllegalArgumentException
+     *             if this is not the case.
+     */
+    private void checkType(String type) throws IllegalArgumentException {
+        if (!(type.equals("not") || type.equals("eq") || type.equals("ne") || type.equals("lt")
+                || type.equals("le") || type.equals("gt") || type.equals("ge")
+                || type.equals("and") || type.equals("or"))) {
+            throw new IllegalArgumentException(
+                    "Type must be 'not', 'eq', 'ne', 'lt', 'le', 'gt', 'ge', 'and' or 'or'.");
+        }
+    }
+
+    public List<Object> getOperands() {
+        return this.operands;
+    }
+
+    public String getType() {
+        return this.type;
+    }
+
+    /**
+     * If type is "not", operands shall have exactly one element. <br>
+     * If type is "eq", "ne", "lt", "le", "gt", or "ge", operands shall have
+     * exactly two elements. <br>
+     * If type is "and" or "or", operands shall have at least two elements.
+     *
+     * @param operands
+     *            must be a list of either conditions or a Map<String, String>
+     *            with exactly one key value pair.
+     * @throws IllegalArgumentException
+     *             if this is not the case.
+     */
+    public void setOperands(List<Object> operands) throws IllegalArgumentException {
+        this.checkOperandClasses(operands);
+        // Check the operands list length if type is already set.
+        if (this.getType() != null) {
+            this.checkOpernadListLength(this.getType(), operands);
+        }
         this.operands = operands;
+    }
+
+    /**
+     * @param type
+     *            must be 'not', 'eq', 'ne', 'lt', 'le', 'gt', 'ge', 'and' or
+     *            'or'. <br>
+     *            If type is "not", operands shall have exactly one element. <br>
+     *            If type is "eq", "ne", "lt", "le", "gt", or "ge", operands
+     *            shall have exactly two elements. <br>
+     *            If type is "and" or "or", operands shall have at least two
+     *            elements.
+     * @throws IllegalArgumentException
+     *             if this is not the case.
+     */
+    public void setType(String type) {
+        this.checkType(type);
+        // Check the operands list length if operands are already set.
+        if (this.getOperands() != null) {
+            this.checkOpernadListLength(type, this.getOperands());
+        }
+        this.type = type;
     }
 
 }
