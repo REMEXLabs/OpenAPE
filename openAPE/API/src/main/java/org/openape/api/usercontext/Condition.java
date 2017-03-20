@@ -144,6 +144,9 @@ public class Condition {
      *             if this is not the case.
      */
     public void setOperands(List<Object> operands) throws IllegalArgumentException {
+        // No content class checking since json uses sup results that are not
+        // from type Condition but represent a condition object.
+        //this.checkOperandClasses(operands);
         // Check the operands list length if type is already set.
         if (this.getType() != null) {
             this.checkOpernadListLength(this.getType(), operands);
