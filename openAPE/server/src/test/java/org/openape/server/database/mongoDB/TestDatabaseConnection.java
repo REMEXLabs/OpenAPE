@@ -1,12 +1,15 @@
 package org.openape.server.database.mongoDB;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.openape.api.usercontext.Condition;
 import org.openape.api.usercontext.Context;
 import org.openape.api.usercontext.UserContext;
 
@@ -31,6 +34,18 @@ public class TestDatabaseConnection {
                 "false");
         darkPreference.addPreference("http://registry.gpii.net/common/magnifierEnabled", "true");
         darkPreference.addPreference("http://registry.gpii.net/common/magnification", "2");
+
+        List<Object> andConditionOperands = new ArrayList<Object>();
+        List<Object> geOperandList = new ArrayList<Object>();
+        geOperandList.add("http://registry.gpii.net/common/env/visual.luminance");
+        geOperandList.add("0");
+        List<Object> leOperandList = new ArrayList<Object>();
+        leOperandList.add("http://registry.gpii.net/common/env/visual.luminance");
+        leOperandList.add("200");
+        andConditionOperands.add(new Condition("ge", geOperandList));
+        andConditionOperands.add(new Condition("le", leOperandList));
+        Condition andCondition = new Condition("and", andConditionOperands);
+        darkPreference.addCondition(andCondition);
         final ObjectMapper mapper = new ObjectMapper();
         try {
             final String jsonData = mapper.writeValueAsString(userContext);

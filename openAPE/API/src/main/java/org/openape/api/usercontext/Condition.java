@@ -17,7 +17,6 @@
 package org.openape.api.usercontext;
 
 import java.util.List;
-import java.util.Map;
 
 public class Condition {
     /**
@@ -29,7 +28,7 @@ public class Condition {
      */
     private String type = null;
     /**
-     * Either Condition or Map<String, String>.
+     * Either Condition or String.
      */
     private List<Object> operands = null;
 
@@ -46,8 +45,7 @@ public class Condition {
      *            If type is "and" or "or", operands shall have at least two
      *            elements.
      * @param operands
-     *            must be a list of either conditions or a Map<String, String>
-     *            with exactly one key value pair.
+     *            must be a list of either conditions or strings.
      * @throws IllegalArgumentException
      *             if this is not the case.
      */
@@ -61,24 +59,15 @@ public class Condition {
 
     /**
      * @param operands
-     *            must be a list of either conditions or a Map<String, String>
-     *            with exactly one key value pair.
+     *            must be a list of either conditions or strings.
      * @throws IllegalArgumentException
      *             if this is not the case.
      */
     private void checkOperandClasses(List<Object> operands) {
         for (final Object operand : operands) {
-            if (!(operand instanceof Condition || operand instanceof Map<?, ?>)) {
+            if (!(operand instanceof Condition) && !(operand instanceof String)) {
                 throw new IllegalArgumentException(
-                        "operands must be a list of either conditions or a Map<String, String> with exactly one key value pair.");
-            } else if (operand instanceof Map<?, ?>) {
-                final Map<?, ?> map = (Map<?, ?>) operand;
-                if (map.size() != 1
-                        || !map.keySet().iterator().next().getClass().equals(String.class)
-                        || map.get(map.keySet().iterator().next()).getClass().equals(String.class)) {
-                    throw new IllegalArgumentException(
-                            "operands must be a list of either conditions or a Map<String, String> with exactly one key value pair.");
-                }
+                        "operands must be a list of either conditions or strings.");
             }
         }
     }
@@ -155,13 +144,11 @@ public class Condition {
      * If type is "and" or "or", operands shall have at least two elements.
      *
      * @param operands
-     *            must be a list of either conditions or a Map<String, String>
-     *            with exactly one key value pair.
+     *            must be a list of either conditions or strings.
      * @throws IllegalArgumentException
      *             if this is not the case.
      */
     public void setOperands(List<Object> operands) throws IllegalArgumentException {
-        this.checkOperandClasses(operands);
         // Check the operands list length if type is already set.
         if (this.getType() != null) {
             this.checkOpernadListLength(this.getType(), operands);
