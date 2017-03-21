@@ -16,6 +16,7 @@
 
 package org.openape.api.usercontext;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import org.openape.api.Messages;
@@ -67,7 +68,12 @@ public class Condition {
      */
     private void checkOperandClasses(List<Object> operands) {
         for (final Object operand : operands) {
-            if (!(operand instanceof Condition) && !(operand instanceof String)) {
+            if (!(operand instanceof Condition) && !(operand instanceof String)
+                    && !(operand instanceof LinkedHashMap<?, ?>)) {// LinkedHashMap
+                                                                   // is used by
+                                                                   // json to
+                                                                   // store sub
+                                                                   // results.
                 throw new IllegalArgumentException(
                         Messages.getString("Condition.wrongOperandTypesErrorMsg")); //$NON-NLS-1$
             }
@@ -144,9 +150,7 @@ public class Condition {
      *             if this is not the case.
      */
     public void setOperands(List<Object> operands) throws IllegalArgumentException {
-        // No content class checking since json uses sup results that are not
-        // from type Condition but represent a condition object.
-        //this.checkOperandClasses(operands);
+        this.checkOperandClasses(operands);
         // Check the operands list length if type is already set.
         if (this.getType() != null) {
             this.checkOpernadListLength(this.getType(), operands);
