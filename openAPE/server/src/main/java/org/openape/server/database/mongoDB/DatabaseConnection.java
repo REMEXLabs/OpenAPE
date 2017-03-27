@@ -440,7 +440,6 @@ public class DatabaseConnection {
             String jsonData = mapper.writeValueAsString(data);
             // Deal with special mongoDB characters '.' and '$'.
             jsonData = this.replaceMongoSpecialChars(jsonData);
-            System.out.println(jsonData);
             dataDocument = Document.parse(jsonData);
             // Insert the document.
             collectionToWorkOn.insertOne(dataDocument);

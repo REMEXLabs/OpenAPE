@@ -1,5 +1,5 @@
 Datum,Zeit in Stunden,Aktivität,Summe
-12.10,1,Initialer Projekttreff,177
+12.10,1,Initialer Projekttreff,182
 18.10,1,2. Teambesprechung,
 18.10,2,Issues erstellen und Projekt bei mir einrichten,
 25.10,"0,5",3. Teambesprechung,
@@ -92,3 +92,4 @@ Datum,Zeit in Stunden,Aktivität,Summe
 15.03,2,mongo special char replacement,
 15.03,1,replace context list by map,
 15.03,"0,5",contitions aufsetzen,
+20.03,5,implement conditions,

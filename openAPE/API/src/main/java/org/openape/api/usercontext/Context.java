@@ -17,13 +17,16 @@
 package org.openape.api.usercontext;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import javax.xml.bind.annotation.XmlElement;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 public class Context implements Serializable {
     private static final long serialVersionUID = -8602234372848554234L;
@@ -61,6 +64,9 @@ public class Context implements Serializable {
         return true;
     }
 
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    // Ignores field if null.
+    private List<Condition> conditions = null;
     private String name;
 
     private Map<String, String> preferences = new HashMap<String, String>();
@@ -74,6 +80,13 @@ public class Context implements Serializable {
 
     public Context(String name) {
         this.name = name;
+    }
+
+    public void addCondition(Condition condition) {
+        if (this.getConditions() == null) {
+            this.setConditions(new ArrayList<Condition>());
+        }
+        this.conditions.add(condition);
     }
 
     public void addPreference(String key, String value) {
@@ -96,6 +109,10 @@ public class Context implements Serializable {
                 .hasContextTheSamePreferences(this, compare));
     }
 
+    public List<Condition> getConditions() {
+        return this.conditions;
+    }
+
     @XmlElement(name = "name")
     public String getName() {
         return this.name;
@@ -104,6 +121,10 @@ public class Context implements Serializable {
     @XmlElement(name = "preference")
     public Map<String, String> getPreferences() {
         return this.preferences;
+    }
+
+    public void setConditions(List<Condition> conditions) {
+        this.conditions = conditions;
     }
 
     public void setName(String name) {
