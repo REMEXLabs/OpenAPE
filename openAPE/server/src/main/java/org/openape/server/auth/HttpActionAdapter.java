@@ -1,4 +1,4 @@
-package org.openape.server;
+package org.openape.server.auth;
 
 import org.pac4j.core.context.HttpConstants;
 import org.pac4j.sparkjava.DefaultHttpActionAdapter;
