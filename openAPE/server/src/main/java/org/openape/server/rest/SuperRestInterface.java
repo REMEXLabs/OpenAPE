@@ -3,6 +3,7 @@ package org.openape.server.rest;
 import java.io.IOException;
 
 import org.openape.api.Messages;
+import org.openape.server.auth.AuthConfigFactory;
 import org.openape.server.requestHandler.EnvironmentContextRequestHandler;
 import org.openape.server.requestHandler.EquipmentContextRequestHandler;
 import org.openape.server.requestHandler.ListingRequestHandler;
@@ -11,6 +12,8 @@ import org.openape.server.requestHandler.ResourceRequestHandler;
 import org.openape.server.requestHandler.TaskContextRequestHandler;
 import org.openape.server.requestHandler.UserContextRequestHandler;
 
+import org.pac4j.core.config.Config;
+import org.pac4j.sparkjava.SecurityFilter;
 import spark.Request;
 import spark.Spark;
 
@@ -31,10 +34,8 @@ public class SuperRestInterface {
     /**
      * Get a sent json object from a request.
      *
-     * @param req
-     *            spark request containing the object.
-     * @param objectType
-     *            expected class of the object.
+     * @param req spark request containing the object.
+     * @param objectType expected class of the object.
      * @return received java object of the type objectType.
      * @throws IOException
      * @throws JsonParseException
@@ -52,26 +53,32 @@ public class SuperRestInterface {
      * points of the application.
      */
     public SuperRestInterface() {
-        /**
-         * test request to test if the server runs. Invoke locally using:
-         * http://localhost:4567/hello if started from main.
-         */
-        Spark.get(
-                Messages.getString("SuperRestInterface.HelloWorldURL"), (req, res) -> Messages.getString("SuperRestInterface.HelloWorld")); //$NON-NLS-1$ //$NON-NLS-2$
 
-        EnvironmentContextRESTInterface
-                .setupEnvironmentContextRESTInterface(new EnvironmentContextRequestHandler());
-        EquipmentContextRESTInterface
-                .setupEquipmentContextRESTInterface(new EquipmentContextRequestHandler());
+        // Create a new security configuration
+        final Config config = new AuthConfigFactory("12345678901234567890123456789012").build();
+
+        // Catch and print exceptions
+        Spark.exception(Exception.class, (exception, request, response) -> {
+            exception.printStackTrace();
+        });
+
+        // Test endpoint to see if server runs. Invoke locally: http://localhost:4567/hello
+        Spark.get(Messages.getString("SuperRestInterface.HelloWorldURL"), (req, res) -> Messages.getString("SuperRestInterface.HelloWorld")); //$NON-NLS-1$ //$NON-NLS-2$
+
+        // Demo endpoint to test authenticated requests
+        Spark.before("/protected", new SecurityFilter(config, "ParameterClient"));
+        Spark.get("/protected", (req, res) -> "This is a protected space!");
+
+        EnvironmentContextRESTInterface.setupEnvironmentContextRESTInterface(new EnvironmentContextRequestHandler());
+        EquipmentContextRESTInterface.setupEquipmentContextRESTInterface(new EquipmentContextRequestHandler());
         ListingRESTInterface.setupListingRESTInterface(new ListingRequestHandler());
-        ResourceDescriptionRESTInterface
-                .setupResourceDescriptionRESTInterface(new ResourceDescriptionRequestHandler());
+        ResourceDescriptionRESTInterface.setupResourceDescriptionRESTInterface(new ResourceDescriptionRequestHandler());
         ResourceManagerRESTInterface.setupResourceManagerRESTInterface();
         ResourceRESTInterface.setupResourceRESTInterface(new ResourceRequestHandler());
         TaskContextRESTInterface.setupTaskContextRESTInterface(new TaskContextRequestHandler());
         UserContextRESTInterface.setupUserContextRESTInterface(new UserContextRequestHandler());
-        if (SuperRestInterface.TEST_ENVIRONMENT) {// test html interface found
-                                                  // under .../api/tests.
+        // Test html interface found
+        if(SuperRestInterface.TEST_ENVIRONMENT) {
             TestRESTInterface.setupTestRESTInterface();
         }
     }
