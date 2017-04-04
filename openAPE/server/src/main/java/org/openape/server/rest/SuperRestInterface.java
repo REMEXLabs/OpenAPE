@@ -13,6 +13,9 @@ import org.openape.server.requestHandler.TaskContextRequestHandler;
 import org.openape.server.requestHandler.UserContextRequestHandler;
 
 import org.pac4j.core.config.Config;
+import org.pac4j.core.profile.CommonProfile;
+import org.pac4j.jwt.config.signature.SecretSignatureConfiguration;
+import org.pac4j.jwt.profile.JwtGenerator;
 import org.pac4j.sparkjava.SecurityFilter;
 import spark.Request;
 import spark.Spark;
@@ -30,6 +33,7 @@ public class SuperRestInterface {
     public static final int HTTP_STATUS_NOT_FOUND = 404;
     public static final int HTTP_STATUS_INTERNAL_SERVER_ERROR = 500;
     private static final boolean TEST_ENVIRONMENT = true;
+    private static final String JWT_SALT = "12345678901234567890123456789012";
 
     /**
      * Get a sent json object from a request.
@@ -55,7 +59,7 @@ public class SuperRestInterface {
     public SuperRestInterface() {
 
         // Create a new security configuration
-        final Config config = new AuthConfigFactory("12345678901234567890123456789012").build();
+        final Config config = new AuthConfigFactory(JWT_SALT).build();
 
         // Catch and print exceptions
         Spark.exception(Exception.class, (exception, request, response) -> {
@@ -69,6 +73,13 @@ public class SuperRestInterface {
         Spark.before("/protected", new SecurityFilter(config, "ParameterClient"));
         Spark.get("/protected", (req, res) -> "This is a protected space!");
 
+        // Get a JWT that you can use to access the protected demo route
+        Spark.get("/token", (req, res) -> {
+            CommonProfile profile = new CommonProfile();
+            profile.setId("uid_002");
+            return generateJwt(profile);
+        });
+
         EnvironmentContextRESTInterface.setupEnvironmentContextRESTInterface(new EnvironmentContextRequestHandler());
         EquipmentContextRESTInterface.setupEquipmentContextRESTInterface(new EquipmentContextRequestHandler());
         ListingRESTInterface.setupListingRESTInterface(new ListingRequestHandler());
@@ -81,6 +92,11 @@ public class SuperRestInterface {
         if(SuperRestInterface.TEST_ENVIRONMENT) {
             TestRESTInterface.setupTestRESTInterface();
         }
+    }
+
+    private static String generateJwt(final CommonProfile profile) {
+        JwtGenerator<CommonProfile> jwtGenerator = new JwtGenerator<>(new SecretSignatureConfiguration(JWT_SALT));
+        return jwtGenerator.generate(profile);
     }
 
 }
