@@ -23,15 +23,14 @@ public class AuthConfigFactory implements ConfigFactory {
         // REST authentication with JWT for a token passed in the url as the token parameter
         ParameterClient parameterClient = new ParameterClient("token", new JwtAuthenticator(new SecretSignatureConfiguration(salt)));
         parameterClient.setSupportGetRequest(true);
-        parameterClient.setSupportPostRequest(false);
+        parameterClient.setSupportPostRequest(true);
         // Define config
         final Config config = new Config(parameterClient);
         // Register HttpActionAdapter to respond with proper HTTP response codes on auth errors
         config.setHttpActionAdapter(new HttpActionAdapter());
         // Set Authorizers to check of roles
-        config.addAuthorizer("isAdmin", new RequireAnyRoleAuthorizer("admin"));
-        config.addAuthorizer("isUser", new RequireAnyRoleAuthorizer("user"));
-        config.addAuthorizer("isObserver", new RequireAnyRoleAuthorizer("observer"));
+        config.addAuthorizer("admin", new RequireAnyRoleAuthorizer("admin"));
+        config.addAuthorizer("user", new RequireAnyRoleAuthorizer("user"));
         return config;
     }
 
