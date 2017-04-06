@@ -11,5 +11,6 @@ database.createCollection("listings");
 database.createCollection("task_contexts");
 database.createCollection("user_contexts");
 database.createCollection("resources");
+database.createCollection("users");
 database.createCollection("test");
 database.test.insert( { x: 1 } );
