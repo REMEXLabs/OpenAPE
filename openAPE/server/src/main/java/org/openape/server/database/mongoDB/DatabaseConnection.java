@@ -118,6 +118,10 @@ public class DatabaseConnection {
      * Database collection holding the mime types of the stored resources.
      */
     private MongoCollection<Document> resourceMimeTypesCollection;
+    /**
+     * Database collection holding the users.
+     */
+    private MongoCollection<Document> userCollection;
 
     /**
      * private constructor to create the singleton database connection instance.
@@ -188,6 +192,8 @@ public class DatabaseConnection {
                 .toString());
         this.resourceMimeTypesCollection = this.database
                 .getCollection(MongoCollectionTypes.RESOURCEMIMETYPES.toString());
+        this.userCollection = this.database
+                .getCollection(MongoCollectionTypes.USERS.toString());
 
     }
 
@@ -269,6 +275,8 @@ public class DatabaseConnection {
             return this.listingContextCollection;
         } else if (type.equals(MongoCollectionTypes.RESOURCEMIMETYPES)) {
             return this.resourceMimeTypesCollection;
+        } else if (type.equals(MongoCollectionTypes.USERS)) {
+            return this.userCollection;
         } else {
             return null; // Should never occur.
         }

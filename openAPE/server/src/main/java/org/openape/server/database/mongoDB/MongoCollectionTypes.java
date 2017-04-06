@@ -7,6 +7,7 @@ import org.openape.api.equipmentcontext.EquipmentContext;
 import org.openape.api.listing.Listing;
 import org.openape.api.resourceDescription.ResourceDescription;
 import org.openape.api.taskcontext.TaskContext;
+import org.openape.api.user.User;
 import org.openape.api.usercontext.UserContext;
 
 /**
@@ -27,7 +28,8 @@ public enum MongoCollectionTypes {
             Messages.getString("MongoCollectionTypes.resourceDescriptionCollectionName"), ResourceDescription.class), //$NON-NLS-1$
     LISTING(Messages.getString("MongoCollectionTypes.lstingCollectionName"), Listing.class), //$NON-NLS-1$
     RESOURCEMIMETYPES(
-            Messages.getString("MongoCollectionTypes.resourceMimeTypesCollectionName"), null);//$NON-NLS-1$
+            Messages.getString("MongoCollectionTypes.resourceMimeTypesCollectionName"), null), //$NON-NLS-1$
+    USERS("users", User.class);
 
     /**
      * Get the collection type of a mongo database collection by its name.
@@ -57,6 +59,8 @@ public enum MongoCollectionTypes {
         } else if (collectionName.endsWith(Messages
                 .getString("MongoCollectionTypes.resourceMimeTypesCollectionName"))) {//$NON-NLS-1$
             return RESOURCEMIMETYPES;
+        } else if (collectionName.equals("users")) {
+            return USERS;
         } else {
             return null;
         }
