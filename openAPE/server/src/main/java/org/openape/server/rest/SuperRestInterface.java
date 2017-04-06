@@ -3,7 +3,7 @@ package org.openape.server.rest;
 import java.io.IOException;
 
 import org.openape.api.Messages;
-import org.openape.server.auth.AuthConfigFactory;
+import org.openape.server.auth.AuthService;
 import org.openape.server.requestHandler.EnvironmentContextRequestHandler;
 import org.openape.server.requestHandler.EquipmentContextRequestHandler;
 import org.openape.server.requestHandler.ListingRequestHandler;
@@ -12,11 +12,6 @@ import org.openape.server.requestHandler.ResourceRequestHandler;
 import org.openape.server.requestHandler.TaskContextRequestHandler;
 import org.openape.server.requestHandler.UserContextRequestHandler;
 
-import org.pac4j.core.config.Config;
-import org.pac4j.core.profile.CommonProfile;
-import org.pac4j.jwt.config.signature.SecretSignatureConfiguration;
-import org.pac4j.jwt.profile.JwtGenerator;
-import org.pac4j.sparkjava.SecurityFilter;
 import spark.Request;
 import spark.Spark;
 
@@ -30,10 +25,10 @@ public class SuperRestInterface {
     public static final int HTTP_STATUS_CREATED = 201;
     public static final int HTTP_STATUS_NO_CONTENT = 204;
     public static final int HTTP_STATUS_BAD_REQUEST = 400;
+    public static final int HTTP_STATUS_UNAUTHORIZED = 401;
     public static final int HTTP_STATUS_NOT_FOUND = 404;
     public static final int HTTP_STATUS_INTERNAL_SERVER_ERROR = 500;
     private static final boolean TEST_ENVIRONMENT = true;
-    private static final String JWT_SALT = "12345678901234567890123456789012";
 
     /**
      * Get a sent json object from a request.
@@ -58,8 +53,8 @@ public class SuperRestInterface {
      */
     public SuperRestInterface() {
 
-        // Create a new security configuration
-        final Config config = new AuthConfigFactory(JWT_SALT).build();
+        // AuthService singleton to enable security features on REST endpoints
+        final AuthService authService = new AuthService();
 
         // Catch and print exceptions
         Spark.exception(Exception.class, (exception, request, response) -> {
@@ -68,18 +63,9 @@ public class SuperRestInterface {
 
         // Test endpoint to see if server runs. Invoke locally: http://localhost:4567/hello
         Spark.get(Messages.getString("SuperRestInterface.HelloWorldURL"), (req, res) -> Messages.getString("SuperRestInterface.HelloWorld")); //$NON-NLS-1$ //$NON-NLS-2$
-
-        // Demo endpoint to test authenticated requests
-        Spark.before("/protected", new SecurityFilter(config, "ParameterClient"));
-        Spark.get("/protected", (req, res) -> "This is a protected space!");
-
-        // Get a JWT that you can use to access the protected demo route
-        Spark.get("/token", (req, res) -> {
-            CommonProfile profile = new CommonProfile();
-            profile.setId("uid_002");
-            return generateJwt(profile);
-        });
-
+        // Endpoint to receive tokens
+        TokenRESTInterface.setupTokenRESTInterface();
+        // Resource endpoints
         EnvironmentContextRESTInterface.setupEnvironmentContextRESTInterface(new EnvironmentContextRequestHandler());
         EquipmentContextRESTInterface.setupEquipmentContextRESTInterface(new EquipmentContextRequestHandler());
         ListingRESTInterface.setupListingRESTInterface(new ListingRequestHandler());
@@ -87,16 +73,11 @@ public class SuperRestInterface {
         ResourceManagerRESTInterface.setupResourceManagerRESTInterface();
         ResourceRESTInterface.setupResourceRESTInterface(new ResourceRequestHandler());
         TaskContextRESTInterface.setupTaskContextRESTInterface(new TaskContextRequestHandler());
-        UserContextRESTInterface.setupUserContextRESTInterface(new UserContextRequestHandler());
+        UserContextRESTInterface.setupUserContextRESTInterface(new UserContextRequestHandler(), authService);
         // Test html interface found
         if(SuperRestInterface.TEST_ENVIRONMENT) {
             TestRESTInterface.setupTestRESTInterface();
         }
-    }
-
-    private static String generateJwt(final CommonProfile profile) {
-        JwtGenerator<CommonProfile> jwtGenerator = new JwtGenerator<>(new SecretSignatureConfiguration(JWT_SALT));
-        return jwtGenerator.generate(profile);
     }
 
 }
