@@ -1,5 +1,6 @@
 package org.openape.server.auth;
 
+import org.pac4j.core.authorization.authorizer.RequireAnyRoleAuthorizer;
 import org.pac4j.core.config.Config;
 import org.pac4j.core.config.ConfigFactory;
 import org.pac4j.http.client.direct.ParameterClient;
@@ -27,6 +28,10 @@ public class AuthConfigFactory implements ConfigFactory {
         final Config config = new Config(parameterClient);
         // Register HttpActionAdapter to respond with proper HTTP response codes on auth errors
         config.setHttpActionAdapter(new HttpActionAdapter());
+        // Set Authorizers to check of roles
+        config.addAuthorizer("isAdmin", new RequireAnyRoleAuthorizer("admin"));
+        config.addAuthorizer("isUser", new RequireAnyRoleAuthorizer("user"));
+        config.addAuthorizer("isObserver", new RequireAnyRoleAuthorizer("observer"));
         return config;
     }
 
