@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import org.openape.api.Messages;
 import org.openape.api.usercontext.UserContext;
+import org.openape.server.auth.AuthService;
 import org.openape.server.requestHandler.UserContextRequestHandler;
 
 import spark.Spark;
@@ -14,10 +15,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class UserContextRESTInterface extends SuperRestInterface {
 
-    public static void setupUserContextRESTInterface(final UserContextRequestHandler requestHandler) {
+    public static void setupUserContextRESTInterface(final UserContextRequestHandler requestHandler, final AuthService auth) {
         /**
          * Request 7.2.2 create user-context.
          */
+        Spark.before(Messages.getString("UserContextRESTInterface.UserContextURLWithoutID"), auth.protectWithRole("user"));
         Spark.post(
                 Messages.getString("UserContextRESTInterface.UserContextURLWithoutID"), (req, res) -> { //$NON-NLS-1$
                     if (!req.contentType().equals(Messages.getString("MimeTypeJson"))) {//$NON-NLS-1$
@@ -27,17 +29,14 @@ public class UserContextRESTInterface extends SuperRestInterface {
                     try {
                         // Try to map the received json object to a userContext
                         // object.
-                        final UserContext recievedUserContext = (UserContext) SuperRestInterface
-                                .extractObjectFromRequest(req, UserContext.class);
+                        final UserContext receivedUserContext = (UserContext) SuperRestInterface.extractObjectFromRequest(req, UserContext.class);
                         // Test the object for validity.
-                        if (!recievedUserContext.isValid()) {
+                        if (!receivedUserContext.isValid()) {
                             res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
-                            return Messages
-                                    .getString("UserContextRESTInterface.NoValidObjectErrorMassage"); //$NON-NLS-1$
+                            return Messages.getString("UserContextRESTInterface.NoValidObjectErrorMassage"); //$NON-NLS-1$
                         }
                         // If the object is okay, save it and return the id.
-                        final String userContextId = requestHandler
-                                .createUserContext(recievedUserContext);
+                        final String userContextId = requestHandler.createUserContext(receivedUserContext);
                         res.status(SuperRestInterface.HTTP_STATUS_CREATED);
                         return userContextId;
                     } catch (JsonParseException | JsonMappingException e) {
@@ -57,13 +56,10 @@ public class UserContextRESTInterface extends SuperRestInterface {
          */
         Spark.get(
                 Messages.getString("UserContextRESTInterface.UserContextURLWithID"), (req, res) -> { //$NON-NLS-1$
-                    final String userContextId = req.params(Messages
-                            .getString("UserContextRESTInterface.IDParam")); //$NON-NLS-1$
-
+                    final String userContextId = req.params(Messages.getString("UserContextRESTInterface.IDParam")); //$NON-NLS-1$
                     try {
                         // if it is successful return user context.
-                        final UserContext userContext = requestHandler
-                                .getUserContextById(userContextId);
+                        final UserContext userContext = requestHandler.getUserContextById(userContextId);
                         res.status(SuperRestInterface.HTTP_STATUS_OK);
                         res.type(Messages.getString("UserContextRESTInterface.JsonMimeType")); //$NON-NLS-1$
                         final ObjectMapper mapper = new ObjectMapper();
@@ -77,7 +73,6 @@ public class UserContextRESTInterface extends SuperRestInterface {
                         res.status(SuperRestInterface.HTTP_STATUS_INTERNAL_SERVER_ERROR);
                         return e.getMessage();
                     }
-
                 });
 
         /**
