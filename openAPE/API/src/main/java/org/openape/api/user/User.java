@@ -6,10 +6,19 @@ import java.util.List;
 
 public class User extends DatabaseObject {
 
+    private String id;
     private String username;
     private String email;
     private String password;
     private List<String> roles;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getUsername() {
         return username;

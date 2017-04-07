@@ -300,7 +300,7 @@ public class DatabaseConnection {
         // Search for object in database.
         final BasicDBObject query = new BasicDBObject();
         query.put(Messages.getString("DatabaseConnection._id"), new ObjectId(id));
-        return executeQuery(type, collectionToWorkOn, query);
+        return executeQuery(type, collectionToWorkOn, query, false);
     }
 
     /**
@@ -318,7 +318,7 @@ public class DatabaseConnection {
         // Search for object in database.
         final BasicDBObject query = new BasicDBObject();
         query.put(attribute, value);
-        return executeQuery(type, collectionToWorkOn, query);
+        return executeQuery(type, collectionToWorkOn, query, true);
     }
 
     /**
@@ -376,14 +376,18 @@ public class DatabaseConnection {
      * @return
      * @throws IOException
      */
-    private DatabaseObject executeQuery(MongoCollectionTypes type, MongoCollection collection, BasicDBObject query) throws IOException {
+    private DatabaseObject executeQuery(MongoCollectionTypes type, MongoCollection collection, BasicDBObject query, boolean includeId) throws IOException {
         final Iterator<Document> resultIterator = collection.find(query).iterator();
         if(resultIterator.hasNext()) {
             final Document resultDocument = resultIterator.next();
             DatabaseObject result = null;
             try {
                 // Remove the MongoDB id field
+                ObjectId oid = (ObjectId) resultDocument.get("_id");
                 resultDocument.remove(Messages.getString("DatabaseConnection._id")); //$NON-NLS-1$
+                if(includeId) {
+                    resultDocument.append("id", oid.toString());
+                }
                 String jsonResult = resultDocument.toJson();
                 // reverse mongo special character replacement.
                 jsonResult = this.reverseMongoSpecialCharsReplacement(jsonResult);
