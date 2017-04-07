@@ -72,7 +72,7 @@ public class AuthService {
             User user = getUserByUsername(username);
             if (matchPassword(password, user.getPassword())) {
                 CommonProfile profile = new CommonProfile();
-                profile.setId(user.getUsername());
+                profile.setId(user.getId());
                 profile.addRoles(user.getRoles());
                 profile.addAttribute("username", user.getUsername());
                 profile.addAttribute("email", user.getEmail());
