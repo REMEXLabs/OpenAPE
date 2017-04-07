@@ -297,36 +297,28 @@ public class DatabaseConnection {
      */
     public DatabaseObject getData(MongoCollectionTypes type, String id) throws IOException {
         final MongoCollection<Document> collectionToWorkOn = this.getCollectionByType(type);
-
         // Search for object in database.
         final BasicDBObject query = new BasicDBObject();
-        query.put(Messages.getString("DatabaseConnection._id"), new ObjectId(id)); //$NON-NLS-1$
-        final FindIterable<Document> resultIteratable = collectionToWorkOn.find(query);
+        query.put(Messages.getString("DatabaseConnection._id"), new ObjectId(id));
+        return executeQuery(type, collectionToWorkOn, query);
+    }
 
-        final Iterator<Document> resultInterator = resultIteratable.iterator();
-        if (!resultInterator.hasNext()) {
-            // If no result is found return null.
-            return null;
-        } else {
-            // get the first result. Souldn't ever be more than one since _ids
-            // are supposed to be unique.
-            final Document resultDocument = resultInterator.next();
-
-            DatabaseObject result = null;
-            try {
-                // Remove the automatically added id.
-                resultDocument.remove(Messages.getString("DatabaseConnection._id")); //$NON-NLS-1$
-                String jsonResult = resultDocument.toJson();
-                // reverse mongo special character replacement.
-                jsonResult = this.reverseMongoSpecialCharsReplacement(jsonResult);
-                final ObjectMapper mapper = new ObjectMapper();
-                result = mapper.readValue(jsonResult, type.getDocumentType());
-            } catch (CodecConfigurationException | IOException | JsonParseException e) {
-                e.printStackTrace();
-                throw new IOException(e.getMessage());
-            }
-            return result;
-        }
+    /**
+     * Query a collection by a certain attribute and value. Will return the first document matching the query or
+     * null if no document matches the query.
+     *
+     * @param type the collection in which the object is located.
+     * @param attribute the attribute to query for
+     * @param value the value for the attribute to query for
+     * @return
+     * @throws IOException
+     */
+    public DatabaseObject getByUniqueAttribute(MongoCollectionTypes type, String attribute, String value) throws IOException {
+        final MongoCollection<Document> collectionToWorkOn = this.getCollectionByType(type);
+        // Search for object in database.
+        final BasicDBObject query = new BasicDBObject();
+        query.put(attribute, value);
+        return executeQuery(type, collectionToWorkOn, query);
     }
 
     /**
@@ -371,6 +363,40 @@ public class DatabaseConnection {
                 throw new IOException(e.getMessage());
             }
             return mimetype;
+        }
+    }
+
+    /**
+     * Execute a Mongo BasicDBObject query on the given collection and return the result as a DatabaseObject of the
+     * given collection.
+     *
+     * @param type the type of the collections DatabaseObject
+     * @param collection the collection in which the object is located.
+     * @param query the Mongo query to be executed
+     * @return
+     * @throws IOException
+     */
+    private DatabaseObject executeQuery(MongoCollectionTypes type, MongoCollection collection, BasicDBObject query) throws IOException {
+        final Iterator<Document> resultIterator = collection.find(query).iterator();
+        if(resultIterator.hasNext()) {
+            final Document resultDocument = resultIterator.next();
+            DatabaseObject result = null;
+            try {
+                // Remove the MongoDB id field
+                resultDocument.remove(Messages.getString("DatabaseConnection._id")); //$NON-NLS-1$
+                String jsonResult = resultDocument.toJson();
+                // reverse mongo special character replacement.
+                jsonResult = this.reverseMongoSpecialCharsReplacement(jsonResult);
+                final ObjectMapper mapper = new ObjectMapper();
+                result = mapper.readValue(jsonResult, type.getDocumentType());
+            } catch (CodecConfigurationException | IOException | JsonParseException e) {
+                e.printStackTrace();
+                throw new IOException(e.getMessage());
+            }
+            return result;
+        } else {
+            // If no result is found return null.
+            return null;
         }
     }
 
