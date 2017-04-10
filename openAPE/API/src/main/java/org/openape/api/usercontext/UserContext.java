@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import javax.ws.rs.DefaultValue;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -69,8 +70,9 @@ public class UserContext extends DatabaseObject {
 
     private Map<String, Context> contexts;
 
-    private User owner;
+    private String ownerId;
 
+    @DefaultValue("false")
     private boolean isPublic;
 
     public UserContext() {
@@ -120,12 +122,12 @@ public class UserContext extends DatabaseObject {
         this.contexts = contexts;
     }
 
-    public User getOwner() {
-        return owner;
+    public String getOwnerId() {
+        return ownerId;
     }
 
-    public void setOwner(User owner) {
-        this.owner = owner;
+    public void setOwnerId(String ownerId) {
+        this.ownerId = ownerId;
     }
 
     public boolean isPublic() {
