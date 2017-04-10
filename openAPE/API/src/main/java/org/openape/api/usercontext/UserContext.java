@@ -26,6 +26,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import org.openape.api.DatabaseObject;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.openape.api.user.User;
 
 /**
  * User context object defined in 7.2.1
@@ -67,6 +68,10 @@ public class UserContext extends DatabaseObject {
     }
 
     private Map<String, Context> contexts;
+
+    private User owner;
+
+    private boolean isPublic;
 
     public UserContext() {
         this.contexts = new HashMap<String, Context>();
@@ -115,4 +120,19 @@ public class UserContext extends DatabaseObject {
         this.contexts = contexts;
     }
 
+    public User getOwner() {
+        return owner;
+    }
+
+    public void setOwner(User owner) {
+        this.owner = owner;
+    }
+
+    public boolean isPublic() {
+        return isPublic;
+    }
+
+    public void setPublic(boolean aPublic) {
+        isPublic = aPublic;
+    }
 }
