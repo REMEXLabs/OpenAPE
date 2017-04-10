@@ -1,6 +1,6 @@
 package org.openape.api.user;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import org.openape.api.DatabaseObject;
 import org.pac4j.core.profile.CommonProfile;
 
@@ -12,6 +12,7 @@ public class User extends DatabaseObject {
     private String id;
     private String username;
     private String email;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String password;
     private List<String> roles;
 
@@ -48,7 +49,6 @@ public class User extends DatabaseObject {
         this.email = email;
     }
 
-    @JsonIgnore
     public String getPassword() {
         return password;
     }
