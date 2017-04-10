@@ -1,7 +1,6 @@
 package org.openape.server.auth;
 
 import org.jboss.resteasy.spi.NotFoundException;
-import org.jboss.resteasy.spi.UnauthorizedException;
 import org.openape.api.DatabaseObject;
 import org.openape.api.Messages;
 import org.openape.api.user.User;
@@ -9,11 +8,16 @@ import org.openape.server.database.mongoDB.DatabaseConnection;
 import org.openape.server.database.mongoDB.MongoCollectionTypes;
 import org.pac4j.core.config.Config;
 import org.pac4j.core.profile.CommonProfile;
+import org.pac4j.core.profile.ProfileManager;
 import org.pac4j.jwt.config.signature.SecretSignatureConfiguration;
 import org.pac4j.jwt.profile.JwtGenerator;
 import org.pac4j.sparkjava.SecurityFilter;
+import org.pac4j.sparkjava.SparkWebContext;
+import spark.Request;
+import spark.Response;
 
 import java.io.IOException;
+import java.util.*;
 
 /**
  * Authorize users and generate tokens.
@@ -22,7 +26,6 @@ import java.io.IOException;
 public class AuthService {
 
     private final Config config = new AuthConfigFactory(Messages.getString("Auth.JwtSalt")).build();
-    private final PasswordEncoder passwordEncoder = new PasswordEncoder();
     private final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
 
     /**
@@ -39,12 +42,75 @@ public class AuthService {
         return generateJwt(profile);
     }
 
-    public SecurityFilter protect() {
-        return new SecurityFilter(config, "HeaderClient");
+    public SecurityFilter authenticate(String role) {
+        switch(role) {
+            // Authenticate only if role "admin" is present
+            case "admin": return new SecurityFilter(config, "HeaderClient", "adminOnly");
+            // Authenticate if role "admin" or "user" is present
+            case "user": return new SecurityFilter(config, "HeaderClient", "userAndAdmin");
+            // Authenticate anyone, also anonymous users
+            case "anonymous": return new SecurityFilter(config, "HeaderClient,AnonymousClient");
+            // Require token, but authorize any role
+            default: return new SecurityFilter(config, "HeaderClient");
+        }
     }
 
-    public SecurityFilter protectWithRole(String role) {
-        return new SecurityFilter(config, "HeaderClient", role);
+    public CommonProfile getAuthenticatedProfile(Request request, Response response) throws UnauthorizedException {
+        ProfileManager manager = new ProfileManager(new SparkWebContext(request, response));
+        Optional<CommonProfile> profile = manager.get(false);
+        if(profile.isPresent()) {
+            return profile.get();
+        } else {
+            throw new UnauthorizedException("Unauthorized");
+        }
+    }
+
+    public User getAuthenticatedUser(Request req, Response res) throws UnauthorizedException {
+        return User.getFromProfile(getAuthenticatedProfile(req, res));
+    }
+
+    public void allowAdminAndOwner(final Request request, final Response response, String owner) throws UnauthorizedException {
+        CommonProfile profile = getAuthenticatedProfile(request, response);
+        if(!isAdminOrOwner(profile, owner)) {
+            throw new UnauthorizedException("You are not allowed to perform this operation");
+        }
+    }
+
+    public void allowAdminOnly(final Request request, final Response response) throws UnauthorizedException {
+        CommonProfile profile = getAuthenticatedProfile(request, response);
+        if(!isAdmin(profile)) {
+            throw new UnauthorizedException("You are not allowed to perform this operation");
+        }
+    }
+
+    public void allowOwnerOnly(final Request request, final Response response, String owner) throws UnauthorizedException {
+        CommonProfile profile = getAuthenticatedProfile(request, response);
+        if(!isOwner(profile, owner)) {
+            throw new UnauthorizedException("You are not allowed to perform this operation");
+        }
+    }
+
+    public void allowAdminOwnerAndPublic(final Request request, final Response response, String owner, boolean isPublic) throws UnauthorizedException {
+        CommonProfile profile = getAuthenticatedProfile(request, response);
+        if(!(hasAnonymousAccess(profile, isPublic) || isAdminOrOwner(profile, owner))) {
+            throw new UnauthorizedException("You are not allowed to perform this operation");
+        }
+    }
+
+    private boolean isAdmin(CommonProfile profile) {
+        return profile.getRoles().contains("admin");
+    }
+
+    private boolean isOwner(CommonProfile profile, String owner) {
+        return profile.getId().equals(owner);
+    }
+
+    private boolean isAdminOrOwner(CommonProfile profile, String owner) {
+        return isAdmin(profile) || isOwner(profile, owner);
+    }
+
+    private boolean hasAnonymousAccess(CommonProfile profile, boolean isPublic) {
+        return profile.getId().equals("anonymous") && isPublic;
     }
 
     /**
@@ -70,7 +136,7 @@ public class AuthService {
     private CommonProfile authorizeUser(String username, String password) throws UnauthorizedException {
         try {
             User user = getUserByUsername(username);
-            if (matchPassword(password, user.getPassword())) {
+            if(matchPassword(password, user.getPassword())) {
                 CommonProfile profile = new CommonProfile();
                 profile.setId(user.getId());
                 profile.addRoles(user.getRoles());
@@ -117,7 +183,7 @@ public class AuthService {
      */
     private boolean matchPassword(String plainTextPassword, String encryptedPassword) {
         try {
-            if(passwordEncoder.matches(plainTextPassword, encryptedPassword)) {
+            if(PasswordEncoder.matches(plainTextPassword, encryptedPassword)) {
                 return true;
             } else {
                 return false;
