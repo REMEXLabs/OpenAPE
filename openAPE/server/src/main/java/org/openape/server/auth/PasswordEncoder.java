@@ -21,7 +21,7 @@ public class PasswordEncoder {
      * @throws NoSuchAlgorithmException
      * @throws InvalidKeySpecException
      */
-    public String encode(String password) throws NoSuchAlgorithmException, InvalidKeySpecException {
+    public static String encode(String password) throws NoSuchAlgorithmException, InvalidKeySpecException {
         int iterations = 1000;
         char[] chars = password.toCharArray();
         byte[] salt = getSalt();
@@ -40,7 +40,7 @@ public class PasswordEncoder {
      * @throws NoSuchAlgorithmException
      * @throws InvalidKeySpecException
      */
-    public boolean matches(String plainPassword, String encodedPassword) throws NoSuchAlgorithmException, InvalidKeySpecException {
+    public static boolean matches(String plainPassword, String encodedPassword) throws NoSuchAlgorithmException, InvalidKeySpecException {
         String[] parts = encodedPassword.split(":");
         int iterations = Integer.parseInt(parts[0]);
         byte[] salt = fromHex(parts[1]);
