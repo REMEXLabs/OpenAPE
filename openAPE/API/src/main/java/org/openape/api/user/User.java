@@ -1,7 +1,10 @@
 package org.openape.api.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.openape.api.DatabaseObject;
+import org.pac4j.core.profile.CommonProfile;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class User extends DatabaseObject {
@@ -11,6 +14,15 @@ public class User extends DatabaseObject {
     private String email;
     private String password;
     private List<String> roles;
+
+    public static User getFromProfile(CommonProfile profile) {
+        User user = new User();
+        user.setId(profile.getId());
+        user.setUsername(profile.getUsername());
+        user.setEmail(profile.getEmail());
+        user.setRoles(new ArrayList<>(profile.getRoles()));
+        return user;
+    }
 
     public String getId() {
         return id;
@@ -36,6 +48,7 @@ public class User extends DatabaseObject {
         this.email = email;
     }
 
+    @JsonIgnore
     public String getPassword() {
         return password;
     }
