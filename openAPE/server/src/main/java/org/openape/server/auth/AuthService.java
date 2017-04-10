@@ -92,7 +92,7 @@ public class AuthService {
 
     public void allowAdminOwnerAndPublic(final Request request, final Response response, String owner, boolean isPublic) throws UnauthorizedException {
         CommonProfile profile = getAuthenticatedProfile(request, response);
-        if(!(hasAnonymousAccess(profile, isPublic) || isAdminOrOwner(profile, owner))) {
+        if(!(isPublic || isAdminOrOwner(profile, owner))) {
             throw new UnauthorizedException("You are not allowed to perform this operation");
         }
     }
@@ -107,10 +107,6 @@ public class AuthService {
 
     private boolean isAdminOrOwner(CommonProfile profile, String owner) {
         return isAdmin(profile) || isOwner(profile, owner);
-    }
-
-    private boolean hasAnonymousAccess(CommonProfile profile, boolean isPublic) {
-        return profile.getId().equals("anonymous") && isPublic;
     }
 
     /**

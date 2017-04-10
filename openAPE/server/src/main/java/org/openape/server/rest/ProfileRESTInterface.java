@@ -1,7 +1,6 @@
 package org.openape.server.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.openape.api.DatabaseObject;
 import org.openape.api.Messages;
 import org.openape.api.user.User;
 import org.openape.server.auth.AuthService;
@@ -22,7 +21,7 @@ public class ProfileRESTInterface extends SuperRestInterface {
 
     static void setupProfileRESTInterface() {
         final AuthService authService = new AuthService();
-        Spark.before("/profile", authService.protect());
+        Spark.before("/profile", authService.authenticate("default"));
         Spark.get("/profile", "app", (req, res) -> {
             final SparkWebContext context = new SparkWebContext(req, res);
             final ProfileManager manager = new ProfileManager(context);
