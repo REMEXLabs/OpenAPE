@@ -3,6 +3,7 @@ package org.openape.server.rest;
 import java.io.IOException;
 
 import org.openape.api.Messages;
+import org.openape.api.user.User;
 import org.openape.api.usercontext.UserContext;
 import org.openape.server.auth.AuthService;
 import org.openape.server.requestHandler.UserContextRequestHandler;
@@ -17,7 +18,7 @@ public class UserContextRESTInterface extends SuperRestInterface {
 
     public static void setupUserContextRESTInterface(final UserContextRequestHandler requestHandler, final AuthService auth) {
         /**
-         * Request 7.2.2 create user-context.
+         * Request 7.2.2 create user-context. Can only be accessed by roles "user" and "admin.
          */
         Spark.before(Messages.getString("UserContextRESTInterface.UserContextURLWithoutID"), auth.protectWithRole("user"));
         Spark.post(
@@ -30,6 +31,8 @@ public class UserContextRESTInterface extends SuperRestInterface {
                         // Try to map the received json object to a userContext
                         // object.
                         final UserContext receivedUserContext = (UserContext) SuperRestInterface.extractObjectFromRequest(req, UserContext.class);
+                        // Make sure to set the id of the authenticated user as the ownerId
+                        receivedUserContext.setOwner(auth.getAuthenticatedUser(req, res).getId());
                         // Test the object for validity.
                         if (!receivedUserContext.isValid()) {
                             res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
@@ -54,6 +57,7 @@ public class UserContextRESTInterface extends SuperRestInterface {
          * Request 7.2.3 get user-context. Used to get a specific user context
          * identified by ID.
          */
+        Spark.before(Messages.getString("UserContextRESTInterface.UserContextURLWithID"), auth.protect());
         Spark.get(
                 Messages.getString("UserContextRESTInterface.UserContextURLWithID"), (req, res) -> { //$NON-NLS-1$
                     final String userContextId = req.params(Messages.getString("UserContextRESTInterface.IDParam")); //$NON-NLS-1$

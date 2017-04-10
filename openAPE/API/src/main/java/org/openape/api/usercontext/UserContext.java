@@ -70,7 +70,7 @@ public class UserContext extends DatabaseObject {
 
     private Map<String, Context> contexts;
 
-    private String ownerId;
+    private String owner;
 
     @DefaultValue("false")
     private boolean isPublic;
@@ -122,12 +122,12 @@ public class UserContext extends DatabaseObject {
         this.contexts = contexts;
     }
 
-    public String getOwnerId() {
-        return ownerId;
+    public String getOwner() {
+        return owner;
     }
 
-    public void setOwnerId(String ownerId) {
-        this.ownerId = ownerId;
+    public void setOwner(String owner) {
+        this.owner = owner;
     }
 
     public boolean isPublic() {
@@ -137,4 +137,5 @@ public class UserContext extends DatabaseObject {
     public void setPublic(boolean aPublic) {
         isPublic = aPublic;
     }
+
 }
