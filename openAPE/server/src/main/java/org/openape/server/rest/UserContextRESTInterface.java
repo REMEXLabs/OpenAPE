@@ -28,8 +28,7 @@ public class UserContextRESTInterface extends SuperRestInterface {
                         return Messages.getString("Contexts.WrongMimeTypeErrorMsg");//$NON-NLS-1$
                     }
                     try {
-                        // Try to map the received json object to a userContext
-                        // object.
+                        // Try to map the received json object to a userContext object.
                         final UserContext receivedUserContext = (UserContext) SuperRestInterface.extractObjectFromRequest(req, UserContext.class);
                         // Make sure to set the id of the authenticated user as the ownerId
                         receivedUserContext.setOwner(auth.getAuthenticatedUser(req, res).getId());

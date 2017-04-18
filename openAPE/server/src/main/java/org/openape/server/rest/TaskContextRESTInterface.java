@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import org.openape.api.Messages;
 import org.openape.api.taskcontext.TaskContext;
+import org.openape.server.auth.AuthService;
 import org.openape.server.requestHandler.TaskContextRequestHandler;
 
 import spark.Spark;
@@ -14,10 +15,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class TaskContextRESTInterface extends SuperRestInterface {
 
-    public static void setupTaskContextRESTInterface(final TaskContextRequestHandler requestHandler) {
+    public static void setupTaskContextRESTInterface(final TaskContextRequestHandler requestHandler, final AuthService auth) {
         /**
          * Request 7.3.2 create task-context.
          */
+        // Make sure that only roles "user" and "admin" can access this route.
+        Spark.before(Messages.getString("TaskContextRESTInterface.TastContextURLWithoutID"), auth.authenticate("user"));
         Spark.post(
                 Messages.getString("TaskContextRESTInterface.TastContextURLWithoutID"), (req, res) -> { //$NON-NLS-1$
                     if (!req.contentType().equals(Messages.getString("MimeTypeJson"))) {//$NON-NLS-1$
@@ -27,17 +30,19 @@ public class TaskContextRESTInterface extends SuperRestInterface {
                     try {
                         // Try to map the received json object to a taskContext
                         // object.
-                        final TaskContext recievedTaskContext = (TaskContext) SuperRestInterface
+                        final TaskContext receivedTaskContext = (TaskContext) SuperRestInterface
                                 .extractObjectFromRequest(req, TaskContext.class);
+                        // Make sure to set the id of the authenticated user as the ownerId
+                        receivedTaskContext.setOwner(auth.getAuthenticatedUser(req, res).getId());
                         // Test the object for validity.
-                        if (!recievedTaskContext.isValid()) {
+                        if (!receivedTaskContext.isValid()) {
                             res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
                             return Messages
                                     .getString("TaskContextRESTInterface.NoValidObjectErrorMassage"); //$NON-NLS-1$
                         }
                         // If the object is okay, save it and return the id.
                         final String taskContextId = requestHandler
-                                .createTaskContext(recievedTaskContext);
+                                .createTaskContext(receivedTaskContext);
                         res.status(SuperRestInterface.HTTP_STATUS_CREATED);
                         return taskContextId;
                     } catch (JsonParseException | JsonMappingException e) {
@@ -55,6 +60,7 @@ public class TaskContextRESTInterface extends SuperRestInterface {
          * Request 7.3.3 get task-context. Used to get a specific task context
          * identified by ID.
          */
+        Spark.before(Messages.getString("TaskContextRESTInterface.TastContextURLWithID"), auth.authenticate("default"));
         Spark.get(
                 Messages.getString("TaskContextRESTInterface.TastContextURLWithID"), (req, res) -> { //$NON-NLS-1$
                     final String taskContextId = req.params(Messages
@@ -63,6 +69,8 @@ public class TaskContextRESTInterface extends SuperRestInterface {
                         // if it is successful return task context.
                         final TaskContext taskContext = requestHandler
                                 .getTaskContextById(taskContextId);
+                        // Make sure only admins or the owner can view the context, except if it is public
+                        auth.allowAdminOwnerAndPublic(req, res, taskContext.getOwner(), taskContext.isPublic());
                         res.status(SuperRestInterface.HTTP_STATUS_OK);
                         res.type(Messages.getString("TaskContextRESTInterface.JsonMimeType")); //$NON-NLS-1$
                         final ObjectMapper mapper = new ObjectMapper();
@@ -82,6 +90,7 @@ public class TaskContextRESTInterface extends SuperRestInterface {
         /**
          * Request 7.3.4 update task-context.
          */
+        Spark.before(Messages.getString("TaskContextRESTInterface.TastContextURLWithID"), auth.authenticate("user"));
         Spark.put(Messages.getString("TaskContextRESTInterface.TastContextURLWithID"), //$NON-NLS-1$
                 (req, res) -> {
                     if (!req.contentType().equals(Messages.getString("MimeTypeJson"))) {//$NON-NLS-1$
@@ -91,16 +100,21 @@ public class TaskContextRESTInterface extends SuperRestInterface {
                 final String taskContextId = req.params(Messages
                         .getString("TaskContextRESTInterface.IDParam")); //$NON-NLS-1$
                 try {
-                    final TaskContext recievedTaskContext = (TaskContext) SuperRestInterface
+                    final TaskContext receivedTaskContext = (TaskContext) SuperRestInterface
                             .extractObjectFromRequest(req, TaskContext.class);
                     // Test the object for validity.
-                    if (!recievedTaskContext.isValid()) {
+                    if (!receivedTaskContext.isValid()) {
                         res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
                         return Messages
                                 .getString("TaskContextRESTInterface.NoValidObjectErrorMassage"); //$NON-NLS-1$
                     }
-                    // If the object is okay, update it.
-                    requestHandler.updateTaskContextById(taskContextId, recievedTaskContext);
+                    // Check if the task context does exist
+                    final TaskContext taskContext = requestHandler.getTaskContextById(taskContextId);
+                    // Make sure only admins and the owner can update a context
+                    auth.allowAdminAndOwner(req, res, taskContext.getOwner());
+                    receivedTaskContext.setOwner(taskContext.getOwner()); // Make sure the owner can't be changed
+                    // Perform update
+                    requestHandler.updateTaskContextById(taskContextId, receivedTaskContext);
                     res.status(SuperRestInterface.HTTP_STATUS_OK);
                     return Messages.getString("TaskContextRESTInterface.EmptyString"); //$NON-NLS-1$ //TODO return right statuscode
                 } catch (JsonParseException | JsonMappingException | IllegalArgumentException e) {
@@ -118,11 +132,16 @@ public class TaskContextRESTInterface extends SuperRestInterface {
         /**
          * Request 7.3.5 delete task-context.
          */
+        Spark.before(Messages.getString("TaskContextRESTInterface.TastContextURLWithID"), auth.authenticate("user"));
         Spark.delete(
                 Messages.getString("TaskContextRESTInterface.TastContextURLWithID"), (req, res) -> { //$NON-NLS-1$
                     final String taskContextId = req.params(Messages
                             .getString("TaskContextRESTInterface.IDParam")); //$NON-NLS-1$
                     try {
+                        // Check if the user context does exist
+                        final TaskContext userContext = requestHandler.getTaskContextById(taskContextId);
+                        // Make sure only admins and the owner can delete a context
+                        auth.allowAdminAndOwner(req, res, userContext.getOwner());
                         // if it is successful return empty string.
                         requestHandler.deleteTaskContextById(taskContextId);
                         res.status(SuperRestInterface.HTTP_STATUS_NO_CONTENT);
