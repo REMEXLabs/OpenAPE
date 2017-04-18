@@ -20,20 +20,17 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import javax.ws.rs.DefaultValue;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.openape.api.DatabaseObject;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.openape.api.user.User;
+import org.openape.api.Resource;
 
 /**
  * User context object defined in 7.2.1
  */
 @XmlRootElement
-public class UserContext extends DatabaseObject {
+public class UserContext extends Resource {
     private static final long serialVersionUID = 5891055316807633786L;
 
     /**
@@ -69,11 +66,6 @@ public class UserContext extends DatabaseObject {
     }
 
     private Map<String, Context> contexts;
-
-    private String owner;
-
-    @DefaultValue("false")
-    private boolean isPublic;
 
     public UserContext() {
         this.contexts = new HashMap<String, Context>();
@@ -120,22 +112,6 @@ public class UserContext extends DatabaseObject {
 
     public void setContexts(Map<String, Context> contexts) {
         this.contexts = contexts;
-    }
-
-    public String getOwner() {
-        return owner;
-    }
-
-    public void setOwner(String owner) {
-        this.owner = owner;
-    }
-
-    public boolean isPublic() {
-        return isPublic;
-    }
-
-    public void setPublic(boolean aPublic) {
-        isPublic = aPublic;
     }
 
 }
