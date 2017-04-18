@@ -101,9 +101,12 @@ public class UserContextRESTInterface extends SuperRestInterface {
                         res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
                         return Messages.getString("UserContextRESTInterface.NoValidObjectErrorMassage"); //$NON-NLS-1$
                     }
+                    // Check if the user context does exist
+                    final UserContext userContext = requestHandler.getUserContextById(userContextId);
                     // Make sure only admins and the owner can update a context
-                    auth.allowAdminAndOwner(req, res, receivedUserContext.getOwner());
-                    // If the object is okay, update it.
+                    auth.allowAdminAndOwner(req, res, userContext.getOwner());
+                    receivedUserContext.setOwner(userContext.getOwner()); // Make sure the owner can't be changed
+                    // Perform the update
                     requestHandler.updateUserContextById(userContextId, receivedUserContext);
                     res.status(SuperRestInterface.HTTP_STATUS_OK);
                     return Messages.getString("UserContextRESTInterface.EmptyString"); //$NON-NLS-1$ //TODO return right statuscode
@@ -128,7 +131,11 @@ public class UserContextRESTInterface extends SuperRestInterface {
                     final String userContextId = req.params(Messages
                             .getString("UserContextRESTInterface.IDParam")); //$NON-NLS-1$
                     try {
-                        // if it is successful return empty string.
+                        // Check if the user context does exist
+                        final UserContext userContext = requestHandler.getUserContextById(userContextId);
+                        // Make sure only admins and the owner can delete a context
+                        auth.allowAdminAndOwner(req, res, userContext.getOwner());
+                        // Perform delete and return empty string
                         requestHandler.deleteUserContextById(userContextId);
                         res.status(SuperRestInterface.HTTP_STATUS_NO_CONTENT);
                         return Messages.getString("UserContextRESTInterface.EmptyString"); //$NON-NLS-1$
