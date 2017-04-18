@@ -139,9 +139,9 @@ public class TaskContextRESTInterface extends SuperRestInterface {
                             .getString("TaskContextRESTInterface.IDParam")); //$NON-NLS-1$
                     try {
                         // Check if the user context does exist
-                        final TaskContext userContext = requestHandler.getTaskContextById(taskContextId);
+                        final TaskContext taskContext = requestHandler.getTaskContextById(taskContextId);
                         // Make sure only admins and the owner can delete a context
-                        auth.allowAdminAndOwner(req, res, userContext.getOwner());
+                        auth.allowAdminAndOwner(req, res, taskContext.getOwner());
                         // if it is successful return empty string.
                         requestHandler.deleteTaskContextById(taskContextId);
                         res.status(SuperRestInterface.HTTP_STATUS_NO_CONTENT);

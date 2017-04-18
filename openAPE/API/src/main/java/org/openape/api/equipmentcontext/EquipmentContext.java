@@ -22,16 +22,16 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.openape.api.DatabaseObject;
 import org.openape.api.Property;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.openape.api.Resource;
 
 /**
  * Equipment context object defined in 7.4.1
  */
 @XmlRootElement
-public class EquipmentContext extends DatabaseObject {
+public class EquipmentContext extends Resource {
     private static final long serialVersionUID = 4810176872836108065L;
 
     /**
