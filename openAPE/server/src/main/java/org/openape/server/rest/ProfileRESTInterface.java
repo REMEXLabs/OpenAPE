@@ -33,9 +33,14 @@ public class ProfileRESTInterface extends SuperRestInterface {
 
         // TODO: Remove this before live deployment!
         Spark.post("/users", (req, res) -> {
-            User receivedUser = (User) extractObjectFromRequest(req, User.class);
-            String id = createUser(receivedUser);
-            return "Done! Your ID is " + id;
+            try {
+                User receivedUser = (User) extractObjectFromRequest(req, User.class);
+                String id = createUser(receivedUser);
+                return "Done! Your ID is " + id;
+            } catch(IOException e) {
+                res.status(409);
+                return "Could not create user: " + e.getMessage();
+            }
         });
 
     }
