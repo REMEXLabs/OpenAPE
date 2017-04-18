@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Iterator;
 
+import com.mongodb.client.model.IndexOptions;
 import org.bson.Document;
 import org.bson.codecs.configuration.CodecConfigurationException;
 import org.bson.json.JsonParseException;
@@ -594,4 +595,15 @@ public class DatabaseConnection {
 
         return true;
     }
+
+    /**
+     * Make sure indexes for the application are set.
+     */
+    public void ensureIndexes() {
+        // Make sure email is unique for all users
+        this.userCollection.createIndex(new BasicDBObject("email", 1), new IndexOptions().unique(true));
+        // Make sure username is unique for all users
+        this.userCollection.createIndex(new BasicDBObject("username", 1), new IndexOptions().unique(true));
+    }
+
 }
