@@ -64,15 +64,16 @@ public class SuperRestInterface {
         // Test endpoint to see if server runs. Invoke locally: http://localhost:4567/hello
         Spark.get(Messages.getString("SuperRestInterface.HelloWorldURL"), (req, res) -> Messages.getString("SuperRestInterface.HelloWorld")); //$NON-NLS-1$ //$NON-NLS-2$
         // Endpoint to receive tokens
-        TokenRESTInterface.setupTokenRESTInterface();
+        TokenRESTInterface.setupTokenRESTInterface(authService);
+        ProfileRESTInterface.setupProfileRESTInterface();
         // Resource endpoints
-        EnvironmentContextRESTInterface.setupEnvironmentContextRESTInterface(new EnvironmentContextRequestHandler());
-        EquipmentContextRESTInterface.setupEquipmentContextRESTInterface(new EquipmentContextRequestHandler());
+        EnvironmentContextRESTInterface.setupEnvironmentContextRESTInterface(new EnvironmentContextRequestHandler(), authService);
+        EquipmentContextRESTInterface.setupEquipmentContextRESTInterface(new EquipmentContextRequestHandler(), authService);
         ListingRESTInterface.setupListingRESTInterface(new ListingRequestHandler());
-        ResourceDescriptionRESTInterface.setupResourceDescriptionRESTInterface(new ResourceDescriptionRequestHandler());
+        ResourceDescriptionRESTInterface.setupResourceDescriptionRESTInterface(new ResourceDescriptionRequestHandler(), authService);
         ResourceManagerRESTInterface.setupResourceManagerRESTInterface();
         ResourceRESTInterface.setupResourceRESTInterface(new ResourceRequestHandler());
-        TaskContextRESTInterface.setupTaskContextRESTInterface(new TaskContextRequestHandler());
+        TaskContextRESTInterface.setupTaskContextRESTInterface(new TaskContextRequestHandler(), authService);
         UserContextRESTInterface.setupUserContextRESTInterface(new UserContextRequestHandler(), authService);
         // Test html interface found
         if(SuperRestInterface.TEST_ENVIRONMENT) {
