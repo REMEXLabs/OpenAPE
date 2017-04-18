@@ -3,7 +3,6 @@ package org.openape.server.rest;
 import java.io.IOException;
 
 import org.openape.api.Messages;
-import org.openape.api.user.User;
 import org.openape.api.usercontext.UserContext;
 import org.openape.server.auth.AuthService;
 import org.openape.server.requestHandler.UserContextRequestHandler;
@@ -20,7 +19,8 @@ public class UserContextRESTInterface extends SuperRestInterface {
         /**
          * Request 7.2.2 create user-context. Can only be accessed by roles "user" and "admin.
          */
-        Spark.before(Messages.getString("UserContextRESTInterface.UserContextURLWithoutID"), auth.protectWithRole("user"));
+        // Make sure that only roles "user" and "admin" can access this route.
+        Spark.before(Messages.getString("UserContextRESTInterface.UserContextURLWithoutID"), auth.authenticate("user"));
         Spark.post(
                 Messages.getString("UserContextRESTInterface.UserContextURLWithoutID"), (req, res) -> { //$NON-NLS-1$
                     if (!req.contentType().equals(Messages.getString("MimeTypeJson"))) {//$NON-NLS-1$
@@ -57,13 +57,15 @@ public class UserContextRESTInterface extends SuperRestInterface {
          * Request 7.2.3 get user-context. Used to get a specific user context
          * identified by ID.
          */
-        Spark.before(Messages.getString("UserContextRESTInterface.UserContextURLWithID"), auth.protect());
+        Spark.before(Messages.getString("UserContextRESTInterface.UserContextURLWithID"), auth.authenticate("default"));
         Spark.get(
                 Messages.getString("UserContextRESTInterface.UserContextURLWithID"), (req, res) -> { //$NON-NLS-1$
                     final String userContextId = req.params(Messages.getString("UserContextRESTInterface.IDParam")); //$NON-NLS-1$
                     try {
                         // if it is successful return user context.
                         final UserContext userContext = requestHandler.getUserContextById(userContextId);
+                        // Make sure only admins or the owner can view the context, except if it is public
+                        auth.allowAdminOwnerAndPublic(req, res, userContext.getOwner(), userContext.isPublic());
                         res.status(SuperRestInterface.HTTP_STATUS_OK);
                         res.type(Messages.getString("UserContextRESTInterface.JsonMimeType")); //$NON-NLS-1$
                         final ObjectMapper mapper = new ObjectMapper();
@@ -82,6 +84,8 @@ public class UserContextRESTInterface extends SuperRestInterface {
         /**
          * Request 7.2.4 update user-context.
          */
+        // Make sure that only roles "user" and "admin" can access this route.
+        Spark.before(Messages.getString("UserContextRESTInterface.UserContextURLWithID"), auth.authenticate("user"));
         Spark.put(Messages.getString("UserContextRESTInterface.UserContextURLWithID"), //$NON-NLS-1$
                 (req, res) -> {
                     if (!req.contentType().equals(Messages.getString("MimeTypeJson"))) {//$NON-NLS-1$
@@ -91,16 +95,16 @@ public class UserContextRESTInterface extends SuperRestInterface {
                 final String userContextId = req.params(Messages
                         .getString("UserContextRESTInterface.IDParam")); //$NON-NLS-1$
                 try {
-                    final UserContext recievedUserContext = (UserContext) SuperRestInterface
-                            .extractObjectFromRequest(req, UserContext.class);
+                    final UserContext receivedUserContext = (UserContext) SuperRestInterface.extractObjectFromRequest(req, UserContext.class);
                     // Test the object for validity.
-                    if (!recievedUserContext.isValid()) {
+                    if (!receivedUserContext.isValid()) {
                         res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
-                        return Messages
-                                .getString("UserContextRESTInterface.NoValidObjectErrorMassage"); //$NON-NLS-1$
+                        return Messages.getString("UserContextRESTInterface.NoValidObjectErrorMassage"); //$NON-NLS-1$
                     }
+                    // Make sure only admins and the owner can update a context
+                    auth.allowAdminAndOwner(req, res, receivedUserContext.getOwner());
                     // If the object is okay, update it.
-                    requestHandler.updateUserContextById(userContextId, recievedUserContext);
+                    requestHandler.updateUserContextById(userContextId, receivedUserContext);
                     res.status(SuperRestInterface.HTTP_STATUS_OK);
                     return Messages.getString("UserContextRESTInterface.EmptyString"); //$NON-NLS-1$ //TODO return right statuscode
                 } catch (JsonParseException | JsonMappingException | IllegalArgumentException e) {
@@ -118,6 +122,7 @@ public class UserContextRESTInterface extends SuperRestInterface {
         /**
          * Request 7.2.5 delete user-context.
          */
+        Spark.before(Messages.getString("UserContextRESTInterface.UserContextURLWithID"), auth.authenticate("user"));
         Spark.delete(
                 Messages.getString("UserContextRESTInterface.UserContextURLWithID"), (req, res) -> { //$NON-NLS-1$
                     final String userContextId = req.params(Messages
