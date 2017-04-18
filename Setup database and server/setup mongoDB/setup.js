@@ -1,8 +1,8 @@
 ﻿var connection = new Mongo("localhost:27017");
-var database = connection.getDB("openAPE2");
+var database = connection.getDB("openAPE");
 database.createUser({
-     user: "openAPE2",
-     pwd: "121212",
+     user: "openAPE",
+     pwd: "<userPassword>",
      roles: [ "readWrite", "dbAdmin" ]});
 database.createCollection("environment_contexts");
 database.createCollection("equipment_contexts");
