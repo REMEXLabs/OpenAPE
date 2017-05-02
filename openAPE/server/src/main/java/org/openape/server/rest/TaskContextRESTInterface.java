@@ -16,11 +16,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class TaskContextRESTInterface extends SuperRestInterface {
 
     public static void setupTaskContextRESTInterface(final TaskContextRequestHandler requestHandler, final AuthService auth) {
+
+        // Authentication: Make sure only registered principals (users and admins) can create a new context
+        Spark.before(Messages.getString("TaskContextRESTInterface.TastContextURLWithoutID"), auth.authenticate("user"));
+        // Authentication: Everyone can access the route for a specific context
+        Spark.before(Messages.getString("TaskContextRESTInterface.TastContextURLWithID"), auth.authenticate("anonymous"));
+
         /**
          * Request 7.3.2 create task-context.
          */
-        // Make sure that only roles "user" and "admin" can access this route.
-        Spark.before(Messages.getString("TaskContextRESTInterface.TastContextURLWithoutID"), auth.authenticate("user"));
         Spark.post(
                 Messages.getString("TaskContextRESTInterface.TastContextURLWithoutID"), (req, res) -> { //$NON-NLS-1$
                     if (!req.contentType().equals(Messages.getString("MimeTypeJson"))) {//$NON-NLS-1$
@@ -60,7 +64,6 @@ public class TaskContextRESTInterface extends SuperRestInterface {
          * Request 7.3.3 get task-context. Used to get a specific task context
          * identified by ID.
          */
-        Spark.before(Messages.getString("TaskContextRESTInterface.TastContextURLWithID"), auth.authenticate("default"));
         Spark.get(
                 Messages.getString("TaskContextRESTInterface.TastContextURLWithID"), (req, res) -> { //$NON-NLS-1$
                     final String taskContextId = req.params(Messages
@@ -90,7 +93,6 @@ public class TaskContextRESTInterface extends SuperRestInterface {
         /**
          * Request 7.3.4 update task-context.
          */
-        Spark.before(Messages.getString("TaskContextRESTInterface.TastContextURLWithID"), auth.authenticate("user"));
         Spark.put(Messages.getString("TaskContextRESTInterface.TastContextURLWithID"), //$NON-NLS-1$
                 (req, res) -> {
                     if (!req.contentType().equals(Messages.getString("MimeTypeJson"))) {//$NON-NLS-1$
@@ -132,7 +134,6 @@ public class TaskContextRESTInterface extends SuperRestInterface {
         /**
          * Request 7.3.5 delete task-context.
          */
-        Spark.before(Messages.getString("TaskContextRESTInterface.TastContextURLWithID"), auth.authenticate("user"));
         Spark.delete(
                 Messages.getString("TaskContextRESTInterface.TastContextURLWithID"), (req, res) -> { //$NON-NLS-1$
                     final String taskContextId = req.params(Messages
