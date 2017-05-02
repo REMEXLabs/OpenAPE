@@ -17,10 +17,15 @@ public class EnvironmentContextRESTInterface extends SuperRestInterface {
 
     public static void setupEnvironmentContextRESTInterface(
             final EnvironmentContextRequestHandler requestHandler, final AuthService auth) {
+
+        // Authentication: Make sure only registered principals (users and admins) can create a new context
+        Spark.before(Messages.getString("EnvironmentContextRESTInterface.EnvironmentContextsURLWithoutID"), auth.authenticate("user"));
+        // Authentication: Everyone can access the route for a specific context
+        Spark.before(Messages.getString("EnvironmentContextRESTInterface.EnvironmentContextsURLWithID"), auth.authenticate("anonymous"));
+
         /**
          * Request 7.5.2 create environment-context.
          */
-        Spark.before(Messages.getString("EnvironmentContextRESTInterface.EnvironmentContextsURLWithoutID"), auth.authenticate("user"));
         Spark.post(
                 Messages.getString("EnvironmentContextRESTInterface.EnvironmentContextsURLWithoutID"), (req, res) -> { //$NON-NLS-1$
                     if (!req.contentType().equals(Messages.getString("MimeTypeJson"))) {//$NON-NLS-1$
@@ -59,7 +64,6 @@ public class EnvironmentContextRESTInterface extends SuperRestInterface {
          * Request 7.5.3 get environment-context. Used to get a specific
          * environment context identified by ID.
          */
-        Spark.before(Messages.getString("EnvironmentContextRESTInterface.EnvironmentContextsURLWithID"), auth.authenticate("default"));
         Spark.get(
                 Messages.getString("EnvironmentContextRESTInterface.EnvironmentContextsURLWithID"), //$NON-NLS-1$
                 (req, res) -> {
@@ -90,8 +94,6 @@ public class EnvironmentContextRESTInterface extends SuperRestInterface {
         /**
          * Request 7.5.4 update environment-context.
          */
-        // Make sure that only roles "user" and "admin" can access this route.
-        Spark.before(Messages.getString("EnvironmentContextRESTInterface.EnvironmentContextsURLWithID"), auth.authenticate("user"));
         Spark.put(Messages
                 .getString("EnvironmentContextRESTInterface.EnvironmentContextsURLWithID"), //$NON-NLS-1$
                 (req, res) -> {
@@ -135,7 +137,6 @@ public class EnvironmentContextRESTInterface extends SuperRestInterface {
         /**
          * Request 7.5.5 delete environment-context.
          */
-        Spark.before(Messages.getString("EnvironmentContextRESTInterface.EnvironmentContextsURLWithID"), auth.authenticate("user"));
         Spark.delete(
                 Messages.getString("EnvironmentContextRESTInterface.EnvironmentContextsURLWithID"), (req, res) -> { //$NON-NLS-1$
                     final String environmentContextId = req.params(Messages
