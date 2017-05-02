@@ -25,7 +25,7 @@ import java.util.*;
 
 public class AuthService {
 
-    private final Config config = new AuthConfigFactory(Messages.getString("Auth.JwtSalt")).build();
+    private final Config config = new AuthConfigFactory(Messages.getString("Auth.JwtSalt")).build(); // TODO: Get salt from any save (not public) config file!
     private final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
 
     /**
