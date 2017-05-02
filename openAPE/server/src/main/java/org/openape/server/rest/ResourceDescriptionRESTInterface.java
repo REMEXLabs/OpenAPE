@@ -18,11 +18,15 @@ public class ResourceDescriptionRESTInterface extends SuperRestInterface {
 
     public static void setupResourceDescriptionRESTInterface(
             final ResourceDescriptionRequestHandler requestHandler, AuthService auth) {
+
+        // Authentication: Make sure only registered principals (users and admins) can create a new resource description
+        Spark.before(Messages.getString("ResourceDescriptionRESTInterface.ResourceDescriptionURLWithoutID"), auth.authenticate("user"));
+        // Authentication: Everyone can access the route for a specific resource description
+        Spark.before(Messages.getString("ResourceDescriptionRESTInterface.ResourceDescriptionURLWithID"), auth.authenticate("anonymous"));
+
         /**
          * Request 7.7.2 create resource description.
          */
-        // Make sure that only roles "user" and "admin" can access this route.
-        Spark.before(Messages.getString("ResourceDescriptionRESTInterface.ResourceDescriptionURLWithoutID"), auth.authenticate("user"));
         Spark.post(
                 Messages.getString("ResourceDescriptionRESTInterface.ResourceDescriptionURLWithoutID"), (req, res) -> { //$NON-NLS-1$
                     try {
@@ -61,7 +65,6 @@ public class ResourceDescriptionRESTInterface extends SuperRestInterface {
          * Request 7.7.3 get resource description. Used to get a specific
          * resource description identified by ID.
          */
-        Spark.before(Messages.getString("ResourceDescriptionRESTInterface.ResourceDescriptionURLWithID"), auth.authenticate("default"));
         Spark.get(Messages
                 .getString("ResourceDescriptionRESTInterface.ResourceDescriptionURLWithID"), //$NON-NLS-1$
                 (req, res) -> {
@@ -126,8 +129,6 @@ public class ResourceDescriptionRESTInterface extends SuperRestInterface {
         /**
          * Request 7.7.5 update resource description.
          */
-        // Make sure that only roles "user" and "admin" can access this route.
-        Spark.before(Messages.getString("ResourceDescriptionRESTInterface.ResourceDescriptionURLWithID"), auth.authenticate("user"));
         Spark.put(Messages
                 .getString("ResourceDescriptionRESTInterface.ResourceDescriptionURLWithID"), //$NON-NLS-1$
                 (req, res) -> {
@@ -171,7 +172,6 @@ public class ResourceDescriptionRESTInterface extends SuperRestInterface {
         /**
          * Request 7.7.6 delete resource description.
          */
-        Spark.before(Messages.getString("ResourceDescriptionRESTInterface.ResourceDescriptionURLWithID"), auth.authenticate("user"));
         Spark.delete(
                 Messages.getString("ResourceDescriptionRESTInterface.ResourceDescriptionURLWithID"), (req, res) -> { //$NON-NLS-1$
                     final String resourceDescriptionId = req.params(Messages
