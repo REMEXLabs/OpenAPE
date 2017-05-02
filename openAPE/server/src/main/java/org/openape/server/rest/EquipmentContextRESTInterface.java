@@ -17,11 +17,15 @@ public class EquipmentContextRESTInterface extends SuperRestInterface {
 
     public static void setupEquipmentContextRESTInterface(
             final EquipmentContextRequestHandler requestHandler, final AuthService auth) {
+
+        // Authentication: Make sure only registered principals (users and admins) can create a new context
+        Spark.before(Messages.getString("EquipmentContextRESTInterface.EquipmentContextURLWithoutID"), auth.authenticate("user"));
+        // Authentication: Everyone can access the route for a specific context
+        Spark.before(Messages.getString("EquipmentContextRESTInterface.EquipmentContextURLWithID"), auth.authenticate("anonymous"));
+
         /**
          * Request 7.4.2 create equipment-context.
          */
-        // Make sure that only roles "user" and "admin" can access this route.
-        Spark.before(Messages.getString("EquipmentContextRESTInterface.EquipmentContextURLWithoutID"), auth.authenticate("user"));
         Spark.post(
                 Messages.getString("EquipmentContextRESTInterface.EquipmentContextURLWithoutID"), (req, res) -> { //$NON-NLS-1$
                     if (!req.contentType().equals(Messages.getString("MimeTypeJson"))) {//$NON-NLS-1$
@@ -60,7 +64,6 @@ public class EquipmentContextRESTInterface extends SuperRestInterface {
          * Request 7.4.3 get equipment-context. Used to get a specific equipment
          * context identified by ID.
          */
-        Spark.before(Messages.getString("EquipmentContextRESTInterface.EquipmentContextURLWithID"), auth.authenticate("default"));
         Spark.get(
                 Messages.getString("EquipmentContextRESTInterface.EquipmentContextURLWithID"), //$NON-NLS-1$
                 (req, res) -> {
@@ -90,7 +93,6 @@ public class EquipmentContextRESTInterface extends SuperRestInterface {
         /**
          * Request 7.4.4 update equipment-context.
          */
-        Spark.before(Messages.getString("EquipmentContextRESTInterface.EquipmentContextURLWithID"), auth.authenticate("user"));
         Spark.put(Messages.getString("EquipmentContextRESTInterface.EquipmentContextURLWithID"), //$NON-NLS-1$
                 (req, res) -> {
                     if (!req.contentType().equals(Messages.getString("MimeTypeJson"))) {//$NON-NLS-1$
@@ -133,7 +135,6 @@ public class EquipmentContextRESTInterface extends SuperRestInterface {
         /**
          * Request 7.4.5 delete equipment-context.
          */
-        Spark.before(Messages.getString("EquipmentContextRESTInterface.EquipmentContextURLWithID"), auth.authenticate("user"));
         Spark.delete(
                 Messages.getString("EquipmentContextRESTInterface.EquipmentContextURLWithID"), (req, res) -> { //$NON-NLS-1$
                     final String equipmentContextId = req.params(Messages
