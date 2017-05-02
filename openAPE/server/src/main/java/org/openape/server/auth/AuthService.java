@@ -116,6 +116,8 @@ public class AuthService {
      * @return a JWT as String
      */
     private static String generateJwt(final CommonProfile profile) {
+        profile.addAttribute("exp", getExpirationDate()); // Expire token in X minutes
+        profile.addAttribute("iat", new Date()); // Issued at date (now)
         JwtGenerator<CommonProfile> jwtGenerator = new JwtGenerator<>(new SecretSignatureConfiguration(Messages.getString("Auth.JwtSalt")));
         return jwtGenerator.generate(profile);
     }
@@ -188,6 +190,15 @@ public class AuthService {
             e.printStackTrace();
             return false;
         }
+    }
+
+    /**
+     * Get the expiration date for tokens.
+     * @return
+     */
+    private static Date getExpirationDate() {
+        int minutesToExpiration = Integer.parseInt(Messages.getString("Auth.TokenExpirationTimeInMinutes").replaceAll("[\\D]", ""));
+        return new Date(Calendar.getInstance().getTimeInMillis() + (minutesToExpiration * 60000));
     }
 
 }
