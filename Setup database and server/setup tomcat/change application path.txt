@@ -1,0 +1,8 @@
+1. locate our .war file OUTSIDE of the usual deployment folder webapps to avoid double startup.
+2. create an "openape.xml" file in the "tomcat/conf/Catalina/localhost" folder with the contensts:
+<Context 
+  docBase="<path/Application.war>" 
+  path="/openape" 
+  reloadable="true" 
+/>
+With "\" for "/" in the file path if you operate on windows.

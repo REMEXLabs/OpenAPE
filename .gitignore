@@ -1,8 +1,35 @@
-
+﻿# Java and Eclipse/Netbeans
 *.prefs
 *.classpath
 *.project
 *.jar
 *.class
+*.classpath
+*.settings
+target
 bin
+
+# Project binaries
+!openAPE/web/target/
+openAPE/web/target/*
+!openAPE/web/target/*.war
+openAPE/web/target/*.war
+
+# Documentation
 documentation/build/*
+!documentation/build/*.pdf
+
+# JetBrains IDE's (IntelliJ, Webstorm)
+.idea/
+*.ipr
+*.iml
+*.iws
+/out
+/.idea_modules
+
+# OSX
+.DS_Store
+.AppleDouble
+.LSOverride
+.Spotlight-V100
+.Trashes
