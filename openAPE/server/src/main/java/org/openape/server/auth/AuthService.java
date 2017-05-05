@@ -3,7 +3,6 @@ package org.openape.server.auth;
 import com.google.gson.Gson;
 import org.jboss.resteasy.spi.NotFoundException;
 import org.openape.api.DatabaseObject;
-import org.openape.api.Messages;
 import org.openape.api.user.User;
 import org.openape.server.database.mongoDB.DatabaseConnection;
 import org.openape.server.database.mongoDB.MongoCollectionTypes;
@@ -26,7 +25,10 @@ import java.util.*;
 
 public class AuthService {
 
-    private final Config config = new AuthConfigFactory(Messages.getString("Auth.JwtSalt")).build(); // TODO: Get salt from any save (not public) config file!
+    private static final ResourceBundle properties = ResourceBundle.getBundle("config/auth");
+    private static final String JWT_SIGNATURE = properties.getString("JwtSignature");
+    private static final String EXPIRATION_TIME = properties.getString("TokenExpirationTimeInMinutes");
+    private final Config config = new AuthConfigFactory(JWT_SIGNATURE).build();
     private final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
 
     /**
@@ -50,7 +52,7 @@ public class AuthService {
      * @throws UnauthorizedException if user can not be authorized
      */
     public String getJSONToken(String username, String password) throws UnauthorizedException {
-        TokenResponse response = new TokenResponse(this.getToken(username, password));
+        TokenResponse response = new TokenResponse(this.getToken(username, password), EXPIRATION_TIME);
         return new Gson().toJson(response);
     }
 
@@ -177,7 +179,7 @@ public class AuthService {
     private static String generateJwt(final CommonProfile profile) {
         profile.addAttribute("exp", getExpirationDate()); // Expire token in X minutes
         profile.addAttribute("iat", new Date()); // Issued at date (now)
-        JwtGenerator<CommonProfile> jwtGenerator = new JwtGenerator<>(new SecretSignatureConfiguration(Messages.getString("Auth.JwtSalt")));
+        JwtGenerator<CommonProfile> jwtGenerator = new JwtGenerator<>(new SecretSignatureConfiguration(JWT_SIGNATURE));
         return jwtGenerator.generate(profile);
     }
 
@@ -253,7 +255,7 @@ public class AuthService {
      * @return The time the token will expire.
      */
     private static Date getExpirationDate() {
-        int minutesToExpiration = Integer.parseInt(Messages.getString("Auth.TokenExpirationTimeInMinutes").replaceAll("[\\D]", ""));
+        int minutesToExpiration = Integer.parseInt(EXPIRATION_TIME.replaceAll("[\\D]", ""));
         return new Date(Calendar.getInstance().getTimeInMillis() + (minutesToExpiration * 60000));
     }
 

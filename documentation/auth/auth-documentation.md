@@ -68,7 +68,8 @@ JWT is an URL-safe, encrypted JSON object, containing all security claims and ar
 (HS256) and a secret hash signature.
 
 Tokens expire after a default time of 24 hours (1440 minutes). You can configure the token expiration time via the 
-`Auth.TokenExpirationTimeInMinutes` property in the `messages.properties` file.
+`Auth.TokenExpirationTimeInMinutes` property in the `auth.properties` file. See section [configuration](##Configuration) 
+for more information.
 
 An example token can look like this:
  
@@ -83,6 +84,8 @@ Any issued token currently contains the following claims:
 * `username`: The username of the user the token was issued to.
 
 Tip: For debugging JSON web tokens you can use the debugger tool at: https://jwt.io/.
+
+**WARNING: You have to change the value for the `JwtSignature` before deploying the server into production environments!**
 
 ## Implementation
 
@@ -134,4 +137,14 @@ in order to hash passwords.
 
 #### Access Token REST Endpoint
 
-Spark REST interface that implements the endpoint for `POST /token` requests in order for clients to get access tokens. 
+Spark REST interface that implements the endpoint for `POST /token` requests in order for clients to get access tokens.
+ 
+## Configuration
+
+The security layer can be configured via the `auth.properties` file in the `server/config` folder. It contains the following
+properties:
+
+* `JwtSignature`: The cryptographic key used to sign the JSON Web Tokens. It should have a length of at least 2048 at be 
+generated and encrypted using HS256 (HMAC + SH256). Tip: You can use https://mkjwk.org/ to create secure keys.
+* `TokenExpirationTimeInMinutes`: The number of minutes after a issued token should expire and can no longer be used.
+*Default: 1440 minutes (24 hours)*
