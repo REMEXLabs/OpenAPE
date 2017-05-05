@@ -1,5 +1,6 @@
 package org.openape.server.auth;
 
+import com.google.gson.annotations.SerializedName;
 import org.openape.api.Messages;
 
 /**
@@ -7,7 +8,9 @@ import org.openape.api.Messages;
  */
 public class TokenResponse {
 
+    @SerializedName("access_token")
     private String accessToken;
+    @SerializedName("expires_in")
     private String expiresIn;
 
     public TokenResponse(String accessToken) {
