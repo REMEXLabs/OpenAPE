@@ -18,9 +18,9 @@ public class UserContextRESTInterface extends SuperRestInterface {
     public static void setupUserContextRESTInterface(final UserContextRequestHandler requestHandler, final AuthService auth) {
 
         // Authentication: Make sure only registered principals (users and admins) can create a new context
-        Spark.before(Messages.getString("UserContextRESTInterface.UserContextURLWithoutID"), auth.authenticate("user"));
+        Spark.before(Messages.getString("UserContextRESTInterface.UserContextURLWithoutID"), auth.authorize("user"));
         // Authentication: Everyone can access the route for a specific ID
-        Spark.before(Messages.getString("UserContextRESTInterface.UserContextURLWithID"), auth.authenticate("anonymous"));
+        Spark.before(Messages.getString("UserContextRESTInterface.UserContextURLWithID"), auth.authorize("anonymous"));
 
         /**
          * Request 7.2.2 create user-context. Can only be accessed by roles "user" and "admin.

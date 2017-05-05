@@ -1,6 +1,5 @@
 package org.openape.server.auth;
 
-import org.pac4j.core.authorization.authorizer.IsAnonymousAuthorizer;
 import org.pac4j.core.authorization.authorizer.RequireAnyRoleAuthorizer;
 import org.pac4j.core.client.Clients;
 import org.pac4j.core.client.direct.AnonymousClient;
@@ -11,7 +10,8 @@ import org.pac4j.jwt.config.signature.SecretSignatureConfiguration;
 import org.pac4j.jwt.credentials.authenticator.JwtAuthenticator;
 
 /**
- * Created by benjamin on 04.04.17.
+ * Factory class to build a PAC4J security configuration from properties and return a Config containing required clients,
+ * authorizers and matchers.
  */
 public class AuthConfigFactory implements ConfigFactory {
 

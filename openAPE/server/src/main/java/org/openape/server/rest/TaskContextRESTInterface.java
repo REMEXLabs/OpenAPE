@@ -18,9 +18,9 @@ public class TaskContextRESTInterface extends SuperRestInterface {
     public static void setupTaskContextRESTInterface(final TaskContextRequestHandler requestHandler, final AuthService auth) {
 
         // Authentication: Make sure only registered principals (users and admins) can create a new context
-        Spark.before(Messages.getString("TaskContextRESTInterface.TastContextURLWithoutID"), auth.authenticate("user"));
+        Spark.before(Messages.getString("TaskContextRESTInterface.TastContextURLWithoutID"), auth.authorize("user"));
         // Authentication: Everyone can access the route for a specific context
-        Spark.before(Messages.getString("TaskContextRESTInterface.TastContextURLWithID"), auth.authenticate("anonymous"));
+        Spark.before(Messages.getString("TaskContextRESTInterface.TastContextURLWithID"), auth.authorize("anonymous"));
 
         /**
          * Request 7.3.2 create task-context.

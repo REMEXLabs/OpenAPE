@@ -19,9 +19,9 @@ public class EquipmentContextRESTInterface extends SuperRestInterface {
             final EquipmentContextRequestHandler requestHandler, final AuthService auth) {
 
         // Authentication: Make sure only registered principals (users and admins) can create a new context
-        Spark.before(Messages.getString("EquipmentContextRESTInterface.EquipmentContextURLWithoutID"), auth.authenticate("user"));
+        Spark.before(Messages.getString("EquipmentContextRESTInterface.EquipmentContextURLWithoutID"), auth.authorize("user"));
         // Authentication: Everyone can access the route for a specific context
-        Spark.before(Messages.getString("EquipmentContextRESTInterface.EquipmentContextURLWithID"), auth.authenticate("anonymous"));
+        Spark.before(Messages.getString("EquipmentContextRESTInterface.EquipmentContextURLWithID"), auth.authorize("anonymous"));
 
         /**
          * Request 7.4.2 create equipment-context.

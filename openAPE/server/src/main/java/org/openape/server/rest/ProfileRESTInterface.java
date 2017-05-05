@@ -21,7 +21,7 @@ public class ProfileRESTInterface extends SuperRestInterface {
 
     static void setupProfileRESTInterface() {
         final AuthService authService = new AuthService();
-        Spark.before("/profile", authService.authenticate("default"));
+        Spark.before("/profile", authService.authorize("default"));
         Spark.get("/profile", "app", (req, res) -> {
             final SparkWebContext context = new SparkWebContext(req, res);
             final ProfileManager manager = new ProfileManager(context);

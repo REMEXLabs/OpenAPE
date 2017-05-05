@@ -19,9 +19,9 @@ public class EnvironmentContextRESTInterface extends SuperRestInterface {
             final EnvironmentContextRequestHandler requestHandler, final AuthService auth) {
 
         // Authentication: Make sure only registered principals (users and admins) can create a new context
-        Spark.before(Messages.getString("EnvironmentContextRESTInterface.EnvironmentContextsURLWithoutID"), auth.authenticate("user"));
+        Spark.before(Messages.getString("EnvironmentContextRESTInterface.EnvironmentContextsURLWithoutID"), auth.authorize("user"));
         // Authentication: Everyone can access the route for a specific context
-        Spark.before(Messages.getString("EnvironmentContextRESTInterface.EnvironmentContextsURLWithID"), auth.authenticate("anonymous"));
+        Spark.before(Messages.getString("EnvironmentContextRESTInterface.EnvironmentContextsURLWithID"), auth.authorize("anonymous"));
 
         /**
          * Request 7.5.2 create environment-context.

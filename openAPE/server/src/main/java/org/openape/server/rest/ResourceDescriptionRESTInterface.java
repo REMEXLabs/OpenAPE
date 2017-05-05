@@ -20,9 +20,9 @@ public class ResourceDescriptionRESTInterface extends SuperRestInterface {
             final ResourceDescriptionRequestHandler requestHandler, AuthService auth) {
 
         // Authentication: Make sure only registered principals (users and admins) can create a new resource description
-        Spark.before(Messages.getString("ResourceDescriptionRESTInterface.ResourceDescriptionURLWithoutID"), auth.authenticate("user"));
+        Spark.before(Messages.getString("ResourceDescriptionRESTInterface.ResourceDescriptionURLWithoutID"), auth.authorize("user"));
         // Authentication: Everyone can access the route for a specific resource description
-        Spark.before(Messages.getString("ResourceDescriptionRESTInterface.ResourceDescriptionURLWithID"), auth.authenticate("anonymous"));
+        Spark.before(Messages.getString("ResourceDescriptionRESTInterface.ResourceDescriptionURLWithID"), auth.authorize("anonymous"));
 
         /**
          * Request 7.7.2 create resource description.

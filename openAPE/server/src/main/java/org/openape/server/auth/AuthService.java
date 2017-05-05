@@ -32,7 +32,6 @@ public class AuthService {
     /**
      * Tries to authorize using the given credentials (username and password) and returns a JWT String for the user
      * if the authorization was successful.
-     *
      * @param username username to use for the authorization
      * @param password password to use for the authorization
      * @return Token String
@@ -45,7 +44,6 @@ public class AuthService {
 
     /**
      * Tries to authorize using the given credentials (username and password) and returns a TokenResponse as JSON.
-     *
      * @param username username to use for the authorization
      * @param password password to use for the authorization
      * @return Token String
@@ -56,7 +54,12 @@ public class AuthService {
         return new Gson().toJson(response);
     }
 
-    public SecurityFilter authenticate(String role) {
+    /**
+     * Authorize any profile that has the given role.
+     * @param role Name of the role that should be authorized.
+     * @return PAC4J SecurityFilter containing the authorization for the given role.
+     */
+    public SecurityFilter authorize(String role) {
         switch(role) {
             // Authenticate only if role "admin" is present
             case "admin": return new SecurityFilter(config, "HeaderClient", "adminOnly");
@@ -69,6 +72,13 @@ public class AuthService {
         }
     }
 
+    /**
+     * Get the profile of the currently authenticated user. Throws an exception if no user is authenticated.
+     * @param request Spark request object
+     * @param response Spark response object
+     * @return The CommonProfile for the authenticated user
+     * @throws UnauthorizedException Will be thrown if no user is authenticated.
+     */
     public CommonProfile getAuthenticatedProfile(Request request, Response response) throws UnauthorizedException {
         ProfileManager manager = new ProfileManager(new SparkWebContext(request, response));
         Optional<CommonProfile> profile = manager.get(false);
@@ -79,10 +89,24 @@ public class AuthService {
         }
     }
 
+    /**
+     * Get a OpenAPE user object for the currently authenticated user. Throws an exception if no user is authenticated.
+     * @param req Spark request object
+     * @param res Spark response object
+     * @return The User object representing the authenticated user.
+     * @throws UnauthorizedException Will be thrown if no user is authenticated.
+     */
     public User getAuthenticatedUser(Request req, Response res) throws UnauthorizedException {
         return User.getFromProfile(getAuthenticatedProfile(req, res));
     }
 
+    /**
+     * Check if the authenticated user has either the role `admin` or equals the provided owner.
+     * @param request Spark request object
+     * @param response Spark response object
+     * @param owner The owner id to authorize against
+     * @throws UnauthorizedException Will be thrown if authenticated user is no admin and also not the owner
+     */
     public void allowAdminAndOwner(final Request request, final Response response, String owner) throws UnauthorizedException {
         CommonProfile profile = getAuthenticatedProfile(request, response);
         if(!isAdminOrOwner(profile, owner)) {
@@ -90,20 +114,14 @@ public class AuthService {
         }
     }
 
-    public void allowAdminOnly(final Request request, final Response response) throws UnauthorizedException {
-        CommonProfile profile = getAuthenticatedProfile(request, response);
-        if(!isAdmin(profile)) {
-            throw new UnauthorizedException("You are not allowed to perform this operation");
-        }
-    }
-
-    public void allowOwnerOnly(final Request request, final Response response, String owner) throws UnauthorizedException {
-        CommonProfile profile = getAuthenticatedProfile(request, response);
-        if(!isOwner(profile, owner)) {
-            throw new UnauthorizedException("You are not allowed to perform this operation");
-        }
-    }
-
+    /**
+     * Check if the authenticated user has either the role `admin`, equals the provided owner or the resource is public.
+     * @param request Spark request object
+     * @param response Spark response object
+     * @param owner The owner id to authorize against
+     * @param isPublic Public state of the resource
+     * @throws UnauthorizedException Will be thrown if non of the conditions are met.
+     */
     public void allowAdminOwnerAndPublic(final Request request, final Response response, String owner, boolean isPublic) throws UnauthorizedException {
         CommonProfile profile = getAuthenticatedProfile(request, response);
         if(!(isPublic || isAdminOrOwner(profile, owner))) {
@@ -113,7 +131,6 @@ public class AuthService {
 
     /**
      * Creates string error containing an RFC 6749 section 5.2 compliant JSON form with the provided error and description.
-     *
      * @param error The error code.
      * @param description Human-readable error description.
      * @return The JSON string error.
@@ -123,21 +140,37 @@ public class AuthService {
         return new Gson().toJson(authError);
     }
 
+    /**
+     * Check if the provided profile has the `admin` role.
+     * @param profile
+     * @return True if admin role is present, otherwise false.
+     */
     private boolean isAdmin(CommonProfile profile) {
         return profile.getRoles().contains("admin");
     }
 
+    /**
+     * Check if the provided profile has either the role `admin` or is equal to the given owner.
+     * @param profile The authenticated profile
+     * @param owner The owner id.
+     * @return True if the profile is also the owner, otherwise false.
+     */
     private boolean isOwner(CommonProfile profile, String owner) {
         return profile.getId().equals(owner);
     }
 
+    /**
+     * Check if the provided profile has either the role `admin` or is equal to the given owner.
+     * @param profile The authenticated profile
+     * @param owner The owner id.
+     * @return True if the profile is also the owner, otherwise false.
+     */
     private boolean isAdminOrOwner(CommonProfile profile, String owner) {
         return isAdmin(profile) || isOwner(profile, owner);
     }
 
     /**
      * Generates a Json Web Token (JWT) for the given CommonProfile.
-     *
      * @param profile the profile the token should be created for
      * @return a JWT as String
      */
@@ -151,7 +184,6 @@ public class AuthService {
     /**
      * Authorizes a user by the given username and password and returns a CommonProfile for the user if he could be
      * found.
-     *
      * @param username username of the user to be authorized
      * @param password password for the user to be authorized
      * @return
@@ -183,7 +215,6 @@ public class AuthService {
 
     /**
      * Queries the database for a user with the given username.
-     *
      * @param username username to query for
      * @return
      * @throws IOException
@@ -200,7 +231,6 @@ public class AuthService {
 
     /**
      * Checks if a given plain text password matches the encrypted one.
-     *
      * @param plainTextPassword the password in plain text to match
      * @param encryptedPassword the encrypted password to match against
      * @return
@@ -220,7 +250,7 @@ public class AuthService {
 
     /**
      * Get the expiration date for tokens.
-     * @return
+     * @return The time the token will expire.
      */
     private static Date getExpirationDate() {
         int minutesToExpiration = Integer.parseInt(Messages.getString("Auth.TokenExpirationTimeInMinutes").replaceAll("[\\D]", ""));
