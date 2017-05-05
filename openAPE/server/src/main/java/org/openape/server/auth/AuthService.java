@@ -1,5 +1,6 @@
 package org.openape.server.auth;
 
+import com.google.gson.Gson;
 import org.jboss.resteasy.spi.NotFoundException;
 import org.openape.api.DatabaseObject;
 import org.openape.api.Messages;
@@ -40,6 +41,19 @@ public class AuthService {
     public String getToken(String username, String password) throws UnauthorizedException {
         CommonProfile profile = authorizeUser(username, password);
         return generateJwt(profile);
+    }
+
+    /**
+     * Tries to authorize using the given credentials (username and password) and returns a TokenResponse as JSON.
+     *
+     * @param username username to use for the authorization
+     * @param password password to use for the authorization
+     * @return Token String
+     * @throws UnauthorizedException if user can not be authorized
+     */
+    public String getJSONToken(String username, String password) throws UnauthorizedException {
+        TokenResponse response = new TokenResponse(this.getToken(username, password));
+        return new Gson().toJson(response);
     }
 
     public SecurityFilter authenticate(String role) {
@@ -95,6 +109,18 @@ public class AuthService {
         if(!(isPublic || isAdminOrOwner(profile, owner))) {
             throw new UnauthorizedException("You are not allowed to perform this operation");
         }
+    }
+
+    /**
+     * Creates string error containing an RFC 6749 section 5.2 compliant JSON form with the provided error and description.
+     *
+     * @param error The error code.
+     * @param description Human-readable error description.
+     * @return The JSON string error.
+     */
+    public static String buildAuthErrorJSON(String error, String description) {
+        AuthError authError = new AuthError(error, description);
+        return new Gson().toJson(authError);
     }
 
     private boolean isAdmin(CommonProfile profile) {

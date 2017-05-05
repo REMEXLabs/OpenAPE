@@ -22,6 +22,12 @@
 			<artifactId>API</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+		<!-- Google Java JSON API | https://github.com/google/gson -->
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+			<version>2.2.4</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<resources>
