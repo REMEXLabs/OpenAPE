@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>openAPE</title>
     <script type="application/javascript">
-        var serveraddress = "http://localhost:8080/openape/";
+        var serveraddress = "http://localhost:4567/";
 		var sampleUserContext = '{"contexts":{"default":{"name":"Default preferences","preferences":{"http://registry.gpii.net/common/magnifierEnabled":"false","http://registry.gpii.net/applications/org.chrome.cloud4chrome/invertColours":"false"}},"dark":{"conditions":[{"type":"and","operands":[{"type":"ge","operands":["http://registry.gpii.net/common/env/visual.luminance","0"]},{"type":"le","operands":["http://registry.gpii.net/common/env/visual.luminance","200"]}]}],"name":"little environmental light","preferences":{"http://registry.gpii.net/common/magnifierEnabled":"true","http://registry.gpii.net/common/magnification":"2"}}}}';
 		var id;
 		
@@ -133,7 +133,7 @@
 </table><br>
 <div style="text-align: center;">
 <h2>Resource Storage</h2>
-<form action="http://localhost:8080/openape/api/resources" method="post" enctype="multipart/form-data">
+<form action="http://localhost:4567/api/resources" method="post" enctype="multipart/form-data">
 	<input name="file" id="filename" type="file" />
 	<button name="submit" type="submit">store resource</button>
 </form>
