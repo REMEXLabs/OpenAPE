@@ -126,14 +126,13 @@
 	    	$.ajax({
 	    	        type: 'POST',
 	    	        async: false,
-	    	        url: "http://localhost:4567/token?grant_type="+grant_type+"+&username="+username+"&password="+password,
+	    	        url: "http://localhost:4567/token?grant_type="+grant_type+"&username="+username+"&password="+password,
 	    	        dataType: "html",
 	    	        success: function(data, textStatus, jqXHR){
-	    	        	objToken.token = data;
-	    	        	objToken.stauts = textStatus;
+	    	        	objToken = jqXHR;
 	    	        },
 	    	        error: function(jqXHR, textStatus, errorThrown){
-	    	           console.log(jqXHR, textStatus, errorThrown);
+	    	           objToken = jqXHR;
 	    	      }
 	    	 });
 	    	

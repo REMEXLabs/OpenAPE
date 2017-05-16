@@ -1,3 +1,5 @@
+
+
 $(document).ready(function(){
 	$('#register').click(function(){
 		setUserData();
@@ -49,19 +51,24 @@ function openSection(evt, sectionName) {
 function getTokenForLogin(){
 	var username = $("#username").val();
 	var password = $("#password").val();
-	var token = openape.getToken("password", username, password).token;
+	var tokenData = openape.getToken("password", username, password);
 	
-	localStorage.setItem("token", token);
-	var userID = openape.getUser(token).id;
-	var securityQuestion = $("#securityQuestion").val();
-	
-	if(securityQuestion == 15){
-		if(userID != undefined){
-			window.location = "http://localhost:4567/ressourceUpload.html";
-		} else {
-			alert("user not found");
+	if(tokenData.status==400){
+		alert("No user found");
+	} else {
+		var token = JSON.parse(tokenData.responseText).access_token;
+		localStorage.setItem("token", token);
+		var userID = openape.getUser(token).id;
+		var securityQuestion = $("#securityQuestion").val();
+		
+		if(securityQuestion == 15){
+			if(userID != undefined){
+				window.location = "http://localhost:4567/ressourceUpload.html";
+			} else {
+				alert("user not found");
+			}
+		}  else {
+			alert("Wrong security question answer!");
 		}
-	}  else {
-		alert("Wrong security question answer!");
 	}
 }
