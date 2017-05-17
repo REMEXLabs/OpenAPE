@@ -1,6 +1,15 @@
-
+//get the protocol and adress of the location. If it´s running local, than the adress should be http://localhost:4567
+var protocol = location.protocol;
 
 $(document).ready(function(){
+	$('#errUsername').hide();
+	$('#errPassword').hide();
+	$('#errSecQuestion').hide();
+	$('#errRegUsername').hide();
+	$('#errRegEmail').hide();
+	$('#errRegPassword').hide();
+	$('#errRegSecQuestion').hide();
+	
 	$('#register').click(function(){
 		setUserData();
 	})
@@ -17,13 +26,67 @@ function setUserData(){
 	var password = $("#regPassword").val();
 	var regSecurityQuestion = $("#regSecurityQuestion").val();
 	
-	if(regSecurityQuestion == 15){
-		if(openape.setUser(username, email, password)==true){
-			window.location = "http://localhost:4567/ressourceUpload.html";
-		}
+	var isUsernameCorrect = true;
+	var isEmailCorrect = true;
+	var isPasswordCorrect = true;
+	var isRegSecurityQuestionCorrect = true;
+	
+	if(username!=""){
+		isUsernameCorrect = true;
+		$('#errRegUsername').hide();
+		$('#formGroupRegUsername').removeClass( "has-error has-feedback" );
 	} else {
-		alert("Wrong security question answer!");
+		isUsernameCorrect = false;
+		$('#errRegUsername').show();
+		$('#formGroupRegUsername').addClass( "has-error has-feedback" );
 	}
+	
+	if(email!=""){
+		isEmailCorrect = true;
+		$('#errRegEmail').hide();
+		$('#formGroupRegEmail').removeClass( "has-error has-feedback" );
+	} else {
+		isEmailCorrect = false;
+		$('#errRegEmail').show();
+		$('#formGroupRegEmail').addClass( "has-error has-feedback" );
+	}
+	
+	if(password!=""){
+		isPasswordCorrect = true;
+		$('#errRegPassword').hide();
+		$('#formGroupRegPassword').removeClass( "has-error has-feedback" );
+	} else {
+		isPasswordCorrect = false;
+		$('#errRegPassword').show();
+		$('#formGroupRegPassword').addClass( "has-error has-feedback" );
+	}	
+	
+	if(regSecurityQuestion!=""){
+		isRegSecurityQuestionCorrect = true;
+		$('#errRegSecQuestion').hide();
+		$('#formGroupRegSecQuestion').removeClass( "has-error has-feedback" );
+	} else {
+		isRegSecurityQuestionCorrect = false;
+		$('#errRegSecQuestion').show();
+		$('#formGroupRegSecQuestion').addClass( "has-error has-feedback" );
+	}		
+
+	if(isRegSecurityQuestionCorrect == true && isUsernameCorrect == true && isEmailCorrect == true && isPasswordCorrect == true){
+		if(regSecurityQuestion == 15){
+			var objSenduserStatus = openape.setUser(username, email, password);
+			if(objSenduserStatus.status == 200){
+				window.location = protocol+"/ressourceUpload.html";
+				$('#registrationErrorMsg').empty();
+			} else {
+				$('#registrationErrorMsg').empty();
+				$('#registrationErrorMsg').append("<img src='img/Attention-SZ-icon.png' width='20' height='20'> "+objSenduserStatus.statusText);
+			}
+		} else {
+			$('#registrationErrorMsg').empty();
+			$('#registrationErrorMsg').append("<img src='img/Attention-SZ-icon.png' width='20' height='20'> Wrong security question");
+		}
+	}
+	
 }
 
 function openSection(evt, sectionName) {
@@ -51,24 +114,70 @@ function openSection(evt, sectionName) {
 function getTokenForLogin(){
 	var username = $("#username").val();
 	var password = $("#password").val();
-	var tokenData = openape.getToken("password", username, password);
+	var securityQuestion = $("#securityQuestion").val();
+	var isUsernameCorrect = true;
+	var isPasswordCorrect = true;
+	var isSecurityQuestionCorrect = true;
 	
-	if(tokenData.status==400){
-		alert("No user found");
+	if(username!=""){
+		$('#errUsername').hide();
+		$('#forGroupUsername').removeClass( "has-error has-feedback" );
+		isUsernameCorrect = true;
 	} else {
-		var token = JSON.parse(tokenData.responseText).access_token;
-		localStorage.setItem("token", token);
-		var userID = openape.getUser(token).id;
-		var securityQuestion = $("#securityQuestion").val();
+		$('#errUsername').show();
+		$('#forGroupUsername').addClass( "has-error has-feedback" );
+		isUsernameCorrect = false;
+	}
+	
+	if(password!=""){
+		isPasswordCorrect = true;
+		$('#errPassword').hide();
+		$('#formGroupPassword').removeClass( "has-error has-feedback" );
+	} else {
+		isPasswordCorrect = false;
+		$('#errPassword').show();
+		$('#formGroupPassword').addClass( "has-error has-feedback" );
+	}
+
+	if(securityQuestion!=""){
+		$('#errSecQuestion').hide();
+		$('#formGroupSecQuestion').removeClass( "has-error has-feedback" );
+		isSecurityQuestionCorrect = true;
+	} else {
+		$('#errSecQuestion').show();
 		
-		if(securityQuestion == 15){
-			if(userID != undefined){
-				window.location = "http://localhost:4567/ressourceUpload.html";
-			} else {
-				alert("user not found");
+		$('#formGroupSecQuestion').addClass( "has-error has-feedback" );
+		isSecurityQuestionCorrect = false;
+	}
+	
+	
+	if(isUsernameCorrect == true && isPasswordCorrect == true && isSecurityQuestionCorrect == true){
+		var tokenData = openape.getToken("password", username, password);
+		
+		if(tokenData.status==200){
+			var token = JSON.parse(tokenData.responseText).access_token;
+			var userID = openape.getUser(token).id;
+			var securityQuestion = $("#securityQuestion").val();
+			
+			localStorage.setItem("token", token);
+			
+			if(securityQuestion == 15){
+				if(userID != undefined){
+					window.location = protocol+"/ressourceUpload.html";
+				} else {
+					$('#loginErrorMsg').empty();
+					$('#loginErrorMsg').append("<img src='img/Attention-SZ-icon.png' width='20' height='20'>  user not found");
+				}
+			}  else {
+				$('#loginErrorMsg').empty();
+				$('#loginErrorMsg').append("<img src='img/Attention-SZ-icon.png' width='20' height='20'> Wrong security question answer!");
 			}
-		}  else {
-			alert("Wrong security question answer!");
+		} else {
+			$('#loginErrorMsg').empty();
+			$('#loginErrorMsg').append("<img src='img/Attention-SZ-icon.png' width='20' height='20'> User not found");
 		}
 	}
 }
+
+
+

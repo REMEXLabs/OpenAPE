@@ -37,23 +37,48 @@
 			<div class="registerContent" id="registerContent">
 			<table>
 				<tr>
-					<td ><b>Username:</b>  </td><td><input id="username" type="text"></td>
+					<td ><b>Username:</b> 
+					<td>
+						<div id="forGroupUsername" class="form-group ">
+						    <div class="col-sm-15">
+						      <input type="text" class="form-control" id="username" placeholder="Username">
+						      <span class="glyphicon glyphicon-remove form-control-feedback" id="errUsername"></span>
+						    </div>
+					  </div>
 				</tr>
 				<tr>
-					<td><b>Password:</b>  </td><td><input id="password" type="password"></td>
+					<td><b>Password:  </b></td>
+					<td>
+						<div id="formGroupPassword" class="form-group ">
+						    <div class="col-sm-15">
+						      <input type="password" class="form-control" id="password" placeholder="Password">
+						      <span class="glyphicon glyphicon-remove form-control-feedback" id="errPassword"></span>
+						    </div>
+					  </div>
+					</td>
 				</tr>
 				<tr>
-					<td><b>2 + 13?</b>  </td><td><input id="securityQuestion" type="number"></td>
+					<td><b>2 + 13?</b> </td>
+					<td>
+						<div id="formGroupSecQuestion" class="form-group ">
+							    <div class="col-sm-15">
+							      <input type="number" class="form-control" id="securityQuestion" placeholder="Security question">
+							      <span class="glyphicon glyphicon-remove form-control-feedback" id="errSecQuestion"></span>
+							    </div>
+						  </div>
+					</td>
 				</tr>
 				<tr>
 					<td><a id="btnRegistration" class="tablinks" onclick="openSection(event, 'Registration')">Create Account</a></td>
 					<td align="right"><button id="login" class="btn btn-primary" > Login</button></td>
 				</tr>
 			</table>
-			
 			</div>
+			<div class="loginErrorMsg" id="loginErrorMsg" align="center"></div>
 		</div>
 	</div>
+	
+
 	
 	<div id="Registration" class="tabcontent">
 		<div class="registerSection" id="registerSection">
@@ -62,26 +87,67 @@
 			<div class="registerContent" id="registerContent">
 			<table>
 				<tr>
-					<td><b> Username:</b> </td><td><input id="regUsername" type="text"></td>
+					<td><b> Username:</b> </td>
+					<td>
+						<div id="formGroupRegUsername" class="form-group ">
+						    <div class="col-sm-15">
+						      <input type="text" class="form-control" id="regUsername" placeholder="Username">
+						      <span class="glyphicon glyphicon-remove form-control-feedback" id="errRegUsername"></span>
+						    </div>
+					  	</div>
+					</td>
 				</tr>
 				<tr>
-					<td><b> Email:</b> </td><td><input id="email" type="text"></td>
+					<td><b> Email:</b> </td>
+					<td>
+					
+					<div id="formGroupRegEmail" class="form-group ">
+						    <div class="col-sm-15">
+						      <input type="email" class="form-control" id="email" placeholder="Email">
+						      <span class="glyphicon glyphicon-remove form-control-feedback" id="errRegEmail"></span>
+						    </div>
+					 </div>
+					</td>
 				</tr>
 				<tr>
-					<td> <b>Password:</b> </td><td><input id="regPassword" type="password"></td>
+					<td> <b>Password:</b> </td>
+					<td>
+					
+					<div id="formGroupRegPassword" class="form-group ">
+						    <div class="col-sm-15">
+						      <input type="password" class="form-control" id="regPassword" placeholder="Password">
+						      <span class="glyphicon glyphicon-remove form-control-feedback" id="errRegPassword"></span>
+						    </div>
+					 </div>
+					</td>
 				</tr>
 				<tr>
-					<td><b> 2 + 13?</b> </td><td><input id="regSecurityQuestion" type="number"></td>
+					<td><b> 2 + 13?</b> </td>
+					<td>
+					
+					<div id="formGroupRegSecQuestion" class="form-group ">
+						    <div class="col-sm-15">
+						      <input type="number" class="form-control" id="regSecurityQuestion" placeholder="Security question">
+						      <span class="glyphicon glyphicon-remove form-control-feedback" id="errRegSecQuestion"></span>
+						    </div>
+					 </div>
+					 
+						
+					</td>
 				</tr>
 				<tr>
 					<td> <a id="btnLogin" class="tablinks" onclick="openSection(event, 'Login')">Login</a	></td>
 					<td  align="right"><button id="register" class="btn btn-primary" > Register</button></td>
 				</tr>
 			</table>
+			
 			</div>
+		<div class="loginErrorMsg" id="registrationErrorMsg" align="center"></div>
 		</div>
-	</div>
+		
+	</div>	
 </div>
+
 
 <script>
 // Get the element with id="defaultOpen" and click on it

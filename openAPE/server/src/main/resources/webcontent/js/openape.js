@@ -40,7 +40,6 @@
 	   			isUsernameCorrect = true;
 	   		} else {
 	   			isUsernameCorrect = false;
-	   			alert("Username is needed");
 	   		}
 	    		
 	   		//check if email is correct
@@ -52,7 +51,6 @@
 	   				alert("wrong email");
 	   			}
 			}else {
-	   			alert("Email is needed");
 	   			isEmailCorrect=false;
 	  		}
 	    		
@@ -61,7 +59,6 @@
 	   			objUser.password = password;
 	   			isPasswordCorrect=true;
 	   		} else {
-	   			alert("Password is needed");
 	   			isPasswordCorrect=false;
 	   		}    		
 	    		
@@ -126,7 +123,7 @@
 	    	$.ajax({
 	    	        type: 'POST',
 	    	        async: false,
-	    	        url: "http://localhost:4567/token?grant_type="+grant_type+"&username="+username+"&password="+password,
+	    	        url: protocol+"/token?grant_type="+grant_type+"&username="+username+"&password="+password,
 	    	        dataType: "html",
 	    	        success: function(data, textStatus, jqXHR){
 	    	        	objToken = jqXHR;
@@ -286,7 +283,7 @@
 	    }        
 	    
 	    function sendUserData(user){
-	    	 var status = true;
+	    	 objSendUserdata = {};
 	    	 $.ajax({
 	    	        type: 'POST',
 	    	        async: false,
@@ -296,18 +293,18 @@
 	    	        data: JSON.stringify(user),
 	    	        success: function(data, textStatus, jqXHR){
 	    				localStorage.setItem("token", data.substring(17, 41));
-	    				status =  true;
+	    				objSendUserdata.status =  jqXHR.status;
 	    	        },
 	    	        error: function(jqXHR, textStatus, errorThrown){
-	    	           status = false;
+	    	           objSendUserdata.status = jqXHR.status;
 	    	           if(jqXHR.responseText.includes("username_1 dup key")==true){
-	    		       	  alert("User with this username already exists");
+	    	        	   objSendUserdata.statusText = "User with this username already exists";
 	    		       } else  if(jqXHR.responseText.includes("email_1 dup key")==true){
-	    		          alert("User with this email already exists");
+	    		    	   objSendUserdata.statusText = "User with this email already exists";
 	    		       }
 	    	        }
 	    	  });
-	    	 return status;
+	    	 return objSendUserdata;
 	    }
 	
 	    function validateEmail(email) {

@@ -1,6 +1,6 @@
 .registerSection{
 	position:fixed;
-    top: 45%;
+    top: 40%;
     left: 50%;
     width:30em;
     margin-top: -9em; /*set to a negative number 1/2 of your height*/
@@ -60,4 +60,10 @@ div.tab button.active {
     display: none;
     padding: 6px 12px;
     border-top: none;
+}
+
+div.loginErrorMsg {
+	margin: 20px 0px 0px 0px;
+	color: red;
+	font-weight: bold;
 }

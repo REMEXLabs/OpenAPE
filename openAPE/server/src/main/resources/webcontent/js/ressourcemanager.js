@@ -1,4 +1,4 @@
-
+var protocol = location.protocol;
 
 function saveData(){
 	 var token = localStorage.getItem("token");	
@@ -68,6 +68,6 @@ function updateData() {
 
 
 function Logout() {
-	window.location = "http://localhost:4567/start.html";
+	window.location = protocol+"/start.html";
 }
 
