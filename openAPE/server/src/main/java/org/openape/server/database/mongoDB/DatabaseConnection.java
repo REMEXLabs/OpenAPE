@@ -5,6 +5,11 @@ import java.util.Arrays;
 import java.util.Iterator;
 
 import com.mongodb.client.model.IndexOptions;
+import com.mongodb.event.ServerHeartbeatFailedEvent;
+import com.mongodb.event.ServerHeartbeatStartedEvent;
+import com.mongodb.event.ServerHeartbeatSucceededEvent;
+import com.mongodb.event.ServerMonitorListener;
+
 import org.bson.Document;
 import org.bson.codecs.configuration.CodecConfigurationException;
 import org.bson.json.JsonParseException;
@@ -16,10 +21,13 @@ import org.openape.server.requestHandler.EnvironmentContextRequestHandler;
 import org.openape.server.requestHandler.EquipmentContextRequestHandler;
 import org.openape.server.requestHandler.TaskContextRequestHandler;
 import org.openape.server.requestHandler.UserContextRequestHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mongodb.BasicDBObject;
 import com.mongodb.MongoClient;
+import com.mongodb.MongoClientOptions;
 import com.mongodb.MongoCredential;
 import com.mongodb.MongoException;
 import com.mongodb.ServerAddress;
@@ -34,7 +42,9 @@ import com.mongodb.client.MongoDatabase;
  * {@link EquipmentContextRequestHandler}, {@link TaskContextRequestHandler},
  * {@link UserContextRequestHandler}.
  */
-public class DatabaseConnection {
+public class DatabaseConnection implements ServerMonitorListener {
+	
+	static Logger logger = LoggerFactory.getLogger(DatabaseConnection.class);
     /**
      * The url to our mongo database server.
      */
@@ -76,8 +86,11 @@ public class DatabaseConnection {
      */
     public static DatabaseConnection getInstance() {
         if (DatabaseConnection.databaseConnectionInstance == null) {
+        	logger.info("new database connection required");
             DatabaseConnection.databaseConnectionInstance = new DatabaseConnection();
-        }
+        } else {
+    	logger.info("Found existing database connection.");
+    }
         return DatabaseConnection.databaseConnectionInstance;
     }
 
@@ -129,58 +142,37 @@ public class DatabaseConnection {
      */
     private DatabaseConnection() {
         // import configuration file
-        final String name = MongoConfig.getString("databaseName");//$NON-NLS-1$
-        if (name != null && !name.equals(Messages.getString("DatabaseConnection.EmptyString"))) {//$NON-NLS-1$
-            DatabaseConnection.DATABASENAME = name;
-        } else {
-            DatabaseConnection.DATABASENAME = Messages
-                    .getString("DatabaseConnection.MongoDBDatabaseName"); //$NON-NLS-1$
-        }
-        final String address = MongoConfig.getString("databaseURL");//$NON-NLS-1$
-        if (address != null
-                && !address.equals(Messages.getString("DatabaseConnection.EmptyString"))) {//$NON-NLS-1$
-            DatabaseConnection.DATABASEURL = address;
-        } else {
-            DatabaseConnection.DATABASEURL = Messages
-                    .getString("DatabaseConnection.MongoDBServerAddress"); //$NON-NLS-1$
-        }
-        final String port = MongoConfig.getString("databasePort");//$NON-NLS-1$
-        if (port != null && !port.equals(Messages.getString("DatabaseConnection.EmptyString"))) {//$NON-NLS-1$
-            DatabaseConnection.DATABASEPORT = port;
-        } else {
-            DatabaseConnection.DATABASEPORT = Messages
-                    .getString("DatabaseConnection.MongoDBServerPort"); //$NON-NLS-1$
-        }
-        final String password = MongoConfig.getString("databasePassword");//$NON-NLS-1$
-        if (password != null
-                && !password.equals(Messages.getString("DatabaseConnection.EmptyString"))) {//$NON-NLS-1$
-            DatabaseConnection.DATABASEPASSWORD = password;
-        } else {
-            DatabaseConnection.DATABASEPASSWORD = Messages
-                    .getString("DatabaseConnection.MongoDBDatabaseUserPassword"); //$NON-NLS-1$
-        }
-        final String userName = MongoConfig.getString("databaseUsername");//$NON-NLS-1$
-        if (userName != null
-                && !userName.equals(Messages.getString("DatabaseConnection.EmptyString"))) {//$NON-NLS-1$
-            DatabaseConnection.DATABASEUSERNAME = userName;
-        } else {
-            DatabaseConnection.DATABASEUSERNAME = Messages
-                    .getString("DatabaseConnection.MongoDBDatabaseUsername"); //$NON-NLS-1$
-        }
-        // Create credentials for the openAPE database
+    	readConfigFile();
+     try {   
+//    	Create credentials for the openAPE database
         final MongoCredential credential = MongoCredential.createCredential(
                 DatabaseConnection.DATABASEUSERNAME, DatabaseConnection.DATABASENAME,
                 DatabaseConnection.DATABASEPASSWORD.toCharArray());
 
+//Add MongoDB Monitor with client options
+        MongoClientOptions clientOptions = new MongoClientOptions.Builder()
+                .addServerMonitorListener(this)
+                .build();
+        
         // Create database client for the openAPE database
         this.mongoClient = new MongoClient(new ServerAddress(DatabaseConnection.DATABASEURL,
-                Integer.parseInt(DatabaseConnection.DATABASEPORT)), Arrays.asList(credential));
-
+                Integer.parseInt(DatabaseConnection.DATABASEPORT)), Arrays.asList(credential), clientOptions);
+        
         // Get a reference to the openAPE database.
         this.database = this.mongoClient.getDatabase(DatabaseConnection.DATABASENAME);
+        logger.info("Found openAPE dataBase");
+    } catch(Exception e){
+    	logger.error("Failed to connect to the openAPE database");
+    	return;
+    }
+        
         // Get references to the database collections.
+     try{
         this.userContextCollection = this.database.getCollection(MongoCollectionTypes.USERCONTEXT
                 .toString());
+     } catch (Exception e){
+    	 logger.error("Couldn't find collection \"" + MongoCollectionTypes.USERCONTEXT + "\"");
+     }
         this.environmentContextCollection = this.database
                 .getCollection(MongoCollectionTypes.ENVIRONMENTCONTEXT.toString());
         this.equipmentContextCollection = this.database
@@ -198,7 +190,52 @@ public class DatabaseConnection {
 
     }
 
-    /**
+    private void readConfigFile() {
+    	final String name = MongoConfig.getString("databaseName");//$NON-NLS-1$
+        if (name != null && !name.equals(Messages.getString("DatabaseConnection.EmptyString"))) {//$NON-NLS-1$
+            DatabaseConnection.DATABASENAME = name;
+        } else {
+            DatabaseConnection.DATABASENAME = Messages
+                    .getString("DatabaseConnection.MongoDBDatabaseName"); //$NON-NLS-1$
+        }
+        final String address = MongoConfig.getString("databaseURL");//$NON-NLS-1$
+        if (address != null
+                && !address.equals(Messages.getString("DatabaseConnection.EmptyString"))) {//$NON-NLS-1$
+            DatabaseConnection.DATABASEURL = address;
+        } else {
+            DatabaseConnection.DATABASEURL = Messages
+                    .getString("DatabaseConnection.MongoDBServerAddress"); //$NON-NLS-1$
+        }
+        final String port = MongoConfig.getString("databasePort");//$NON-NLS-1$
+        if (port != null && !port.equals(Messages.getString("DatabaseConnection.EmptyString"))) {//$NON-NLS-1$
+        	logger.debug("Using MongoDB port " + port + " defined in mongo.properties" );
+            DatabaseConnection.DATABASEPORT = port;
+        } else {
+        	String standardPort = Messages
+            .getString("DatabaseConnection.MongoDBServerPort"); //$NON-NLS-1$
+        	logger.debug("Using MongoDB port " + standardPort + " defined in Messages.properties"); 
+        	DatabaseConnection.DATABASEPORT = standardPort;
+        }
+        final String password = MongoConfig.getString("databasePassword");//$NON-NLS-1$
+        if (password != null
+                && !password.equals(Messages.getString("DatabaseConnection.EmptyString"))) {//$NON-NLS-1$
+            DatabaseConnection.DATABASEPASSWORD = password;
+        } else {
+            DatabaseConnection.DATABASEPASSWORD = Messages
+                    .getString("DatabaseConnection.MongoDBDatabaseUserPassword"); //$NON-NLS-1$
+        }
+        final String userName = MongoConfig.getString("databaseUsername");//$NON-NLS-1$
+        if (userName != null
+                && !userName.equals(Messages.getString("DatabaseConnection.EmptyString"))) {//$NON-NLS-1$
+            DatabaseConnection.DATABASEUSERNAME = userName;
+        } else {
+            DatabaseConnection.DATABASEUSERNAME = Messages
+                    .getString("DatabaseConnection.MongoDBDatabaseUsername"); //$NON-NLS-1$
+        }
+         		
+	}
+
+	/**
      * Delete a database object, either a context or a resource, from the
      * database. Choose the object via id and the collection via the collection
      * type.
@@ -605,5 +642,23 @@ public class DatabaseConnection {
         // Make sure username is unique for all users
         this.userCollection.createIndex(new BasicDBObject("username", 1), new IndexOptions().unique(true));
     }
+
+	@Override
+	public void serverHearbeatStarted(ServerHeartbeatStartedEvent event) {
+				logger.info("Found new heartbeat with connection ID: " + event.getConnectionId() );
+		
+	}
+
+	@Override
+	public void serverHeartbeatSucceeded(ServerHeartbeatSucceededEvent event) {
+		logger.info("Found heartbeat with connection ID: " + event.getConnectionId() );
+		
+	}
+
+	@Override
+	public void serverHeartbeatFailed(ServerHeartbeatFailedEvent event) {
+		
+		logger.error("Connecting to MongoDB at " + this.DATABASEURL + ":" + this.DATABASEPORT + ".\n" + event);
+			}
 
 }
