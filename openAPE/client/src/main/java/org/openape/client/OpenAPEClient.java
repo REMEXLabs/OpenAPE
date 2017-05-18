@@ -16,24 +16,88 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.glassfish.jersey.client.ClientConfig;
+import org.openape.api.Messages;
+import org.openape.api.environmentcontext.EnvironmentContext;
+import org.openape.api.equipmentcontext.EquipmentContext;
+import org.openape.api.listing.Listing;
+import org.openape.api.rest.RESTPaths;
+import org.openape.api.taskcontext.TaskContext;
 import org.openape.api.usercontext.UserContext;
-import org.openape.api.rest.*;
 /** @author Lukas Smirek
 */
 
 public class OpenAPEClient {
 private Client client;
 private WebTarget webResource;
+private String token;
 
-public OpenAPEClient(String uri) {
+static final String ENVIRONMENT_CONTEXT_PATH = "api/environment-contexts";
+static final String EQUIPMENT_CONTEXT_PATH = "api/equipment-contexts";
+static final String TASK_CONTEXT_PATH = "api/task-contexts";
+static final String USER_CONTEXT_PATH = "api/user-contexts";
+static final String LISTING_PATH = "api/listings";
+/** Standard constructor, sets server adress automatically to http://openape.gpii.eu/ */
+public OpenAPEClient(String userName, String password){
+this(userName, password, "http://openape.gpii.eu");
+}
+
+public OpenAPEClient(String userName, String password, String uri) {
+//	create HTTP client that connects to the server
 	ClientConfig config = new ClientConfig();
 	 client = ClientBuilder.newClient(config);
 webResource = client.target(uri);
+
+//get token for accessing server
+this.token = getToken(userName,password);
 }
-	
+
+private String getToken(String userName,String password){
+	String tokenRequest= "grant_type=password&username=" + userName + "&password=" + password;
+	Response response = webResource.path("/token").request(MediaType.APPLICATION_FORM_URLENCODED)
+		    .post(Entity.entity(tokenRequest,MediaType.APPLICATION_JSON));
+		    		
+			if (response.getStatus() != 200){
+				throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
+			}
+			
+		    String output = response.readEntity(String.class);
+		 
+return response.getEntity().toString();
+
+					}
+
 public URI createUserContext(UserContext userContext) throws URISyntaxException{
-	return createContext(RESTPaths.USER_CONTEXTS, userContext);
+	Messages.
+	return createContext(MessagesUserContextRESTInterface.UserContextURLWithoutID   , userContext);
 }
+
+public URI createEquipmentContext(EquipmentContext equipmentContext) throws URISyntaxException{
+	return createContext(EQUIPMENT_CONTEXT_PATH , equipmentContext);
+}
+
+public URI createEnvironmentContext(EnvironmentContext envrionmentContext) throws URISyntaxException{
+	return createContext(ENVIRONMENT_CONTEXT_PATH, EnvironmentContext.class);
+}
+
+public URI createTaskContext(TaskContext taskContext) throws URISyntaxException{
+	return createContext(TASK_CONTEXT_PATH, taskContext);
+}
+
+public Listing createListing(URI userContextUri, URI equipmentContextUri, URI environMentUri, URI taskContextUri){
+	Response response = webResource.path(LISTING_PATH).request(MediaType.APPLICATION_JSON_TYPE)
+		    .post(Entity.entity(listingQuery,MediaType.APPLICATION_JSON));
+		    		
+			if (response.getStatus() != 201){
+				throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
+			}
+			
+		    Listing output = response.readEntity(Listing.class);
+		 	return output;
+}
+
+
+
+
 
 private URI createContext(String path,Object uploadContext ) throws URISyntaxException{
 	
