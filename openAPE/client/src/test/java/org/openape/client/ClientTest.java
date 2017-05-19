@@ -19,7 +19,10 @@ import org.openape.api.usercontext.UserContext;
 import spark.Spark;
 import static spark.Spark.staticFileLocation;
 public class ClientTest {
-	 @BeforeClass
+	private static String testUser = "TestUser";
+	private static String testPw = "TestPw";
+	
+	@BeforeClass
 	  public static void beforeClass() {
 
 	 staticFileLocation("/webcontent"); // Static files
@@ -39,7 +42,7 @@ public class ClientTest {
 	  @Test
 	 public void testFileDownload() throws URISyntaxException, InterruptedException {
 //Thread.sleep(60000);;
-		  OpenAPEClient client = new OpenAPEClient("http://localhost:4567/");
+		  OpenAPEClient client = getOpenApeClient();
 File downloadedFile = client.getResource("http://localhost:4567/test.html", "d:/testCopy.html");
 assertFalse(downloadedFile.equals(null)  );	  
 }
@@ -47,13 +50,16 @@ assertFalse(downloadedFile.equals(null)  );
 	  @Test
 	  public void testCreateContent() throws URISyntaxException{
 		  
-		  OpenAPEClient client = new OpenAPEClient("http://localhost:4567/");
+		  OpenAPEClient client = getOpenApeClient(); 
 		  UserContext userContext = new UserContext();
-		  userContext.addContext(new Context("user"
-, "test user") );
+		  userContext.addContext("testContext", new Context("test" ));
 		  URI newLocation = client.createUserContext(userContext);
 		  assertEquals("http://localhost:4567/testId", newLocation.toString() );
 		  
 		  
 	  }
+
+	private static OpenAPEClient getOpenApeClient() {
+				return new OpenAPEClient(testUser, testPw, "http://localhost:4567/");
+	}
 }

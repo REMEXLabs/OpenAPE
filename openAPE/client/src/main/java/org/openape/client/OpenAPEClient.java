@@ -67,7 +67,7 @@ return response.getEntity().toString();
 					}
 
 public URI createUserContext(UserContext userContext) throws URISyntaxException{
-	Messages.
+	
 	return createContext(MessagesUserContextRESTInterface.UserContextURLWithoutID   , userContext);
 }
 
@@ -84,6 +84,7 @@ public URI createTaskContext(TaskContext taskContext) throws URISyntaxException{
 }
 
 public Listing createListing(URI userContextUri, URI equipmentContextUri, URI environMentUri, URI taskContextUri){
+	/*
 	Response response = webResource.path(LISTING_PATH).request(MediaType.APPLICATION_JSON_TYPE)
 		    .post(Entity.entity(listingQuery,MediaType.APPLICATION_JSON));
 		    		
@@ -93,6 +94,8 @@ public Listing createListing(URI userContextUri, URI equipmentContextUri, URI en
 			
 		    Listing output = response.readEntity(Listing.class);
 		 	return output;
+		 	*/
+	return null;
 }
 
 
@@ -122,6 +125,19 @@ return new URI(response.getHeaderString("Location"));
 				
 
 	}
+	
+	public UserContext getUserContext(String userContextId){
+        Invocation.Builder invocationBuilder = webResource.path(USER_CONTEXT_PATH + userContextId).request();
+invocationBuilder.header("Authorization",this.token );
+        
+Response response = invocationBuilder.get();
+
+			if (response.getStatus() != 200) {
+UserContext userContext = 		 response.getEntity();
+return userContext;
+	}
+			return null;
+}
 	
 	
 	public File getResource(URI uri, String targetFile){
