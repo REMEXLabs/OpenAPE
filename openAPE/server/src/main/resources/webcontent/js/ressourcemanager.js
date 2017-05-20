@@ -1,10 +1,18 @@
-var protocol = location.protocol;
+
 
 function saveData(){
 	 var token = localStorage.getItem("token");	
-	 objSaveUserContextsResult = openape.setUserContexts(document.getElementById("dataInput").value, token);
-	 $("#saveUserContextsStatus").empty();
-	 $("#saveUserContextsStatus").append("<b>UserContextId: </b>"+ objSaveUserContextsResult.userContextId);
+	 var userContext = document.getElementById("dataInput").value;
+	 
+	 if(userContext==""){
+		 $("#saveUserContextsStatus").empty();
+		 $("#saveUserContextsStatus").append("<img src='img/Attention-SZ-icon.png' width='20' height='20'> Please enter a usercontext");
+	 } else {
+		 objSaveUserContextsResult = openape.setUserContexts(token, userContext);
+		 $("#saveUserContextsStatus").empty();
+		 $("#saveUserContextsStatus").append("<b>UserContextId: </b>"+ objSaveUserContextsResult.responseText);
+	 }
+	
 }
 
 function loadData() {
@@ -23,51 +31,82 @@ function loadData() {
 		}
 	} else {
 		$('#loadStatus').empty(); 
-		$('#loadStatus').append("Please enter a usercontextId");
+		$('#loadStatus').append("<img src='img/Attention-SZ-icon.png' width='20' height='20'> Please enter a usercontextId");
 	}
 	
 }
 
 function deleteData() {
 	var userContextId =  $('#deleteUserContextIdInput').val();
-	var token = localStorage.getItem("token");
 	
-	var objStatus = openape.deleteUserContexts(token, userContextId);
-	if(objStatus.status == 204){
+	if(userContextId!=""){
+		var token = localStorage.getItem("token");
+		
+		var objStatus = openape.deleteUserContexts(token, userContextId);
+		if(objStatus.status == 204){
+			$('#deleteStatus').empty();
+			$('#deleteStatus').append("Successfully deleted");
+		} 
+		if(objStatus.status == 404){
+			$('#deleteStatus').empty();
+			$('#deleteStatus').append("<img src='img/Attention-SZ-icon.png' width='20' height='20'> Not Found");
+		}
+	} else {
 		$('#deleteStatus').empty();
-		$('#deleteStatus').append("<font style='color:green'>Successfully deleted</font>");
-	} 
-	if(objStatus.status == 404){
-		$('#deleteStatus').empty();
-		$('#deleteStatus').append("<font style='color:red'>Not Found</font>");
+		$('#deleteStatus').append("<img src='img/Attention-SZ-icon.png' width='20' height='20'> Please enter a usercontextId");
 	}
+	
 }
 
 function updateData() {
 	var token = localStorage.getItem("token");
 	var userContextId =  $('#updateUserContextIdInput').val();
 	var userContexts = document.getElementById("updateUserContextTextarea").value;
-	var objUpdateStatus = openape.updateUserContexts(token, userContextId, userContexts);
-		
-	if(userContextId != ""){
-		if(objUpdateStatus.status == 200){
-			$('#updateStatus').empty();
-			$('#updateStatus').append("updated");
-		}
-		
-		if(objUpdateStatus.status == 400){
-			$('#updateStatus').empty();
-			$('#updateStatus').append("update failed");
-		}
+	
+	var isUserContextIdCorrect = false;
+	var isUserContextCorrect = false;
+	
+	
+	if(userContextId==""){
+		isUserContextIdCorrect = false;
+		$('#updateStatus').empty();
+		$('#updateStatus').append("<img src='img/Attention-SZ-icon.png' width='20' height='20'> Please enter a userContextId");
 	} else {
-		$('#updateStatus').empty(); 
-		$('#updateStatus').append("Please enter a usercontextId");
+		isUserContextIdCorrect = true;
 	}
+	
+	if(userContexts==""){
+		isUserContextCorrect = false;
+		$('#updateStatus').empty();
+		$('#updateStatus').append(" <img src='img/Attention-SZ-icon.png' width='20' height='20'> Please enter a userContext");
+	} else {
+		isUserContextCorrect = true;
+	}
+	
+	if(isUserContextCorrect == true && isUserContextIdCorrect == true){
+		var objUpdateStatus = openape.updateUserContexts(token, userContextId, userContexts);
+
+		if(userContextId != ""){
+			if(objUpdateStatus.status == 200){
+				$('#updateStatus').empty();
+				$('#updateStatus').append("updated");
+			}
+			
+			if(objUpdateStatus.status == 400){
+				$('#updateStatus').empty();
+				$('#updateStatus').append(objUpdateStatus.responseText);
+			}
+		} else {
+			$('#updateStatus').empty(); 
+			$('#updateStatus').append("<img src='img/Attention-SZ-icon.png' width='20' height='20'><font style='color:red'> Please enter a usercontextId</font>");
+		}
+	}
+	
 	
 }
 
 
 function Logout() {
-	window.location = protocol+"/start.html";
+	window.location = "http://localhost:4567/start.html";
 }
 

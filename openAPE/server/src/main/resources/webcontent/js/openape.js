@@ -28,43 +28,62 @@
 	    objOpenape.setUser = function (username, email, password) {
 	   		var objUser = new Object();
 	   		var arrRoles = [];
-	   		arrRoles.push("admin");
-	
+	   		
+	   		var objErrResponse = new Object();
+	   		var arrStatusTexts = [];
+	   		
 	   		var isUsernameCorrect = false;
 	   		var isEmailCorrect = false;
 	   		var isPasswordCorrect = false;
-	    		
+	    	
+	   		arrRoles.push("admin");
+	   		
 	   		//check if username is correct
-	   		if(username!=""){
+	   		if(username==""){
+	   			isUsernameCorrect = false;
+	   			arrStatusTexts.push("The username can not be empty");
+	   		} else if(username === undefined){
+	   			isUsernameCorrect = false;
+	   			arrStatusTexts.push("Please enter a username");
+	   		} else {
 	   			objUser.username = username;
 	   			isUsernameCorrect = true;
-	   		} else {
-	   			isUsernameCorrect = false;
 	   		}
 	    		
 	   		//check if email is correct
-	   		if(email!=""){
+	   		if(email==""){  			
+	   			isEmailCorrect=false;
+	   			arrStatusTexts.push("The email can not be empty");
+			} else if(email === undefined){
+				isEmailCorrect = false;
+	   			arrStatusTexts.push("Please enter a email");
+			} else {
 	   			if((validateEmail(email))==true){
 	   	   			objUser.email = email; 			
 	   	   			isEmailCorrect=true;
 	   			} else {
-	   				alert("wrong email");
+	   				arrStatusTexts.push("Wrong email form");
 	   			}
-			}else {
-	   			isEmailCorrect=false;
 	  		}
 	    		
 	   		//check if password is correct
-	   		if(password!=""){
+	   		if(password==""){
+	   			isPasswordCorrect=false;
+	   			arrStatusTexts.push("The password can not be empty");
+	   		} else if(password === undefined){
+	   			arrStatusTexts.push("Please enter a password");
+	   		} else {
 	   			objUser.password = password;
 	   			isPasswordCorrect=true;
-	   		} else {
-	   			isPasswordCorrect=false;
 	   		}    		
 	    		
 	   		if(isPasswordCorrect==true && isEmailCorrect==true && isUsernameCorrect==true){
 	   			objUser.roles = arrRoles;
 	   			return sendUserData(objUser);
+	   		} else {
+	   			objErrResponse.status = 400;
+	   			objErrResponse.statusText = arrStatusTexts;
+	   			return objErrResponse;
 	   		}
 	    }
 
@@ -80,22 +99,37 @@
 	    */
 	    objOpenape.getUser = function (token) {
 	    	var objUserProfile = {};
-	    	$.ajax({
-		        type: 'GET',
-		        async: false,
-		        contentType: 'json',
-		        headers: {
-		            "Authorization": token,
-		        },
-		        url: protocol+"/profile",
-		        dataType: "html",
-		        success: function(data, textStatus, jqXHR){
-		        	objUserProfile = jQuery.parseJSON(data);
-		        },
-		        error: function(jqXHR, textStatus, errorThrown){
-		          console.log(jqXHR, textStatus, errorThrown);
-		        }
-	    	});
+	    	var isTokenCorrect = true;
+	    	
+	    	if(token==""){
+	    		objUserProfile.statusText = "Token can not be empty";
+	    		isTokenCorrect = false;
+	    	} else if(token === undefined){
+	    		isTokenCorrect = false;
+	    		objUserProfile.statusText = "Please enter a token";
+	    	} 
+	    	
+	    	if(isTokenCorrect == true) {
+	    		$.ajax({
+			        type: 'GET',
+			        async: false,
+			        contentType: 'json',
+			        headers: {
+			            "Authorization": token,
+			        },
+			        url: protocol+"/profile",
+			        dataType: "html",
+			        success: function(data, textStatus, jqXHR){
+			        	objUserProfile = jqXHR;
+			        },
+			        error: function(jqXHR, textStatus, errorThrown){
+			        	objUserProfile = jqXHR;
+			        }
+		    	});
+	    	} else {
+	    		objUserProfile.status = 400;
+	    	}
+	    	
 	    	return objUserProfile;
 	    }
 	    
@@ -120,7 +154,41 @@
 		*/
 	    objOpenape.getToken = function (grant_type, username, password) {
 	    	var objToken = {};
-	    	$.ajax({
+	    	var arrStatusText = [];
+	    	
+	    	var isPasswordCorret = true;
+	    	var isUsernameCorrect = true;
+	    	var isGrantTypeCorrect = true;
+	    	
+	    	if(grant_type==""){
+	    		arrStatusText.push("Grant type can not be empty");
+	    		isGrantTypeCorrect = false;
+	    	} else if (grant_type === undefined){
+	    		arrStatusText.push("Please enter a grant type");
+	    		isGrantTypeCorrect = false;
+	    	} else if (grant_type != "password"){
+	    		arrStatusText.push("Grant type should be password");
+	    		isGrantTypeCorrect = false;
+	    	}
+	    	
+	    	if(username == ""){
+	    		arrStatusText.push("Username can not be empty");
+	    		isUsernameCorrect = false;
+	    	} else if(username === undefined){
+	    		arrStatusText.push("Please enter a username");
+	    		isUsernameCorrect = false;
+	    	}
+	    	
+	    	if(password==""){
+	    		arrStatusText.push("Password can not be empty");
+	    		isPasswordCorret = false;
+	    	} else if(password === undefined){
+	    		arrStatusText.push("Please enter a password");
+	    		isUsernameCorrect = false;
+	    	}
+	    	
+	    	if(isPasswordCorret == true && isUsernameCorrect == true && isGrantTypeCorrect == true){
+	    		$.ajax({
 	    	        type: 'POST',
 	    	        async: false,
 	    	        url: protocol+"/token?grant_type="+grant_type+"&username="+username+"&password="+password,
@@ -131,8 +199,11 @@
 	    	        error: function(jqXHR, textStatus, errorThrown){
 	    	           objToken = jqXHR;
 	    	      }
-	    	 });
-	    	
+	    		});
+	    	} else {
+	    		objToken.statusText = arrStatusText;
+	    		objToken.status = 400;
+	    	}
 	    	return objToken;
 	    }
 	    
@@ -155,22 +226,48 @@
 		*/
 	    objOpenape.getUserContexts = function (token, userContextId) {
 	    	var objGetUserContext_Result = {};
-	    	$.ajax({
-	    	        type: 'GET',
-	    	        async: false,
-	    	        contentType: 'application/json',
-	    	        headers: {
-	    	        	 "Authorization": token,
-	    	        },
-	    	        url: protocol+"/api/user-contexts/"+userContextId,
-	    	        success: function(data, textStatus, jqXHR){
-	    	        	objGetUserContext_Result = jqXHR;
-	  
-	    	        },
-	    	        error: function(jqXHR, textStatus, errorThrown){
-	    	        	objGetUserContext_Result = jqXHR;
-	    	      }
-	    	 });
+	    	var arrStatusText = [];
+	    	var isTokenCorrect = true;
+	    	var isuserContextIdCorrect = true;
+	    	
+	    	if(token==""){
+	    		arrStatusText.push("The token can not be empty");
+	    		isTokenCorrect = false;
+	    	} else if(token === undefined){
+	    		arrStatusText.push("Please enter a token");
+	    		isTokenCorrect = false;
+	    	}
+	    	
+	    	if(userContextId==""){
+	    		arrStatusText.push("The usercontextId can not be empty");
+	    		isuserContextIdCorrect = false;
+	    	} else if(userContextId === undefined){
+	    		arrStatusText.push("Please enter a usercontextId");
+	    		isuserContextIdCorrect = false;
+	    	}
+	    	
+	    	if(isTokenCorrect==true && isuserContextIdCorrect == true){
+		    	$.ajax({
+		    	        type: 'GET',
+		    	        async: false,
+		    	        contentType: 'application/json',
+		    	        headers: {
+		    	        	 "Authorization": token,
+		    	        },
+		    	        url: protocol+"/api/user-contexts/"+userContextId,
+		    	        success: function(data, textStatus, jqXHR){
+		    	        	objGetUserContext_Result = jqXHR;
+		  
+		    	        },
+		    	        error: function(jqXHR, textStatus, errorThrown){
+		    	        	objGetUserContext_Result = jqXHR;
+		    	      }
+		    	 });
+	    	} else {
+	    		objGetUserContext_Result.status = 400;
+	    		objGetUserContext_Result.statusText = arrStatusText;
+	    	}
+	    	
 	    	return objGetUserContext_Result;
 	    }
 	    
@@ -187,26 +284,49 @@
 		* @return      
 		* 	 A javascript object with all status information of the set process
 		*/	    
-	    objOpenape.setUserContexts = function (userContexts, token) {
+	    objOpenape.setUserContexts = function (token, userContexts) {
 	    	var objSetUserContext_Result = {};
-	    	$.ajax({
-	    	        type: 'POST',
-	    	        async: false,
-	    	        contentType: 'application/json',
-	    	        headers: {
-	    	        	 "Authorization": token,
-	    	        },
-	    	        url: protocol+"/api/user-contexts",
-	    	        data: userContexts,
-	    	        success: function(data, textStatus, jqXHR){
-	    	        	objSetUserContext_Result.statusText = jqXHR.statusText;
-	    	        	objSetUserContext_Result.userContextId = data;
-	    	        },
-	    	        error: function(jqXHR, textStatus, errorThrown){
-	    	           console.log(jqXHR, textStatus, errorThrown);
-	    	      }
-	    	 });
+	    	var arrStatusText = [];
+	    	var isTokenCorrect = true;
+	    	var isUserContextCorrect = true;
 	    	
+	    	if(token==""){
+	    		arrStatusText.push("The token can not be empty");
+	    		isTokenCorrect = false;
+	    	} else if(token === undefined){
+	    		arrStatusText.push("Please enter a token");
+	    		isTokenCorrect = false;
+	    	}
+	    	
+	    	if(userContexts==""){
+	    		arrStatusText.push("The usercontextId can not be empty");
+	    		isUserContextCorrect = false;
+	    	} else if(userContexts === undefined){
+	    		arrStatusText.push("Please enter a usercontextId");
+	    		isUserContextCorrect = false;
+	    	}
+	    	
+	    	if(isTokenCorrect == true && isUserContextCorrect == true){
+		    	$.ajax({
+		    	        type: 'POST',
+		    	        async: false,
+		    	        contentType: 'application/json',
+		    	        headers: {
+		    	        	 "Authorization": token,
+		    	        },
+		    	        url: protocol+"/api/user-contexts",
+		    	        data: userContexts,
+		    	        success: function(data, textStatus, jqXHR){
+		    	        	objSetUserContext_Result = jqXHR;
+		    	        },
+		    	        error: function(jqXHR, textStatus, errorThrown){
+		    	        	objSetUserContext_Result = jqXHR;
+		    	      }
+		    	 });
+	    	} else {
+	    		objSetUserContext_Result.statusText = arrStatusText;
+	    		objSetUserContext_Result.status = 400;
+	    	}
 	    	return objSetUserContext_Result;
 	    }
 	    
@@ -225,7 +345,32 @@
 		*/	    	    
 	    objOpenape.deleteUserContexts = function (token, userContextId) {
 	    	var objDeleteUserContext_Result = {};
-	    	$.ajax({
+	    	var arrStatusText = [];
+	    	var isTokenCorrect = true;
+	    	var isuserContextIdCorrect = true;
+	    	
+	    	if(token==""){
+	    		arrStatusText.push("The token can not be empty");
+	    		objDeleteUserContext_Result.statusText = arrStatusText;
+	    		isTokenCorrect = false;
+	    	} else if(token === undefined){
+	    		arrStatusText.push("Please enter a token");
+	    		objDeleteUserContext_Result.statusText = arrStatusText;
+	    		isTokenCorrect = false;
+	    	}
+	    	
+	    	if(userContextId==""){
+	    		arrStatusText.push("The usercontextId can not be empty");
+	    		objDeleteUserContext_Result.statusText = arrStatusText;
+	    		isuserContextIdCorrect = false;
+	    	} else if(userContextId === undefined){
+	    		arrStatusText.push("Please enter a usercontextId");
+	    		objDeleteUserContext_Result.statusText = arrStatusText;
+	    		isuserContextIdCorrect = false;
+	    	}
+	    	
+	    	if(isTokenCorrect==true && isuserContextIdCorrect == true){
+	    		$.ajax({
 	    	        type: 'DELETE',
 	    	        async: false,
 	    	        contentType: 'application/json',
@@ -240,6 +385,10 @@
 	    	        	objDeleteUserContext_Result = jqXHR;
 	    	      }
 	    	 });
+	    	} else {
+	    		objDeleteUserContext_Result.status = 400;
+	    	}
+	    	
 	    	
 	    	return objDeleteUserContext_Result;
 	    }
@@ -262,7 +411,37 @@
 		*/	
 	    objOpenape.updateUserContexts = function (token, userContextId, userContexts) {
 	    	var objUpdateUserContext_Result = {};
-	    	$.ajax({
+	    	var arrStatusText = [];
+	    	var isTokenCorrect = true;
+	    	var isUserContextCorrect = true;
+	    	var isuserContextIdCorrect = true;
+	    	
+	    	if(token==""){
+	    		arrStatusText.push("The token can not be empty");
+	    		isTokenCorrect = false;
+	    	} else if(token === undefined){
+	    		arrStatusText.push("Please enter a token");
+	    		isTokenCorrect = false;
+	    	}
+	    	
+	    	if(userContexts==""){
+	    		arrStatusText.push("The usercontext can not be empty");
+	    		isUserContextCorrect = false;
+	    	} else if(userContexts === undefined){
+	    		arrStatusText.push("Please enter a usercontext");
+	    		isUserContextCorrect = false;
+	    	}
+	    	
+	    	if(userContextId==""){
+	    		arrStatusText.push("The usercontextId can not be empty");
+	    		isuserContextIdCorrect = false;
+	    	} else if(userContextId === undefined){
+	    		arrStatusText.push("Please enter a usercontextId");
+	    		isuserContextIdCorrect = false;
+	    	}
+	    	
+	    	if(isTokenCorrect == true && isUserContextCorrect == true && isuserContextIdCorrect == true){
+	    		$.ajax({
 	    	        type: 'PUT',
 	    	        async: false,
 	    	        contentType: 'application/json',
@@ -277,10 +456,14 @@
 	    	        error: function(jqXHR, textStatus, errorThrown){
 	    	        	objUpdateUserContext_Result = jqXHR;
 	    	      }
-	    	 });
-	    	
+	    		});
+	    	} else {
+	    		objUpdateUserContext_Result.status = 400;
+	    		objUpdateUserContext_Result.statusText = arrStatusText;
+	    	}
 	    	return objUpdateUserContext_Result;
-	    }        
+	    }     
+	    
 	    
 	    function sendUserData(user){
 	    	 objSendUserdata = {};
