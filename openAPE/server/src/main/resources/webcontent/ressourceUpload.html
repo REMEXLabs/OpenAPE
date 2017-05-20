@@ -48,11 +48,7 @@
 	<div class="tab">
 	  <button id="btnRegistration" class="tablinks" onclick="Logout()">Logout</button>
 	</div>
-	
-	
 	<div id="Login" class="tabcontent">	</div>
-	
-
 <br>
 <br>
 
@@ -68,29 +64,28 @@
 
 <div style="text-align: center;">
 
-<textarea id="dataInput" name="dataInput" cols="100" rows="8"></textarea> <br>
+<textarea id="dataInput" name="dataInput" cols="100" rows="8" class="form-control"></textarea> <br>
 </div><br>
-<div class="saveUserContextsStatus" id="saveUserContextsStatus"></div>
 <div align="right">
 <button type="button" id="saveData" onclick="saveData()" class="btn btn-primary">store data</button>
 </div>
-   
- 
- 
+<div class="saveUserContextsStatus" id="saveUserContextsStatus" align="center"></div>
  </div>
  
 <div id="tabs-2">
 <table>
   	<tr>
   		<td><b>UserContextId:</b> </td>
-  		<td><input type="text" id="getUserContextIdInput"></td>
-  		<td><button class="btn btn-primary" id="loadUserContexts" onclick="loadData()">Load</button></td>
-  		<td id="loadStatus"></td>
+  		<td><input type="text" id="getUserContextIdInput" class="form-control"></td>
+  		<td><button class="btn btn-primary btn-lg btn-block" id="loadUserContexts" onclick="loadData()">Load</button></td>
   	</tr>
-  		
+  	<tr>
+  		<td colspan="4"><textarea class="form-control" id="getUserContextTextarea" cols="100" rows="8" style="max-width: 100%;" width="100%" disabled></textarea></td>
+  	</tr>
+  	<tr>
+  		<td colspan="4" id="loadStatus" align="center"></td>
+  	</tr>
   </table>
-  <br>
-  <div align="center"><textarea id="getUserContextTextarea" cols="100" rows="8"></textarea></div>
 </div>
   
  
@@ -98,25 +93,28 @@
   <table>
   	<tr>
   		<td><b>UserContextId:</b> </td>
-  		<td><input type="text" id="updateUserContextIdInput"></td>
-  		<td><button class="btn btn-primary" id="updateUserContexts" onclick="updateData()">Update</button></td>
-  		<td id="updateStatus"></td>
+  		<td><input type="text" id="updateUserContextIdInput" class="form-control"></td>
+  		<td><button class="btn btn-primary btn-lg btn-block" id="updateUserContexts" onclick="updateData()">Update</button></td>
+  	</tr>
+  	<tr>
+  		<td colspan="4"><textarea class="form-control" id="updateUserContextTextarea" cols="100" rows="8" ></textarea></td>
   	</tr>		
+  	<tr>
+  		<td colspan="4" id="updateStatus" align="center"></td>
+  	</tr>
   </table>
   <br>
-  <div align="center"><textarea id="updateUserContextTextarea" cols="100" rows="8"></textarea></div>
 </div>
 
   <div id="tabs-4">
  <table>
   	<tr>
   		<td><b>UserContextId:</b> </td>
-  		<td><input type="text" id="deleteUserContextIdInput"></td>
-  		<td><button class="btn btn-primary" id="deleteUserContexts" onclick="deleteData()">Delete</button></td>
+  		<td><input type="text" id="deleteUserContextIdInput" class="form-control"></td>
+  		<td><button id="deleteUserContexts"  class="btn btn-primary btn-lg btn-block" onclick="deleteData()">Delete</button></td>
+  		 <td id="deleteStatus" align="center"></td>
   	</tr>
-  		
   </table>
- <div id="deleteStatus" align="center"></div>
  </div>
 </div>
 
