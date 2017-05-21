@@ -71,7 +71,7 @@ function setUserData(){
 		$('#formGroupRegSecQuestion').addClass( "has-error has-feedback" );
 	}		
 
-	if(isRegSecurityQuestionCorrect == true && isUsernameCorrect == true && isEmailCorrect == true && isPasswordCorrect == true){
+	if(isRegSecurityQuestionCorrect && isUsernameCorrect && isEmailCorrect && isPasswordCorrect){
 		if(regSecurityQuestion == 15){
 			var objSenduserStatus = openape.setUser(username, email, password);
 			if(objSenduserStatus.status == 200){
@@ -153,7 +153,7 @@ function getTokenForLogin(){
 	}
 	
 	
-	if(isUsernameCorrect == true && isPasswordCorrect == true && isSecurityQuestionCorrect == true){
+	if(isUsernameCorrect  && isPasswordCorrect && isSecurityQuestionCorrect){
 		var tokenData = openape.getToken("password", username, password);
 		
 		if(tokenData.status==200){

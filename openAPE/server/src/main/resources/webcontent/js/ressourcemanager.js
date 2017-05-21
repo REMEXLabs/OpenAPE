@@ -1,4 +1,5 @@
-
+//get the protocol and adress of the location. If it´s running local, than the adress should be http://localhost:4567
+var protocol = location.protocol;
 
 function saveData(){
 	 var token = localStorage.getItem("token");	
@@ -27,11 +28,11 @@ function loadData() {
 		} else {
 			$('#getUserContextTextarea').val();
 			$('#loadStatus').empty(); 
-			$('#loadStatus').append(objResponse.responseText);
+			$('#loadStatus').append("<img src='img/Attention-SZ-icon.png' width='20' height='20'> <font class='statusError'>"+objResponse.responseText+"</font>");
 		}
 	} else {
 		$('#loadStatus').empty(); 
-		$('#loadStatus').append("<img src='img/Attention-SZ-icon.png' width='20' height='20'> Please enter a usercontextId");
+		$('#loadStatus').append("<img src='img/Attention-SZ-icon.png' width='20' height='20'><font class='statusError'> Please enter a usercontextId</font>");
 	}
 	
 }
@@ -45,15 +46,15 @@ function deleteData() {
 		var objStatus = openape.deleteUserContexts(token, userContextId);
 		if(objStatus.status == 204){
 			$('#deleteStatus').empty();
-			$('#deleteStatus').append("Successfully deleted");
+			$('#deleteStatus').append("<font class='statusInfo '>Successfully deleted</font>");
 		} 
 		if(objStatus.status == 404){
 			$('#deleteStatus').empty();
-			$('#deleteStatus').append("<img src='img/Attention-SZ-icon.png' width='20' height='20'> Not Found");
+			$('#deleteStatus').append("<img src='img/Attention-SZ-icon.png' width='20' height='20'> <font class='statusError'> Not Found </font>");
 		}
 	} else {
 		$('#deleteStatus').empty();
-		$('#deleteStatus').append("<img src='img/Attention-SZ-icon.png' width='20' height='20'> Please enter a usercontextId");
+		$('#deleteStatus').append("<img src='img/Attention-SZ-icon.png' width='20' height='20'><font class='statusError'>  Please enter a usercontextId </font>");
 	}
 	
 }
@@ -66,11 +67,10 @@ function updateData() {
 	var isUserContextIdCorrect = false;
 	var isUserContextCorrect = false;
 	
-	
 	if(userContextId==""){
 		isUserContextIdCorrect = false;
 		$('#updateStatus').empty();
-		$('#updateStatus').append("<img src='img/Attention-SZ-icon.png' width='20' height='20'> Please enter a userContextId");
+		$('#updateStatus').append("<img src='img/Attention-SZ-icon.png' width='20' height='20'><font class='statusError'> Please enter a userContextId</font>");
 	} else {
 		isUserContextIdCorrect = true;
 	}
@@ -78,35 +78,33 @@ function updateData() {
 	if(userContexts==""){
 		isUserContextCorrect = false;
 		$('#updateStatus').empty();
-		$('#updateStatus').append(" <img src='img/Attention-SZ-icon.png' width='20' height='20'> Please enter a userContext");
+		$('#updateStatus').append(" <img src='img/Attention-SZ-icon.png' width='20' height='20'><font class='statusError'> Please enter a userContext</font>");
 	} else {
 		isUserContextCorrect = true;
 	}
 	
-	if(isUserContextCorrect == true && isUserContextIdCorrect == true){
+	if(isUserContextCorrect && isUserContextIdCorrect){
 		var objUpdateStatus = openape.updateUserContexts(token, userContextId, userContexts);
 
 		if(userContextId != ""){
 			if(objUpdateStatus.status == 200){
 				$('#updateStatus').empty();
-				$('#updateStatus').append("updated");
+				$('#updateStatus').append("<font class='statusInfo'>updated </font>");
 			}
 			
 			if(objUpdateStatus.status == 400){
 				$('#updateStatus').empty();
-				$('#updateStatus').append(objUpdateStatus.responseText);
+				$('#updateStatus').append("<img src='img/Attention-SZ-icon.png' width='20' height='20'> <font class='statusError'>"+objUpdateStatus.responseText+"</font>");
 			}
 		} else {
 			$('#updateStatus').empty(); 
-			$('#updateStatus').append("<img src='img/Attention-SZ-icon.png' width='20' height='20'><font style='color:red'> Please enter a usercontextId</font>");
+			$('#updateStatus').append("<img src='img/Attention-SZ-icon.png' width='20' height='20'><font class='statusError'>Please enter a usercontextId</font>");
 		}
 	}
-	
-	
 }
 
 
 function Logout() {
-	window.location = "http://localhost:4567/start.html";
+	window.location = protocol+"/start.html";
 }
 
