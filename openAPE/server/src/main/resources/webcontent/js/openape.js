@@ -27,6 +27,9 @@
 	     */
 	    objOpenape.setUser = function (username, email, password) {
 	   		var objUser = new Object();
+   			var objSendUserdata = {};
+	    	var objAjaxParameters = {};
+	    	
 	   		var arrRoles = [];
 	   		
 	   		var objErrResponse = new Object();
@@ -77,9 +80,20 @@
 	   			isPasswordCorrect=true;
 	   		}    		
 	    		
-	   		if(isPasswordCorrect==true && isEmailCorrect==true && isUsernameCorrect==true){
+	   		if(isPasswordCorrect && isEmailCorrect && isUsernameCorrect){
 	   			objUser.roles = arrRoles;
-	   			return sendUserData(objUser);
+		    	objAjaxParameters.data = JSON.stringify(objUser);
+		    	objAjaxParameters.type = "POST";
+		    	objAjaxParameters.url = protocol+"/users";
+		    	objSendUserdata = databaseCommunication(objAjaxParameters);
+		    	
+		    	if(objSendUserdata.responseText.includes("username_1 dup key")){
+ 	        	   objSendUserdata.statusText = "User with this username already exists";
+ 		       } else  if(objSendUserdata.responseText.includes("email_1 dup key")){
+ 		    	   objSendUserdata.statusText = "User with this email already exists";
+ 		       } 
+	   			
+	   			return objSendUserdata;
 	   		} else {
 	   			objErrResponse.status = 400;
 	   			objErrResponse.statusText = arrStatusTexts;
@@ -99,6 +113,8 @@
 	    */
 	    objOpenape.getUser = function (token) {
 	    	var objUserProfile = {};
+	    	var objAjaxParameters = {};
+	    	
 	    	var isTokenCorrect = true;
 	    	
 	    	if(token==""){
@@ -109,23 +125,12 @@
 	    		objUserProfile.statusText = "Please enter a token";
 	    	} 
 	    	
-	    	if(isTokenCorrect == true) {
-	    		$.ajax({
-			        type: 'GET',
-			        async: false,
-			        contentType: 'json',
-			        headers: {
-			            "Authorization": token,
-			        },
-			        url: protocol+"/profile",
-			        dataType: "html",
-			        success: function(data, textStatus, jqXHR){
-			        	objUserProfile = jqXHR;
-			        },
-			        error: function(jqXHR, textStatus, errorThrown){
-			        	objUserProfile = jqXHR;
-			        }
-		    	});
+	    	if(isTokenCorrect) {
+	    		objAjaxParameters.type = "GET";
+	    		objAjaxParameters.url = protocol+"/profile";
+	    		objAjaxParameters.token = token;
+	    		objUserProfile = databaseCommunication(objAjaxParameters);
+	    		
 	    	} else {
 	    		objUserProfile.status = 400;
 	    	}
@@ -154,6 +159,8 @@
 		*/
 	    objOpenape.getToken = function (grant_type, username, password) {
 	    	var objToken = {};
+	    	var objAjaxParameters = {};
+	    	
 	    	var arrStatusText = [];
 	    	
 	    	var isPasswordCorret = true;
@@ -187,19 +194,10 @@
 	    		isUsernameCorrect = false;
 	    	}
 	    	
-	    	if(isPasswordCorret == true && isUsernameCorrect == true && isGrantTypeCorrect == true){
-	    		$.ajax({
-	    	        type: 'POST',
-	    	        async: false,
-	    	        url: protocol+"/token?grant_type="+grant_type+"&username="+username+"&password="+password,
-	    	        dataType: "html",
-	    	        success: function(data, textStatus, jqXHR){
-	    	        	objToken = jqXHR;
-	    	        },
-	    	        error: function(jqXHR, textStatus, errorThrown){
-	    	           objToken = jqXHR;
-	    	      }
-	    		});
+	    	if(isPasswordCorret && isUsernameCorrect && isGrantTypeCorrect){
+	    		objAjaxParameters.type = "POST";
+	    		objAjaxParameters.url = protocol+"/token?grant_type="+grant_type+"&username="+username+"&password="+password;
+	    		objToken = databaseCommunication(objAjaxParameters);
 	    	} else {
 	    		objToken.statusText = arrStatusText;
 	    		objToken.status = 400;
@@ -226,6 +224,8 @@
 		*/
 	    objOpenape.getUserContexts = function (token, userContextId) {
 	    	var objGetUserContext_Result = {};
+	    	var objAjaxParameters = {};
+	    	
 	    	var arrStatusText = [];
 	    	var isTokenCorrect = true;
 	    	var isuserContextIdCorrect = true;
@@ -246,23 +246,11 @@
 	    		isuserContextIdCorrect = false;
 	    	}
 	    	
-	    	if(isTokenCorrect==true && isuserContextIdCorrect == true){
-		    	$.ajax({
-		    	        type: 'GET',
-		    	        async: false,
-		    	        contentType: 'application/json',
-		    	        headers: {
-		    	        	 "Authorization": token,
-		    	        },
-		    	        url: protocol+"/api/user-contexts/"+userContextId,
-		    	        success: function(data, textStatus, jqXHR){
-		    	        	objGetUserContext_Result = jqXHR;
-		  
-		    	        },
-		    	        error: function(jqXHR, textStatus, errorThrown){
-		    	        	objGetUserContext_Result = jqXHR;
-		    	      }
-		    	 });
+	    	if(isTokenCorrect && isuserContextIdCorrect){
+	    		objAjaxParameters.type = "GET";
+	    		objAjaxParameters.url = protocol+"/api/user-contexts/"+userContextId;
+	    		objAjaxParameters.token = token;
+	    		objGetUserContext_Result = databaseCommunication(objAjaxParameters);
 	    	} else {
 	    		objGetUserContext_Result.status = 400;
 	    		objGetUserContext_Result.statusText = arrStatusText;
@@ -286,6 +274,8 @@
 		*/	    
 	    objOpenape.setUserContexts = function (token, userContexts) {
 	    	var objSetUserContext_Result = {};
+	    	var objAjaxParameters = {};
+	    	
 	    	var arrStatusText = [];
 	    	var isTokenCorrect = true;
 	    	var isUserContextCorrect = true;
@@ -306,23 +296,12 @@
 	    		isUserContextCorrect = false;
 	    	}
 	    	
-	    	if(isTokenCorrect == true && isUserContextCorrect == true){
-		    	$.ajax({
-		    	        type: 'POST',
-		    	        async: false,
-		    	        contentType: 'application/json',
-		    	        headers: {
-		    	        	 "Authorization": token,
-		    	        },
-		    	        url: protocol+"/api/user-contexts",
-		    	        data: userContexts,
-		    	        success: function(data, textStatus, jqXHR){
-		    	        	objSetUserContext_Result = jqXHR;
-		    	        },
-		    	        error: function(jqXHR, textStatus, errorThrown){
-		    	        	objSetUserContext_Result = jqXHR;
-		    	      }
-		    	 });
+	    	if(isTokenCorrect && isUserContextCorrect){
+	    		objAjaxParameters.data = userContexts;
+	    		objAjaxParameters.type = "POST";
+	    		objAjaxParameters.url = protocol+"/api/user-contexts";
+	    		objAjaxParameters.token = token;
+	    		objSetUserContext_Result = databaseCommunication(objAjaxParameters);
 	    	} else {
 	    		objSetUserContext_Result.statusText = arrStatusText;
 	    		objSetUserContext_Result.status = 400;
@@ -345,7 +324,10 @@
 		*/	    	    
 	    objOpenape.deleteUserContexts = function (token, userContextId) {
 	    	var objDeleteUserContext_Result = {};
+	    	var objAjaxParameters = {};
+	    	
 	    	var arrStatusText = [];
+	    	
 	    	var isTokenCorrect = true;
 	    	var isuserContextIdCorrect = true;
 	    	
@@ -369,27 +351,14 @@
 	    		isuserContextIdCorrect = false;
 	    	}
 	    	
-	    	if(isTokenCorrect==true && isuserContextIdCorrect == true){
-	    		$.ajax({
-	    	        type: 'DELETE',
-	    	        async: false,
-	    	        contentType: 'application/json',
-	    	        headers: {
-	    	        	 "Authorization": token,
-	    	        },
-	    	        url: protocol+"/api/user-contexts/"+userContextId,
-	    	        success: function(data, textStatus, jqXHR){
-	    	        	objDeleteUserContext_Result = jqXHR;
-	    	        },
-	    	        error: function(jqXHR, textStatus, errorThrown){
-	    	        	objDeleteUserContext_Result = jqXHR;
-	    	      }
-	    	 });
+	    	if(isTokenCorrect && isuserContextIdCorrect ){
+	    		objAjaxParameters.type = "DELETE";
+	    		objAjaxParameters.url = protocol+"/api/user-contexts/"+userContextId,
+	    		objAjaxParameters.token = token;
+	    		objDeleteUserContext_Result = databaseCommunication(objAjaxParameters);
 	    	} else {
 	    		objDeleteUserContext_Result.status = 400;
 	    	}
-	    	
-	    	
 	    	return objDeleteUserContext_Result;
 	    }
 	    
@@ -411,6 +380,7 @@
 		*/	
 	    objOpenape.updateUserContexts = function (token, userContextId, userContexts) {
 	    	var objUpdateUserContext_Result = {};
+	    	var objAjaxParameters = {};
 	    	var arrStatusText = [];
 	    	var isTokenCorrect = true;
 	    	var isUserContextCorrect = true;
@@ -440,23 +410,12 @@
 	    		isuserContextIdCorrect = false;
 	    	}
 	    	
-	    	if(isTokenCorrect == true && isUserContextCorrect == true && isuserContextIdCorrect == true){
-	    		$.ajax({
-	    	        type: 'PUT',
-	    	        async: false,
-	    	        contentType: 'application/json',
-	    	        headers: {
-	    	        	 "Authorization": token,
-	    	        },
-	    	        url: protocol+"/api/user-contexts/"+userContextId,
-	    	        data: userContexts,
-	    	        success: function(data, textStatus, jqXHR){
-	    	        	objUpdateUserContext_Result = jqXHR;
-	    	        },
-	    	        error: function(jqXHR, textStatus, errorThrown){
-	    	        	objUpdateUserContext_Result = jqXHR;
-	    	      }
-	    		});
+	    	if(isTokenCorrect && isUserContextCorrect && isuserContextIdCorrect ){
+	    		objAjaxParameters.data = userContexts;
+	    		objAjaxParameters.type = "PUT";
+	    		objAjaxParameters.url = protocol+"/api/user-contexts/"+userContextId;
+	    		objAjaxParameters.token = token;
+	    		objUpdateUserContext_Result = databaseCommunication(objAjaxParameters);
 	    	} else {
 	    		objUpdateUserContext_Result.status = 400;
 	    		objUpdateUserContext_Result.statusText = arrStatusText;
@@ -464,30 +423,65 @@
 	    	return objUpdateUserContext_Result;
 	    }     
 	    
-	    
-	    function sendUserData(user){
-	    	 objSendUserdata = {};
-	    	 $.ajax({
-	    	        type: 'POST',
-	    	        async: false,
-	    	        contentType: 'json',
-	    	        url: protocol+"/users",
-	    	        dataType: "html",
-	    	        data: JSON.stringify(user),
-	    	        success: function(data, textStatus, jqXHR){
-	    				localStorage.setItem("token", data.substring(17, 41));
-	    				objSendUserdata.status =  jqXHR.status;
-	    	        },
-	    	        error: function(jqXHR, textStatus, errorThrown){
-	    	           objSendUserdata.status = jqXHR.status;
-	    	           if(jqXHR.responseText.includes("username_1 dup key")==true){
-	    	        	   objSendUserdata.statusText = "User with this username already exists";
-	    		       } else  if(jqXHR.responseText.includes("email_1 dup key")==true){
-	    		    	   objSendUserdata.statusText = "User with this email already exists";
-	    		       }
-	    	        }
-	    	  });
-	    	 return objSendUserdata;
+	    function databaseCommunication (objAjaxParameters) {
+	    	var objStatus = {};
+	    	var request =  
+	    	{
+	    		async: false,
+		    	contentType: 'application/json',
+		    	success: function(data, textStatus, jqXHR){
+		    		objStatus = jqXHR;
+		    	},
+		    	error: function(jqXHR, textStatus, errorThrown){
+		    		objStatus = jqXHR;
+		    	}
+	    	}
+	    	
+	    	if(objAjaxParameters.type == "PUT") {
+	    		request.data = objAjaxParameters.data;
+	    		request.type = objAjaxParameters.type;
+	    		request.url = objAjaxParameters.url;
+	    		
+	    		if (objAjaxParameters.token !== undefined) {
+	    			request.headers = {
+			    	   	 "Authorization": objAjaxParameters.token,
+			    	}
+	    		}
+	    	}  else if(objAjaxParameters.type == "DELETE"){
+	    		request.type = objAjaxParameters.type;
+	    		request.url = objAjaxParameters.url;
+	    		
+	    		if (objAjaxParameters.token !== undefined) {
+	    			request.headers = {
+			    	   	 "Authorization": objAjaxParameters.token,
+			    	}
+	    		}
+	    	} else if(objAjaxParameters.type == "GET"){
+	    		request.type = objAjaxParameters.type;
+	    		request.url = objAjaxParameters.url;
+	    		
+	    		if (objAjaxParameters.token !== undefined) {
+	    			request.headers = {
+			    	   	 "Authorization": objAjaxParameters.token,
+			    	}
+	    		}
+	    	} else if(objAjaxParameters.type == "POST"){
+	    		request.type = objAjaxParameters.type;
+	    		request.url = objAjaxParameters.url;
+	    		
+	    		if (objAjaxParameters.token !== undefined) {
+	    			request.headers = {
+			    	   	 "Authorization": objAjaxParameters.token,
+			    	}
+	    		}
+	    		
+	    		if (objAjaxParameters.data !== undefined) {
+	    			request.data = objAjaxParameters.data;
+	    		}
+	    	}
+	    	
+	    	$.ajax(request);
+	    	return objStatus;
 	    }
 	
 	    function validateEmail(email) {

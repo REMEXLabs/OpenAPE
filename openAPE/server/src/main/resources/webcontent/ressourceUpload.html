@@ -44,7 +44,7 @@
 <body >
 
 <div class="main">	
-	<div align="center"><h1><font>OpenAPE</font></h1></div><br>
+	<div align="center"><h1><font class="header">OpenAPE</font></h1></div><br>
 	<div class="tab">
 	  <button id="btnRegistration" class="tablinks" onclick="Logout()">Logout</button>
 	</div>
@@ -76,7 +76,7 @@
 <table>
   	<tr>
   		<td><b>UserContextId:</b> </td>
-  		<td><input type="text" id="getUserContextIdInput" class="form-control"></td>
+  		<td><input type="text" id="getUserContextIdInput" class="form-control" placeholder="UsercontextId"></td>
   		<td><button class="btn btn-primary btn-lg btn-block" id="loadUserContexts" onclick="loadData()">Load</button></td>
   	</tr>
   	<tr>
@@ -93,7 +93,7 @@
   <table>
   	<tr>
   		<td><b>UserContextId:</b> </td>
-  		<td><input type="text" id="updateUserContextIdInput" class="form-control"></td>
+  		<td><input type="text" id="updateUserContextIdInput" class="form-control" placeholder="UsercontextId"></td>
   		<td><button class="btn btn-primary btn-lg btn-block" id="updateUserContexts" onclick="updateData()">Update</button></td>
   	</tr>
   	<tr>
@@ -110,9 +110,9 @@
  <table>
   	<tr>
   		<td><b>UserContextId:</b> </td>
-  		<td><input type="text" id="deleteUserContextIdInput" class="form-control"></td>
+  		<td><input type="text" id="deleteUserContextIdInput" class="form-control" placeholder="UsercontextId"></td>
   		<td><button id="deleteUserContexts"  class="btn btn-primary btn-lg btn-block" onclick="deleteData()">Delete</button></td>
-  		 <td id="deleteStatus" align="center"></td>
+  		<td id="deleteStatus" align="center"></td>
   	</tr>
   </table>
  </div>
