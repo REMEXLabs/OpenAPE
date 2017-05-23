@@ -71,10 +71,13 @@ function setUserData(){
 		$('#formGroupRegSecQuestion').addClass( "has-error has-feedback" );
 	}		
 
-	if(isRegSecurityQuestionCorrect == true && isUsernameCorrect == true && isEmailCorrect == true && isPasswordCorrect == true){
+	if(isRegSecurityQuestionCorrect && isUsernameCorrect && isEmailCorrect && isPasswordCorrect){
 		if(regSecurityQuestion == 15){
 			var objSenduserStatus = openape.setUser(username, email, password);
 			if(objSenduserStatus.status == 200){
+				var tokenData = openape.getToken("password", username, password);
+				var token = JSON.parse(tokenData.responseText).access_token;
+				localStorage.setItem("token", token);
 				window.location = protocol+"/ressourceUpload.html";
 				$('#registrationErrorMsg').empty();
 			} else {
@@ -145,18 +148,17 @@ function getTokenForLogin(){
 		isSecurityQuestionCorrect = true;
 	} else {
 		$('#errSecQuestion').show();
-		
 		$('#formGroupSecQuestion').addClass( "has-error has-feedback" );
 		isSecurityQuestionCorrect = false;
 	}
 	
 	
-	if(isUsernameCorrect == true && isPasswordCorrect == true && isSecurityQuestionCorrect == true){
+	if(isUsernameCorrect  && isPasswordCorrect && isSecurityQuestionCorrect){
 		var tokenData = openape.getToken("password", username, password);
 		
 		if(tokenData.status==200){
 			var token = JSON.parse(tokenData.responseText).access_token;
-			var userID = openape.getUser(token).id;
+			var userID = JSON.parse(openape.getUser(token).responseText).id;
 			var securityQuestion = $("#securityQuestion").val();
 			
 			localStorage.setItem("token", token);
@@ -178,6 +180,3 @@ function getTokenForLogin(){
 		}
 	}
 }
-
-
-

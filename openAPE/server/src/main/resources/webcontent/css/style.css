@@ -17,9 +17,21 @@ table {
   border-spacing:55px 20px;
 }
 
-font {
+font.header {
 	color: #2B669A;
 	font-size: 28pt;
+	font-weight: bold;
+}
+
+.statusError {
+	color: red;
+	font-size: 12pt;
+	font-weight: bold;
+}
+
+.statusInfo {
+	color: green;
+	font-size: 12pt;
 	font-weight: bold;
 }
 

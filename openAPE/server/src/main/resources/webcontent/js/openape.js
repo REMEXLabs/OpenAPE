@@ -27,44 +27,77 @@
 	     */
 	    objOpenape.setUser = function (username, email, password) {
 	   		var objUser = new Object();
+   			var objSendUserdata = {};
+	    	var objAjaxParameters = {};
+	    	
 	   		var arrRoles = [];
-	   		arrRoles.push("admin");
-	
+	   		
+	   		var objErrResponse = new Object();
+	   		var arrStatusTexts = [];
+	   		
 	   		var isUsernameCorrect = false;
 	   		var isEmailCorrect = false;
 	   		var isPasswordCorrect = false;
-	    		
+	    	
+	   		arrRoles.push("admin");
+	   		
 	   		//check if username is correct
-	   		if(username!=""){
+	   		if(username==""){
+	   			isUsernameCorrect = false;
+	   			arrStatusTexts.push("The username can not be empty");
+	   		} else if(username === undefined){
+	   			isUsernameCorrect = false;
+	   			arrStatusTexts.push("Please enter a username");
+	   		} else {
 	   			objUser.username = username;
 	   			isUsernameCorrect = true;
-	   		} else {
-	   			isUsernameCorrect = false;
 	   		}
 	    		
 	   		//check if email is correct
-	   		if(email!=""){
+	   		if(email==""){  			
+	   			isEmailCorrect=false;
+	   			arrStatusTexts.push("The email can not be empty");
+			} else if(email === undefined){
+				isEmailCorrect = false;
+	   			arrStatusTexts.push("Please enter a email");
+			} else {
 	   			if((validateEmail(email))==true){
 	   	   			objUser.email = email; 			
 	   	   			isEmailCorrect=true;
 	   			} else {
-	   				alert("wrong email");
+	   				arrStatusTexts.push("Wrong email form");
 	   			}
-			}else {
-	   			isEmailCorrect=false;
 	  		}
 	    		
 	   		//check if password is correct
-	   		if(password!=""){
+	   		if(password==""){
+	   			isPasswordCorrect=false;
+	   			arrStatusTexts.push("The password can not be empty");
+	   		} else if(password === undefined){
+	   			arrStatusTexts.push("Please enter a password");
+	   		} else {
 	   			objUser.password = password;
 	   			isPasswordCorrect=true;
-	   		} else {
-	   			isPasswordCorrect=false;
 	   		}    		
 	    		
-	   		if(isPasswordCorrect==true && isEmailCorrect==true && isUsernameCorrect==true){
+	   		if(isPasswordCorrect && isEmailCorrect && isUsernameCorrect){
 	   			objUser.roles = arrRoles;
-	   			return sendUserData(objUser);
+		    	objAjaxParameters.data = JSON.stringify(objUser);
+		    	objAjaxParameters.type = "POST";
+		    	objAjaxParameters.url = protocol+"/users";
+		    	objSendUserdata = databaseCommunication(objAjaxParameters);
+		    	
+		    	if(objSendUserdata.responseText.includes("username_1 dup key")){
+ 	        	   objSendUserdata.statusText = "User with this username already exists";
+ 		       } else  if(objSendUserdata.responseText.includes("email_1 dup key")){
+ 		    	   objSendUserdata.statusText = "User with this email already exists";
+ 		       } 
+	   			
+	   			return objSendUserdata;
+	   		} else {
+	   			objErrResponse.status = 400;
+	   			objErrResponse.statusText = arrStatusTexts;
+	   			return objErrResponse;
 	   		}
 	    }
 
@@ -80,22 +113,28 @@
 	    */
 	    objOpenape.getUser = function (token) {
 	    	var objUserProfile = {};
-	    	$.ajax({
-		        type: 'GET',
-		        async: false,
-		        contentType: 'json',
-		        headers: {
-		            "Authorization": token,
-		        },
-		        url: protocol+"/profile",
-		        dataType: "html",
-		        success: function(data, textStatus, jqXHR){
-		        	objUserProfile = jQuery.parseJSON(data);
-		        },
-		        error: function(jqXHR, textStatus, errorThrown){
-		          console.log(jqXHR, textStatus, errorThrown);
-		        }
-	    	});
+	    	var objAjaxParameters = {};
+	    	
+	    	var isTokenCorrect = true;
+	    	
+	    	if(token==""){
+	    		objUserProfile.statusText = "Token can not be empty";
+	    		isTokenCorrect = false;
+	    	} else if(token === undefined){
+	    		isTokenCorrect = false;
+	    		objUserProfile.statusText = "Please enter a token";
+	    	} 
+	    	
+	    	if(isTokenCorrect) {
+	    		objAjaxParameters.type = "GET";
+	    		objAjaxParameters.url = protocol+"/profile";
+	    		objAjaxParameters.token = token;
+	    		objUserProfile = databaseCommunication(objAjaxParameters);
+	    		
+	    	} else {
+	    		objUserProfile.status = 400;
+	    	}
+	    	
 	    	return objUserProfile;
 	    }
 	    
@@ -120,19 +159,49 @@
 		*/
 	    objOpenape.getToken = function (grant_type, username, password) {
 	    	var objToken = {};
-	    	$.ajax({
-	    	        type: 'POST',
-	    	        async: false,
-	    	        url: protocol+"/token?grant_type="+grant_type+"&username="+username+"&password="+password,
-	    	        dataType: "html",
-	    	        success: function(data, textStatus, jqXHR){
-	    	        	objToken = jqXHR;
-	    	        },
-	    	        error: function(jqXHR, textStatus, errorThrown){
-	    	           objToken = jqXHR;
-	    	      }
-	    	 });
+	    	var objAjaxParameters = {};
 	    	
+	    	var arrStatusText = [];
+	    	
+	    	var isPasswordCorret = true;
+	    	var isUsernameCorrect = true;
+	    	var isGrantTypeCorrect = true;
+	    	
+	    	if(grant_type==""){
+	    		arrStatusText.push("Grant type can not be empty");
+	    		isGrantTypeCorrect = false;
+	    	} else if (grant_type === undefined){
+	    		arrStatusText.push("Please enter a grant type");
+	    		isGrantTypeCorrect = false;
+	    	} else if (grant_type != "password"){
+	    		arrStatusText.push("Grant type should be password");
+	    		isGrantTypeCorrect = false;
+	    	}
+	    	
+	    	if(username == ""){
+	    		arrStatusText.push("Username can not be empty");
+	    		isUsernameCorrect = false;
+	    	} else if(username === undefined){
+	    		arrStatusText.push("Please enter a username");
+	    		isUsernameCorrect = false;
+	    	}
+	    	
+	    	if(password==""){
+	    		arrStatusText.push("Password can not be empty");
+	    		isPasswordCorret = false;
+	    	} else if(password === undefined){
+	    		arrStatusText.push("Please enter a password");
+	    		isUsernameCorrect = false;
+	    	}
+	    	
+	    	if(isPasswordCorret && isUsernameCorrect && isGrantTypeCorrect){
+	    		objAjaxParameters.type = "POST";
+	    		objAjaxParameters.url = protocol+"/token?grant_type="+grant_type+"&username="+username+"&password="+password;
+	    		objToken = databaseCommunication(objAjaxParameters);
+	    	} else {
+	    		objToken.statusText = arrStatusText;
+	    		objToken.status = 400;
+	    	}
 	    	return objToken;
 	    }
 	    
@@ -155,22 +224,38 @@
 		*/
 	    objOpenape.getUserContexts = function (token, userContextId) {
 	    	var objGetUserContext_Result = {};
-	    	$.ajax({
-	    	        type: 'GET',
-	    	        async: false,
-	    	        contentType: 'application/json',
-	    	        headers: {
-	    	        	 "Authorization": token,
-	    	        },
-	    	        url: protocol+"/api/user-contexts/"+userContextId,
-	    	        success: function(data, textStatus, jqXHR){
-	    	        	objGetUserContext_Result = jqXHR;
-	  
-	    	        },
-	    	        error: function(jqXHR, textStatus, errorThrown){
-	    	        	objGetUserContext_Result = jqXHR;
-	    	      }
-	    	 });
+	    	var objAjaxParameters = {};
+	    	
+	    	var arrStatusText = [];
+	    	var isTokenCorrect = true;
+	    	var isuserContextIdCorrect = true;
+	    	
+	    	if(token==""){
+	    		arrStatusText.push("The token can not be empty");
+	    		isTokenCorrect = false;
+	    	} else if(token === undefined){
+	    		arrStatusText.push("Please enter a token");
+	    		isTokenCorrect = false;
+	    	}
+	    	
+	    	if(userContextId==""){
+	    		arrStatusText.push("The usercontextId can not be empty");
+	    		isuserContextIdCorrect = false;
+	    	} else if(userContextId === undefined){
+	    		arrStatusText.push("Please enter a usercontextId");
+	    		isuserContextIdCorrect = false;
+	    	}
+	    	
+	    	if(isTokenCorrect && isuserContextIdCorrect){
+	    		objAjaxParameters.type = "GET";
+	    		objAjaxParameters.url = protocol+"/api/user-contexts/"+userContextId;
+	    		objAjaxParameters.token = token;
+	    		objGetUserContext_Result = databaseCommunication(objAjaxParameters);
+	    	} else {
+	    		objGetUserContext_Result.status = 400;
+	    		objGetUserContext_Result.statusText = arrStatusText;
+	    	}
+	    	
 	    	return objGetUserContext_Result;
 	    }
 	    
@@ -187,26 +272,40 @@
 		* @return      
 		* 	 A javascript object with all status information of the set process
 		*/	    
-	    objOpenape.setUserContexts = function (userContexts, token) {
+	    objOpenape.setUserContexts = function (token, userContexts) {
 	    	var objSetUserContext_Result = {};
-	    	$.ajax({
-	    	        type: 'POST',
-	    	        async: false,
-	    	        contentType: 'application/json',
-	    	        headers: {
-	    	        	 "Authorization": token,
-	    	        },
-	    	        url: protocol+"/api/user-contexts",
-	    	        data: userContexts,
-	    	        success: function(data, textStatus, jqXHR){
-	    	        	objSetUserContext_Result.statusText = jqXHR.statusText;
-	    	        	objSetUserContext_Result.userContextId = data;
-	    	        },
-	    	        error: function(jqXHR, textStatus, errorThrown){
-	    	           console.log(jqXHR, textStatus, errorThrown);
-	    	      }
-	    	 });
+	    	var objAjaxParameters = {};
 	    	
+	    	var arrStatusText = [];
+	    	var isTokenCorrect = true;
+	    	var isUserContextCorrect = true;
+	    	
+	    	if(token==""){
+	    		arrStatusText.push("The token can not be empty");
+	    		isTokenCorrect = false;
+	    	} else if(token === undefined){
+	    		arrStatusText.push("Please enter a token");
+	    		isTokenCorrect = false;
+	    	}
+	    	
+	    	if(userContexts==""){
+	    		arrStatusText.push("The usercontextId can not be empty");
+	    		isUserContextCorrect = false;
+	    	} else if(userContexts === undefined){
+	    		arrStatusText.push("Please enter a usercontextId");
+	    		isUserContextCorrect = false;
+	    	}
+	    	
+	    	if(isTokenCorrect && isUserContextCorrect){
+	    		objAjaxParameters.data = userContexts;
+	    		objAjaxParameters.type = "POST";
+	    		objAjaxParameters.url = protocol+"/api/user-contexts";
+	    		objAjaxParameters.token = token;
+	    		objSetUserContext_Result = databaseCommunication(objAjaxParameters);
+	    	} else {
+	    		objSetUserContext_Result.statusText = arrStatusText;
+	    		objSetUserContext_Result.status = 400;
+	    	}
 	    	return objSetUserContext_Result;
 	    }
 	    
@@ -225,22 +324,41 @@
 		*/	    	    
 	    objOpenape.deleteUserContexts = function (token, userContextId) {
 	    	var objDeleteUserContext_Result = {};
-	    	$.ajax({
-	    	        type: 'DELETE',
-	    	        async: false,
-	    	        contentType: 'application/json',
-	    	        headers: {
-	    	        	 "Authorization": token,
-	    	        },
-	    	        url: protocol+"/api/user-contexts/"+userContextId,
-	    	        success: function(data, textStatus, jqXHR){
-	    	        	objDeleteUserContext_Result = jqXHR;
-	    	        },
-	    	        error: function(jqXHR, textStatus, errorThrown){
-	    	        	objDeleteUserContext_Result = jqXHR;
-	    	      }
-	    	 });
+	    	var objAjaxParameters = {};
 	    	
+	    	var arrStatusText = [];
+	    	
+	    	var isTokenCorrect = true;
+	    	var isuserContextIdCorrect = true;
+	    	
+	    	if(token==""){
+	    		arrStatusText.push("The token can not be empty");
+	    		objDeleteUserContext_Result.statusText = arrStatusText;
+	    		isTokenCorrect = false;
+	    	} else if(token === undefined){
+	    		arrStatusText.push("Please enter a token");
+	    		objDeleteUserContext_Result.statusText = arrStatusText;
+	    		isTokenCorrect = false;
+	    	}
+	    	
+	    	if(userContextId==""){
+	    		arrStatusText.push("The usercontextId can not be empty");
+	    		objDeleteUserContext_Result.statusText = arrStatusText;
+	    		isuserContextIdCorrect = false;
+	    	} else if(userContextId === undefined){
+	    		arrStatusText.push("Please enter a usercontextId");
+	    		objDeleteUserContext_Result.statusText = arrStatusText;
+	    		isuserContextIdCorrect = false;
+	    	}
+	    	
+	    	if(isTokenCorrect && isuserContextIdCorrect ){
+	    		objAjaxParameters.type = "DELETE";
+	    		objAjaxParameters.url = protocol+"/api/user-contexts/"+userContextId,
+	    		objAjaxParameters.token = token;
+	    		objDeleteUserContext_Result = databaseCommunication(objAjaxParameters);
+	    	} else {
+	    		objDeleteUserContext_Result.status = 400;
+	    	}
 	    	return objDeleteUserContext_Result;
 	    }
 	    
@@ -262,49 +380,108 @@
 		*/	
 	    objOpenape.updateUserContexts = function (token, userContextId, userContexts) {
 	    	var objUpdateUserContext_Result = {};
-	    	$.ajax({
-	    	        type: 'PUT',
-	    	        async: false,
-	    	        contentType: 'application/json',
-	    	        headers: {
-	    	        	 "Authorization": token,
-	    	        },
-	    	        url: protocol+"/api/user-contexts/"+userContextId,
-	    	        data: userContexts,
-	    	        success: function(data, textStatus, jqXHR){
-	    	        	objUpdateUserContext_Result = jqXHR;
-	    	        },
-	    	        error: function(jqXHR, textStatus, errorThrown){
-	    	        	objUpdateUserContext_Result = jqXHR;
-	    	      }
-	    	 });
+	    	var objAjaxParameters = {};
+	    	var arrStatusText = [];
+	    	var isTokenCorrect = true;
+	    	var isUserContextCorrect = true;
+	    	var isuserContextIdCorrect = true;
 	    	
+	    	if(token==""){
+	    		arrStatusText.push("The token can not be empty");
+	    		isTokenCorrect = false;
+	    	} else if(token === undefined){
+	    		arrStatusText.push("Please enter a token");
+	    		isTokenCorrect = false;
+	    	}
+	    	
+	    	if(userContexts==""){
+	    		arrStatusText.push("The usercontext can not be empty");
+	    		isUserContextCorrect = false;
+	    	} else if(userContexts === undefined){
+	    		arrStatusText.push("Please enter a usercontext");
+	    		isUserContextCorrect = false;
+	    	}
+	    	
+	    	if(userContextId==""){
+	    		arrStatusText.push("The usercontextId can not be empty");
+	    		isuserContextIdCorrect = false;
+	    	} else if(userContextId === undefined){
+	    		arrStatusText.push("Please enter a usercontextId");
+	    		isuserContextIdCorrect = false;
+	    	}
+	    	
+	    	if(isTokenCorrect && isUserContextCorrect && isuserContextIdCorrect ){
+	    		objAjaxParameters.data = userContexts;
+	    		objAjaxParameters.type = "PUT";
+	    		objAjaxParameters.url = protocol+"/api/user-contexts/"+userContextId;
+	    		objAjaxParameters.token = token;
+	    		objUpdateUserContext_Result = databaseCommunication(objAjaxParameters);
+	    	} else {
+	    		objUpdateUserContext_Result.status = 400;
+	    		objUpdateUserContext_Result.statusText = arrStatusText;
+	    	}
 	    	return objUpdateUserContext_Result;
-	    }        
+	    }     
 	    
-	    function sendUserData(user){
-	    	 objSendUserdata = {};
-	    	 $.ajax({
-	    	        type: 'POST',
-	    	        async: false,
-	    	        contentType: 'json',
-	    	        url: protocol+"/users",
-	    	        dataType: "html",
-	    	        data: JSON.stringify(user),
-	    	        success: function(data, textStatus, jqXHR){
-	    				localStorage.setItem("token", data.substring(17, 41));
-	    				objSendUserdata.status =  jqXHR.status;
-	    	        },
-	    	        error: function(jqXHR, textStatus, errorThrown){
-	    	           objSendUserdata.status = jqXHR.status;
-	    	           if(jqXHR.responseText.includes("username_1 dup key")==true){
-	    	        	   objSendUserdata.statusText = "User with this username already exists";
-	    		       } else  if(jqXHR.responseText.includes("email_1 dup key")==true){
-	    		    	   objSendUserdata.statusText = "User with this email already exists";
-	    		       }
-	    	        }
-	    	  });
-	    	 return objSendUserdata;
+	    function databaseCommunication (objAjaxParameters) {
+	    	var objStatus = {};
+	    	var request =  
+	    	{
+	    		async: false,
+		    	contentType: 'application/json',
+		    	success: function(data, textStatus, jqXHR){
+		    		objStatus = jqXHR;
+		    	},
+		    	error: function(jqXHR, textStatus, errorThrown){
+		    		objStatus = jqXHR;
+		    	}
+	    	}
+	    	
+	    	if(objAjaxParameters.type == "PUT") {
+	    		request.data = objAjaxParameters.data;
+	    		request.type = objAjaxParameters.type;
+	    		request.url = objAjaxParameters.url;
+	    		
+	    		if (objAjaxParameters.token !== undefined) {
+	    			request.headers = {
+			    	   	 "Authorization": objAjaxParameters.token,
+			    	}
+	    		}
+	    	}  else if(objAjaxParameters.type == "DELETE"){
+	    		request.type = objAjaxParameters.type;
+	    		request.url = objAjaxParameters.url;
+	    		
+	    		if (objAjaxParameters.token !== undefined) {
+	    			request.headers = {
+			    	   	 "Authorization": objAjaxParameters.token,
+			    	}
+	    		}
+	    	} else if(objAjaxParameters.type == "GET"){
+	    		request.type = objAjaxParameters.type;
+	    		request.url = objAjaxParameters.url;
+	    		
+	    		if (objAjaxParameters.token !== undefined) {
+	    			request.headers = {
+			    	   	 "Authorization": objAjaxParameters.token,
+			    	}
+	    		}
+	    	} else if(objAjaxParameters.type == "POST"){
+	    		request.type = objAjaxParameters.type;
+	    		request.url = objAjaxParameters.url;
+	    		
+	    		if (objAjaxParameters.token !== undefined) {
+	    			request.headers = {
+			    	   	 "Authorization": objAjaxParameters.token,
+			    	}
+	    		}
+	    		
+	    		if (objAjaxParameters.data !== undefined) {
+	    			request.data = objAjaxParameters.data;
+	    		}
+	    	}
+	    	
+	    	$.ajax(request);
+	    	return objStatus;
 	    }
 	
 	    function validateEmail(email) {
