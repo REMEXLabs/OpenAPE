@@ -26,6 +26,7 @@
   <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
   <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script src="js/navigation.js" type="text/javascript"></script>
   <script>
   $( function() {
     $( "#tabs" ).tabs();
@@ -42,42 +43,52 @@
 </script>
 </head>
 <body >
-
 <div class="main">	
-	<div align="center"><h1><font class="header">OpenAPE</font></h1></div><br>
-	<div class="tab">
-	  <button id="btnRegistration" class="tablinks" onclick="Logout()">Logout</button>
+	<!-- Header Content like the logo -->
+
+	
+	<div class="topnav" id="myTopnav">
+		<div >
+		  <a href="index.html" id="linkHome">Home</a>
+		  <a href="workflow.html">Tutorial</a>
+		</div>
+		<div  align="right">
+		  	  <a href="start.html" id="linkLogin">Login</a>
+		</div>
 	</div>
-	<div id="Login" class="tabcontent">	</div>
-<br>
-<br>
+	<div class="header">
+		<div style="float:left ">
+		<h1 ><font class="header" >	OpenAPE</font></h1>
+		<h4> open Accessibility Personalisation Extension</h4><br>
+		</div>
+		<div align="right">
+		<img class="hdmlogo" src="img/hdm_logo.png">
+		</div>
+	</div>
+	<div class="subnav" id="subnav">
+	  <a href="#" id="linkUser-contexts">User-Contexts</a>
+	</div>
+	<div class="subsubnav" id="subsubnav" hidden=true>
+	  <a href="#" id="linkOverview">Overview</a>
+	  <a href="#" id="linkAdd">Add</a>
+	  <a href="#" id="linkUpdate">Update</a>
+	  <a href="#" id="linkDelete">Delete</a>
+	</div>
+	<div class="headerBottom" id="headerBottom">
+	 &nbsp;
+	</div>
+	
+	<div class="mainContent">
 
-<div id="tabs">
-  <ul>
-    <li><a href="#tabs-1">Save User-Contexts</a></li>
-    <li><a href="#tabs-2">Get User-Contexts</a></li>
-    <li><a href="#tabs-3">Update User-Contexts</a></li>
-    <li><a href="#tabs-4">Delete User-Contexts</a></li>
-  </ul>
-  <div id="tabs-1">
 
+<div id="overview" align="center">
+<h1 align="center">User-Contexts Overview</h1> <br>
 
-<div style="text-align: center;">
-
-<textarea id="dataInput" name="dataInput" cols="100" rows="8" class="form-control"></textarea> <br>
-</div><br>
-<div align="right">
-<button type="button" id="saveData" onclick="saveData()" class="btn btn-primary">store data</button>
-</div>
-<div class="saveUserContextsStatus" id="saveUserContextsStatus" align="center"></div>
- </div>
- 
-<div id="tabs-2">
 <table>
   	<tr>
   		<td><b>UserContextId:</b> </td>
   		<td><input type="text" id="getUserContextIdInput" class="form-control" placeholder="UsercontextId"></td>
-  		<td><button class="btn btn-primary btn-lg btn-block" id="loadUserContexts" onclick="loadData()">Load</button></td>
+  		<td><button class="btn btn-red btn-lg btn-block" id="loadUserContexts" onclick="loadData()">Load</button></td>
   	</tr>
   	<tr>
   		<td colspan="4"><textarea class="form-control" id="getUserContextTextarea" cols="100" rows="8" style="max-width: 100%;" width="100%" disabled></textarea></td>
@@ -87,14 +98,38 @@
   	</tr>
   </table>
 </div>
-  
+
+
+
+
+<div id="add" hidden="true" align="center">
+
+<h1 align="center">Add User-Contexts</h1> <br>
+
+
+
+<table>
+<tr>
+<td><textarea id="dataInput" name="dataInput" cols="100" rows="8" class="form-control"></textarea>  </td>
+</tr>
+<tr>
+	<td align="right"><button type="button" id="saveData" onclick="saveData()" class="btn btn-lg btn-block btn-red">store data</button></td>
+</tr>
+
+</table>
+
+
+
+<div class="saveUserContextsStatus" id="saveUserContextsStatus" align="center"></div>
+ </div>
  
- <div id="tabs-3">
+ <div id="update" hidden="true" align="center">
+ <h1 align="center">Update User-Contexts</h1> <br>
   <table>
   	<tr>
   		<td><b>UserContextId:</b> </td>
   		<td><input type="text" id="updateUserContextIdInput" class="form-control" placeholder="UsercontextId"></td>
-  		<td><button class="btn btn-primary btn-lg btn-block" id="updateUserContexts" onclick="updateData()">Update</button></td>
+  		<td><button class="btn btn-red btn-lg btn-block" id="updateUserContexts" onclick="updateData()">Update</button></td>
   	</tr>
   	<tr>
   		<td colspan="4"><textarea class="form-control" id="updateUserContextTextarea" cols="100" rows="8" ></textarea></td>
@@ -104,18 +139,29 @@
   	</tr>
   </table>
   <br>
+
+
+
 </div>
 
-  <div id="tabs-4">
+  <div id="delete" hidden="true" align="center">
+  <h1 align="center">Delete User-Contexts</h1> <br>
  <table>
   	<tr>
   		<td><b>UserContextId:</b> </td>
   		<td><input type="text" id="deleteUserContextIdInput" class="form-control" placeholder="UsercontextId"></td>
-  		<td><button id="deleteUserContexts"  class="btn btn-primary btn-lg btn-block" onclick="deleteData()">Delete</button></td>
+  		<td><button id="deleteUserContexts"  class="btn btn-red btn-lg btn-block" onclick="deleteData()">Delete</button></td>
   		<td id="deleteStatus" align="center"></td>
   	</tr>
   </table>
  </div>
+</div>
+
+<footer>
+<p>Last update by Lukas Smirek 2017-05-23</p>
+		<p>Coppyright Hochschule der Medien 2017</p>
+</footer>
+
 </div>
 
 

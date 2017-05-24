@@ -18,19 +18,41 @@
 <script src="js/openape.js" type="text/javascript"></script>
 <script src="js/start.js" type="text/javascript"></script>
 <link rel="stylesheet" href="css/style.css">
+<script src="js/navigation.js" type="text/javascript"></script>
 </head>
 <body>
 
 <div class="main">	
-	<div align="center"><h1><font class="header">OpenAPE</font></h1></div><br>
-	<!-- 
-	<div class="tab">
-	  <button id="btnLogin" class="tablinks" onclick="openSection(event, 'Login')">Login</button>
-	  <button id="btnRegistration" class="tablinks" onclick="openSection(event, 'Registration')">Registration</button>
+			<!-- Main site Navigation -->
+	<div class="topnav" id="myTopnav">
+		<div >
+		  <a href="" id="linkHome">Home</a>
+		  <a href="workflow.html">Tutorial</a>
+		</div>
+		<div  align="right">
+		  	  <a href="start.html" id="linkLogin">Login</a>
+		</div>
 	</div>
-	 -->
+	<div class="header">
+		<div style="float:left ">
+		<h1 ><font class="header" >	OpenAPE</font></h1>
+		<h4> open Accessibility Personalisation Extension</h4><br>
+		</div>
+		<div align="right">
+		<img class="hdmlogo" src="img/hdm_logo.png">
+		</div>
+	</div>
+	<div class="subnav" id="subnav">
+	  <a href="ressourceUpload.html">Contexts</a>
+	</div>
+	<div class="headerBottom" id="headerBottom">
+	 &nbsp;
+	</div>
+	
+	<div class="mainContent">
 	
 	<div id="Login" class="tabcontent">	
+		<div align="center"><h1>Login</h1></div>
 		<div class="registerSection" id="registerSection">
 			<div class="registerHeader" id="registerHeader" align="center"><font></font></div>
 			<br>
@@ -70,7 +92,7 @@
 				</tr>
 				<tr>
 					<td><a id="btnRegistration" class="tablinks" onclick="openSection(event, 'Registration')">Create Account</a></td>
-					<td align="right"><button id="login" class="btn btn-primary" > Login</button></td>
+					<td align="right"><button id="login" class="btn btn-red " > Login</button></td>
 				</tr>
 			</table>
 			</div>
@@ -81,6 +103,7 @@
 
 	
 	<div id="Registration" class="tabcontent">
+		<div align="center"><h1>Registration</h1></div>
 		<div class="registerSection" id="registerSection">
 			<div class="registerHeader" id="registerHeader" align="center"><font></font></div>
 			<br>
@@ -137,7 +160,7 @@
 				</tr>
 				<tr>
 					<td> <a id="btnLogin" class="tablinks" onclick="openSection(event, 'Login')">Login</a	></td>
-					<td  align="right"><button id="register" class="btn btn-primary" > Register</button></td>
+					<td  align="right"><button id="register" class="btn btn-red" > Register</button></td>
 				</tr>
 			</table>
 			
@@ -146,8 +169,14 @@
 		</div>
 		
 	</div>	
+	
 </div>
+<footer>
+<p>Last update by Lukas Smirek 2017-05-23</p>
+		<p>Coppyright Hochschule der Medien 2017</p>
+</footer>
 
+</div>
 
 <script>
 // Get the element with id="defaultOpen" and click on it

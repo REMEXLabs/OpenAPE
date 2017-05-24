@@ -162,7 +162,7 @@
 	    	var objAjaxParameters = {};
 	    	
 	    	var arrStatusText = [];
-	    	
+	    
 	    	var isPasswordCorret = true;
 	    	var isUsernameCorrect = true;
 	    	var isGrantTypeCorrect = true;

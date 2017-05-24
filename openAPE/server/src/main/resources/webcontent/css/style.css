@@ -1,10 +1,6 @@
 .registerSection{
-	position:fixed;
-    top: 40%;
-    left: 50%;
-    width:30em;
-    margin-top: -9em; /*set to a negative number 1/2 of your height*/
-    margin-left: -15em; /*set to a negative number 1/2 of your width*/
+	width: 30em;
+	margin: auto;
 }
 
 .registerContent {
@@ -18,7 +14,7 @@ table {
 }
 
 font.header {
-	color: #2B669A;
+	color: grey;
 	font-size: 28pt;
 	font-weight: bold;
 }
@@ -39,12 +35,12 @@ font.header {
 div.tab {
     overflow: hidden;
     border: 1px solid #ccc;
-    background-color: #f1f1f1;
+    background-color: #b7052c;
 }
 
 /* Style the buttons inside the tab */
 div.tab button {
-    background-color: inherit;
+    background-color: #b7052c;
     float: left;
     border: none;
     outline: none;
@@ -53,10 +49,29 @@ div.tab button {
     transition: 0.3s;
 }
 
-div.main {
-	margin: 0px 200px 50px 200px;
+.hdmlogo {
+	width:6em;
 }
 
+.btn-red {
+	background-color: #b7052c;
+	color: white;
+}
+
+div.main {
+	
+	margin: 50px 250px 0px 250px;
+   
+    box-shadow: 0 0 10px #000000;
+}
+
+.btn:focus, .btn:active:focus, .btn.active:focus, .btn:hover {
+    color: white;
+    background-color: #7c031d;
+}
+
+
+ 
 /* Change background color of buttons on hover */
 div.tab button:hover {
     background-color: #ddd;
@@ -70,7 +85,7 @@ div.tab button.active {
 /* Style the tab content */
 .tabcontent {
     display: none;
-    padding: 6px 12px;
+   
     border-top: none;
 }
 
@@ -78,4 +93,114 @@ div.loginErrorMsg {
 	margin: 20px 0px 0px 0px;
 	color: red;
 	font-weight: bold;
+}
+
+
+
+.subsubnav {
+    background-color: #706E6E;
+    overflow: hidden;
+    width:100%;
+}
+
+/* Style the links inside the navigation bar */
+.subsubnav a {
+    float: left;
+    display: block;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 8px 16px;
+    text-decoration: none;
+    font-size: 17px;
+}
+
+/* Change the color of links on hover */
+.subsubnav a:hover {
+    background-color: #363636;
+}
+
+.active {
+    background-color: #363636;
+    color: white;
+}
+
+.subnav-active, .topnav-active  {
+    background-color: #b7052c;
+    color: white;
+}
+
+
+
+
+/* Add a black background color to the top navigation */
+.topnav {
+    background-color: #e31134;
+    overflow: hidden;
+    width:100%;
+    border-bottom: 3px solid #b7052c;
+}
+.subnav {
+	background-color: #363636;
+    overflow: hidden;
+    width:100%;
+    border-bottom: 5px solid #C60000;
+    border-top: 5px solid #C60000;
+}
+.headerBottom {
+    background-color: #363636;
+    overflow: hidden;
+    width:100%;
+}
+
+/* Style the links inside the navigation bar */
+.subnav a {
+    float: left;
+    display: block;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 8px 16px;
+    text-decoration: none;
+    font-size: 17px;
+}
+
+/* Change the color of links on hover */
+.subnav a:hover {
+    background-color: #b7052c;
+}
+	
+
+/* Style the links inside the navigation bar */
+.topnav a {
+    float: left;
+    display: block;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+}
+
+/* Change the color of links on hover */
+.topnav a:hover {
+    background-color: #b7052c;
+}
+
+
+
+div.mainContent {
+	padding: 2em;
+}
+
+div.header {
+	padding: 1em;
+}
+
+footer {
+ 	padding: 1em;
+ 	border-top: 2px solid #ccc;
+    color: black;
+    background-color: rgb(236, 236, 236)	;
+    clear: left;
+    margin: 0px 0px 100px 0px;
+    text-align: center;
 }
