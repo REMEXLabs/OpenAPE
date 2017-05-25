@@ -1,3 +1,6 @@
+
+
+
 $(document).ready(function(){
 	var token = localStorage.getItem("token");
 	var href = document.location.href;
@@ -12,18 +15,37 @@ $(document).ready(function(){
 	}
 	
 	if(token === null){
-		$("#subnav").hide();
-		$("#headerBottom").show();
-		$('#linkLogin').empty();
-		$('#linkLogin').append("login");
+		$("#subnav").attr("hidden", true );
+		$("#headerBottom").removeAttr( "hidden");
+		$('#subnavigatons').empty();
+		$('#subnavigatons').append("<div class='headerBottom' id='headerBottom'>&nbsp</div>");
+		
+
+		/*
+		
+		*/
+		
+		
+		$('#divLogin').empty();
+		$('#divLogin').append("<a href='start.html' id='linkLogin'>Login</a>");
 
 	} else {
-		$("#subnav").show();
-		$("#headerBottom").hide();
-		$('#linkLogin').empty();
-		$('#linkLogin').append("logout");
-		$("#linkLogin").removeAttr("href");
-		$("#linkLogin").attr("href", "#");
+		$('#subnavigatons').empty();
+		$('#subnavigatons').append("" +
+				"<div class='subnav' id='subnav'>" +
+				"<a href='ressourceUpload.html' id='linkUser-contexts'>User-Contexts</a>" +
+				"</div>" +
+				"<div class='subsubnav' id='subsubnav'>" +
+				"<a href='#' id='linkOverview'>Overview</a>" +
+				"<a href='#' id='linkAdd'>Add</a>" + 
+				"<a href='#' id='linkUpdate'>Update</a>" +
+				"<a href='#' id='linkDelete'>Delete</a>" +
+				"</div>"
+		);
+		
+		$('#divLogin').empty();
+		$('#divLogin').append("<a href='#' id='linkLogin'>Logout</a>");
+		
 	}
 	
 	$("#linkLogin").click(function(){

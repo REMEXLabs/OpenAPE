@@ -4,7 +4,63 @@
 	    
 	    //get the protocol and adress of the location. If it´s running local, than the adress should be http://localhost:4567
 	    var protocol = location.protocol;
+	    var token = "";
 	    
+	    /*
+		    * initializeLibrary
+		    */
+		  
+		    /** initializeLibrary
+			* 
+			* This function is used get the authorization token for the given grantTypem, username and password 
+			*
+			* 	 
+		    * @param  userName
+		    * 	 The username of the user from the mongodb
+			* 			 
+		    * @param  password
+		    * 	 The password of the user from the mongodb
+		    * 
+			* @return      
+			* 	 A javascript object with all token information
+			*/
+		    objOpenape.initializeLibrary = function (username, password) {
+		    	var objToken = {};
+		    	var objAjaxParameters = {};
+		    	
+		    	var arrStatusText = [];
+		    
+		    	var isPasswordCorret = true;
+		    	var isUsernameCorrect = true;
+		    	
+		    	if(username == ""){
+		    		arrStatusText.push("Username can not be empty");
+		    		isUsernameCorrect = false;
+		    	} else if(username === undefined){
+		    		arrStatusText.push("Please enter a username");
+		    		isUsernameCorrect = false;
+		    	}
+		    	
+		    	if(password==""){
+		    		arrStatusText.push("Password can not be empty");
+		    		isPasswordCorret = false;
+		    	} else if(password === undefined){
+		    		arrStatusText.push("Please enter a password");
+		    		isUsernameCorrect = false;
+		    	}
+		    	
+		    	if(isPasswordCorret && isUsernameCorrect){
+		    		objAjaxParameters.type = "POST";
+		    		objAjaxParameters.url = protocol+"/token?grant_type=password&username="+username+"&password="+password;
+		    		objToken = databaseCommunication(objAjaxParameters);
+		    	} else {
+		    		objToken.statusText = arrStatusText;
+		    		objToken.status = 400;
+		    	}
+		    	localStorage.setItem("token", JSON.parse(objToken.responseText).access_token);
+		    	return objToken;
+		    }
+		    
 	    //
 	    // FUNCTIONS FOR USER
 	    //
@@ -111,24 +167,21 @@
 	    * @return      
 	    * 	 A javascript object with all found user information like username, email and roles
 	    */
-	    objOpenape.getUser = function (token) {
+	    objOpenape.getUser = function () {
 	    	var objUserProfile = {};
 	    	var objAjaxParameters = {};
 	    	
 	    	var isTokenCorrect = true;
 	    	
-	    	if(token==""){
-	    		objUserProfile.statusText = "Token can not be empty";
+	    	if(localStorage.getItem("token") === undefined){
+	    		objUserProfile.statusText = "Please initialize the library";
 	    		isTokenCorrect = false;
-	    	} else if(token === undefined){
-	    		isTokenCorrect = false;
-	    		objUserProfile.statusText = "Please enter a token";
 	    	} 
 	    	
 	    	if(isTokenCorrect) {
 	    		objAjaxParameters.type = "GET";
 	    		objAjaxParameters.url = protocol+"/profile";
-	    		objAjaxParameters.token = token;
+	    		objAjaxParameters.token = localStorage.getItem("token");
 	    		objUserProfile = databaseCommunication(objAjaxParameters);
 	    		
 	    	} else {
@@ -138,72 +191,7 @@
 	    	return objUserProfile;
 	    }
 	    
-	    /*
-	    * TOKEN FUNCTIONS
-	    */
-	  
-	    /** getToken
-		* 
-		* This function is used get the authorization token for the given grantTypem, username and password 
-		*
-		* @param  grant_type
-		* 	 
-	    * @param  userName
-	    * 	 The username of the user from the mongodb
-		* 			 
-	    * @param  password
-	    * 	 The password of the user from the mongodb
-	    * 
-		* @return      
-		* 	 A javascript object with all token information
-		*/
-	    objOpenape.getToken = function (grant_type, username, password) {
-	    	var objToken = {};
-	    	var objAjaxParameters = {};
-	    	
-	    	var arrStatusText = [];
-	    
-	    	var isPasswordCorret = true;
-	    	var isUsernameCorrect = true;
-	    	var isGrantTypeCorrect = true;
-	    	
-	    	if(grant_type==""){
-	    		arrStatusText.push("Grant type can not be empty");
-	    		isGrantTypeCorrect = false;
-	    	} else if (grant_type === undefined){
-	    		arrStatusText.push("Please enter a grant type");
-	    		isGrantTypeCorrect = false;
-	    	} else if (grant_type != "password"){
-	    		arrStatusText.push("Grant type should be password");
-	    		isGrantTypeCorrect = false;
-	    	}
-	    	
-	    	if(username == ""){
-	    		arrStatusText.push("Username can not be empty");
-	    		isUsernameCorrect = false;
-	    	} else if(username === undefined){
-	    		arrStatusText.push("Please enter a username");
-	    		isUsernameCorrect = false;
-	    	}
-	    	
-	    	if(password==""){
-	    		arrStatusText.push("Password can not be empty");
-	    		isPasswordCorret = false;
-	    	} else if(password === undefined){
-	    		arrStatusText.push("Please enter a password");
-	    		isUsernameCorrect = false;
-	    	}
-	    	
-	    	if(isPasswordCorret && isUsernameCorrect && isGrantTypeCorrect){
-	    		objAjaxParameters.type = "POST";
-	    		objAjaxParameters.url = protocol+"/token?grant_type="+grant_type+"&username="+username+"&password="+password;
-	    		objToken = databaseCommunication(objAjaxParameters);
-	    	} else {
-	    		objToken.statusText = arrStatusText;
-	    		objToken.status = 400;
-	    	}
-	    	return objToken;
-	    }
+	   
 	    
 	    /*
 	     * USER-CONTEXTS FUNCTION
@@ -222,7 +210,7 @@
 		* @return      
 		* 	 A javascript object with all user contexts information
 		*/
-	    objOpenape.getUserContexts = function (token, userContextId) {
+	    objOpenape.getUserContexts = function (userContextId) {
 	    	var objGetUserContext_Result = {};
 	    	var objAjaxParameters = {};
 	    	
@@ -230,13 +218,10 @@
 	    	var isTokenCorrect = true;
 	    	var isuserContextIdCorrect = true;
 	    	
-	    	if(token==""){
-	    		arrStatusText.push("The token can not be empty");
+	    	if(localStorage.getItem("token") === undefined){
+	    		arrStatusText.push("Please initialize the library");
 	    		isTokenCorrect = false;
-	    	} else if(token === undefined){
-	    		arrStatusText.push("Please enter a token");
-	    		isTokenCorrect = false;
-	    	}
+	    	} 
 	    	
 	    	if(userContextId==""){
 	    		arrStatusText.push("The usercontextId can not be empty");
@@ -249,7 +234,7 @@
 	    	if(isTokenCorrect && isuserContextIdCorrect){
 	    		objAjaxParameters.type = "GET";
 	    		objAjaxParameters.url = protocol+"/api/user-contexts/"+userContextId;
-	    		objAjaxParameters.token = token;
+	    		objAjaxParameters.token = localStorage.getItem("token");
 	    		objGetUserContext_Result = databaseCommunication(objAjaxParameters);
 	    	} else {
 	    		objGetUserContext_Result.status = 400;
@@ -272,7 +257,7 @@
 		* @return      
 		* 	 A javascript object with all status information of the set process
 		*/	    
-	    objOpenape.setUserContexts = function (token, userContexts) {
+	    objOpenape.setUserContexts = function (userContexts) {
 	    	var objSetUserContext_Result = {};
 	    	var objAjaxParameters = {};
 	    	
@@ -280,13 +265,10 @@
 	    	var isTokenCorrect = true;
 	    	var isUserContextCorrect = true;
 	    	
-	    	if(token==""){
-	    		arrStatusText.push("The token can not be empty");
+	    	if(localStorage.getItem("token") === undefined){
+	    		arrStatusText.push("Please initialize the library");
 	    		isTokenCorrect = false;
-	    	} else if(token === undefined){
-	    		arrStatusText.push("Please enter a token");
-	    		isTokenCorrect = false;
-	    	}
+	    	} 
 	    	
 	    	if(userContexts==""){
 	    		arrStatusText.push("The usercontextId can not be empty");
@@ -300,7 +282,7 @@
 	    		objAjaxParameters.data = userContexts;
 	    		objAjaxParameters.type = "POST";
 	    		objAjaxParameters.url = protocol+"/api/user-contexts";
-	    		objAjaxParameters.token = token;
+	    		objAjaxParameters.token = localStorage.getItem("token");
 	    		objSetUserContext_Result = databaseCommunication(objAjaxParameters);
 	    	} else {
 	    		objSetUserContext_Result.statusText = arrStatusText;
@@ -322,7 +304,7 @@
 		* @return      
 		* 	 A javascript object with all status information of the delete process
 		*/	    	    
-	    objOpenape.deleteUserContexts = function (token, userContextId) {
+	    objOpenape.deleteUserContexts = function (userContextId) {
 	    	var objDeleteUserContext_Result = {};
 	    	var objAjaxParameters = {};
 	    	
@@ -331,15 +313,10 @@
 	    	var isTokenCorrect = true;
 	    	var isuserContextIdCorrect = true;
 	    	
-	    	if(token==""){
-	    		arrStatusText.push("The token can not be empty");
-	    		objDeleteUserContext_Result.statusText = arrStatusText;
+	    	if(localStorage.getItem("token") === undefined){
+	    		arrStatusText.push("Please initialize the library");
 	    		isTokenCorrect = false;
-	    	} else if(token === undefined){
-	    		arrStatusText.push("Please enter a token");
-	    		objDeleteUserContext_Result.statusText = arrStatusText;
-	    		isTokenCorrect = false;
-	    	}
+	    	} 
 	    	
 	    	if(userContextId==""){
 	    		arrStatusText.push("The usercontextId can not be empty");
@@ -354,7 +331,7 @@
 	    	if(isTokenCorrect && isuserContextIdCorrect ){
 	    		objAjaxParameters.type = "DELETE";
 	    		objAjaxParameters.url = protocol+"/api/user-contexts/"+userContextId,
-	    		objAjaxParameters.token = token;
+	    		objAjaxParameters.token = localStorage.getItem("token");
 	    		objDeleteUserContext_Result = databaseCommunication(objAjaxParameters);
 	    	} else {
 	    		objDeleteUserContext_Result.status = 400;
@@ -378,7 +355,7 @@
 		* @return      
 		* 	 A javascript object with all status information of the update process
 		*/	
-	    objOpenape.updateUserContexts = function (token, userContextId, userContexts) {
+	    objOpenape.updateUserContexts = function (userContextId, userContexts) {
 	    	var objUpdateUserContext_Result = {};
 	    	var objAjaxParameters = {};
 	    	var arrStatusText = [];
@@ -386,13 +363,10 @@
 	    	var isUserContextCorrect = true;
 	    	var isuserContextIdCorrect = true;
 	    	
-	    	if(token==""){
-	    		arrStatusText.push("The token can not be empty");
+	    	if(localStorage.getItem("token") === undefined){
+	    		arrStatusText.push("Please initialize the library");
 	    		isTokenCorrect = false;
-	    	} else if(token === undefined){
-	    		arrStatusText.push("Please enter a token");
-	    		isTokenCorrect = false;
-	    	}
+	    	} 
 	    	
 	    	if(userContexts==""){
 	    		arrStatusText.push("The usercontext can not be empty");
@@ -414,7 +388,7 @@
 	    		objAjaxParameters.data = userContexts;
 	    		objAjaxParameters.type = "PUT";
 	    		objAjaxParameters.url = protocol+"/api/user-contexts/"+userContextId;
-	    		objAjaxParameters.token = token;
+	    		objAjaxParameters.token = localStorage.getItem("token");
 	    		objUpdateUserContext_Result = databaseCommunication(objAjaxParameters);
 	    	} else {
 	    		objUpdateUserContext_Result.status = 400;

@@ -2,24 +2,28 @@
 var protocol = location.protocol;
 
 function saveData(){
-	 var token = localStorage.getItem("token");	
 	 var userContext = document.getElementById("dataInput").value;
 	 
 	 if(userContext==""){
 		 $("#saveUserContextsStatus").empty();
 		 $("#saveUserContextsStatus").append("<img src='img/Attention-SZ-icon.png' width='20' height='20'> Please enter a usercontext");
 	 } else {
-		 objSaveUserContextsResult = openape.setUserContexts(token, userContext);
+		 objSaveUserContextsResult = openape.setUserContexts(userContext);
 		 $("#saveUserContextsStatus").empty();
-		 $("#saveUserContextsStatus").append("<b>UserContextId: </b>"+ objSaveUserContextsResult.responseText);
+		 if(objSaveUserContextsResult.responseText.includes("Unexpected character") || objSaveUserContextsResult.responseText.includes("Unrecognized token") ||
+				 objSaveUserContextsResult.responseText.includes("Can not construct instance") ||  objSaveUserContextsResult.responseText.includes("Unexpected end-of-inputexpected")){
+				$('#saveUserContextsStatus').append("<img src='img/Attention-SZ-icon.png' width='20' height='20'> <font class='statusError'> Wrong JSON-Format</font>");
+		 } else {
+			  $("#saveUserContextsStatus").empty();
+			  $('#saveUserContextsStatus').append(" <font class='statusInfo'> Successfully added ContextId: "+objSaveUserContextsResult.responseText+"</font>");
+		 }
 	 }
 	
 }
 
 function loadData() {
 	var userContextId =  $('#getUserContextIdInput').val();
-	var token = localStorage.getItem("token");
-	var objResponse = openape.getUserContexts(token, userContextId);
+	var objResponse = openape.getUserContexts(userContextId);
 	
 	if(userContextId != ""){
 		if(objResponse.status == 200){
@@ -41,9 +45,7 @@ function deleteData() {
 	var userContextId =  $('#deleteUserContextIdInput').val();
 	
 	if(userContextId!=""){
-		var token = localStorage.getItem("token");
-		
-		var objStatus = openape.deleteUserContexts(token, userContextId);
+		var objStatus = openape.deleteUserContexts(userContextId);
 		if(objStatus.status == 204){
 			$('#deleteStatus').empty();
 			$('#deleteStatus').append("<font class='statusInfo '>Successfully deleted</font>");
@@ -60,7 +62,6 @@ function deleteData() {
 }
 
 function updateData() {
-	var token = localStorage.getItem("token");
 	var userContextId =  $('#updateUserContextIdInput').val();
 	var userContexts = document.getElementById("updateUserContextTextarea").value;
 	
@@ -84,7 +85,7 @@ function updateData() {
 	}
 	
 	if(isUserContextCorrect && isUserContextIdCorrect){
-		var objUpdateStatus = openape.updateUserContexts(token, userContextId, userContexts);
+		var objUpdateStatus = openape.updateUserContexts(userContextId, userContexts);
 
 		if(userContextId != ""){
 			if(objUpdateStatus.status == 200){

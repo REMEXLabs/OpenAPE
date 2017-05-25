@@ -75,9 +75,7 @@ function setUserData(){
 		if(regSecurityQuestion == 15){
 			var objSenduserStatus = openape.setUser(username, email, password);
 			if(objSenduserStatus.status == 200){
-				var tokenData = openape.getToken("password", username, password);
-				var token = JSON.parse(tokenData.responseText).access_token;
-				localStorage.setItem("token", token);
+				var tokenData = openape.initializeLibrary(username, password);
 				window.location = protocol+"/ressourceUpload.html";
 				$('#registrationErrorMsg').empty();
 			} else {
@@ -89,7 +87,6 @@ function setUserData(){
 			$('#registrationErrorMsg').append("<img src='img/Attention-SZ-icon.png' width='20' height='20'> Wrong security question");
 		}
 	}
-	
 }
 
 function openSection(evt, sectionName) {
@@ -154,14 +151,12 @@ function getTokenForLogin(){
 	
 	
 	if(isUsernameCorrect  && isPasswordCorrect && isSecurityQuestionCorrect){
-		var tokenData = openape.getToken("password", username, password);
+		var tokenData = openape.initializeLibrary(username, password);
 		
 		if(tokenData.status==200){
 			var token = JSON.parse(tokenData.responseText).access_token;
 			var userID = JSON.parse(openape.getUser(token).responseText).id;
 			var securityQuestion = $("#securityQuestion").val();
-			
-			localStorage.setItem("token", token);
 			
 			if(securityQuestion == 15){
 				if(userID != undefined){
