@@ -2,7 +2,7 @@
 	 function defineOpenape(){
 	    var objOpenape = {};
 	    
-	    //get the protocol and adress of the location. If it´s running local, than the adress should be http://localhost:4567
+	    //get the protocol and adress of the location. If it´s running local, than the address should be http://localhost:4567
 	    var protocol = location.protocol;
 	    var token = "";
 	    
@@ -396,6 +396,201 @@
 	    	}
 	    	return objUpdateUserContext_Result;
 	    }     
+	    
+	    
+	    
+	    /*
+	     * 
+	     * Task-Contexts Functions
+	     */
+	    
+	    /** setTaskContexts
+	     * 
+	     * This function is used to set the task-context in the mongodb database with the given task-context
+	     *
+	     * @param  taskContexts
+	     * 	 The given task-context in JSON
+	     * 
+	     * @return      An JavaScript-Object with the create result
+	     */
+	    objOpenape.setTaskContexts = function (taskContexts) {
+	    	var objSetTaskContext_Result = {};
+	    	var objAjaxParameters = {};
+	    	
+	    	var arrStatusText = [];
+	    	var isTokenCorrect = true;
+	    	var isTaskContextCorrect = true;
+	    	
+	    	if(localStorage.getItem("token") === undefined){
+	    		arrStatusText.push("Please initialize the library");
+	    		isTaskContextCorrect = false;
+	    	} 
+	    	
+	    	if(taskContexts==""){
+	    		arrStatusText.push("The taskcontext can not be empty");
+	    		isTaskContextCorrect = false;
+	    	} else if(taskContexts === undefined){
+	    		arrStatusText.push("Please enter a taskcontext");
+	    		isTaskContextCorrect = false;
+	    	}
+	    	
+	    	if(isTokenCorrect && isTaskContextCorrect){	
+	    		objAjaxParameters.data = taskContexts;
+	    		objAjaxParameters.type = "POST";
+	    		objAjaxParameters.url = protocol+"/api/task-contexts";
+	    		objAjaxParameters.token = localStorage.getItem("token");
+	    		objSetTaskContext_Result = databaseCommunication(objAjaxParameters);
+	    	} else {
+	    		objSetTaskContext_Result.statusText = arrStatusText;
+	    		objSetTaskContext_Result.status = 400;
+	    	}
+	    	return objSetTaskContext_Result;
+	    }
+	    
+	    /** getTaskContexts
+	     * 
+	     * This function is used to get the task-context from the Mongodb database with the given taskContextId
+	     *
+	     * @param  taskContextId
+	     * 	 The taskContextId
+	     * 
+	     * @return      
+	     * 	An JavaScript-Object with the get result and the corresponding task-context to the given taskContextId
+	     */
+	    objOpenape.getTaskContexts = function (taskContextId) {
+	    	var objGetTaskContext_Result = {};
+	    	var objAjaxParameters = {};
+	    	
+	    	var arrStatusText = [];
+	    	var isTokenCorrect = true;
+	    	var isTaskContextIdCorrect = true;
+	    	
+	    	if(localStorage.getItem("token") === undefined){
+	    		arrStatusText.push("Please initialize the library");
+	    		isTokenCorrect = false;
+	    	} 
+	    	
+	    	if(taskContextId==""){
+	    		arrStatusText.push("The taskContextId can not be empty");
+	    		isTaskContextIdCorrect = false;
+	    	} else if(taskContextId === undefined){
+	    		arrStatusText.push("Please enter a taskContextId");
+	    		isTaskContextIdCorrect = false;
+	    	}
+	    	
+	    	if(isTokenCorrect && isTaskContextIdCorrect){
+	    		objAjaxParameters.type = "GET";
+	    		objAjaxParameters.url = protocol+"/api/task-contexts/"+taskContextId;
+	    		objAjaxParameters.token = localStorage.getItem("token");
+	    		objGetTaskContext_Result = databaseCommunication(objAjaxParameters);
+	    	} else {
+	    		objGetTaskContext_Result.status = 400;
+	    		objGetTaskContext_Result.statusText = arrStatusText;
+	    	}
+	    	
+	    	return objGetTaskContext_Result;
+	    }
+
+	    /** deleteTaskContexts
+	     * 
+	     * This function is used to delete the task-context from the Mongodb database with the given taskContextId
+	     *
+	     * @param  taskContextId
+	     * 	 The taskContextId
+	     * 
+	     * @return      
+	     * 	An JavaScript-Object with the delete result
+	     */
+	    objOpenape.deleteTaskContexts = function (taskContextId) {
+	    	var objDeleteTaskContext_Result = {};
+	    	var objAjaxParameters = {};
+	    	
+	    	var arrStatusText = [];
+	    	
+	    	var isTokenCorrect = true;
+	    	var isTaskContextIdCorrect = true;
+	    	
+	    	if(localStorage.getItem("token") === undefined){
+	    		arrStatusText.push("Please initialize the library");
+	    		isTokenCorrect = false;
+	    	} 
+	    	
+	    	if(taskContextId==""){
+	    		arrStatusText.push("The taskcontextId can not be empty");
+	    		isTaskContextIdCorrect = false;
+	    	} else if(taskContextId === undefined){
+	    		arrStatusText.push("Please enter a taskcontextId");
+	    		isTaskContextIdCorrect = false;
+	    	}
+	    	
+	    	if(isTokenCorrect && isTaskContextIdCorrect ){
+	    		objAjaxParameters.type = "DELETE";
+	    		objAjaxParameters.url = protocol+"/api/task-contexts/"+taskContextId,
+	    		objAjaxParameters.token = localStorage.getItem("token");
+	    		objDeleteTaskContext_Result = databaseCommunication(objAjaxParameters);
+	    	} else {
+	    		objDeleteTaskContext_Result.statusText = arrStatusText;
+	    		objDeleteTaskContext_Result.status = 400;
+	    	}
+	    	return objDeleteTaskContext_Result;
+	    }
+	    
+	    /** updateTaskContexts
+	     * 
+	     * This function is used to update the task-context in MongoDB with the given taskContextId and task-context
+	     *
+	     * @param  taskContextId
+	     * 	 The taskContextId
+	     * 
+	     * @param  taskContexts
+	     * 	 The given task-context in JSON
+	     * 
+	     * @return      
+	     * 	An JavaScript-Object with the update result
+	     */
+	    objOpenape.updateTaskContexts = function (taskContextId, taskContexts) {
+	    	var objUpdateUserContext_Result = {};
+	    	var objAjaxParameters = {};
+	    	var arrStatusText = [];
+	    	var isTokenCorrect = true;
+	    	var isTaskContextCorrect = true;
+	    	var isTaskContextIdCorrect = true;
+	    	
+	    	if(localStorage.getItem("token") === undefined){
+	    		arrStatusText.push("Please initialize the library");
+	    		isTokenCorrect = false;
+	    	} 
+	    	
+	    	if(taskContexts==""){
+	    		arrStatusText.push("The taskcontext can not be empty");
+	    		isTaskContextCorrect = false;
+	    	} else if(taskContexts === undefined){
+	    		arrStatusText.push("Please enter a taskcontext");
+	    		isTaskContextCorrect = false;
+	    	}
+	    	
+	    	if(taskContextId==""){
+	    		arrStatusText.push("The taskContextId can not be empty");
+	    		isTaskContextIdCorrect = false;
+	    	} else if(taskContextId === undefined){
+	    		arrStatusText.push("Please enter a taskContextId");
+	    		isTaskContextIdCorrect = false;
+	    	}
+	    	
+	    	if(isTokenCorrect && isTaskContextCorrect && isTaskContextIdCorrect ){
+	    		objAjaxParameters.data = taskContexts;
+	    		objAjaxParameters.type = "PUT";
+	    		objAjaxParameters.url = protocol+"/api/task-contexts/"+taskContextId;
+	    		objAjaxParameters.token = localStorage.getItem("token");
+	    		objUpdateUserContext_Result = databaseCommunication(objAjaxParameters);
+	    	} else {
+	    		objUpdateUserContext_Result.status = 400;
+	    		objUpdateUserContext_Result.statusText = arrStatusText;
+	    	}
+	    	return objUpdateUserContext_Result;
+	    }     
+	    
+	    
 	    
 	    function databaseCommunication (objAjaxParameters) {
 	    	var objStatus = {};
