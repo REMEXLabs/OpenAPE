@@ -6,6 +6,46 @@ $(document).ready(function(){
 	var href = document.location.href;
 	var lastPathSegment = href.substr(href.lastIndexOf('/') + 1);
 	
+
+	if(token === null){
+		$("#subnav").attr("hidden", true );
+		$("#headerBottom").removeAttr( "hidden");
+		$('#subnavigatons').empty();
+		$('#subnavigatons').append("<div class='headerBottom' id='headerBottom'>&nbsp</div>");
+		$('#divLogin').empty();
+		$('#divLogin').append("<a href='start.html' id='linkLogin'>Login</a>");
+
+	} else {
+		$('#subnavigatons').empty();
+		
+		if( lastPathSegment != "ressourceUpload.html"){
+			$('#subnavigatons').append("" +
+					"<div class='subnav' id='subnav'>" +
+					"<a href='ressourceUpload.html' id='linkUser-contexts'>User-Contexts</a>" +
+					"</div>"
+			);
+		} else {
+			
+			$('#subnavigatons').append("" +
+					"<div class='subnav' id='subnav'>" +
+					"<a href='#' id='linkUser-contexts'>User-Contexts</a>" +
+					"</div>" +
+					"<div class='subsubnav' id='subsubnav'>" +
+					"<a href='#' id='linkOverview'>Overview</a>" +
+					"<a href='#' id='linkAdd'>Add</a>" + 
+					"<a href='#' id='linkUpdate'>Update</a>" +
+					"<a href='#' id='linkDelete'>Delete</a>" +
+					"</div>"
+			);
+			$('#linkUser-contexts').addClass("subnav-active");
+		}
+		
+		
+		$('#divLogin').empty();
+		$('#divLogin').append("<a href='#' id='linkLogin'>Logout</a>");
+		
+	}
+	
 	if(lastPathSegment == "workflow.html"){
 		$('#linkTutorial').addClass("topnav-active");
 	} else if (lastPathSegment == "index.html"){
@@ -14,39 +54,6 @@ $(document).ready(function(){
 		 $('#linkLogin').addClass("topnav-active");
 	}
 	
-	if(token === null){
-		$("#subnav").attr("hidden", true );
-		$("#headerBottom").removeAttr( "hidden");
-		$('#subnavigatons').empty();
-		$('#subnavigatons').append("<div class='headerBottom' id='headerBottom'>&nbsp</div>");
-		
-
-		/*
-		
-		*/
-		
-		
-		$('#divLogin').empty();
-		$('#divLogin').append("<a href='start.html' id='linkLogin'>Login</a>");
-
-	} else {
-		$('#subnavigatons').empty();
-		$('#subnavigatons').append("" +
-				"<div class='subnav' id='subnav'>" +
-				"<a href='ressourceUpload.html' id='linkUser-contexts'>User-Contexts</a>" +
-				"</div>" +
-				"<div class='subsubnav' id='subsubnav'>" +
-				"<a href='#' id='linkOverview'>Overview</a>" +
-				"<a href='#' id='linkAdd'>Add</a>" + 
-				"<a href='#' id='linkUpdate'>Update</a>" +
-				"<a href='#' id='linkDelete'>Delete</a>" +
-				"</div>"
-		);
-		
-		$('#divLogin').empty();
-		$('#divLogin').append("<a href='#' id='linkLogin'>Logout</a>");
-		
-	}
 	
 	$("#linkLogin").click(function(){
 		localStorage.clear();

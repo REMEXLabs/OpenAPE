@@ -125,7 +125,7 @@ div.loginErrorMsg {
 }
 
 .subnav-active, .topnav-active  {
-    background-color: #b7052c;
+    background-color: #C60000;
     color: white;
 }
 
@@ -149,7 +149,10 @@ div.loginErrorMsg {
 .headerBottom {
     background-color: #363636;
     overflow: hidden;
+    height:50px;
     width:100%;
+      border-bottom: 5px solid #C60000;
+    border-top: 5px solid #C60000;
 }
 
 /* Style the links inside the navigation bar */

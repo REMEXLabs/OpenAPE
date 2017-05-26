@@ -2,7 +2,7 @@
 	 function defineOpenape(){
 	    var objOpenape = {};
 	    
-	    //get the protocol and adress of the location. If it´s running local, than the adress should be http://localhost:4567
+	    //get the protocol and address of the location. If it´s running local, than the address should be http://localhost:4567
 	    var protocol = location.protocol;
 	    var token = "";
 	    
@@ -73,7 +73,7 @@
 	     * 	 The username of the user from the mongodb
 	     * 
 	     * @param  email
-	     * 	 The email adress of the user from the mongodb
+	     * 	 The email address of the user from the mongodb
 	     * 
 	     * @param  password
 	     * 	 The password of the user from the mongodb
@@ -396,6 +396,585 @@
 	    	}
 	    	return objUpdateUserContext_Result;
 	    }     
+	    
+	    
+	    
+	    /*
+	     * 
+	     * Task-Contexts Functions
+	     */
+	    
+	    /** setTaskContexts
+	     * 
+	     * This function is used to set the task-context in the mongodb database with the given task-context
+	     *
+	     * @param  taskContexts
+	     * 	 The given task-context in JSON
+	     * 
+	     * @return      An JavaScript-Object with the create result
+	     */
+	    objOpenape.setTaskContexts = function (taskContexts) {
+	    	var objSetTaskContext_Result = {};
+	    	var objAjaxParameters = {};
+	    	
+	    	var arrStatusText = [];
+	    	var isTokenCorrect = true;
+	    	var isTaskContextCorrect = true;
+	    	
+	    	if(localStorage.getItem("token") === undefined){
+	    		arrStatusText.push("Please initialize the library");
+	    		isTaskContextCorrect = false;
+	    	} 
+	    	
+	    	if(taskContexts==""){
+	    		arrStatusText.push("The taskcontext can not be empty");
+	    		isTaskContextCorrect = false;
+	    	} else if(taskContexts === undefined){
+	    		arrStatusText.push("Please enter a taskcontext");
+	    		isTaskContextCorrect = false;
+	    	}
+	    	
+	    	if(isTokenCorrect && isTaskContextCorrect){	
+	    		objAjaxParameters.data = taskContexts;
+	    		objAjaxParameters.type = "POST";
+	    		objAjaxParameters.url = protocol+"/api/task-contexts";
+	    		objAjaxParameters.token = localStorage.getItem("token");
+	    		objSetTaskContext_Result = databaseCommunication(objAjaxParameters);
+	    	} else {
+	    		objSetTaskContext_Result.statusText = arrStatusText;
+	    		objSetTaskContext_Result.status = 400;
+	    	}
+	    	return objSetTaskContext_Result;
+	    }
+	    
+	    /** getTaskContexts
+	     * 
+	     * This function is used to get the task-context from the Mongodb database with the given taskContextId
+	     *
+	     * @param  taskContextId
+	     * 	 The taskContextId
+	     * 
+	     * @return      
+	     * 	An JavaScript-Object with the get result and the corresponding task-context to the given taskContextId
+	     */
+	    objOpenape.getTaskContexts = function (taskContextId) {
+	    	var objGetTaskContext_Result = {};
+	    	var objAjaxParameters = {};
+	    	
+	    	var arrStatusText = [];
+	    	var isTokenCorrect = true;
+	    	var isTaskContextIdCorrect = true;
+	    	
+	    	if(localStorage.getItem("token") === undefined){
+	    		arrStatusText.push("Please initialize the library");
+	    		isTokenCorrect = false;
+	    	} 
+	    	
+	    	if(taskContextId==""){
+	    		arrStatusText.push("The taskContextId can not be empty");
+	    		isTaskContextIdCorrect = false;
+	    	} else if(taskContextId === undefined){
+	    		arrStatusText.push("Please enter a taskContextId");
+	    		isTaskContextIdCorrect = false;
+	    	}
+	    	
+	    	if(isTokenCorrect && isTaskContextIdCorrect){
+	    		objAjaxParameters.type = "GET";
+	    		objAjaxParameters.url = protocol+"/api/task-contexts/"+taskContextId;
+	    		objAjaxParameters.token = localStorage.getItem("token");
+	    		objGetTaskContext_Result = databaseCommunication(objAjaxParameters);
+	    	} else {
+	    		objGetTaskContext_Result.status = 400;
+	    		objGetTaskContext_Result.statusText = arrStatusText;
+	    	}
+	    	
+	    	return objGetTaskContext_Result;
+	    }
+
+	    /** deleteTaskContexts
+	     * 
+	     * This function is used to delete the task-context from the Mongodb database with the given taskContextId
+	     *
+	     * @param  taskContextId
+	     * 	 The taskContextId
+	     * 
+	     * @return      
+	     * 	An JavaScript-Object with the delete result
+	     */
+	    objOpenape.deleteTaskContexts = function (taskContextId) {
+	    	var objDeleteTaskContext_Result = {};
+	    	var objAjaxParameters = {};
+	    	
+	    	var arrStatusText = [];
+	    	
+	    	var isTokenCorrect = true;
+	    	var isTaskContextIdCorrect = true;
+	    	
+	    	if(localStorage.getItem("token") === undefined){
+	    		arrStatusText.push("Please initialize the library");
+	    		isTokenCorrect = false;
+	    	} 
+	    	
+	    	if(taskContextId==""){
+	    		arrStatusText.push("The taskcontextId can not be empty");
+	    		isTaskContextIdCorrect = false;
+	    	} else if(taskContextId === undefined){
+	    		arrStatusText.push("Please enter a taskcontextId");
+	    		isTaskContextIdCorrect = false;
+	    	}
+	    	
+	    	if(isTokenCorrect && isTaskContextIdCorrect ){
+	    		objAjaxParameters.type = "DELETE";
+	    		objAjaxParameters.url = protocol+"/api/task-contexts/"+taskContextId,
+	    		objAjaxParameters.token = localStorage.getItem("token");
+	    		objDeleteTaskContext_Result = databaseCommunication(objAjaxParameters);
+	    	} else {
+	    		objDeleteTaskContext_Result.statusText = arrStatusText;
+	    		objDeleteTaskContext_Result.status = 400;
+	    	}
+	    	return objDeleteTaskContext_Result;
+	    }
+	    
+	    /** updateTaskContexts
+	     * 
+	     * This function is used to update the task-context in MongoDB with the given taskContextId and task-context
+	     *
+	     * @param  taskContextId
+	     * 	 The taskContextId
+	     * 
+	     * @param  taskContexts
+	     * 	 The given task-context in JSON
+	     * 
+	     * @return      
+	     * 	An JavaScript-Object with the update result
+	     */
+	    objOpenape.updateTaskContexts = function (taskContextId, taskContexts) {
+	    	var objUpdateUserContext_Result = {};
+	    	var objAjaxParameters = {};
+	    	var arrStatusText = [];
+	    	var isTokenCorrect = true;
+	    	var isTaskContextCorrect = true;
+	    	var isTaskContextIdCorrect = true;
+	    	
+	    	if(localStorage.getItem("token") === undefined){
+	    		arrStatusText.push("Please initialize the library");
+	    		isTokenCorrect = false;
+	    	} 
+	    	
+	    	if(taskContexts==""){
+	    		arrStatusText.push("The taskcontext can not be empty");
+	    		isTaskContextCorrect = false;
+	    	} else if(taskContexts === undefined){
+	    		arrStatusText.push("Please enter a taskcontext");
+	    		isTaskContextCorrect = false;
+	    	}
+	    	
+	    	if(taskContextId==""){
+	    		arrStatusText.push("The taskContextId can not be empty");
+	    		isTaskContextIdCorrect = false;
+	    	} else if(taskContextId === undefined){
+	    		arrStatusText.push("Please enter a taskContextId");
+	    		isTaskContextIdCorrect = false;
+	    	}
+	    	
+	    	if(isTokenCorrect && isTaskContextCorrect && isTaskContextIdCorrect ){
+	    		objAjaxParameters.data = taskContexts;
+	    		objAjaxParameters.type = "PUT";
+	    		objAjaxParameters.url = protocol+"/api/task-contexts/"+taskContextId;
+	    		objAjaxParameters.token = localStorage.getItem("token");
+	    		objUpdateUserContext_Result = databaseCommunication(objAjaxParameters);
+	    	} else {
+	    		objUpdateUserContext_Result.status = 400;
+	    		objUpdateUserContext_Result.statusText = arrStatusText;
+	    	}
+	    	return objUpdateUserContext_Result;
+	    }     
+	    
+
+	    /*
+	     * Equipment-Contexts functions
+	     */
+
+	    /** getEquipmentContexts
+	     * 
+	     * This function is used to get the equipment-context from the Mongodb database with the given equipmentContextId
+	     *
+	     * @param  equipmentContextId
+	     * 	 The equipmentContextId
+	     * 
+	     * @return      
+	     * 	An JavaScript-Object with the equipment-context result
+	     */
+	    objOpenape.getEquipmentContexts = function (equipmentContextId) {
+	    	var objGetEquipmentContext_Result = {};
+	    	var objAjaxParameters = {};
+	    	
+	    	var arrStatusText = [];
+	    	var isTokenCorrect = true;
+	    	var isEquipmentContextIdCorrect = true;
+	    	
+	    	if(localStorage.getItem("token") === undefined){
+	    		arrStatusText.push("Please initialize the library");
+	    		isTokenCorrect = false;
+	    	} 
+	    	
+	    	if(equipmentContextId==""){
+	    		arrStatusText.push("The equipmentContextId can not be empty");
+	    		isEquipmentContextIdCorrect = false;
+	    	} else if(equipmentContextId === undefined){
+	    		arrStatusText.push("Please enter a equipmentContextId");
+	    		isEquipmentContextIdCorrect = false;
+	    	}
+	    	
+	    	if(isTokenCorrect && isEquipmentContextIdCorrect){
+	    		objAjaxParameters.type = "GET";
+	    		objAjaxParameters.url = protocol+"/api/equipment-contexts/"+equipmentContextId;
+	    		objAjaxParameters.token = localStorage.getItem("token");
+	    		objGetEquipmentContext_Result = databaseCommunication(objAjaxParameters);
+	    	} else {
+	    		objGetEquipmentContext_Result.status = 400;
+	    		objGetEquipmentContext_Result.statusText = arrStatusText;
+	    	}
+	    	
+	    	return objGetEquipmentContext_Result;
+	    }
+	    
+
+	    /** deleteEquipmentContexts
+	     * 
+	     * This function is used to delete the equipment-context from the Mongodb database with the given equipmentContextId
+	     *
+	     * @param  equipmentContextId
+	     * 	 The equipmentContextId
+	     * 
+	     * @return      
+	     * 	An JavaScript-Object with the delete result
+	     */
+	    objOpenape.deleteEquipmentContexts = function (equipmentContextId) {
+	    	var objDeleteEquipmentContext_Result = {};
+	    	var objAjaxParameters = {};
+	    	
+	    	var arrStatusText = [];
+	    	
+	    	var isTokenCorrect = true;
+	    	var isEquipmenContextIdCorrect = true;
+	    	
+	    	if(localStorage.getItem("token") === undefined){
+	    		arrStatusText.push("Please initialize the library");
+	    		isTokenCorrect = false;
+	    	} 
+	    	
+	    	if(equipmentContextId==""){
+	    		arrStatusText.push("The equipmentContextId can not be empty");
+	    		isEquipmenContextIdCorrect = false;
+	    	} else if(equipmentContextId === undefined){
+	    		arrStatusText.push("Please enter a equipmentContextId");
+	    		isEquipmenContextIdCorrect = false;
+	    	}
+	    	
+	    	if(isTokenCorrect && isEquipmenContextIdCorrect ){
+	    		objAjaxParameters.type = "DELETE";
+	    		objAjaxParameters.url = protocol+"/api/equipment-contexts/"+equipmentContextId,
+	    		objAjaxParameters.token = localStorage.getItem("token");
+	    		objDeleteEquipmentContext_Result = databaseCommunication(objAjaxParameters);
+	    	} else {
+	    		objDeleteEquipmentContext_Result.statusText = arrStatusText;
+	    		objDeleteEquipmentContext_Result.status = 400;
+	    	}
+	    	return objDeleteEquipmentContext_Result;
+	    }
+
+	    /** setEquipmentContexts
+	     * 
+	     * This function is used to set the equipment-context in the mongodb database with the given equipment-context
+	     *
+	     * @param  equipmentContexts
+	     * 	 The given equipment-context in JSON
+	     * 
+	     * @return      
+	     * 	 An JavaScript-Object with the create result
+	     */	    
+	    objOpenape.setEquipmentContexts = function (equipmentContexts) {
+	    	var objSetEquipmentContext_Result = {};
+	    	var objAjaxParameters = {};
+	    	
+	    	var arrStatusText = [];
+	    	var isTokenCorrect = true;
+	    	var isEquipmentContextCorrect = true;
+	    	
+	    	if(localStorage.getItem("token") === undefined){
+	    		arrStatusText.push("Please initialize the library");
+	    		isTokenCorrect = false;
+	    	} 
+	    	
+	    	if(equipmentContexts==""){
+	    		arrStatusText.push("The equipmentContext can not be empty");
+	    		isEquipmentContextCorrect = false;
+	    	} else if(equipmentContexts === undefined){
+	    		arrStatusText.push("Please enter a equipmentContext");
+	    		isEquipmentContextCorrect = false;
+	    	}
+	    	
+	    	if(isTokenCorrect && isEquipmentContextCorrect){	
+	    		objAjaxParameters.data = equipmentContexts;
+	    		objAjaxParameters.type = "POST";
+	    		objAjaxParameters.url = protocol+"/api/equipment-contexts";
+	    		objAjaxParameters.token = localStorage.getItem("token");
+	    		objSetEquipmentContext_Result = databaseCommunication(objAjaxParameters);
+	    	} else {
+	    		objSetEquipmentContext_Result.statusText = arrStatusText;
+	    		objSetEquipmentContext_Result.status = 400;
+	    	}
+	    	return objSetEquipmentContext_Result;
+	    }
+	    
+	    /** updateEquipmentContexts
+	     * 
+	     * This function is used to update the equipment-context in MongoDB with the given equipmentContextId and equipmentContexts
+	     *
+	     * @param  equipmentContextId
+	     * 	 The equipmentContextId
+	     * 
+	     * @param  equipmentContexts
+	     * 	 The given equipmentContexts in JSON
+	     * 
+	     * @return      
+	     * 	An JavaScript-Object with the update result
+	     */
+	    objOpenape.updateEquipmentContexts = function (equipmentContextId, equipmentContexts) {
+	    	var objUpdateEquipmentContext_Result = {};
+	    	var objAjaxParameters = {};
+	    	var arrStatusText = [];
+	    	var isTokenCorrect = true;
+	    	var isEquipmentContextCorrect = true;
+	    	var isEquipmentContextIdCorrect = true;
+	    	
+	    	if(localStorage.getItem("token") === undefined){
+	    		arrStatusText.push("Please initialize the library");
+	    		isTokenCorrect = false;
+	    	} 
+	    	
+	    	if(equipmentContexts==""){
+	    		arrStatusText.push("The equipmentContexts can not be empty");
+	    		isEquipmentContextCorrect = false;
+	    	} else if(equipmentContexts === undefined){
+	    		arrStatusText.push("Please enter a equipmentContexts");
+	    		isEquipmentContextCorrect = false;
+	    	}
+	    	
+	    	if(equipmentContextId==""){
+	    		arrStatusText.push("The equipmentContextId can not be empty");
+	    		isEquipmentContextIdCorrect = false;
+	    	} else if(equipmentContextId === undefined){
+	    		arrStatusText.push("Please enter a equipmentContextId");
+	    		isTaskContextIdCorrect = false;
+	    	}
+	    	
+	    	if(isTokenCorrect && isEquipmentContextCorrect && isEquipmentContextIdCorrect ){
+	    		objAjaxParameters.data = equipmentContexts;
+	    		objAjaxParameters.type = "PUT";
+	    		objAjaxParameters.url = protocol+"/api/equipment-contexts/"+equipmentContextId;
+	    		objAjaxParameters.token = localStorage.getItem("token");
+	    		objUpdateEquipmentContext_Result = databaseCommunication(objAjaxParameters);
+	    	} else {
+	    		objUpdateEquipmentContext_Result.status = 400;
+	    		objUpdateEquipmentContext_Result.statusText = arrStatusText;
+	    	}
+	    	return objUpdateEquipmentContext_Result;
+	    }     
+	    
+	    
+	    /*
+	     * Environment-Contexts functions
+	     */
+
+	    /** getEnvironmentContexts
+	     * 
+	     * This function is used to get the environment-context from the MongoDB database with the given environmentContextId
+	     *
+	     * @param  environmentContextId
+	     * 	 The environmentContextId
+	     * 
+	     * @return      
+	     * 	An JavaScript-Object with the environment-context result
+	     */
+	    objOpenape.getEnvironmentContexts = function (environmentContextId) {
+	    	var objGetEnvironmentContext_Result = {};
+	    	var objAjaxParameters = {};
+	    	
+	    	var arrStatusText = [];
+	    	var isTokenCorrect = true;
+	    	var isEnvironmentContextIdCorrect = true;
+	    	
+	    	if(localStorage.getItem("token") === undefined){
+	    		arrStatusText.push("Please initialize the library");
+	    		isTokenCorrect = false;
+	    	} 
+	    	
+	    	if(environmentContextId==""){
+	    		arrStatusText.push("The environmentContextId can not be empty");
+	    		isEnvironmentContextIdCorrect  = false;
+	    	} else if(environmentContextId === undefined){
+	    		arrStatusText.push("Please enter a environmentContextId");
+	    		isEnvironmentContextIdCorrect  = false;
+	    	}
+	    	
+	    	if(isTokenCorrect && isEnvironmentContextIdCorrect ){
+	    		objAjaxParameters.type = "GET";
+	    		objAjaxParameters.url = protocol+"/api/environment-contexts/"+environmentContextId;
+	    		objAjaxParameters.token = localStorage.getItem("token");
+	    		objGetEnvironmentContext_Result = databaseCommunication(objAjaxParameters);
+	    	} else {
+	    		objGetEnvironmentContext_Result.status = 400;
+	    		objGetEnvironmentContext_Result.statusText = arrStatusText;
+	    	}
+	    	
+	    	return objGetEnvironmentContext_Result;
+	    }
+	    
+
+	    /** deleteEnvironmentContexts
+	     * 
+	     * This function is used to delete the environment-context from the Mongodb database with the given environmentContextId
+	     *
+	     * @param  equipmentContextId
+	     * 	 The equipmentContextId
+	     * 
+	     * @return      
+	     * 	An JavaScript-Object with the delete result
+	     */
+	    objOpenape.deleteEnvironmentContexts = function (environmentContextId) {
+	    	var objDeleteEnvironmentContext_Result = {};
+	    	var objAjaxParameters = {};
+	    	
+	    	var arrStatusText = [];
+	    	
+	    	var isTokenCorrect = true;
+	    	var isEnvironmentContextIdCorrect = true;
+	    	
+	    	if(localStorage.getItem("token") === undefined){
+	    		arrStatusText.push("Please initialize the library");
+	    		isTokenCorrect = false;
+	    	} 
+	    	
+	    	if(environmentContextId==""){
+	    		arrStatusText.push("The environmentContextId can not be empty");
+	    		isEnvironmentContextIdCorrect = false;
+	    	} else if(environmentContextId === undefined){
+	    		arrStatusText.push("Please enter a environmentContextId");
+	    		isEnvironmentContextIdCorrect = false;
+	    	}
+	    	
+	    	if(isTokenCorrect && isEnvironmentContextIdCorrect ){
+	    		objAjaxParameters.type = "DELETE";
+	    		objAjaxParameters.url = protocol+"/api/environment-contexts/"+environmentContextId,
+	    		objAjaxParameters.token = localStorage.getItem("token");
+	    		objDeleteEnvironmentContext_Result = databaseCommunication(objAjaxParameters);
+	    	} else {
+	    		objDeleteEnvironmentContext_Result.statusText = arrStatusText;
+	    		objDeleteEnvironmentContext_Result.status = 400;
+	    	}
+	    	return objDeleteEnvironmentContext_Result;
+	    }
+
+	    /** setEnvironmentContexts
+	     * 
+	     * This function is used to set the environment-context in the MongoDB database with the given environment-context
+	     *
+	     * @param  environmentContexts
+	     * 	 The given environment-context in JSON
+	     * 
+	     * @return      
+	     * 	 An JavaScript-Object with the create result
+	     */	    
+	    objOpenape.setEnvironmentContexts = function (environmentContexts) {
+	    	var objSetEnvironmentContext_Result = {};
+	    	var objAjaxParameters = {};
+	    	
+	    	var arrStatusText = [];
+	    	var isTokenCorrect = true;
+	    	var isEnvironmentContextCorrect = true;
+	    	
+	    	if(localStorage.getItem("token") === undefined){
+	    		arrStatusText.push("Please initialize the library");
+	    		isTokenCorrect = false;
+	    	} 
+	    	
+	    	if(environmentContexts==""){
+	    		arrStatusText.push("The environmentContexts can not be empty");
+	    		isEnvironmentContextCorrect = false;
+	    	} else if(environmentContexts === undefined){
+	    		arrStatusText.push("Please enter a environmentContexts");
+	    		isEnvironmentContextCorrect = false;
+	    	}
+	    	
+	    	if(isTokenCorrect && isEnvironmentContextCorrect){	
+	    		objAjaxParameters.data = environmentContexts;
+	    		objAjaxParameters.type = "POST";
+	    		objAjaxParameters.url = protocol+"/api/environment-contexts";
+	    		objAjaxParameters.token = localStorage.getItem("token");
+	    		objSetEnvironmentContext_Result = databaseCommunication(objAjaxParameters);
+	    	} else {
+	    		objSetEnvironmentContext_Result.statusText = arrStatusText;
+	    		objSetEnvironmentContext_Result.status = 400;
+	    	}
+	    	return objSetEnvironmentContext_Result;
+	    }
+	    
+	    /** updateEnvironmentContexts
+	     * 
+	     * This function is used to update the environment-context in MongoDB with the given environmentContextId and environmentContexts
+	     *
+	     * @param  environmentContextId
+	     * 	 The environmentContextId
+	     * 
+	     * @param  environmentContexts
+	     * 	 The given environmentContexts in JSON
+	     * 
+	     * @return      
+	     * 	An JavaScript-Object with the update result
+	     */
+	    objOpenape.updateEnvironmentContexts = function (environmentContextId, environmentContexts) {
+	    	var objUpdateEnvironmentContext_Result = {};
+	    	var objAjaxParameters = {};
+	    	var arrStatusText = [];
+	    	var isTokenCorrect = true;
+	    	var isEnvironmentContextCorrect = true;
+	    	var isEnvironmentContextIdCorrect = true;
+	    	
+	    	if(localStorage.getItem("token") === undefined){
+	    		arrStatusText.push("Please initialize the library");
+	    		isTokenCorrect = false;
+	    	} 
+	    	
+	    	if(environmentContexts==""){
+	    		arrStatusText.push("The environmentContexts can not be empty");
+	    		isEnvironmentContextCorrect = false;
+	    	} else if(environmentContexts === undefined){
+	    		arrStatusText.push("Please enter a environmentContexts");
+	    		isEnvironmentContextCorrect = false;
+	    	}
+	    	
+	    	if(environmentContextId==""){
+	    		arrStatusText.push("The environmentContextId can not be empty");
+	    		isEnvironmentContextIdCorrect = false;
+	    	} else if(environmentContextId === undefined){
+	    		arrStatusText.push("Please enter a environmentContextId");
+	    		isEnvironmentContextIdCorrect = false;
+	    	}
+	    	
+	    	if(isTokenCorrect && isEnvironmentContextCorrect && isEnvironmentContextIdCorrect ){
+	    		objAjaxParameters.data = environmentContexts;
+	    		objAjaxParameters.type = "PUT";
+	    		objAjaxParameters.url = protocol+"/api/environment-contexts/"+environmentContextId;
+	    		objAjaxParameters.token = localStorage.getItem("token");
+	    		objUpdateEnvironmentContext_Result = databaseCommunication(objAjaxParameters);
+	    	} else {
+	    		objUpdateEnvironmentContext_Result.status = 400;
+	    		objUpdateEnvironmentContext_Result.statusText = arrStatusText;
+	    	}
+	    	return objUpdateEnvironmentContext_Result;
+	    } 
 	    
 	    function databaseCommunication (objAjaxParameters) {
 	    	var objStatus = {};
