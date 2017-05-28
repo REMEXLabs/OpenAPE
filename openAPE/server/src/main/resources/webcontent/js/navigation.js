@@ -5,27 +5,30 @@ $(document).ready(function(){
 	var token = localStorage.getItem("token");
 	var href = document.location.href;
 	var lastPathSegment = href.substr(href.lastIndexOf('/') + 1);
+	var protocol = location.protocol;
+	
+	//set the top navigation
+	$('#mainnavigationlinks').append('<a href="index.html" id="linkHome">Home</a><a href="workflow.html" id="linkworkflow">Workflow</a>');
 	
 
+	//if token === null than the use is not loggedin, else the user is loggedin and a token was created
 	if(token === null){
 		$("#subnav").attr("hidden", true );
 		$("#headerBottom").removeAttr( "hidden");
 		$('#subnavigatons').empty();
 		$('#subnavigatons').append("<div class='headerBottom' id='headerBottom'>&nbsp</div>");
 		$('#divLogin').empty();
-		$('#divLogin').append("<a href='start.html' id='linkLogin'>Login</a>");
+		$('#divLogin').append("<a href='loginRegistration.html' id='linkLogin'>Login</a>");
 
 	} else {
 		$('#subnavigatons').empty();
-		
-		if( lastPathSegment != "ressourceUpload.html"){
+		if( lastPathSegment != "usercontexts.html"){
 			$('#subnavigatons').append("" +
 					"<div class='subnav' id='subnav'>" +
-					"<a href='ressourceUpload.html' id='linkUser-contexts'>User-Contexts</a>" +
+					"<a href='usercontexts.html' id='linkUser-contexts'>User-Contexts</a>" +
 					"</div>"
 			);
 		} else {
-			
 			$('#subnavigatons').append("" +
 					"<div class='subnav' id='subnav'>" +
 					"<a href='#' id='linkUser-contexts'>User-Contexts</a>" +
@@ -39,18 +42,15 @@ $(document).ready(function(){
 			);
 			$('#linkUser-contexts').addClass("subnav-active");
 		}
-		
-		
 		$('#divLogin').empty();
 		$('#divLogin').append("<a href='#' id='linkLogin'>Logout</a>");
-		
 	}
 	
 	if(lastPathSegment == "workflow.html"){
-		$('#linkTutorial').addClass("topnav-active");
+		$('#linkworkflow').addClass("topnav-active");
 	} else if (lastPathSegment == "index.html"){
 		$('#linkHome').addClass("topnav-active");
-	} else if(lastPathSegment == "start.html"){
+	} else if(lastPathSegment == "loginRegistration.html"){
 		 $('#linkLogin').addClass("topnav-active");
 	}
 	
@@ -58,8 +58,8 @@ $(document).ready(function(){
 	$("#linkLogin").click(function(){
 		localStorage.clear();
 		location.reload();
-		if(lastPathSegment == "ressourceUpload.html"){
-			window.location = "http://localhost:4567/start.html";
+		if(lastPathSegment == "usercontexts.html"){
+			window.location = protocol+"/loginRegistration.html";
 		}
 	})
 	
@@ -113,4 +113,25 @@ $(document).ready(function(){
 		$("#update").hide();
 	})	
 })
+
+function openSection(evt, sectionName) {
+    // Declare all variables
+    var i, tabcontent, tablinks;
+
+    // Get all elements with class="tabcontent" and hide them
+    tabcontent = document.getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+    }
+
+    // Get all elements with class="tablinks" and remove the class "active"
+    tablinks = document.getElementsByClassName("tablinks");
+    for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+
+    // Show the current tab, and add an "active" class to the button that opened the tab
+    document.getElementById(sectionName).style.display = "block";
+    evt.currentTarget.className += " active";
+}
 
