@@ -133,7 +133,7 @@ invocationBuilder.header("Authorization",this.token );
 Response response = invocationBuilder.get();
 
 			if (response.getStatus() != 200) {
-UserContext userContext = 		 response.getEntity();
+UserContext userContext = 		 response.readEntity(UserContext.class);
 return userContext;
 	}
 			return null;

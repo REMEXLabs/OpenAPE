@@ -33,3 +33,4 @@ documentation/build/*
 .LSOverride
 .Spotlight-V100
 .Trashes
+/openAPE/logs
