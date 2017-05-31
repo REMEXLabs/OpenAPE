@@ -57,7 +57,7 @@ $(document).ready(function(){
 	
 	$("#linkLogin").click(function(){
 		localStorage.clear();
-		location.reload();
+		window.location=window.location;
 		if(lastPathSegment == "usercontexts.html"){
 			window.location = protocol+"/loginRegistration.html";
 		}
