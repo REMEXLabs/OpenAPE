@@ -47,8 +47,8 @@ this(userName, password, "http://openape.gpii.eu");
 public OpenAPEClient(String userName, String password, String uri) {
 //	create HTTP client that connects to the server
 	System.out.println("Constructor");
-	ClientConfig config = new ClientConfig();
-	 client = ClientBuilder.newClient(config);
+//	ClientConfig config = new ClientConfig();
+	 client = ClientBuilder.newClient();//config);
 webResource = client.target(uri);
 
 //get token for accessing server
@@ -58,7 +58,7 @@ logger.info("OpenAPECLIENT received Token for: " + uri);
 
 private String getToken(String userName,String password){
 	String tokenRequest= "grant_type=password&username=" + userName + "&password=" + password;
-	Response response = webResource.path("/token").request(MediaType.APPLICATION_FORM_URLENCODED)
+	Response response = webResource.path("token").request(MediaType.APPLICATION_FORM_URLENCODED)
 		    .post(Entity.entity(tokenRequest,MediaType.APPLICATION_JSON));
 		    		
 			if (response.getStatus() != 200){
