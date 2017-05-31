@@ -1,4 +1,4 @@
-//get the protocol and adress of the location. If it´s running local, than the adress should be http://localhost:4567
+//get the protocol and address of the location. If it´s running local, than the address should be http://localhost:4567
 var protocol = location.protocol;
 
 function saveData(){
@@ -106,6 +106,5 @@ function updateData() {
 
 
 function Logout() {
-	window.location = protocol+"/start.html";
+	window.location = protocol+"/loginRegistration.html";
 }
-

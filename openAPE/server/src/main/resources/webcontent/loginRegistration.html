@@ -26,13 +26,13 @@
 <body>
 
 <div class="main">	
-			<!-- Main site Navigation -->
-	<div class="topnav" id="myTopnav">
+	<!-- Main site Navigation -->
+	<div class="topnav" id="myTopnav" role="navigation" aria-labelledby="mainnavigation">
 		<div id="mainnavigationlinks"></div>
 		<div  align="right" id="divLogin"></div>
 	</div>
 	<div class="header" id="header"></div>
-	<div id="subnavigatons"></div>
+	<div id="subnavigatons" role="navigaton" aria-labelledby="subnavigation"></div>
 	
 	<div class="mainContent">
 	
@@ -46,9 +46,9 @@
 				<tr>
 					<td ><b>Username:</b> 
 					<td>
-						<div id="forGroupUsername" class="form-group ">
-						    <div class="col-sm-15">
-						      <input type="text" class="form-control" id="username" placeholder="Username">
+						<div id="forGroupUsername" class="form-group" role="form">
+						    <div class="col-sm-15" role="form">
+						      <input type="text" class="form-control" id="username" placeholder="Username" name="username">
 						      <span class="glyphicon glyphicon-remove form-control-feedback" id="errUsername"></span>
 						    </div>
 					  </div>
@@ -56,9 +56,9 @@
 				<tr>
 					<td><b>Password:  </b></td>
 					<td>
-						<div id="formGroupPassword" class="form-group ">
+						<div id="formGroupPassword" class="form-group" role="form">
 						    <div class="col-sm-15">
-						      <input type="password" class="form-control" id="password" placeholder="Password">
+						      <input type="password" class="form-control" id="password" placeholder="Password" name="password">
 						      <span class="glyphicon glyphicon-remove form-control-feedback" id="errPassword"></span>
 						    </div>
 					  </div>
@@ -67,9 +67,9 @@
 				<tr>
 					<td><b>2 + 13?</b> </td>
 					<td>
-						<div id="formGroupSecQuestion" class="form-group ">
+						<div id="formGroupSecQuestion" class="form-group" role="form">
 							    <div class="col-sm-15">
-							      <input type="number" class="form-control" id="securityQuestion" placeholder="Security question">
+							      <input type="number" class="form-control" id="securityQuestion" placeholder="Security question" name="securityQuestion">
 							      <span class="glyphicon glyphicon-remove form-control-feedback" id="errSecQuestion"></span>
 							    </div>
 						  </div>
@@ -97,7 +97,7 @@
 				<tr>
 					<td><b> Username:</b> </td>
 					<td>
-						<div id="formGroupRegUsername" class="form-group ">
+						<div id="formGroupRegUsername" class="form-group" role="form">
 						    <div class="col-sm-15">
 						      <input type="text" class="form-control" id="regUsername" placeholder="Username">
 						      <span class="glyphicon glyphicon-remove form-control-feedback" id="errRegUsername"></span>
@@ -109,9 +109,9 @@
 					<td><b> Email:</b> </td>
 					<td>
 					
-					<div id="formGroupRegEmail" class="form-group ">
+					<div id="formGroupRegEmail" class="form-group" role="form">
 						    <div class="col-sm-15">
-						      <input type="email" class="form-control" id="email" placeholder="Email">
+						      <input type="email" class="form-control" id="email" placeholder="Email" name="email">
 						      <span class="glyphicon glyphicon-remove form-control-feedback" id="errRegEmail"></span>
 						    </div>
 					 </div>
@@ -121,9 +121,9 @@
 					<td> <b>Password:</b> </td>
 					<td>
 					
-					<div id="formGroupRegPassword" class="form-group ">
+					<div id="formGroupRegPassword" class="form-group" role="form">
 						    <div class="col-sm-15">
-						      <input type="password" class="form-control" id="regPassword" placeholder="Password">
+						      <input type="password" class="form-control" id="regPassword" placeholder="Password" name="password">
 						      <span class="glyphicon glyphicon-remove form-control-feedback" id="errRegPassword"></span>
 						    </div>
 					 </div>
@@ -133,9 +133,9 @@
 					<td><b> 2 + 13?</b> </td>
 					<td>
 					
-					<div id="formGroupRegSecQuestion" class="form-group ">
+					<div id="formGroupRegSecQuestion" class="form-group" role="form">
 						    <div class="col-sm-15">
-						      <input type="number" class="form-control" id="regSecurityQuestion" placeholder="Security question">
+						      <input type="number" class="form-control" id="regSecurityQuestion" placeholder="Security question" name="SecurityQuestion">
 						      <span class="glyphicon glyphicon-remove form-control-feedback" id="errRegSecQuestion"></span>
 						    </div>
 					 </div>
@@ -144,7 +144,7 @@
 					</td>
 				</tr>
 				<tr>
-					<td> <a id="btnLogin" class="tablinks" onclick="openSection(event, 'Login')">Login</a	></td>
+					<td> <a id="btnLogin" class="tablinks" onclick="openSection(event, 'Login')">Login</a></td>
 					<td  align="right"><button id="register" class="btn btn-red" > Register</button></td>
 				</tr>
 			</table>
