@@ -8,7 +8,7 @@ $(document).ready(function(){
 	var protocol = location.protocol;
 	
 	//set the top navigation
-	$('#mainnavigationlinks').append('<a href="index.html" id="linkHome">Home</a><a href="workflow.html" id="linkworkflow">Workflow</a>');
+	$('#mainnavigationlinks').append('<a href="index.html" id="linkHome">Home</a><a href="workflow.html" id="linkworkflow">Tutorials</a>');
 	
 
 	//if token === null than the use is not loggedin, else the user is loggedin and a token was created
@@ -57,7 +57,7 @@ $(document).ready(function(){
 	
 	$("#linkLogin").click(function(){
 		localStorage.clear();
-		location.reload();
+		window.location=window.location;
 		if(lastPathSegment == "usercontexts.html"){
 			window.location = protocol+"/loginRegistration.html";
 		}
