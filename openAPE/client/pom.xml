@@ -2,8 +2,8 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<properties>
-		<jersey2.version>2.19</jersey2.version>
-		<jaxrs.version>2.0.1</jaxrs.version>
+		<jersey2.version>2.25.1</jersey2.version>
+		
 	</properties>
 
 	<parent>
@@ -19,11 +19,6 @@
 			<groupId>openape</groupId>
 			<artifactId>API</artifactId>
 			<version>${project.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>javax.ws.rs</groupId>
-			<artifactId>javax.ws.rs-api</artifactId>
-			<version>${jaxrs.version}</version>
 		</dependency>
  	<dependency>
             <groupId>org.glassfish.jersey.containers</groupId>

@@ -15,7 +15,7 @@ import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import org.glassfish.jersey.client.ClientConfig;
+
 import org.openape.api.Messages;
 import org.openape.api.environmentcontext.EnvironmentContext;
 import org.openape.api.equipmentcontext.EquipmentContext;
@@ -23,10 +23,13 @@ import org.openape.api.listing.Listing;
 import org.openape.api.rest.RESTPaths;
 import org.openape.api.taskcontext.TaskContext;
 import org.openape.api.usercontext.UserContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 /** @author Lukas Smirek
 */
 
 public class OpenAPEClient {
+	private static Logger logger = LoggerFactory.getLogger(OpenAPEClient.class);
 private Client client;
 private WebTarget webResource;
 private String token;
@@ -43,12 +46,14 @@ this(userName, password, "http://openape.gpii.eu");
 
 public OpenAPEClient(String userName, String password, String uri) {
 //	create HTTP client that connects to the server
+	System.out.println("Constructor");
 	ClientConfig config = new ClientConfig();
 	 client = ClientBuilder.newClient(config);
 webResource = client.target(uri);
 
 //get token for accessing server
 this.token = getToken(userName,password);
+logger.info("OpenAPECLIENT received Token for: " + uri);
 }
 
 private String getToken(String userName,String password){
@@ -68,7 +73,8 @@ return response.getEntity().toString();
 
 public URI createUserContext(UserContext userContext) throws URISyntaxException{
 	
-	return createContext(MessagesUserContextRESTInterface.UserContextURLWithoutID   , userContext);
+	return createContext(USER_CONTEXT_PATH, userContext);
+			
 }
 
 public URI createEquipmentContext(EquipmentContext equipmentContext) throws URISyntaxException{
