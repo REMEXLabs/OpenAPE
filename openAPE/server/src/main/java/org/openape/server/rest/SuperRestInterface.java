@@ -6,6 +6,7 @@ import java.io.IOException;
 import org.openape.api.Messages;
 import org.openape.server.Main;
 import org.openape.server.auth.AuthService;
+import org.openape.server.filter.CorsFilter;
 import org.openape.server.requestHandler.EnvironmentContextRequestHandler;
 import org.openape.server.requestHandler.EquipmentContextRequestHandler;
 import org.openape.server.requestHandler.ListingRequestHandler;
@@ -73,7 +74,7 @@ public class SuperRestInterface {
     	
     	}
     	Spark.staticFiles.externalLocation(System.getProperty("java.io.tmpdir")+"/extContent");
-   
+   CorsFilter.apply();
     	Spark.get("api", (req,res) -> new API()                                                                    );
     	
         // AuthService singleton to enable security features on REST endpoints
