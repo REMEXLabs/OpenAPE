@@ -1,4 +1,4 @@
-//get the protocol and adress of the location. If it´s running local, than the adress should be http://localhost:4567
+//get the protocol and address of the location. If it´s running local, than the address should be http://localhost:4567
 var protocol = location.protocol;
 
 $(document).ready(function(){
@@ -71,11 +71,12 @@ function setUserData(){
 		$('#formGroupRegSecQuestion').addClass( "has-error has-feedback" );
 	}		
 
-	if(isRegSecurityQuestionCorrect == true && isUsernameCorrect == true && isEmailCorrect == true && isPasswordCorrect == true){
+	if(isRegSecurityQuestionCorrect && isUsernameCorrect && isEmailCorrect && isPasswordCorrect){
 		if(regSecurityQuestion == 15){
 			var objSenduserStatus = openape.setUser(username, email, password);
 			if(objSenduserStatus.status == 200){
-				window.location = protocol+"/ressourceUpload.html";
+				var tokenData = openape.initializeLibrary(username, password);
+				window.location = protocol+"/usercontexts.html";
 				$('#registrationErrorMsg').empty();
 			} else {
 				$('#registrationErrorMsg').empty();
@@ -86,30 +87,7 @@ function setUserData(){
 			$('#registrationErrorMsg').append("<img src='img/Attention-SZ-icon.png' width='20' height='20'> Wrong security question");
 		}
 	}
-	
 }
-
-function openSection(evt, sectionName) {
-    // Declare all variables
-    var i, tabcontent, tablinks;
-
-    // Get all elements with class="tabcontent" and hide them
-    tabcontent = document.getElementsByClassName("tabcontent");
-    for (i = 0; i < tabcontent.length; i++) {
-        tabcontent[i].style.display = "none";
-    }
-
-    // Get all elements with class="tablinks" and remove the class "active"
-    tablinks = document.getElementsByClassName("tablinks");
-    for (i = 0; i < tablinks.length; i++) {
-        tablinks[i].className = tablinks[i].className.replace(" active", "");
-    }
-
-    // Show the current tab, and add an "active" class to the button that opened the tab
-    document.getElementById(sectionName).style.display = "block";
-    evt.currentTarget.className += " active";
-}
-
 
 function getTokenForLogin(){
 	var username = $("#username").val();
@@ -145,25 +123,21 @@ function getTokenForLogin(){
 		isSecurityQuestionCorrect = true;
 	} else {
 		$('#errSecQuestion').show();
-		
 		$('#formGroupSecQuestion').addClass( "has-error has-feedback" );
 		isSecurityQuestionCorrect = false;
 	}
 	
 	
-	if(isUsernameCorrect == true && isPasswordCorrect == true && isSecurityQuestionCorrect == true){
-		var tokenData = openape.getToken("password", username, password);
+	if(isUsernameCorrect  && isPasswordCorrect && isSecurityQuestionCorrect){
+		var tokenData = openape.initializeLibrary(username, password);
 		
 		if(tokenData.status==200){
-			var token = JSON.parse(tokenData.responseText).access_token;
-			var userID = openape.getUser(token).id;
+			var userID = JSON.parse(openape.getUser().responseText).id;
 			var securityQuestion = $("#securityQuestion").val();
-			
-			localStorage.setItem("token", token);
 			
 			if(securityQuestion == 15){
 				if(userID != undefined){
-					window.location = protocol+"/ressourceUpload.html";
+					window.location = protocol+"/usercontexts.html";
 				} else {
 					$('#loginErrorMsg').empty();
 					$('#loginErrorMsg').append("<img src='img/Attention-SZ-icon.png' width='20' height='20'>  user not found");
@@ -178,6 +152,3 @@ function getTokenForLogin(){
 		}
 	}
 }
-
-
-

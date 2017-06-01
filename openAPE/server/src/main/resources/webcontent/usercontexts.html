@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<!-- Latest compiled and minified CSS -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OpenAPE</title>
+
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	<link rel="stylesheet" href="css/style.css">
+	
+	<!-- Latest compiled and minified JavaScript -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script src="js/openape.js" type="text/javascript"></script>
+	<script src="js/usercontexts.js" type="text/javascript"></script>
+	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+	<script src="js/navigation.js" type="text/javascript"></script>
+	<script src="js/footer.js" type="text/javascript"></script>
+	<script src="js/header.js" type="text/javascript"></script>
+	<script>
+	$( function() {
+	   $( "#tabs" ).tabs();
+	} );
+	</script>
+</head>
+<body >
+<div class="main">	
+	<!-- Main site Navigation -->
+	<div class="topnav" id="myTopnav" role="navigation" aria-labelledby="mainnavigation">
+		<div id="mainnavigationlinks"></div>
+		<div  align="right" id="divLogin"></div>
+	</div>
+	<div class="header" id="header"></div>
+	<div id="subnavigatons" role="navigaton" aria-labelledby="subnavigation"></div>
+	
+	<div class="mainContent">
+		<div id="overview" align="center">
+		<h1 align="center">User-Contexts Overview</h1> <br>
+		
+		<table>
+		  	<tr>
+		  		<td><b>UserContextId:</b> </td>
+		  		<td><input type="text" id="getUserContextIdInput" class="form-control" placeholder="UsercontextId"></td>
+		  		<td><button class="btn btn-red btn-lg btn-block" id="loadUserContexts" onclick="loadData()">Load</button></td>
+		  	</tr>
+		  	<tr>
+		  		<td colspan="4"><textarea class="form-control" id="getUserContextTextarea" cols="100" rows="8" style="max-width: 100%;" width="100%" disabled></textarea></td>
+		  	</tr>
+		  	<tr>
+		  		<td colspan="4" id="loadStatus" align="center"></td>
+		  	</tr>
+		  </table>
+		</div>	
+		
+		<div id="add" hidden="true" align="center">
+		
+		<h1 align="center">Add User-Contexts</h1> <br>
+	
+		<table>
+		<tr>
+		<td><textarea id="dataInput" name="dataInput" cols="100" rows="8" class="form-control"></textarea>  </td>
+		</tr>
+		<tr>
+			<td align="right"><button type="button" id="saveData" onclick="saveData()" class="btn btn-lg btn-block btn-red">store data</button></td>
+		</tr>
+		
+		</table>
+		<div class="saveUserContextsStatus" id="saveUserContextsStatus" align="center"></div>
+		</div>
+		 
+		 <div id="update" hidden="true" align="center">
+		 <h1 align="center">Update User-Contexts</h1> <br>
+		  <table>
+		  	<tr>
+		  		<td><b>UserContextId:</b> </td>
+		  		<td><input type="text" id="updateUserContextIdInput" class="form-control" placeholder="UsercontextId"></td>
+		  		<td><button class="btn btn-red btn-lg btn-block" id="updateUserContexts" onclick="updateData()">Update</button></td>
+		  	</tr>
+		  	<tr>
+		  		<td colspan="4"><textarea class="form-control" id="updateUserContextTextarea" cols="100" rows="8" ></textarea></td>
+		  	</tr>		
+		  	<tr>
+		  		<td colspan="4" id="updateStatus" align="center"></td>
+		  	</tr>
+		  </table>
+		  <br>
+		</div>
+		
+		  <div id="delete" hidden="true" align="center">
+		  <h1 align="center">Delete User-Contexts</h1> <br>
+		 <table>
+		  	<tr>
+		  		<td><b>UserContextId:</b> </td>
+		  		<td><input type="text" id="deleteUserContextIdInput" class="form-control" placeholder="UsercontextId"></td>
+		  		<td><button id="deleteUserContexts"  class="btn btn-red btn-lg btn-block" onclick="deleteData()">Delete</button></td>
+		  		<td id="deleteStatus" align="center"></td>
+		  	</tr>
+		  </table>
+		</div>
+</div>
+
+<footer id="footercontent"></footer>
+
+</div>
+
+
+</body>
+</html>
