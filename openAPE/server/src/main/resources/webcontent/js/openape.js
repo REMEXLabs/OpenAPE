@@ -51,7 +51,9 @@
 		    	
 		    	if(isPasswordCorret && isUsernameCorrect){
 		    		objAjaxParameters.type = "POST";
-		    		objAjaxParameters.url = protocol+"/token?grant_type=password&username="+username+"&password="+password;
+		    		objAjaxParameters.url = protocol+"/token";
+		    		objAjaxParameters.contentType = 'application/x-www-form-urlencoded';
+		    		objAjaxParameters.data = "grant_type=password&username="+encodeURIComponent(username)+"&password="+encodeURIComponent(password),
 		    		objToken = databaseCommunication(objAjaxParameters);
 		    	} else {
 		    		objToken.statusText = arrStatusText;
@@ -141,6 +143,7 @@
 		    	objAjaxParameters.data = JSON.stringify(objUser);
 		    	objAjaxParameters.type = "POST";
 		    	objAjaxParameters.url = protocol+"/users";
+		    	objAjaxParameters.contentType = 'application/json';
 		    	objSendUserdata = databaseCommunication(objAjaxParameters);
 		    	
 		    	if(objSendUserdata.responseText.includes("username_1 dup key")){
@@ -190,7 +193,6 @@
 	    	
 	    	return objUserProfile;
 	    }
-	    
 	   
 	    
 	    /*
@@ -282,6 +284,7 @@
 	    		objAjaxParameters.data = userContexts;
 	    		objAjaxParameters.type = "POST";
 	    		objAjaxParameters.url = protocol+"/api/user-contexts";
+	    		objAjaxParameters.contentType = 'application/json';
 	    		objAjaxParameters.token = localStorage.getItem("token");
 	    		objSetUserContext_Result = databaseCommunication(objAjaxParameters);
 	    	} else {
@@ -387,6 +390,7 @@
 	    	if(isTokenCorrect && isUserContextCorrect && isuserContextIdCorrect ){
 	    		objAjaxParameters.data = userContexts;
 	    		objAjaxParameters.type = "PUT";
+		    	objAjaxParameters.contentType = 'application/json';
 	    		objAjaxParameters.url = protocol+"/api/user-contexts/"+userContextId;
 	    		objAjaxParameters.token = localStorage.getItem("token");
 	    		objUpdateUserContext_Result = databaseCommunication(objAjaxParameters);
@@ -437,6 +441,7 @@
 	    	if(isTokenCorrect && isTaskContextCorrect){	
 	    		objAjaxParameters.data = taskContexts;
 	    		objAjaxParameters.type = "POST";
+	    		objAjaxParameters.contentType = 'application/json';
 	    		objAjaxParameters.url = protocol+"/api/task-contexts";
 	    		objAjaxParameters.token = localStorage.getItem("token");
 	    		objSetTaskContext_Result = databaseCommunication(objAjaxParameters);
@@ -580,6 +585,7 @@
 	    	if(isTokenCorrect && isTaskContextCorrect && isTaskContextIdCorrect ){
 	    		objAjaxParameters.data = taskContexts;
 	    		objAjaxParameters.type = "PUT";
+	    		objAjaxParameters.contentType = 'application/json';
 	    		objAjaxParameters.url = protocol+"/api/task-contexts/"+taskContextId;
 	    		objAjaxParameters.token = localStorage.getItem("token");
 	    		objUpdateUserContext_Result = databaseCommunication(objAjaxParameters);
@@ -718,6 +724,7 @@
 	    	if(isTokenCorrect && isEquipmentContextCorrect){	
 	    		objAjaxParameters.data = equipmentContexts;
 	    		objAjaxParameters.type = "POST";
+	    		objAjaxParameters.contentType = 'application/json';
 	    		objAjaxParameters.url = protocol+"/api/equipment-contexts";
 	    		objAjaxParameters.token = localStorage.getItem("token");
 	    		objSetEquipmentContext_Result = databaseCommunication(objAjaxParameters);
@@ -773,6 +780,7 @@
 	    	if(isTokenCorrect && isEquipmentContextCorrect && isEquipmentContextIdCorrect ){
 	    		objAjaxParameters.data = equipmentContexts;
 	    		objAjaxParameters.type = "PUT";
+	    		objAjaxParameters.contentType = 'application/json';
 	    		objAjaxParameters.url = protocol+"/api/equipment-contexts/"+equipmentContextId;
 	    		objAjaxParameters.token = localStorage.getItem("token");
 	    		objUpdateEquipmentContext_Result = databaseCommunication(objAjaxParameters);
@@ -911,6 +919,7 @@
 	    	if(isTokenCorrect && isEnvironmentContextCorrect){	
 	    		objAjaxParameters.data = environmentContexts;
 	    		objAjaxParameters.type = "POST";
+	    		objAjaxParameters.contentType = 'application/json';
 	    		objAjaxParameters.url = protocol+"/api/environment-contexts";
 	    		objAjaxParameters.token = localStorage.getItem("token");
 	    		objSetEnvironmentContext_Result = databaseCommunication(objAjaxParameters);
@@ -966,6 +975,7 @@
 	    	if(isTokenCorrect && isEnvironmentContextCorrect && isEnvironmentContextIdCorrect ){
 	    		objAjaxParameters.data = environmentContexts;
 	    		objAjaxParameters.type = "PUT";
+	    		objAjaxParameters.contentType = 'application/json';
 	    		objAjaxParameters.url = protocol+"/api/environment-contexts/"+environmentContextId;
 	    		objAjaxParameters.token = localStorage.getItem("token");
 	    		objUpdateEnvironmentContext_Result = databaseCommunication(objAjaxParameters);
@@ -980,8 +990,7 @@
 	    	var objStatus = {};
 	    	var request =  
 	    	{
-	    		async: false,
-		    	contentType: 'application/json',
+	    		async: false,	
 		    	success: function(data, textStatus, jqXHR){
 		    		objStatus = jqXHR;
 		    	},
@@ -994,6 +1003,7 @@
 	    		request.data = objAjaxParameters.data;
 	    		request.type = objAjaxParameters.type;
 	    		request.url = objAjaxParameters.url;
+	    		request.contentType = objAjaxParameters.contentType;
 	    		
 	    		if (objAjaxParameters.token !== undefined) {
 	    			request.headers = {
@@ -1021,6 +1031,7 @@
 	    	} else if(objAjaxParameters.type == "POST"){
 	    		request.type = objAjaxParameters.type;
 	    		request.url = objAjaxParameters.url;
+	    		request.contentType = objAjaxParameters.contentType;
 	    		
 	    		if (objAjaxParameters.token !== undefined) {
 	    			request.headers = {
