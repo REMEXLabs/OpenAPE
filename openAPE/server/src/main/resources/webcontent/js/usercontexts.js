@@ -6,7 +6,7 @@ function saveData(){
 	 
 	 if(userContext==""){
 		 $("#saveUserContextsStatus").empty();
-		 $("#saveUserContextsStatus").append("<img src='img/Attention-SZ-icon.png' width='20' height='20'> Please enter a usercontext");
+		 $("#saveUserContextsStatus").append("<img src='img/Attention-SZ-icon.png' width='20' height='20'><font class='statusError'> Please enter a usercontext</font>");
 	 } else {
 		 objSaveUserContextsResult = openape.setUserContexts(userContext);
 		 $("#saveUserContextsStatus").empty();
@@ -87,19 +87,20 @@ function updateData() {
 	if(isUserContextCorrect && isUserContextIdCorrect){
 		var objUpdateStatus = openape.updateUserContexts(userContextId, userContexts);
 
-		if(userContextId != ""){
-			if(objUpdateStatus.status == 200){
-				$('#updateStatus').empty();
-				$('#updateStatus').append("<font class='statusInfo'>updated </font>");
-			}
-			
-			if(objUpdateStatus.status == 400){
-				$('#updateStatus').empty();
-				$('#updateStatus').append("<img src='img/Attention-SZ-icon.png' width='20' height='20'> <font class='statusError'>"+objUpdateStatus.responseText+"</font>");
-			}
-		} else {
-			$('#updateStatus').empty(); 
-			$('#updateStatus').append("<img src='img/Attention-SZ-icon.png' width='20' height='20'><font class='statusError'>Please enter a usercontextId</font>");
+		 if(objUpdateStatus.responseText.includes("Unexpected character") || objUpdateStatus.responseText.includes("Unrecognized token") ||
+				 objUpdateStatus.responseText.includes("Can not construct instance") ||  objUpdateStatus.responseText.includes("Unexpected end-of-inputexpected")){
+			 	$('#updateStatus').empty();
+			 	$('#updateStatus').append("<img src='img/Attention-SZ-icon.png' width='20' height='20'> <font class='statusError'> Wrong JSON-Format</font>");
+		 } else {
+			 if(objUpdateStatus.status == 200){
+					$('#updateStatus').empty();
+					$('#updateStatus').append("<font class='statusInfo'>updated </font>");
+				}
+				
+				if(objUpdateStatus.status == 400){
+					$('#updateStatus').empty();
+					$('#updateStatus').append("<img src='img/Attention-SZ-icon.png' width='20' height='20'> <font class='statusError'>"+objUpdateStatus.responseText+"</font>");
+				}
 		}
 	}
 }
