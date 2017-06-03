@@ -62,7 +62,10 @@
 	
 		<table>
 		<tr>
-		<td><textarea id="dataInput" name="dataInput" cols="100" rows="8" class="form-control"></textarea>  </td>
+			<td><b>Please enter a User-Context in JSON-Format:</b></td>
+		</tr>
+		<tr>
+			<td><textarea id="dataInput" name="dataInput" cols="100" rows="8" class="form-control"></textarea>  </td>
 		</tr>
 		<tr>
 			<td align="right"><button type="button" id="saveData" onclick="saveData()" class="btn btn-lg btn-block btn-red">store data</button></td>
@@ -79,6 +82,9 @@
 		  		<td><b>UserContextId:</b> </td>
 		  		<td><input type="text" id="updateUserContextIdInput" class="form-control" placeholder="UsercontextId"></td>
 		  		<td><button class="btn btn-red btn-lg btn-block" id="updateUserContexts" onclick="updateData()">Update</button></td>
+		  	</tr>
+		  	<tr>
+		  		 <td colspan="2"><b>Please enter a User-Context in JSON-Format:</b></td>
 		  	</tr>
 		  	<tr>
 		  		<td colspan="4"><textarea class="form-control" id="updateUserContextTextarea" cols="100" rows="8" ></textarea></td>
