@@ -8,9 +8,11 @@ $(document).ready(function(){
 	var protocol = location.protocol;
 	
 	//set the top navigation
-	$('#mainnavigationlinks').append('<a href="index.html" id="linkHome">Home</a><a href="workflow.html" id="linkworkflow">Tutorials</a>');
+	$('#mainnavigationlinks').append('<a href="index.html" id="linkHome">Home</a><a href="#" id="linkTutorial">Tutorials</a>');
 	
 
+	$('#tutoriallinks').append('<a href="workflow.html" id="linkWorkflow">Workflow</a>');
+	
 	//if token === null than the use is not loggedin, else the user is loggedin and a token was created
 	if(token === null){
 		$("#subnav").attr("hidden", true );
@@ -48,10 +50,14 @@ $(document).ready(function(){
 	
 	if(lastPathSegment == "workflow.html"){
 		$('#linkworkflow').addClass("topnav-active");
+		$('#linkWorkflow').addClass("subnav-active");
+		$('#linkTutorial').addClass("topnav-active");
 	} else if (lastPathSegment == "index.html"){
 		$('#linkHome').addClass("topnav-active");
 	} else if(lastPathSegment == "loginRegistration.html"){
 		 $('#linkLogin').addClass("topnav-active");
+	} else if(lastPathSegment == "usercontexts.html"){
+		$('#linkOverview').addClass("active");
 	}
 	
 	
@@ -63,10 +69,29 @@ $(document).ready(function(){
 		}
 	})
 	
+	
+
+	$("#linkHome").click(function(){
+		$("#tutoriallinks").hide();
+		
+	})
+	
 	$("#linkUser-contexts").click(function(){
 		$("#subsubnav").show();
+		$('#linkHome').removeClass("topnav-active");
 		$('#linkUser-contexts').addClass("subnav-active");
-	})	
+		
+	})
+	
+	$("#linkTutorial").click(function(){
+		$('#linkWorkflow').addClass("subnav-active");
+		$('#linkTutorial').addClass("topnav-active");
+		$('#tutoriallinks').show();
+		$('#linkLogin').removeClass("topnav-active");
+		$('#linkHome').removeClass("topnav-active");
+	})
+	
+	
 	
 	$("#linkOverview").click(function(){
 		$('#linkOverview').addClass("active");
