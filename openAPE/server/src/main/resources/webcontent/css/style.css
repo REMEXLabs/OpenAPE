@@ -1,5 +1,8 @@
+a {
+  color: #A80000; }
+
 div.main {
-  margin: 50px 250px 0px 250px;
+  margin: 50px 200px 0px 200px;
   box-shadow: 0 0 10px #000000; }
   div.main .topnav {
     background-color: #e31134;
@@ -79,7 +82,7 @@ table {
   border-spacing: 55px 20px; }
 
 font.header {
-  color: #A60101;
+  color: #C60000;
   font-size: 28pt;
   font-weight: bold; }
 

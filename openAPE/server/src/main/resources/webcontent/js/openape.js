@@ -1,9 +1,9 @@
 (function(window){
 	 function defineOpenape(){
 	    var objOpenape = {};
-	    
-	    //get the protocol and address of the location. If it´s running local, than the address should be http://localhost:4567
 	    var protocol = location.protocol;
+	    //get the protocol and address of the location. If it´s running local, than the address should be http://localhost:4567
+	    
 	    var token = "";
 	    
 	    /*
