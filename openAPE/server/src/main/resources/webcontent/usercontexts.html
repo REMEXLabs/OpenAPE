@@ -26,6 +26,10 @@
 	   $( "#tabs" ).tabs();
 	} );
 	</script>
+	
+	 <script>
+
+    </script>
 </head>
 <body >
 <div class="main">	
@@ -49,7 +53,7 @@
 		  		<td><button class="btn btn-red btn-lg btn-block" id="loadUserContexts" onclick="loadData()">Load</button></td>
 		  	</tr>
 		  	<tr>
-		  		<td colspan="4"><textarea class="form-control" id="getUserContextTextarea" cols="100" rows="8" style="max-width: 100%;" width="100%" disabled></textarea></td>
+		  		<td colspan="3"><textarea class="form-control" id="getUserContextTextarea" cols="100" rows="8" style="max-width: 100%;" width="100%" disabled></textarea></td>
 		  	</tr>
 		  	<tr>
 		  		<td colspan="4" id="loadStatus" align="center"></td>
@@ -66,14 +70,21 @@
 			<td><b>Please enter a User-Context in JSON-Format:</b></td>
 		</tr>
 		<tr>
-			<td><textarea id="dataInput" name="dataInput" cols="100" rows="8" class="form-control"></textarea>  </td>
+			<td colspan="2"><textarea id="dataInput" name="dataInput" cols="100" rows="8" class="form-control"></textarea>  </td>
 		</tr>
 		<tr>
-			<td align="right"><button type="button" id="saveData" onclick="saveData()" class="btn btn-lg btn-block btn-red">Add</button></td>
+			<td align="right" colspan="2"><button type="button" id="saveData" onclick="saveData()" class="btn btn-lg btn-block btn-red">Add</button></td>
+		</tr>
+		<tr >
+			<td style="border-top: 2px solid #b7052c; padding-top:1em" colspan="2"><b>Upload a User-Context with JSON-File</b></td>
+		</tr>
+		<tr>
+			<td style="width:50%"><input type='file' accept='.json' class="btn btn-lg btn-block btn-red" onchange='onChange(event)'>  </td>
+			<td> <div class="saveUserContextsStatus" id="saveUserContextsStatus" align="center"></div></td>
 		</tr>
 		
 		</table>
-		<div class="saveUserContextsStatus" id="saveUserContextsStatus" align="center"></div>
+		
 		</div>
 		 
 		 <div id="update" hidden="true" align="center">
@@ -88,11 +99,15 @@
 		  		 <td colspan="2"><b>Please enter a User-Context in JSON-Format:</b></td>
 		  	</tr>
 		  	<tr>
-		  		<td colspan="4"><textarea class="form-control" id="updateUserContextTextarea" cols="100" rows="8" ></textarea></td>
+		  		<td colspan="3"><textarea class="form-control" id="updateUserContextTextarea" cols="100" rows="8" ></textarea></td>
 		  	</tr>		
-		  	<tr>
-		  		<td colspan="4" id="updateStatus" align="center"></td>
-		  	</tr>
+		  	<tr >
+				<td colspan="3" style="border-top: 2px solid #b7052c; padding-top:1em" colspan="2"><b>Upload a User-Context with JSON-File</b></td>
+			</tr>
+			<tr>
+				<td style="width:60%"><input type='file' accept='.json' class="btn btn-lg btn-block btn-red" onchange='onChangeUpdate(event)'>  </td>
+				<td colspan="3" id="updateStatus" align="center"></td>
+			</tr>
 		  </table>
 		  <br>
 		</div>
@@ -109,6 +124,8 @@
 		  </table>
 		</div>
 </div>
+
+
 
 <footer id="footercontent"></footer>
 

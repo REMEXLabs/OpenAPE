@@ -1,3 +1,3 @@
 $(document).ready(function(){
-	$("#footercontent").append("<p>Last update by Lukas Smirek 2017-05-23</p><p>&copy; Hochschule der Medien 2017 | <a href='legalNotice.html'>Legal Notice</a></p>");
+	$("#footercontent").append("<p>&copy; Hochschule der Medien 2017 | <a href='legalNotice.html'>Legal Notice</a></p>");
 })
