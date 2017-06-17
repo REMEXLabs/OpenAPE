@@ -34,7 +34,7 @@
 		    	var isUsernameCorrect = true;
 		    	
 		    	if(serverUrl === undefined){
-		    		window.protocol = location.protocol;
+		    		window.protocol = "http://openape.gpii.eu";
 		    	} else {
 		    		window.protocol = serverUrl;
 		    	}
