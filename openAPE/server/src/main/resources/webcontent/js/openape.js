@@ -34,9 +34,9 @@
 		    	var isUsernameCorrect = true;
 		    	
 		    	if(serverUrl === undefined){
-		    		window.protocol = "http://openape.gpii.eu";
+		    		window.host = location.protocol;
 		    	} else {
-		    		window.protocol = serverUrl;
+		    		window.host = serverUrl;
 		    	}
 		    	
 		    	if(username == ""){
@@ -57,7 +57,7 @@
 		    	
 		    	if(isPasswordCorret && isUsernameCorrect){
 		    		objAjaxParameters.type = "POST";
-		    		objAjaxParameters.url = window.protocol+"/token";
+		    		objAjaxParameters.url = window.host+"/token";
 		    		objAjaxParameters.contentType = 'application/x-www-form-urlencoded';
 		    		objAjaxParameters.data = "grant_type=password&username="+encodeURIComponent(username)+"&password="+encodeURIComponent(password),
 		    		objToken = databaseCommunication(objAjaxParameters);
@@ -152,7 +152,7 @@
 	   			objUser.roles = arrRoles;
 		    	objAjaxParameters.data = JSON.stringify(objUser);
 		    	objAjaxParameters.type = "POST";
-		    	objAjaxParameters.url = window.protocol+"/users";
+		    	objAjaxParameters.url = window.host+"/users";
 		    	objAjaxParameters.contentType = 'application/json';
 		    	objSendUserdata = databaseCommunication(objAjaxParameters);
 		    	
@@ -193,7 +193,7 @@
 	    	
 	    	if(isTokenCorrect) {
 	    		objAjaxParameters.type = "GET";
-	    		objAjaxParameters.url = window.protocol+"/profile";
+	    		objAjaxParameters.url = window.host+"/profile";
 	    		objAjaxParameters.token = localStorage.getItem("token");
 	    		objUserProfile = databaseCommunication(objAjaxParameters);
 	    		
@@ -245,7 +245,7 @@
 	    	
 	    	if(isTokenCorrect && isuserContextIdCorrect){
 	    		objAjaxParameters.type = "GET";
-	    		objAjaxParameters.url = window.protocol+"/api/user-contexts/"+userContextId;
+	    		objAjaxParameters.url = window.host+"/api/user-contexts/"+userContextId;
 	    		objAjaxParameters.token = localStorage.getItem("token");
 	    		objGetUserContext_Result = databaseCommunication(objAjaxParameters);
 	    	} else {
@@ -293,7 +293,7 @@
 	    	if(isTokenCorrect && isUserContextCorrect){
 	    		objAjaxParameters.data = userContexts;
 	    		objAjaxParameters.type = "POST";
-	    		objAjaxParameters.url = window.protocol+"/api/user-contexts";
+	    		objAjaxParameters.url = window.host+"/api/user-contexts";
 	    		objAjaxParameters.contentType = 'application/json';
 	    		objAjaxParameters.token = localStorage.getItem("token");
 	    		objSetUserContext_Result = databaseCommunication(objAjaxParameters);
@@ -343,7 +343,7 @@
 	    	
 	    	if(isTokenCorrect && isuserContextIdCorrect ){
 	    		objAjaxParameters.type = "DELETE";
-	    		objAjaxParameters.url = window.protocol+"/api/user-contexts/"+userContextId,
+	    		objAjaxParameters.url = window.host+"/api/user-contexts/"+userContextId,
 	    		objAjaxParameters.token = localStorage.getItem("token");
 	    		objDeleteUserContext_Result = databaseCommunication(objAjaxParameters);
 	    	} else {
@@ -401,7 +401,7 @@
 	    		objAjaxParameters.data = userContexts;
 	    		objAjaxParameters.type = "PUT";
 		    	objAjaxParameters.contentType = 'application/json';
-	    		objAjaxParameters.url = window.protocol+"/api/user-contexts/"+userContextId;
+	    		objAjaxParameters.url = window.host+"/api/user-contexts/"+userContextId;
 	    		objAjaxParameters.token = localStorage.getItem("token");
 	    		objUpdateUserContext_Result = databaseCommunication(objAjaxParameters);
 	    	} else {
@@ -452,7 +452,7 @@
 	    		objAjaxParameters.data = taskContexts;
 	    		objAjaxParameters.type = "POST";
 	    		objAjaxParameters.contentType = 'application/json';
-	    		objAjaxParameters.url = window.protocol+"/api/task-contexts";
+	    		objAjaxParameters.url = window.host+"/api/task-contexts";
 	    		objAjaxParameters.token = localStorage.getItem("token");
 	    		objSetTaskContext_Result = databaseCommunication(objAjaxParameters);
 	    	} else {
@@ -495,7 +495,7 @@
 	    	
 	    	if(isTokenCorrect && isTaskContextIdCorrect){
 	    		objAjaxParameters.type = "GET";
-	    		objAjaxParameters.url = window.protocol+"/api/task-contexts/"+taskContextId;
+	    		objAjaxParameters.url = window.host+"/api/task-contexts/"+taskContextId;
 	    		objAjaxParameters.token = localStorage.getItem("token");
 	    		objGetTaskContext_Result = databaseCommunication(objAjaxParameters);
 	    	} else {
@@ -540,7 +540,7 @@
 	    	
 	    	if(isTokenCorrect && isTaskContextIdCorrect ){
 	    		objAjaxParameters.type = "DELETE";
-	    		objAjaxParameters.url = window.protocol+"/api/task-contexts/"+taskContextId,
+	    		objAjaxParameters.url = window.host+"/api/task-contexts/"+taskContextId,
 	    		objAjaxParameters.token = localStorage.getItem("token");
 	    		objDeleteTaskContext_Result = databaseCommunication(objAjaxParameters);
 	    	} else {
@@ -596,7 +596,7 @@
 	    		objAjaxParameters.data = taskContexts;
 	    		objAjaxParameters.type = "PUT";
 	    		objAjaxParameters.contentType = 'application/json';
-	    		objAjaxParameters.url = window.protocol+"/api/task-contexts/"+taskContextId;
+	    		objAjaxParameters.url = window.host+"/api/task-contexts/"+taskContextId;
 	    		objAjaxParameters.token = localStorage.getItem("token");
 	    		objUpdateUserContext_Result = databaseCommunication(objAjaxParameters);
 	    	} else {
@@ -644,7 +644,7 @@
 	    	
 	    	if(isTokenCorrect && isEquipmentContextIdCorrect){
 	    		objAjaxParameters.type = "GET";
-	    		objAjaxParameters.url = window.protocol+"/api/equipment-contexts/"+equipmentContextId;
+	    		objAjaxParameters.url = window.host+"/api/equipment-contexts/"+equipmentContextId;
 	    		objAjaxParameters.token = localStorage.getItem("token");
 	    		objGetEquipmentContext_Result = databaseCommunication(objAjaxParameters);
 	    	} else {
@@ -690,7 +690,7 @@
 	    	
 	    	if(isTokenCorrect && isEquipmenContextIdCorrect ){
 	    		objAjaxParameters.type = "DELETE";
-	    		objAjaxParameters.url = window.protocol+"/api/equipment-contexts/"+equipmentContextId,
+	    		objAjaxParameters.url = window.host+"/api/equipment-contexts/"+equipmentContextId,
 	    		objAjaxParameters.token = localStorage.getItem("token");
 	    		objDeleteEquipmentContext_Result = databaseCommunication(objAjaxParameters);
 	    	} else {
@@ -735,7 +735,7 @@
 	    		objAjaxParameters.data = equipmentContexts;
 	    		objAjaxParameters.type = "POST";
 	    		objAjaxParameters.contentType = 'application/json';
-	    		objAjaxParameters.url = window.protocol+"/api/equipment-contexts";
+	    		objAjaxParameters.url = window.host+"/api/equipment-contexts";
 	    		objAjaxParameters.token = localStorage.getItem("token");
 	    		objSetEquipmentContext_Result = databaseCommunication(objAjaxParameters);
 	    	} else {
@@ -791,7 +791,7 @@
 	    		objAjaxParameters.data = equipmentContexts;
 	    		objAjaxParameters.type = "PUT";
 	    		objAjaxParameters.contentType = 'application/json';
-	    		objAjaxParameters.url = window.protocol+"/api/equipment-contexts/"+equipmentContextId;
+	    		objAjaxParameters.url = window.host+"/api/equipment-contexts/"+equipmentContextId;
 	    		objAjaxParameters.token = localStorage.getItem("token");
 	    		objUpdateEquipmentContext_Result = databaseCommunication(objAjaxParameters);
 	    	} else {
@@ -839,7 +839,7 @@
 	    	
 	    	if(isTokenCorrect && isEnvironmentContextIdCorrect ){
 	    		objAjaxParameters.type = "GET";
-	    		objAjaxParameters.url = window.protocol+"/api/environment-contexts/"+environmentContextId;
+	    		objAjaxParameters.url = window.host+"/api/environment-contexts/"+environmentContextId;
 	    		objAjaxParameters.token = localStorage.getItem("token");
 	    		objGetEnvironmentContext_Result = databaseCommunication(objAjaxParameters);
 	    	} else {
@@ -885,7 +885,7 @@
 	    	
 	    	if(isTokenCorrect && isEnvironmentContextIdCorrect ){
 	    		objAjaxParameters.type = "DELETE";
-	    		objAjaxParameters.url = window.protocol+"/api/environment-contexts/"+environmentContextId,
+	    		objAjaxParameters.url = window.host+"/api/environment-contexts/"+environmentContextId,
 	    		objAjaxParameters.token = localStorage.getItem("token");
 	    		objDeleteEnvironmentContext_Result = databaseCommunication(objAjaxParameters);
 	    	} else {
@@ -930,7 +930,7 @@
 	    		objAjaxParameters.data = environmentContexts;
 	    		objAjaxParameters.type = "POST";
 	    		objAjaxParameters.contentType = 'application/json';
-	    		objAjaxParameters.url = window.protocol+"/api/environment-contexts";
+	    		objAjaxParameters.url = window.host+"/api/environment-contexts";
 	    		objAjaxParameters.token = localStorage.getItem("token");
 	    		objSetEnvironmentContext_Result = databaseCommunication(objAjaxParameters);
 	    	} else {
@@ -986,7 +986,7 @@
 	    		objAjaxParameters.data = environmentContexts;
 	    		objAjaxParameters.type = "PUT";
 	    		objAjaxParameters.contentType = 'application/json';
-	    		objAjaxParameters.url = window.protocol+"/api/environment-contexts/"+environmentContextId;
+	    		objAjaxParameters.url = window.host+"/api/environment-contexts/"+environmentContextId;
 	    		objAjaxParameters.token = localStorage.getItem("token");
 	    		objUpdateEnvironmentContext_Result = databaseCommunication(objAjaxParameters);
 	    	} else {
