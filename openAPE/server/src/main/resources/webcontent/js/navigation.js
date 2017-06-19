@@ -8,7 +8,7 @@ $(document).ready(function(){
 	var protocol = location.protocol;
 	
 	//set the top navigation
-	$('#mainnavigationlinks').append('<a href="index.html" id="linkHome">Home</a><a href="#" id="linkTutorial">Tutorials</a>');
+	$('#mainnavigationlinks').append('<a href="index.html" id="linkHome">Home</a><a href="tutorial.html" id="linkTutorial">Tutorials</a>');
 	
 
 	$('#tutoriallinks').append('<a href="workflow.html" id="linkWorkflow">Workflow</a>');
@@ -58,6 +58,8 @@ $(document).ready(function(){
 		 $('#linkLogin').addClass("topnav-active");
 	} else if(lastPathSegment == "usercontexts.html"){
 		$('#linkOverview').addClass("active");
+	} else if(lastPathSegment == "tutorial.html"){
+		$('#linkTutorial').addClass("topnav-active");
 	}
 	
 	
@@ -84,9 +86,7 @@ $(document).ready(function(){
 	})
 	
 	$("#linkTutorial").click(function(){
-		$('#linkWorkflow').addClass("subnav-active");
 		$('#linkTutorial').addClass("topnav-active");
-		$('#tutoriallinks').show();
 		$('#linkLogin').removeClass("topnav-active");
 		$('#linkHome').removeClass("topnav-active");
 	})
