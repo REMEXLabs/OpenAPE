@@ -8,7 +8,7 @@ function saveData(){
 		 $("#saveUserContextStatus").empty();
 		 $("#saveUserContextStatus").append("<img src='img/Attention-SZ-icon.png' width='20' height='20'><font class='statusError'> Please enter a usercontext</font>");
 	 } else {
-		 objSaveUserContextResult = openape.setUserContext(userContext);
+		 objSaveUserContextResult = openape.createUserContext(userContext);
 		 $("#saveUserContextStatus").empty();
 		 if(objSaveUserContextResult.responseText.includes("Unexpected character") || objSaveUserContextResult.responseText.includes("Unrecognized token") ||
 				 objSaveUserContextResult.responseText.includes("Can not construct instance") ||  objSaveUserContextResult.responseText.includes("Unexpected end-of-inputexpected")){
@@ -61,7 +61,7 @@ function onChangeUpdate(event) {
 		  };
 		  
 		  reader.readAsText(file);
-		  //openape.setUserContext(jsonUserContext);
+		  //openape.createUserContext(jsonUserContext);
 	}
 }
 
