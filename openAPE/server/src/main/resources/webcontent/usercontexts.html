@@ -50,7 +50,7 @@
 		  	<tr>
 		  		<td><b>UserContextId:</b> </td>
 		  		<td><input type="text" id="getUserContextIdInput" class="form-control" placeholder="UsercontextId"></td>
-		  		<td><button class="btn btn-red btn-lg btn-block" id="loadUserContexts" onclick="loadData()">Load</button></td>
+		  		<td><button class="btn btn-red btn-lg btn-block" id="loadUserContext" onclick="loadData()">Load</button></td>
 		  	</tr>
 		  	<tr>
 		  		<td colspan="3"><textarea class="form-control" id="getUserContextTextarea" cols="100" rows="8" style="max-width: 100%;" width="100%" disabled></textarea></td>
@@ -80,7 +80,7 @@
 		</tr>
 		<tr>
 			<td style="width:50%"><input type='file' accept='.json' class="btn btn-lg btn-block btn-red" onchange='onChange(event)'>  </td>
-			<td> <div class="saveUserContextsStatus" id="saveUserContextsStatus" align="center"></div></td>
+			<td> <div class="saveUserContextStatus" id="saveUserContextStatus" align="center"></div></td>
 		</tr>
 		
 		</table>
@@ -93,7 +93,7 @@
 		  	<tr>
 		  		<td><b>UserContextId:</b> </td>
 		  		<td><input type="text" id="updateUserContextIdInput" class="form-control" placeholder="UsercontextId"></td>
-		  		<td><button class="btn btn-red btn-lg btn-block" id="updateUserContexts" onclick="updateData()">Update</button></td>
+		  		<td><button class="btn btn-red btn-lg btn-block" id="updateUserContext" onclick="updateData()">Update</button></td>
 		  	</tr>
 		  	<tr>
 		  		 <td colspan="2"><b>Please enter a User-Context in JSON-Format:</b></td>
@@ -118,7 +118,7 @@
 		  	<tr>
 		  		<td><b>UserContextId:</b> </td>
 		  		<td><input type="text" id="deleteUserContextIdInput" class="form-control" placeholder="UsercontextId"></td>
-		  		<td><button id="deleteUserContexts"  class="btn btn-red btn-lg btn-block" onclick="deleteData()">Delete</button></td>
+		  		<td><button id="deleteUserContext"  class="btn btn-red btn-lg btn-block" onclick="deleteData()">Delete</button></td>
 		  		<td id="deleteStatus" align="center"></td>
 		  	</tr>
 		  </table>
