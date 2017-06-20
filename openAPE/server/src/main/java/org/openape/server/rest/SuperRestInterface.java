@@ -75,15 +75,39 @@ public class SuperRestInterface {
     	Spark.staticFiles.externalLocation(System.getProperty("java.io.tmpdir")+"/extContent");
     	
 //   before filter enables CORS
-        Spark.before("/*", (q, response) -> {
+       /* Spark.before("/*", (q, response) -> {
         	logger.debug("Received api call: " + q.protocol() + "" + q.uri());
                 response.header("Access-Control-Allow-Origin", "*");
                 response.header("Access-Control-Request-Method", "GET,PUT,POST,DELETE,OPTIONS");
 //                response.header("Access-Control-Allow-Headers", headers);
 
-        });
+        });*/
+        
+   	 Spark.options("/*", (request, response) -> {
 
-    	Spark.get("api", (req,res) -> new API()                                                                    );
+	        String accessControlRequestHeaders = request.headers("Access-Control-Request-Headers");
+	        if (accessControlRequestHeaders != null) {
+	            response.header("Access-Control-Allow-Headers", accessControlRequestHeaders);
+	        }
+
+	        String accessControlRequestMethod = request.headers("Access-Control-Request-Method");
+	        if (accessControlRequestMethod != null) {
+	            response.header("Access-Control-Allow-Methods", accessControlRequestMethod);
+	        }
+
+	        return 200;
+	    });
+
+	   Spark.before((request, response) -> {
+	        response.header("Access-Control-Allow-Origin", "*");
+	        response.header("Access-Control-Request-Method", "*");
+	        response.header("Access-Control-Allow-Headers", "*");
+	        response.header("Access-Control-Max-Age", "1728000");
+	        response.header("Cache-Control", "no-cache");
+	
+	    });
+
+    	Spark.get("api", (request, response) -> new API()                                                                    );
     	
         // AuthService singleton to enable security features on REST endpoints
         final AuthService authService = new AuthService();
@@ -95,11 +119,11 @@ public class SuperRestInterface {
 
         // Test endpoint to see if server runs. Invoke locally: http://localhost:4567/hello
     	Spark.get(
-                Messages.getString("UserContextRESTInterface.HelloWorldURL"), (req, res) -> Messages.getString("UserContextRESTInterface.HelloWorld")); //$NON-NLS-1$ //$NON-NLS-2$
+                Messages.getString("UserContextRESTInterface.HelloWorldURL"), (request, response) -> Messages.getString("UserContextRESTInterface.HelloWorld")); //$NON-NLS-1$ //$NON-NLS-2$
 
         
 
-Spark.get(Messages.getString("SuperRestInterface.HelloWorldURL"), (req, res) -> Messages.getString("SuperRestInterface.HelloWorld")); //$NON-NLS-1$ //$NON-NLS-2$
+Spark.get(Messages.getString("SuperRestInterface.HelloWorldURL"), (request, response) -> Messages.getString("SuperRestInterface.HelloWorld")); //$NON-NLS-1$ //$NON-NLS-2$
         // Endpoint to receive tokens
         TokenRESTInterface.setupTokenRESTInterface(authService);
         ProfileRESTInterface.setupProfileRESTInterface();
