@@ -73,9 +73,9 @@ function setUserData(){
 
 	if(isRegSecurityQuestionCorrect && isUsernameCorrect && isEmailCorrect && isPasswordCorrect){
 		if(regSecurityQuestion == 15){
-			var objSenduserStatus = openape.setUser(username, email, password);
+			var objSenduserStatus = openape.createUser(username, email, password);
 			if(objSenduserStatus.status == 200){
-				var tokenData = openape.initializeLibrary(username, password);
+				var tokenData = openape.initializeLibrary(username, password, "/");
 				window.location = protocol+"/usercontexts.html";
 				$('#registrationErrorMsg').empty();
 			} else {
@@ -129,7 +129,7 @@ function getTokenForLogin(){
 	
 	
 	if(isUsernameCorrect  && isPasswordCorrect && isSecurityQuestionCorrect){
-		var tokenData = openape.initializeLibrary(username, password);
+		var tokenData = openape.initializeLibrary(username, password, "/");
 		
 		if(tokenData.status==200){
 			var userID = JSON.parse(openape.getUser().responseText).id;

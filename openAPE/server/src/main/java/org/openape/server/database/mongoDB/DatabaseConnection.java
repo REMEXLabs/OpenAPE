@@ -45,6 +45,8 @@ import com.mongodb.client.MongoDatabase;
 public class DatabaseConnection implements ServerMonitorListener {
 	
 	static Logger logger = LoggerFactory.getLogger(DatabaseConnection.class);
+	static boolean firstTime = true; // only for logging control needed
+	
     /**
      * The url to our mongo database server.
      */
@@ -645,20 +647,25 @@ public class DatabaseConnection implements ServerMonitorListener {
 
 	@Override
 	public void serverHearbeatStarted(ServerHeartbeatStartedEvent event) {
-				logger.info("Found new heartbeat with connection ID: " + event.getConnectionId() );
-		
+		if (firstTime == true){
+			logger.info("Found new heartbeat with connection ID: " + event.getConnectionId() );
+			firstTime = false;
+		} else {
+			logger.debug("Found new heartbeat with connection ID: " + event.getConnectionId() );
+		}	
 	}
 
 	@Override
 	public void serverHeartbeatSucceeded(ServerHeartbeatSucceededEvent event) {
-		logger.info("Found heartbeat with connection ID: " + event.getConnectionId() );
+		logger.debug("Found heartbeat with connection ID: " + event.getConnectionId() );
 		
 	}
 
 	@Override
 	public void serverHeartbeatFailed(ServerHeartbeatFailedEvent event) {
 		
-		logger.error("Connecting to MongoDB at " + this.DATABASEURL + ":" + this.DATABASEPORT + ".\n" + event);
+		logger.error("Connecting to MongoDB at " + this.DATABASEURL + ":" + this.DATABASEPORT + " failed.\n" + event);
+		firstTime = true;  // logger can now indicate when new connection will be found again.
 			}
 
 }
