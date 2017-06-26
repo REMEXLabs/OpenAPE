@@ -54,7 +54,7 @@ $(document).ready(function(){
 		$('#linkTutorial').addClass("topnav-active");
 	} else if (lastPathSegment == "index.html"){
 		$('#linkHome').addClass("topnav-active");
-	} else if(lastPathSegment == "loginRegistration.html"){
+	} else if(lastPathSegment == "loginRegistration.html#"){
 		 $('#linkLogin').addClass("topnav-active");
 	} else if(lastPathSegment == "usercontexts.html"){
 		$('#linkOverview').addClass("active");
