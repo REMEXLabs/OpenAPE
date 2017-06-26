@@ -8,9 +8,7 @@ $(document).ready(function(){
 	var protocol = location.protocol;
 	
 	//set the top navigation
-	$('#mainnavigationlinks').append('<a href="index.html" id="linkHome">Home</a><a href="tutorial.html" id="linkTutorial">Tutorials</a>');
-	
-
+	$('#mainnavigationlinks').append('<a href="index.html" id="linkHome">Home</a><a href="tutorial.html" id="linkTutorial">Tutorials</a><a href="download.html" id="linkDownload">Downloads</a>');
 	$('#tutoriallinks').append('<a href="workflow.html" id="linkWorkflow">Workflow</a>');
 	
 	//if token === null than the use is not loggedin, else the user is loggedin and a token was created
@@ -60,6 +58,8 @@ $(document).ready(function(){
 		$('#linkOverview').addClass("active");
 	} else if(lastPathSegment == "tutorial.html"){
 		$('#linkTutorial').addClass("topnav-active");
+	} else if(lastPathSegment == "download.html"){
+		$('#linkDownload').addClass("topnav-active");
 	}
 	
 	
