@@ -7,6 +7,7 @@ $(document).ready(function(){
 	var lastPathSegment = href.substr(href.lastIndexOf('/') + 1);
 	var protocol = location.protocol;
 	
+	
 	//set the top navigation
 	$('#mainnavigationlinks').append('<a href="index.html" id="linkHome">Home</a><a href="tutorial.html" id="linkTutorial">Tutorials</a><a href="download.html" id="linkDownload">Downloads</a>');
 	$('#tutoriallinks').append('<a href="workflow.html" id="linkWorkflow">Workflow</a>');
@@ -21,6 +22,7 @@ $(document).ready(function(){
 		$('#divLogin').append("<a href='loginRegistration.html' id='linkLogin'>Login</a>");
 
 	} else {
+		$('#welcomeUsername').append("Welcome <u>"+JSON.parse(openape.getUser().responseText).username+"</u>");
 		$('#subnavigatons').empty();
 		if( lastPathSegment != "usercontexts.html"){
 			$('#subnavigatons').append("" +
