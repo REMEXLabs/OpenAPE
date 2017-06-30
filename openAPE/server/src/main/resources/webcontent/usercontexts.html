@@ -26,6 +26,10 @@
 	   $( "#tabs" ).tabs();
 	} );
 	</script>
+	
+	 <script>
+
+    </script>
 </head>
 <body >
 <div class="main">	
@@ -34,21 +38,22 @@
 		<div id="mainnavigationlinks"></div>
 		<div  align="right" id="divLogin"></div>
 	</div>
+	<div class="subnav" id="tutoriallinks" hidden="true"></div>
 	<div class="header" id="header"></div>
 	<div id="subnavigatons" role="navigaton" aria-labelledby="subnavigation"></div>
 	
 	<div class="mainContent">
 		<div id="overview" align="center">
-		<h1 align="center">User-Contexts Overview</h1> <br>
+		<h1 align="center">User-Context Overview</h1> <br>
 		
 		<table>
 		  	<tr>
 		  		<td><b>UserContextId:</b> </td>
 		  		<td><input type="text" id="getUserContextIdInput" class="form-control" placeholder="UsercontextId"></td>
-		  		<td><button class="btn btn-red btn-lg btn-block" id="loadUserContexts" onclick="loadData()">Load</button></td>
+		  		<td><button class="btn btn-red btn-lg btn-block" id="loadUserContext" onclick="loadData()">Load</button></td>
 		  	</tr>
 		  	<tr>
-		  		<td colspan="4"><textarea class="form-control" id="getUserContextTextarea" cols="100" rows="8" style="max-width: 100%;" width="100%" disabled></textarea></td>
+		  		<td colspan="3"><textarea class="form-control" id="getUserContextTextarea" cols="100" rows="8" style="max-width: 100%;" width="100%" disabled></textarea></td>
 		  	</tr>
 		  	<tr>
 		  		<td colspan="4" id="loadStatus" align="center"></td>
@@ -58,50 +63,69 @@
 		
 		<div id="add" hidden="true" align="center">
 		
-		<h1 align="center">Add User-Contexts</h1> <br>
+		<h1 align="center">Add User-Context</h1> <br>
 	
 		<table>
 		<tr>
-		<td><textarea id="dataInput" name="dataInput" cols="100" rows="8" class="form-control"></textarea>  </td>
+			<td><b>Please enter a User-Context in JSON-Format:</b></td>
 		</tr>
 		<tr>
-			<td align="right"><button type="button" id="saveData" onclick="saveData()" class="btn btn-lg btn-block btn-red">store data</button></td>
+			<td colspan="2"><textarea id="dataInput" name="dataInput" cols="100" rows="8" class="form-control"></textarea>  </td>
+		</tr>
+		<tr>
+			<td align="right" colspan="2"><button type="button" id="saveData" onclick="saveData()" class="btn btn-lg btn-block btn-red">Add</button></td>
+		</tr>
+		<tr >
+			<td style="border-top: 2px solid #b7052c; padding-top:1em" colspan="2"><b>Upload a User-Context with JSON-File</b></td>
+		</tr>
+		<tr>
+			<td style="width:50%"><input type='file' accept='.json' class="btn btn-lg btn-block btn-red" onchange='onChange(event)'>  </td>
+			<td> <div class="saveUserContextStatus" id="saveUserContextStatus" align="center"></div></td>
 		</tr>
 		
 		</table>
-		<div class="saveUserContextsStatus" id="saveUserContextsStatus" align="center"></div>
+		
 		</div>
 		 
 		 <div id="update" hidden="true" align="center">
-		 <h1 align="center">Update User-Contexts</h1> <br>
+		 <h1 align="center">Update User-Context</h1> <br>
 		  <table>
 		  	<tr>
 		  		<td><b>UserContextId:</b> </td>
 		  		<td><input type="text" id="updateUserContextIdInput" class="form-control" placeholder="UsercontextId"></td>
-		  		<td><button class="btn btn-red btn-lg btn-block" id="updateUserContexts" onclick="updateData()">Update</button></td>
+		  		<td><button class="btn btn-red btn-lg btn-block" id="updateUserContext" onclick="updateData()">Update</button></td>
 		  	</tr>
 		  	<tr>
-		  		<td colspan="4"><textarea class="form-control" id="updateUserContextTextarea" cols="100" rows="8" ></textarea></td>
+		  		 <td colspan="2"><b>Please enter a User-Context in JSON-Format:</b></td>
+		  	</tr>
+		  	<tr>
+		  		<td colspan="3"><textarea class="form-control" id="updateUserContextTextarea" cols="100" rows="8" ></textarea></td>
 		  	</tr>		
-		  	<tr>
-		  		<td colspan="4" id="updateStatus" align="center"></td>
-		  	</tr>
+		  	<tr >
+				<td colspan="3" style="border-top: 2px solid #b7052c; padding-top:1em" colspan="2"><b>Upload a User-Context with JSON-File</b></td>
+			</tr>
+			<tr>
+				<td style="width:60%"><input type='file' accept='.json' class="btn btn-lg btn-block btn-red" onchange='onChangeUpdate(event)'>  </td>
+				<td colspan="3" id="updateStatus" align="center"></td>
+			</tr>
 		  </table>
 		  <br>
 		</div>
 		
 		  <div id="delete" hidden="true" align="center">
-		  <h1 align="center">Delete User-Contexts</h1> <br>
+		  <h1 align="center">Delete User-Context</h1> <br>
 		 <table>
 		  	<tr>
 		  		<td><b>UserContextId:</b> </td>
 		  		<td><input type="text" id="deleteUserContextIdInput" class="form-control" placeholder="UsercontextId"></td>
-		  		<td><button id="deleteUserContexts"  class="btn btn-red btn-lg btn-block" onclick="deleteData()">Delete</button></td>
+		  		<td><button id="deleteUserContext"  class="btn btn-red btn-lg btn-block" onclick="deleteData()">Delete</button></td>
 		  		<td id="deleteStatus" align="center"></td>
 		  	</tr>
 		  </table>
 		</div>
 </div>
+
+
 
 <footer id="footercontent"></footer>
 

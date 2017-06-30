@@ -20,6 +20,7 @@
 <script src="js/navigation.js" type="text/javascript"></script>
 <script src="js/footer.js" type="text/javascript"></script>
 <script src="js/header.js" type="text/javascript"></script>
+<script src="js/index.js" type="text/javascript"></script>
 </head>
 <body>
 
@@ -30,31 +31,66 @@
 		<div id="mainnavigationlinks"></div>
 		<div  align="right" id="divLogin"></div>
 	</div>
+	<div class="subnav" id="tutoriallinks" hidden="true"></div>
 	<div class="header" id="header"></div>
 	<div id="subnavigatons" role="navigaton" aria-labelledby="subnavigation"></div>
 	
 	<div class="mainContent" role="main">
-		<div align="center"><h1>Welcome to OpenAPE</h1></div><br>
-		<p>This is the OpenAPE project. OpenAPe is the open Accessibility Personalisation Extension. It is an light wight, REST based  infrastructure to exchange context information to provide personalised user interfaces. 
+		<div id="sidebarLeft" style="float:left; width:55%;margin-right:5%">
+		
+		<div id="welcome" align="center" style=" text-align: justify;">
+		<h2 style="font-weight:bold" align="center">Welcome to OpenAPE</h2><br>
+		<p>This is the OpenAPE project. OpenAPE is the open Accessibility Personalisation Extension. It is an light wight, REST based  infrastructure to exchange context information to provide personalised user interfaces. 
 		OpenAPE is the reference implementation of ISO/IEC 24752-8.</p>
 		
 		<p>If you want to benefit from the OpenAPE infrastructure you need to <a href="loginRegistration.html">create an account</a>.</p>
+		</div>
+	
 		
-		<h2>Getting started as a developer</h2>
+		<br>
+		
+		<div style="padding: 1em; border: 2px solid #ccc; background-color:#ececec;  text-align: justify; -moz-box-shadow:    inset 0 0 10px #000000;
+   -webkit-box-shadow: inset 0 0 10px #000000; box-shadow:         inset 0 0 10px #000000;">
+		
+		<h2 style="font-weight:bold" align="center">Acknowledgement</h2>
+		<p>The research leading to these results has received funding from the European Union Seventh Framework Program (FP7/2007-2011) under grant agreement no. 610510, Prosperity4All ("Ecosystem infrastructure for smart and personalized inclusion and PROSPERITY for ALL stakeholders") as well as under the EC H2020 Innovation Action No One Left Behind, Grant Agreement No. 645215. This publication reflects only the authors views and the European Union is not liable for any use that may be made of the information contained herein.</p>
+		
+		</div>
+		<br>
+
+		</div>
+
+		<div id="sidebarLeft" style="float:left; width:40%; padding: 1em; box-shadow: 0 0 10px #000000;margin-bottom:1em" >
+			<h2 style="font-weight:bold; padding:10px; border-bottom:5px solid #A80000" align="center">News</h2>
+			 
+			<div class="newContainer" >
+				<div class="newsEntry" style="margin-bottom:5%">
+				<div class="newsDate" style="background-color:#A80000; color:white; padding:0.5em; width:28%;font-weight:bold">04.06.2017</div> 
+				<div class="newsTitle" style="border-top:5px solid #A80000;  border: 2px solid #ccc; background-color:#ececec; padding:1em; font-weight:bold">Successful Webinar: "Introduction to OpenAPE" online available.</div>
+				<div class="newsContent" style="padding:1em; border:1px solid grey">The first webinar "Introduction to OpenAPE" was a great success. The recording from the webinar is available at 
+				<a href="https://cloud.mi.hdm-stuttgart.de/owncloud/index.php/s/oFJPNlawM3GzZ4W">MI Cloud</a>.
+				</div>
+				</div>
+				
+				<div class="newsEntry">
+				<div class="newsDate" style="background-color:#A80000; color:white; padding:0.5em; width:28%;font-weight:bold">04.06.2017</div> 
+				<div class="newsTitle" style="border-top:5px solid #A80000; border: 2px solid #ccc; background-color:#ececec;padding:1em; font-weight:bold">OpenAPE mailing list available</div>
+				<div class="newsContent" style="padding:1em; border:1px solid grey">Everybody who is interested in joining the openAPE community can sign up to
+					our new mailing list openape@googlegroups.com.  
+					The related google group is <a href="https://groups.google.com/d/forum/openape">open
+					Accessibility Personalisation Extension (openAPE)</a>.</div>
+				</div>
+			</div>
+			<h2 style="font-weight:bold; padding:10px; border-bottom:5px solid #A80000" align="center">Developer</h2>
+				
 		<ul>
-		<li> <a href="http://localhost:4567/workflow.html">Workflow model</a></li>
+		<li> <a href="workflow.html">Workflow model</a></li>
 		<li>Have a look at our <a href="https://github.com/REMEXLabs/OpenAPE">Github repository</a></li>
 		</ul>
-		<h2>News</h2>
+			
+		</div>
 		
-		<h2>Important dates</h2>
-		<h3>02.06.2017 2:00 pm. Webinar: Introduction to OpenAPE</h3>
-		<p>In this Webinar we will give an introduction to the new OpenAPE infrastructure. Connection information will be available soon.</p>
-		
-		<h3>Acknowledgement</h3>
-		<p>The research leading to these results has received funding from the European Union Seventh Framework Program (FP7/2007-2011) under grant agreement no. 610510, Prosperity4All ("Ecosystem infrastructure for smart and personalized inclusion and PROSPERITY for ALL stakeholders") as well as under the EC H2020 Innovation Action No One Left Behind, Grant Agreement No. 645215. This publication reflects only the authors views and the European Union is not liable for any use that may be made of the information contained herein.</p>
-
-</div>
+	</div>
 		
 		
 <footer id="footercontent"></footer>

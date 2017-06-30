@@ -5,25 +5,95 @@ function saveData(){
 	 var userContext = document.getElementById("dataInput").value;
 	 
 	 if(userContext==""){
-		 $("#saveUserContextsStatus").empty();
-		 $("#saveUserContextsStatus").append("<img src='img/Attention-SZ-icon.png' width='20' height='20'> Please enter a usercontext");
+		 $("#saveUserContextStatus").empty();
+		 $("#saveUserContextStatus").append("<img src='img/Attention-SZ-icon.png' width='20' height='20'><font class='statusError'> Please enter a usercontext</font>");
 	 } else {
-		 objSaveUserContextsResult = openape.setUserContexts(userContext);
-		 $("#saveUserContextsStatus").empty();
-		 if(objSaveUserContextsResult.responseText.includes("Unexpected character") || objSaveUserContextsResult.responseText.includes("Unrecognized token") ||
-				 objSaveUserContextsResult.responseText.includes("Can not construct instance") ||  objSaveUserContextsResult.responseText.includes("Unexpected end-of-inputexpected")){
-				$('#saveUserContextsStatus').append("<img src='img/Attention-SZ-icon.png' width='20' height='20'> <font class='statusError'> Wrong JSON-Format</font>");
+		 objSaveUserContextResult = openape.createUserContext(userContext);
+		 $("#saveUserContextStatus").empty();
+		 if(objSaveUserContextResult.responseText.includes("Unexpected character") || objSaveUserContextResult.responseText.includes("Unrecognized token") ||
+				 objSaveUserContextResult.responseText.includes("Can not construct instance") ||  objSaveUserContextResult.responseText.includes("Unexpected end-of-inputexpected")){
+				$('#saveUserContextStatus').append("<img src='img/Attention-SZ-icon.png' width='20' height='20'> <font class='statusError'> Wrong JSON-Format</font>");
 		 } else {
-			  $("#saveUserContextsStatus").empty();
-			  $('#saveUserContextsStatus').append(" <font class='statusInfo'> Successfully added ContextId: "+objSaveUserContextsResult.responseText+"</font>");
+			  $("#saveUserContextStatus").empty();
+			  $('#saveUserContextStatus').append(" <font class='statusInfo'> Successfully added ContextId: "+objSaveUserContextResult.responseText+"</font>");
 		 }
 	 }
 	
 }
 
+function onChangeUpdate(event) {
+	var userContextId =  $('#updateUserContextIdInput').val();
+	
+	var isUserContextIdCorrect = false;
+	
+	if(userContextId==""){
+		isUserContextIdCorrect = false;
+		$('#updateStatus').empty();
+		$('#updateStatus').append("<img src='img/Attention-SZ-icon.png' width='20' height='20'><font class='statusError'> Please enter a userContextId</font>");
+	} else {
+		isUserContextIdCorrect = true;
+	}
+	
+	
+	
+	if(isUserContextIdCorrect){	
+		  var file = event.target.files[0];
+		  var reader = new FileReader();
+		 
+		  reader.onload = function(event) {
+			var objUpdateStatus = openape.updateUserContext(userContextId, event.target.result);
+
+			if(objUpdateStatus.responseText.includes("Unexpected character") || objUpdateStatus.responseText.includes("Unrecognized token") ||
+				objUpdateStatus.responseText.includes("Can not construct instance") ||  objUpdateStatus.responseText.includes("Unexpected end-of-inputexpected") ||
+				objUpdateStatus.responseText.includes("Unrecognized field")){
+			 	$('#updateStatus').empty();
+			 	$('#updateStatus').append("<img src='img/Attention-SZ-icon.png' width='20' height='20'> <font class='statusError'> Wrong JSON-Format</font>");
+			} else {
+				 if(objUpdateStatus.status == 200){
+						$('#updateStatus').empty();
+						$('#updateStatus').append("<font class='statusInfo'>updated </font>");
+				}			
+				if(objUpdateStatus.status == 400){
+						$('#updateStatus').empty();
+						$('#updateStatus').append("<img src='img/Attention-SZ-icon.png' width='20' height='20'> <font class='statusError'>"+objUpdateStatus.responseText+"</font>");
+				}
+			}
+		  };
+		  
+		  reader.readAsText(file);
+		  //openape.createUserContext(jsonUserContext);
+	}
+}
+
+function onChange(event) {
+	  var file = event.target.files[0];
+	  var reader = new FileReader();
+	 
+	  reader.onload = function(event) {
+	    // Hier wird der Text der Datei ausgegeben
+		  console.log(event.target.result);
+		  
+		  objSaveUserContextResult = openape.createUserContext(event.target.result);
+		  $("#saveUserContextStatus").empty();
+		  if(objSaveUserContextResult.responseText.includes("Unexpected character") || objSaveUserContextResult.responseText.includes("Unrecognized token") ||
+					 objSaveUserContextResult.responseText.includes("Can not construct instance") ||  objSaveUserContextResult.responseText.includes("Unexpected end-of-inputexpected") ||
+					 objSaveUserContextResult.responseText.includes("Unrecognized field")){
+					$('#saveUserContextStatus').append("<img src='img/Attention-SZ-icon.png' width='20' height='20'> <font class='statusError'> Wrong JSON-Format</font>");
+		  } else {
+				  $("#saveUserContextStatus").empty();
+				  $('#saveUserContextStatus').append(" <font class='statusInfo'> Successfully added ContextId: "+objSaveUserContextResult.responseText+"</font>");
+		  }
+		  
+		
+	  };
+	  
+	  reader.readAsText(file);
+	  //openape.createUserContext(jsonUserContext);
+}
+
 function loadData() {
 	var userContextId =  $('#getUserContextIdInput').val();
-	var objResponse = openape.getUserContexts(userContextId);
+	var objResponse = openape.getUserContext(userContextId);
 	
 	if(userContextId != ""){
 		if(objResponse.status == 200){
@@ -45,7 +115,7 @@ function deleteData() {
 	var userContextId =  $('#deleteUserContextIdInput').val();
 	
 	if(userContextId!=""){
-		var objStatus = openape.deleteUserContexts(userContextId);
+		var objStatus = openape.deleteUserContext(userContextId);
 		if(objStatus.status == 204){
 			$('#deleteStatus').empty();
 			$('#deleteStatus').append("<font class='statusInfo '>Successfully deleted</font>");
@@ -63,7 +133,7 @@ function deleteData() {
 
 function updateData() {
 	var userContextId =  $('#updateUserContextIdInput').val();
-	var userContexts = document.getElementById("updateUserContextTextarea").value;
+	var userContext = document.getElementById("updateUserContextTextarea").value;
 	
 	var isUserContextIdCorrect = false;
 	var isUserContextCorrect = false;
@@ -76,7 +146,7 @@ function updateData() {
 		isUserContextIdCorrect = true;
 	}
 	
-	if(userContexts==""){
+	if(userContext==""){
 		isUserContextCorrect = false;
 		$('#updateStatus').empty();
 		$('#updateStatus').append(" <img src='img/Attention-SZ-icon.png' width='20' height='20'><font class='statusError'> Please enter a userContext</font>");
@@ -85,21 +155,23 @@ function updateData() {
 	}
 	
 	if(isUserContextCorrect && isUserContextIdCorrect){
-		var objUpdateStatus = openape.updateUserContexts(userContextId, userContexts);
+		var objUpdateStatus = openape.updateUserContext(userContextId, userContext);
 
-		if(userContextId != ""){
-			if(objUpdateStatus.status == 200){
-				$('#updateStatus').empty();
-				$('#updateStatus').append("<font class='statusInfo'>updated </font>");
-			}
-			
-			if(objUpdateStatus.status == 400){
-				$('#updateStatus').empty();
-				$('#updateStatus').append("<img src='img/Attention-SZ-icon.png' width='20' height='20'> <font class='statusError'>"+objUpdateStatus.responseText+"</font>");
-			}
-		} else {
-			$('#updateStatus').empty(); 
-			$('#updateStatus').append("<img src='img/Attention-SZ-icon.png' width='20' height='20'><font class='statusError'>Please enter a usercontextId</font>");
+		 if(objUpdateStatus.responseText.includes("Unexpected character") || objUpdateStatus.responseText.includes("Unrecognized token") ||
+				 objUpdateStatus.responseText.includes("Can not construct instance") ||  objUpdateStatus.responseText.includes("Unexpected end-of-inputexpected") ||
+				 objUpdateStatus.responseText.includes("Unrecognized field")){
+			 	$('#updateStatus').empty();
+			 	$('#updateStatus').append("<img src='img/Attention-SZ-icon.png' width='20' height='20'> <font class='statusError'> Wrong JSON-Format</font>");
+		 } else {
+			 if(objUpdateStatus.status == 200){
+					$('#updateStatus').empty();
+					$('#updateStatus').append("<font class='statusInfo'>updated </font>");
+				}
+				
+				if(objUpdateStatus.status == 400){
+					$('#updateStatus').empty();
+					$('#updateStatus').append("<img src='img/Attention-SZ-icon.png' width='20' height='20'> <font class='statusError'>"+objUpdateStatus.responseText+"</font>");
+				}
 		}
 	}
 }

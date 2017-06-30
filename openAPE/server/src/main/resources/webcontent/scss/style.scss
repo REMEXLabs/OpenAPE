@@ -1,7 +1,10 @@
 $errorFontSize: 12pt;
+a {
+ color:#A80000;
+}
 	
 div.main {
-	margin: 50px 250px 0px 250px;
+	margin: 50px 200px 0px 200px;
     box-shadow: 0 0 10px #000000;
     
     .topnav {
@@ -71,7 +74,7 @@ div.main {
 		    font-size: 17px;
 		    
 		    &:hover {
-			    background-color: #b7052c;
+			    background-color: #C60000;
 			}
 		}
 	} 
@@ -117,7 +120,7 @@ table {
 }
 
 font.header {
-	color: grey;
+	color: #C60000;
 	font-size: 28pt;
 	font-weight: bold;
 }
