@@ -92,7 +92,15 @@
 	     * @return      The function will send the user credentials to the function
 	     * 				sendUserData and return a status as a boolean 
 	     */
-	    objOpenape.createUser = function (username, email, password) {
+	    objOpenape.createUser = function (username, email, password, serverurl) {
+	    	if(serverurl === undefined){
+	    		localStorage.setItem("host", "http://openape.gpii.eu");
+	    	} else if(serverurl === "/"){
+	    		localStorage.setItem("host", location.protocol);
+	    	} else {
+	    		localStorage.setItem("host", serverurl);
+	    	}
+	    	
 	   		var objUser = new Object();
    			var objSendUserdata = {};
 	    	var objAjaxParameters = {};
