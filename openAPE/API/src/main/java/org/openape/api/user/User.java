@@ -3,11 +3,14 @@ package org.openape.api.user;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.openape.api.DatabaseObject;
 import org.pac4j.core.profile.CommonProfile;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class User extends DatabaseObject {
+private static Logger logger = LoggerFactory.getLogger(User.class);
 
     private String id;
     private String username;
@@ -17,7 +20,8 @@ public class User extends DatabaseObject {
     private List<String> roles;
 
     public static User getFromProfile(CommonProfile profile) {
-        User user = new User();
+logger.debug("Profile" + profile);
+    	User user = new User();
         user.setId(profile.getId());
         user.setUsername(profile.getUsername());
         user.setEmail(profile.getEmail());

@@ -13,6 +13,9 @@ import org.pac4j.jwt.config.signature.SecretSignatureConfiguration;
 import org.pac4j.jwt.profile.JwtGenerator;
 import org.pac4j.sparkjava.SecurityFilter;
 import org.pac4j.sparkjava.SparkWebContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import spark.Request;
 import spark.Response;
 
@@ -24,7 +27,7 @@ import java.util.*;
  */
 
 public class AuthService {
-
+private static Logger logger = LoggerFactory.getLogger(AuthService.class);
     private static final ResourceBundle properties = ResourceBundle.getBundle("config/auth");
     private static final String JWT_SIGNATURE = properties.getString("JwtSignature");
     private static final String EXPIRATION_TIME = properties.getString("TokenExpirationTimeInMinutes");
@@ -84,10 +87,12 @@ public class AuthService {
     public CommonProfile getAuthenticatedProfile(Request request, Response response) throws UnauthorizedException {
         ProfileManager manager = new ProfileManager(new SparkWebContext(request, response));
         Optional<CommonProfile> profile = manager.get(false);
+        logger.info("Profile: " + profile);
         if(profile.isPresent()) {
             return profile.get();
         } else {
-            throw new UnauthorizedException("Unauthorized");
+            logger.debug("Error: Couldn't find profile");
+        	throw new UnauthorizedException("Unauthorized");
         }
     }
 
