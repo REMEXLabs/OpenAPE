@@ -1,21 +1,30 @@
 package org.openape.server.rest;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import org.openape.api.DatabaseObject;
 import org.openape.api.Messages;
 import org.openape.api.user.User;
+import org.openape.api.usercontext.UserContext;
+import org.openape.server.api.OpenAPEEndPoints;
 import org.openape.server.auth.AuthService;
 import org.openape.server.auth.PasswordEncoder;
 import org.openape.server.database.mongoDB.DatabaseConnection;
 import org.openape.server.database.mongoDB.MongoCollectionTypes;
+import org.openape.server.requestHandler.ProfileHandler;
+import org.openape.server.requestHandler.UserContextRequestHandler;
 import org.pac4j.core.profile.CommonProfile;
 import org.pac4j.core.profile.ProfileManager;
 import org.pac4j.sparkjava.SparkWebContext;
-import spark.Spark;
 
-import java.io.IOException;
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
-import java.util.Optional;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import spark.Spark;
 
 public class ProfileRESTInterface extends SuperRestInterface {
 
@@ -43,9 +52,35 @@ public class ProfileRESTInterface extends SuperRestInterface {
             }
         });
 
+        /*Enables admins to change the role of other users
+         * 
+         */
+        Spark.before( OpenAPEEndPoints.USER_ROLES   , authService.authorize("admin"));
+        Spark.put(OpenAPEEndPoints.USER_ROLES, (req,res) ->  {
+        	List<String> received = (List<String>) SuperRestInterface.extractObjectFromRequest(req, ArrayList.class);
+
+        
+        	String authUserId = req.params(OpenAPEEndPoints.USER_ID); 
+        	User storedUser = null;
+        	try{
+        	storedUser = ProfileHandler.getUser(authUserId);
+        	} catch(IllegalArgumentException e) {
+        		e.printStackTrace();
+        	}
+        			
+        			try{
+        				storedUser.setRoles(received );
+        				ProfileHandler.updateUser(storedUser);
+        			} catch (IOException e) {
+        				e.printStackTrace();
+        			}
+        			
+        return OpenAPEEndPoints.USER_ROLES_CHANGED; 
+        });
+        
     }
 
-    private static String createUser(User user) throws IOException, IllegalArgumentException {
+private static String createUser(User user) throws IOException, IllegalArgumentException {
         final DatabaseConnection databaseconnection = DatabaseConnection.getInstance();
         String id;
         try {
@@ -64,4 +99,5 @@ public class ProfileRESTInterface extends SuperRestInterface {
         return id;
     }
 
+    
 }

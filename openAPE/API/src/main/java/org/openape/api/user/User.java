@@ -56,7 +56,7 @@ logger.debug("Profile" + profile);
     public String getPassword() {
         return password;
     }
-
+/** @param	password  Hash of the user's password*/
     public void setPassword(String password) {
         this.password = password;
     }

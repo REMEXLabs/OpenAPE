@@ -5,6 +5,7 @@ import java.io.IOException;
 
 import org.openape.api.Messages;
 import org.openape.server.Main;
+import org.openape.server.admin.AdminInterface;
 import org.openape.server.auth.AuthService;
 import org.openape.server.requestHandler.EnvironmentContextRequestHandler;
 import org.openape.server.requestHandler.EquipmentContextRequestHandler;
@@ -130,6 +131,7 @@ public class SuperRestInterface {
 
 Spark.get(Messages.getString("SuperRestInterface.HelloWorldURL"), (request, response) -> Messages.getString("SuperRestInterface.HelloWorld")); //$NON-NLS-1$ //$NON-NLS-2$
         // Endpoint to receive tokens
+AdminInterface.setupAdminRestInterface(authService);
         TokenRESTInterface.setupTokenRESTInterface(authService);
         ProfileRESTInterface.setupProfileRESTInterface();
 
