@@ -1,6 +1,10 @@
 package org.openape.server;
 
+import org.openape.server.database.mongoDB.DatabaseConnection;
+
 import java.io.IOException;
+
+import org.openape.server.admin.AdminInterface;
 import org.openape.server.database.mongoDB.DatabaseConnection;
 
 import org.openape.server.rest.SuperRestInterface;
@@ -25,7 +29,16 @@ logger.debug("Working directory: " +             System.getProperty("user.dir"))
             databaseConnection.ensureIndexes();
             
         }
-        // Start the REST API.
+        // 
+        // create a standard Admin user
+        try{        
+        AdminInterface.createAdmin();
+        } catch(Exception e){
+        	logger.error("Admin could not be created or no Admin found. System could not start.");
+        			 return;
+        }
+        
+//        Start the REST API.
         new SuperRestInterface();
     }
 
