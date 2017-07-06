@@ -1,8 +1,6 @@
 package org.openape.server.rest;
 
 import java.io.IOException;
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -13,9 +11,6 @@ import org.openape.api.user.User;
 import org.openape.api.usercontext.UserContext;
 import org.openape.server.api.OpenAPEEndPoints;
 import org.openape.server.auth.AuthService;
-import org.openape.server.auth.PasswordEncoder;
-import org.openape.server.database.mongoDB.DatabaseConnection;
-import org.openape.server.database.mongoDB.MongoCollectionTypes;
 import org.openape.server.requestHandler.ProfileHandler;
 import org.openape.server.requestHandler.UserContextRequestHandler;
 import org.pac4j.core.profile.CommonProfile;
@@ -44,7 +39,7 @@ public class ProfileRESTInterface extends SuperRestInterface {
         Spark.post("/users", (req, res) -> {
             try {
                 User receivedUser = (User) extractObjectFromRequest(req, User.class);
-                String id = createUser(receivedUser);
+                String id = ProfileHandler.createUser(receivedUser);
                 return "Done! Your ID is " + id;
             } catch(IOException e) {
                 res.status(409);
@@ -78,25 +73,6 @@ public class ProfileRESTInterface extends SuperRestInterface {
         return OpenAPEEndPoints.USER_ROLES_CHANGED; 
         });
         
-    }
-
-private static String createUser(User user) throws IOException, IllegalArgumentException {
-        final DatabaseConnection databaseconnection = DatabaseConnection.getInstance();
-        String id;
-        try {
-            String hashedPassword = PasswordEncoder.encode(user.getPassword());
-            user.setPassword(hashedPassword);
-            id = databaseconnection.storeData(MongoCollectionTypes.USERS, user);
-        } catch (final ClassCastException e) {
-            throw new IllegalArgumentException(e.getMessage());
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-            throw new IOException(e.getMessage());
-        } catch (InvalidKeySpecException e) {
-            e.printStackTrace();
-            throw new IOException(e.getMessage());
-        }
-        return id;
     }
 
     
