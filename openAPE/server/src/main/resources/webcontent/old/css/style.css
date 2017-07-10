@@ -1,6 +1,13 @@
+a {
+  color: #A80000; }
+
 div.main {
   margin: 50px 200px 0px 200px;
   box-shadow: 0 0 10px #000000; }
+  div.main .welcomeUsername {
+    padding: 1em;
+    color: white;
+    font-weight: bold; }
   div.main .topnav {
     background-color: #e31134;
     overflow: hidden;
@@ -79,7 +86,7 @@ table {
   border-spacing: 55px 20px; }
 
 font.header {
-  color: grey;
+  color: #C60000;
   font-size: 28pt;
   font-weight: bold; }
 

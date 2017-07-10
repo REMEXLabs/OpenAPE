@@ -52,6 +52,7 @@ public class ProfileRESTInterface extends SuperRestInterface {
             String hashedPassword = PasswordEncoder.encode(user.getPassword());
             user.setPassword(hashedPassword);
             id = databaseconnection.storeData(MongoCollectionTypes.USERS, user);
+           
         } catch (final ClassCastException e) {
             throw new IllegalArgumentException(e.getMessage());
         } catch (NoSuchAlgorithmException e) {

@@ -16,7 +16,7 @@ import org.openape.server.rest.UserContextRESTInterface;
  */
 public class UserContextRequestHandler {
 
-    private static final MongoCollectionTypes COLLECTIONTOUSE = MongoCollectionTypes.USERCONTEXT;
+    public static final MongoCollectionTypes COLLECTIONTOUSE = MongoCollectionTypes.USERCONTEXT;
 
     /**
      * Method to store a new user context into the server. It is used by the

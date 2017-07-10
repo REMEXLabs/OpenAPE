@@ -26,6 +26,8 @@ import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mongodb.BasicDBObject;
+import com.mongodb.DBCursor;
+import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientOptions;
 import com.mongodb.MongoCredential;
@@ -343,6 +345,28 @@ public class DatabaseConnection implements ServerMonitorListener {
         return executeQuery(type, collectionToWorkOn, query, false);
     }
 
+    
+    
+    /***************/
+    
+    public DatabaseObject getAllData(MongoCollectionTypes type) throws IOException {
+        final MongoCollection<Document> collectionToWorkOn = this.getCollectionByType(type);
+        // Search for object in database.
+        final BasicDBObject query = new BasicDBObject();
+        
+        
+
+       
+        FindIterable<Document> cursor = collectionToWorkOn.find();
+        
+        while(cursor.iterator().hasNext()) {
+            System.out.println(cursor.iterator().next());
+        }
+
+        return executeQuery(type, collectionToWorkOn, query, false);
+    }
+    
+    
     /**
      * Query a collection by a certain attribute and value. Will return the first document matching the query or
      * null if no document matches the query.
