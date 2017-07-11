@@ -8,8 +8,18 @@ $(document).ready(function() {
     $('#users').show();
 
     $('#signin').click(function(){
+    	
+    	$('#div_signin').addClass("active");
+    	$('#div_signup').removeClass("active");
     	$('#userSectionLoggedOut').show();
     	 $('#userSectionSignIn').hide();
+    })
+    
+     $('#signup').click(function(){
+    	$('#div_signup').addClass("active");
+    	$('#div_signin').removeClass("active");
+    	$('#userSectionLoggedOut').show();
+    	$('#userSectionSignIn').hide();
     })
     
     $('#signup').click(function(){

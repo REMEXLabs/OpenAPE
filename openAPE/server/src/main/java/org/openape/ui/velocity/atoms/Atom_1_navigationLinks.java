@@ -31,11 +31,12 @@ public class Atom_1_navigationLinks {
 	
 		return map;
 	}
+	public LinkedHashMap<String, String> generateUserSectionLinksLoggedOut(){
+		LinkedHashMap<String, String> map = new LinkedHashMap<>();
+		
+		map.put("signin", "<div class='glyphicon glyphicon-log-in'></div>  Sign in");
+		map.put("signup", "<div class='glyphicon glyphicon-log-in'></div>  Sign up");
 	
-	public ArrayList<String> generateUserSectionLinksLoggedOut(){
-		ArrayList<String> listLinks = new ArrayList<>();
-		listLinks.add("<a href='#' id='signin'> <div class='glyphicon glyphicon-log-in'></div> Sign in</a>");
-		listLinks.add("<a href='#' id='signup'><div class='glyphicon glyphicon-ok'></div> Sign up</a>");	
-		return listLinks;
+		return map;
 	}
 }

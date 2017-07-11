@@ -131,7 +131,7 @@ $subSection
                 <th>Username</th>
                 <th>User ID</th>
                 <th>Email</th>
-                <th>Roles</th>
+                <th>Role</th>
                 <th>Options</th>
             </tr>
         </thead>

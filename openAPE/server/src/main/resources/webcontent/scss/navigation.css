@@ -133,34 +133,4 @@
 .dataTableNavigation {
   background-color: #C60000; }
 
-.footer {
-  background-color: yellow;
-  text-align: center;
-  padding: 1em;
-  background-color: #ececec;
-  border-top: 2px solid #ccc; }
-
-.content {
-  min-height: 30em;
-  display: flex; }
-  .content .leftContent {
-    float: left;
-    display: block;
-    min-width: 13em;
-    text-align: center; }
-    .content .leftContent .shadow {
-      -moz-box-shadow: inset 0 0 10px #000000;
-      -webkit-box-shadow: inset 0 0 10px #000000;
-      box-shadow: inset 0 0 10px #000000; }
-  .content .rightContent {
-    display: block;
-    padding: 1em;
-    -webkit-box-shadow: -8px 0px 12px -4px rgba(0, 0, 0, 0.75);
-    -moz-box-shadow: -8px 0px 12px -4px rgba(0, 0, 0, 0.75);
-    box-shadow: -8px 0px 12px -4px rgba(0, 0, 0, 0.75); }
-
-.main h1 {
-  color: #C60000;
-  font-weight: bold; }
-
-/*# sourceMappingURL=style.css.map */
+/*# sourceMappingURL=navigation.css.map */

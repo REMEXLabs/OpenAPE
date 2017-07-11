@@ -14,8 +14,8 @@ public class Organism_2_SubSection {
 		String subSection = 
 				"<div class='subSection'>"
 				+ subNavigation
-				+ "<div align='center' style='float:right;background-color:#C60000;width:45em;height:3.3em;padding-top:0.5em' id='userSectionLoggedOut' hidden='true'>"+userSectionLoggedOut+"</div>"
-				+ "<div align='center' style='float:right;background-color:#C60000;width:45em;height:3.3em;padding-top:0.5em' id='userSectionSignIn' hidden='true'>"+userSectionSignin+"</div>"
+				+ "<div align='center' style='float:right;background-color:#AB112A;width:45em;height:4em;padding-top:0.7em' id='userSectionLoggedOut' hidden='true'>"+userSectionLoggedOut+"</div>"
+				+ "<div align='center' style='float:right;background-color:#AB112A;width:45em;height:4em;padding-top:0.7em' id='userSectionSignIn' hidden='true'>"+userSectionSignin+"</div>"
 				+ "</div>";
 		return subSection;
 	}

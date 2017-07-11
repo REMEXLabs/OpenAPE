@@ -4,7 +4,6 @@
 	background-color:#e31134; 
 	overflow: hidden; 
 	height:4em;
-	box-shadow: inset 0 -10px 9px -7px rgba(0,0,0,5);
 	
 
 	
@@ -19,7 +18,6 @@
 		font-weight:bold;
 		font-size: 14pt;
 		text-shadow: 4px 4px #000;
-		box-shadow: inset 0 -10px 9px -7px rgba(0,0,0,5);
 		
 	}
 
@@ -62,10 +60,8 @@
 	
 		.active {
 			font-weight:bold;
-    		background-color: #C60000;
-			box-shadow: 6px 0 4px -4px #222 , -6px 0 4px -4px #222; 
-			 -moz-box-shadow: 6px 0 4px -4px #222, -6px 0 4px -4px #222; 
-			-webkit-box-shadow: 6px 0 4px -4px #222, -6px 0 4px -4px #222;
+    		background-color: #AB112A;
+    		border-bottom: 1px solid black;
 		}
 	}
 	
@@ -79,14 +75,10 @@
 		text-align: center;
 		
 		padding-right:1em;
-		box-shadow: inset 0 -10px 9px -7px rgba(0,0,0,5);
 		
 		div:hover { 
 			font-weight:bold;
-    		background-color: #C60000;
-			box-shadow: 6px 0 4px -4px #222 , -6px 0 4px -4px #222; 
-			 -moz-box-shadow: 6px 0 4px -4px #222, -6px 0 4px -4px #222; 
-			-webkit-box-shadow: 6px 0 4px -4px #222, -6px 0 4px -4px #222;
+    		background-color: #AB112A;
 		}
 	
 				   	a {
@@ -103,6 +95,12 @@
 			    	color: white;
 			   		text-decoration:none;
 			   	}
+			   
+			   
+		.active {
+			font-weight:bold;
+    		background-color: #AB112A;
+		}
 		
 		.userSectionLinks {
 			width:6em;
@@ -132,13 +130,12 @@
 
 .subSection {
 	min-height: 4em;     
-	background-color: #363636;     
-	border-bottom: 5px solid #C60000;     
-	border-top: 5px solid #C60000;	
+	background-color: #818181;     	
 	
 	
 	.active {
-		background-color: #C60000;
+		background-color: #4E4E4E;
+		min-height:4em;
 	}
 	.subnav {
 		&:hover { 
