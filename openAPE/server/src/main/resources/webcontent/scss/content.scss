@@ -1,8 +1,10 @@
 .content{
-	min-height:100%;
+	min-height:30em;
 	display: flex;
 	
+	
 	.leftContent {
+		min-height:30em;
 		float:left;
 		display:block;
 		min-width:13em;
@@ -16,12 +18,18 @@
 	}
 
 	.rightContent {
+		min-height:30em;
 		display:block;
 		padding:1em;
 		-webkit-box-shadow: -8px 0px 12px -4px rgba(0,0,0,0.75);
 		-moz-box-shadow: -8px 0px 12px -4px rgba(0,0,0,0.75);
 		box-shadow: -8px 0px 12px -4px rgba(0,0,0,0.75);
 		
+	}
+
+	.mainContent {
+		
+		padding:3em;
 	}
 }
 

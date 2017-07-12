@@ -15,7 +15,7 @@ import spark.Spark;
 
 public class Footer {
 	public String generateFooter(){
-		String footerContent = "Hochschuel der Medien 2017 <br> <a href='http://www.google.de'>Legal Notice</a>";
+		String footerContent = "Hochschuel der Medien 2017 <br> <a href='http://localhost:4567/legalNotice'>Legal Notice</a>";
 		return footerContent;	
 	}
 
