@@ -17,7 +17,17 @@ import org.openape.server.requestHandler.ResourceDescriptionRequestHandler;
 import org.openape.server.requestHandler.ResourceRequestHandler;
 import org.openape.server.requestHandler.TaskContextRequestHandler;
 import org.openape.server.requestHandler.UserContextRequestHandler;
-import org.openape.ui.velocity.Adminsection;
+import org.openape.ui.velocity.Administration;
+import org.openape.ui.velocity.Contact;
+import org.openape.ui.velocity.Context;
+import org.openape.ui.velocity.Downloads;
+import org.openape.ui.velocity.GettingStarted;
+import org.openape.ui.velocity.LegalNotice;
+import org.openape.ui.velocity.MyContexts;
+import org.openape.ui.velocity.MyGroups;
+import org.openape.ui.velocity.MyProfile;
+import org.openape.ui.velocity.MyResources;
+import org.openape.ui.velocity.Tutorials;
 import org.openape.ui.velocity.requestHandler.AdminSectionRequestHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -145,7 +155,7 @@ ResourceDescriptionRESTInterface.setupResourceDescriptionRESTInterface(new Resou
         
 		
         try {
-			Adminsection.setupAdminVELOCITYInterface(new AdminSectionRequestHandler());
+			Administration.setupAdministrationVELOCITYInterface(new AdminSectionRequestHandler());
 		} catch (IllegalArgumentException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -154,6 +164,108 @@ ResourceDescriptionRESTInterface.setupResourceDescriptionRESTInterface(new Resou
 			e.printStackTrace();
 		}
         
+        try {
+			GettingStarted.setupGettingStartedVELOCITYInterface();
+		} catch (IllegalArgumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        
+        try {
+			Tutorials.setupTutorialsVELOCITYInterface();
+		} catch (IllegalArgumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        
+        try {
+			Downloads.setupDownloadsVELOCITYInterface();
+		} catch (IllegalArgumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        
+        
+        try {
+			Context.setupContextVELOCITYInterface();
+		} catch (IllegalArgumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        
+        
+        
+        try {
+			Contact.setupContactVELOCITYInterface();
+		} catch (IllegalArgumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        
+        try {
+			MyProfile.setupMyProfileVELOCITYInterface();
+		} catch (IllegalArgumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        
+        try {
+			MyContexts.setupTutorialsVELOCITYInterface();
+		} catch (IllegalArgumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        
+        try {
+			MyResources.setupMyResourcesVELOCITYInterface();
+		} catch (IllegalArgumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        
+        try {
+			MyGroups.setupMyGroupsVELOCITYInterface();
+		} catch (IllegalArgumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        
+        try {
+			LegalNotice.setupLegalNoticeVELOCITYInterface();
+		} catch (IllegalArgumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         //REST-Interfaces
 		ResourceRESTInterface.setupResourceRESTInterface(new ResourceRequestHandler());
         TaskContextRESTInterface.setupTaskContextRESTInterface(new TaskContextRequestHandler(), authService);

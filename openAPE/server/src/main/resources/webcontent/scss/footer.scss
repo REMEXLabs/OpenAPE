@@ -2,10 +2,12 @@
 
 .footer{
 	background-color:yellow; 
+	float:clear;
 	text-align:center; 
 	padding:1em; 
 	background-color: $light-grey; 
 	border-top: 2px solid $dark-grey;
+	border-bottom: 2px solid $dark-grey;
 }
 
 
