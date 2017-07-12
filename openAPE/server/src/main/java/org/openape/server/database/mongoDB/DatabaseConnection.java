@@ -1,6 +1,7 @@
 package org.openape.server.database.mongoDB;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 
@@ -10,12 +11,15 @@ import com.mongodb.event.ServerHeartbeatStartedEvent;
 import com.mongodb.event.ServerHeartbeatSucceededEvent;
 import com.mongodb.event.ServerMonitorListener;
 
+import org.apache.log4j.helpers.AbsoluteTimeDateFormat;
 import org.bson.Document;
 import org.bson.codecs.configuration.CodecConfigurationException;
+import org.bson.conversions.Bson;
 import org.bson.json.JsonParseException;
 import org.bson.types.ObjectId;
 import org.openape.api.DatabaseObject;
 import org.openape.api.Messages;
+import org.openape.api.usercontext.UserContext;
 import org.openape.server.MongoConfig;
 import org.openape.server.requestHandler.EnvironmentContextRequestHandler;
 import org.openape.server.requestHandler.EquipmentContextRequestHandler;
@@ -35,6 +39,7 @@ import com.mongodb.MongoException;
 import com.mongodb.ServerAddress;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
 
 /**
@@ -349,21 +354,33 @@ public class DatabaseConnection implements ServerMonitorListener {
     
     /***************/
     
-    public DatabaseObject getAllData(MongoCollectionTypes type) throws IOException {
+    public void removeData(MongoCollectionTypes type, String id) throws IOException {
         final MongoCollection<Document> collectionToWorkOn = this.getCollectionByType(type);
         // Search for object in database.
         final BasicDBObject query = new BasicDBObject();
+        query.put(Messages.getString("DatabaseConnection._id"), new ObjectId(id));
         
+        Bson filter = new Document(Messages.getString("DatabaseConnection._id"), new ObjectId(id));
+        collectionToWorkOn.deleteOne(filter);
         
+    }
+    
+    public ArrayList<Document> getAllDocuments(MongoCollectionTypes type) throws IOException {
+        final MongoCollection<Document> collectionToWorkOn = this.getCollectionByType(type);
+        ArrayList<Document> listDocuments = new ArrayList<Document>(); 
+        // Search for object in database.
+        
+        FindIterable<Document> find = collectionToWorkOn.find();
+                
+        MongoCursor<Document> cursor = find.iterator();
 
-       
-        FindIterable<Document> cursor = collectionToWorkOn.find();
         
-        while(cursor.iterator().hasNext()) {
-            System.out.println(cursor.iterator().next());
+        while(cursor.hasNext()) {
+        	
+        	listDocuments.add(cursor.next());
         }
 
-        return executeQuery(type, collectionToWorkOn, query, false);
+        return listDocuments;
     }
     
     
@@ -691,5 +708,10 @@ public class DatabaseConnection implements ServerMonitorListener {
 		logger.error("Connecting to MongoDB at " + this.DATABASEURL + ":" + this.DATABASEPORT + " failed.\n" + event);
 		firstTime = true;  // logger can now indicate when new connection will be found again.
 			}
+
+	public ArrayList<Document> getAllDocuments(String string) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }

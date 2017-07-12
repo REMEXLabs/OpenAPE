@@ -141,7 +141,7 @@
   border-top: 2px solid #ccc; }
 
 .content {
-  min-height: 30em;
+  min-height: 100%;
   display: flex; }
   .content .leftContent {
     float: left;

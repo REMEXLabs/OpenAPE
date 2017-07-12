@@ -1,112 +1,34 @@
 package org.openape.ui.velocity.molecules;
 
+import java.util.ArrayList;
+
+import org.openape.api.user.User;
 import org.openape.ui.velocity.atoms.Atom_1_navigationLinks;
 
 public class Molecule_5_dataTable {
-	public String generateSubNavigation(){
+	public String generateDataTableContent(ArrayList<User> listUsers){
 		
 		String tableContent = "";
+				
+		for(User users : listUsers){
+			String roles = "";
+			
+			for (String role : users.getRoles())
+			{
+				roles += role;
+			}
+			tableContent +=  "<tr>"
+					+ "<td>"+users.getUsername()+"</td>"
+					+ "<td>"+users.getId()+"</td>"
+					+ "<td>"+users.getEmail()+"</td>"
+					+ "<td>"+roles+"</td>"
+					+ "<td>"
+					+ "<button id='"+users.getId()+"' class='btn btn-md btn-default'><div class='glyphicon glyphicon-edit' ></div> Edit </button>"
+					+ "<button id='"+users.getId()+"' class='btn btn-md btn-default' onClick='deleteUser(this)'><div class='glyphicon glyphicon-trash'></div> Delete </button> "
+					+ "<button id='"+users.getId()+"' class='btn btn-md btn-default'><div class='glyphicon glyphicon-copy'></div> Copy to clipboard  </button> </td></tr>";
+		}
 		
-		tableContent =  "<tr>"
-				+ "<td>Waldemar</td>"
-				+ "<td>594d4a1804bac11a8c68c765</td>"
-				+ "<td>wjaufmann@gmx.de</td>"
-				+ "<td>admin</td>"
-				+ "<td>"
-				+ "<button class='btn btn-md btn-default'><div class='glyphicon glyphicon-edit'></div> Edit </button>"
-				+ "<button class='btn btn-md btn-default'><div class='glyphicon glyphicon-trash'></div> Delete </button> "
-				+ "<button class='btn btn-md btn-default'><div class='glyphicon glyphicon-copy'></div> Copy to clipboard  </button> </td></tr>"
-				+ "<tr>"
-				+ "<td>Lukas</td>"
-				+ "<td>594d4ae204bac133b0c22e1c</td>"
-				+ "<td>lukas@gmx.de</td>"
-				+ "<td>user</td>"
-				+ "<td>"
-				+ "<button class='btn btn-md btn-default'><div class='glyphicon glyphicon-edit'></div> Edit </button>"
-				+ "<button class='btn btn-md btn-default'><div class='glyphicon glyphicon-trash'></div> Delete </button> "
-				+ "<button class='btn btn-md btn-default'><div class='glyphicon glyphicon-copy'></div> Copy to clipboard  </button> </td></tr>"+ "<tr>"
-				+ "<td>Lorem ipsum</td>"
-				+ "<td>abc594d4ae204bac133b0c22e1c</td>"
-				+ "<td>dolor@gmx.de</td>"
-				+ "<td>user</td>"
-				+ "<td>"
-				+ "<button class='btn btn-md btn-default'><div class='glyphicon glyphicon-edit'></div> Edit </button>"
-				+ "<button class='btn btn-md btn-default'><div class='glyphicon glyphicon-trash'></div> Delete </button> "
-				+ "<button class='btn btn-md btn-default'><div class='glyphicon glyphicon-copy'></div> Copy to clipboard  </button> </td></tr>"+ "<tr>"
-				+ "<td>diam voluptua</td>"
-				+ "<td>111594d4ae204bac133b0c22e1c</td>"
-				+ "<td>dim@gmx.de</td>"
-				+ "<td>user</td>"
-				+ "<td>"
-				+ "<button class='btn btn-md btn-default'><div class='glyphicon glyphicon-edit'></div> Edit </button>"
-				+ "<button class='btn btn-md btn-default'><div class='glyphicon glyphicon-trash'></div> Delete </button> "
-				+ "<button class='btn btn-md btn-default'><div class='glyphicon glyphicon-copy'></div> Copy to clipboard  </button> </td></tr>"+ "<tr>"
-				+ "<td>magna aliquyam</td>"
-				+ "<td>594d4ae204bac133b0c22e1c</td>"
-				+ "<td>magna@gmx.de</td>"
-				+ "<td>user</td>"
-				+ "<td>"
-				+ "<button class='btn btn-md btn-default'><div class='glyphicon glyphicon-edit'></div> Edit </button>"
-				+ "<button class='btn btn-md btn-default'><div class='glyphicon glyphicon-trash'></div> Delete </button> "
-				+ "<button class='btn btn-md btn-default'><div class='glyphicon glyphicon-copy'></div> Copy to clipboard  </button> </td></tr>"+ "<tr>"
-				+ "<td>et accusam</td>"
-				+ "<td>594d4ae204bac133b0c22e1c</td>"
-				+ "<td>et@gmx.de</td>"
-				+ "<td>user</td>"
-				+ "<td>"
-				+ "<button class='btn btn-md btn-default'><div class='glyphicon glyphicon-edit'></div> Edit </button>"
-				+ "<button class='btn btn-md btn-default'><div class='glyphicon glyphicon-trash'></div> Delete </button> "
-				+ "<button class='btn btn-md btn-default'><div class='glyphicon glyphicon-copy'></div> Copy to clipboard  </button> </td></tr>"+ "<tr>"
-				+ "<td>sea takimata</td>"
-				+ "<td>594d4ae204bac133b0c22e1c</td>"
-				+ "<td>sea@gmx.de</td>"
-				+ "<td>user</td>"
-				+ "<td>"
-				+ "<button class='btn btn-md btn-default'><div class='glyphicon glyphicon-edit'></div> Edit </button>"
-				+ "<button class='btn btn-md btn-default'><div class='glyphicon glyphicon-trash'></div> Delete </button> "
-				+ "<button class='btn btn-md btn-default'><div class='glyphicon glyphicon-copy'></div> Copy to clipboard  </button> </td></tr>"+ "<tr>"
-				+ "<td>justo duo</td>"
-				+ "<td>594d4ae204bac133b0c22e1c</td>"
-				+ "<td>justo@gmx.de</td>"
-				+ "<td>user</td>"
-				+ "<td>"
-				+ "<button class='btn btn-md btn-default'><div class='glyphicon glyphicon-edit'></div> Edit </button>"
-				+ "<button class='btn btn-md btn-default'><div class='glyphicon glyphicon-trash'></div> Delete </button> "
-				+ "<button class='btn btn-md btn-default'><div class='glyphicon glyphicon-copy'></div> Copy to clipboard  </button> </td></tr>"+ "<tr>"
-				+ "<td>taki sanctus</td>"
-				+ "<td>594d4ae204bac133b0c22e1c</td>"
-				+ "<td>takimata@gmx.de</td>"
-				+ "<td>user</td>"
-				+ "<td>"
-				+ "<button class='btn btn-md btn-default'><div class='glyphicon glyphicon-edit'></div> Edit </button>"
-				+ "<button class='btn btn-md btn-default'><div class='glyphicon glyphicon-trash'></div> Delete </button> "
-				+ "<button class='btn btn-md btn-default'><div class='glyphicon glyphicon-copy'></div> Copy to clipboard  </button> </td></tr>"+ "<tr>"
-				+ "<td>Lukas</td>"
-				+ "<td>594d4ae204bac133b0c22e1c</td>"
-				+ "<td>lukas@gmx.de</td>"
-				+ "<td>user</td>"
-				+ "<td>"
-				+ "<button class='btn btn-md btn-default'><div class='glyphicon glyphicon-edit'></div> Edit </button>"
-				+ "<button class='btn btn-md btn-default'><div class='glyphicon glyphicon-trash'></div> Delete </button> "
-				+ "<button class='btn btn-md btn-default'><div class='glyphicon glyphicon-copy'></div> Copy to clipboard  </button> </td></tr>"+ "<tr>"
-				+ "<td>Lukas</td>"
-				+ "<td>594d4ae204bac133b0c22e1c</td>"
-				+ "<td>lukas@gmx.de</td>"
-				+ "<td>user</td>"
-				+ "<td>"
-				+ "<button class='btn btn-md btn-default'><div class='glyphicon glyphicon-edit'></div> Edit </button>"
-				+ "<button class='btn btn-md btn-default'><div class='glyphicon glyphicon-trash'></div> Delete </button> "
-				+ "<button class='btn btn-md btn-default'><div class='glyphicon glyphicon-copy'></div> Copy to clipboard  </button> </td></tr>"+ "<tr>"
-				+ "<td>Lukas</td>"
-				+ "<td>594d4ae204bac133b0c22e1c</td>"
-				+ "<td>lukas@gmx.de</td>"
-				+ "<td>user</td>"
-				+ "<td>"
-				+ "<button class='btn btn-md btn-default'><div class='glyphicon glyphicon-edit'></div> Edit </button>"
-				+ "<button class='btn btn-md btn-default'><div class='glyphicon glyphicon-trash'></div> Delete </button> "
-				+ "<button class='btn btn-md btn-default'><div class='glyphicon glyphicon-copy'></div> Copy to clipboard  </button> </td></tr>";
-		
-		
+				
 		return tableContent;
 	}
 }

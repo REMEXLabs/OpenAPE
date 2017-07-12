@@ -1,4 +1,8 @@
 $(document).ready(function() {
+	function deleteUser(){
+		alert("fsdfd"+this.value());
+	}
+	
 	$('#example').DataTable( {
 		"lengthMenu": [[5, 10, 15, -1], [5, 10, 15, "All"]]
     } );
@@ -134,6 +138,29 @@ $(document).ready(function() {
 } );
 
 
+function deleteUser(event){
+	removeUser(event.id);
+	location.reload();
+}
+
+
+
+
+
+function removeUser(userId) {
+	$.ajax({
+	    type: 'DELETE',
+	    contentType: 'application/json',
+	    url: 'http://localhost:4567/te?id='+userId,
+	    dataType: "json",
+	    success: function(data, textStatus, jqXHR){
+	    	
+	    },
+	    error: function(jqXHR, textStatus, errorThrown){
+	       // alert('Medicine information could be deleted');
+	    }
+	});
+}
 function openCity(evt, cityName) {
     // Declare all variables
     var i, tabcontent, tablinks;
