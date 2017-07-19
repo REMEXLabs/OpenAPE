@@ -1,11 +1,7 @@
 $(document).ready(function() {
-	function deleteUser(){
-		alert("fsdfd"+this.value());
-	}
 	
 	var href = document.location.href;
 	var lastPathSegment = href.substr(href.lastIndexOf('/') + 1);
-	console.log(lastPathSegment);
 	
 	if(lastPathSegment == "gettingStarted"){
     	$('#divGettingStarted').addClass("active");	
@@ -70,19 +66,7 @@ $(document).ready(function() {
 	}
 	
 	
-	
-	
-	
 
-	
-
-	
-	
-	
-	$('#example').DataTable( {
-		"lengthMenu": [[5, 10, 15, -1], [5, 10, 15, "All"]]
-    } );
-    
     //$('#nav_adminsectionUsers').click();
     $('#div_nav_adminsectionUsers').addClass("adminsectionNavActive");
     $('#users').show();
@@ -128,14 +112,11 @@ $(document).ready(function() {
     })
     
      $('#linkGettingStarted').click(function(){ 	
-
-    	
     	window.location = "http://localhost:4567/gettingStarted";
     })
     
     $('#linkTutorials').click(function(){ 
     	window.location = "http://localhost:4567/tutorials";
-    
     })
     
      $('#linkDownloads').click(function(){ 	
@@ -144,69 +125,34 @@ $(document).ready(function() {
 
     $('#linkContext').click(function(){ 
     	 window.location = "http://localhost:4567/context";
-    	
     })
     
     $('#linkContact').click(function(){ 
     	 window.location = "http://localhost:4567/contact";
-
     })
     
     
     $('#linkMyContexts').click(function(){ 	
-
     	 window.location = "http://localhost:4567/myContexts";
     })
     
     $('#linkMyProfile').click(function(){ 	
-
-    	
     	window.location = "http://localhost:4567/myProfile";
     })
     
      $('#linkMyResources').click(function(){ 	
     	 window.location = "http://localhost:4567/myResources";
-
     })
     
      $('#linkMyGroups').click(function(){ 	
     	 window.location = "http://localhost:4567/myGroups";
-    	
     })
     
     $('#linkAdministration').click(function(){ 	
     	window.location = "http://localhost:4567/administration";
-
     })
-    
-    
-    
 } );
 
-
-function deleteUser(event){
-	removeUser(event.id);
-	location.reload();
-}
-
-
-
-
-
-function removeUser(userId) {
-	$.ajax({
-	    type: 'DELETE',
-	    contentType: 'application/json',
-	    url: 'http://localhost:4567/te?id='+userId,
-	    dataType: "json",
-	    success: function(data, textStatus, jqXHR){
-	    	
-	    },
-	    error: function(jqXHR, textStatus, errorThrown){
-	       // alert('Medicine information could be deleted');
-	    }
-	});
-}
 function openCity(evt, cityName) {
     // Declare all variables
     var i, tabcontent, tablinks;

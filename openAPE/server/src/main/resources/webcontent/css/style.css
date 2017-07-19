@@ -165,6 +165,20 @@
   .content .mainContent {
     padding: 3em; }
 
+.roles {
+  background-color: #ececec;
+  width: 8.4em;
+  height: 3em;
+  text-align: center;
+  padding-top: 0.7em;
+  float: left; }
+
+.roles:nth-child(2) {
+  margin-left: 1em; }
+
+.selected {
+  background-color: #64D329; }
+
 .main h1 {
   color: #C60000;
   font-weight: bold; }

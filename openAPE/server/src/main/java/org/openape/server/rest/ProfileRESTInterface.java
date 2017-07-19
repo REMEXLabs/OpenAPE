@@ -1,6 +1,8 @@
 package org.openape.server.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import org.json.JSONObject;
 import org.openape.api.Messages;
 import org.openape.api.user.User;
 import org.openape.api.usercontext.UserContext;
@@ -45,13 +47,36 @@ public class ProfileRESTInterface extends SuperRestInterface {
             }
         });
         
-        Spark.delete("/te", (req, res) -> {
+        Spark.delete("/users", (req, res) -> {
         	AdminSectionRequestHandler adminsectionRequestHandler = new AdminSectionRequestHandler();
         	
         	adminsectionRequestHandler.removeUser(req.queryParams("id"));
         	System.out.println(req.queryParams("id"));
 
             return "";
+        });
+        
+        //edit users
+        Spark.put("/users", (req, res) -> {
+            try {
+            	AdminSectionRequestHandler adminsectionRequestHandler = new AdminSectionRequestHandler();
+            	
+            	
+            	JSONObject jsonObj = new JSONObject(req.body().toString());
+    
+            	adminsectionRequestHandler.updateUser(jsonObj.getString("id"), "username", jsonObj.getString("username"));
+            	adminsectionRequestHandler.updateUser(jsonObj.getString("id"), "email", jsonObj.getString("email"));
+            	
+            	for(Object entry: jsonObj.getJSONArray("roles")){
+            		adminsectionRequestHandler.updateUser(jsonObj.getString("id"), "roles", entry.toString());
+            	}
+            	
+            	//adminsectionRequestHandler.updateUser(jsonObj.getString("id"), "roles", jsonObj.getJSONArray("roles"));
+            	
+                return "user updated";
+            } catch(Exception err) {
+                return "Could not create user: " + err.getMessage();
+            }
         });
        
 

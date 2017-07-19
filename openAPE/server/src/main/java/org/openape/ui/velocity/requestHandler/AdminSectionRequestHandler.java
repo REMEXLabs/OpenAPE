@@ -17,6 +17,8 @@ import org.openape.server.database.mongoDB.MongoCollectionTypes;
 import org.openape.server.requestHandler.UserContextRequestHandler;
 import org.openape.server.rest.UserContextRESTInterface;
 
+import com.mongodb.client.result.UpdateResult;
+
 /**
  * Class with methods to manage user context on the server. It is used by the
  * rest API {@link UserContextRESTInterface} and uses the server database
@@ -32,12 +34,10 @@ public class AdminSectionRequestHandler {
         // Get the requested data.
         databaseConnection.removeData(
                 AdminSectionRequestHandler.COLLECTIONTOUSE, id);
-        
-     
-
     }
     
     public ArrayList<User> getAllUsers() throws IOException, IllegalArgumentException {
+    	
         // get database connection.
         final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
 
@@ -54,12 +54,25 @@ public class AdminSectionRequestHandler {
         	user.setUsername(entry.getString("username"));
         	user.setId(entry.getObjectId("_id").toString());
         	
-        	
         	List<String> listRoles = Arrays.asList(entry.get("roles").toString().replace("[", "").replace("]", ""));
         	user.setRoles(listRoles);
         	
         	listUsers.add(user);
         }
         return listUsers;
+    }
+    
+ public UpdateResult updateUser(String id, String indexName, String indexValue) throws Exception {
+    	
+        // get database connection.
+        final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
+
+        UpdateResult updateResult = null;
+	
+		updateResult = databaseConnection.updateDocument(
+	                AdminSectionRequestHandler.COLLECTIONTOUSE, id, indexName, indexValue); 
+
+       
+        return updateResult;
     }
 }

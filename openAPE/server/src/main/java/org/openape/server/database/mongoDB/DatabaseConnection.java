@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 
 import com.mongodb.client.model.IndexOptions;
+import com.mongodb.client.result.UpdateResult;
 import com.mongodb.event.ServerHeartbeatFailedEvent;
 import com.mongodb.event.ServerHeartbeatStartedEvent;
 import com.mongodb.event.ServerHeartbeatSucceededEvent;
@@ -25,6 +26,7 @@ import org.openape.server.requestHandler.EnvironmentContextRequestHandler;
 import org.openape.server.requestHandler.EquipmentContextRequestHandler;
 import org.openape.server.requestHandler.TaskContextRequestHandler;
 import org.openape.server.requestHandler.UserContextRequestHandler;
+import org.openape.ui.velocity.requestHandler.AdminSectionRequestHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -357,9 +359,6 @@ public class DatabaseConnection implements ServerMonitorListener {
     public void removeData(MongoCollectionTypes type, String id) throws IOException {
         final MongoCollection<Document> collectionToWorkOn = this.getCollectionByType(type);
         // Search for object in database.
-        final BasicDBObject query = new BasicDBObject();
-        query.put(Messages.getString("DatabaseConnection._id"), new ObjectId(id));
-        
         Bson filter = new Document(Messages.getString("DatabaseConnection._id"), new ObjectId(id));
         collectionToWorkOn.deleteOne(filter);
         
@@ -383,6 +382,26 @@ public class DatabaseConnection implements ServerMonitorListener {
         return listDocuments;
     }
     
+    
+    public UpdateResult updateDocument(MongoCollectionTypes type, String id, String indexName, String indexValue) throws Exception {
+    	
+        final MongoCollection<Document> collectionToWorkOn = this.getCollectionByType(type);
+
+		Bson filter = new Document(Messages.getString("DatabaseConnection._id"), new ObjectId(id));
+		Bson newValue = new Document(indexName, indexValue);
+		Bson updateOperationDocument = new Document("$set", newValue);
+             
+		UpdateResult updateResult = null; 
+        
+		try {
+            updateResult = collectionToWorkOn.updateOne(filter, updateOperationDocument); 
+        } catch (Exception err) {
+            throw new Exception(err.getMessage());
+        }
+       
+        
+        return updateResult;
+    }
     
     /**
      * Query a collection by a certain attribute and value. Will return the first document matching the query or

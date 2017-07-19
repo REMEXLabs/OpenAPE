@@ -1,117 +1,58 @@
 <html>
 <head>
  <title>OpenAPE</title>
- <link rel="stylesheet" href="css/style.css">
- <script src="https://code.jquery.com/jquery-3.2.1.js"></script>
-
-
+ 
+<!--Vendor Stylesheets -->
  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+<!--Custom Stylesheets -->
+ <link rel="stylesheet" href="css/style.css">
+
+<!--Vendor Javascript -->
+ <script src="https://code.jquery.com/jquery-3.2.1.js"></script>
  
-
- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.6/semantic.min.css">
- <link rel="stylesheet" href="https://cdn.datatables.net/1.10.15/css/dataTables.semanticui.min.css">
- 
-
-
-
-
-  <script src=" https://code.jquery.com/jquery-1.12.4.js"></script>
-  <script src=" https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
- <script src="https://cdn.datatables.net/1.10.15/js/dataTables.semanticui.min.js"></script>
-
- <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.6/semantic.min.js"></script>
-
-
- 
+ <!--Custom Javascript -->
  <script src="js/navigation.js" type="text/javascript"></script>
- 
- <style>
- /* Style the tab */
-div.tab {
-    overflow: hidden;
-    border: 1px solid #ccc;
-    background-color: #f1f1f1;
-}
-
-/* Style the buttons inside the tab */
-div.tab button {
-    background-color: inherit;
-    float: left;
-    border: none;
-    outline: none;
-    cursor: pointer;
-    padding: 14px 16px;
-    transition: 0.3s;
-}
-
-/* Change background color of buttons on hover */
-div.tab button:hover {
-    background-color: #ddd;
-}
-
-/* Create an active/current tablink class */
-div.tab button.active {
-    background-color: #ccc;
-}
-
-/* Style the tab content */
-.tabcontent {
-    display: none;
-    padding: 3em;
-}
- </style>
 </head>
 
 <body>
-
-
 <div class="main">
 	$topNavigation
 	$subSection
 	
-	<div class="content">
-		
-		
+	<div class="content">	
 		<div class="mainContent">
-		 <h1>Contact</h1> <br>
-		 
-		 
-		 
-<div id="left" style="float:left;  padding-bottom:1em; padding-top:1em; width:50%">
-	<h4 style="color:#C60000"><b>Prof. Dr. Gottfried Zimmermann</b></h4>
-	Stuttgart Media University<br>
-	Nobelstr. 10<br>
-	70569 Stuttgart<br>
-	Germany<br><br>
-	<b>E-Mail:</b> gzimmermann@hdm-stuttgart.de<br><br>
-</div>
-
-<div id="right" style="padding-bottom:1em; padding-top:1em;" >
-	<h4 style="color:#C60000"><b>Dipl.-Wi.-Ing. Lukas Smirek</b></h4>
-	Stuttgart Media University<br>
-	Nobelstr. 10<br>
-	70569 Stuttgart<br>
-	Germany<br><br>
-	<b>E-Mail:</b> smirek@hdm-stuttgart.de<br>
-	<b>Phone:</b> +49-711-8923-2672 
-</div>
-
-<div id="mailinglist" style="padding-bottom:1em; padding-top:1em;">
-	<h4 style="color:#C60000"><b>Mailinglist</b></h4>
-		Everybody who is interested in joining the openAPE community can sign up to
-		our new mailing list openape@googlegroups.com.  
-		The related google group is <a href="https://groups.google.com/d/forum/openape">open
-		Accessibility Personalisation Extension (openAPE)</a>
-</div>
-
+			 <h1>Contact</h1> <br>
+			 
+			<div id="left" style="float:left;  padding-bottom:1em; padding-top:1em; width:50%">
+				<h4 style="color:#C60000"><b>Prof. Dr. Gottfried Zimmermann</b></h4>
+				Stuttgart Media University<br>
+				Nobelstr. 10<br>
+				70569 Stuttgart<br>
+				Germany<br><br>
+				<b>E-Mail:</b> gzimmermann@hdm-stuttgart.de<br><br>
+			</div>
+			
+			<div id="right" style="padding-bottom:1em; padding-top:1em;" >
+				<h4 style="color:#C60000"><b>Dipl.-Wi.-Ing. Lukas Smirek</b></h4>
+				Stuttgart Media University<br>
+				Nobelstr. 10<br>
+				70569 Stuttgart<br>
+				Germany<br><br>
+				<b>E-Mail:</b> smirek@hdm-stuttgart.de<br>
+				<b>Phone:</b> +49-711-8923-2672 
+			</div>
+			
+			<div id="mailinglist" style="padding-bottom:1em; padding-top:1em;">
+				<h4 style="color:#C60000"><b>Mailinglist</b></h4>
+					Everybody who is interested in joining the openAPE community can sign up to
+					our new mailing list openape@googlegroups.com.  
+					The related google group is <a href="https://groups.google.com/d/forum/openape">open
+					Accessibility Personalisation Extension (openAPE)</a>
+			</div>
 		</div> 
-	
 	</div>
-	
-	
 	<footer class="footer">$footer</footer>
 </div>
-
 </body>
-
 </html>
