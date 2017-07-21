@@ -59,9 +59,6 @@ logger.info("OpenAPECLIENT received Token for: " + uri);
 
 private String getToken(String userName,String password){
 	String tokenRequest= "grant_type=password&username=" + userName + "&password=" + password;
-/*	Response response = webResource.path("token").request(MediaType.APPLICATION_FORM_URLENCODED)
-					    .post(Entity.entity(tokenRequest,MediaType.APPLICATION_JSON));
-	*/	    
 	Form form = new Form();
 	form.param("grant_type","password");
 	form.param( "username",userName);
