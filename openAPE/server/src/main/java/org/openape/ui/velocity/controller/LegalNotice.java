@@ -22,10 +22,8 @@ public class LegalNotice  extends SuperRestInterface{
 		 
     	 Spark.get("/legalNotice", (request, response) -> {           
     		 
-             model.put("footer", new Footer().generateFooter());
-             model.put("logo", new Atom_2_OpenAPEHeader().generateLogo());
-             model.put("topNavigation", new Organism_1_Topsection().generateTopNavigation());
-             model.put("subSection", new Organism_2_SubSection().generateTopNavigation());
+             MainController mainController = new MainController();
+             Map<String, Object> model = mainController.getTemplateComponents();
              
              return new ModelAndView(model, "velocityTemplates/legalNotice.vm"); // located in the resources directory
          }, new VelocityTemplateEngine());

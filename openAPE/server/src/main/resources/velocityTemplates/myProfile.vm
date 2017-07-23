@@ -25,6 +25,8 @@
 <body>
 
 <div class="main">
+	$signinModal
+	$signupModal
 	$topNavigation
 	$subSection
 		

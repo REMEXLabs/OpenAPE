@@ -1,6 +1,11 @@
 $(document).ready(function() {
-	$('#btnSignin').click(function(){
-		login();
+	
+	$('#signinSecQuestionErrIcon').hide();
+	$('#signPasswordErrIcon').hide();
+	$('#signinUsernameErrIcon').hide();
+	$('#div_signin').click(function(){
+		$('#signinModal').modal('show');
+		//login();
 	})
 	
 })

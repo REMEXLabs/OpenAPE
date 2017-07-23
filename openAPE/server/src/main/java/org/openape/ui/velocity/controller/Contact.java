@@ -7,6 +7,8 @@ import org.openape.server.rest.SuperRestInterface;
 import org.openape.ui.velocity.atoms.Atom_2_OpenAPEHeader;
 import org.openape.ui.velocity.organism.Organism_1_Topsection;
 import org.openape.ui.velocity.organism.Organism_2_SubSection;
+import org.openape.ui.velocity.organism.Organism_4_Modals;
+
 import spark.ModelAndView;
 import spark.template.velocity.VelocityTemplateEngine;
 import spark.Spark;
@@ -21,10 +23,8 @@ public class Contact  extends SuperRestInterface{
 	public static void setupContactVELOCITYInterface() throws IllegalArgumentException, IOException {	 
     	 Spark.get("/contact", (request, response) -> {           
     		 
-             model.put("footer", new Footer().generateFooter());
-             model.put("logo", new Atom_2_OpenAPEHeader().generateLogo());
-             model.put("topNavigation", new Organism_1_Topsection().generateTopNavigation());
-             model.put("subSection", new Organism_2_SubSection().generateTopNavigation());
+             MainController mainController = new MainController();
+             Map<String, Object> model = mainController.getTemplateComponents();
              
              return new ModelAndView(model, "velocityTemplates/contact.vm"); // located in the resources directory
          }, new VelocityTemplateEngine());

@@ -7,12 +7,13 @@ import org.openape.server.rest.SuperRestInterface;
 import org.openape.ui.velocity.atoms.Atom_2_OpenAPEHeader;
 import org.openape.ui.velocity.organism.Organism_1_Topsection;
 import org.openape.ui.velocity.organism.Organism_2_SubSection;
+import org.openape.ui.velocity.organism.Organism_4_Modals;
+
 import spark.ModelAndView;
 import spark.template.velocity.VelocityTemplateEngine;
 import spark.Spark;
 
 public class GettingStarted  extends SuperRestInterface{
-	private static Map<String, Object> model = new HashMap<>();
 	public GettingStarted() throws IllegalArgumentException, IOException {
 		super();
 		// TODO Auto-generated constructor stub
@@ -22,10 +23,8 @@ public class GettingStarted  extends SuperRestInterface{
 		 
     	 Spark.get("/gettingStarted", (request, response) -> {           
     		 
-             model.put("footer", new Footer().generateFooter());
-             model.put("logo", new Atom_2_OpenAPEHeader().generateLogo());
-             model.put("topNavigation", new Organism_1_Topsection().generateTopNavigation());
-             model.put("subSection", new Organism_2_SubSection().generateTopNavigation());
+            MainController mainController = new MainController();
+            Map<String, Object> model = mainController.getTemplateComponents();
              
              return new ModelAndView(model, "velocityTemplates/gettingStarted.vm"); // located in the resources directory
          }, new VelocityTemplateEngine());
