@@ -111,10 +111,12 @@ function editUser(event){
 	
 	if($("#tdRoles_"+event.id).html() == "admin")	{
 		$('#editRoleAdmin').addClass("selected");
+		selectedRoles.push("admin");
 	} 
 	
 	if($("#tdRoles_"+event.id).html() == "user"){
 		$('#editRoleUser').addClass("selected");
+		selectedRoles.push("user");
 	}
 	
 	
