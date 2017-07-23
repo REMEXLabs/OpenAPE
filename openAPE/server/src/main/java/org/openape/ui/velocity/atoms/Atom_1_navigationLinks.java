@@ -1,11 +1,6 @@
 package org.openape.ui.velocity.atoms;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
-
-import org.bouncycastle.crypto.engines.NaccacheSternEngine;
-import org.openape.ui.velocity.models.Navigation;
 
 public class Atom_1_navigationLinks {
 	public LinkedHashMap<String, String> generateTopNavigationLinks(){

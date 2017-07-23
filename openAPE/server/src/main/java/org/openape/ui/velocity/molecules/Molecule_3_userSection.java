@@ -18,12 +18,12 @@ public class Molecule_3_userSection {
 		
 		return userSectionFormulars += ""
 				+ "<div class='col-xs-4' style='float:left'>"
-				+ "<input class='form-control' id='ex1' placeholder='username' type='text'>"
+				+ "<input class='form-control' id='signinUsernameInput' placeholder='username' type='text'>"
 				+ "</div>"
 				+ "<div class='col-xs-4' style='float:left'>"
-				+ "<input class='form-control' id='ex1' placeholder='password' type='password'>"
+				+ "<input class='form-control' id='signinPwInput' placeholder='password' type='password'>"
 				+ "</div>"
-				+ "<button class='btn btn-sm btn-danger'>"
+				+ "<button class='btn btn-sm btn-danger' id='btnSignin'>"
 				+ "<div class='glyphicon glyphicon-log-in'></div> Sign in</button>"
 				+ "      <button class='btn btn-sm btn-danger'>"
 				+ "<div class='glyphicon glyphicon-question-sign'></div> Forgot PW?</button>";
@@ -44,7 +44,7 @@ public class Molecule_3_userSection {
 				+ "</div>"
 				+ "<div style='loat:left'>"
 				+ "<button class='btn btn-sm btn-danger'>"
-				+ "<div class='glyphicon glyphicon-log-in'></div> Sign in</button></div>";
+				+ "<div class='glyphicon glyphicon-log-in'></div> Sign up</button></div>";
 	}
 	
 }

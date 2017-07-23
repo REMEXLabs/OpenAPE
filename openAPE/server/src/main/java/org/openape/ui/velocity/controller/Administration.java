@@ -1,24 +1,16 @@
 package org.openape.ui.velocity.controller;
 
-import static spark.Spark.get;
-
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-
-import org.bson.Document;
-import org.openape.api.user.User;
-import org.openape.api.usercontext.UserContext;
-import org.openape.server.auth.AuthService;
-import org.openape.server.requestHandler.EquipmentContextRequestHandler;
 import org.openape.server.rest.SuperRestInterface;
-import org.openape.ui.velocity.models.deleteUser;
-import org.openape.ui.velocity.molecules.Molecule_5_dataTable;
+import org.openape.ui.velocity.atoms.Atom_2_OpenAPEHeader;
+import org.openape.ui.velocity.molecules.Molecule_5_dataTableContent;
 import org.openape.ui.velocity.molecules.Molecule_6_Modals;
 import org.openape.ui.velocity.organism.Organism_1_Topsection;
 import org.openape.ui.velocity.organism.Organism_2_SubSection;
+import org.openape.ui.velocity.organism.Organism_3_DataTable;
 import org.openape.ui.velocity.requestHandler.AdminSectionRequestHandler;
-
 import spark.ModelAndView;
 import spark.template.velocity.VelocityTemplateEngine;
 import spark.Spark;
@@ -33,13 +25,12 @@ public class Administration  extends SuperRestInterface{
 	public static void setupAdministrationVELOCITYInterface(AdminSectionRequestHandler adminsectionRequestHandler) throws IllegalArgumentException, IOException {
 		 
     	 Spark.get("/administration", (request, response) -> {
-    		 deleteUser del = new deleteUser();
     		
              model.put("footer", new Footer().generateFooter());
-             model.put("logo", new OpenapeLogo().generateOpenAPELogo());
+             model.put("logo", new Atom_2_OpenAPEHeader().generateLogo());
              model.put("topNavigation", new Organism_1_Topsection().generateTopNavigation());
              model.put("subSection", new Organism_2_SubSection().generateTopNavigation());
-             model.put("tableContent", new Molecule_5_dataTable().generateDataTableContent(adminsectionRequestHandler.getAllUsers()));
+             model.put("dataTableUser", new Organism_3_DataTable().generateAdministrationUserTable(adminsectionRequestHandler));
              model.put("deleteUserModal", new Molecule_6_Modals().generateDeleteUserModal());
          
              return new ModelAndView(model, "velocityTemplates/administration.vm"); // located in the resources directory

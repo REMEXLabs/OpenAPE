@@ -1,6 +1,6 @@
 package org.openape.ui.velocity.organism;
 
-import org.openape.ui.velocity.molecules.Molecule_1_logo;
+import org.openape.ui.velocity.atoms.Atom_2_OpenAPEHeader;
 import org.openape.ui.velocity.molecules.Molecule_2_topnavigation;
 import org.openape.ui.velocity.molecules.Molecule_3_userSection;
 import org.openape.ui.velocity.molecules.Molecule_4_subNavigation;

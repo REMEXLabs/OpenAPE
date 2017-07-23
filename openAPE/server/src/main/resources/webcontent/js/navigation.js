@@ -1,5 +1,20 @@
 $(document).ready(function() {
 	
+	var token = localStorage.getItem("token");
+	if(token === null){
+		$('.subnav').hide();
+	} else {
+		$('.subnav').show();
+		if(localStorage.getItem("role") === "admin" || localStorage.getItem("role") !== null){
+			$('#linkAdministration').show();
+		} else {
+			$('#linkAdministration').hide();
+		}
+	}
+	
+
+	
+	
 	var href = document.location.href;
 	var lastPathSegment = href.substr(href.lastIndexOf('/') + 1);
 	

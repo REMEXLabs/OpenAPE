@@ -1,5 +1,9 @@
 var selectedRoles = [];
 $(document).ready(function() {
+	if($('td').attr("id").includes(localStorage.getItem("userid"))){
+		$('#tdUserName_'+localStorage.getItem("userid")).closest('tr').hide();
+	}
+	
 	//add user
 	$('#errUsername').hide();
 	$('#errEmail').hide();
@@ -334,12 +338,12 @@ function validateEditUserFields (objUser) {
 	}
 	
 	if(objUser.roles.length > 0) {
-		$('#errorSection').empty();
-		isRoleCorrect = true;
+		$('#editErrSection').empty();
+		isEditRoleCorrect = true;
 	} else {
-		isRoleCorrect = false;
-		$('#errorSection').empty();
-		$('#errorSection').append("<img width='20px' height='20px' src='img/attention_icon.png'>  Please define a role!");	
+		isEditRoleCorrect = false;
+		$('#editErrSection').empty();
+		$('#editErrSection').append("<img width='20px' height='20px' src='img/attention_icon.png'>  Please define a role!");	
 	}
 	
 	if(isEditUsernameCorrect && isEditEmailCorrect && isEditRoleCorrect){
