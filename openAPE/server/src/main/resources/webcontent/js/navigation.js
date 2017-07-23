@@ -12,9 +12,6 @@ $(document).ready(function() {
 		}
 	}
 	
-
-	
-	
 	var href = document.location.href;
 	var lastPathSegment = href.substr(href.lastIndexOf('/') + 1);
 	
@@ -86,25 +83,14 @@ $(document).ready(function() {
     $('#div_nav_adminsectionUsers').addClass("adminsectionNavActive");
     $('#users').show();
 
-    $('#signin').click(function(){
-    	
+    $('#signin').click(function(){	
     	$('#div_signin').addClass("active");
     	$('#div_signup').removeClass("active");
-    	$('#userSectionLoggedOut').show();
-    	 $('#userSectionSignIn').hide();
     })
     
      $('#signup').click(function(){
     	$('#div_signup').addClass("active");
     	$('#div_signin').removeClass("active");
-    	$('#userSectionLoggedOut').show();
-    	$('#userSectionSignIn').hide();
-    })
-    
-    $('#signup').click(function(){
-    
-    	$('#userSectionSignIn').show();
-    	$('#userSectionLoggedOut').hide();
     })
     
     

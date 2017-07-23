@@ -29,8 +29,8 @@ public class Atom_1_navigationLinks {
 	public LinkedHashMap<String, String> generateUserSectionLinksLoggedOut(){
 		LinkedHashMap<String, String> map = new LinkedHashMap<>();
 		
-		map.put("signin", "<div class='glyphicon glyphicon-log-in'></div>  Sign in");
-		map.put("signup", "<div class='glyphicon glyphicon-log-in'></div>  Sign up");
+		map.put("signin", "<div class='glyphicon glyphicon-log-in'></div>&nbsp; Sign in");
+		map.put("signup", "<img src='img/signup.png' width='20px' height='20px'>&nbsp; Sign up");
 	
 		return map;
 	}

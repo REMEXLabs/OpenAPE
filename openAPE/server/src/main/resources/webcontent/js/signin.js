@@ -3,7 +3,7 @@ $(document).ready(function() {
 	$('#signinSecQuestionErrIcon').hide();
 	$('#signPasswordErrIcon').hide();
 	$('#signinUsernameErrIcon').hide();
-	$('#div_signin').click(function(){
+	$('#signin').click(function(){
 		$('#signinModal').modal('show');
 		//login();
 	})

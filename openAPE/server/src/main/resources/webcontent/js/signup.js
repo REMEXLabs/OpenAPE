@@ -5,7 +5,7 @@ $(document).ready(function() {
 	$('#signupPasswordErrIcon').hide();
 	$('#signupSecQuestionErrIcon').hide();
 	
-	$('#div_signup').click(function(){
+	$('#signup').click(function(){
 		$('#signupModal').modal('show');
 	})
 	
