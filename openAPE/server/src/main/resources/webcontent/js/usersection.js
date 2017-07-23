@@ -3,8 +3,9 @@ $(document).ready(function() {
 	
 	var token = localStorage.getItem("token");
 	var username = localStorage.getItem("username");
-	if(token === null){
+	if(token === null || token === "undefined"){
 		$('#userSection').show();
+		$('#userLoggedin').removeClass("active");
 	} else {
 		$('#userSection').show();
 		$('#userSection').empty();
@@ -18,3 +19,4 @@ $(document).ready(function() {
 		window.location = document.location.origin+"/gettingStarted";
 	})
 })
+

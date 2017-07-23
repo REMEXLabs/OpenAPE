@@ -1,7 +1,7 @@
 $(document).ready(function() {
 	
 	var token = localStorage.getItem("token");
-	if(token === null){
+	if(token === null || token === "undefined"){
 		$('.subnav').hide();
 	} else {
 		$('.subnav').show();
