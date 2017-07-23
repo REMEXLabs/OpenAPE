@@ -5,7 +5,8 @@ import java.util.LinkedHashMap;
 public class Atom_1_navigationLinks {
 	public LinkedHashMap<String, String> generateTopNavigationLinks(){
 		LinkedHashMap<String, String> map = new LinkedHashMap<>();
-	
+		
+		map.put("Home", "Home");	
 		map.put("GettingStarted", "Getting Started");
 		map.put("Tutorials", "Tutorials");
 		map.put("Downloads", "Downloads");

@@ -4,6 +4,8 @@
 	background-color:#e31134; 
 	overflow: hidden; 
 	height:4em;
+	border-bottom: 5px solid #AB112A;
+
 	
 
 	
@@ -14,7 +16,7 @@
 		float:left; 
 		height:inherit; 
 		text-align:center;
-		padding-top:0.6em;
+		padding-top:0.9em;
 		font-weight:bold;
 		font-size: 14pt;
 		text-shadow: 4px 4px #000;
@@ -129,9 +131,9 @@
 
 .subSection {
 	min-height: 4em;     
-	background-color: #818181;     	
+	background-color: #740a1b;     	
 	.active {
-		background-color: #4E4E4E;
+		background-color: #4b020e;
 		min-height:4em;
 		font-weight:bold;
 	}

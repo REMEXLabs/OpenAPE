@@ -1,9 +1,5 @@
 package org.openape.ui.velocity.molecules;
 
-import java.util.ArrayList;
-
-import org.openape.api.user.User;
-
 public class Molecule_6_Modals {
 	public String generateDeleteUserModal(){
 		

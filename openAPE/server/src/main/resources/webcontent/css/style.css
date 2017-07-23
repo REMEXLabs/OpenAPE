@@ -1,7 +1,8 @@
 .topNavigation {
   background-color: #e31134;
   overflow: hidden;
-  height: 4em; }
+  height: 4em;
+  border-bottom: 5px solid #AB112A; }
   .topNavigation .logo {
     background-color: #e31134;
     color: white;
@@ -9,7 +10,7 @@
     float: left;
     height: inherit;
     text-align: center;
-    padding-top: 0.6em;
+    padding-top: 0.9em;
     font-weight: bold;
     font-size: 14pt;
     text-shadow: 4px 4px #000; }
@@ -79,9 +80,9 @@
 
 .subSection {
   min-height: 4em;
-  background-color: #818181; }
+  background-color: #740a1b; }
   .subSection .active {
-    background-color: #4E4E4E;
+    background-color: #4b020e;
     min-height: 4em;
     font-weight: bold; }
   .subSection .subnav:hover {
@@ -167,10 +168,13 @@ div.tab button.active {
   background-color: yellow;
   float: clear;
   text-align: center;
-  padding: 1em;
-  background-color: #ececec;
-  border-top: 2px solid #ccc;
-  border-bottom: 2px solid #ccc; }
+  padding: 2em;
+  background-color: #3b3b3b;
+  color: white;
+  font-weight: bold;
+  min-height: 7em; }
+  .footer a {
+    color: #e31134; }
 
 .content {
   min-height: 30em;
@@ -212,5 +216,8 @@ div.tab button.active {
 .main h2 {
   color: #C60000;
   font-weight: bold; }
+
+body {
+  background: #eee; }
 
 /*# sourceMappingURL=style.css.map */

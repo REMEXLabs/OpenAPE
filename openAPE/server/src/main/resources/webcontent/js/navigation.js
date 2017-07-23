@@ -2,9 +2,11 @@ $(document).ready(function() {
 	
 	var token = localStorage.getItem("token");
 	if(token === null || token === "undefined"){
-		$('.subnav').hide();
+		$('.subSection').hide();
 	} else {
 		$('.subnav').show();
+		$('.subSection').show();
+		
 		if(localStorage.getItem("role") === "admin" || localStorage.getItem("role") !== null){
 			$('#linkAdministration').show();
 		} else {
@@ -21,57 +23,73 @@ $(document).ready(function() {
     	$('#divDownloads').removeClass("active");
     	$('#divContext').removeClass("active");
     	$('#divContact').removeClass("active");
+    	$('#divHome').removeClass("active");
 	} else if(lastPathSegment == "tutorials"){
 		$('#divTutorials').addClass("active");
     	$('#divGettingStarted').removeClass("active");
     	$('#divDownloads').removeClass("active");
     	$('#divContext').removeClass("active");
     	$('#divContact').removeClass("active");
+    	$('#divHome').removeClass("active");
 	} else if(lastPathSegment == "downloads"){
     	$('#divDownloads').addClass("active");
     	$('#divTutorials').removeClass("active");
     	$('#divGettingStarted').removeClass("active");
     	$('#divContext').removeClass("active");
     	$('#divContact').removeClass("active");
+    	$('#divHome').removeClass("active");
 	}else if(lastPathSegment == "context"){
 		$('#divContext').addClass("active");
 		$('#divDownloads').removeClass("active");
 		$('#divTutorials').removeClass("active");
 		$('#divGettingStarted').removeClass("active");
 		$('#divContact').removeClass("active");
+		$('#divHome').removeClass("active");
 	} else if(lastPathSegment == "contact"){
     	$('#divContact').addClass("active");
     	$('#divContext').removeClass("active");
     	$('#divDownloads').removeClass("active");
     	$('#divTutorials').removeClass("active");
     	$('#divGettingStarted').removeClass("active");
+    	$('#divHome').removeClass("active");
 	} else if(lastPathSegment == "myProfile"){
 		$('#divAdministration').removeClass("active");
 		$('#divMyProfile').addClass("active");
 		$('#divMyContexts').removeClass("active");
 		$('#divMyResources').removeClass("active");
 		$('#divMyGroups').removeClass("active");
+		$('#divHome').removeClass("active");
 	}else if(lastPathSegment == "myContexts"){
 		$('#divAdministration').removeClass("active");
 		$('#divMyContexts').addClass("active");
 		$('#divMyProfile').removeClass("active");
 		$('#divMyResources').removeClass("active");
 		$('#divMyGroups').removeClass("active");
+		$('#divHome').removeClass("active");
 	} else if(lastPathSegment == "myResources"){
 		 $('#divAdministration').removeClass("active");
 		 	$('#divMyResources').addClass("active");
 		 	$('#divMyContexts').removeClass("active");
 		 	$('#divMyProfile').removeClass("active");
 		 	$('#divMyGroups').removeClass("active");
+		 	$('#divHome').removeClass("active");
 	} else if(lastPathSegment == "administration"){
 		$('#divAdministration').addClass("active");
 		$('#divMyGroups').removeClass("active");
 		$('#divMyContexts').removeClass("active");
 		$('#divMyProfile').removeClass("active");
 		$('#divMyResources').removeClass("active");
+		$('#divHome').removeClass("active");
 	} else if(lastPathSegment == "myGroups"){
 		$('#divAdministration').removeClass("active");
     	$('#divMyGroups').addClass("active");
+    	$('#divMyContexts').removeClass("active");
+    	$('#divMyProfile').removeClass("active");
+    	$('#divMyResources').removeClass("active");
+    	$('#divHome').removeClass("active");
+	} else if(lastPathSegment == "index"){
+		$('#divAdministration').removeClass("active");
+    	$('#divHome').addClass("active");
     	$('#divMyContexts').removeClass("active");
     	$('#divMyProfile').removeClass("active");
     	$('#divMyResources').removeClass("active");
@@ -118,6 +136,10 @@ $(document).ready(function() {
     
     $('#linkTutorials').click(function(){ 
     	window.location = "http://localhost:4567/tutorials";
+    })
+    
+    $('#linkHome').click(function(){ 
+    	window.location = "http://localhost:4567/index";
     })
     
      $('#linkDownloads').click(function(){ 	

@@ -22,6 +22,7 @@ import org.openape.ui.velocity.controller.Contact;
 import org.openape.ui.velocity.controller.Context;
 import org.openape.ui.velocity.controller.Downloads;
 import org.openape.ui.velocity.controller.GettingStarted;
+import org.openape.ui.velocity.controller.Index;
 import org.openape.ui.velocity.controller.LegalNotice;
 import org.openape.ui.velocity.controller.MyContexts;
 import org.openape.ui.velocity.controller.MyGroups;
@@ -266,6 +267,17 @@ ResourceDescriptionRESTInterface.setupResourceDescriptionRESTInterface(new Resou
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+        
+        try {
+			Index.setupIndexVELOCITYInterface();
+		} catch (IllegalArgumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        
         //REST-Interfaces
 		ResourceRESTInterface.setupResourceRESTInterface(new ResourceRequestHandler());
         TaskContextRESTInterface.setupTaskContextRESTInterface(new TaskContextRequestHandler(), authService);

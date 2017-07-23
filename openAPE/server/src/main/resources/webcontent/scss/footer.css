@@ -2,9 +2,12 @@
   background-color: yellow;
   float: clear;
   text-align: center;
-  padding: 1em;
-  background-color: #ececec;
-  border-top: 2px solid #ccc;
-  border-bottom: 2px solid #ccc; }
+  padding: 2em;
+  background-color: #3b3b3b;
+  color: white;
+  font-weight: bold;
+  min-height: 7em; }
+  .footer a {
+    color: #e31134; }
 
 /*# sourceMappingURL=footer.css.map */
