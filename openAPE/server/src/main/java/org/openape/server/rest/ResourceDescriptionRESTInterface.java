@@ -6,6 +6,7 @@ import org.openape.api.Messages;
 import org.openape.api.listing.Listing;
 import org.openape.api.resourceDescription.ResourceDescription;
 import org.openape.server.auth.AuthService;
+import org.openape.server.auth.UnauthorizedException;
 import org.openape.server.requestHandler.ResourceDescriptionRequestHandler;
 
 import spark.Spark;
@@ -58,6 +59,10 @@ public class ResourceDescriptionRESTInterface extends SuperRestInterface {
                     } catch (final IOException e) {
                         res.status(SuperRestInterface.HTTP_STATUS_INTERNAL_SERVER_ERROR);
                         return e.getMessage();
+                    } catch (UnauthorizedException e) {
+                        //Only authorized users may post resource descriptions
+                        res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
+                        return e.getMessage();
                     }
                 });
 
@@ -85,6 +90,9 @@ public class ResourceDescriptionRESTInterface extends SuperRestInterface {
                     return e.getMessage();
                 } catch (final IOException e) {
                     res.status(SuperRestInterface.HTTP_STATUS_INTERNAL_SERVER_ERROR);
+                    return e.getMessage();
+                } catch (UnauthorizedException e) {
+                    res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
                     return e.getMessage();
                 }
 
@@ -123,7 +131,7 @@ public class ResourceDescriptionRESTInterface extends SuperRestInterface {
                     } catch (final IOException e) {
                         res.status(SuperRestInterface.HTTP_STATUS_INTERNAL_SERVER_ERROR);
                         return e.getMessage();
-                    }
+                    } 
                 });
 
         /**
@@ -166,6 +174,10 @@ public class ResourceDescriptionRESTInterface extends SuperRestInterface {
                 } catch (final IOException e) {
                     res.status(SuperRestInterface.HTTP_STATUS_INTERNAL_SERVER_ERROR);
                     return e.getMessage();
+                } catch (UnauthorizedException e) {
+                    //Only authorized users may edit resource descriptions
+                    res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
+                    return e.getMessage();
                 }
             });
 
@@ -191,6 +203,10 @@ public class ResourceDescriptionRESTInterface extends SuperRestInterface {
                         return e.getMessage();
                     } catch (final IOException e) {
                         res.status(SuperRestInterface.HTTP_STATUS_INTERNAL_SERVER_ERROR);
+                        return e.getMessage();
+                    } catch (UnauthorizedException e) {
+                        //Only authorized users may delete resource descriptions
+                        res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
                         return e.getMessage();
                     }
                 });
