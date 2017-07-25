@@ -21,7 +21,7 @@ public class GroupMember {
 	/**
 	 * The members user id {@link IUser#getId()}.
 	 */
-	private int userId;
+	private String userId;
 	
 	/**
 	 * True if the member is an admin of this group and false if not.
@@ -37,7 +37,12 @@ public class GroupMember {
 	// *********************************************************************************************************************************************
 	// *********************************************************************************************************************************************
 
-	public GroupMember(int userId, boolean groupAdmin){
+	/**
+	 * Create a group member.
+	 * @param userId user id {@link IUser#getId()} of the user, who is the group member. It must not be null or empty.
+	 * @param groupAdmin true if the user should be an admin of the group and false if not
+	 */
+	public GroupMember(String userId, boolean groupAdmin){
 		this.setUserId(userId);
 		this.setGroupAdmin(groupAdmin);
 	}
@@ -51,19 +56,35 @@ public class GroupMember {
 	// *********************************************************************************************************************************************
 	// *********************************************************************************************************************************************
 
-	public int getUserId() {
+	/**
+	 * Getter for the user id {@link IUser#getId()} of the group member.
+	 * @return user id of the group member
+	 */
+	public String getUserId() {
 		return this.userId;
 	}
 	
-	public void setUserId(int userId) {
+	/**
+	 * Setter for the user id {@link IUser#getId()} of the group member. It must not be null or empty.
+	 * @param userId user id {@link IUser#getId()} of the group member
+	 */
+	public void setUserId(String userId) {
 		//Checker.checkUserId(userId);
 		this.userId = userId;
 	}
 	
+	/**
+	 * Getter whether the group member is also an admin of the group or not.
+	 * @return true if the group member is a group admin and false if not
+	 */
 	public boolean isGroupAdmin() {
 		return this.groupAdmin;
 	}
 
+	/**
+	 * Setter whether the group member should be an admin of the group or not.
+	 * @param groupAdmin true if the group member should be an admin of the group and false if not
+	 */
 	public void setGroupAdmin(boolean groupAdmin) {
 		this.groupAdmin = groupAdmin;
 	}
