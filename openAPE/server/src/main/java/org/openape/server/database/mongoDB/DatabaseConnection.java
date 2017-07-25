@@ -46,10 +46,10 @@ import com.mongodb.client.MongoDatabase;
  * {@link UserContextRequestHandler}.
  */
 public class DatabaseConnection implements ServerMonitorListener {
-	
-	static Logger logger = LoggerFactory.getLogger(DatabaseConnection.class);
-	static boolean firstTime = true; // only for logging control needed
-	
+
+    static Logger logger = LoggerFactory.getLogger(DatabaseConnection.class);
+    static boolean firstTime = true; // only for logging control needed
+
     /**
      * The url to our mongo database server.
      */
@@ -91,11 +91,11 @@ public class DatabaseConnection implements ServerMonitorListener {
      */
     public static DatabaseConnection getInstance() {
         if (DatabaseConnection.databaseConnectionInstance == null) {
-        	logger.info("new database connection required");
+            logger.info("new database connection required");
             DatabaseConnection.databaseConnectionInstance = new DatabaseConnection();
         } else {
-    	logger.info("Found existing database connection.");
-    }
+            logger.info("Found existing database connection.");
+        }
         return DatabaseConnection.databaseConnectionInstance;
     }
 
@@ -147,39 +147,39 @@ public class DatabaseConnection implements ServerMonitorListener {
      */
     private DatabaseConnection() {
         // import configuration file
-    	readConfigFile();
-     try {   
-//    	Create credentials for the openAPE database
-        final MongoCredential credential = MongoCredential.createCredential(
-                DatabaseConnection.DATABASEUSERNAME, DatabaseConnection.DATABASENAME,
-                DatabaseConnection.DATABASEPASSWORD.toCharArray());
+        readConfigFile();
+        try {
+            // Create credentials for the openAPE database
+            final MongoCredential credential = MongoCredential.createCredential(
+                    DatabaseConnection.DATABASEUSERNAME, DatabaseConnection.DATABASENAME,
+                    DatabaseConnection.DATABASEPASSWORD.toCharArray());
 
-//Add MongoDB Monitor with client options
-        MongoClientOptions clientOptions = new MongoClientOptions.Builder()
-                .addServerMonitorListener(this)
-                .build();
-        
-        // Create database client for the openAPE database
-        this.mongoClient = new MongoClient(new ServerAddress(DatabaseConnection.DATABASEURL,
-                Integer.parseInt(DatabaseConnection.DATABASEPORT)), Arrays.asList(credential), clientOptions);
-        
-        // Get a reference to the openAPE database.
-        this.database = this.mongoClient.getDatabase(DatabaseConnection.DATABASENAME);
+            // Add MongoDB Monitor with client options
+            MongoClientOptions clientOptions = new MongoClientOptions.Builder()
+                    .addServerMonitorListener(this).build();
 
-        //Test if a connection to the MongoDB can be established        
-        testDatabase();
-    }  catch(Exception e){
-    	logger.error("Failed to connect to database \"" + DATABASENAME + "\"." );
-    	return;
-    }
-        
+            // Create database client for the openAPE database
+            this.mongoClient = new MongoClient(new ServerAddress(DatabaseConnection.DATABASEURL,
+                    Integer.parseInt(DatabaseConnection.DATABASEPORT)), Arrays.asList(credential),
+                    clientOptions);
+
+            // Get a reference to the openAPE database.
+            this.database = this.mongoClient.getDatabase(DatabaseConnection.DATABASENAME);
+
+            // Test if a connection to the MongoDB can be established
+            testDatabase();
+        } catch (Exception e) {
+            logger.error("Failed to connect to database \"" + DATABASENAME + "\".");
+            return;
+        }
+
         // Get references to the database collections.
-     try{
-        this.userContextCollection = this.database.getCollection(MongoCollectionTypes.USERCONTEXT
-                .toString());
-     } catch (Exception e){
-    	 logger.error("Couldn't find collection \"" + MongoCollectionTypes.USERCONTEXT + "\"");
-     }
+        try {
+            this.userContextCollection = this.database
+                    .getCollection(MongoCollectionTypes.USERCONTEXT.toString());
+        } catch (Exception e) {
+            logger.error("Couldn't find collection \"" + MongoCollectionTypes.USERCONTEXT + "\"");
+        }
         this.environmentContextCollection = this.database
                 .getCollection(MongoCollectionTypes.ENVIRONMENTCONTEXT.toString());
         this.equipmentContextCollection = this.database
@@ -192,21 +192,20 @@ public class DatabaseConnection implements ServerMonitorListener {
                 .toString());
         this.resourceMimeTypesCollection = this.database
                 .getCollection(MongoCollectionTypes.RESOURCEMIMETYPES.toString());
-        this.userCollection = this.database
-                .getCollection(MongoCollectionTypes.USERS.toString());
+        this.userCollection = this.database.getCollection(MongoCollectionTypes.USERS.toString());
 
     }
 
     private void testDatabase() {
-    	 Mongo mongo = new Mongo();
-    	 DBObject ping = new BasicDBObject("ping", "1");
-    	 
-    	       mongo.getDB(DATABASENAME ).command(ping);
-    	       logger.info("Database \"" + DATABASENAME + "\" available." );
-    	 	}
+        Mongo mongo = new Mongo();
+        DBObject ping = new BasicDBObject("ping", "1");
 
-	private void readConfigFile() {
-    	final String name = MongoConfig.getString("databaseName");//$NON-NLS-1$
+        mongo.getDB(DATABASENAME).command(ping);
+        logger.info("Database \"" + DATABASENAME + "\" available.");
+    }
+
+    private void readConfigFile() {
+        final String name = MongoConfig.getString("databaseName");//$NON-NLS-1$
         if (name != null && !name.equals(Messages.getString("DatabaseConnection.EmptyString"))) {//$NON-NLS-1$
             DatabaseConnection.DATABASENAME = name;
         } else {
@@ -223,13 +222,12 @@ public class DatabaseConnection implements ServerMonitorListener {
         }
         final String port = MongoConfig.getString("databasePort");//$NON-NLS-1$
         if (port != null && !port.equals(Messages.getString("DatabaseConnection.EmptyString"))) {//$NON-NLS-1$
-        	logger.debug("Using MongoDB port " + port + " defined in mongo.properties" );
+            logger.debug("Using MongoDB port " + port + " defined in mongo.properties");
             DatabaseConnection.DATABASEPORT = port;
         } else {
-        	String standardPort = Messages
-            .getString("DatabaseConnection.MongoDBServerPort"); //$NON-NLS-1$
-        	logger.debug("Using MongoDB port " + standardPort + " defined in Messages.properties"); 
-        	DatabaseConnection.DATABASEPORT = standardPort;
+            String standardPort = Messages.getString("DatabaseConnection.MongoDBServerPort"); //$NON-NLS-1$
+            logger.debug("Using MongoDB port " + standardPort + " defined in Messages.properties");
+            DatabaseConnection.DATABASEPORT = standardPort;
         }
         final String password = MongoConfig.getString("databasePassword");//$NON-NLS-1$
         if (password != null
@@ -247,10 +245,10 @@ public class DatabaseConnection implements ServerMonitorListener {
             DatabaseConnection.DATABASEUSERNAME = Messages
                     .getString("DatabaseConnection.MongoDBDatabaseUsername"); //$NON-NLS-1$
         }
-         		
-	}
 
-	/**
+    }
+
+    /**
      * Delete a database object, either a context or a resource, from the
      * database. Choose the object via id and the collection via the collection
      * type.
@@ -357,16 +355,21 @@ public class DatabaseConnection implements ServerMonitorListener {
     }
 
     /**
-     * Query a collection by a certain attribute and value. Will return the first document matching the query or
-     * null if no document matches the query.
+     * Query a collection by a certain attribute and value. Will return the
+     * first document matching the query or null if no document matches the
+     * query.
      *
-     * @param type the collection in which the object is located.
-     * @param attribute the attribute to query for
-     * @param value the value for the attribute to query for
+     * @param type
+     *            the collection in which the object is located.
+     * @param attribute
+     *            the attribute to query for
+     * @param value
+     *            the value for the attribute to query for
      * @return
      * @throws IOException
      */
-    public DatabaseObject getByUniqueAttribute(MongoCollectionTypes type, String attribute, String value) throws IOException {
+    public DatabaseObject getByUniqueAttribute(MongoCollectionTypes type, String attribute,
+            String value) throws IOException {
         final MongoCollection<Document> collectionToWorkOn = this.getCollectionByType(type);
         // Search for object in database.
         final BasicDBObject query = new BasicDBObject();
@@ -420,25 +423,29 @@ public class DatabaseConnection implements ServerMonitorListener {
     }
 
     /**
-     * Execute a Mongo BasicDBObject query on the given collection and return the result as a DatabaseObject of the
-     * given collection.
+     * Execute a Mongo BasicDBObject query on the given collection and return
+     * the result as a DatabaseObject of the given collection.
      *
-     * @param type the type of the collections DatabaseObject
-     * @param collection the collection in which the object is located.
-     * @param query the Mongo query to be executed
+     * @param type
+     *            the type of the collections DatabaseObject
+     * @param collection
+     *            the collection in which the object is located.
+     * @param query
+     *            the Mongo query to be executed
      * @return
      * @throws IOException
      */
-    private DatabaseObject executeQuery(MongoCollectionTypes type, MongoCollection collection, BasicDBObject query, boolean includeId) throws IOException {
+    private DatabaseObject executeQuery(MongoCollectionTypes type, MongoCollection collection,
+            BasicDBObject query, boolean includeId) throws IOException {
         final Iterator<Document> resultIterator = collection.find(query).iterator();
-        if(resultIterator.hasNext()) {
+        if (resultIterator.hasNext()) {
             final Document resultDocument = resultIterator.next();
             DatabaseObject result = null;
             try {
                 // Remove the MongoDB id field
                 ObjectId oid = (ObjectId) resultDocument.get("_id");
                 resultDocument.remove(Messages.getString("DatabaseConnection._id")); //$NON-NLS-1$
-                if(includeId) {
+                if (includeId) {
                     resultDocument.append("id", oid.toString());
                 }
                 String jsonResult = resultDocument.toJson();
@@ -653,32 +660,36 @@ public class DatabaseConnection implements ServerMonitorListener {
      */
     public void ensureIndexes() {
         // Make sure email is unique for all users
-        this.userCollection.createIndex(new BasicDBObject("email", 1), new IndexOptions().unique(true));
+        this.userCollection.createIndex(new BasicDBObject("email", 1),
+                new IndexOptions().unique(true));
         // Make sure username is unique for all users
-        this.userCollection.createIndex(new BasicDBObject("username", 1), new IndexOptions().unique(true));
+        this.userCollection.createIndex(new BasicDBObject("username", 1),
+                new IndexOptions().unique(true));
     }
 
-	@Override
-	public void serverHearbeatStarted(ServerHeartbeatStartedEvent event) {
-		if (firstTime == true){
-			logger.info("Found new heartbeat with connection ID: " + event.getConnectionId() );
-			firstTime = false;
-		} else {
-			logger.debug("Found new heartbeat with connection ID: " + event.getConnectionId() );
-		}	
-	}
+    @Override
+    public void serverHearbeatStarted(ServerHeartbeatStartedEvent event) {
+        if (firstTime == true) {
+            logger.info("Found new heartbeat with connection ID: " + event.getConnectionId());
+            firstTime = false;
+        } else {
+            logger.debug("Found new heartbeat with connection ID: " + event.getConnectionId());
+        }
+    }
 
-	@Override
-	public void serverHeartbeatSucceeded(ServerHeartbeatSucceededEvent event) {
-		logger.debug("Found heartbeat with connection ID: " + event.getConnectionId() );
-		
-	}
+    @Override
+    public void serverHeartbeatSucceeded(ServerHeartbeatSucceededEvent event) {
+        logger.debug("Found heartbeat with connection ID: " + event.getConnectionId());
 
-	@Override
-	public void serverHeartbeatFailed(ServerHeartbeatFailedEvent event) {
-		
-		logger.error("Connecting to MongoDB at " + this.DATABASEURL + ":" + this.DATABASEPORT + " failed.\n" + event);
-		firstTime = true;  // logger can now indicate when new connection will be found again.
-			}
+    }
+
+    @Override
+    public void serverHeartbeatFailed(ServerHeartbeatFailedEvent event) {
+
+        logger.error("Connecting to MongoDB at " + this.DATABASEURL + ":" + this.DATABASEPORT
+                + " failed.\n" + event);
+        firstTime = true; // logger can now indicate when new connection will be
+                          // found again.
+    }
 
 }
