@@ -7,19 +7,29 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
 
+
+
 import javassist.NotFoundException;
+
+
 
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
 import javax.ws.rs.core.StreamingOutput;
+
+
 
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.openape.api.Messages;
 import org.openape.api.listing.Listing;
+import org.openape.api.user.User;
+import org.openape.server.auth.AuthService;
 import org.openape.server.database.resources.GetResourceReturnType;
 import org.openape.server.requestHandler.ResourceRequestHandler;
+
+
 
 import spark.Spark;
 
@@ -65,14 +75,14 @@ public class ResourceRESTInterface extends SuperRestInterface {
         return response;
     }
 
-    public static void setupResourceRESTInterface(final ResourceRequestHandler requestHandler) {
+    public static void setupResourceRESTInterface(final ResourceRequestHandler requestHandler, AuthService auth) {
         /**
          * Request 7.6.2 create resource.
          */
         Spark.post(
                 Messages.getString("ResourceRESTInterface.ResourcesURLWithoutID"), //$NON-NLS-1$
                 (req, res) -> {
-
+             
                     final String mimeType = req.headers(Messages
                             .getString("ResourceRESTInterface.contentTypeString"));//$NON-NLS-1$
                     // req.contentType();
@@ -80,6 +90,10 @@ public class ResourceRESTInterface extends SuperRestInterface {
                         res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
                         return Messages.getString("ResourceRESTInterface.NoMimeTypeErrorMsg");//$NON-NLS-1$
                     }
+                    
+                    //get user from request response pair. 
+                    User user = auth.getAuthenticatedUser(req, res);
+                    
                     // Return value.
                     String fileName = Messages.getString("EmptyString"); //$NON-NLS-1$
 

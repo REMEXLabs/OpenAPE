@@ -135,7 +135,7 @@ Spark.get(Messages.getString("SuperRestInterface.HelloWorldURL"), (request, resp
                 
 ResourceDescriptionRESTInterface.setupResourceDescriptionRESTInterface(new ResourceDescriptionRequestHandler(), authService);
         
-        ResourceRESTInterface.setupResourceRESTInterface(new ResourceRequestHandler());
+        ResourceRESTInterface.setupResourceRESTInterface(new ResourceRequestHandler(), authService);
         TaskContextRESTInterface.setupTaskContextRESTInterface(new TaskContextRequestHandler(), authService);
         UserContextRESTInterface.setupUserContextRESTInterface(new UserContextRequestHandler(), authService);
         logger.info("REST API successfully set up");
