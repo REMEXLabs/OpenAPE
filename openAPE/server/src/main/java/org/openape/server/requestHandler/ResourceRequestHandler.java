@@ -7,6 +7,7 @@ import javassist.NotFoundException;
 
 import org.apache.commons.fileupload.FileItem;
 import org.openape.api.listing.Listing;
+import org.openape.api.user.User;
 import org.openape.server.database.mongoDB.DatabaseConnection;
 import org.openape.server.database.resources.GetResourceReturnType;
 import org.openape.server.database.resources.ListingManager;
@@ -29,15 +30,17 @@ public class ResourceRequestHandler {
      *            to be stored.
      * @param mimeType
      *            mime type of the data to store
+     * @param user
+     *            owner of the resource
      * @return the ID of the stored resource.
      * @throws IOException
      *             if a storage problem still occurs, after to many tries.
      * @throws IllegalArgumentException
      *             if the resource name is already taken.
      */
-    public String createResource(FileItem resource, String mimeType) throws IOException,
+    public String createResource(FileItem resource, String mimeType, User user) throws IOException,
             IllegalArgumentException {
-        return ResourceList.getInstance().addResource(resource, mimeType);
+        return ResourceList.getInstance().addResource(resource, mimeType, user);
     }
 
     /**

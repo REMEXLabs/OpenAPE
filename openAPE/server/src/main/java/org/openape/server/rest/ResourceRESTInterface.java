@@ -7,17 +7,11 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
 
-
-
 import javassist.NotFoundException;
-
-
 
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
 import javax.ws.rs.core.StreamingOutput;
-
-
 
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
@@ -26,10 +20,9 @@ import org.openape.api.Messages;
 import org.openape.api.listing.Listing;
 import org.openape.api.user.User;
 import org.openape.server.auth.AuthService;
+import org.openape.server.auth.UnauthorizedException;
 import org.openape.server.database.resources.GetResourceReturnType;
 import org.openape.server.requestHandler.ResourceRequestHandler;
-
-
 
 import spark.Spark;
 
@@ -75,14 +68,15 @@ public class ResourceRESTInterface extends SuperRestInterface {
         return response;
     }
 
-    public static void setupResourceRESTInterface(final ResourceRequestHandler requestHandler, AuthService auth) {
+    public static void setupResourceRESTInterface(final ResourceRequestHandler requestHandler,
+            AuthService auth) {
         /**
          * Request 7.6.2 create resource.
          */
         Spark.post(
                 Messages.getString("ResourceRESTInterface.ResourcesURLWithoutID"), //$NON-NLS-1$
                 (req, res) -> {
-             
+
                     final String mimeType = req.headers(Messages
                             .getString("ResourceRESTInterface.contentTypeString"));//$NON-NLS-1$
                     // req.contentType();
@@ -90,10 +84,7 @@ public class ResourceRESTInterface extends SuperRestInterface {
                         res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
                         return Messages.getString("ResourceRESTInterface.NoMimeTypeErrorMsg");//$NON-NLS-1$
                     }
-                    
-                    //get user from request response pair. 
-                    User user = auth.getAuthenticatedUser(req, res);
-                    
+
                     // Return value.
                     String fileName = Messages.getString("EmptyString"); //$NON-NLS-1$
 
@@ -101,6 +92,9 @@ public class ResourceRESTInterface extends SuperRestInterface {
                     final File tmpFile = new File(Messages
                             .getString("ResourceRESTInterface.tmpFileName")); //$NON-NLS-1$
                     try {
+                        // get user from request response pair.
+                        User user = auth.getAuthenticatedUser(req, res);
+                        
                         if (!tmpFile.exists() && !tmpFile.mkdirs()) {
                             throw new RuntimeException(Messages
                                     .getString("ResourceRESTInterface.FailedToCreateDirError") //$NON-NLS-1$
@@ -115,15 +109,19 @@ public class ResourceRESTInterface extends SuperRestInterface {
                         final List<FileItem> items = fileUpload.parseRequest(req.raw());
                         final FileItem item = items.get(0);
                         // hand off file to handler.
-                        fileName = requestHandler.createResource(item, mimeType);
+                        fileName = requestHandler.createResource(item, mimeType, user);
                     } catch (final IllegalArgumentException e) {
                         // occurs if the filename is taken or its not a file.
+                        res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
+                        return e.getMessage();
+                    } catch (UnauthorizedException e) {
+                        //Only authorized users may post resources
                         res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
                         return e.getMessage();
                     } catch (final Exception e) {
                         res.status(SuperRestInterface.HTTP_STATUS_INTERNAL_SERVER_ERROR);
                         return e.getMessage();
-                    }
+                    } 
                     res.status(SuperRestInterface.HTTP_STATUS_CREATED);
                     return fileName;
                 });

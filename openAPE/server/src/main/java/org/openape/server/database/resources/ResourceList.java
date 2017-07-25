@@ -10,6 +10,7 @@ import java.util.List;
 
 import org.apache.commons.fileupload.FileItem;
 import org.openape.api.Messages;
+import org.openape.api.user.User;
 import org.openape.server.database.mongoDB.DatabaseConnection;
 import org.openape.server.requestHandler.ResourceRequestHandler;
 import org.openape.server.rest.ResourceRESTInterface;
@@ -85,14 +86,16 @@ public class ResourceList {
      *            received file from the rest interface
      * @param mimeType
      *            mime type of the data to store
+     * @param user
+     *            owner of the resource
      * @return filename.
      * @throws IllegalArgumentException
      *             if the file name is taken or no file is sent.
      * @throws IOException
      *             if a storing error occurs.
      */
-    public String addResource(FileItem resource, String mimeType) throws IllegalArgumentException,
-            IOException {
+    public String addResource(FileItem resource, String mimeType, User user)
+            throws IllegalArgumentException, IOException {
         final String fileName = resource.getName();
 
         // Check if filename exists.
