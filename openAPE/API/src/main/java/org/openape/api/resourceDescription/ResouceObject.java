@@ -21,42 +21,36 @@ public class ResouceObject extends Resource {
     private String id = null;
     private String fileName = null;
     private String ownerId = null;
+    private String mimeType = null;
+
     private ResourceDescription resourceDescription = null;
 
-    @XmlAttribute(name = "id")
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
+    public ResouceObject(String id, String fileName, String ownerId, String mimeType) {
+        super();
         this.id = id;
+        this.fileName = fileName;
+        this.ownerId = ownerId;
+        this.mimeType = mimeType;
     }
 
     @XmlAttribute(name = "fileName")
     public String getFileName() {
-        return fileName;
+        return this.fileName;
     }
 
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
+    @XmlAttribute(name = "id")
+    public String getId() {
+        return this.id;
+    }
+
+    @XmlAttribute(name = "mimeType")
+    public String getMimeType() {
+        return this.mimeType;
     }
 
     @XmlAttribute(name = "ownerID")
     public String getOwnerId() {
-        return ownerId;
-    }
-
-    public void setOwnerId(String ownerId) {
-        this.ownerId = ownerId;
-    }
-
-    @XmlElement(name = "resourceDescription")
-    public ResourceDescription getResourceDescription() {
-        return resourceDescription;
-    }
-
-    public void setResourceDescription(ResourceDescription resourceDescription) {
-        this.resourceDescription = resourceDescription;
+        return this.ownerId;
     }
 
     /**
@@ -64,9 +58,34 @@ public class ResouceObject extends Resource {
      */
     @JsonIgnore
     public String getPath() {
-        String resourceFolderPath = Messages.getString("ResourceList.rootFolder") + File.separator + Messages.getString("ResourceList.ResourceFolder"); //$NON-NLS-1$ //$NON-NLS-2$
+        final String resourceFolderPath = Messages.getString("ResourceList.rootFolder") + File.separator + Messages.getString("ResourceList.ResourceFolder"); //$NON-NLS-1$ //$NON-NLS-2$
         return resourceFolderPath + File.separator + this.getOwnerId() + File.separator
                 + this.getFileName();
+    }
+
+    @XmlElement(name = "resourceDescription")
+    public ResourceDescription getResourceDescription() {
+        return this.resourceDescription;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public void setMimeType(String mimeType) {
+        this.mimeType = mimeType;
+    }
+
+    public void setOwnerId(String ownerId) {
+        this.ownerId = ownerId;
+    }
+
+    public void setResourceDescription(ResourceDescription resourceDescription) {
+        this.resourceDescription = resourceDescription;
     }
 
 }
