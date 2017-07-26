@@ -10,8 +10,10 @@ import java.util.List;
 
 import org.apache.commons.fileupload.FileItem;
 import org.openape.api.Messages;
+import org.openape.api.resourceDescription.ResourceObject;
 import org.openape.api.user.User;
 import org.openape.server.database.mongoDB.DatabaseConnection;
+import org.openape.server.database.mongoDB.MongoCollectionTypes;
 import org.openape.server.requestHandler.ResourceRequestHandler;
 import org.openape.server.rest.ResourceRESTInterface;
 
@@ -81,7 +83,7 @@ public class ResourceList {
                 final File[] listOfUserFiles = listOfFiles[i].listFiles();
                 for (int j = 0; j < listOfUserFiles.length; j++) {
                     if (listOfUserFiles[j].isFile()) {
-                        //Add 'user id / file name' to list.
+                        // Add 'user id / file name' to list.
                         this.resourceNameList.add(listOfFiles[i].getName() + File.separator
                                 + listOfUserFiles[j].getName());
                     }
@@ -99,7 +101,7 @@ public class ResourceList {
      *            mime type of the data to store
      * @param user
      *            owner of the resource
-     * @return filename.
+     * @return id.
      * @throws IllegalArgumentException
      *             if the file name is taken or no file is sent.
      * @throws IOException
@@ -114,26 +116,37 @@ public class ResourceList {
             throw new IllegalArgumentException(
                     Messages.getString("ResourceList.NoFileNameErrorMassage")); //$NON-NLS-1$
         }
-        // store mime type
+        // Create resource reference object for the database.
+        ResourceObject resourceObject = new ResourceObject(fileName, user.getId(), mimeType);
+        // store database resource object
         final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
-        if (!databaseConnection.storeMimeType(fileName, mimeType)) {
-            throw new IOException(
-                    Messages.getString("ResourceList.MimeTypeCouldNotBeStoredErrorMsg"));//$NON-NLS-1$
+        String id = null;
+        try {
+            id = databaseConnection.storeData(MongoCollectionTypes.RESOURCEOBJECTS, resourceObject);
+        } catch (ClassCastException e) {
+            throw new IOException(e.getMessage());
+        }
+        // Add id to resource object and store again.
+        resourceObject.setId(id);
+        try {
+            databaseConnection.updateData(MongoCollectionTypes.RESOURCEOBJECTS, resourceObject, id);
+        } catch (ClassCastException e) {
+            throw new IOException(e.getMessage());
         }
 
+        // store file on disk.
         final OutputStream out = null;
         final InputStream filecontent = null;
 
         try {
             // Check if file already exists.
-            if (this.resourceExists(fileName)) {
+            if (this.resourceExists(resourceObject)) {
                 throw new IllegalArgumentException(
                         Messages.getString("ResourceList.FilenameInUseErrorMassage")); //$NON-NLS-1$
             }
 
             // Specify where to store the file.
-            final File fileToWrite = new File(ResourceList.RESOURCEFOLDERPATH + File.separator
-                    + fileName);
+            final File fileToWrite = new File(resourceObject.getPath());
 
             // Read file content and write it into resource file.
             resource.write(fileToWrite);
@@ -158,8 +171,8 @@ public class ResourceList {
             }
 
         }
-        this.resourceNameList.add(fileName);
-        return fileName;
+        this.resourceNameList.add(resourceObject.getOwnerId() + File.separator + fileName);
+        return id;
     }
 
     /**
@@ -206,14 +219,11 @@ public class ResourceList {
      * @throws IllegalArgumentException
      *             if file is non existent.
      */
-    public GetResourceReturnType getResoureFile(String fileName) throws IllegalArgumentException,
-            IOException {
-        if (this.resourceExists(fileName)) {
-            final File file = new File(ResourceList.RESOURCEFOLDERPATH + File.separator + fileName);
-            // Get mime type from database
-            final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
-            final String mimeType = databaseConnection.getMimeType(fileName);
-            return new GetResourceReturnType(file, mimeType);
+    public GetResourceReturnType getResoureFile(ResourceObject resourceObject)
+            throws IllegalArgumentException, IOException {
+        if (this.resourceExists(resourceObject)) {
+            final File file = new File(resourceObject.getPath());
+            return new GetResourceReturnType(file, resourceObject);
         } else {
             throw new IllegalArgumentException(
                     Messages.getString("ResourceList.FileNotFoundErrorMassage")); //$NON-NLS-1$
@@ -224,12 +234,12 @@ public class ResourceList {
     /**
      * Checks if resource is available on the file system.
      *
-     * @param resourceName
-     *            name of the resource containing the file ending.
+     * @param resourceObject
+     *            reference object, database store able.
      * @return true if file is false false if not.
      */
-    private boolean resourceExists(final String resourceName) {
-        final File file = new File(ResourceList.RESOURCEFOLDERPATH + File.separator + resourceName);
+    private boolean resourceExists(final ResourceObject resourceObject) {
+        final File file = new File(resourceObject.getPath());
         if (file.exists() && !file.isDirectory()) {
             return true;
         } else {

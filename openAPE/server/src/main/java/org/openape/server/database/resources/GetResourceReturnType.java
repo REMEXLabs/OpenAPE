@@ -2,33 +2,35 @@ package org.openape.server.database.resources;
 
 import java.io.File;
 
+import org.openape.api.resourceDescription.ResourceObject;
+
 /**
- * Loading a resource has to return a {@link File} and a mime type as string.
- * This class represents objects containing both.
+ * Loading a resource has to return a {@link File} and a resource object
+ * containing the mime type. This class represents objects containing both.
  */
 public class GetResourceReturnType {
     private File file;
-    private String mimeType;
+    private ResourceObject resourceObject;
 
-    public GetResourceReturnType(File file, String mimeType) {
+    public ResourceObject getResourceObject() {
+        return resourceObject;
+    }
+
+    public void setResourceObject(ResourceObject resourceObject) {
+        this.resourceObject = resourceObject;
+    }
+
+    public GetResourceReturnType(File file, ResourceObject resourceObject) {
         this.file = file;
-        this.mimeType = mimeType;
+        this.resourceObject = resourceObject;
     }
 
     public File getFile() {
         return this.file;
     }
 
-    public String getMimeType() {
-        return this.mimeType;
-    }
-
     public void setFile(File file) {
         this.file = file;
-    }
-
-    public void setMimeType(String mimeType) {
-        this.mimeType = mimeType;
     }
 
 }
