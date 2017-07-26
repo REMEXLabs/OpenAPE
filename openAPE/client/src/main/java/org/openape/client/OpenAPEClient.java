@@ -11,13 +11,15 @@ import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.Invocation;
+import javax.ws.rs.client.Invocation.Builder;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Form;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-
+import org.junit.runner.Request;
 import org.openape.api.Messages;
+import org.openape.api.PasswordChangeRequest;
 import org.openape.api.environmentcontext.EnvironmentContext;
 import org.openape.api.equipmentcontext.EquipmentContext;
 import org.openape.api.listing.Listing;
@@ -34,7 +36,7 @@ public class OpenAPEClient {
 private Client client;
 private WebTarget webResource;
 private String token;
-
+private String userId;
 static final String ENVIRONMENT_CONTEXT_PATH = "api/environment-contexts";
 static final String EQUIPMENT_CONTEXT_PATH = "api/equipment-contexts";
 static final String TASK_CONTEXT_PATH = "api/task-contexts";
@@ -187,7 +189,32 @@ Response response = invocationBuilder.get();
 	public File getResource(String url, String targetFile) throws URISyntaxException {
 		URI uri = new URI(url);
 return 		getResource(uri, targetFile);
+	}
+
+	public boolean changeUserPassword(String oldPassword, String newPassword) {
+		PasswordChangeRequest pwChangeReq = new PasswordChangeRequest(oldPassword, newPassword);
+		Response response = getRequest("openape/users/" + userId + "password").put(Entity.entity(pwChangeReq, MediaType.APPLICATION_JSON));
+		
+		checkResponse(response);
+		int status = response.getStatus();
+		logger.debug("Http Status: " + status + "\n Server message: " + response.getStatusInfo() );
+		if (status != 200) {
+			logger.error("Http Status: " + status + "\n" + "Server message: " + response.getStatus() );
+					return false;
+					}
+		
+		logger.debug("Http Status: " + status + "\n Server message: " + response.getStatusInfo() );
+		return true;
+	}
+
+	
+	private void checkResponse(Response response) {
+		// TODO Auto-generated method stub
 		
 	}
-	
+
+	Builder getRequest(String path){
+		return webResource.path(path).request();
+				
+	}
 }
