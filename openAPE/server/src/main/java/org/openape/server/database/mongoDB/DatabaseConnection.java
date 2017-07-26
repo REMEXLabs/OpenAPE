@@ -191,7 +191,7 @@ public class DatabaseConnection implements ServerMonitorListener {
         this.listingContextCollection = this.database.getCollection(MongoCollectionTypes.LISTING
                 .toString());
         this.resourceMimeTypesCollection = this.database
-                .getCollection(MongoCollectionTypes.RESOURCEMIMETYPES.toString());
+                .getCollection(MongoCollectionTypes.RESOURCEOBJECTS.toString());
         this.userCollection = this.database.getCollection(MongoCollectionTypes.USERS.toString());
 
     }
@@ -289,7 +289,7 @@ public class DatabaseConnection implements ServerMonitorListener {
      */
     public boolean deleteMimeType(String fileName) throws IOException {
         final MongoCollection<Document> collectionToWorkOn = this
-                .getCollectionByType(MongoCollectionTypes.RESOURCEMIMETYPES);
+                .getCollectionByType(MongoCollectionTypes.RESOURCEOBJECTS);
 
         // Create search query.
         final BasicDBObject query = new BasicDBObject();
@@ -324,7 +324,7 @@ public class DatabaseConnection implements ServerMonitorListener {
             return this.resourceDescriptionContectCollection;
         } else if (type.equals(MongoCollectionTypes.LISTING)) {
             return this.listingContextCollection;
-        } else if (type.equals(MongoCollectionTypes.RESOURCEMIMETYPES)) {
+        } else if (type.equals(MongoCollectionTypes.RESOURCEOBJECTS)) {
             return this.resourceMimeTypesCollection;
         } else if (type.equals(MongoCollectionTypes.USERS)) {
             return this.userCollection;
@@ -388,7 +388,7 @@ public class DatabaseConnection implements ServerMonitorListener {
      */
     public String getMimeType(String fileName) throws IOException {
         final MongoCollection<Document> collectionToWorkOn = this
-                .getCollectionByType(MongoCollectionTypes.RESOURCEMIMETYPES);
+                .getCollectionByType(MongoCollectionTypes.RESOURCEOBJECTS);
 
         // Search for object in database.
         final BasicDBObject query = new BasicDBObject();
@@ -578,7 +578,7 @@ public class DatabaseConnection implements ServerMonitorListener {
                     Messages.getString("ResourceList.FilenameInUseErrorMassage"));
         }
         final MongoCollection<Document> collectionToWorkOn = this
-                .getCollectionByType(MongoCollectionTypes.RESOURCEMIMETYPES);
+                .getCollectionByType(MongoCollectionTypes.RESOURCEOBJECTS);
         // Object representation of the string. Needed for storage.
         final MimeTypeDatabaseObject data = new MimeTypeDatabaseObject(mimeType);
         // Create Document from data.
