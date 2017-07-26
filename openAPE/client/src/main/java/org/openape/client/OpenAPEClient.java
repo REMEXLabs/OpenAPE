@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
+import java.util.List;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -195,9 +196,17 @@ return 		getResource(uri, targetFile);
 		PasswordChangeRequest pwChangeReq = new PasswordChangeRequest(oldPassword, newPassword);
 		Response response = getRequest("openape/users/" + userId + "password").put(Entity.entity(pwChangeReq, MediaType.APPLICATION_JSON));
 		
-		checkResponse(response);
+		return checkResponse(response);
+			}
+	
+	public boolean changeUserRoles(String userId, List<String> roles) {
+		Response response = getRequest("users/"+ userId + "/roles").put(Entity.entity(roles, MediaType.APPLICATION_JSON));
+		return checkResponse(response);
+	}
+	
+	private boolean checkResponse(Response response) {
 		int status = response.getStatus();
-		logger.debug("Http Status: " + status + "\n Server message: " + response.getStatusInfo() );
+		
 		if (status != 200) {
 			logger.error("Http Status: " + status + "\n" + "Server message: " + response.getStatus() );
 					return false;
@@ -205,11 +214,7 @@ return 		getResource(uri, targetFile);
 		
 		logger.debug("Http Status: " + status + "\n Server message: " + response.getStatusInfo() );
 		return true;
-	}
 
-	
-	private void checkResponse(Response response) {
-		// TODO Auto-generated method stub
 		
 	}
 
