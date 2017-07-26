@@ -76,6 +76,17 @@ public class ResourceList {
             if (listOfFiles[i].isFile()) {
                 this.resourceNameList.add(listOfFiles[i].getName());
             }
+            // Iterate through user folders and add files to list.
+            if (listOfFiles[i].isDirectory()) {
+                final File[] listOfUserFiles = listOfFiles[i].listFiles();
+                for (int j = 0; j < listOfUserFiles.length; j++) {
+                    if (listOfUserFiles[j].isFile()) {
+                        //Add 'user id / file name' to list.
+                        this.resourceNameList.add(listOfFiles[i].getName() + File.separator
+                                + listOfUserFiles[j].getName());
+                    }
+                }
+            }
         }
     }
 
