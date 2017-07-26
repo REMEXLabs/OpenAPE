@@ -115,6 +115,18 @@ public class AuthService {
             throw new UnauthorizedException("You are not allowed to perform this operation");
         }
     }
+    
+    /**
+     * Check if the authenticated user has either the role `admin` or equals the provided owner.
+     * @param requestingUser user sending the spark request.
+     * @param owner The owner id to authorize against
+     * @throws UnauthorizedException Will be thrown if authenticated user is no admin and also not the owner
+     */
+    public void allowAdminAndOwner(final CommonProfile profile, String owner) throws UnauthorizedException {
+        if(!isAdminOrOwner(profile, owner)) {
+            throw new UnauthorizedException("You are not allowed to perform this operation");
+        }
+    }
 
     /**
      * Check if the authenticated user has either the role `admin`, equals the provided owner or the resource is public.

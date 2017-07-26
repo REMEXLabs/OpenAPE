@@ -8,11 +8,13 @@ import javassist.NotFoundException;
 import org.apache.commons.fileupload.FileItem;
 import org.openape.api.listing.Listing;
 import org.openape.api.user.User;
+import org.openape.server.auth.UnauthorizedException;
 import org.openape.server.database.mongoDB.DatabaseConnection;
 import org.openape.server.database.resources.GetResourceReturnType;
 import org.openape.server.database.resources.ListingManager;
 import org.openape.server.database.resources.ResourceList;
 import org.openape.server.rest.ResourceRESTInterface;
+import org.pac4j.core.profile.CommonProfile;
 
 /**
  * Class with methods to manage resources on the server. It is used by the rest
@@ -50,17 +52,17 @@ public class ResourceRequestHandler {
      *
      * @param id
      *            the ID of the resource to delete.
-     * @param user
-     *            who requests to delete the resource.
+     * @param profile
+     *            of the user who requests to delete the resource.
      * @return true if successful. Else an exception is thrown.
      * @throws IOException
      *             if a storage problem still occurs, after to many tries.
      * @throws IllegalArgumentException
      *             if the id is no valid id or not assigned.
      */
-    public boolean deleteResourceById(String id, User user) throws IOException,
-            IllegalArgumentException {
-        return ResourceList.getInstance().deleteResource(id, user);
+    public boolean deleteResourceById(String id, CommonProfile profile) throws IOException,
+            IllegalArgumentException, UnauthorizedException {
+        return ResourceList.getInstance().deleteResource(id, profile);
     }
 
     /**

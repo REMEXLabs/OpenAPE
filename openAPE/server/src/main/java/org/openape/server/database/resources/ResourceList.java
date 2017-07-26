@@ -12,10 +12,13 @@ import org.apache.commons.fileupload.FileItem;
 import org.openape.api.Messages;
 import org.openape.api.resourceDescription.ResourceObject;
 import org.openape.api.user.User;
+import org.openape.server.auth.AuthService;
+import org.openape.server.auth.UnauthorizedException;
 import org.openape.server.database.mongoDB.DatabaseConnection;
 import org.openape.server.database.mongoDB.MongoCollectionTypes;
 import org.openape.server.requestHandler.ResourceRequestHandler;
 import org.openape.server.rest.ResourceRESTInterface;
+import org.pac4j.core.profile.CommonProfile;
 
 /**
  * {@link ResourceList} is a singleton class that contains a list holding all
@@ -180,23 +183,37 @@ public class ResourceList {
     /**
      * If found the method deletes the resource with the given name.
      *
-     * @param fileName
-     *            name of the resource including file ending.
-     * @param user
-     *            who requests to delete the resource.
+     * @param id
+     *            id of the file.
+     * @param profile
+     *            of the user who requests to delete the resource.
      * @return true if successful.
      * @throws IllegalArgumentException
      *             if the file is not found.
      * @throws IOException
      */
-    public boolean deleteResource(String fileName, User user) throws IllegalArgumentException,
-            IOException {
-        if (this.resourceExists(fileName)) {
-            new File(ResourceList.RESOURCEFOLDERPATH + File.separator + fileName).delete();
-            this.resourceNameList.remove(fileName);
-            // delete mime type from database.
-            final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
-            databaseConnection.deleteMimeType(fileName);
+    public boolean deleteResource(String id, CommonProfile profile)
+            throws IllegalArgumentException, IOException, UnauthorizedException {
+        // get corresponding resource reference object.
+        DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
+        ResourceObject resourceObject = null;
+        try {
+            resourceObject = (ResourceObject) databaseConnection.getData(
+                    MongoCollectionTypes.RESOURCEOBJECTS, id);
+        } catch (ClassCastException e) {
+            throw new IOException(e.getMessage());
+        }
+
+        // Check if user is allowed to delete the resource
+        AuthService auth = new AuthService();
+        auth.allowAdminAndOwner(profile, resourceObject.getOwnerId());
+
+        if (this.resourceExists(resourceObject)) {
+            new File(resourceObject.getPath()).delete();
+            this.resourceNameList.remove(resourceObject.getOwnerId() + File.separator
+                    + resourceObject.getFileName());
+            // delete reference object from database.
+            databaseConnection.deleteData(MongoCollectionTypes.RESOURCEOBJECTS, id);
         } else {
             throw new IllegalArgumentException(
                     Messages.getString("ResourceList.FileNotFoundErrorMassage")); //$NON-NLS-1$

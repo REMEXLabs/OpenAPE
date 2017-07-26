@@ -23,6 +23,7 @@ import org.openape.server.auth.AuthService;
 import org.openape.server.auth.UnauthorizedException;
 import org.openape.server.database.resources.GetResourceReturnType;
 import org.openape.server.requestHandler.ResourceRequestHandler;
+import org.pac4j.core.profile.CommonProfile;
 
 import spark.Spark;
 
@@ -227,9 +228,8 @@ public class ResourceRESTInterface extends SuperRestInterface {
                             .getString("ResourceRESTInterface.IDParam")); //$NON-NLS-1$
                     try {
                         // get user from request response pair.
-                        User user = auth.getAuthenticatedUser(req, res);
-
-                        requestHandler.deleteResourceById(resourceId, user);
+                        CommonProfile profile = auth.getAuthenticatedProfile(req, res);
+                        requestHandler.deleteResourceById(resourceId, profile);
                     } catch (final IllegalArgumentException e) {
                         res.status(SuperRestInterface.HTTP_STATUS_NOT_FOUND);
                         return e.getMessage();
