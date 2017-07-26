@@ -12,6 +12,7 @@ import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.Invocation;
 import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.Form;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -58,16 +59,25 @@ logger.info("OpenAPECLIENT received Token for: " + uri);
 
 private String getToken(String userName,String password){
 	String tokenRequest= "grant_type=password&username=" + userName + "&password=" + password;
-	Response response = webResource.path("token").request(MediaType.APPLICATION_FORM_URLENCODED)
-		    .post(Entity.entity(tokenRequest,MediaType.APPLICATION_JSON));
-		    		
-			if (response.getStatus() != 200){
-				throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
+	Form form = new Form();
+	form.param("grant_type","password");
+	form.param( "username",userName);
+	form.param("password",password);
+	
+	Response response = webResource.path("token")
+			.request()
+			.post(Entity.form(form));
+	
+	int status = response.getStatus();
+	logger.debug("Response code: " + status);
+			if (status != 200){
+				logger.error("Failed : HTTP error code : " + status  +".\n Server message: " + response.readEntity(String.class)     );
+				throw new RuntimeException("Failed : HTTP error code : " + status );
 			}
 			
 		    String output = response.readEntity(String.class);
 		 
-return response.getEntity().toString();
+return output;
 
 					}
 

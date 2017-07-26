@@ -73,7 +73,7 @@ function setUserData(){
 
 	if(isRegSecurityQuestionCorrect && isUsernameCorrect && isEmailCorrect && isPasswordCorrect){
 		if(regSecurityQuestion == 15){
-			var objSenduserStatus = openape.createUser(username, email, password);
+			var objSenduserStatus = openape.createUser(username, email, password, "/");
 			if(objSenduserStatus.status == 200){
 				var tokenData = openape.initializeLibrary(username, password, "/");
 				window.location = protocol+"/usercontexts.html";
