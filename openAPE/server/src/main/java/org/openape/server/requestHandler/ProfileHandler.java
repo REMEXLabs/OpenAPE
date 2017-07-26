@@ -49,4 +49,18 @@ public static User getUser(String userName) throws IOException{
 	return user;
 }
 
+public static void updateUser(User storedUser) {
+	final DatabaseConnection databaseconnection = DatabaseConnection.getInstance();
+    try {
+		databaseconnection.updateData(MongoCollectionTypes.USERS , storedUser, storedUser.getId() );
+	} catch (ClassCastException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	} catch (IOException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+	
+}
+
 }
