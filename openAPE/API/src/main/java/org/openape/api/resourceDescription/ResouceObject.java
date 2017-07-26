@@ -22,12 +22,10 @@ public class ResouceObject extends Resource {
     private String fileName = null;
     private String ownerId = null;
     private String mimeType = null;
-
     private ResourceDescription resourceDescription = null;
 
-    public ResouceObject(String id, String fileName, String ownerId, String mimeType) {
+    public ResouceObject(String fileName, String ownerId, String mimeType) {
         super();
-        this.id = id;
         this.fileName = fileName;
         this.ownerId = ownerId;
         this.mimeType = mimeType;
