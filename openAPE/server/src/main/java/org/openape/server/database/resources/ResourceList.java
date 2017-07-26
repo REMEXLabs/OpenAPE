@@ -118,6 +118,8 @@ public class ResourceList {
         }
         // Create resource reference object for the database.
         ResourceObject resourceObject = new ResourceObject(fileName, user.getId(), mimeType);
+        // set owner.
+        resourceObject.setOwner(user.getId());
         // store database resource object
         final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
         String id = null;
@@ -214,13 +216,22 @@ public class ResourceList {
     /**
      * Returns resource file of the given name.
      *
-     * @param fileName
+     * @param id
      * @return resource file of the given name.
      * @throws IllegalArgumentException
      *             if file is non existent.
      */
-    public GetResourceReturnType getResoureFile(ResourceObject resourceObject)
-            throws IllegalArgumentException, IOException {
+    public GetResourceReturnType getResoureFile(String id) throws IllegalArgumentException,
+            IOException {
+        // get resource description object.
+        DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
+        ResourceObject resourceObject = null;
+        try {
+            resourceObject = (ResourceObject) databaseConnection.getData(
+                    MongoCollectionTypes.RESOURCEOBJECTS, id);
+        } catch (ClassCastException e) {
+            throw new IOException(e.getMessage());
+        }
         if (this.resourceExists(resourceObject)) {
             final File file = new File(resourceObject.getPath());
             return new GetResourceReturnType(file, resourceObject);

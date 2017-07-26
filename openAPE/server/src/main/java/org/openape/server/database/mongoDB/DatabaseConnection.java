@@ -279,33 +279,6 @@ public class DatabaseConnection implements ServerMonitorListener {
     }
 
     /**
-     * Delete a mime type of a stored resource.
-     *
-     * @param fileName
-     *            file name of the resource, used as id.
-     * @return true if successful of false if the object is not found.
-     * @throws IOException
-     *             if a database problem occurs.
-     */
-    public boolean deleteMimeType(String fileName) throws IOException {
-        final MongoCollection<Document> collectionToWorkOn = this
-                .getCollectionByType(MongoCollectionTypes.RESOURCEOBJECTS);
-
-        // Create search query.
-        final BasicDBObject query = new BasicDBObject();
-        query.put(Messages.getString("DatabaseConnection._id"), fileName); //$NON-NLS-1$
-
-        // deleted will be null if no data with the given id is found.
-        final Document deleted = collectionToWorkOn.findOneAndDelete(query);
-        if (deleted == null) {
-            return false;
-        } else {
-            return true;
-        }
-
-    }
-
-    /**
      * Get a mongo collection reference by providing the collection type.
      *
      * @param type
@@ -375,51 +348,6 @@ public class DatabaseConnection implements ServerMonitorListener {
         final BasicDBObject query = new BasicDBObject();
         query.put(attribute, value);
         return executeQuery(type, collectionToWorkOn, query, true);
-    }
-
-    /**
-     * Get stored mime type of a resource stored in the file system.
-     *
-     * @param fileName
-     *            of the resource, used as id.
-     * @return mime type as string or null if none is found.
-     * @throws IOException
-     *             if an error arouses.
-     */
-    public String getMimeType(String fileName) throws IOException {
-        final MongoCollection<Document> collectionToWorkOn = this
-                .getCollectionByType(MongoCollectionTypes.RESOURCEOBJECTS);
-
-        // Search for object in database.
-        final BasicDBObject query = new BasicDBObject();
-        query.put(Messages.getString("DatabaseConnection._id"), fileName); //$NON-NLS-1$
-        final FindIterable<Document> resultIteratable = collectionToWorkOn.find(query);
-
-        final Iterator<Document> resultInterator = resultIteratable.iterator();
-        if (!resultInterator.hasNext()) {
-            // If no result is found return null.
-            return null;
-        } else {
-            // get the first result. Souldn't ever be more than one since _ids
-            // are supposed to be unique.
-            final Document resultDocument = resultInterator.next();
-            String mimetype = null;
-            try {
-                // Remove the automatically added id.
-                resultDocument.remove(Messages.getString("DatabaseConnection._id")); //$NON-NLS-1$
-                String jsonResult = resultDocument.toJson();
-                // reverse mongo special character replacement.
-                jsonResult = this.reverseMongoSpecialCharsReplacement(jsonResult);
-                final ObjectMapper mapper = new ObjectMapper();
-                final DatabaseObject mimeTypeObject = mapper.readValue(jsonResult,
-                        MimeTypeDatabaseObject.class);
-                mimetype = ((MimeTypeDatabaseObject) mimeTypeObject).getMimeType();
-            } catch (CodecConfigurationException | IOException | JsonParseException e) {
-                e.printStackTrace();
-                throw new IOException(e.getMessage());
-            }
-            return mimetype;
-        }
     }
 
     /**
@@ -556,47 +484,6 @@ public class DatabaseConnection implements ServerMonitorListener {
         }
 
         return id.toHexString();
-    }
-
-    /**
-     * Used to store a string mime type of a stored resource.
-     *
-     * @param fileName
-     *            name of the file, used as id.
-     * @param mimeType
-     *            string mime type of the resource with the given name.
-     * @return true if successful else a exception will be thrown.
-     * @throws IOException
-     * @throws IllegalArgumentException
-     *             if filename is already in use as a key.
-     */
-    public boolean storeMimeType(String fileName, String mimeType) throws IOException,
-            IllegalArgumentException {
-        // check if key is in use.
-        if (this.getMimeType(fileName) != null) {
-            throw new IllegalArgumentException(
-                    Messages.getString("ResourceList.FilenameInUseErrorMassage"));
-        }
-        final MongoCollection<Document> collectionToWorkOn = this
-                .getCollectionByType(MongoCollectionTypes.RESOURCEOBJECTS);
-        // Object representation of the string. Needed for storage.
-        final MimeTypeDatabaseObject data = new MimeTypeDatabaseObject(mimeType);
-        // Create Document from data.
-        Document dataDocument = null;
-        try {
-            final ObjectMapper mapper = new ObjectMapper();
-            String jsonData = mapper.writeValueAsString(data);
-            // Deal with special mongoDB characters '.' and '$'.
-            jsonData = this.replaceMongoSpecialChars(jsonData);
-            dataDocument = Document.parse(jsonData);
-            dataDocument.append(Messages.getString("DatabaseConnection._id"), fileName);//$NON-NLS-1$
-            // Insert the document.
-            collectionToWorkOn.insertOne(dataDocument);
-        } catch (IOException | JsonParseException | MongoException e) {
-            e.printStackTrace();
-            throw new IOException(e.getMessage());
-        }
-        return true;
     }
 
     /**

@@ -94,7 +94,7 @@ public class ResourceRESTInterface extends SuperRestInterface {
                     try {
                         // get user from request response pair.
                         User user = auth.getAuthenticatedUser(req, res);
-                        
+
                         if (!tmpFile.exists() && !tmpFile.mkdirs()) {
                             throw new RuntimeException(Messages
                                     .getString("ResourceRESTInterface.FailedToCreateDirError") //$NON-NLS-1$
@@ -115,13 +115,13 @@ public class ResourceRESTInterface extends SuperRestInterface {
                         res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
                         return e.getMessage();
                     } catch (UnauthorizedException e) {
-                        //Only authorized users may post resources
+                        // Only authorized users may post resources
                         res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
                         return e.getMessage();
                     } catch (final Exception e) {
                         res.status(SuperRestInterface.HTTP_STATUS_INTERNAL_SERVER_ERROR);
                         return e.getMessage();
-                    } 
+                    }
                     res.status(SuperRestInterface.HTTP_STATUS_CREATED);
                     return fileName;
                 });
@@ -140,7 +140,7 @@ public class ResourceRESTInterface extends SuperRestInterface {
                     final GetResourceReturnType serverReturn = requestHandler
                             .getResourceById(resourceId);
                     final File file = serverReturn.getFile();
-                    final String mimeType = serverReturn.getMimeType();
+                    final String mimeType = serverReturn.getResourceObject().getMimeType();
 
                     // create response from file.
                     final ResponseBuilder response = ResourceRESTInterface.createFileResponse(file);
@@ -186,7 +186,7 @@ public class ResourceRESTInterface extends SuperRestInterface {
                         final int index = Integer.parseInt(listingIndex);
                         final GetResourceReturnType returnType = serverResponse.get(index);
                         file = returnType.getFile();
-                        mimeType = returnType.getMimeType();
+                        mimeType = returnType.getResourceObject().getMimeType();
                     } catch (NotFoundException | IllegalArgumentException
                             | IndexOutOfBoundsException e) {
                         res.status(SuperRestInterface.HTTP_STATUS_NOT_FOUND);
@@ -228,7 +228,7 @@ public class ResourceRESTInterface extends SuperRestInterface {
                     try {
                         // get user from request response pair.
                         User user = auth.getAuthenticatedUser(req, res);
-                        
+
                         requestHandler.deleteResourceById(resourceId, user);
                     } catch (final IllegalArgumentException e) {
                         res.status(SuperRestInterface.HTTP_STATUS_NOT_FOUND);
@@ -237,7 +237,7 @@ public class ResourceRESTInterface extends SuperRestInterface {
                         res.status(SuperRestInterface.HTTP_STATUS_INTERNAL_SERVER_ERROR);
                         return e.getMessage();
                     } catch (UnauthorizedException e) {
-                        //Only authorized users may delete their resources.
+                        // Only authorized users may delete their resources.
                         res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
                         return e.getMessage();
                     }
