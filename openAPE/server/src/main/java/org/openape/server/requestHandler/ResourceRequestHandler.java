@@ -50,14 +50,17 @@ public class ResourceRequestHandler {
      *
      * @param id
      *            the ID of the resource to delete.
+     * @param user
+     *            who requests to delete the resource.
      * @return true if successful. Else an exception is thrown.
      * @throws IOException
      *             if a storage problem still occurs, after to many tries.
      * @throws IllegalArgumentException
      *             if the id is no valid id or not assigned.
      */
-    public boolean deleteResourceById(String id) throws IOException, IllegalArgumentException {
-        return ResourceList.getInstance().deleteResource(id);
+    public boolean deleteResourceById(String id, User user) throws IOException,
+            IllegalArgumentException {
+        return ResourceList.getInstance().deleteResource(id, user);
     }
 
     /**

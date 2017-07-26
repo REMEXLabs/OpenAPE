@@ -156,12 +156,15 @@ public class ResourceList {
      *
      * @param fileName
      *            name of the resource including file ending.
+     * @param user
+     *            who requests to delete the resource.
      * @return true if successful.
      * @throws IllegalArgumentException
      *             if the file is not found.
      * @throws IOException
      */
-    public boolean deleteResource(String fileName) throws IllegalArgumentException, IOException {
+    public boolean deleteResource(String fileName, User user) throws IllegalArgumentException,
+            IOException {
         if (this.resourceExists(fileName)) {
             new File(ResourceList.RESOURCEFOLDERPATH + File.separator + fileName).delete();
             this.resourceNameList.remove(fileName);

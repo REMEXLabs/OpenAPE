@@ -226,13 +226,19 @@ public class ResourceRESTInterface extends SuperRestInterface {
                     final String resourceId = req.params(Messages
                             .getString("ResourceRESTInterface.IDParam")); //$NON-NLS-1$
                     try {
-                        requestHandler.deleteResourceById(resourceId);
-
+                        // get user from request response pair.
+                        User user = auth.getAuthenticatedUser(req, res);
+                        
+                        requestHandler.deleteResourceById(resourceId, user);
                     } catch (final IllegalArgumentException e) {
                         res.status(SuperRestInterface.HTTP_STATUS_NOT_FOUND);
                         return e.getMessage();
                     } catch (final IOException e) {
                         res.status(SuperRestInterface.HTTP_STATUS_INTERNAL_SERVER_ERROR);
+                        return e.getMessage();
+                    } catch (UnauthorizedException e) {
+                        //Only authorized users may delete their resources.
+                        res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
                         return e.getMessage();
                     }
                     res.status(SuperRestInterface.HTTP_STATUS_NO_CONTENT);
