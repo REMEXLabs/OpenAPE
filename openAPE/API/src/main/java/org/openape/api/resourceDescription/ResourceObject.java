@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  * owner id. It is stored into the database, when the corresponding resource is
  * stored onto the file system.
  */
-public class ResouceObject extends Resource {
+public class ResourceObject extends Resource {
     private static final long serialVersionUID = -5926306380613419041L;
 
     private String id = null;
@@ -24,7 +24,7 @@ public class ResouceObject extends Resource {
     private String mimeType = null;
     private ResourceDescription resourceDescription = null;
 
-    public ResouceObject(String fileName, String ownerId, String mimeType) {
+    public ResourceObject(String fileName, String ownerId, String mimeType) {
         super();
         this.fileName = fileName;
         this.ownerId = ownerId;
