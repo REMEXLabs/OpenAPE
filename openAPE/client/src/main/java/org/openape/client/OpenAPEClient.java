@@ -20,6 +20,7 @@ import javax.ws.rs.core.Response;
 
 import org.junit.runner.Request;
 import org.openape.api.Messages;
+import org.openape.api.OpenAPEEndPoints;
 import org.openape.api.PasswordChangeRequest;
 import org.openape.api.environmentcontext.EnvironmentContext;
 import org.openape.api.equipmentcontext.EquipmentContext;
@@ -58,13 +59,14 @@ webResource = client.target(uri);
 //get token for accessing server
 this.token = getToken(userName,password);
 logger.info("OpenAPECLIENT received Token for: " + uri);
+logger.info("Token: " + token);
 
 this.userId = getMyId();
 }
 
 private String getMyId() {
 	// TODO Auto-generated method stub
-	Response response = getRequest(OpenAPEEndPoints.MY_ID  );
+	Response response = getRequest(OpenAPEEndPoints.MY_ID  ).get();
 	return response.readEntity(String.class);
 }
 
