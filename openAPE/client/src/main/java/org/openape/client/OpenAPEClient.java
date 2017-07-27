@@ -58,6 +58,14 @@ webResource = client.target(uri);
 //get token for accessing server
 this.token = getToken(userName,password);
 logger.info("OpenAPECLIENT received Token for: " + uri);
+
+this.userId = getMyId();
+}
+
+private String getMyId() {
+	// TODO Auto-generated method stub
+	Response response = getRequest(OpenAPEEndPoints.MY_ID  );
+	return response.readEntity(String.class);
 }
 
 private String getToken(String userName,String password){
@@ -219,7 +227,7 @@ return 		getResource(uri, targetFile);
 	}
 
 	Builder getRequest(String path){
-		return webResource.path(path).request();
+		return webResource.path(path).request().header("Authorization", this.token);
 				
 	}
 }
