@@ -28,6 +28,7 @@ public class ProfileRESTInterface extends SuperRestInterface {
     static void setupProfileRESTInterface() {
         final AuthService authService = new AuthService();
         Spark.before("/profile", authService.authorize("default"));
+        /* returns a user object /*
         Spark.get("/profile", "app", (req, res) -> {
             final SparkWebContext context = new SparkWebContext(req, res);
             final ProfileManager manager = new ProfileManager(context);
@@ -54,15 +55,18 @@ public class ProfileRESTInterface extends SuperRestInterface {
         	return authService.getAuthenticatedUser(req, res).getId(); 
         });
         
+        Spark.before( OpenAPEEndPoints.USER_PASSWORD   , authService.authorize("user"));
         Spark.put(OpenAPEEndPoints.USER_PASSWORD, (req,res) ->  {
         User authUser = authService.getAuthenticatedUser(req, res);
-        /*
-        PasswordChangeRequest pwChangeReq  = (PasswordChangeRequest) SuperRestInterface.extractObjectFromRequest(req, PasswordChangeRequest.class);	)
+        
+        PasswordChangeRequest pwChangeReq  = (PasswordChangeRequest) SuperRestInterface.extractObjectFromRequest(req, PasswordChangeRequest.class	);
         if (PasswordEncoder.encode(pwChangeReq.oldPassword).equals(authUser.getPassword() ) ){
-        	authUser.setP
-        	PasswordEncoder.encode(pwChangeReq.oldPassword)
-        return "success";
-        }*/
+        	authUser.setPassword(      	PasswordEncoder.encode(pwChangeReq.oldPassword));
+            logger.debug("PW successfuly changed");
+        	return "success";        
+        }
+res.status(403);
+return "Wrong password";
         });
         
         /*Enables admins to change the role of other users
