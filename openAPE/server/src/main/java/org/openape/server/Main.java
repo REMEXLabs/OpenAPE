@@ -29,7 +29,7 @@ logger.debug("Working directory: " +             System.getProperty("user.dir"))
             databaseConnection.ensureIndexes();
             
         }
-        // 
+        
         // create a standard Admin user
         try{        
         AdminInterface.createAdmin();
