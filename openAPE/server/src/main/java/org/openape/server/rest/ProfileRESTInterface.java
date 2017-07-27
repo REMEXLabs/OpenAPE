@@ -7,9 +7,9 @@ import java.util.Optional;
 
 import org.openape.api.DatabaseObject;
 import org.openape.api.Messages;
+import org.openape.api.OpenAPEEndPoints;
 import org.openape.api.user.User;
 import org.openape.api.usercontext.UserContext;
-import org.openape.server.api.OpenAPEEndPoints;
 import org.openape.server.auth.AuthService;
 import org.openape.server.requestHandler.ProfileHandler;
 import org.openape.server.requestHandler.UserContextRequestHandler;

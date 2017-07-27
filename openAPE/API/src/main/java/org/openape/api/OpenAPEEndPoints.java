@@ -1,4 +1,4 @@
-package org.openape.server.api;
+package org.openape.api;
 
 public class OpenAPEEndPoints {
 
