@@ -18,14 +18,11 @@ import javax.ws.rs.core.Form;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import org.junit.runner.Request;
-import org.openape.api.Messages;
 import org.openape.api.OpenAPEEndPoints;
 import org.openape.api.PasswordChangeRequest;
 import org.openape.api.environmentcontext.EnvironmentContext;
 import org.openape.api.equipmentcontext.EquipmentContext;
 import org.openape.api.listing.Listing;
-import org.openape.api.rest.RESTPaths;
 import org.openape.api.taskcontext.TaskContext;
 import org.openape.api.usercontext.UserContext;
 import org.slf4j.Logger;
@@ -62,7 +59,8 @@ logger.info("OpenAPECLIENT received Token for: " + uri);
 logger.info("Token: " + token);
 
 this.userId = getMyId();
-}
+logger.debug("userId: "  + this.userId);
+}c
 
 private String getMyId() {
 	// TODO Auto-generated method stub
@@ -82,13 +80,8 @@ private String getToken(String userName,String password){
 			.post(Entity.form(form));
 	
 	int status = response.getStatus();
-	logger.debug("Response code: " + status);
-			if (status != 200){
-				logger.error("Failed : HTTP error code : " + status  +".\n Server message: " + response.readEntity(String.class)     );
-				throw new RuntimeException("Failed : HTTP error code : " + status );
-			}
-			
-		    String output = response.readEntity(String.class);
+checkResponse(response);			
+		    TokenResponse	 output = response.readEntity(TokenResponse.class);
 		 
 return output;
 
