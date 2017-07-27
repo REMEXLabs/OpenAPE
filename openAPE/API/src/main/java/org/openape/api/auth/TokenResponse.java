@@ -1,4 +1,4 @@
-
+package org.openape.api.auth;
 
 import com.google.gson.annotations.SerializedName;
 import org.openape.api.Messages;

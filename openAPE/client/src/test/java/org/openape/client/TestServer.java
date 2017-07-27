@@ -2,6 +2,7 @@ package org.openape.client;
 
 import static spark.Spark.post;
 
+import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 
 import org.openape.api.rest.RESTPaths;
@@ -9,7 +10,7 @@ import org.openape.api.rest.RESTPaths;
 import spark.Response;
 
 public class TestServer {
-public static void main(String[] args) throws URISyntaxException, InterruptedException {
+public static void main(String[] args) throws URISyntaxException, InterruptedException, MalformedURLException {
 //	post (RESTPaths.USER_CONTEXTS,"application/json",(req, res) -> TestServer.createUserContext(req.body(),res));
 	ClientTest.beforeClass();
 	new ClientTest().testFileDownload();

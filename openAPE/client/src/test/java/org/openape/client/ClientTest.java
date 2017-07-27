@@ -6,6 +6,7 @@ import static spark.Spark.get;
 import static spark.Spark.post;
 
 import java.io.File;
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -40,7 +41,7 @@ public class ClientTest {
 
 	  
 	  @Test
-	 public void testFileDownload() throws URISyntaxException, InterruptedException {
+	 public void testFileDownload() throws URISyntaxException, InterruptedException, MalformedURLException {
 //Thread.sleep(60000);;
 		  OpenAPEClient client = getOpenApeClient();
 File downloadedFile = client.getResource("http://localhost:4567/test.html", "d:/testCopy.html");
@@ -48,7 +49,7 @@ assertFalse(downloadedFile.equals(null)  );
 }
 
 	  @Test
-	  public void testCreateContent() throws URISyntaxException{
+	  public void testCreateContent() throws URISyntaxException, MalformedURLException{
 		  
 		  OpenAPEClient client = getOpenApeClient(); 
 		  UserContext userContext = new UserContext();
@@ -59,7 +60,8 @@ assertFalse(downloadedFile.equals(null)  );
 		  
 	  }
 
-	private static OpenAPEClient getOpenApeClient() {
-				return new OpenAPEClient(testUser, testPw, "http://localhost:4567/");
+	private static OpenAPEClient getOpenApeClient() throws MalformedURLException {
+		return new OpenAPEClient(testUser, testPw, "http://localhost:4567/");
+
 	}
 }

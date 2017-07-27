@@ -3,8 +3,10 @@ package org.openape.client;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.nio.file.Files;
 import java.util.List;
 
@@ -20,6 +22,7 @@ import javax.ws.rs.core.Response;
 
 import org.openape.api.OpenAPEEndPoints;
 import org.openape.api.PasswordChangeRequest;
+import org.openape.api.auth.TokenResponse;
 import org.openape.api.environmentcontext.EnvironmentContext;
 import org.openape.api.equipmentcontext.EquipmentContext;
 import org.openape.api.listing.Listing;
@@ -42,16 +45,28 @@ static final String TASK_CONTEXT_PATH = "api/task-contexts";
 static final String USER_CONTEXT_PATH = "api/user-contexts";
 static final String LISTING_PATH = "api/listings";
 /** Standard constructor, sets server adress automatically to http://openape.gpii.eu/ */
-public OpenAPEClient(String userName, String password){
+public OpenAPEClient(String userName, String password)throws Exception {
 this(userName, password, "http://openape.gpii.eu");
 }
 
-public OpenAPEClient(String userName, String password, String uri) {
+public OpenAPEClient(String userName, String password, String uri) throws MalformedURLException {
 //	create HTTP client that connects to the server
 	System.out.println("Constructor");
 //	ClientConfig config = new ClientConfig();
 	 client = ClientBuilder.newClient();//config);
-webResource = client.target(uri);
+System.out.println(uri);
+try {
+URL url = new URL(uri);
+} catch (MalformedURLException e)	{
+logger.error("Invalide URL");
+	throw e;
+}
+try {
+System.out.println("trying");
+	webResource = client.target(uri);
+} catch (Exception e) {
+	e.printStackTrace();
+}
 
 //get token for accessing server
 this.token = getToken(userName,password);
@@ -60,12 +75,12 @@ logger.info("Token: " + token);
 
 this.userId = getMyId();
 logger.debug("userId: "  + this.userId);
-}c
+}
 
 private String getMyId() {
 	// TODO Auto-generated method stub
 	Response response = getRequest(OpenAPEEndPoints.MY_ID  ).get();
-	return response.readEntity(String.class);
+	return (String) response.readEntity(String.class);
 }
 
 private String getToken(String userName,String password){
@@ -75,6 +90,7 @@ private String getToken(String userName,String password){
 	form.param( "username",userName);
 	form.param("password",password);
 	
+	
 	Response response = webResource.path("token")
 			.request()
 			.post(Entity.form(form));
@@ -83,7 +99,7 @@ private String getToken(String userName,String password){
 checkResponse(response);			
 		    TokenResponse	 output = response.readEntity(TokenResponse.class);
 		 
-return output;
+return output.getAccessToken();
 
 					}
 
