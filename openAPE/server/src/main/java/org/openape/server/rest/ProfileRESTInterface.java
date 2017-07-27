@@ -47,6 +47,10 @@ public class ProfileRESTInterface extends SuperRestInterface {
             }
         });
 
+        Spark.before( OpenAPEEndPoints.MY_ID   , authService.authorize("user"));
+        Spark.get(OpenAPEEndPoints.MY_ID, (req, res) -> {
+        	return authService.getAuthenticatedUser(req, res).getId(); 
+        });
         /*Enables admins to change the role of other users
          * 
          */
