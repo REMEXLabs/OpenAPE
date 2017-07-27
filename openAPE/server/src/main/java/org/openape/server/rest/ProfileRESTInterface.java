@@ -8,9 +8,11 @@ import java.util.Optional;
 import org.openape.api.DatabaseObject;
 import org.openape.api.Messages;
 import org.openape.api.OpenAPEEndPoints;
+import org.openape.api.PasswordChangeRequest;
 import org.openape.api.user.User;
 import org.openape.api.usercontext.UserContext;
 import org.openape.server.auth.AuthService;
+import org.openape.server.auth.PasswordEncoder;
 import org.openape.server.requestHandler.ProfileHandler;
 import org.openape.server.requestHandler.UserContextRequestHandler;
 import org.pac4j.core.profile.CommonProfile;
@@ -51,6 +53,18 @@ public class ProfileRESTInterface extends SuperRestInterface {
         Spark.get(OpenAPEEndPoints.MY_ID, (req, res) -> {
         	return authService.getAuthenticatedUser(req, res).getId(); 
         });
+        
+        Spark.put(OpenAPEEndPoints.USER_PASSWORD, (req,res) ->  {
+        User authUser = authService.getAuthenticatedUser(req, res);
+        /*
+        PasswordChangeRequest pwChangeReq  = (PasswordChangeRequest) SuperRestInterface.extractObjectFromRequest(req, PasswordChangeRequest.class);	)
+        if (PasswordEncoder.encode(pwChangeReq.oldPassword).equals(authUser.getPassword() ) ){
+        	authUser.setP
+        	PasswordEncoder.encode(pwChangeReq.oldPassword)
+        return "success";
+        }*/
+        });
+        
         /*Enables admins to change the role of other users
          * 
          */
