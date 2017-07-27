@@ -55,7 +55,8 @@ public class ProfileRESTInterface extends SuperRestInterface {
         	List<String> received = (List<String>) SuperRestInterface.extractObjectFromRequest(req, ArrayList.class);
 
         
-        	String authUserId = req.params(OpenAPEEndPoints.USER_ID); 
+        	String authUserId = req.params(OpenAPEEndPoints.USER_ID);
+        	logger.info("userid" + authUserId );
         	User storedUser = null;
         	try{
         	storedUser = ProfileHandler.getUser(authUserId);
@@ -63,12 +64,8 @@ public class ProfileRESTInterface extends SuperRestInterface {
         		e.printStackTrace();
         	}
         			
-        			try{
-        				storedUser.setRoles(received );
-        				ProfileHandler.updateUser(storedUser);
-        			} catch (IOException e) {
-        				e.printStackTrace();
-        			}
+        			storedUser.setRoles(received );
+					ProfileHandler.updateUser(storedUser);
         			
         return OpenAPEEndPoints.USER_ROLES_CHANGED; 
         });
