@@ -18,6 +18,7 @@ import org.openape.server.requestHandler.UserContextRequestHandler;
 import org.openape.server.rest.UserContextRESTInterface;
 
 import com.mongodb.client.result.UpdateResult;
+import com.sun.xml.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
 
 /**
  * Class with methods to manage user context on the server. It is used by the
@@ -25,7 +26,8 @@ import com.mongodb.client.result.UpdateResult;
  * {@link DatabaseConnection}.
  */
 public class AdminSectionRequestHandler {
-	public static final MongoCollectionTypes COLLECTIONTOUSE = MongoCollectionTypes.USERS;
+	public static final MongoCollectionTypes COLLECTIONTOUSE_USERS = MongoCollectionTypes.USERS;
+	public static final MongoCollectionTypes COLLECTIONTOUSE_USERCONTEXTS = MongoCollectionTypes.USERCONTEXT;
 
     public void removeUser(String id) throws IOException, IllegalArgumentException {
         // get database connection.
@@ -33,7 +35,7 @@ public class AdminSectionRequestHandler {
 
         // Get the requested data.
         databaseConnection.removeData(
-                AdminSectionRequestHandler.COLLECTIONTOUSE, id);
+                AdminSectionRequestHandler.COLLECTIONTOUSE_USERS, id);
     }
     
     public ArrayList<User> getAllUsers() throws IOException, IllegalArgumentException {
@@ -43,7 +45,7 @@ public class AdminSectionRequestHandler {
 
         // Get the requested data.
         final ArrayList<Document> listDocuments = databaseConnection.getAllDocuments(
-                AdminSectionRequestHandler.COLLECTIONTOUSE);
+                AdminSectionRequestHandler.COLLECTIONTOUSE_USERS);
         
         User user = new User();
         ArrayList<User> listUsers = new ArrayList<User>();
@@ -62,6 +64,41 @@ public class AdminSectionRequestHandler {
         return listUsers;
     }
     
+    public ArrayList<String[]> getAllUsercontexts() throws IOException, IllegalArgumentException {
+    	
+        // get database connection.
+        final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
+
+        // Get the requested data.
+        final ArrayList<Document> listDocuments = databaseConnection.getAllDocuments(
+                AdminSectionRequestHandler.COLLECTIONTOUSE_USERCONTEXTS);
+        
+        ArrayList<String[]> listContext = new ArrayList<String[]>();
+        
+        for(Document entry : listDocuments){
+        	
+        	
+        	Document documentContext = (Document) entry.get("contexts");
+        	Document documentDefault = (Document) documentContext.get("default");
+        	
+        	String name = documentDefault.getString("name");
+        	String id = entry.getObjectId("_id").toString();
+        	boolean isPublic = entry.getBoolean("public");
+        	String stringIsPublic = "";
+        	
+        	if(isPublic == false){
+        		stringIsPublic = "false";
+        	} else {
+        		stringIsPublic = "true";
+        	}
+        	
+        	String[] myStringArray = {name,id,stringIsPublic};
+        	listContext.add(myStringArray);
+        }
+        
+        return listContext;
+    }
+    
  public UpdateResult updateUser(String id, String indexName, String indexValue) throws Exception {
     	
         // get database connection.
@@ -70,7 +107,9 @@ public class AdminSectionRequestHandler {
         UpdateResult updateResult = null;
 	
 		updateResult = databaseConnection.updateDocument(
-	                AdminSectionRequestHandler.COLLECTIONTOUSE, id, indexName, indexValue); 
+	                AdminSectionRequestHandler.COLLECTIONTOUSE_USERS, id, indexName, indexValue); 
+		
+		
 
        
         return updateResult;

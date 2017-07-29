@@ -12,6 +12,7 @@ public class Organism_3_DataTable {
 	public String generateAdministrationUserTable(AdminSectionRequestHandler adminsectionRequestHandler) throws IllegalArgumentException, IOException{
 	
 		String administrationDatableContent = new Molecule_5_dataTableContent().generateAdministrationUserContent(adminsectionRequestHandler.getAllUsers());
+		adminsectionRequestHandler.getAllUsercontexts();
 		String administrationUserTable =""
 			+ "<table id='example' class='table table-striped table-bordered' cellspacing='0' width='100%'>"
 	        + "<thead>"
@@ -25,6 +26,28 @@ public class Organism_3_DataTable {
 	        + "</thead>"
 	        + "<tbody id='tableContent'>"
 	        + administrationDatableContent
+	        + "</tbody>"
+	        + "</table>";
+		return administrationUserTable;
+		
+	}
+	
+	public String generateAdministrationUserContextTable(AdminSectionRequestHandler adminsectionRequestHandler) throws IllegalArgumentException, IOException{
+		
+		String administrationDatableUserContextContent = new Molecule_5_dataTableContent().generateUserContextContent(adminsectionRequestHandler.getAllUsercontexts());
+		adminsectionRequestHandler.getAllUsercontexts();
+		String administrationUserTable =""
+			+ "<table id='userContextDataTable' class='table table-striped table-bordered' cellspacing='0' width='100%'>"
+	        + "<thead>"
+	        + "<tr>"
+	        + "<th>Name</th>"
+	        + "<th>ID</th>"
+	        + "<th>isPublic</th>"
+	        + "<th>Options</th>"
+	        + "</tr>"
+	        + "</thead>"
+	        + "<tbody id='tableContent'>"
+	        + administrationDatableUserContextContent
 	        + "</tbody>"
 	        + "</table>";
 		return administrationUserTable;

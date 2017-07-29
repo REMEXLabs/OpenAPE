@@ -1,8 +1,8 @@
 var selectedRoles = [];
 $(document).ready(function() {
-	if($('td').attr("id").includes(localStorage.getItem("userid"))){
-		$('#tdUserName_'+localStorage.getItem("userid")).closest('tr').hide();
-	}
+	//if($('td').attr("id").includes(localStorage.getItem("userid"))){
+	//	$('#tdUserName_'+localStorage.getItem("userid")).closest('tr').hide();
+	//}
 	
 	//add user
 	$('#errUsername').hide();
@@ -18,6 +18,7 @@ $(document).ready(function() {
 	$('#example').DataTable( {
 		"lengthMenu": [[5, 10, 15, -1], [5, 10, 15, "All"]]
     } ); 
+	 
 	
     $('#btnConfirmDeleteUser').click(function(){ 	
     	removeUser(localStorage.getItem("userId"));

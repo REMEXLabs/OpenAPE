@@ -7,7 +7,7 @@
 		min-height:30em;
 		float:left;
 		display:block;
-		min-width:13em;
+		min-width:16em;
 		text-align:center;	
 		
 		.shadow {
@@ -21,9 +21,7 @@
 		min-height:30em;
 		display:block;
 		padding:1em;
-		-webkit-box-shadow: -8px 0px 12px -4px rgba(0,0,0,0.75);
-		-moz-box-shadow: -8px 0px 12px -4px rgba(0,0,0,0.75);
-		box-shadow: -8px 0px 12px -4px rgba(0,0,0,0.75);
+		border-left: 2px solid #cfc9c9;
 		
 	}
 

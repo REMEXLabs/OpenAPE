@@ -6,7 +6,11 @@
   background-color: #3b3b3b;
   color: white;
   font-weight: bold;
-  min-height: 7em; }
+  min-height: 6em;
+  position: relative;
+  border-top: 4px solid #740a1b;
+  bottom: 0;
+  width: 100%; }
   .footer a {
     color: #e31134; }
 

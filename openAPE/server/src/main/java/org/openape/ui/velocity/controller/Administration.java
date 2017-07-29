@@ -31,7 +31,12 @@ public class Administration  extends SuperRestInterface{
              model.put("topNavigation", new Organism_1_Topsection().generateTopNavigation());
              model.put("subSection", new Organism_2_SubSection().generateTopNavigation());
              model.put("dataTableUser", new Organism_3_DataTable().generateAdministrationUserTable(adminsectionRequestHandler));
+             model.put("dataTableUserContext", new Organism_3_DataTable().generateAdministrationUserContextTable(adminsectionRequestHandler));
              model.put("deleteUserModal", new Molecule_6_Modals().generateDeleteUserModal());
+             model.put("deleteUserContextModal", new Molecule_6_Modals().generateDeleteUserContextModal());
+             model.put("addUserContextModal", new Molecule_6_Modals().generateAddUserContextModal());
+             model.put("editUserContextModal", new Molecule_6_Modals().generateEditUserContextModal());
+             
          
              return new ModelAndView(model, "velocityTemplates/administration.vm"); // located in the resources directory
          }, new VelocityTemplateEngine());

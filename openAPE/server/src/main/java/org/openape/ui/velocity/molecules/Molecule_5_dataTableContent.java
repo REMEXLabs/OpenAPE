@@ -3,6 +3,7 @@ package org.openape.ui.velocity.molecules;
 import java.util.ArrayList;
 
 import org.openape.api.user.User;
+import org.openape.api.usercontext.UserContext;
 import org.openape.ui.velocity.atoms.Atom_1_navigationLinks;
 
 public class Molecule_5_dataTableContent {
@@ -43,6 +44,28 @@ public class Molecule_5_dataTableContent {
 					+ "<button id='"+users.getId()+"' class='btn btn-md btn-default' onClick='editUser(this)' ><div class='glyphicon glyphicon-edit' ></div> Edit </button>"
 					+ "<button id='"+users.getId()+"' class='btn btn-md btn-default' onClick='deleteUser(this)'><div class='glyphicon glyphicon-trash'></div> Delete </button> "
 					+ "<button id='"+users.getId()+"' class='btn btn-md btn-default'><div class='glyphicon glyphicon-copy'></div> Copy to clipboard  </button> </td></tr>";
+		}
+		
+				
+		return tableContent;
+	}
+	
+	
+public String generateUserContextContent(ArrayList<String[]> listUserContexts){
+		
+		String tableContent = "";
+				
+		for(String[] userContext : listUserContexts){
+
+			
+			tableContent +=  "<tr>"
+					+ "<td id='tdUserContextName_"+userContext[1]+"'>"+userContext[0]+"</td>"
+					+ "<td>"+userContext[1]+"</td>"
+					+ "<td>"+userContext[2]+"</td>"
+					+ "<td>"
+					+ "<button id='"+userContext[1]+"' class='btn btn-md btn-default' onClick='editUserContext(this)' ><div class='glyphicon glyphicon-edit' ></div> Edit </button>"
+					+ "<button id='"+userContext[1]+"' class='btn btn-md btn-default' onClick='deleteUserContext(this)'><div class='glyphicon glyphicon-trash'></div> Delete </button> "
+					+ "<button id='"+userContext[1]+"' class='btn btn-md btn-default' onClick='copyUserContext(this)'><div class='glyphicon glyphicon-copy'></div> Copy </button> </td></tr>";
 		}
 		
 				
