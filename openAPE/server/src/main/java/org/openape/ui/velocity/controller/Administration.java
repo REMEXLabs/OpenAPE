@@ -3,6 +3,8 @@ package org.openape.ui.velocity.controller;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ArrayBlockingQueue;
+
 import org.openape.server.rest.SuperRestInterface;
 import org.openape.ui.velocity.atoms.Atom_2_OpenAPEHeader;
 import org.openape.ui.velocity.molecules.Molecule_5_dataTableContent;
@@ -26,27 +28,27 @@ public class Administration  extends SuperRestInterface{
 		 adminsectionRequestHandler.getAllTaskContexts();
     	 Spark.get("/administration", (request, response) -> {
     		
+    		 
              model.put("footer", new Footer().generateFooter());
              model.put("logo", new Atom_2_OpenAPEHeader().generateLogo());
              model.put("topNavigation", new Organism_1_Topsection().generateTopNavigation());
              model.put("subSection", new Organism_2_SubSection().generateTopNavigation());
              model.put("dataTableUser", new Organism_3_DataTable().generateAdministrationUserTable(adminsectionRequestHandler));
              model.put("dataTableUserContext", new Organism_3_DataTable().generateAdministrationUserContextTable(adminsectionRequestHandler));
-             model.put("deleteUserModal", new Molecule_6_Modals().generateDeleteContextModal("User"));
+             model.put("dataTableEquipmentContext", new Organism_3_DataTable().generateAdministrationContextTable(adminsectionRequestHandler, "Equipment-Context"));
+
              
-             model.put("dataTableTaskContext", new Organism_3_DataTable().generateAdministrationTaskContextTable(adminsectionRequestHandler));
+             model.put("dataTableTaskContext", new Organism_3_DataTable().generateAdministrationContextTable(adminsectionRequestHandler, "Task-Context"));
              
            
-             //modals
-             model.put("deleteUserContextModal", new Molecule_6_Modals().generateDeleteContextModal("User-Context"));
-             model.put("addUserContextModal", new Molecule_6_Modals().generateAddContextModal("User-Context"));
-             model.put("addTaskContextModal", new Molecule_6_Modals().generateAddContextModal("Task-Context"));
-             model.put("editUserContextModal", new Molecule_6_Modals().generateEditContextModal("User-Context"));
-             model.put("editTaskContextModal", new Molecule_6_Modals().generateEditContextModal("Task-Context"));
-             model.put("deleteTaskContextModal", new Molecule_6_Modals().generateDeleteContextModal("Task-Context"));
+             String[] contexts = {"User", "User-Context", "Task-Context", "Equipment-Context", "Environment-Context"};
              
-             
-             
+             for(String context : contexts){
+            	 String contextIdName = context.replace("-", "");
+            	 model.put("delete"+contextIdName+"Modal", new Molecule_6_Modals().generateDeleteContextModal(context));
+            	 model.put("edit"+contextIdName+"Modal", new Molecule_6_Modals().generateEditContextModal(context));
+            	 model.put("add"+contextIdName+"Modal", new Molecule_6_Modals().generateAddContextModal(context));
+             }
              
          
              return new ModelAndView(model, "velocityTemplates/administration.vm"); // located in the resources directory

@@ -29,6 +29,7 @@ public class AdminSectionRequestHandler {
 	public static final MongoCollectionTypes COLLECTIONTOUSE_USERS = MongoCollectionTypes.USERS;
 	public static final MongoCollectionTypes COLLECTIONTOUSE_USERCONTEXTS = MongoCollectionTypes.USERCONTEXT;
 	public static final MongoCollectionTypes COLLECTIONTOUSE_TASKCONTEXTS = MongoCollectionTypes.TASKCONTEXT;
+	public static final MongoCollectionTypes COLLECTIONTOUSE_EQUIPMENTCONTEXTS = MongoCollectionTypes.EQUIPMENTCONTEXT;
 
     public void removeUser(String id) throws IOException, IllegalArgumentException {
         // get database connection.
@@ -126,15 +127,43 @@ public class AdminSectionRequestHandler {
         	}
         	
         	String[] myStringArray = {id, userId, stringIsPublic};
-        	
         	listTaskContexts.add(myStringArray);
-        	
         }
-        
         return listTaskContexts;
     }
     
-    
+
+    public ArrayList<String[]> getAllEquipmentContexts() throws IOException, IllegalArgumentException {
+    	
+        // get database connection.
+         final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
+
+        // Get the requested data.
+        final ArrayList<Document> listDocuments = databaseConnection.getAllDocuments(
+                AdminSectionRequestHandler.COLLECTIONTOUSE_EQUIPMENTCONTEXTS);
+        
+        ArrayList<String[]> listEquipmentContexts = new ArrayList<String[]>();
+        
+        for(Document entry : listDocuments){
+        	String id = entry.getObjectId("_id").toString();
+        	String userId = entry.getString("owner").toString();
+
+        	boolean isPublic = entry.getBoolean("public");
+        	
+        	String stringIsPublic = "";
+        	
+        	if(isPublic == false){
+        		stringIsPublic = "false";
+        	} else {
+        		stringIsPublic = "true";
+        	}
+        	
+        	String[] myStringArray = {id, userId, stringIsPublic};
+        	listEquipmentContexts.add(myStringArray);
+        	System.out.println(myStringArray);
+        }
+        return listEquipmentContexts;
+    }
     
  public UpdateResult updateUser(String id, String indexName, String indexValue) throws Exception {
     	

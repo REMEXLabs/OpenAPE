@@ -54,11 +54,21 @@ public class Organism_3_DataTable {
 		
 	}
 	
-	public String generateAdministrationTaskContextTable(AdminSectionRequestHandler adminsectionRequestHandler) throws IllegalArgumentException, IOException{
+	public String generateAdministrationContextTable(AdminSectionRequestHandler adminsectionRequestHandler, String contextName) throws IllegalArgumentException, IOException{
 		
-		String administrationDatableTaskContextContent = new Molecule_5_dataTableContent().generateTaskContextContent(adminsectionRequestHandler.getAllTaskContexts());
-		String administrationTaskContextTable =""
-			+ "<table id='taskContextDataTable' class='table table-striped table-bordered' cellspacing='0' width='100%'>"
+		String administrationDatableContextContent = "";
+		String idName = contextName.substring(0,1).toLowerCase() + contextName.substring(1).replace("-", "");
+		
+		if(contextName == "User-Context"){
+			administrationDatableContextContent = new Molecule_5_dataTableContent().generateUserContextContent(adminsectionRequestHandler.getAllUsercontexts());
+		} else if(contextName == "Task-Context") {
+			administrationDatableContextContent = new Molecule_5_dataTableContent().generateTaskContextContent(adminsectionRequestHandler.getAllTaskContexts());
+		} else if(contextName == "Equipment-Context") {
+			administrationDatableContextContent = new Molecule_5_dataTableContent().generateEquipmentContextContent(adminsectionRequestHandler.getAllEquipmentContexts());
+		}
+		
+		String administrationContextTable =""
+			+ "<table id='"+idName+"DataTable' class='table table-striped table-bordered' cellspacing='0' width='100%'>"
 	        + "<thead>"
 	        + "<tr>"
 	        + "<th>ID</th>"
@@ -68,10 +78,10 @@ public class Organism_3_DataTable {
 	        + "</tr>"
 	        + "</thead>"
 	        + "<tbody id='tableContent'>"
-	        + administrationDatableTaskContextContent
+	        + administrationDatableContextContent
 	        + "</tbody>"
 	        + "</table>";
-		return administrationTaskContextTable;
+		return administrationContextTable;
 		
 	}
 }

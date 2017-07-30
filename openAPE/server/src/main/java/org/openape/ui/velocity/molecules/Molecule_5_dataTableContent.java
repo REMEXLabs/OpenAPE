@@ -91,6 +91,26 @@ public String generateUserContextContent(ArrayList<String[]> listUserContexts){
 				
 		return tableContent;
 	}
+	
+	public String generateEquipmentContextContent(ArrayList<String[]> listEquipmentContexts){
+		
+		String tableContent = "";
+				
+		for(String[] equipmentkContext : listEquipmentContexts){
+	
+			
+			tableContent +=  "<tr>"
+					+ "<td id='tdEquipmentContextName_"+equipmentkContext[0]+"'>"+equipmentkContext[0]+"</td>"
+					+ "<td>"+equipmentkContext[1]+"</td>"
+					+ "<td>"+equipmentkContext[2]+"</td>"
+					+ "<td>"
+					+ "<button id='"+equipmentkContext[0]+"' name='editEquipmentContext' class='btn btn-md btn-default' onClick='editEquipmentContext(this)' ><div class='glyphicon glyphicon-edit' ></div> Edit </button>"
+					+ "<button id='"+equipmentkContext[0]+"' class='btn btn-md btn-default' onClick='deleteEquipmentContext(this)'><div class='glyphicon glyphicon-trash'></div> Delete </button> "
+					+ "<button id='"+equipmentkContext[0]+"' class='btn btn-md btn-default' onClick='copyEquipmentContext(this)'><div class='glyphicon glyphicon-copy'></div> Copy </button> </td></tr>";
+		}
+				
+		return tableContent;
+	}
 }
 
 
