@@ -65,6 +65,8 @@ public class Organism_3_DataTable {
 			administrationDatableContextContent = new Molecule_5_dataTableContent().generateTaskContextContent(adminsectionRequestHandler.getAllTaskContexts());
 		} else if(contextName == "Equipment-Context") {
 			administrationDatableContextContent = new Molecule_5_dataTableContent().generateEquipmentContextContent(adminsectionRequestHandler.getAllEquipmentContexts());
+		} else if(contextName == "Environment-Context") {
+			administrationDatableContextContent = new Molecule_5_dataTableContent().generateEnvironmentContextContent(adminsectionRequestHandler.getAllEnvironmentContexts());
 		}
 		
 		String administrationContextTable =""

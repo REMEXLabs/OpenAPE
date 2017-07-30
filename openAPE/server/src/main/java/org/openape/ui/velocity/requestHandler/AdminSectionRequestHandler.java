@@ -30,6 +30,7 @@ public class AdminSectionRequestHandler {
 	public static final MongoCollectionTypes COLLECTIONTOUSE_USERCONTEXTS = MongoCollectionTypes.USERCONTEXT;
 	public static final MongoCollectionTypes COLLECTIONTOUSE_TASKCONTEXTS = MongoCollectionTypes.TASKCONTEXT;
 	public static final MongoCollectionTypes COLLECTIONTOUSE_EQUIPMENTCONTEXTS = MongoCollectionTypes.EQUIPMENTCONTEXT;
+	public static final MongoCollectionTypes COLLECTIONTOUSE_ENVIRONMENTCONTEXTS = MongoCollectionTypes.ENVIRONMENTCONTEXT;
 
     public void removeUser(String id) throws IOException, IllegalArgumentException {
         // get database connection.
@@ -164,6 +165,39 @@ public class AdminSectionRequestHandler {
         }
         return listEquipmentContexts;
     }
+    
+    public ArrayList<String[]> getAllEnvironmentContexts() throws IOException, IllegalArgumentException {
+    	
+        // get database connection.
+         final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
+
+        // Get the requested data.
+        final ArrayList<Document> listDocuments = databaseConnection.getAllDocuments(
+                AdminSectionRequestHandler.COLLECTIONTOUSE_ENVIRONMENTCONTEXTS);
+        
+        ArrayList<String[]> listEnvironmentContexts = new ArrayList<String[]>();
+        
+        for(Document entry : listDocuments){
+        	String id = entry.getObjectId("_id").toString();
+        	String userId = entry.getString("owner").toString();
+
+        	boolean isPublic = entry.getBoolean("public");
+        	
+        	String stringIsPublic = "";
+        	
+        	if(isPublic == false){
+        		stringIsPublic = "false";
+        	} else {
+        		stringIsPublic = "true";
+        	}
+        	
+        	String[] myStringArray = {id, userId, stringIsPublic};
+        	listEnvironmentContexts.add(myStringArray);
+        	System.out.println(myStringArray);
+        }
+        return listEnvironmentContexts;
+    }
+    
     
  public UpdateResult updateUser(String id, String indexName, String indexValue) throws Exception {
     	

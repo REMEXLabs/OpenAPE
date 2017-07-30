@@ -111,6 +111,26 @@ public String generateUserContextContent(ArrayList<String[]> listUserContexts){
 				
 		return tableContent;
 	}
+	
+	public String generateEnvironmentContextContent(ArrayList<String[]> listEnvironmentContexts){
+		
+		String tableContent = "";
+				
+		for(String[] environmentContext : listEnvironmentContexts){
+	
+			
+			tableContent +=  "<tr>"
+					+ "<td id='tdEnvironmentContextName_"+environmentContext[0]+"'>"+environmentContext[0]+"</td>"
+					+ "<td>"+environmentContext[1]+"</td>"
+					+ "<td>"+environmentContext[2]+"</td>"
+					+ "<td>"
+					+ "<button id='"+environmentContext[0]+"' name='editEnvironmentContext' class='btn btn-md btn-default' onClick='editEnvironmentContext(this)' ><div class='glyphicon glyphicon-edit' ></div> Edit </button>"
+					+ "<button id='"+environmentContext[0]+"' class='btn btn-md btn-default' onClick='deleteEnvironmentContext(this)'><div class='glyphicon glyphicon-trash'></div> Delete </button> "
+					+ "<button id='"+environmentContext[0]+"' class='btn btn-md btn-default' onClick='copyEnvironmentContext(this)'><div class='glyphicon glyphicon-copy'></div> Copy </button> </td></tr>";
+		}
+				
+		return tableContent;
+	}
 }
 
 
