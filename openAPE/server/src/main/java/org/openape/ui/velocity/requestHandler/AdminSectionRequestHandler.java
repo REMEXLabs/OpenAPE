@@ -28,6 +28,7 @@ import com.sun.xml.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
 public class AdminSectionRequestHandler {
 	public static final MongoCollectionTypes COLLECTIONTOUSE_USERS = MongoCollectionTypes.USERS;
 	public static final MongoCollectionTypes COLLECTIONTOUSE_USERCONTEXTS = MongoCollectionTypes.USERCONTEXT;
+	public static final MongoCollectionTypes COLLECTIONTOUSE_TASKCONTEXTS = MongoCollectionTypes.TASKCONTEXT;
 
     public void removeUser(String id) throws IOException, IllegalArgumentException {
         // get database connection.
@@ -99,6 +100,42 @@ public class AdminSectionRequestHandler {
         return listContext;
     }
     
+    public ArrayList<String[]> getAllTaskContexts() throws IOException, IllegalArgumentException {
+    	
+        // get database connection.
+         final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
+
+        // Get the requested data.
+        final ArrayList<Document> listDocuments = databaseConnection.getAllDocuments(
+                AdminSectionRequestHandler.COLLECTIONTOUSE_TASKCONTEXTS);
+        
+        ArrayList<String[]> listTaskContexts = new ArrayList<String[]>();
+        
+        for(Document entry : listDocuments){
+        	String id = entry.getObjectId("_id").toString();
+        	String userId = entry.getString("owner").toString();
+
+        	boolean isPublic = entry.getBoolean("public");
+        	
+        	String stringIsPublic = "";
+        	
+        	if(isPublic == false){
+        		stringIsPublic = "false";
+        	} else {
+        		stringIsPublic = "true";
+        	}
+        	
+        	String[] myStringArray = {id, userId, stringIsPublic};
+        	
+        	listTaskContexts.add(myStringArray);
+        	
+        }
+        
+        return listTaskContexts;
+    }
+    
+    
+    
  public UpdateResult updateUser(String id, String indexName, String indexValue) throws Exception {
     	
         // get database connection.
@@ -109,9 +146,6 @@ public class AdminSectionRequestHandler {
 		updateResult = databaseConnection.updateDocument(
 	                AdminSectionRequestHandler.COLLECTIONTOUSE_USERS, id, indexName, indexValue); 
 		
-		
-
-       
         return updateResult;
     }
 }

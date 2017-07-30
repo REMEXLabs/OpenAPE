@@ -71,5 +71,27 @@ public String generateUserContextContent(ArrayList<String[]> listUserContexts){
 				
 		return tableContent;
 	}
+	
+	public String generateTaskContextContent(ArrayList<String[]> listTaskContexts){
+		
+		String tableContent = "";
+				
+		for(String[] taskContext : listTaskContexts){
+	
+			
+			tableContent +=  "<tr>"
+					+ "<td id='tdTaskContextName_"+taskContext[0]+"'>"+taskContext[0]+"</td>"
+					+ "<td>"+taskContext[1]+"</td>"
+					+ "<td>"+taskContext[2]+"</td>"
+					+ "<td>"
+					+ "<button id='"+taskContext[0]+"' name='editTaskContext' class='btn btn-md btn-default' onClick='editTaskContext(this)' ><div class='glyphicon glyphicon-edit' ></div> Edit </button>"
+					+ "<button id='"+taskContext[0]+"' class='btn btn-md btn-default' onClick='deleteTaskContext(this)'><div class='glyphicon glyphicon-trash'></div> Delete </button> "
+					+ "<button id='"+taskContext[0]+"' class='btn btn-md btn-default' onClick='copyTaskContext(this)'><div class='glyphicon glyphicon-copy'></div> Copy </button> </td></tr>";
+		}
+				
+		return tableContent;
+	}
 }
+
+
 

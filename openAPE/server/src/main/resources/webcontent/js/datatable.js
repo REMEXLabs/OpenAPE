@@ -13,6 +13,24 @@ $(document).ready(function() {
 	$('#editEmailErrIcon').hide();
 	$('#editUsernameErrIcon').hide();
 	
+	//resetting error messages
+	$('#createUserModal').on('hidden.bs.modal', function () {
+		$('#formGroupEmail').removeClass("has-error has-feedback");
+		$('#errorSection').empty();
+		$('#formGroupUsername').removeClass("has-error has-feedback");
+		$('#formGroupPassword').removeClass("has-error has-feedback");
+		$('#errPassword').hide();
+		$('#errEmail').hide();
+		$('#errUsername').hide();
+	});
+	
+	$('#editModal').on('hidden.bs.modal', function () {
+		$('#editErrSection').empty();
+		$('#editFormGroupUsername').removeClass("has-error has-feedback");
+		$('#editFormGroupEmail').removeClass("has-error has-feedback");
+		$('#editEmailErrIcon').hide();
+		$('#editUsernameErrIcon').hide();
+	});
 	
 	
 	$('#example').DataTable( {
@@ -96,7 +114,7 @@ $(document).ready(function() {
 
 
 function deleteUser(event){
-	$('#exampleModalLong').modal('show');
+	$('#deleteUserModal').modal('show');
 	localStorage.setItem("userId", event.id);
 }
 
@@ -237,7 +255,7 @@ function createUserDB(userObj) {
 }
 
 
-function validateAddUserFields (objUser) {
+function validateAddUserFields (objUser) {	
 	var isAddUsernameCorrect = true;
 	var isAddEmailCorrect = true;
 	var isAddPasswordCorrect = true;
@@ -322,7 +340,7 @@ function validateEditUserFields (objUser) {
 	
 	if(editEmail === ""){
 		isAddEmailCorrect = false;
-		$('#editeditFormGroupEmail').addClass("has-error has-feedback");
+		$('#editFormGroupEmail').addClass("has-error has-feedback");
 		$('#editEmailErrIcon').show();
 	} else {
 		if(validateEmail(editEmail)){

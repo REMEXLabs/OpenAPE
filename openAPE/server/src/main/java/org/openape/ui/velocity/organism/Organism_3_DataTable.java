@@ -53,4 +53,25 @@ public class Organism_3_DataTable {
 		return administrationUserTable;
 		
 	}
+	
+	public String generateAdministrationTaskContextTable(AdminSectionRequestHandler adminsectionRequestHandler) throws IllegalArgumentException, IOException{
+		
+		String administrationDatableTaskContextContent = new Molecule_5_dataTableContent().generateTaskContextContent(adminsectionRequestHandler.getAllTaskContexts());
+		String administrationTaskContextTable =""
+			+ "<table id='taskContextDataTable' class='table table-striped table-bordered' cellspacing='0' width='100%'>"
+	        + "<thead>"
+	        + "<tr>"
+	        + "<th>ID</th>"
+	        + "<th>UserID</th>"
+	        + "<th>isPublic</th>"
+	        + "<th>Options</th>"
+	        + "</tr>"
+	        + "</thead>"
+	        + "<tbody id='tableContent'>"
+	        + administrationDatableTaskContextContent
+	        + "</tbody>"
+	        + "</table>";
+		return administrationTaskContextTable;
+		
+	}
 }

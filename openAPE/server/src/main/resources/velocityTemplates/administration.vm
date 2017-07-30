@@ -25,8 +25,10 @@
 <script src="js/openape.js" type="text/javascript"></script>
 <script src="js/navigation.js" type="text/javascript"></script>
 <script src="js/datatable.js" type="text/javascript"></script>
- <script src="js/usersection.js" type="text/javascript"></script>
-  <script src="js/datatableUsercontext.js" type="text/javascript"></script>
+<script src="js/usersection.js" type="text/javascript"></script>
+<script src="js/datatableUsercontext.js" type="text/javascript"></script>
+<script src="js/datatableTaskContext.js" type="text/javascript"></script>
+  
 
 
 
@@ -326,6 +328,14 @@ $subSection
 			
 		<div id="task-contexts" class="tabcontent">
 		  <h1>Task-Contexts</h1>
+		  <div style="padding:1.2em">
+		  	$dataTableTaskContext
+		  </div>
+		  <button class='btn btn-md btn-default'" id="btnAddTaskContext"><div class="glyphicon glyphicon-plus"></div> Add </button>		
+		
+		  $editTaskContextModal
+		  $deleteTaskContextModal
+		  $addTaskContextModal
 		</div>	
 		
 		<div id="environment-contexts" class="tabcontent">
