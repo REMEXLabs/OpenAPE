@@ -2,6 +2,8 @@ package org.openape.api.group;
 
 import java.util.List;
 
+import org.openape.api.DatabaseObject;
+
 /**
  * This class defines a group. A group has members. Some of those members can also be admins of the group. Group admins
  * are allowed to edit a group and their memberships. The OpenAPE server uses groups to manage the access rights for
@@ -13,7 +15,7 @@ import java.util.List;
  * @author Tobias Ableitner
  *
  */
-public class Group {
+public class Group extends DatabaseObject {
 
 	// *********************************************************************************************************************************************
 	// *********************************************************************************************************************************************
