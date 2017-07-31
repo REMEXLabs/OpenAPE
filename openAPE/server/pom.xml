@@ -22,7 +22,8 @@
 			<artifactId>API</artifactId>
 			<version>${project.version}</version>
 		</dependency>
-		<!-- Google Java JSON API | https://github.com/google/gson -->
+		
+<!-- Google Java JSON API | https://github.com/google/gson -->
 		<dependency>
 			<groupId>com.google.code.gson</groupId>
 			<artifactId>gson</artifactId>
