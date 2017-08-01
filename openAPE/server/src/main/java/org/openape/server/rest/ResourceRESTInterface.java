@@ -117,7 +117,7 @@ public class ResourceRESTInterface extends SuperRestInterface {
                         return e.getMessage();
                     } catch (UnauthorizedException e) {
                         // Only authorized users may post resources
-                        res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
+                        res.status(SuperRestInterface.HTTP_STATUS_UNAUTHORIZED);
                         return e.getMessage();
                     } catch (final Exception e) {
                         res.status(SuperRestInterface.HTTP_STATUS_INTERNAL_SERVER_ERROR);
@@ -238,7 +238,7 @@ public class ResourceRESTInterface extends SuperRestInterface {
                         return e.getMessage();
                     } catch (UnauthorizedException e) {
                         // Only authorized users may delete their resources.
-                        res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
+                        res.status(SuperRestInterface.HTTP_STATUS_UNAUTHORIZED);
                         return e.getMessage();
                     }
                     res.status(SuperRestInterface.HTTP_STATUS_NO_CONTENT);

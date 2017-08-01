@@ -61,7 +61,7 @@ public class ResourceDescriptionRESTInterface extends SuperRestInterface {
                         return e.getMessage();
                     } catch (UnauthorizedException e) {
                         //Only authorized users may post resource descriptions
-                        res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
+                        res.status(SuperRestInterface.HTTP_STATUS_UNAUTHORIZED);
                         return e.getMessage();
                     }
                 });
@@ -92,7 +92,7 @@ public class ResourceDescriptionRESTInterface extends SuperRestInterface {
                     res.status(SuperRestInterface.HTTP_STATUS_INTERNAL_SERVER_ERROR);
                     return e.getMessage();
                 } catch (UnauthorizedException e) {
-                    res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
+                    res.status(SuperRestInterface.HTTP_STATUS_UNAUTHORIZED);
                     return e.getMessage();
                 }
 
@@ -176,7 +176,7 @@ public class ResourceDescriptionRESTInterface extends SuperRestInterface {
                     return e.getMessage();
                 } catch (UnauthorizedException e) {
                     //Only authorized users may edit resource descriptions
-                    res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
+                    res.status(SuperRestInterface.HTTP_STATUS_UNAUTHORIZED);
                     return e.getMessage();
                 }
             });
@@ -206,7 +206,7 @@ public class ResourceDescriptionRESTInterface extends SuperRestInterface {
                         return e.getMessage();
                     } catch (UnauthorizedException e) {
                         //Only authorized users may delete resource descriptions
-                        res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
+                        res.status(SuperRestInterface.HTTP_STATUS_UNAUTHORIZED);
                         return e.getMessage();
                     }
                 });
