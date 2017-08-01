@@ -1,34 +1,39 @@
 package org.openape.server.database.mongoDB;
 
 import java.io.IOException;
-import java.net.ConnectException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 
 import com.mongodb.client.model.IndexOptions;
+import com.mongodb.client.result.UpdateResult;
 import com.mongodb.event.ServerHeartbeatFailedEvent;
 import com.mongodb.event.ServerHeartbeatStartedEvent;
 import com.mongodb.event.ServerHeartbeatSucceededEvent;
 import com.mongodb.event.ServerMonitorListener;
 
+import org.apache.log4j.helpers.AbsoluteTimeDateFormat;
 import org.bson.Document;
 import org.bson.codecs.configuration.CodecConfigurationException;
+import org.bson.conversions.Bson;
 import org.bson.json.JsonParseException;
 import org.bson.types.ObjectId;
 import org.openape.api.DatabaseObject;
 import org.openape.api.Messages;
+import org.openape.api.usercontext.UserContext;
 import org.openape.server.MongoConfig;
 import org.openape.server.requestHandler.EnvironmentContextRequestHandler;
 import org.openape.server.requestHandler.EquipmentContextRequestHandler;
 import org.openape.server.requestHandler.TaskContextRequestHandler;
 import org.openape.server.requestHandler.UserContextRequestHandler;
+import org.openape.ui.velocity.requestHandler.AdminSectionRequestHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mongodb.BasicDBObject;
+import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
-import com.mongodb.Mongo;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientOptions;
 import com.mongodb.MongoCredential;
@@ -36,6 +41,7 @@ import com.mongodb.MongoException;
 import com.mongodb.ServerAddress;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
 
 /**
@@ -165,11 +171,9 @@ public class DatabaseConnection implements ServerMonitorListener {
         
         // Get a reference to the openAPE database.
         this.database = this.mongoClient.getDatabase(DatabaseConnection.DATABASENAME);
-
-        //Test if a connection to the MongoDB can be established        
-        testDatabase();
-    }  catch(Exception e){
-    	logger.error("Failed to connect to database \"" + DATABASENAME + "\"." );
+        logger.info("Found openAPE dataBase");
+    } catch(Exception e){
+    	logger.error("Failed to connect to the openAPE database");
     	return;
     }
         
@@ -197,15 +201,7 @@ public class DatabaseConnection implements ServerMonitorListener {
 
     }
 
-    private void testDatabase() {
-    	 Mongo mongo = new Mongo();
-    	 DBObject ping = new BasicDBObject("ping", "1");
-    	 
-    	       mongo.getDB(DATABASENAME ).command(ping);
-    	       logger.info("Database \"" + DATABASENAME + "\" available." );
-    	 	}
-
-	private void readConfigFile() {
+    private void readConfigFile() {
     	final String name = MongoConfig.getString("databaseName");//$NON-NLS-1$
         if (name != null && !name.equals(Messages.getString("DatabaseConnection.EmptyString"))) {//$NON-NLS-1$
             DatabaseConnection.DATABASENAME = name;
@@ -356,6 +352,57 @@ public class DatabaseConnection implements ServerMonitorListener {
         return executeQuery(type, collectionToWorkOn, query, false);
     }
 
+    
+    
+    /***************/
+    
+    public void removeData(MongoCollectionTypes type, String id) throws IOException {
+        final MongoCollection<Document> collectionToWorkOn = this.getCollectionByType(type);
+        // Search for object in database.
+        Bson filter = new Document(Messages.getString("DatabaseConnection._id"), new ObjectId(id));
+        collectionToWorkOn.deleteOne(filter);
+        
+    }
+    
+    public ArrayList<Document> getAllDocuments(MongoCollectionTypes type) throws IOException {
+        final MongoCollection<Document> collectionToWorkOn = this.getCollectionByType(type);
+        ArrayList<Document> listDocuments = new ArrayList<Document>(); 
+        // Search for object in database.
+        
+        FindIterable<Document> find = collectionToWorkOn.find();
+                
+        MongoCursor<Document> cursor = find.iterator();
+
+        
+        while(cursor.hasNext()) {
+        	
+        	listDocuments.add(cursor.next());
+        }
+
+        return listDocuments;
+    }
+    
+    
+    public UpdateResult updateDocument(MongoCollectionTypes type, String id, String indexName, String indexValue) throws Exception {
+    	
+        final MongoCollection<Document> collectionToWorkOn = this.getCollectionByType(type);
+
+		Bson filter = new Document(Messages.getString("DatabaseConnection._id"), new ObjectId(id));
+		Bson newValue = new Document(indexName, indexValue);
+		Bson updateOperationDocument = new Document("$set", newValue);
+             
+		UpdateResult updateResult = null; 
+        
+		try {
+            updateResult = collectionToWorkOn.updateOne(filter, updateOperationDocument); 
+        } catch (Exception err) {
+            throw new Exception(err.getMessage());
+        }
+       
+        
+        return updateResult;
+    }
+    
     /**
      * Query a collection by a certain attribute and value. Will return the first document matching the query or
      * null if no document matches the query.
@@ -680,5 +727,10 @@ public class DatabaseConnection implements ServerMonitorListener {
 		logger.error("Connecting to MongoDB at " + this.DATABASEURL + ":" + this.DATABASEPORT + " failed.\n" + event);
 		firstTime = true;  // logger can now indicate when new connection will be found again.
 			}
+
+	public ArrayList<Document> getAllDocuments(String string) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }

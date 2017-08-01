@@ -1,7 +1,11 @@
 package org.openape.server.rest;
 
+import static spark.Spark.get;
+
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.openape.api.Messages;
 import org.openape.server.Main;
@@ -13,11 +17,26 @@ import org.openape.server.requestHandler.ResourceDescriptionRequestHandler;
 import org.openape.server.requestHandler.ResourceRequestHandler;
 import org.openape.server.requestHandler.TaskContextRequestHandler;
 import org.openape.server.requestHandler.UserContextRequestHandler;
+import org.openape.ui.velocity.controller.Administration;
+import org.openape.ui.velocity.controller.Contact;
+import org.openape.ui.velocity.controller.Context;
+import org.openape.ui.velocity.controller.Downloads;
+import org.openape.ui.velocity.controller.GettingStarted;
+import org.openape.ui.velocity.controller.Index;
+import org.openape.ui.velocity.controller.LegalNotice;
+import org.openape.ui.velocity.controller.MyContexts;
+import org.openape.ui.velocity.controller.MyGroups;
+import org.openape.ui.velocity.controller.MyProfile;
+import org.openape.ui.velocity.controller.MyResources;
+import org.openape.ui.velocity.controller.Tutorials;
+import org.openape.ui.velocity.requestHandler.AdminSectionRequestHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import spark.ModelAndView;
 import spark.Request;
 import spark.Spark;
+import spark.template.velocity.VelocityTemplateEngine;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -123,7 +142,7 @@ public class SuperRestInterface {
 
         
 
-Spark.get(Messages.getString("SuperRestInterface.HelloWorldURL"), (request, response) -> Messages.getString("SuperRestInterface.HelloWorld")); //$NON-NLS-1$ //$NON-NLS-2$
+    	Spark.get(Messages.getString("SuperRestInterface.HelloWorldURL"), (request, response) -> Messages.getString("SuperRestInterface.HelloWorld")); //$NON-NLS-1$ //$NON-NLS-2$
         // Endpoint to receive tokens
         TokenRESTInterface.setupTokenRESTInterface(authService);
         ProfileRESTInterface.setupProfileRESTInterface();
@@ -135,7 +154,132 @@ Spark.get(Messages.getString("SuperRestInterface.HelloWorldURL"), (request, resp
                 
 ResourceDescriptionRESTInterface.setupResourceDescriptionRESTInterface(new ResourceDescriptionRequestHandler(), authService);
         
-        ResourceRESTInterface.setupResourceRESTInterface(new ResourceRequestHandler());
+		
+        try {
+			Administration.setupAdministrationVELOCITYInterface(new AdminSectionRequestHandler());
+		} catch (IllegalArgumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        
+        try {
+			GettingStarted.setupGettingStartedVELOCITYInterface();
+		} catch (IllegalArgumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        
+        try {
+			Tutorials.setupTutorialsVELOCITYInterface();
+		} catch (IllegalArgumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        
+        try {
+			Downloads.setupDownloadsVELOCITYInterface();
+		} catch (IllegalArgumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        
+        
+        try {
+			Context.setupContextVELOCITYInterface();
+		} catch (IllegalArgumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        
+        
+        
+        try {
+			Contact.setupContactVELOCITYInterface();
+		} catch (IllegalArgumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        
+        try {
+			MyProfile.setupMyProfileVELOCITYInterface();
+		} catch (IllegalArgumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        
+        try {
+			MyContexts.setupTutorialsVELOCITYInterface();
+		} catch (IllegalArgumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        
+        try {
+			MyResources.setupMyResourcesVELOCITYInterface();
+		} catch (IllegalArgumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        
+        try {
+			MyGroups.setupMyGroupsVELOCITYInterface();
+		} catch (IllegalArgumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        
+        try {
+			LegalNotice.setupLegalNoticeVELOCITYInterface();
+		} catch (IllegalArgumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        
+        try {
+			Index.setupIndexVELOCITYInterface();
+		} catch (IllegalArgumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        
+        //REST-Interfaces
+		ResourceRESTInterface.setupResourceRESTInterface(new ResourceRequestHandler());
         TaskContextRESTInterface.setupTaskContextRESTInterface(new TaskContextRequestHandler(), authService);
         UserContextRESTInterface.setupUserContextRESTInterface(new UserContextRequestHandler(), authService);
         logger.info("REST API successfully set up");
