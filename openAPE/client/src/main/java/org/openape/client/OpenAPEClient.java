@@ -18,11 +18,9 @@ import javax.ws.rs.core.Form;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-
-import org.openape.api.Messages;
-
 import org.openape.api.OpenAPEEndPoints;
 import org.openape.api.PasswordChangeRequest;
+import org.openape.api.auth.TokenResponse;
 import org.openape.api.environmentcontext.EnvironmentContext;
 import org.openape.api.equipmentcontext.EquipmentContext;
 import org.openape.api.listing.Listing;
@@ -51,7 +49,7 @@ this(userName, password, "http://openape.gpii.eu");
 
 public OpenAPEClient(String userName, String password, String uri) {
 //	create HTTP client that connects to the server
-	System.out.println("Constructor");
+	logger.info("Initialising OpenAPE client");
 //	ClientConfig config = new ClientConfig();
 	 client = ClientBuilder.newClient();//config);
 webResource = client.target(uri);
@@ -65,13 +63,16 @@ this.userId = getMyId();
 }
 
 private String getMyId() {
-	// TODO Auto-generated method stub
+	
 	Response response = getRequest(OpenAPEEndPoints.MY_ID  ).get();
-	return response.readEntity(String.class);
+checkResponse(response);
+	String id = response.readEntity(String.class);
+	logger.debug("Received user id: " + id);
+	return id; 
 }
 
 private String getToken(String userName,String password){
-	String tokenRequest= "grant_type=password&username=" + userName + "&password=" + password;
+	
 	Form form = new Form();
 	form.param("grant_type","password");
 	form.param( "username",userName);
@@ -88,7 +89,7 @@ private String getToken(String userName,String password){
 				throw new RuntimeException("Failed : HTTP error code : " + status );
 			}
 			
-		    String output = response.readEntity(String.class);
+		    String output = response.readEntity(TokenResponse.class).getAccessToken()	;
 		 
 return output;
 
@@ -229,6 +230,7 @@ return 		getResource(uri, targetFile);
 	}
 
 	Builder getRequest(String path){
+logger.debug("Building request for URL: " + path);
 		return webResource.path(path).request().header("Authorization", this.token);
 				
 	}

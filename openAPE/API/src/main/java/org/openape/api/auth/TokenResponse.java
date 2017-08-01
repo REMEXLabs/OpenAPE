@@ -21,6 +21,10 @@ public class TokenResponse {
         this.expiresIn = expiresIn;
     }
 
+    public TokenResponse(){
+    	
+    }
+    
     public String getAccessToken() {
         return accessToken;
     }
