@@ -1,5 +1,19 @@
 var selectedRoles = [];
 $(document).ready(function() {
+	
+	if(window.location.hash == "#equipment-contexts"){
+		$('#collapseTwo').addClass("in");
+		openCity(event, "equipment-contexts");
+		
+		$("#collapseTwo").find("table td a.active").closest("tr").attr("hidden","true");
+		
+		$("#example").find("td").each(function() {
+			if($(this).text().indexOf(localStorage.getItem("userid")) != -1){
+				$(this).closest('tr').attr("hidden", true);
+			}
+		})
+		
+	}
 	//resetting errormessages if closing the modal
 	$('#editEquipmentContextModal').on('hidden.bs.modal', function () {
 		$('#editEquipmentContextMainErrSection').empty();
@@ -25,9 +39,7 @@ $(document).ready(function() {
     $('#btnConfirmDeleteEquipmentContext').click(function(){ 
     	openape.deleteEquipmentContext(localStorage.getItem("id")); 
     	$('#deleteEquipmentContextModal').modal('hide');
-    	e.preventDefault();
     	setTimeout(function(){ 
-    		
     		location.reload();
    		}, 1000);
     })

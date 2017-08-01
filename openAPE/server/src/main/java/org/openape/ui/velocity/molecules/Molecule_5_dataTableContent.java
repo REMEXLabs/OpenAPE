@@ -59,8 +59,8 @@ public String generateUserContextContent(ArrayList<String[]> listUserContexts){
 
 			
 			tableContent +=  "<tr>"
-					+ "<td id='tdUserContextName_"+userContext[1]+"'>"+userContext[0]+"</td>"
-					+ "<td>"+userContext[1]+"</td>"
+					+ "<td id='tdUserContextName_"+userContext[1]+"'>"+userContext[1]+"</td>"
+					+ "<td>"+userContext[0]+"</td>"
 					+ "<td>"+userContext[2]+"</td>"
 					+ "<td>"
 					+ "<button id='"+userContext[1]+"' class='btn btn-md btn-default' onClick='editUserContext(this)' ><div class='glyphicon glyphicon-edit' ></div> Edit </button>"

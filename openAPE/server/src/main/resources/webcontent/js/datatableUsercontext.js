@@ -1,5 +1,11 @@
 var selectedRoles = [];
 $(document).ready(function() {
+	if(window.location.hash == "#user-contexts"){
+		$('#collapseTwo').addClass("in");
+		openCity(event, "user-contexts");
+		$('#trTabUserContexts').attr("style", "background-color:#e8e5e5");
+	}
+	
 	//resetting errormessages if closing the modal
 	$('#editUserContextModal').on('hidden.bs.modal', function () {
 		$('#editUserContextMainErrSection').empty();
@@ -68,6 +74,7 @@ function editUserContext(event){
 }
 
 function getUserContext(id){
+	console.log(openape.getUserContext(id).responseText);
 	return JSON.parse(openape.getUserContext(id).responseText).contexts;
 }
 
@@ -100,12 +107,5 @@ function removeUserContext(userContextId) {
 	    contentType: 'application/json',
 	    url: 'http://localhost:4567/api/user-contexts/'+userContextId,
 	    dataType: "json",
-	    
-	    success: function(data, textStatus, jqXHR){
-	    	
-	    },
-	    error: function(jqXHR, textStatus, errorThrown){
-	       // alert('Medicine information could be deleted');
-	    }
 	});
 }

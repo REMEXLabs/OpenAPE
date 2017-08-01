@@ -1,9 +1,15 @@
 var selectedRoles = [];
 $(document).ready(function() {
-	//if($('td').attr("id").includes(localStorage.getItem("userid"))){
-	//	$('#tdUserName_'+localStorage.getItem("userid")).closest('tr').hide();
-	//}
+	if(window.location.hash == "#users"){
+		$('#collapseTwo').removeClass("in");
+		openCity(event, "users");
+	}
 	
+	$("#example").find("td").each(function() {
+		if($(this).text().indexOf(localStorage.getItem("userid")) != -1){
+			$(this).closest('tr').attr("hidden", true);
+		}
+	})
 	//add user
 	$('#errUsername').hide();
 	$('#errEmail').hide();
@@ -63,6 +69,10 @@ $(document).ready(function() {
     	if($.inArray("admin", selectedRoles) == -1) {
     		selectedRoles.push("admin");
     		$(this).addClass("selected");
+        	if($.inArray("user", selectedRoles) != -1) {
+        		selectedRoles.splice($.inArray("user", selectedRoles),1);
+        		$('#editRoleUser').removeClass("selected");
+        	}
     	} else {
     		selectedRoles.splice($.inArray("admin", selectedRoles),1);
     		$(this).removeClass("selected");
@@ -73,16 +83,27 @@ $(document).ready(function() {
     	if($.inArray("admin", selectedRoles) == -1) {
     		selectedRoles.push("admin");
     		$(this).addClass("selected");
+    		$('#editRoleUser').removeClass("selected");
+    		if($.inArray("user", selectedRoles) != -1) {
+        		selectedRoles.splice($.inArray("user", selectedRoles),1);
+        		$('#addRoleUser').removeClass("selected");
+        	}		
     	} else {
     		selectedRoles.splice($.inArray("admin", selectedRoles),1);
     		$(this).removeClass("selected");
+    		$('#editRoleUser').removeClass("selected");
     	}	
     })
     
-    $('#editRoleUser').click(function(){ 
+    $('#editRoleUser').click(function(){   	
     	if($.inArray("user", selectedRoles) == -1) {
     		selectedRoles.push("user");
     		$(this).addClass("selected");
+    		$('#editRoleAdmin').removeClass("selected");
+        	if($.inArray("admin", selectedRoles) != -1) {
+        		selectedRoles.splice($.inArray("admin", selectedRoles),1);
+        		$('#editRoleAdmin').removeClass("selected");
+        	}		
     	} else {
     		selectedRoles.splice($.inArray("user", selectedRoles),1);
     		$(this).removeClass("selected");
@@ -93,10 +114,14 @@ $(document).ready(function() {
     	if($.inArray("user", selectedRoles) == -1) {
     		selectedRoles.push("user");
     		$(this).addClass("selected");
+        	if($.inArray("admin", selectedRoles) != -1) {
+        		selectedRoles.splice($.inArray("admin", selectedRoles),1);
+        		$('#addRoleAdmin').removeClass("selected");
+        	}
     	} else {
     		selectedRoles.splice($.inArray("user", selectedRoles),1);
     		$(this).removeClass("selected");
-    	}	
+    	}
     })
     
     $('#btnConfirmCreateUser').click(function(){ 
@@ -108,8 +133,6 @@ $(document).ready(function() {
     	
     	validateAddUserFields(objUser);
     })
-    
-   
 } );
 
 

@@ -9,6 +9,11 @@ $(document).ready(function() {
 		$('#addEnvironmentContextMainErrSection').empty();
 	});
 	
+	if(window.location.hash == "#environment-contexts"){
+		openCity(event, "environment-contexts");
+	}
+	
+	
 	
 	//initialising the datatable
 	$('#environmentContextDataTable').DataTable( {
@@ -26,6 +31,7 @@ $(document).ready(function() {
     	openape.deleteEnvironmentContext(localStorage.getItem("id")); 
     	$('#deleteEnvironmentContextModal').modal('hide');
     	setTimeout(function(){ 
+    		localStorage.setItem("location", "environment-contexts");
     		location.reload();
    		}, 1000);
     })

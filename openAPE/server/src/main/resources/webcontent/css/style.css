@@ -220,6 +220,7 @@ div.tab button.active {
   font-weight: bold; }
 
 body {
+  height: 100%;
   background: #eee; }
   body a {
     color: black; }

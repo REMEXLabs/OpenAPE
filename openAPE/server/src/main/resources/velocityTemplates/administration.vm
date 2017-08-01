@@ -33,7 +33,9 @@
 
 
   
+<script>
 
+</script>
 
 
 </head>
@@ -70,25 +72,25 @@ $subSection
                             </span>Contexts</a>
                         </h4>
                     </div>
-                    <div id="collapseTwo" class="panel-collapse collapse">
+                    <div id="collapseTwo" class="panel-collapse collapse in">
                         <div class="panel-body" style="background-color:#f9f9f9">
-                            <table class="table">
-                                <tr>
+                            <table class="table" id="tbltabContexts">
+                                <tr id="trTabUserContexts">
                                     <td>
-                                        <a href="#user-contexts" onclick="openCity(event, 'user-contexts')">User-Contexts</a>
+                                        <a id="tabUserContexts" href="#user-contexts" onclick="openCity(event, 'user-contexts')">User-Contexts</a>
                                     </td>
                                 </tr>
-                                <tr>
+                                <tr id="trTabTaskContexts">
                                     <td>
                                         <a href="#task-contexts" onclick="openCity(event, 'task-contexts')">Task-Contexts</a>
                                     </td>
                                 </tr>
-                                <tr>
+                                <tr id="trTabEquipmentContexts">
                                     <td>
                                         <a href="#equipment-contexts" onclick="openCity(event, 'equipment-contexts')">Equipment-Contexts</a>
                                     </td>
                                 </tr>
-                                <tr>
+                                 <tr id="trTabEnvironmentContexts">
                                     <td>
                                         <a href="#environment-contexts" onclick="openCity(event, 'environment-contexts')">Environment-Contexts</a>
                                     </td>

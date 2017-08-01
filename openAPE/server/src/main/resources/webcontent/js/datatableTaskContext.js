@@ -1,5 +1,14 @@
 var selectedRoles = [];
 $(document).ready(function() {
+	
+	if(window.location.hash == "#task-contexts"){
+		$('#collapseTwo').removeClass("in");
+		$('#collapseTwo').addClass("in");
+		openCity(event, "task-contexts");
+		
+		$('#trTabTaskContexts').attr("style", "background-color:#e8e5e5");
+	}
+	
 	//resetting errormessages if closing the modal
 	$('#editTaskContextModal').on('hidden.bs.modal', function () {
 		$('#editTaskContextMainErrSection').empty();
@@ -26,13 +35,13 @@ $(document).ready(function() {
     	openape.deleteTaskContext(localStorage.getItem("id")); 
     	$('#deleteTaskContextModal').modal('hide');
     	setTimeout(function(){ 
-    		$('#taskContextDataTable').DataTable().ajax.reload();
+    		location.reload();
    		}, 1000);
     })
     
     $('#btnConfirmAddTaskContext').click(function(){ 
     	var taskContextJSON = $('#inputAdministrationAddTaskContext').val();   	
-    	validateTaskContext(taskContextJSON, openape.createTaskContext(taskContextJSON), "add") == true ? location.reload() : void 0;	
+    	validateTaskContext(taskContextJSON, openape.createTaskContext(taskContextJSON), "add") == true ? window.location.reload() : void 0;	
     })
     
     $('#btnConfirmEditTaskContext').click(function(){ 

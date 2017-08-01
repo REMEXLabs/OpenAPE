@@ -14,7 +14,7 @@ $(document).ready(function() {
 		}
 	}
 	
-	var href = document.location.href;
+	var href = window.location.href;
 	var lastPathSegment = href.substr(href.lastIndexOf('/') + 1);
 	
 	if(lastPathSegment == "gettingStarted"){
@@ -73,7 +73,7 @@ $(document).ready(function() {
 		 	$('#divMyProfile').removeClass("active");
 		 	$('#divMyGroups').removeClass("active");
 		 	$('#divHome').removeClass("active");
-	} else if(lastPathSegment == "administration"){
+	} else if(lastPathSegment.indexOf("administration") != -1){
 		$('#divAdministration').addClass("active");
 		$('#divMyGroups').removeClass("active");
 		$('#divMyContexts').removeClass("active");
@@ -176,7 +176,7 @@ $(document).ready(function() {
     })
 } );
 
-function openCity(evt, cityName) {
+function openCity(evt, tabName) {
     // Declare all variables
     var i, tabcontent, tablinks;
 
@@ -193,7 +193,38 @@ function openCity(evt, cityName) {
     }
 
     // Show the current tab, and add an "active" class to the button that opened the tab
-    document.getElementById(cityName).style.display = "block";
+    document.getElementById(tabName).style.display = "block";
     evt.currentTarget.className += " active";
+    
+    
+   
+    if(tabName == "user-contexts"){
+    	$('#trTabUserContexts').attr("style", "background-color:#e8e5e5");
+    	$('#trTabTaskContexts').removeAttr("style");
+    	$('#trTabEnvironmentContexts').removeAttr("style");
+    	$('#trTabEquipmentContexts').removeAttr("style");
+    } else if(tabName == "environment-contexts"){
+    	$('#trTabEnvironmentContexts').attr("style", "background-color:#e8e5e5");
+    	$('#trTabTaskContexts').removeAttr("style");
+    	$('#trTabUserContexts').removeAttr("style");
+    	$('#trTabEquipmentContexts').removeAttr("style");
+    } else if(tabName == "task-contexts"){
+    	$('#trTabTaskContexts').attr("style", "background-color:#e8e5e5");
+    	$('#trTabEnvironmentContexts').removeAttr("style");
+    	$('#trTabUserContexts').removeAttr("style");
+    	$('#trTabEquipmentContexts').removeAttr("style");
+    } else if(tabName == "equipment-contexts"){
+    	$('#trTabEquipmentContexts').attr("style", "background-color:#e8e5e5");
+    	$('#trTabEnvironmentContexts').removeAttr("style");
+    	$('#trTabUserContexts').removeAttr("style");
+    	$('#trTabTaskContexts').removeAttr("style");
+    } else if(tabName == "users") {
+    	$('#trTabTaskContexts').removeAttr("style");
+    	$('#trTabEnvironmentContexts').removeAttr("style");
+    	$('#trTabEquipmentContexts').removeAttr("style");
+    	$('#trTabUserContexts').removeAttr("style");
+    	
+    	$('#collapseTwo').removeClass("in");
+    }
 }
 

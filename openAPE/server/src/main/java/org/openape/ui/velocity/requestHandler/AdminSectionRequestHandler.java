@@ -84,7 +84,7 @@ public class AdminSectionRequestHandler {
         	Document documentContext = (Document) entry.get("contexts");
         	Document documentDefault = (Document) documentContext.get("default");
         	
-        	String name = documentDefault.getString("name");
+        	String userid = entry.getString("owner").toString();
         	String id = entry.getObjectId("_id").toString();
         	boolean isPublic = entry.getBoolean("public");
         	String stringIsPublic = "";
@@ -95,7 +95,7 @@ public class AdminSectionRequestHandler {
         		stringIsPublic = "true";
         	}
         	
-        	String[] myStringArray = {name,id,stringIsPublic};
+        	String[] myStringArray = {userid,id,stringIsPublic};
         	listContext.add(myStringArray);
         }
         
