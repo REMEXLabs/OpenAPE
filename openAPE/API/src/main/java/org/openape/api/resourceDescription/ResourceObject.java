@@ -1,6 +1,7 @@
 package org.openape.api.resourceDescription;
 
 import java.io.File;
+import java.util.List;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
@@ -22,7 +23,7 @@ public class ResourceObject extends Resource {
     private String fileName = null;
     private String ownerId = null;
     private String mimeType = null;
-    private ResourceDescription resourceDescription = null;
+    private List<ResourceDescription> resourceDescriptions = null;
 
     public ResourceObject(String fileName, String ownerId, String mimeType) {
         super();
@@ -62,8 +63,8 @@ public class ResourceObject extends Resource {
     }
 
     @XmlElement(name = "resourceDescription")
-    public ResourceDescription getResourceDescription() {
-        return this.resourceDescription;
+    public List<ResourceDescription> getResourceDescriptions() {
+        return this.resourceDescriptions;
     }
 
     public void setFileName(String fileName) {
@@ -82,8 +83,13 @@ public class ResourceObject extends Resource {
         this.ownerId = ownerId;
     }
 
-    public void setResourceDescription(ResourceDescription resourceDescription) {
-        this.resourceDescription = resourceDescription;
+    public void setResourceDescriptions(List<ResourceDescription> resourceDescriptions) {
+        this.resourceDescriptions = resourceDescriptions;
+    }
+    
+    @JsonIgnore
+    public void addResourceDescription(ResourceDescription resourceDescription) {
+        this.resourceDescriptions.add(resourceDescription);
     }
 
 }
