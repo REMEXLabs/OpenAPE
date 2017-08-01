@@ -29,7 +29,7 @@ public class ProfileRESTInterface extends SuperRestInterface {
         final AuthService authService = new AuthService();
         Spark.before("/profile", authService.authorize("default"));
         /* returns a user object /*
-        Spark.get("/profile", "app", (req, res) -> {
+        /*Spark.get("/profile", "app", (req, res) -> {
             final SparkWebContext context = new SparkWebContext(req, res);
             final ProfileManager manager = new ProfileManager(context);
             final Optional<CommonProfile> profile = manager.get(false);
@@ -37,7 +37,7 @@ public class ProfileRESTInterface extends SuperRestInterface {
             res.type(Messages.getString("UserContextRESTInterface.JsonMimeType"));
             return mapper.writeValueAsString(User.getFromProfile(profile.get()));
         });
-
+*/
         // TODO: Remove this before live deployment!
         Spark.post("/users", (req, res) -> {
             try {
@@ -57,7 +57,8 @@ public class ProfileRESTInterface extends SuperRestInterface {
         
         Spark.before( OpenAPEEndPoints.USER_PASSWORD   , authService.authorize("user"));
         Spark.put(OpenAPEEndPoints.USER_PASSWORD, (req,res) ->  {
-        User authUser = authService.getAuthenticatedUser(req, res);
+        logger.info("blabla");
+        	User authUser = authService.getAuthenticatedUser(req, res);
         
         PasswordChangeRequest pwChangeReq  = (PasswordChangeRequest) SuperRestInterface.extractObjectFromRequest(req, PasswordChangeRequest.class	);
         if (PasswordEncoder.encode(pwChangeReq.oldPassword).equals(authUser.getPassword() ) ){
