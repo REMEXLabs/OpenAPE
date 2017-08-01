@@ -1,7 +1,11 @@
 package org.openape.server.database.mongoDB;
 
 import java.io.IOException;
+<<<<<<< HEAD
 import java.util.ArrayList;
+=======
+import java.net.ConnectException;
+>>>>>>> refs/remotes/origin/newMaster
 import java.util.Arrays;
 import java.util.Iterator;
 
@@ -32,8 +36,13 @@ import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mongodb.BasicDBObject;
+<<<<<<< HEAD
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
+=======
+import com.mongodb.DBObject;
+import com.mongodb.Mongo;
+>>>>>>> refs/remotes/origin/newMaster
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientOptions;
 import com.mongodb.MongoCredential;
@@ -171,9 +180,11 @@ public class DatabaseConnection implements ServerMonitorListener {
         
         // Get a reference to the openAPE database.
         this.database = this.mongoClient.getDatabase(DatabaseConnection.DATABASENAME);
-        logger.info("Found openAPE dataBase");
-    } catch(Exception e){
-    	logger.error("Failed to connect to the openAPE database");
+
+        //Test if a connection to the MongoDB can be established        
+        testDatabase();
+    }  catch(Exception e){
+    	logger.error("Failed to connect to database \"" + DATABASENAME + "\"." );
     	return;
     }
         
@@ -201,7 +212,15 @@ public class DatabaseConnection implements ServerMonitorListener {
 
     }
 
-    private void readConfigFile() {
+    private void testDatabase() {
+    	 Mongo mongo = new Mongo();
+    	 DBObject ping = new BasicDBObject("ping", "1");
+    	 
+    	       mongo.getDB(DATABASENAME ).command(ping);
+    	       logger.info("Database \"" + DATABASENAME + "\" available." );
+    	 	}
+
+	private void readConfigFile() {
     	final String name = MongoConfig.getString("databaseName");//$NON-NLS-1$
         if (name != null && !name.equals(Messages.getString("DatabaseConnection.EmptyString"))) {//$NON-NLS-1$
             DatabaseConnection.DATABASENAME = name;
