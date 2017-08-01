@@ -7,7 +7,7 @@ static String userContextId = "592d48b938f553545b8a8dd0";
 		// TODO Auto-generated method stub
 System.out.println("starte test");
 		try{
-		OpenAPEClient client = new OpenAPEClient("daniel","ich");
+		OpenAPEClient client = new OpenAPEClient("daniel","ich", "http://localhost:4567");
 UserContext userContext = client.getUserContext(userContextId);
 	System.out.println(userContext);
 	System.out.println("erledigt");
