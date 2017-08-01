@@ -168,10 +168,6 @@ function editUser(event){
 		selectedRoles.push("user");
 	}
 	
-	
-	
-	localStorage.setItem("username", $("#tdUserName_"+id).html());
-	localStorage.setItem("email", $("#tdEmail_"+id).html());
 	localStorage.setItem("id", id);
 }
 
