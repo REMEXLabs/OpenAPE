@@ -14,7 +14,7 @@ public class Organism_3_DataTable {
 		String administrationDatableContent = new Molecule_5_dataTableContent().generateAdministrationUserContent(adminsectionRequestHandler.getAllUsers());
 		adminsectionRequestHandler.getAllUsercontexts();
 		String administrationUserTable =""
-			+ "<table id='example' class='table table-striped table-bordered' cellspacing='0' width='100%'>"
+			+ "<table id='user' class='table table-striped table-bordered' cellspacing='0' width='100%'>"
 	        + "<thead>"
 	        + "<tr>"
 	        + "<th>Username</th>"

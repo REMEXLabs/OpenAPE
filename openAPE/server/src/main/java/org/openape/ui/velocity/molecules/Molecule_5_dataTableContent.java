@@ -41,9 +41,8 @@ public class Molecule_5_dataTableContent {
 					+ "<td id='tdEmail_"+users.getId()+"'>"+email+"</td>"
 					+ "<td id='tdRoles_"+users.getId()+"'>"+roles+"</td>"
 					+ "<td>"
-					+ "<button id='"+users.getId()+"' class='btn btn-md btn-default' onClick='editUser(this)' ><div class='glyphicon glyphicon-edit' ></div> Edit </button>"
-					+ "<button id='"+users.getId()+"' class='btn btn-md btn-default' onClick='deleteUser(this)'><div class='glyphicon glyphicon-trash'></div> Delete </button> "
-					+ "<button id='"+users.getId()+"' class='btn btn-md btn-default'><div class='glyphicon glyphicon-copy'></div> Copy to clipboard  </button> </td></tr>";
+					+ "<button id='edit_"+users.getId()+"' class='btn btn-md btn-default' onClick='editUser(this)' ><div class='glyphicon glyphicon-edit' ></div> Edit </button>"
+					+ "<button id='delete_"+users.getId()+"' class='btn btn-md btn-default' onClick='deleteUser(this)'><div class='glyphicon glyphicon-trash'></div> Delete </button></tr>";
 		}
 		
 				

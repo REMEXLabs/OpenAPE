@@ -3,16 +3,36 @@
 @import 'content';
 @import 'modal';
 
-.main{
-	h1 {
+
+.wrapper {
+   min-height:100%;
+   position:relative;
+   h1 {
 	color:#740a1b;
 	font-weight:bold;
+   }
+  
+  	.body {
+   		.landingPage {
+   			
+   		}
+   	
+   		.oneContentBlock {
+   			padding:3em;
+   			padding-bottom:10em;   /* Height of the footer */
+   		}
+   	
+   		.twoContentBlocks {
+   			
+   		}
+	}
 }
 
-}
-
+html,
 body {
-	height: 100%;
+	margin:0;
+   	padding:0;
+   	height:100%;
 	a {
 		color:black;
 	}

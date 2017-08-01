@@ -32,30 +32,21 @@
 <script src="js/datatableEnvironmentContext.js" type="text/javascript"></script>
 
 
-  
-<script>
-
-</script>
-
 
 </head>
 
 <body>
 
-<div class="main">
-$topNavigation
-$subSection
+<div class="wrapper">
+   <div class="header">
+	$topNavigation
+	$subSection
+   </div>
 
 <div class="content">
 	<div class="leftContent">
 		<br>
 		<div ><h4><b>Administration</b></h4></div> <br>
-	<!--	<div class="leftNavigation" id="div_nav_adminsectionUsers"><a href='#' onclick="openCity(event, 'users')" id="nav_adminsectionUsers">Users</a></div>
-		<div class="leftNavigation" id="div_nav_adminsectionGroups"><a href='#' onclick="openCity(event, 'groups')" id="nav_adminsectionGroups">Groups</a></div>
-		<div class="leftNavigation" id="div_nav_adminsectionContexts"><a href='#' onclick="openCity(event, 'contexts')" id="nav_adminsectionContexts">Contexts</a></div>
-		<div class="leftNavigation"><a href='#'>Resources</a></div>	 -->
-		
-		
             <div class="panel-group" id="accordion">
                  <div class="panel panel-default">
                     <div class="panel-heading">
@@ -378,7 +369,7 @@ $subSection
 	</div>
 </div>
 
-<footer class="footer">$footer</footer>
+<div id="footer">$footer</div>
 </div>
 </body>
 </html>

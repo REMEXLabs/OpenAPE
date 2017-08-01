@@ -24,20 +24,20 @@
 </head>
 <body>
 
-<div class="main">
-	$signinModal
+<div class="wrapper">
+   <div class="header">
+   	$signinModal
 	$signupModal
-	
 	$topNavigation
 	$subSection
-		
-	<div class="content">	
-		<div class="mainContent">
-		 <h1>Downloads</h1> <br>
-		  Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+   </div>
+   <div class="body">
+	   	 <div class="oneContentBlock">
+	   	 	   <h1>Downloads</h1> <br>
+			  Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
 		</div> 
-	</div>
-	<footer class="footer">$footer</footer>
+   </div>
+   <div id="footer">$footer</div>
 </div>
 </body>
 </html>

@@ -5,10 +5,15 @@ $(document).ready(function() {
 		openCity(event, "users");
 	}
 	
-	$("#example").find("td").each(function() {
-		if($(this).text().indexOf(localStorage.getItem("userid")) != -1){
+	$("#edit_"+localStorage.getItem("userid")).attr("disabled", true);
+	$("#delete_"+localStorage.getItem("userid")).attr("disabled", true);
+	
+	$("#user").find("td").each(function() {
+		console.log($(this).find("button").text().trim() == "Edit");
+		$("#"+localStorage.getItem("userid")).attr("disabled", true);
+		/*if($(this).text().indexOf(localStorage.getItem("userid")) != -1){
 			$(this).closest('tr').attr("hidden", true);
-		}
+		}*/
 	})
 	//add user
 	$('#errUsername').hide();
@@ -39,7 +44,7 @@ $(document).ready(function() {
 	});
 	
 	
-	$('#example').DataTable( {
+	$('#user').DataTable( {
 		"lengthMenu": [[5, 10, 15, -1], [5, 10, 15, "All"]]
     } ); 
 	 
@@ -138,7 +143,8 @@ $(document).ready(function() {
 
 function deleteUser(event){
 	$('#deleteUserModal').modal('show');
-	localStorage.setItem("userId", event.id);
+	var id = event.id.substring(event.id.indexOf("_")+1, event.id.length);
+	localStorage.setItem("userId", id);
 }
 
 
@@ -147,24 +153,26 @@ function createUser(event){
 }
 
 function editUser(event){
+	var id = event.id.substring(event.id.indexOf("_")+1, event.id.length);
 	$('#editModal').modal('show');
-	$('#editUsernameInput').val($("#tdUserName_"+event.id).html());
-	$('#editEmailInput').val($("#tdEmail_"+event.id).html());
+	$('#editUsernameInput').val($("#tdUserName_"+id).html());
+	$('#editEmailInput').val($("#tdEmail_"+id).html());
 	
-	if($("#tdRoles_"+event.id).html() == "admin")	{
+	if($("#tdRoles_"+id).html() == "admin")	{
 		$('#editRoleAdmin').addClass("selected");
 		selectedRoles.push("admin");
 	} 
 	
-	if($("#tdRoles_"+event.id).html() == "user"){
+	if($("#tdRoles_"+id).html() == "user"){
 		$('#editRoleUser').addClass("selected");
 		selectedRoles.push("user");
 	}
 	
 	
-	localStorage.setItem("username", $("#tdUserName_"+event.id).html());
-	localStorage.setItem("email", $("#tdEmail_"+event.id).html());
-	localStorage.setItem("id", event.id);
+	
+	localStorage.setItem("username", $("#tdUserName_"+id).html());
+	localStorage.setItem("email", $("#tdEmail_"+id).html());
+	localStorage.setItem("id", id);
 }
 
 

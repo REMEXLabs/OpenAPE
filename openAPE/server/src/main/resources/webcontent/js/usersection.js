@@ -16,7 +16,7 @@ $(document).ready(function() {
 	
 	$("#btnLoggout").click(function(){
 		localStorage.clear();
-		window.location = document.location.origin+"/gettingStarted";
+		window.location = document.location.origin+"/index";
 	})
 })
 

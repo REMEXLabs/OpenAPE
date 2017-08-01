@@ -152,7 +152,7 @@ $subSection
 </div>
 
 
-<footer class="footer">$footer</footer>
+<footer id="footer">$footer</footer>
 </div>
 
 </body>
