@@ -62,7 +62,10 @@ public class ResourceRequestHandler {
      */
     public boolean deleteResourceById(String id, CommonProfile profile) throws IOException,
             IllegalArgumentException, UnauthorizedException {
-        return ResourceList.getInstance().deleteResource(id, profile);
+        boolean success = ResourceList.getInstance().deleteResource(id, profile);
+        ResourceDescriptionRequestHandler.deleteAllDescriptionsOfAResource(id);
+        return success;
+
     }
 
     /**

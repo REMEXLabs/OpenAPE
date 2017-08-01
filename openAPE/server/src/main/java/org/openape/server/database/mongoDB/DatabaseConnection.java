@@ -1,9 +1,10 @@
 package org.openape.server.database.mongoDB;
 
 import java.io.IOException;
-import java.net.ConnectException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.List;
 
 import com.mongodb.client.model.IndexOptions;
 import com.mongodb.event.ServerHeartbeatFailedEvent;
@@ -25,6 +26,7 @@ import org.openape.server.requestHandler.UserContextRequestHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
@@ -34,7 +36,6 @@ import com.mongodb.MongoClientOptions;
 import com.mongodb.MongoCredential;
 import com.mongodb.MongoException;
 import com.mongodb.ServerAddress;
-import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 
@@ -134,9 +135,10 @@ public class DatabaseConnection implements ServerMonitorListener {
      */
     private MongoCollection<Document> listingContextCollection;
     /**
-     * Database collection holding the mime types of the stored resources.
+     * Database collection holding the describing objects of the stored
+     * resources.
      */
-    private MongoCollection<Document> resourceMimeTypesCollection;
+    private MongoCollection<Document> resourceObjectCollection;
     /**
      * Database collection holding the users.
      */
@@ -190,7 +192,7 @@ public class DatabaseConnection implements ServerMonitorListener {
                 .getCollection(MongoCollectionTypes.RESOURCEDESCRIPTION.toString());
         this.listingContextCollection = this.database.getCollection(MongoCollectionTypes.LISTING
                 .toString());
-        this.resourceMimeTypesCollection = this.database
+        this.resourceObjectCollection = this.database
                 .getCollection(MongoCollectionTypes.RESOURCEOBJECTS.toString());
         this.userCollection = this.database.getCollection(MongoCollectionTypes.USERS.toString());
 
@@ -249,6 +251,38 @@ public class DatabaseConnection implements ServerMonitorListener {
     }
 
     /**
+     * @param type
+     *            of data. Needed to choose the right mongo collection.
+     * @return all objects in the collection of the given type.
+     * @throws IOException
+     *             if database or parse error occurs.
+     */
+    public List<DatabaseObject> getAllObjectsOfType(MongoCollectionTypes type) throws IOException {
+        final MongoCollection<Document> collectionToWorkOn = this.getCollectionByType(type);
+        final Iterator<Document> resultIterator = collectionToWorkOn.find().iterator();
+        List<DatabaseObject> resultList = new ArrayList<DatabaseObject>();
+        while (resultIterator.hasNext()) {
+            final Document resultDocument = resultIterator.next();
+            DatabaseObject result = null;
+            try {
+                // Remove the MongoDB id field
+                resultDocument.remove(Messages.getString("DatabaseConnection._id")); //$NON-NLS-1$
+                String jsonResult = resultDocument.toJson();
+                // reverse mongo special character replacement.
+                jsonResult = this.reverseMongoSpecialCharsReplacement(jsonResult);
+                final ObjectMapper mapper = new ObjectMapper();
+                result = mapper.readValue(jsonResult, type.getDocumentType());
+            } catch (CodecConfigurationException | IOException | JsonParseException e) {
+                e.printStackTrace();
+                throw new IOException(e.getMessage());
+            }
+            resultList.add(result);
+        }
+        return null;
+
+    }
+
+    /**
      * Delete a database object, either a context or a resource, from the
      * database. Choose the object via id and the collection via the collection
      * type.
@@ -298,7 +332,7 @@ public class DatabaseConnection implements ServerMonitorListener {
         } else if (type.equals(MongoCollectionTypes.LISTING)) {
             return this.listingContextCollection;
         } else if (type.equals(MongoCollectionTypes.RESOURCEOBJECTS)) {
-            return this.resourceMimeTypesCollection;
+            return this.resourceObjectCollection;
         } else if (type.equals(MongoCollectionTypes.USERS)) {
             return this.userCollection;
         } else {
@@ -363,8 +397,9 @@ public class DatabaseConnection implements ServerMonitorListener {
      * @return
      * @throws IOException
      */
-    private DatabaseObject executeQuery(MongoCollectionTypes type, MongoCollection collection,
-            BasicDBObject query, boolean includeId) throws IOException {
+    private DatabaseObject executeQuery(MongoCollectionTypes type,
+            MongoCollection<Document> collection, BasicDBObject query, boolean includeId)
+            throws IOException {
         final Iterator<Document> resultIterator = collection.find(query).iterator();
         if (resultIterator.hasNext()) {
             final Document resultDocument = resultIterator.next();
@@ -573,8 +608,8 @@ public class DatabaseConnection implements ServerMonitorListener {
     @Override
     public void serverHeartbeatFailed(ServerHeartbeatFailedEvent event) {
 
-        logger.error("Connecting to MongoDB at " + this.DATABASEURL + ":" + this.DATABASEPORT
-                + " failed.\n" + event);
+        logger.error("Connecting to MongoDB at " + DATABASEURL + ":" + DATABASEPORT + " failed.\n"
+                + event);
         firstTime = true; // logger can now indicate when new connection will be
                           // found again.
     }

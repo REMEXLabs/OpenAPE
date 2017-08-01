@@ -6,6 +6,7 @@ import org.openape.api.environmentcontext.EnvironmentContext;
 import org.openape.api.equipmentcontext.EquipmentContext;
 import org.openape.api.listing.Listing;
 import org.openape.api.resourceDescription.ResourceDescription;
+import org.openape.api.resourceDescription.ResourceObject;
 import org.openape.api.taskcontext.TaskContext;
 import org.openape.api.user.User;
 import org.openape.api.usercontext.UserContext;
@@ -28,7 +29,7 @@ public enum MongoCollectionTypes {
             Messages.getString("MongoCollectionTypes.resourceDescriptionCollectionName"), ResourceDescription.class), //$NON-NLS-1$
     LISTING(Messages.getString("MongoCollectionTypes.lstingCollectionName"), Listing.class), //$NON-NLS-1$
     RESOURCEOBJECTS(
-            Messages.getString("MongoCollectionTypes.resourceObjectsCollectionName"), null), //$NON-NLS-1$
+            Messages.getString("MongoCollectionTypes.resourceObjectsCollectionName"), ResourceObject.class), //$NON-NLS-1$
     USERS("users", User.class);
 
     /**

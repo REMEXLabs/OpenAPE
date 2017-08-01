@@ -1,6 +1,7 @@
 package org.openape.server.requestHandler;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.regex.Pattern;
 
 import org.openape.api.DatabaseObject;
@@ -185,6 +186,21 @@ public class ResourceDescriptionRequestHandler {
         if (!propertyFound) {
             throw new IllegalArgumentException(ResourceDescriptionRequestHandler.PropertyMissing);
         }
+    }
+
+    /**
+     * Deletes all resource descriptions the the given ID in their resource uri
+     * property. Should only be called when the resource gets deleted.
+     * 
+     * @param resourceID
+     * @throws IOException
+     *             if database errors occur.
+     */
+    public static void deleteAllDescriptionsOfAResource(String resourceID) throws IOException {
+        DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
+        //Get all descriptions.
+        List<DatabaseObject> resultList = databaseConnection.getAllObjectsOfType(MongoCollectionTypes.RESOURCEDESCRIPTION);
+        
     }
 
     /**
