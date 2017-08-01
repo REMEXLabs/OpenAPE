@@ -3,8 +3,10 @@ package org.openape.server.database.mongoDB;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.bson.Document;
 import org.bson.codecs.configuration.CodecConfigurationException;
@@ -286,19 +288,23 @@ public class DatabaseConnection implements ServerMonitorListener {
     /**
      * @param type
      *            of data. Needed to choose the right mongo collection.
-     * @return all objects in the collection of the given type.
+     * @return all objects in the collection of the given type and thair
+     *         corresponding ids.
      * @throws IOException
      *             if database or parse error occurs.
      */
-    public List<DatabaseObject> getAllObjectsOfType(MongoCollectionTypes type) throws IOException {
+    public Map<String, DatabaseObject> getAllObjectsOfType(MongoCollectionTypes type)
+            throws IOException {
         final MongoCollection<Document> collectionToWorkOn = this.getCollectionByType(type);
         final Iterator<Document> resultIterator = collectionToWorkOn.find().iterator();
-        final List<DatabaseObject> resultList = new ArrayList<DatabaseObject>();
+        final Map<String, DatabaseObject> resultMap = new HashMap<String, DatabaseObject>();
         while (resultIterator.hasNext()) {
             final Document resultDocument = resultIterator.next();
             DatabaseObject result = null;
+            ObjectId oid = null;
             try {
                 // Remove the MongoDB id field
+                oid = (ObjectId) resultDocument.get("_id");
                 resultDocument.remove(Messages.getString("DatabaseConnection._id")); //$NON-NLS-1$
                 String jsonResult = resultDocument.toJson();
                 // reverse mongo special character replacement.
@@ -309,7 +315,7 @@ public class DatabaseConnection implements ServerMonitorListener {
                 e.printStackTrace();
                 throw new IOException(e.getMessage());
             }
-            resultList.add(result);
+            resultMap.put(oid.toString(), result);
         }
         return null;
 

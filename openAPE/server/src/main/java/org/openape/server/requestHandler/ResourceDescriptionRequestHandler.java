@@ -1,7 +1,9 @@
 package org.openape.server.requestHandler;
 
 import java.io.IOException;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 import org.openape.api.DatabaseObject;
@@ -62,6 +64,41 @@ public class ResourceDescriptionRequestHandler {
             throw new IllegalArgumentException(e.getMessage());
         }
         return id;
+    }
+
+    /**
+     * Deletes all resource descriptions the the given ID in their resource uri
+     * property. Should only be called when the resource gets deleted.
+     *
+     * @param resourceID
+     * @throws IOException
+     *             if database errors occur.
+     */
+    public void deleteAllDescriptionsOfAResource(String resourceID) throws IOException {
+        final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
+        // Get all descriptions.
+        final Map<String, DatabaseObject> resultMap = databaseConnection
+                .getAllObjectsOfType(MongoCollectionTypes.RESOURCEDESCRIPTION);
+        final Set<String> descriptionIDs = resultMap.keySet();
+        // Cast.
+        final Map<String, ResourceDescription> descriptions = new HashMap<String, ResourceDescription>();
+        try {
+            for (final String descriptionID : descriptionIDs) {
+                descriptions.put(descriptionID, (ResourceDescription) resultMap.get(descriptionID));
+            }
+        } catch (final ClassCastException e) {
+            throw new IOException(e.getMessage());
+        }
+        // Get all descriptions belonging to the resource.
+        for (final String descriptionID : descriptionIDs) {
+            final ResourceDescription description = descriptions.get(descriptionID);
+            final String resourceCompare = this.getResourceID(description);
+            if (resourceCompare.equals(resourceID)) {
+                // If resource id fitts, delete the description
+                databaseConnection.deleteData(MongoCollectionTypes.RESOURCEDESCRIPTION,
+                        descriptionID);
+            }
+        }
     }
 
     /**
@@ -149,18 +186,18 @@ public class ResourceDescriptionRequestHandler {
     }
 
     /**
-     * Checks if a resource with the ID given in the resource description is
-     * available.
-     *
      * @param resourceDescription
+     * @return the id of the resource mentioned in the properties of the given
+     *         resource description.
      * @throws IllegalArgumentException
-     *             if it has no property with the name resource-uri, it has the
-     *             wrong form, or no corresponding resource was found.
+     *             if it has no property with the name resource-uri or it has
+     *             the wrong form.
      */
-    private void hasDescriptionResource(ResourceDescription resourceDescription)
-            throws IllegalArgumentException, IOException {
+    private String getResourceID(ResourceDescription resourceDescription)
+            throws IllegalArgumentException {
         // Search for a property with the right name to contain the resource ID.
         boolean propertyFound = false;
+        String resourceID = null;
         for (final Property property : resourceDescription.getPropertys()) {
             if (property.getName()
                     .equals(ResourceDescriptionRequestHandler.ResourceURIPropertyName)) {
@@ -172,35 +209,34 @@ public class ResourceDescriptionRequestHandler {
                     throw new IllegalArgumentException(
                             ResourceDescriptionRequestHandler.WrongURIFormatMsg);
                 }
-                // Check if database contains corresponding resource object.
-                final String resourceID = property.getValue().replaceAll(
+                resourceID = property.getValue().replaceAll(
                         ResourceDescriptionRequestHandler.ResourceURIPatternPrefix, "");
-                final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
-                if (null == databaseConnection.getData(MongoCollectionTypes.RESOURCEOBJECTS,
-                        resourceID)) {
-                    throw new IllegalArgumentException(
-                            ResourceDescriptionRequestHandler.NoResoruceWithThatID + resourceID);
-                }
             }
         }
         if (!propertyFound) {
             throw new IllegalArgumentException(ResourceDescriptionRequestHandler.PropertyMissing);
         }
+        return resourceID;
     }
 
     /**
-     * Deletes all resource descriptions the the given ID in their resource uri
-     * property. Should only be called when the resource gets deleted.
-     * 
-     * @param resourceID
+     * Checks if a resource with the ID given in the resource description is
+     * available.
+     *
+     * @param resourceDescription
+     * @throws IllegalArgumentException
+     *             no corresponding resource was found.
      * @throws IOException
-     *             if database errors occur.
+     *             if database error occurs.
      */
-    public static void deleteAllDescriptionsOfAResource(String resourceID) throws IOException {
-        DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
-        //Get all descriptions.
-        List<DatabaseObject> resultList = databaseConnection.getAllObjectsOfType(MongoCollectionTypes.RESOURCEDESCRIPTION);
-        
+    private void hasDescriptionResource(ResourceDescription resourceDescription)
+            throws IllegalArgumentException, IOException {
+        final String resourceID = this.getResourceID(resourceDescription);
+        final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
+        if (null == databaseConnection.getData(MongoCollectionTypes.RESOURCEOBJECTS, resourceID)) {
+            throw new IllegalArgumentException(
+                    ResourceDescriptionRequestHandler.NoResoruceWithThatID + resourceID);
+        }
     }
 
     /**
