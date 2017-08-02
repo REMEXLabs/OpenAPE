@@ -18,7 +18,8 @@ import org.slf4j.LoggerFactory;
  */
 public class UserContextRequestHandler {
 private static Logger logger = LoggerFactory.getLogger(UserContextRequestHandler.class );
-    private static final MongoCollectionTypes COLLECTIONTOUSE = MongoCollectionTypes.USERCONTEXT;
+
+    public static final MongoCollectionTypes COLLECTIONTOUSE = MongoCollectionTypes.USERCONTEXT;
 
     /**
      * Method to store a new user context into the server. It is used by the

@@ -164,6 +164,9 @@ div.tab button.active {
   display: none;
   padding: 3em; }
 
+.footer {
+  float: clear; }
+
 #footer {
   text-align: center;
   border-top: 4px solid #740a1b;
@@ -180,8 +183,7 @@ div.tab button.active {
     color: #e31134; }
 
 .content {
-  padding-bottom: 60px;
-  /* Height of the footer */
+  min-height: 30em;
   display: flex; }
   .content .leftContent {
     min-height: 30em;
@@ -215,25 +217,14 @@ div.tab button.active {
 .selected {
   background-color: #64D329; }
 
-.wrapper {
-  min-height: 100%;
-  position: relative; }
-  .wrapper h1 {
-    color: #740a1b;
-    font-weight: bold; }
-  .wrapper .body .oneContentBlock {
-    padding: 3em;
-    padding-bottom: 10em;
-    /* Height of the footer */ }
+.main h1 {
+  color: #740a1b;
+  font-weight: bold; }
 
-html,
 body {
-  margin: 0;
-  padding: 0;
   height: 100%;
   background: #eee; }
-  html a,
   body a {
     color: black; }
 
-/*# sourceMappingURL=style.css.map */
+/*# sourceMappingURL=main.css.map */

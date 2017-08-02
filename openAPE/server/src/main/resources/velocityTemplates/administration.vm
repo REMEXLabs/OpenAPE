@@ -1,0 +1,375 @@
+<html>
+<head>
+ <title>OpenAPE</title>
+ <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+ 
+<!-- Vendor Stylesheets -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.6/semantic.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.15/css/dataTables.semanticui.min.css">
+
+<!-- Custom Stylesheets -->
+<link rel="stylesheet" href="css/style.css">
+
+<!-- Vendor Javascript -->
+<script src="https://code.jquery.com/jquery-3.2.1.js"></script>
+<script src=" https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src=" https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.15/js/dataTables.semanticui.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.6/semantic.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+<!-- Custom Javascript --> 
+<script src="js/openape.js" type="text/javascript"></script>
+<script src="js/navigation.js" type="text/javascript"></script>
+<script src="js/datatable.js" type="text/javascript"></script>
+<script src="js/usersection.js" type="text/javascript"></script>
+<script src="js/datatableUsercontext.js" type="text/javascript"></script>
+<script src="js/datatableTaskContext.js" type="text/javascript"></script>
+<script src="js/datatableEquipmentContext.js" type="text/javascript"></script>
+<script src="js/datatableEnvironmentContext.js" type="text/javascript"></script>
+
+
+
+</head>
+
+<body>
+
+<div class="wrapper">
+   <div class="header">
+	$topNavigation
+	$subSection
+   </div>
+
+<div class="content">
+	<div class="leftContent">
+		<br>
+		<div ><h4><b>Administration</b></h4></div> <br>
+            <div class="panel-group" id="accordion">
+                 <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a href="#users" data-parent="#accordion" onclick="openCity(event, 'users')" href="#collapseOne"><span class="glyphicon glyphicon-user">
+                            </span>Users</a>
+                        </h4>
+                    </div>
+                  </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo"><span class="glyphicon glyphicon-th">
+                            </span>Contexts</a>
+                        </h4>
+                    </div>
+                    <div id="collapseTwo" class="panel-collapse collapse in">
+                        <div class="panel-body" style="background-color:#f9f9f9">
+                            <table class="table" id="tbltabContexts">
+                                <tr id="trTabUserContexts">
+                                    <td>
+                                        <a id="tabUserContexts" href="#user-contexts" onclick="openCity(event, 'user-contexts')">User-Contexts</a>
+                                    </td>
+                                </tr>
+                                <tr id="trTabTaskContexts">
+                                    <td>
+                                        <a href="#task-contexts" onclick="openCity(event, 'task-contexts')">Task-Contexts</a>
+                                    </td>
+                                </tr>
+                                <tr id="trTabEquipmentContexts">
+                                    <td>
+                                        <a href="#equipment-contexts" onclick="openCity(event, 'equipment-contexts')">Equipment-Contexts</a>
+                                    </td>
+                                </tr>
+                                 <tr id="trTabEnvironmentContexts">
+                                    <td>
+                                        <a href="#environment-contexts" onclick="openCity(event, 'environment-contexts')">Environment-Contexts</a>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+               <div class="panel panel-default">
+                
+                    <div class="panel-heading" >
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree"><span class="glyphicon glyphicon-folder-close">
+                            </span>Groups</a>
+                        </h4>
+                    </div>
+                    <div id="collapseThree" class="panel-collapse collapse">
+                        <div class="panel-body" style="background-color:#f9f9f9">
+                            <table class="table">
+                                <tr>
+                                    <td>
+                                        <a href="#allGroups" onclick="openCity(event, 'allGroups')">All Groups</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                       <a href="#newGroup" onclick="openCity(event, 'newGroup')">New Group</a>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseFour"><span class="glyphicon glyphicon-file">
+                            </span>Resources</a>
+                        </h4>
+                    </div>
+                    <div id="collapseFour" class="panel-collapse collapse">
+                      <!--  <div class="panel-body">
+                            <table class="table">
+                                <tr>
+                                    <td>
+                                        <span class="glyphicon glyphicon-usd"></span><a href="http://www.jquery2dotnet.com">Sales</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="glyphicon glyphicon-user"></span><a href="http://www.jquery2dotnet.com">Customers</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="glyphicon glyphicon-tasks"></span><a href="http://www.jquery2dotnet.com">Products</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="glyphicon glyphicon-shopping-cart"></span><a href="http://www.jquery2dotnet.com">Shopping Cart</a>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>-->
+                    </div>
+                </div>
+            </div>
+
+
+		
+		
+		
+		
+	</div>
+	
+	<div class="rightContent">
+		<div id="users" class="tabcontent">
+		<h1>Users</h1>
+		<br>
+		
+		<!--UserDataTabel-->	
+		<div style="padding:1.2em">
+			$dataTableUser	
+			
+			
+		</div>
+		<br>
+		<button class='btn btn-md btn-default' onClick="createUser()"><div class="glyphicon glyphicon-plus"></div> Add </button>		
+		
+		<!--Delete user modal-->
+		$deleteUserModal
+		
+		
+				<!-- Modal -->
+		<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+		  <div class="modal-dialog" role="document">
+		    <div class="modal-content">
+		      <div class="modal-header" style="background-color:#e31134; color:white;text-align:center;border-bottom: 2px solid #AB112A;">
+		        <h3 id="exampleModalLongTitle">Edit user information</h3>
+		      </div>
+		      <div class="modal-body" align="center" style="min-height:10em;padding:1em">
+ 				<table width="100%" style="border-collapse:separate; border-spacing:1em;">
+		        	<tr>
+		        		<td>Username: </td>
+		        		<td> 
+			     	 		<div id="editFormGroupUsername" class="form-group" role="form">
+								    <div class="col-sm-15">
+								      <input type="text" class="form-control" id="editUsernameInput" placeholder="Username">
+								      <span class="glyphicon glyphicon-remove form-control-feedback" id="editUsernameErrIcon"></span>
+								     <small id="editUsernameMessage" class="form-text text-muted" style="color:red"></small>
+								    </div>
+							 </div>
+		        		</td>
+		        	</tr>
+		        	<tr>
+		        		<td>Email: </td>
+		        			
+		        		<td> 
+		        			<div id="editFormGroupEmail" class="form-group" role="form">
+								 <div class="col-sm-15">
+								      <input type="text" class="form-control" id="editEmailInput" placeholder="Email">
+								       <small id="editEmailErrMessage" class="form-text text-muted" style="color:red"></small>
+								      <span class="glyphicon glyphicon-remove form-control-feedback" id="editEmailErrIcon"></span>
+								    </div>
+							 	 </div>
+		        		</td>
+		        	</tr>
+		        	<tr>
+		        		<td>
+		        			<div>Roles: </div>
+		        		</td>
+		        		<td>
+		        			<div class="roles" id="editRoleAdmin">Admin </div>
+		        			<div class="roles right" id="editRoleUser">User </div>
+		        		</td>	
+		        	</tr>
+		        </table>
+		       
+		      </div>
+		      <div class="modal-footer" style="background-color:#ececec;border-top: 2px solid #ccc;">
+		      <div style="float:left; color: red; font-weight:bold; padding-top:0.5em; font-size:11pt" id="editErrSection"></div>
+		        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+		        <button type="button" class="btn btn-danger" id="btnConfirmEditUser">Save User</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+
+
+				<!-- Modal -->
+		<div class="modal fade" id="createUserModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+		  <div class="modal-dialog" role="document">
+		    <div class="modal-content">
+		      <div class="modal-header" style="background-color:#e31134; color:white;text-align:center;border-bottom: 2px solid #AB112A;">
+		        <h3 id="exampleModalLongTitle">Create user information</h3>
+		      </div>
+		      <div class="modal-body" align="center" style="min-height:10em;padding:1em">
+		        <table width="100%" style="border-collapse:separate; border-spacing:1em;">
+		        	<tr>
+		        		<td>Username: </td>
+		        		<td> 
+			     	 		<div id="formGroupUsername" class="form-group" role="form">
+								    <div class="col-sm-15">
+								      <input type="text" class="form-control" id="addUsername" placeholder="Username">
+								      <span class="glyphicon glyphicon-remove form-control-feedback" id="errUsername"></span>
+								     <small id="usernameError" class="form-text text-muted" style="color:red"></small>
+								    </div>
+							 </div>
+		        		</td>
+		        	</tr>
+		        	<tr>
+		        		<td>Email: </td>
+		        			
+		        		<td> 
+		        			<div id="formGroupEmail" class="form-group" role="form">
+								 <div class="col-sm-15">
+								      <input type="text" class="form-control" id="addEmail" placeholder="Email" name="password">
+								       <small id="emailError" class="form-text text-muted" style="color:red"></small>
+								      <span class="glyphicon glyphicon-remove form-control-feedback" id="errEmail"></span>
+								    </div>
+							 	 </div>
+		        			
+		        		</td>
+		        	</tr>
+		        	<tr>
+		        		<td>Password: </td>
+		        			
+		        		<td> 
+		        		
+		        			<div id="formGroupPassword" class="form-group " role="form">
+								    <div class="col-sm-15">
+								      <input type="password" class="form-control" id="addPassword" placeholder="Password" name="password">
+								      <span class="glyphicon glyphicon-remove form-control-feedback" id="errPassword"></span>
+								    </div>
+							 	 </div>
+		        		</td>
+		        	</tr>
+		        	<tr>
+		        		<td>
+		        			<div>Roles: </div>
+		        		</td>
+		        		<td>
+		        			<div class="roles" id="addRoleAdmin">Admin </div>
+		        			<div class="roles right" id="addRoleUser">User </div>
+		        		</td>	
+		        	</tr>
+		        </table>
+		       
+		      </div>
+		      <div class="modal-footer" style="background-color:#ececec;border-top: 2px solid #ccc;">
+		      	<div style="float:left; color: red; font-weight:bold; padding-top:0.5em; font-size:11pt" id="errorSection"></div>
+		      	<div style="float:right">
+		      		 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+		       		 <button type="button" class="btn btn-danger" id="btnConfirmCreateUser">Create User</button>
+		      		
+		      	</div>
+		      </div>
+		    </div>
+		  </div>
+		</div>	
+		</div>
+		
+		<div id="groups" class="tabcontent">
+		  <h1>Groups</h1>
+		</div>
+		
+		<div id="user-contexts" class="tabcontent">
+		  <h1>User-Contexts</h1>
+		  <div style="padding:1.2em">
+			  $dataTableUserContext
+		  </div>
+		  <br>
+		  <button class='btn btn-md btn-default'" id="btnAddUserContext"><div class="glyphicon glyphicon-plus"></div> Add </button>		
+		  
+		  $deleteUserContextModal 
+		  $addUserContextModal
+		  $editUserContextModal
+		  
+		</div>
+			
+		<div id="task-contexts" class="tabcontent">
+		  <h1>Task-Contexts</h1>
+		  <div style="padding:1.2em">
+		  	$dataTableTaskContext
+		  </div>
+		  <button class='btn btn-md btn-default'" id="btnAddTaskContext"><div class="glyphicon glyphicon-plus"></div> Add </button>		
+		
+		  $editTaskContextModal
+		  $deleteTaskContextModal
+		  $addTaskContextModal
+		</div>	
+		
+		<div id="environment-contexts" class="tabcontent">
+		  <h1>Environment-Contexts</h1>
+		  <div style="padding:1.2em">
+		  $dataTableEnvironmentContext
+		  </div>
+		  <button class='btn btn-md btn-default'" id="btnAddEnvironmentContext"><div class="glyphicon glyphicon-plus"></div> Add </button>	
+		  $editEnvironmentContextModal
+		  $deleteEnvironmentContextModal
+		  $addEnvironmentContextModal
+		</div>
+			
+		<div id="equipment-contexts" class="tabcontent">
+		  <h1>Equipment-Contexts</h1>
+		  <div style="padding:1.2em">
+		 	 $dataTableEquipmentContext
+		 </div>
+		  <button class='btn btn-md btn-default'" id="btnAddEquipmentContext"><div class="glyphicon glyphicon-plus"></div> Add </button>	
+		  $editEquipmentContextModal
+		  $deleteEquipmentContextModal
+		  $addEquipmentContextModal
+		</div>	
+		
+		<div id="newGroup" class="tabcontent">
+		  <h1>New Group</h1>
+		</div>	
+		
+		<div id="allGroups" class="tabcontent">
+		  <h1>All Groups</h1>
+		</div>	
+		
+		
+	</div>
+</div>
+
+<div id="footer">$footer</div>
+</div>
+</body>
+</html>

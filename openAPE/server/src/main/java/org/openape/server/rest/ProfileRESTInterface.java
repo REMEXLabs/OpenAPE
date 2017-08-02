@@ -9,17 +9,25 @@ import javax.ws.rs.NotFoundException;
 import org.openape.api.DatabaseObject;
 import org.openape.api.OpenAPEEndPoints;
 import org.openape.api.PasswordChangeRequest;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import org.json.JSONObject;
+import org.openape.api.Messages;
 import org.openape.api.user.User;
+import org.openape.api.usercontext.UserContext;
 import org.openape.server.auth.AuthService;
 import org.openape.server.auth.PasswordEncoder;
 import org.openape.server.database.mongoDB.DatabaseConnection;
 import org.openape.server.database.mongoDB.MongoCollectionTypes;
 import org.openape.server.requestHandler.ProfileHandler;
+import org.openape.ui.velocity.requestHandler.AdminSectionRequestHandler;
+import org.pac4j.core.profile.CommonProfile;
+import org.pac4j.core.profile.ProfileManager;
+import org.pac4j.sparkjava.SparkWebContext;
+import spark.Spark;
 
 import com.fasterxml.jackson.core.JsonParseException;
 
-
-import spark.Spark;
 
 public class ProfileRESTInterface extends SuperRestInterface {
 
@@ -47,6 +55,39 @@ public class ProfileRESTInterface extends SuperRestInterface {
                 return "Could not create user: " + e.getMessage();
             }
         });
+        
+        Spark.delete("/users", (req, res) -> {
+        	AdminSectionRequestHandler adminsectionRequestHandler = new AdminSectionRequestHandler();
+        	
+        	adminsectionRequestHandler.removeUser(req.queryParams("id"));
+        	System.out.println(req.queryParams("id"));
+
+            return "";
+        });
+        
+        //edit users
+        Spark.put("/users", (req, res) -> {
+            try {
+            	AdminSectionRequestHandler adminsectionRequestHandler = new AdminSectionRequestHandler();
+            	
+            	
+            	JSONObject jsonObj = new JSONObject(req.body().toString());
+    
+            	adminsectionRequestHandler.updateUser(jsonObj.getString("id"), "username", jsonObj.getString("username"));
+            	adminsectionRequestHandler.updateUser(jsonObj.getString("id"), "email", jsonObj.getString("email"));
+            	
+            	for(Object entry: jsonObj.getJSONArray("roles")){
+            		adminsectionRequestHandler.updateUser(jsonObj.getString("id"), "roles", entry.toString());
+            	}
+            	
+            	//adminsectionRequestHandler.updateUser(jsonObj.getString("id"), "roles", jsonObj.getJSONArray("roles"));
+            	
+                return "user updated";
+            } catch(Exception err) {
+                return "Could not create user: " + err.getMessage();
+            }
+        });
+       
 
         Spark.before( OpenAPEEndPoints.MY_ID   , authService.authorize("user"));
         Spark.get(OpenAPEEndPoints.MY_ID, (req, res) -> {
@@ -76,6 +117,7 @@ public class ProfileRESTInterface extends SuperRestInterface {
         } 
 User user = (User) result;
 
+<<<<<<< HEAD
 if(PasswordEncoder.matches(pwChangeReq.oldPassword, user.getPassword())) {
         		
         	user.setPassword(      	PasswordEncoder.encode(pwChangeReq.newPassword));
@@ -121,6 +163,4 @@ if(PasswordEncoder.matches(pwChangeReq.oldPassword, user.getPassword())) {
         });
         
     }
-
-    
 }
