@@ -117,7 +117,6 @@ public class ProfileRESTInterface extends SuperRestInterface {
         } 
 User user = (User) result;
 
-<<<<<<< HEAD
 if(PasswordEncoder.matches(pwChangeReq.oldPassword, user.getPassword())) {
         		
         	user.setPassword(      	PasswordEncoder.encode(pwChangeReq.newPassword));

@@ -154,11 +154,7 @@ AdminInterface.setupAdminRestInterface(authService);
         TokenRESTInterface.setupTokenRESTInterface(authService);
         ProfileRESTInterface.setupProfileRESTInterface();
 
-        // Resource endpoints
-        EnvironmentContextRESTInterface.setupEnvironmentContextRESTInterface(new EnvironmentContextRequestHandler(), authService);
-        EquipmentContextRESTInterface.setupEquipmentContextRESTInterface(new EquipmentContextRequestHandler(), authService);
-        ListingRESTInterface.setupListingRESTInterface(new ListingRequestHandler());
-                
+         
 ResourceDescriptionRESTInterface.setupResourceDescriptionRESTInterface(new ResourceDescriptionRequestHandler(), authService);
         
 		
@@ -285,7 +281,10 @@ ResourceDescriptionRESTInterface.setupResourceDescriptionRESTInterface(new Resou
 			e.printStackTrace();
 		}
         
-        //REST-Interfaces
+        //REST-Interfaces defined in ISO/IEC 24752-8
+        EnvironmentContextRESTInterface.setupEnvironmentContextRESTInterface(new EnvironmentContextRequestHandler(), authService);
+        EquipmentContextRESTInterface.setupEquipmentContextRESTInterface(new EquipmentContextRequestHandler(), authService);
+        ListingRESTInterface.setupListingRESTInterface(new ListingRequestHandler());
 		ResourceRESTInterface.setupResourceRESTInterface(new ResourceRequestHandler());
         TaskContextRESTInterface.setupTaskContextRESTInterface(new TaskContextRequestHandler(), authService);
         UserContextRESTInterface.setupUserContextRESTInterface(new UserContextRequestHandler(), authService);
