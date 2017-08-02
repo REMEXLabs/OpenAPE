@@ -3,23 +3,20 @@ package org.openape.server.rest;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+
+import javax.ws.rs.NotFoundException;
 
 import org.openape.api.DatabaseObject;
-import org.openape.api.Messages;
 import org.openape.api.OpenAPEEndPoints;
 import org.openape.api.PasswordChangeRequest;
 import org.openape.api.user.User;
-import org.openape.api.usercontext.UserContext;
 import org.openape.server.auth.AuthService;
 import org.openape.server.auth.PasswordEncoder;
+import org.openape.server.database.mongoDB.DatabaseConnection;
+import org.openape.server.database.mongoDB.MongoCollectionTypes;
 import org.openape.server.requestHandler.ProfileHandler;
-import org.openape.server.requestHandler.UserContextRequestHandler;
-import org.pac4j.core.profile.CommonProfile;
-import org.pac4j.core.profile.ProfileManager;
-import org.pac4j.sparkjava.SparkWebContext;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.core.JsonParseException;
 
 import spark.Spark;
 
@@ -52,22 +49,44 @@ public class ProfileRESTInterface extends SuperRestInterface {
 
         Spark.before( OpenAPEEndPoints.MY_ID   , authService.authorize("user"));
         Spark.get(OpenAPEEndPoints.MY_ID, (req, res) -> {
-        	return authService.getAuthenticatedUser(req, res).getId(); 
+        	logger.info("blablubber");
+        	String id = authService.getAuthenticatedUser(req, res).getId();
+        	logger.info("id: " + id);
+        	return id;  
         });
         
         Spark.before( OpenAPEEndPoints.USER_PASSWORD   , authService.authorize("user"));
         Spark.put(OpenAPEEndPoints.USER_PASSWORD, (req,res) ->  {
         logger.info("blabla");
         	User authUser = authService.getAuthenticatedUser(req, res);
-        
-        PasswordChangeRequest pwChangeReq  = (PasswordChangeRequest) SuperRestInterface.extractObjectFromRequest(req, PasswordChangeRequest.class	);
-        if (PasswordEncoder.encode(pwChangeReq.oldPassword).equals(authUser.getPassword() ) ){
-        	authUser.setPassword(      	PasswordEncoder.encode(pwChangeReq.oldPassword));
+        	
+        	PasswordChangeRequest pwChangeReq = null; 
+        try{
+        	pwChangeReq  = (PasswordChangeRequest) SuperRestInterface.extractObjectFromRequest(req, PasswordChangeRequest.class	);
+        } catch (Exception e){
+        	res.status(400);
+        	return "Invalide Password chagne  request";
+        }
+        final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();		
+        final DatabaseObject result = databaseConnection.getByUniqueAttribute(MongoCollectionTypes.USERS, "username", authUser.getUsername() );
+        if(result == null) {
+            throw new NotFoundException("No user found with username: " + authUser.getUsername());
+            
+        } 
+User user = (User) result;
+
+if(PasswordEncoder.matches(pwChangeReq.oldPassword, user.getPassword())) {
+        		
+        	user.setPassword(      	PasswordEncoder.encode(pwChangeReq.newPassword));
+        	databaseConnection.updateData(MongoCollectionTypes.USERS ,user, user.getId() );
             logger.debug("PW successfuly changed");
         	return "success";        
+        } else {
+        	logger.debug("Changing password failed");
+        	res.status(403);
+        	return "forbidden";
         }
-res.status(403);
-return "Wrong password";
+        
         });
         
         /*Enables admins to change the role of other users
