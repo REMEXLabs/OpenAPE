@@ -141,7 +141,7 @@ private URI createContext(String path,Object uploadContext ) throws URISyntaxExc
 		throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
 	}
 	
-    String output = response.readEntity(String.class);
+    
  
 return new URI(response.getHeaderString("Location"));
 }
