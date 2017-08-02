@@ -16,12 +16,12 @@ public class AdminInterface {
 
 
 	static Logger logger = LoggerFactory.getLogger(AdminInterface.class);
-	private static String ADMIN_NAME = "Admin";
-	private static String ADMIN_PASSWORD = "Admin";
+	private static String ADMIN_NAME = "admin";
+	private static String ADMIN_PASSWORD = "admin";
 	private static final List<String> ADMIN_ROLES = new LinkedList<>();
 
 	public static void setupAdminRestInterface(AuthService authService) {
-		// TODO Auto-generated method stub
+		
 		
 	}
 
@@ -35,7 +35,10 @@ public class AdminInterface {
 		User admin = new User();
 		admin.setUsername(ADMIN_NAME);
 		admin.setPassword(ADMIN_PASSWORD);
-		ADMIN_ROLES.add("Admin");
+		admin.setEmail("admin@admin.de");
+		ADMIN_ROLES.add("admin");
+		ADMIN_ROLES.add("user");
+		
 		admin.setRoles(ADMIN_ROLES);
 		ProfileHandler.createUser(admin);
 	}

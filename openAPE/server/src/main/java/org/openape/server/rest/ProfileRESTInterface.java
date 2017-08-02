@@ -18,6 +18,7 @@ import org.openape.server.requestHandler.ProfileHandler;
 
 import com.fasterxml.jackson.core.JsonParseException;
 
+
 import spark.Spark;
 
 public class ProfileRESTInterface extends SuperRestInterface {
@@ -78,7 +79,8 @@ User user = (User) result;
 if(PasswordEncoder.matches(pwChangeReq.oldPassword, user.getPassword())) {
         		
         	user.setPassword(      	PasswordEncoder.encode(pwChangeReq.newPassword));
-        	databaseConnection.updateData(MongoCollectionTypes.USERS ,user, user.getId() );
+        	ProfileHandler.updateUser(user);
+        	
             logger.debug("PW successfuly changed");
         	return "success";        
         } else {
@@ -94,22 +96,28 @@ if(PasswordEncoder.matches(pwChangeReq.oldPassword, user.getPassword())) {
          */
         Spark.before( OpenAPEEndPoints.USER_ROLES   , authService.authorize("admin"));
         Spark.put(OpenAPEEndPoints.USER_ROLES, (req,res) ->  {
-        	List<String> received = (List<String>) SuperRestInterface.extractObjectFromRequest(req, ArrayList.class);
-
+        	List<String>  receivedRoles = null; 
+        	try{
+        	receivedRoles = (List<String>) SuperRestInterface.extractObjectFromRequest(req, ArrayList.class);
+        	} catch (Exception e) {
+        		res.status(400);
+        		return "Invalide JSON format for user roles object"; 
+        	}
         
-        	String authUserId = req.params(OpenAPEEndPoints.USER_ID);
-        	logger.info("userid" + authUserId );
+        	String requestedUserId = req.params(OpenAPEEndPoints.USER_ID);
+        	
         	User storedUser = null;
         	try{
-        	storedUser = ProfileHandler.getUser(authUserId);
+        	storedUser = ProfileHandler.getUser(requestedUserId);
         	} catch(IllegalArgumentException e) {
-        		e.printStackTrace();
+        		res.status(404);
+        		return OpenAPEEndPoints.userDoesNotExist(requestedUserId );
         	}
         			
-        			storedUser.setRoles(received );
+        			storedUser.setRoles(receivedRoles );
 					ProfileHandler.updateUser(storedUser);
-        			
-        return OpenAPEEndPoints.USER_ROLES_CHANGED; 
+        			return OpenAPEEndPoints.USER_ROLES_CHANGED;	
+        					
         });
         
     }

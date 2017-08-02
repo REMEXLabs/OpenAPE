@@ -49,10 +49,10 @@ public static User getUser(String userName) throws IOException{
 	return user;
 }
 
-public static void updateUser(User storedUser) {
+public static void updateUser(User user) {
 	final DatabaseConnection databaseconnection = DatabaseConnection.getInstance();
     try {
-		databaseconnection.updateData(MongoCollectionTypes.USERS , storedUser, storedUser.getId() );
+		databaseconnection.updateData(MongoCollectionTypes.USERS , user, user.getId() );
 	} catch (ClassCastException e) {
 		// TODO Auto-generated catch block
 		e.printStackTrace();
