@@ -205,7 +205,7 @@ return 		getResource(uri, targetFile);
 
 	public boolean changeUserPassword(String oldPassword, String newPassword) {
 		PasswordChangeRequest pwChangeReq = new PasswordChangeRequest(oldPassword, newPassword);
-		Response response = getRequest("openape/users/" + userId + "password").put(Entity.entity(pwChangeReq, MediaType.APPLICATION_JSON));
+		Response response = getRequest("openape/users/" + userId + "/password").put(Entity.entity(pwChangeReq, MediaType.APPLICATION_JSON));
 		
 		return checkResponse(response);
 			}
