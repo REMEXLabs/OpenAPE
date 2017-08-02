@@ -13,6 +13,7 @@ database.createCollection("user_contexts");
 database.createCollection("resources");
 database.createCollection("users");
 database.createCollection("test");
+database.createCollection("groups");
 database.test.insert( { x: 1 } );
 
 // Create indexes to make username and email unique fields in the users collection
