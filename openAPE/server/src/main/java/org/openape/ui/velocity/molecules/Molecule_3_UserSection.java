@@ -2,12 +2,12 @@ package org.openape.ui.velocity.molecules;
 
 import java.util.Map.Entry;
 
-import org.openape.ui.velocity.atoms.Atom_1_navigationLinks;
+import org.openape.ui.velocity.atoms.Atom_1_NavigationLinks;
 
-public class Molecule_3_userSection {
+public class Molecule_3_UserSection {
 	public String generateUsersection(){
 		String userSection = "";	
-		for(Entry<String, String> entry : new Atom_1_navigationLinks().generateUserSectionLinksLoggedOut().entrySet()){
+		for(Entry<String, String> entry : new Atom_1_NavigationLinks().generateUserSectionLinksLoggedOut().entrySet()){
 			userSection += "<div class='userSectionLinks' id='div_"+entry.getKey()+"'><a href='#' id='"+entry.getKey()+"'>"+entry.getValue()+"</a></div>";
 		}
 		return userSection;

@@ -1,29 +1,19 @@
 package org.openape.ui.velocity.controller;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Map;
 import org.openape.server.rest.SuperRestInterface;
-import org.openape.ui.velocity.atoms.Atom_2_OpenAPEHeader;
-import org.openape.ui.velocity.organism.Organism_1_Topsection;
-import org.openape.ui.velocity.organism.Organism_2_SubSection;
+import org.openape.ui.velocity.mainControllerComponents.MainComponents;
+
 import spark.ModelAndView;
 import spark.template.velocity.VelocityTemplateEngine;
 import spark.Spark;
 
 public class Tutorials  extends SuperRestInterface{
-	private static Map<String, Object> model = new HashMap<>();
-	
-	public Tutorials() throws IllegalArgumentException, IOException {
-		super();
-		// TODO Auto-generated constructor stub
-	}
-    
 	public static void setupTutorialsVELOCITYInterface() throws IllegalArgumentException, IOException {
 		 
     	 Spark.get("/tutorials", (request, response) -> {            
-             MainController mainController = new MainController();
-             Map<String, Object> model = mainController.getTemplateComponents();
+             Map<String, Object> model = new MainComponents().getTemplateComponents();
              
              return new ModelAndView(model, "velocityTemplates/tutorials.vm"); // located in the resources directory
          }, new VelocityTemplateEngine());

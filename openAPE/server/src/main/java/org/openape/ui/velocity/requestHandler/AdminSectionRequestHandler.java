@@ -4,27 +4,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.io.IOException;
-import java.util.ArrayList;
-
-import org.openape.api.DatabaseObject;
-import org.openape.api.Messages;
 import org.openape.api.user.User;
-import org.openape.api.usercontext.UserContext;
 import org.openape.server.database.mongoDB.DatabaseConnection;
 import org.bson.Document;
-import org.bson.types.ObjectId;
 import org.openape.server.database.mongoDB.MongoCollectionTypes;
-import org.openape.server.requestHandler.UserContextRequestHandler;
-import org.openape.server.rest.UserContextRESTInterface;
-
 import com.mongodb.client.result.UpdateResult;
-import com.sun.xml.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
 
-/**
- * Class with methods to manage user context on the server. It is used by the
- * rest API {@link UserContextRESTInterface} and uses the server database
- * {@link DatabaseConnection}.
- */
 public class AdminSectionRequestHandler {
 	public static final MongoCollectionTypes COLLECTIONTOUSE_USERS = MongoCollectionTypes.USERS;
 	public static final MongoCollectionTypes COLLECTIONTOUSE_USERCONTEXTS = MongoCollectionTypes.USERCONTEXT;
@@ -78,12 +63,7 @@ public class AdminSectionRequestHandler {
         
         ArrayList<String[]> listContext = new ArrayList<String[]>();
         
-        for(Document entry : listDocuments){
-        	
-        	
-        	Document documentContext = (Document) entry.get("contexts");
-        	Document documentDefault = (Document) documentContext.get("default");
-        	
+        for(Document entry : listDocuments){        	
         	String userid = entry.getString("owner").toString();
         	String id = entry.getObjectId("_id").toString();
         	boolean isPublic = entry.getBoolean("public");
@@ -161,7 +141,6 @@ public class AdminSectionRequestHandler {
         	
         	String[] myStringArray = {id, userId, stringIsPublic};
         	listEquipmentContexts.add(myStringArray);
-        	System.out.println(myStringArray);
         }
         return listEquipmentContexts;
     }
@@ -193,7 +172,6 @@ public class AdminSectionRequestHandler {
         	
         	String[] myStringArray = {id, userId, stringIsPublic};
         	listEnvironmentContexts.add(myStringArray);
-        	System.out.println(myStringArray);
         }
         return listEnvironmentContexts;
     }

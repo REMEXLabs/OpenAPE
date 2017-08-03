@@ -30,6 +30,7 @@
 <script src="js/datatableTaskContext.js" type="text/javascript"></script>
 <script src="js/datatableEquipmentContext.js" type="text/javascript"></script>
 <script src="js/datatableEnvironmentContext.js" type="text/javascript"></script>
+<script src="js/datatableGroup.js" type="text/javascript"></script>
 
 
 
@@ -94,26 +95,11 @@
                 
                     <div class="panel-heading" >
                         <h4 class="panel-title">
-                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree"><span class="glyphicon glyphicon-folder-close">
-                            </span>Groups</a>
+                            <a href="#groups" onclick="openCity(event, 'groups')"><img src="img/group-icon.png">
+                            </span>Goups</a>
                         </h4>
                     </div>
-                    <div id="collapseThree" class="panel-collapse collapse">
-                        <div class="panel-body" style="background-color:#f9f9f9">
-                            <table class="table">
-                                <tr>
-                                    <td>
-                                        <a href="#allGroups" onclick="openCity(event, 'allGroups')">All Groups</a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                       <a href="#newGroup" onclick="openCity(event, 'newGroup')">New Group</a>
-                                    </td>
-                                </tr>
-                            </table>
-                        </div>
-                    </div>
+                    
                 </div>
                 <div class="panel panel-default">
                     <div class="panel-heading">
@@ -305,9 +291,7 @@
 		</div>	
 		</div>
 		
-		<div id="groups" class="tabcontent">
-		  <h1>Groups</h1>
-		</div>
+
 		
 		<div id="user-contexts" class="tabcontent">
 		  <h1>User-Contexts</h1>
@@ -356,13 +340,16 @@
 		  $deleteEquipmentContextModal
 		  $addEquipmentContextModal
 		</div>	
-		
-		<div id="newGroup" class="tabcontent">
-		  <h1>New Group</h1>
-		</div>	
-		
-		<div id="allGroups" class="tabcontent">
-		  <h1>All Groups</h1>
+
+		<div id="groups" class="tabcontent">
+		  <h1>Groups</h1>
+		  <div style="padding:1.2em">
+		  $dataTableGroup
+		  $deleteGroupModal
+		  </div>
+		  $addGroupModal
+		  $editGroupModal
+		  <button class='btn btn-md btn-default'" id="btnAddGroup"><div class="glyphicon glyphicon-plus"></div> Add </button>
 		</div>	
 		
 		

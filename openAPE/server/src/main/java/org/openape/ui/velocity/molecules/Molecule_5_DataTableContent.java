@@ -1,12 +1,9 @@
 package org.openape.ui.velocity.molecules;
 
 import java.util.ArrayList;
-
 import org.openape.api.user.User;
-import org.openape.api.usercontext.UserContext;
-import org.openape.ui.velocity.atoms.Atom_1_navigationLinks;
 
-public class Molecule_5_dataTableContent {
+public class Molecule_5_DataTableContent {
 	
 	public String generateAdministrationUserContent(ArrayList<User> listUsers){
 		
@@ -128,6 +125,21 @@ public String generateUserContextContent(ArrayList<String[]> listUserContexts){
 					+ "<button id='"+environmentContext[0]+"' class='btn btn-md btn-default' onClick='copyEnvironmentContext(this)'><div class='glyphicon glyphicon-copy'></div> Copy </button> </td></tr>";
 		}
 				
+		return tableContent;
+	}
+
+
+	public String generateGroupContent() {
+		// TODO Auto-generated method stub
+		String tableContent = "";
+					
+		tableContent +=  "<tr>"
+					+ "<td>4</td>"
+					+ "<td>G1</td>"
+					+ "<td>"
+					+ "<button class='btn btn-md btn-default' onClick='editGroup(this)' ><div class='glyphicon glyphicon-edit' ></div> Edit </button>"
+					+ "<button class='btn btn-md btn-default' onClick='deleteGroup(this)'><div class='glyphicon glyphicon-trash'></div> Delete </button></tr>";
+
 		return tableContent;
 	}
 }
