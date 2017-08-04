@@ -4,12 +4,12 @@ import org.openape.api.DatabaseObject;
 import org.openape.api.Messages;
 import org.openape.api.environmentcontext.EnvironmentContext;
 import org.openape.api.equipmentcontext.EquipmentContext;
-import org.openape.api.group.Group;
 import org.openape.api.listing.Listing;
 import org.openape.api.resourceDescription.ResourceDescription;
 import org.openape.api.taskcontext.TaskContext;
 import org.openape.api.user.User;
 import org.openape.api.usercontext.UserContext;
+import org.openape.server.api.group.Group;
 
 /**
  * Type of mongoDB collections used for this application within
