@@ -20,6 +20,7 @@ import org.bson.json.JsonParseException;
 import org.bson.types.ObjectId;
 import org.openape.api.DatabaseObject;
 import org.openape.api.Messages;
+import org.openape.api.user.User;
 import org.openape.api.usercontext.UserContext;
 import org.openape.server.MongoConfig;
 import org.openape.server.requestHandler.EnvironmentContextRequestHandler;

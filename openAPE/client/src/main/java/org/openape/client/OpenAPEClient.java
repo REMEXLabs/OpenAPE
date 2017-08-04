@@ -6,22 +6,24 @@ import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
+import java.util.List;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.Invocation;
+import javax.ws.rs.client.Invocation.Builder;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Form;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-
-import org.openape.api.Messages;
+import org.openape.api.OpenAPEEndPoints;
+import org.openape.api.PasswordChangeRequest;
+import org.openape.api.auth.TokenResponse;
 import org.openape.api.environmentcontext.EnvironmentContext;
 import org.openape.api.equipmentcontext.EquipmentContext;
 import org.openape.api.listing.Listing;
-import org.openape.api.rest.RESTPaths;
 import org.openape.api.taskcontext.TaskContext;
 import org.openape.api.usercontext.UserContext;
 import org.slf4j.Logger;
@@ -34,7 +36,7 @@ public class OpenAPEClient {
 private Client client;
 private WebTarget webResource;
 private String token;
-
+private String userId;
 static final String ENVIRONMENT_CONTEXT_PATH = "api/environment-contexts";
 static final String EQUIPMENT_CONTEXT_PATH = "api/equipment-contexts";
 static final String TASK_CONTEXT_PATH = "api/task-contexts";
@@ -47,7 +49,7 @@ this(userName, password, "http://openape.gpii.eu");
 
 public OpenAPEClient(String userName, String password, String uri) {
 //	create HTTP client that connects to the server
-	System.out.println("Constructor");
+	logger.info("Initialising OpenAPE client");
 //	ClientConfig config = new ClientConfig();
 	 client = ClientBuilder.newClient();//config);
 webResource = client.target(uri);
@@ -55,10 +57,22 @@ webResource = client.target(uri);
 //get token for accessing server
 this.token = getToken(userName,password);
 logger.info("OpenAPECLIENT received Token for: " + uri);
+logger.info("Token: " + token);
+
+this.userId = getMyId();
+}
+
+private String getMyId() {
+	
+	Response response = getRequest(OpenAPEEndPoints.MY_ID  ).get();
+checkResponse(response);
+	String id = response.readEntity(String.class);
+	logger.debug("Received user id: " + id);
+	return id; 
 }
 
 private String getToken(String userName,String password){
-	String tokenRequest= "grant_type=password&username=" + userName + "&password=" + password;
+	
 	Form form = new Form();
 	form.param("grant_type","password");
 	form.param( "username",userName);
@@ -71,11 +85,12 @@ private String getToken(String userName,String password){
 	int status = response.getStatus();
 	logger.debug("Response code: " + status);
 			if (status != 200){
-				logger.error("Failed : HTTP error code : " + status  +".\n Server message: " + response.readEntity(String.class)     );
+				logger.error("Failed : HTTP error code : " +
+			status  +".\n Server message: " + response.readEntity(String.class)     );
 				throw new RuntimeException("Failed : HTTP error code : " + status );
 			}
 			
-		    String output = response.readEntity(String.class);
+		    String output = response.readEntity(TokenResponse.class).getAccessToken()	;
 		 
 return output;
 
@@ -127,7 +142,7 @@ private URI createContext(String path,Object uploadContext ) throws URISyntaxExc
 		throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
 	}
 	
-    String output = response.readEntity(String.class);
+    
  
 return new URI(response.getHeaderString("Location"));
 }
@@ -187,7 +202,37 @@ Response response = invocationBuilder.get();
 	public File getResource(String url, String targetFile) throws URISyntaxException {
 		URI uri = new URI(url);
 return 		getResource(uri, targetFile);
+	}
+
+	public boolean changeUserPassword(String oldPassword, String newPassword) {
+		PasswordChangeRequest pwChangeReq = new PasswordChangeRequest(oldPassword, newPassword);
+		Response response = getRequest("openape/users/" + userId + "/password").put(Entity.entity(pwChangeReq, MediaType.APPLICATION_JSON));
 		
+		return checkResponse(response);
+			}
+	
+	public boolean changeUserRoles(String userId, List<String> roles) {
+		Response response = getRequest("users/"+ userId + "/roles").put(Entity.entity(roles, MediaType.APPLICATION_JSON));
+		return checkResponse(response);
 	}
 	
+	private boolean checkResponse(Response response) {
+		int status = response.getStatus();
+		
+		if (status != 200) {
+			logger.error("Http Status: " + status + "\n" + "Server message: " + response.getStatus() );
+					return false;
+					}
+		
+		logger.debug("Http Status: " + status + "\n Server message: " + response.getStatusInfo() );
+		return true;
+
+		
+	}
+
+	Builder getRequest(String path){
+logger.debug("Building request for URL: " + path);
+		return webResource.path(path).request().header("Authorization", this.token);
+				
+	}
 }

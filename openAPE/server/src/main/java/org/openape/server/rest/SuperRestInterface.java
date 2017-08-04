@@ -8,10 +8,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.openape.api.Messages;
+import org.openape.api.groups.GroupMembershipRequest;
 import org.openape.server.Main;
+import org.openape.server.admin.AdminInterface;
 import org.openape.server.auth.AuthService;
 import org.openape.server.requestHandler.EnvironmentContextRequestHandler;
 import org.openape.server.requestHandler.EquipmentContextRequestHandler;
+import org.openape.server.requestHandler.GroupManagementHandler;
 import org.openape.server.requestHandler.ListingRequestHandler;
 import org.openape.server.requestHandler.ResourceDescriptionRequestHandler;
 import org.openape.server.requestHandler.ResourceRequestHandler;
@@ -94,13 +97,18 @@ public class SuperRestInterface {
     	Spark.staticFiles.externalLocation(System.getProperty("java.io.tmpdir")+"/extContent");
     	
 //   before filter enables CORS
-       /* Spark.before("/*", (q, response) -> {
+        Spark.before("/*", (q, response) -> {
+        	logger.info("lusm: " + q.headers("Authorization")    );
         	logger.debug("Received api call: " + q.protocol() + "" + q.uri());
                 response.header("Access-Control-Allow-Origin", "*");
-                response.header("Access-Control-Request-Method", "GET,PUT,POST,DELETE,OPTIONS");
+//                response.header("Access-Control-Request-Method", "GET,PUT,POST,DELETE,OPTIONS");
+    	        response.header("Access-Control-Request-Method", "*");
 //                response.header("Access-Control-Allow-Headers", headers);
+    	        response.header("Access-Control-Allow-Headers", "Authorization");
+    	        response.header("Access-Control-Max-Age", "1728000");
+    	        response.header("Cache-Control", "no-cache");
 
-        });*/
+        });
         
    	 Spark.options("/*", (request, response) -> {
 
@@ -117,14 +125,14 @@ public class SuperRestInterface {
 	        return 200;
 	    });
 
-	   Spark.before((request, response) -> {
+	   /*Spark.before((request, response) -> {
 	        response.header("Access-Control-Allow-Origin", "*");
 	        response.header("Access-Control-Request-Method", "*");
 	        response.header("Access-Control-Allow-Headers", "*");
 	        response.header("Access-Control-Max-Age", "1728000");
 	        response.header("Cache-Control", "no-cache");
 	
-	    });
+	    });*/
 
     	Spark.get("api", (request, response) -> new API()                                                                    );
     	
@@ -144,14 +152,11 @@ public class SuperRestInterface {
 
     	Spark.get(Messages.getString("SuperRestInterface.HelloWorldURL"), (request, response) -> Messages.getString("SuperRestInterface.HelloWorld")); //$NON-NLS-1$ //$NON-NLS-2$
         // Endpoint to receive tokens
+AdminInterface.setupAdminRestInterface(authService);
         TokenRESTInterface.setupTokenRESTInterface(authService);
         ProfileRESTInterface.setupProfileRESTInterface();
 
-        // Resource endpoints
-        EnvironmentContextRESTInterface.setupEnvironmentContextRESTInterface(new EnvironmentContextRequestHandler(), authService);
-        EquipmentContextRESTInterface.setupEquipmentContextRESTInterface(new EquipmentContextRequestHandler(), authService);
-        ListingRESTInterface.setupListingRESTInterface(new ListingRequestHandler());
-                
+         
 ResourceDescriptionRESTInterface.setupResourceDescriptionRESTInterface(new ResourceDescriptionRequestHandler(), authService);
         
 		
@@ -277,8 +282,12 @@ ResourceDescriptionRESTInterface.setupResourceDescriptionRESTInterface(new Resou
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-        
-        //REST-Interfaces
+
+        GroupManagementRestInterface.setupGroupManagementRestInterface(new GroupManagementHandler(), authService );
+        //REST-Interfaces defined in ISO/IEC 24752-8
+        EnvironmentContextRESTInterface.setupEnvironmentContextRESTInterface(new EnvironmentContextRequestHandler(), authService);
+        EquipmentContextRESTInterface.setupEquipmentContextRESTInterface(new EquipmentContextRequestHandler(), authService);
+        ListingRESTInterface.setupListingRESTInterface(new ListingRequestHandler());
 		ResourceRESTInterface.setupResourceRESTInterface(new ResourceRequestHandler());
         TaskContextRESTInterface.setupTaskContextRESTInterface(new TaskContextRequestHandler(), authService);
         UserContextRESTInterface.setupUserContextRESTInterface(new UserContextRequestHandler(), authService);
@@ -289,5 +298,10 @@ ResourceDescriptionRESTInterface.setupResourceDescriptionRESTInterface(new Resou
             TestRESTInterface.setupTestRESTInterface();
         }           
     }
+
+	public static GroupMembershipRequest extractFromRequest(Class<GroupMembershipRequest> class1, Request req) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }
