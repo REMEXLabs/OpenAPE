@@ -11,9 +11,9 @@ package org.openape.api.group;
  * The read change rights right means, that users, which are member of the group with the id
  * {@link GroupAccessRight#groupId} are allowed to change the access rights of this group and all other groups for the
  * resource with the id {@link GroupAccessRight#resourceId}.
- * 
+ *
  * This class is thread safe.
- * 
+ *
  * @author Tobias Ableitner
  *
  */
@@ -67,7 +67,7 @@ public class GroupAccessRight {
 
 	/**
 	 * Create a GroupAccessRight.
-	 * 
+	 *
 	 * @param groupId
 	 *            id of the group. The groupId must not be null or empty.
 	 * @param resourceId
@@ -81,7 +81,8 @@ public class GroupAccessRight {
 	 * @param changeRightsRight
 	 *            true if the group is allowed to change the access rights for the concept and false if not
 	 */
-	public GroupAccessRight(String groupId, String resourceId, boolean readRight, boolean updateRight, boolean deleteRight, boolean changeRightsRight) {
+	public GroupAccessRight(final String groupId, final String resourceId, final boolean readRight,
+			final boolean updateRight, final boolean deleteRight, final boolean changeRightsRight) {
 		this.setGroupId(groupId);
 		this.setResourceId(resourceId);
 		this.setReadRight(readRight);
@@ -101,6 +102,7 @@ public class GroupAccessRight {
 
 	/**
 	 * The id of the group, for which the group access rights are defined.
+	 * 
 	 * @return id of the group
 	 */
 	public String getGroupId() {
@@ -109,62 +111,74 @@ public class GroupAccessRight {
 
 	/**
 	 * Setter for the group's id. It must not be null or empty.
-	 * @param groupId the group's id
+	 * 
+	 * @param groupId
+	 *            the group's id
 	 */
-	public void setGroupId(String groupId) {
+	public void setGroupId(final String groupId) {
 		this.groupId = groupId;
 	}
-	
+
 	/**
 	 * The id of the resource, for which the group access rights are defined.
+	 * 
 	 * @return id of the resource
 	 */
 	public String getResourceId() {
 		return this.resourceId;
 	}
-	
+
 	/**
 	 * Setter for the resource id. The resource id must not be null or empty.
-	 * @param conceptId id of the resource, for which the group access rights are defined
+	 * 
+	 * @param conceptId
+	 *            id of the resource, for which the group access rights are defined
 	 */
-	public void setResourceId(String resourceId) {
+	public void setResourceId(final String resourceId) {
 		this.resourceId = resourceId;
 	}
-	
+
 	/**
 	 * Getter for the read right.
+	 * 
 	 * @return true if the group members are allowed to read the resource and false if not.
 	 */
 	public boolean hasReadRight() {
 		return this.readRight;
 	}
-	
+
 	/**
 	 * Setter for the read right.
-	 * @param readRight true if the group members should have read right and false if not
+	 * 
+	 * @param readRight
+	 *            true if the group members should have read right and false if not
 	 */
-	public void setReadRight(boolean readRight) {
+	public void setReadRight(final boolean readRight) {
 		this.readRight = readRight;
 	}
-	
+
 	/**
 	 * Getter for the update right.
+	 * 
 	 * @return true if the group members are allowed to update the resource and false if not.
 	 */
 	public boolean hasUpdateRight() {
 		return this.updateRight;
 	}
-	
+
 	/**
 	 * Setter for the update right.
-	 * @param updateRight true if the group members should have update right and false if not
+	 * 
+	 * @param updateRight
+	 *            true if the group members should have update right and false if not
 	 */
-	public void setUpdateRight(boolean updateRight) {
+	public void setUpdateRight(final boolean updateRight) {
 		this.updateRight = updateRight;
 	}
-	
+
 	/**
 	 * Getter for the delete right.
+	 * 
 	 * @return true if the group members are allowed to delete the resource and false if not.
 	 */
 	public boolean hasDeleteRight() {
@@ -173,25 +187,30 @@ public class GroupAccessRight {
 
 	/**
 	 * Setter for the delete right.
-	 * @param deleteRight true if the group members should have delete right and false if not
+	 * 
+	 * @param deleteRight
+	 *            true if the group members should have delete right and false if not
 	 */
-	public void setDeleteRight(boolean deleteRight) {
+	public void setDeleteRight(final boolean deleteRight) {
 		this.deleteRight = deleteRight;
 	}
-	
+
 	/**
 	 * Getter for the change rights right.
+	 * 
 	 * @return true if the group members are allowed to change the access rights for the resource and false if not.
 	 */
 	public boolean hasChangeRightsRight() {
 		return this.changeRightsRight;
 	}
-	
+
 	/**
 	 * Setter for the change rights right.
-	 * @param changeRightsRight true if the group members should have change rights right and false if not
+	 * 
+	 * @param changeRightsRight
+	 *            true if the group members should have change rights right and false if not
 	 */
-	public void setChangeRightsRight(boolean changeRightsRight) {
+	public void setChangeRightsRight(final boolean changeRightsRight) {
 		this.changeRightsRight = changeRightsRight;
 	}
 
@@ -213,34 +232,36 @@ public class GroupAccessRight {
 	// *********************************************************************************************************************************************
 	// *********************************************************************************************************************************************
 
-	/*This method is not needed in the OpenAPE-Server.
+	/*
+	 * This method is not needed in the OpenAPE-Server.
 	 * public boolean equals(Object otherObject) {
-		boolean result = true;
-		if (otherObject == null || otherObject instanceof GroupAccessRight == false) {
-			result = false;
-		} else {
-			GroupAccessRight otherGroupAccessRight = (GroupAccessRight) otherObject;
-			if (this.groupId != otherGroupAccessRight.getGroupId()) {
-				result = false;
-			}
-			if (this.resourceId.equals(otherGroupAccessRight.getResourceId()) == false) {
-				result = false;
-			}
-			if (this.readRight != otherGroupAccessRight.hasReadRight()) {
-				result = false;
-			}
-			if (this.updateRight != otherGroupAccessRight.hasUpdateRight()) {
-				result = false;
-			}
-			if (this.deleteRight != otherGroupAccessRight.hasDeleteRight()) {
-				result = false;
-			}
-			if (this.changeRightsRight != otherGroupAccessRight.hasChangeRightsRight()) {
-				result = false;
-			}
-		}
-		return result;
-	}*/
+	 * boolean result = true;
+	 * if (otherObject == null || otherObject instanceof GroupAccessRight == false) {
+	 * result = false;
+	 * } else {
+	 * GroupAccessRight otherGroupAccessRight = (GroupAccessRight) otherObject;
+	 * if (this.groupId != otherGroupAccessRight.getGroupId()) {
+	 * result = false;
+	 * }
+	 * if (this.resourceId.equals(otherGroupAccessRight.getResourceId()) == false) {
+	 * result = false;
+	 * }
+	 * if (this.readRight != otherGroupAccessRight.hasReadRight()) {
+	 * result = false;
+	 * }
+	 * if (this.updateRight != otherGroupAccessRight.hasUpdateRight()) {
+	 * result = false;
+	 * }
+	 * if (this.deleteRight != otherGroupAccessRight.hasDeleteRight()) {
+	 * result = false;
+	 * }
+	 * if (this.changeRightsRight != otherGroupAccessRight.hasChangeRightsRight()) {
+	 * result = false;
+	 * }
+	 * }
+	 * return result;
+	 * }
+	 */
 
 
 
