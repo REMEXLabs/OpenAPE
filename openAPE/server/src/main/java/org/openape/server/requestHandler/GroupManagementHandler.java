@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.openape.api.groups.GroupMembershipStatus;
 import org.openape.server.database.mongoDB.DatabaseConnection;
 import org.openape.server.database.mongoDB.MongoCollectionTypes;
 
@@ -13,7 +14,7 @@ public class GroupManagementHandler {
 
 	public static String createGroup(String groupName, String description, String entryRequirements, String ownerId)
 			throws IllegalArgumentException, IOException {
-		org.openape.server.api.group.GroupMember admin = new org.openape.server.api.group.GroupMember(ownerId, true);
+		org.openape.server.api.group.GroupMember admin = new org.openape.server.api.group.GroupMember(ownerId, GroupMembershipStatus.ADMIN);
 		List<org.openape.server.api.group.GroupMember> groupMembers = new LinkedList<org.openape.server.api.group.GroupMember>();
 		groupMembers.add(admin);
 		org.openape.server.api.group.Group group = new org.openape.server.api.group.Group(groupName, groupMembers);

@@ -1,9 +1,12 @@
 package org.openape.server.api.group;
 
+import org.openape.api.groups.GroupMembershipStatus;
+
 /**
  * This class defines a group member. Therefore it contains the user's id {@link IUser#getId()} and a flag, whether this
  * user is only a member or also an admin of the group. The group member will be stored in a list of the group
- * {@link IGroup#getMembers()}. Thus this class does not contain a group id {@link IGroup#getId()}.
+ * {@link IGroup#getMembers()}. Thus this class does not contain a group id {@link IGroup#getId()}. The state of the
+ * group member ship is defined by {@link #state}.
  *
  * This class is thread safe.
  *
@@ -24,9 +27,9 @@ public class GroupMember {
 	private String userId;
 
 	/**
-	 * True if the member is an admin of this group and false if not.
+	 * The state of the group member ship.
 	 */
-	private boolean groupAdmin;
+	private GroupMembershipStatus state;
 
 
 
@@ -42,12 +45,12 @@ public class GroupMember {
 	 * 
 	 * @param userId
 	 *            user id {@link IUser#getId()} of the user, who is the group member. It must not be null or empty.
-	 * @param groupAdmin
-	 *            true if the user should be an admin of the group and false if not
+	 * @param state
+	 *            the state of the group member ship. It must not be null!
 	 */
-	public GroupMember(final String userId, final boolean groupAdmin) {
+	public GroupMember(final String userId, GroupMembershipStatus state) {
 		this.setUserId(userId);
-		this.setGroupAdmin(groupAdmin);
+		this.setState(state);
 	}
 
 
@@ -80,22 +83,22 @@ public class GroupMember {
 	}
 
 	/**
-	 * Getter whether the group member is also an admin of the group or not.
+	 * Getter for the state {@link #state} of the group member ship.
 	 * 
-	 * @return true if the group member is a group admin and false if not
+	 * @return state of the group member ship
 	 */
-	public boolean isGroupAdmin() {
-		return this.groupAdmin;
+	public GroupMembershipStatus getState() {
+		return this.state;
 	}
 
 	/**
-	 * Setter whether the group member should be an admin of the group or not.
+	 * Setter for the state {@link #state} of the group member ship.
 	 * 
-	 * @param groupAdmin
-	 *            true if the group member should be an admin of the group and false if not
+	 * @param the
+	 *            state of the group member ship. It must not be null!
 	 */
-	public void setGroupAdmin(final boolean groupAdmin) {
-		this.groupAdmin = groupAdmin;
+	public void setState(GroupMembershipStatus state) {
+		this.state = state;
 	}
 
 

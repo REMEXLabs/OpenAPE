@@ -111,7 +111,8 @@ public class GroupManagementHelper {
 
 				// check whether group member exists or not
 				if (userNameToUserIdMap.containsKey(userName)) {
-					groupMembers.add(new GroupMember(userNameToUserIdMap.get(userName), admin));
+					// TODO
+					//groupMembers.add(new GroupMember(userNameToUserIdMap.get(userName), admin));
 				} else {
 					final String message = "Unknown userName = " + userName + "!";
 
@@ -144,9 +145,10 @@ public class GroupManagementHelper {
 			final String userName = userIDToUserNameMap.get(groupMember.getUserId());
 			if (userName != null) {
 				groupMembersAsString += userName;
-				if (groupMember.isGroupAdmin()) {
-					groupMembersAsString += " admin";
-				}
+				// TODO
+				//if (groupMember.isGroupAdmin()) {
+				//	groupMembersAsString += " admin";
+				//}
 				groupMembersAsString += "\n";
 			}
 		}

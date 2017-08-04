@@ -3,6 +3,7 @@ package org.openape.server.api.group;
 import java.util.List;
 
 import org.openape.api.DatabaseObject;
+import org.openape.api.groups.GroupMembershipStatus;
 
 /**
  * This class defines a group. A group has members. Some of those members can also be admins of the group. Group admins
@@ -173,19 +174,19 @@ public class Group extends DatabaseObject {
 	// *********************************************************************************************************************************************
 
 	/**
-	 * Checks, whether the user with the given id is an admin of this group or not. The userId must not be empty or
-	 * null.
+	 * Checks, whether an user with the given id is an admin of this group or not. The userId must not be empty or
+	 * null. If the user is not a member of this group, false will be returned.
 	 *
 	 * @param userId
 	 *            the user's id
-	 * @return true if the user is an admin of this group and false if not
+	 * @return true if the user is an admin of this group and false if not or if the user is not a member of the group.
 	 */
 	public boolean isUserGroupAdmin(final String userId) {
 		// Checker.checkUserId(userId);
 		boolean isGroupAdmin = false;
 		for (final GroupMember groupMember : this.members) {
 			if (groupMember.getUserId().equals(userId)) {
-				if (groupMember.isGroupAdmin()) {
+				if (groupMember.getState() == GroupMembershipStatus.ADMIN) {
 					isGroupAdmin = true;
 				}
 				break;
@@ -196,6 +197,7 @@ public class Group extends DatabaseObject {
 
 
 
+	
 	// *********************************************************************************************************************************************
 	// *********************************************************************************************************************************************
 	// public methods

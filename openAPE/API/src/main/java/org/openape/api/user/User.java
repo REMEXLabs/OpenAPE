@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 
 public class User extends DatabaseObject {
 	/**
-		 * 
+		 *
 		 */
 	private static final long serialVersionUID = 5544621526965300349L;
 
