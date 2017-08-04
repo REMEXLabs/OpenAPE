@@ -3,7 +3,6 @@ package org.openape.server.rest;
 import java.io.IOException;
 
 import org.openape.api.Messages;
-import org.openape.api.UserContextList;
 import org.openape.api.usercontext.UserContext;
 import org.openape.server.auth.AuthService;
 import org.openape.server.requestHandler.UserContextRequestHandler;

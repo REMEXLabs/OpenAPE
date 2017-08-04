@@ -1,23 +1,12 @@
 package org.openape.ui.velocity.controller;
 
-import static spark.Spark.get;
-
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.bson.Document;
-import org.openape.api.user.User;
-import org.openape.api.usercontext.UserContext;
-import org.openape.server.auth.AuthService;
-import org.openape.server.requestHandler.EquipmentContextRequestHandler;
 import org.openape.server.rest.SuperRestInterface;
-import org.openape.ui.velocity.models.deleteUser;
-import org.openape.ui.velocity.molecules.Molecule_5_dataTable;
 import org.openape.ui.velocity.organism.Organism_1_Topsection;
 import org.openape.ui.velocity.organism.Organism_2_SubSection;
-import org.openape.ui.velocity.requestHandler.AdminSectionRequestHandler;
-
 import spark.ModelAndView;
 import spark.template.velocity.VelocityTemplateEngine;
 import spark.Spark;

@@ -12,7 +12,6 @@ import com.mongodb.event.ServerHeartbeatStartedEvent;
 import com.mongodb.event.ServerHeartbeatSucceededEvent;
 import com.mongodb.event.ServerMonitorListener;
 
-import org.apache.log4j.helpers.AbsoluteTimeDateFormat;
 import org.bson.Document;
 import org.bson.codecs.configuration.CodecConfigurationException;
 import org.bson.conversions.Bson;
@@ -20,21 +19,16 @@ import org.bson.json.JsonParseException;
 import org.bson.types.ObjectId;
 import org.openape.api.DatabaseObject;
 import org.openape.api.Messages;
-import org.openape.api.user.User;
-import org.openape.api.usercontext.UserContext;
 import org.openape.server.MongoConfig;
 import org.openape.server.requestHandler.EnvironmentContextRequestHandler;
 import org.openape.server.requestHandler.EquipmentContextRequestHandler;
 import org.openape.server.requestHandler.TaskContextRequestHandler;
 import org.openape.server.requestHandler.UserContextRequestHandler;
-import org.openape.ui.velocity.requestHandler.AdminSectionRequestHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mongodb.BasicDBObject;
-import com.mongodb.DBCursor;
-import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientOptions;
 import com.mongodb.MongoCredential;
@@ -725,7 +719,7 @@ public class DatabaseConnection implements ServerMonitorListener {
 	@Override
 	public void serverHeartbeatFailed(ServerHeartbeatFailedEvent event) {
 		
-		logger.error("Connecting to MongoDB at " + this.DATABASEURL + ":" + this.DATABASEPORT + " failed.\n" + event);
+		logger.error("Connecting to MongoDB at " + DatabaseConnection.DATABASEURL + ":" + DatabaseConnection.DATABASEPORT + " failed.\n" + event);
 		firstTime = true;  // logger can now indicate when new connection will be found again.
 			}
 

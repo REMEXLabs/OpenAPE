@@ -1,9 +1,6 @@
 package org.openape.ui.velocity.organism;
 
 import java.io.IOException;
-import java.util.ArrayList;
-
-import org.openape.api.user.User;
 import org.openape.ui.velocity.molecules.Molecule_5_dataTableContent;
 import org.openape.ui.velocity.requestHandler.AdminSectionRequestHandler;
 

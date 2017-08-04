@@ -5,7 +5,6 @@ import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 
 import org.openape.api.DatabaseObject;
-import org.openape.api.Messages;
 import org.openape.api.user.User;
 import org.openape.server.auth.PasswordEncoder;
 import org.openape.server.database.mongoDB.DatabaseConnection;

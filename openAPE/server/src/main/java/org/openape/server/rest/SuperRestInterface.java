@@ -1,15 +1,9 @@
 package org.openape.server.rest;
 
-import static spark.Spark.get;
-
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-
 import org.openape.api.Messages;
 import org.openape.api.groups.GroupMembershipRequest;
-import org.openape.server.Main;
 import org.openape.server.admin.AdminInterface;
 import org.openape.server.auth.AuthService;
 import org.openape.server.requestHandler.EnvironmentContextRequestHandler;
@@ -36,11 +30,8 @@ import org.openape.ui.velocity.requestHandler.AdminSectionRequestHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import spark.ModelAndView;
 import spark.Request;
 import spark.Spark;
-import spark.template.velocity.VelocityTemplateEngine;
-
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

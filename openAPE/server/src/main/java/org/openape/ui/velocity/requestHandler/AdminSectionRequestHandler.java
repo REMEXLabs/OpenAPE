@@ -4,21 +4,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.io.IOException;
-import java.util.ArrayList;
-
-import org.openape.api.DatabaseObject;
-import org.openape.api.Messages;
 import org.openape.api.user.User;
-import org.openape.api.usercontext.UserContext;
 import org.openape.server.database.mongoDB.DatabaseConnection;
 import org.bson.Document;
-import org.bson.types.ObjectId;
 import org.openape.server.database.mongoDB.MongoCollectionTypes;
-import org.openape.server.requestHandler.UserContextRequestHandler;
 import org.openape.server.rest.UserContextRESTInterface;
 
 import com.mongodb.client.result.UpdateResult;
-import com.sun.xml.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
 
 /**
  * Class with methods to manage user context on the server. It is used by the

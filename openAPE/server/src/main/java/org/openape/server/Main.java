@@ -5,8 +5,6 @@ import org.openape.server.database.mongoDB.DatabaseConnection;
 
 
 import org.openape.server.admin.AdminInterface;
-import org.openape.server.database.mongoDB.DatabaseConnection;
-
 import org.openape.server.rest.SuperRestInterface;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

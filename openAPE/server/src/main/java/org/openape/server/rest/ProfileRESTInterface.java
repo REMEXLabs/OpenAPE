@@ -9,24 +9,15 @@ import javax.ws.rs.NotFoundException;
 import org.openape.api.DatabaseObject;
 import org.openape.api.OpenAPEEndPoints;
 import org.openape.api.PasswordChangeRequest;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import org.json.JSONObject;
-import org.openape.api.Messages;
 import org.openape.api.user.User;
-import org.openape.api.usercontext.UserContext;
 import org.openape.server.auth.AuthService;
 import org.openape.server.auth.PasswordEncoder;
 import org.openape.server.database.mongoDB.DatabaseConnection;
 import org.openape.server.database.mongoDB.MongoCollectionTypes;
 import org.openape.server.requestHandler.ProfileHandler;
 import org.openape.ui.velocity.requestHandler.AdminSectionRequestHandler;
-import org.pac4j.core.profile.CommonProfile;
-import org.pac4j.core.profile.ProfileManager;
-import org.pac4j.sparkjava.SparkWebContext;
 import spark.Spark;
-
-import com.fasterxml.jackson.core.JsonParseException;
 
 
 public class ProfileRESTInterface extends SuperRestInterface {

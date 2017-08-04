@@ -3,8 +3,6 @@ package org.openape.ui.velocity.molecules;
 import java.util.ArrayList;
 
 import org.openape.api.user.User;
-import org.openape.api.usercontext.UserContext;
-import org.openape.ui.velocity.atoms.Atom_1_navigationLinks;
 
 public class Molecule_5_dataTableContent {
 	
