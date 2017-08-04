@@ -85,7 +85,8 @@ private String getToken(String userName,String password){
 	int status = response.getStatus();
 	logger.debug("Response code: " + status);
 			if (status != 200){
-				logger.error("Failed : HTTP error code : " + status  +".\n Server message: " + response.readEntity(String.class)     );
+				logger.error("Failed : HTTP error code : " +
+			status  +".\n Server message: " + response.readEntity(String.class)     );
 				throw new RuntimeException("Failed : HTTP error code : " + status );
 			}
 			

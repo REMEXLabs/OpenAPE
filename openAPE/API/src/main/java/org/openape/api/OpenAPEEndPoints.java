@@ -10,6 +10,8 @@ public class OpenAPEEndPoints {
 			
 			// messages
 			public static final String USER_ROLES_CHANGED = "User roles successfully changed";
+			public static final String GROUPS = "openape/groups";
+			public static final String GROUP_MEMBER =  "openape/:groupId/members/:userId";
 
 			public static String userDoesNotExist(String userId) {
 								return "User with Id \"" + userId + "\" does not exist."; 

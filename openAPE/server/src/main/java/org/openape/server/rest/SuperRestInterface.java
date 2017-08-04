@@ -8,11 +8,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.openape.api.Messages;
+import org.openape.api.groups.GroupMembershipRequest;
 import org.openape.server.Main;
 import org.openape.server.admin.AdminInterface;
 import org.openape.server.auth.AuthService;
 import org.openape.server.requestHandler.EnvironmentContextRequestHandler;
 import org.openape.server.requestHandler.EquipmentContextRequestHandler;
+import org.openape.server.requestHandler.GroupManagementHandler;
 import org.openape.server.requestHandler.ListingRequestHandler;
 import org.openape.server.requestHandler.ResourceDescriptionRequestHandler;
 import org.openape.server.requestHandler.ResourceRequestHandler;
@@ -280,7 +282,8 @@ ResourceDescriptionRESTInterface.setupResourceDescriptionRESTInterface(new Resou
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-        
+
+        GroupManagementRestInterface.setupGroupManagementRestInterface(new GroupManagementHandler(), authService );
         //REST-Interfaces defined in ISO/IEC 24752-8
         EnvironmentContextRESTInterface.setupEnvironmentContextRESTInterface(new EnvironmentContextRequestHandler(), authService);
         EquipmentContextRESTInterface.setupEquipmentContextRESTInterface(new EquipmentContextRequestHandler(), authService);
@@ -295,5 +298,10 @@ ResourceDescriptionRESTInterface.setupResourceDescriptionRESTInterface(new Resou
             TestRESTInterface.setupTestRESTInterface();
         }           
     }
+
+	public static GroupMembershipRequest extractFromRequest(Class<GroupMembershipRequest> class1, Request req) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }
