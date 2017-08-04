@@ -5,16 +5,20 @@ import java.util.ArrayList;
 public class Navigation {
 	private ArrayList<String> listNavigationLinks;
 	private ArrayList<String> listNavigationIDs;
+
 	public ArrayList<String> getListNavigationLinks() {
-		return listNavigationLinks;
+		return this.listNavigationLinks;
 	}
-	public void setListNavigationLinks(ArrayList<String> listNavigationLinks) {
+
+	public void setListNavigationLinks(final ArrayList<String> listNavigationLinks) {
 		this.listNavigationLinks = listNavigationLinks;
 	}
+
 	public ArrayList<String> getListNavigationIDs() {
-		return listNavigationIDs;
+		return this.listNavigationIDs;
 	}
-	public void setListNavigationIDs(ArrayList<String> listNavigationIDs) {
+
+	public void setListNavigationIDs(final ArrayList<String> listNavigationIDs) {
 		this.listNavigationIDs = listNavigationIDs;
 	}
 

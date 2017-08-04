@@ -32,62 +32,62 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  */
 @XmlRootElement
 public class Listing extends DatabaseObject {
-    private static final long serialVersionUID = 6662310079884980939L;
+	private static final long serialVersionUID = 6662310079884980939L;
 
-    private List<String> userContextUris = new ArrayList<String>();
-    private List<String> taskContextUris = new ArrayList<String>();
-    private List<String> equipmentContextUris = new ArrayList<String>();
-    private List<String> environmantContextUris = new ArrayList<String>();
-    private ResourceDescription resourceDescriptionQurey = new ResourceDescription();
+	private List<String> userContextUris = new ArrayList<String>();
+	private List<String> taskContextUris = new ArrayList<String>();
+	private List<String> equipmentContextUris = new ArrayList<String>();
+	private List<String> environmantContextUris = new ArrayList<String>();
+	private ResourceDescription resourceDescriptionQurey = new ResourceDescription();
 
-    @XmlElement(name = "environment-context-uri")
-    public List<String> getEnvironmantContextUris() {
-        return this.environmantContextUris;
-    }
+	@XmlElement(name = "environment-context-uri")
+	public List<String> getEnvironmantContextUris() {
+		return this.environmantContextUris;
+	}
 
-    @XmlElement(name = "equipment-context-uri")
-    public List<String> getEquipmentContextUris() {
-        return this.equipmentContextUris;
-    }
+	@XmlElement(name = "equipment-context-uri")
+	public List<String> getEquipmentContextUris() {
+		return this.equipmentContextUris;
+	}
 
-    @XmlElement(name = "resource-description")
-    public ResourceDescription getResourceDescriptionQurey() {
-        return this.resourceDescriptionQurey;
-    }
+	@XmlElement(name = "resource-description")
+	public ResourceDescription getResourceDescriptionQurey() {
+		return this.resourceDescriptionQurey;
+	}
 
-    @XmlElement(name = "task-context-uri")
-    public List<String> getTaskContextUris() {
-        return this.taskContextUris;
-    }
+	@XmlElement(name = "task-context-uri")
+	public List<String> getTaskContextUris() {
+		return this.taskContextUris;
+	}
 
-    @XmlElement(name = "user-context-uri")
-    public List<String> getUserContextUris() {
-        return this.userContextUris;
-    }
+	@XmlElement(name = "user-context-uri")
+	public List<String> getUserContextUris() {
+		return this.userContextUris;
+	}
 
-    @Override
-    @JsonIgnore
-    public boolean isValid() {
-        return true;
-    }
+	@Override
+	@JsonIgnore
+	public boolean isValid() {
+		return true;
+	}
 
-    public void setEnvironmantContextUris(List<String> environmantContextUris) {
-        this.environmantContextUris = environmantContextUris;
-    }
+	public void setEnvironmantContextUris(final List<String> environmantContextUris) {
+		this.environmantContextUris = environmantContextUris;
+	}
 
-    public void setEquipmentContextUris(List<String> equipmentContextUris) {
-        this.equipmentContextUris = equipmentContextUris;
-    }
+	public void setEquipmentContextUris(final List<String> equipmentContextUris) {
+		this.equipmentContextUris = equipmentContextUris;
+	}
 
-    public void setResourceDescriptionQurey(ResourceDescription resourceDescriptionQurey) {
-        this.resourceDescriptionQurey = resourceDescriptionQurey;
-    }
+	public void setResourceDescriptionQurey(final ResourceDescription resourceDescriptionQurey) {
+		this.resourceDescriptionQurey = resourceDescriptionQurey;
+	}
 
-    public void setTaskContextUris(List<String> taskContextUris) {
-        this.taskContextUris = taskContextUris;
-    }
+	public void setTaskContextUris(final List<String> taskContextUris) {
+		this.taskContextUris = taskContextUris;
+	}
 
-    public void setUserContextUris(List<String> userContextUris) {
-        this.userContextUris = userContextUris;
-    }
+	public void setUserContextUris(final List<String> userContextUris) {
+		this.userContextUris = userContextUris;
+	}
 }

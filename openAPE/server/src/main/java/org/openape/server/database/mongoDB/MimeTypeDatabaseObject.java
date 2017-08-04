@@ -7,22 +7,22 @@ import org.openape.api.DatabaseObject;
  * the database.
  */
 public class MimeTypeDatabaseObject extends DatabaseObject {
-    private static final long serialVersionUID = -3507423199805025440L;
+	private static final long serialVersionUID = -3507423199805025440L;
 
-    private String mimeType;
+	private String mimeType;
 
-    public MimeTypeDatabaseObject() {
-    }
+	public MimeTypeDatabaseObject() {
+	}
 
-    public MimeTypeDatabaseObject(String mimeType) {
-        this.mimeType = mimeType;
-    }
+	public MimeTypeDatabaseObject(final String mimeType) {
+		this.mimeType = mimeType;
+	}
 
-    public String getMimeType() {
-        return this.mimeType;
-    }
+	public String getMimeType() {
+		return this.mimeType;
+	}
 
-    public void setMimeType(String mimeType) {
-        this.mimeType = mimeType;
-    }
+	public void setMimeType(final String mimeType) {
+		this.mimeType = mimeType;
+	}
 }

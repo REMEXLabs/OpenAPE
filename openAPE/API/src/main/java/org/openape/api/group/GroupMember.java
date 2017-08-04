@@ -1,17 +1,19 @@
 package org.openape.api.group;
 
 /**
- * This class defines a group member. Therefore it contains the user's id {@link IUser#getId()} and a flag, whether this
- * user is only a member or also an admin of the group. The group member will be stored in a list of the group
- * {@link IGroup#getMembers()}. Thus this class does not contain a group id {@link IGroup#getId()}.
- * 
+ * This class defines a group member. Therefore it contains the user's id
+ * {@link IUser#getId()} and a flag, whether this user is only a member or also
+ * an admin of the group. The group member will be stored in a list of the group
+ * {@link IGroup#getMembers()}. Thus this class does not contain a group id
+ * {@link IGroup#getId()}.
+ *
  * This class is thread safe.
- * 
+ *
  * @author Tobias Ableitner
  *
  */
 public class GroupMember {
-	
+
 	// *********************************************************************************************************************************************
 	// *********************************************************************************************************************************************
 	// attributes
@@ -22,15 +24,12 @@ public class GroupMember {
 	 * The members user id {@link IUser#getId()}.
 	 */
 	private String userId;
-	
+
 	/**
 	 * True if the member is an admin of this group and false if not.
 	 */
 	private boolean groupAdmin;
 
-	
-
-	
 	// *********************************************************************************************************************************************
 	// *********************************************************************************************************************************************
 	// constructors
@@ -39,16 +38,18 @@ public class GroupMember {
 
 	/**
 	 * Create a group member.
-	 * @param userId user id {@link IUser#getId()} of the user, who is the group member. It must not be null or empty.
-	 * @param groupAdmin true if the user should be an admin of the group and false if not
+	 * 
+	 * @param userId
+	 *            user id {@link IUser#getId()} of the user, who is the group
+	 *            member. It must not be null or empty.
+	 * @param groupAdmin
+	 *            true if the user should be an admin of the group and false if
+	 *            not
 	 */
-	public GroupMember(String userId, boolean groupAdmin){
+	public GroupMember(final String userId, final boolean groupAdmin) {
 		this.setUserId(userId);
 		this.setGroupAdmin(groupAdmin);
 	}
-
-	
-
 
 	// *********************************************************************************************************************************************
 	// *********************************************************************************************************************************************
@@ -58,23 +59,28 @@ public class GroupMember {
 
 	/**
 	 * Getter for the user id {@link IUser#getId()} of the group member.
+	 * 
 	 * @return user id of the group member
 	 */
 	public String getUserId() {
 		return this.userId;
 	}
-	
+
 	/**
-	 * Setter for the user id {@link IUser#getId()} of the group member. It must not be null or empty.
-	 * @param userId user id {@link IUser#getId()} of the group member
+	 * Setter for the user id {@link IUser#getId()} of the group member. It must
+	 * not be null or empty.
+	 * 
+	 * @param userId
+	 *            user id {@link IUser#getId()} of the group member
 	 */
-	public void setUserId(String userId) {
-		//Checker.checkUserId(userId);
+	public void setUserId(final String userId) {
+		// Checker.checkUserId(userId);
 		this.userId = userId;
 	}
-	
+
 	/**
 	 * Getter whether the group member is also an admin of the group or not.
+	 * 
 	 * @return true if the group member is a group admin and false if not
 	 */
 	public boolean isGroupAdmin() {
@@ -83,14 +89,14 @@ public class GroupMember {
 
 	/**
 	 * Setter whether the group member should be an admin of the group or not.
-	 * @param groupAdmin true if the group member should be an admin of the group and false if not
+	 * 
+	 * @param groupAdmin
+	 *            true if the group member should be an admin of the group and
+	 *            false if not
 	 */
-	public void setGroupAdmin(boolean groupAdmin) {
+	public void setGroupAdmin(final boolean groupAdmin) {
 		this.groupAdmin = groupAdmin;
 	}
-	
-	
-
 
 	// *********************************************************************************************************************************************
 	// *********************************************************************************************************************************************
@@ -98,17 +104,11 @@ public class GroupMember {
 	// *********************************************************************************************************************************************
 	// *********************************************************************************************************************************************
 
-	
-	
-
 	// *********************************************************************************************************************************************
 	// *********************************************************************************************************************************************
 	// override methods
 	// *********************************************************************************************************************************************
 	// *********************************************************************************************************************************************
-
-
-
 
 	// *********************************************************************************************************************************************
 	// *********************************************************************************************************************************************
@@ -116,26 +116,17 @@ public class GroupMember {
 	// *********************************************************************************************************************************************
 	// *********************************************************************************************************************************************
 
-
-
-
 	// *********************************************************************************************************************************************
 	// *********************************************************************************************************************************************
 	// protected methods
 	// *********************************************************************************************************************************************
 	// *********************************************************************************************************************************************
 
-
-
-
 	// *********************************************************************************************************************************************
 	// *********************************************************************************************************************************************
 	// private methods
 	// *********************************************************************************************************************************************
 	// *********************************************************************************************************************************************
-
-
-
 
 	// *********************************************************************************************************************************************
 	// *********************************************************************************************************************************************

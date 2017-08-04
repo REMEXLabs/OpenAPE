@@ -5,22 +5,28 @@ public class GroupRequest {
 	private String groupname;
 	private String description;
 	private String entryRequirements;
+
 	public String getGroupname() {
-		return groupname;
+		return this.groupname;
 	}
-	public void setGroupname(String groupname) {
+
+	public void setGroupname(final String groupname) {
 		this.groupname = groupname;
 	}
+
 	public String getDescription() {
-		return description;
+		return this.description;
 	}
-	public void setDescription(String description) {
+
+	public void setDescription(final String description) {
 		this.description = description;
 	}
+
 	public String getEntryRequirements() {
-		return entryRequirements;
+		return this.entryRequirements;
 	}
-	public void setEntryRequirements(String entryRequirements) {
+
+	public void setEntryRequirements(final String entryRequirements) {
 		this.entryRequirements = entryRequirements;
-	} 
+	}
 }

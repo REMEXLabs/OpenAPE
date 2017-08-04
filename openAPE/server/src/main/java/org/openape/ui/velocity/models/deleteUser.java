@@ -6,11 +6,11 @@ public class deleteUser {
 	private AdminSectionRequestHandler adminSectionRequestHandler = new AdminSectionRequestHandler();
 
 	public AdminSectionRequestHandler getAdminSectionRequestHandler() {
-		return adminSectionRequestHandler;
+		return this.adminSectionRequestHandler;
 	}
 
-	public void setAdminSectionRequestHandler(AdminSectionRequestHandler adminSectionRequestHandler) {
+	public void setAdminSectionRequestHandler(final AdminSectionRequestHandler adminSectionRequestHandler) {
 		this.adminSectionRequestHandler = adminSectionRequestHandler;
 	}
-	 
+
 }
