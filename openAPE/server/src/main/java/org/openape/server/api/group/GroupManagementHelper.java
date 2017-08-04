@@ -131,7 +131,7 @@ public class GroupManagementHelper {
 
 	/**
 	 * Creates the content as string for the HTML text area, which used to edit the group memberships.
-	 * 
+	 *
 	 * @param members
 	 *            the group members. It must not be null!
 	 * @param userIDToUserNameMap
@@ -145,7 +145,7 @@ public class GroupManagementHelper {
 		for (final GroupMember groupMember : members) {
 			final String userName = userIDToUserNameMap.get(groupMember.getUserId());
 			if (userName != null) {
-				if(groupMember.getState() == GroupMembershipStatus.MEMBER){
+				if (groupMember.getState() == GroupMembershipStatus.MEMBER) {
 					groupMembersAsString += userName;
 					if (groupMember.getState() == GroupMembershipStatus.ADMIN) {
 						groupMembersAsString += " admin";

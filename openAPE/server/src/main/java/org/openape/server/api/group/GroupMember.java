@@ -42,13 +42,13 @@ public class GroupMember {
 
 	/**
 	 * Create a group member.
-	 * 
+	 *
 	 * @param userId
 	 *            user id {@link IUser#getId()} of the user, who is the group member. It must not be null or empty.
 	 * @param state
 	 *            the state of the group member ship. It must not be null!
 	 */
-	public GroupMember(final String userId, GroupMembershipStatus state) {
+	public GroupMember(final String userId, final GroupMembershipStatus state) {
 		this.setUserId(userId);
 		this.setState(state);
 	}
@@ -64,7 +64,7 @@ public class GroupMember {
 
 	/**
 	 * Getter for the user id {@link IUser#getId()} of the group member.
-	 * 
+	 *
 	 * @return user id of the group member
 	 */
 	public String getUserId() {
@@ -73,7 +73,7 @@ public class GroupMember {
 
 	/**
 	 * Setter for the user id {@link IUser#getId()} of the group member. It must not be null or empty.
-	 * 
+	 *
 	 * @param userId
 	 *            user id {@link IUser#getId()} of the group member
 	 */
@@ -84,7 +84,7 @@ public class GroupMember {
 
 	/**
 	 * Getter for the state {@link #state} of the group member ship.
-	 * 
+	 *
 	 * @return state of the group member ship
 	 */
 	public GroupMembershipStatus getState() {
@@ -93,11 +93,11 @@ public class GroupMember {
 
 	/**
 	 * Setter for the state {@link #state} of the group member ship.
-	 * 
+	 *
 	 * @param the
 	 *            state of the group member ship. It must not be null!
 	 */
-	public void setState(GroupMembershipStatus state) {
+	public void setState(final GroupMembershipStatus state) {
 		this.state = state;
 	}
 

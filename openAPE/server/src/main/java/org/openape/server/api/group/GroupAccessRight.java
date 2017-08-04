@@ -102,7 +102,7 @@ public class GroupAccessRight {
 
 	/**
 	 * The id of the group, for which the group access rights are defined.
-	 * 
+	 *
 	 * @return id of the group
 	 */
 	public String getGroupId() {
@@ -111,7 +111,7 @@ public class GroupAccessRight {
 
 	/**
 	 * Setter for the group's id. It must not be null or empty.
-	 * 
+	 *
 	 * @param groupId
 	 *            the group's id
 	 */
@@ -121,7 +121,7 @@ public class GroupAccessRight {
 
 	/**
 	 * The id of the resource, for which the group access rights are defined.
-	 * 
+	 *
 	 * @return id of the resource
 	 */
 	public String getResourceId() {
@@ -130,7 +130,7 @@ public class GroupAccessRight {
 
 	/**
 	 * Setter for the resource id. The resource id must not be null or empty.
-	 * 
+	 *
 	 * @param conceptId
 	 *            id of the resource, for which the group access rights are defined
 	 */
@@ -140,7 +140,7 @@ public class GroupAccessRight {
 
 	/**
 	 * Getter for the read right.
-	 * 
+	 *
 	 * @return true if the group members are allowed to read the resource and false if not.
 	 */
 	public boolean hasReadRight() {
@@ -149,7 +149,7 @@ public class GroupAccessRight {
 
 	/**
 	 * Setter for the read right.
-	 * 
+	 *
 	 * @param readRight
 	 *            true if the group members should have read right and false if not
 	 */
@@ -159,7 +159,7 @@ public class GroupAccessRight {
 
 	/**
 	 * Getter for the update right.
-	 * 
+	 *
 	 * @return true if the group members are allowed to update the resource and false if not.
 	 */
 	public boolean hasUpdateRight() {
@@ -168,7 +168,7 @@ public class GroupAccessRight {
 
 	/**
 	 * Setter for the update right.
-	 * 
+	 *
 	 * @param updateRight
 	 *            true if the group members should have update right and false if not
 	 */
@@ -178,7 +178,7 @@ public class GroupAccessRight {
 
 	/**
 	 * Getter for the delete right.
-	 * 
+	 *
 	 * @return true if the group members are allowed to delete the resource and false if not.
 	 */
 	public boolean hasDeleteRight() {
@@ -187,7 +187,7 @@ public class GroupAccessRight {
 
 	/**
 	 * Setter for the delete right.
-	 * 
+	 *
 	 * @param deleteRight
 	 *            true if the group members should have delete right and false if not
 	 */
@@ -197,7 +197,7 @@ public class GroupAccessRight {
 
 	/**
 	 * Getter for the change rights right.
-	 * 
+	 *
 	 * @return true if the group members are allowed to change the access rights for the resource and false if not.
 	 */
 	public boolean hasChangeRightsRight() {
@@ -206,7 +206,7 @@ public class GroupAccessRight {
 
 	/**
 	 * Setter for the change rights right.
-	 * 
+	 *
 	 * @param changeRightsRight
 	 *            true if the group members should have change rights right and false if not
 	 */
