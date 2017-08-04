@@ -151,8 +151,7 @@ public class SuperRestInterface {
         EnvironmentContextRESTInterface.setupEnvironmentContextRESTInterface(new EnvironmentContextRequestHandler(), authService);
         EquipmentContextRESTInterface.setupEquipmentContextRESTInterface(new EquipmentContextRequestHandler(), authService);
         ListingRESTInterface.setupListingRESTInterface(new ListingRequestHandler());
-                
-ResourceDescriptionRESTInterface.setupResourceDescriptionRESTInterface(new ResourceDescriptionRequestHandler(), authService);
+        ResourceDescriptionRESTInterface.setupResourceDescriptionRESTInterface(new ResourceDescriptionRequestHandler(), authService);
         
 		
         try {
@@ -287,7 +286,10 @@ ResourceDescriptionRESTInterface.setupResourceDescriptionRESTInterface(new Resou
         // Test html interface found
         if(SuperRestInterface.TEST_ENVIRONMENT) {
             TestRESTInterface.setupTestRESTInterface();
-        }           
+        }    
+        
+        //redirect to index if no path was found in the url
+        Spark.redirect.get("/", "/index");
     }
 
 }

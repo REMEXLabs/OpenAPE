@@ -1,4 +1,4 @@
-package org.openape.ui.velocity.mainControllerComponents;
+package org.openape.ui.velocity.controllerComponents;
 
 import java.util.HashMap;
 import java.util.Map;

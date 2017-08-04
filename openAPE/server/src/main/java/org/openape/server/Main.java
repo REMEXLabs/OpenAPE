@@ -16,7 +16,7 @@ public class Main {
 
     public static void main(String[] args) {
     	logger.info("Starting openAPE application");
-logger.debug("Working directory: " +             System.getProperty("user.dir"));
+    	logger.debug("Working directory: " +             System.getProperty("user.dir"));
 
         if(Arrays.asList(args).contains("ensureIndexes")) {
             // Open database connection and make sure all indexes exist

@@ -3,7 +3,7 @@ package org.openape.ui.velocity.controller;
 import java.io.IOException;
 import java.util.Map;
 import org.openape.server.rest.SuperRestInterface;
-import org.openape.ui.velocity.mainControllerComponents.MainComponents;
+import org.openape.ui.velocity.controllerComponents.MainComponents;
 import org.openape.ui.velocity.organism.Organism_3_DataTable;
 import org.openape.ui.velocity.organism.Organism_4_Modals;
 import org.openape.ui.velocity.requestHandler.AdminSectionRequestHandler;

@@ -3,7 +3,7 @@ package org.openape.ui.velocity.controller;
 import java.io.IOException;
 import java.util.Map;
 import org.openape.server.rest.SuperRestInterface;
-import org.openape.ui.velocity.mainControllerComponents.MainComponents;
+import org.openape.ui.velocity.controllerComponents.MainComponents;
 
 import spark.ModelAndView;
 import spark.template.velocity.VelocityTemplateEngine;
