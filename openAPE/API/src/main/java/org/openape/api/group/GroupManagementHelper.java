@@ -124,7 +124,7 @@ public class GroupManagementHelper {
 	/**
 	 * Creates the content as string for the HTML text area, which used to edit
 	 * the group memberships.
-	 * 
+	 *
 	 * @param members
 	 *            the group members. It must not be null!
 	 * @param userIDToUserNameMap

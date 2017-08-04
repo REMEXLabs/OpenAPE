@@ -55,7 +55,7 @@ public class Group extends DatabaseObject {
 	 * Create a new group and set's the value of {@link Group#id} to null. This
 	 * constructor should be used, to instantiate groups, which are not already
 	 * stored in the database.
-	 * 
+	 *
 	 * @param name
 	 *            the name of the group. It must not be null or empty.
 	 * @param members
@@ -69,7 +69,7 @@ public class Group extends DatabaseObject {
 	/**
 	 * Create a new group. This constructor should be used, to instantiate
 	 * groups, which are already stored in the database.
-	 * 
+	 *
 	 * @param id
 	 *            the id of the group. It must not be null or empty.
 	 * @param name
@@ -92,7 +92,7 @@ public class Group extends DatabaseObject {
 
 	/**
 	 * Getter for the group's id.
-	 * 
+	 *
 	 * @return the group's id, which is a string. If the group is not already
 	 *         stored in the database, null can be returned.
 	 */
@@ -103,7 +103,7 @@ public class Group extends DatabaseObject {
 	/**
 	 * Setter for the group's id. It must not be empty and should not be null.
 	 * Null is only allowed, if the group is not already stored in the database.
-	 * 
+	 *
 	 * @param id
 	 *            the group's id
 	 */
@@ -114,7 +114,7 @@ public class Group extends DatabaseObject {
 
 	/**
 	 * Getter for the group's name.
-	 * 
+	 *
 	 * @return the groups name
 	 */
 	public String getName() {
@@ -123,7 +123,7 @@ public class Group extends DatabaseObject {
 
 	/**
 	 * Setter for the group's name. It must not be null or empty.
-	 * 
+	 *
 	 * @param name
 	 *            the group's name
 	 */
@@ -135,7 +135,7 @@ public class Group extends DatabaseObject {
 	/**
 	 * Getter for the group's members. If the group has no members, an empty
 	 * list will be returned.
-	 * 
+	 *
 	 * @return a list with the group's members
 	 */
 	public List<GroupMember> getMembers() {
@@ -145,7 +145,7 @@ public class Group extends DatabaseObject {
 	/**
 	 * Setter for the group's members. If the group has no members, it can be
 	 * empty, but not null.
-	 * 
+	 *
 	 * @param members
 	 *            the group's members
 	 */
@@ -169,7 +169,7 @@ public class Group extends DatabaseObject {
 	/**
 	 * Checks, whether the user with the given id is an admin of this group or
 	 * not. The userId must not be empty or null.
-	 * 
+	 *
 	 * @param userId
 	 *            the user's id
 	 * @return true if the user is an admin of this group and false if not

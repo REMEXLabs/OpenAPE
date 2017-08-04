@@ -127,7 +127,7 @@ public class ProfileRESTInterface extends SuperRestInterface {
 
 		/*
 		 * Enables admins to change the role of other users
-		 * 
+		 *
 		 */
 		Spark.before(OpenAPEEndPoints.USER_ROLES, authService.authorize("admin"));
 		Spark.put(OpenAPEEndPoints.USER_ROLES, (req, res) -> {

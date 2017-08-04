@@ -122,8 +122,14 @@ public class TaskContextRESTInterface extends SuperRestInterface {
 						requestHandler.updateTaskContextById(taskContextId, receivedTaskContext);
 						res.status(SuperRestInterface.HTTP_STATUS_OK);
 						return Messages.getString("TaskContextRESTInterface.EmptyString"); //$NON-NLS-1$ //TODO
+																							// $NON-NLS-1$
+																							// $NON-NLS-1$
 																							//$NON-NLS-1$ return
+																							// $NON-NLS-1$
+																							// $NON-NLS-1$
 																							//$NON-NLS-1$ right
+																							// $NON-NLS-1$
+																							// $NON-NLS-1$
 																							//$NON-NLS-1$ statuscode
 					} catch (JsonParseException | JsonMappingException | IllegalArgumentException e) {
 						// If the parse or update is not successful return bad

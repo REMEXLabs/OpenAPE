@@ -38,7 +38,7 @@ public class GroupMember {
 
 	/**
 	 * Create a group member.
-	 * 
+	 *
 	 * @param userId
 	 *            user id {@link IUser#getId()} of the user, who is the group
 	 *            member. It must not be null or empty.
@@ -59,7 +59,7 @@ public class GroupMember {
 
 	/**
 	 * Getter for the user id {@link IUser#getId()} of the group member.
-	 * 
+	 *
 	 * @return user id of the group member
 	 */
 	public String getUserId() {
@@ -69,7 +69,7 @@ public class GroupMember {
 	/**
 	 * Setter for the user id {@link IUser#getId()} of the group member. It must
 	 * not be null or empty.
-	 * 
+	 *
 	 * @param userId
 	 *            user id {@link IUser#getId()} of the group member
 	 */
@@ -80,7 +80,7 @@ public class GroupMember {
 
 	/**
 	 * Getter whether the group member is also an admin of the group or not.
-	 * 
+	 *
 	 * @return true if the group member is a group admin and false if not
 	 */
 	public boolean isGroupAdmin() {
@@ -89,7 +89,7 @@ public class GroupMember {
 
 	/**
 	 * Setter whether the group member should be an admin of the group or not.
-	 * 
+	 *
 	 * @param groupAdmin
 	 *            true if the group member should be an admin of the group and
 	 *            false if not

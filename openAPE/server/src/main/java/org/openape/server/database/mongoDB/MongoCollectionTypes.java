@@ -19,17 +19,19 @@ import org.openape.api.usercontext.UserContext;
 public enum MongoCollectionTypes {
 	USERCONTEXT(Messages.getString("MongoCollectionTypes.userContextsCollectionName"), UserContext.class), //$NON-NLS-1$
 	ENVIRONMENTCONTEXT(Messages.getString("MongoCollectionTypes.environmentContextsCollectionName"), //$NON-NLS-1$
-			EnvironmentContext.class), EQUIPMENTCONTEXT(Messages.getString("MongoCollectionTypes.equipmentContextsCollectionName"), //$NON-NLS-1$
-					EquipmentContext.class), TASKCONTEXT(Messages.getString("MongoCollectionTypes.taskContextsCollectionName"), //$NON-NLS-1$
+			EnvironmentContext.class), EQUIPMENTCONTEXT(
+					Messages.getString("MongoCollectionTypes.equipmentContextsCollectionName"), //$NON-NLS-1$
+					EquipmentContext.class), TASKCONTEXT(
+							Messages.getString("MongoCollectionTypes.taskContextsCollectionName"), //$NON-NLS-1$
 							TaskContext.class), RESOURCEDESCRIPTION(
 									Messages.getString("MongoCollectionTypes.resourceDescriptionCollectionName"), //$NON-NLS-1$
-									ResourceDescription.class), LISTING(Messages.getString("MongoCollectionTypes.lstingCollectionName"), //$NON-NLS-1$
+									ResourceDescription.class), LISTING(
+											Messages.getString("MongoCollectionTypes.lstingCollectionName"), //$NON-NLS-1$
 											Listing.class), RESOURCEMIMETYPES(
 													Messages.getString(
 															"MongoCollectionTypes.resourceMimeTypesCollectionName"), //$NON-NLS-1$
-													null), USERS("users", User.class), GROUPS(
-															Messages.getString(
-																	"MongoCollectionTypes.groupMimeTypesCollectionName"), //$NON-NLS-1$
+													null), USERS("users", User.class), GROUPS(Messages.getString(
+															"MongoCollectionTypes.groupMimeTypesCollectionName"), //$NON-NLS-1$
 															Group.class);
 
 	/**

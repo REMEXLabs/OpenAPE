@@ -137,8 +137,14 @@ public class UserContextRESTInterface extends SuperRestInterface {
 						requestHandler.updateUserContextById(userContextId, receivedUserContext);
 						res.status(SuperRestInterface.HTTP_STATUS_OK);
 						return Messages.getString("UserContextRESTInterface.EmptyString"); //$NON-NLS-1$ //TODO
+																							// $NON-NLS-1$
+																							// $NON-NLS-1$
 																							//$NON-NLS-1$ return
+																							// $NON-NLS-1$
+																							// $NON-NLS-1$
 																							//$NON-NLS-1$ right
+																							// $NON-NLS-1$
+																							// $NON-NLS-1$
 																							//$NON-NLS-1$ statuscode
 					} catch (JsonParseException | JsonMappingException | IllegalArgumentException e) {
 						// If the parse or update is not successful return bad
