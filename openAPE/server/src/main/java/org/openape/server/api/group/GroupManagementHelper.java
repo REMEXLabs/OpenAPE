@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import org.openape.api.groups.GroupMembershipStatus;
+
 /**
  * This class provides helper functions to edit the group memberships via a HTML text area.
  *
@@ -102,17 +104,16 @@ public class GroupManagementHelper {
 				}
 
 				// check whether group member should be group admin
-				boolean admin = false;
+				GroupMembershipStatus state = GroupMembershipStatus.MEMBER;
 				String userName = line;
-				if (line.contains(" ")) {
+				if (line.contains(" admin")) {
 					userName = line.substring(0, line.indexOf(" "));
-					admin = true;
+					state = GroupMembershipStatus.ADMIN;
 				}
 
 				// check whether group member exists or not
 				if (userNameToUserIdMap.containsKey(userName)) {
-					// TODO
-					//groupMembers.add(new GroupMember(userNameToUserIdMap.get(userName), admin));
+					groupMembers.add(new GroupMember(userNameToUserIdMap.get(userName), state));
 				} else {
 					final String message = "Unknown userName = " + userName + "!";
 
@@ -144,11 +145,12 @@ public class GroupManagementHelper {
 		for (final GroupMember groupMember : members) {
 			final String userName = userIDToUserNameMap.get(groupMember.getUserId());
 			if (userName != null) {
-				groupMembersAsString += userName;
-				// TODO
-				//if (groupMember.isGroupAdmin()) {
-				//	groupMembersAsString += " admin";
-				//}
+				if(groupMember.getState() == GroupMembershipStatus.MEMBER){
+					groupMembersAsString += userName;
+					if (groupMember.getState() == GroupMembershipStatus.ADMIN) {
+						groupMembersAsString += " admin";
+					}
+				}
 				groupMembersAsString += "\n";
 			}
 		}
