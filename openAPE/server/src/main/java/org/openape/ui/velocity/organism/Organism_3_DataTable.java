@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import org.openape.api.user.User;
 import org.openape.ui.velocity.molecules.Molecule_5_DataTableContent;
 import org.openape.ui.velocity.requestHandler.AdminSectionRequestHandler;
+import org.openape.ui.velocity.requestHandler.MyContextsRequestHandler;
 
 public class Organism_3_DataTable {
 public String generateDataTableContent(ArrayList<User> listUsers){
@@ -73,6 +74,28 @@ public String generateDataTableContent(ArrayList<User> listUsers){
 		
 	}
 	
+	public String generateMyContextUserContextTable(MyContextsRequestHandler myContextRequestHandler, String userId) throws IllegalArgumentException, IOException{
+		
+		String myContextDatableUserContextContent = new Molecule_5_DataTableContent().generateUserContextContent(myContextRequestHandler.getAllUsercontextsByUserId(userId));
+		String administrationUserTable =""
+			+ "<table id='myContextUserContextDataTable' class='table table-striped table-bordered' cellspacing='0' width='100%'>"
+	        + "<thead>"
+	        + "<tr>"
+	        + "<th>Name</th>"
+	        + "<th>ID</th>"
+	        + "<th>Created</th>"
+	        + "<th>Public</th>"
+	        + "<th>Options</th>"
+	        + "</tr>"
+	        + "</thead>"
+	        + "<tbody id='tableContent'>"
+	        + myContextDatableUserContextContent
+	        + "</tbody>"
+	        + "</table>";
+		return administrationUserTable;
+		
+	}
+
 	public String generateAdministrationUserContextTable(AdminSectionRequestHandler adminsectionRequestHandler) throws IllegalArgumentException, IOException{
 		
 		String administrationDatableUserContextContent = new Molecule_5_DataTableContent().generateUserContextContent(adminsectionRequestHandler.getAllUsercontexts());
@@ -83,7 +106,8 @@ public String generateDataTableContent(ArrayList<User> listUsers){
 	        + "<tr>"
 	        + "<th>Name</th>"
 	        + "<th>ID</th>"
-	        + "<th>isPublic</th>"
+	        + "<th>Created</th>"
+	        + "<th>Public</th>"
 	        + "<th>Options</th>"
 	        + "</tr>"
 	        + "</thead>"
@@ -116,7 +140,8 @@ public String generateDataTableContent(ArrayList<User> listUsers){
 	        + "<tr>"
 	        + "<th>ID</th>"
 	        + "<th>UserID</th>"
-	        + "<th>isPublic</th>"
+	        + "<th>Created</th>"
+	        + "<th>Public</th>"
 	        + "<th>Options</th>"
 	        + "</tr>"
 	        + "</thead>"

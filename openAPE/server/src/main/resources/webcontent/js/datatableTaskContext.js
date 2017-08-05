@@ -39,6 +39,11 @@ $(document).ready(function() {
    		}, 1000);
     })
     
+    	//show modal by clicking the add button
+    $('#btnAddEquipmentContext').click(function(){ 
+    	$('#addEquipmentContextModal').modal('show');	
+    })
+    
     $('#btnConfirmAddTaskContext').click(function(){ 
     	var taskContextJSON = $('#inputAdministrationAddTaskContext').val();   	
     	validateTaskContext(taskContextJSON, openape.createTaskContext(taskContextJSON), "add") == true ? window.location.reload() : void 0;	

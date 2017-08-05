@@ -1,0 +1,125 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>MongoDB ObjectId to Timestamp Converter</title>
+
+		<meta name="description" content="Handy converter of MongoDB ObjectIds to timestamps and vice versa."/>
+
+
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+		<script>
+
+			var minDate = new Date(0),
+				maxDate = new Date(parseInt("ffffffff", 16) * 1000);
+
+			$(document).ready(function () {
+				// see https://jira.mongodb.org/browse/SERVER-14623
+				var objectIdFromDate = function (date) {
+					if (date < minDate || date > maxDate) {
+						return "Error: date must be between " + minDate.getFullYear() +
+							" and " + maxDate.getFullYear();
+					}
+					var pad = "00000000";
+					var hexSeconds = Math.floor(date.getTime() / 1000).toString(16)
+					return pad.substring(0, pad.length - hexSeconds.length) + hexSeconds + "0000000000000000";
+				};
+
+				var dateFromObjectId = function (objectId) {
+					return new Date(parseInt(objectId.substring(0, 8), 16) * 1000);
+				};
+
+				var objectIdInput = $('#objectId'),
+					objectIdForPasting = $('#objectIdForPasting'),
+					timestamp = $('#timestamp'),
+					timezoneOffset = $('#timezoneOffset');
+
+				var timezoneOffsetValue = - new Date().getTimezoneOffset() / 60;
+				if (timezoneOffsetValue < 0) {
+					timezoneOffset.text(timezoneOffsetValue);
+				} else if (timezoneOffsetValue > 0) {
+					timezoneOffset.text('+' + timezoneOffsetValue);
+				}
+
+				objectIdForPasting.click(function () {
+					objectIdForPasting.focus().select();
+				});
+				timestamp.click(function () {
+					timestamp.focus().select();
+				});
+
+				var updatedTime = function () {
+					var year = parseInt(yearInput.val(), 10) || 0,
+						month = parseInt(monthInput.val(), 10) || 0,
+						day = parseInt(dayInput.val(), 10) || 0,
+						hours = parseInt(hoursInput.val(), 10) || 0,
+						minutes = parseInt(minutesInput.val(), 10) || 0,
+						seconds = parseInt(secondsInput.val(), 10) || 0;
+
+					var date = new Date(year, month - 1, day, hours, minutes, seconds);
+
+					console.log("date = ", date);
+
+					var objectId = objectIdFromDate(date);
+
+					objectIdInput.val(objectId);
+					objectIdForPasting.val('ObjectId("' + objectId + '")');
+					
+					timestamp.val(date.toISOString());
+				};
+
+				var updatedObjectId = function () {
+					var objectId = objectIdInput.val();
+
+					if (!/^[0-9a-fA-F]{24}$/.test(objectId)) {
+						objectIdInput.addClass('invalid');
+						return;
+					}
+					objectIdInput.removeClass('invalid');
+
+					objectIdForPasting.val('ObjectId("' + objectId + '")');
+
+					var date = dateFromObjectId(objectIdInput.val());
+
+					timestamp.val(date.toISOString());
+				};
+
+				objectIdInput.keyup(updatedObjectId).change(updatedObjectId);
+
+	
+
+				$('#year, #month, #date, #hours, #minutes, #seconds').keyup(updatedTime).change(updatedTime);
+
+				updatedTime();
+			});
+		</script>
+	</head>
+
+	<body>
+		
+		<div class=row>
+			<div class=block>
+				<h2>ObjectId</h2>
+
+				<input id="objectId" type="text"></input><br/>
+				<small>(NOTE: not unique, only use for comparisons, not for creating new documents!)</small>
+				<br/><br/>
+				<input type="text" readonly="readonly" id="objectIdForPasting"></input>
+				<small>(convenient to paste into mongo shell)</small>
+			</div>
+			<div class=block>
+				<h2>Time <small>(UTC<span id="timezoneOffset"></span>)</small></h2>
+				<table>
+					
+					<tr>
+						<td>ISO Timestamp</td><td><input id="timestamp" readonly="readonly" type=text></input></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+    
+		
+
+		
+	</body>
+</html>
+

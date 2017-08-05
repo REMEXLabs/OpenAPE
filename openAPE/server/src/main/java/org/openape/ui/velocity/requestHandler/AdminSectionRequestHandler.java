@@ -2,8 +2,12 @@ package org.openape.ui.velocity.requestHandler;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+
 import org.openape.api.user.User;
 import org.openape.server.database.mongoDB.DatabaseConnection;
 import org.bson.Document;
@@ -66,6 +70,15 @@ public class AdminSectionRequestHandler {
         for(Document entry : listDocuments){        	
         	String userid = entry.getString("owner").toString();
         	String id = entry.getObjectId("_id").toString();
+        	
+        	
+        	
+        	long unixSeconds = (long)entry.getObjectId("_id").getTimestamp();
+        	Date date = new Date(unixSeconds*1000L); // *1000 is to convert seconds to milliseconds
+        	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); // the format of your date
+        	sdf.setTimeZone(TimeZone.getTimeZone("GMT-4")); // give a timezone reference for formating (see comment at the bottom
+        	String formattedDate = sdf.format(date);
+        	
         	boolean isPublic = entry.getBoolean("public");
         	String stringIsPublic = "";
         	
@@ -75,7 +88,7 @@ public class AdminSectionRequestHandler {
         		stringIsPublic = "true";
         	}
         	
-        	String[] myStringArray = {userid,id,stringIsPublic};
+        	String[] myStringArray = {userid,id,stringIsPublic, formattedDate};
         	listContext.add(myStringArray);
         }
         
@@ -99,6 +112,12 @@ public class AdminSectionRequestHandler {
 
         	boolean isPublic = entry.getBoolean("public");
         	
+        	long unixSeconds = (long)entry.getObjectId("_id").getTimestamp();
+        	Date date = new Date(unixSeconds*1000L); // *1000 is to convert seconds to milliseconds
+        	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); // the format of your date
+        	sdf.setTimeZone(TimeZone.getTimeZone("GMT-4")); // give a timezone reference for formating (see comment at the bottom
+        	String formattedDate = sdf.format(date);
+        	
         	String stringIsPublic = "";
         	
         	if(isPublic == false){
@@ -107,7 +126,7 @@ public class AdminSectionRequestHandler {
         		stringIsPublic = "true";
         	}
         	
-        	String[] myStringArray = {id, userId, stringIsPublic};
+        	String[] myStringArray = {id, userId, stringIsPublic, formattedDate};
         	listTaskContexts.add(myStringArray);
         }
         return listTaskContexts;
@@ -133,13 +152,19 @@ public class AdminSectionRequestHandler {
         	
         	String stringIsPublic = "";
         	
+        	long unixSeconds = (long)entry.getObjectId("_id").getTimestamp();
+        	Date date = new Date(unixSeconds*1000L); // *1000 is to convert seconds to milliseconds
+        	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); // the format of your date
+        	sdf.setTimeZone(TimeZone.getTimeZone("GMT-4")); // give a timezone reference for formating (see comment at the bottom
+        	String formattedDate = sdf.format(date);
+        	
         	if(isPublic == false){
         		stringIsPublic = "false";
         	} else {
         		stringIsPublic = "true";
         	}
         	
-        	String[] myStringArray = {id, userId, stringIsPublic};
+        	String[] myStringArray = {id, userId, stringIsPublic, formattedDate};
         	listEquipmentContexts.add(myStringArray);
         }
         return listEquipmentContexts;
@@ -161,6 +186,11 @@ public class AdminSectionRequestHandler {
         	String userId = entry.getString("owner").toString();
 
         	boolean isPublic = entry.getBoolean("public");
+        	long unixSeconds = (long)entry.getObjectId("_id").getTimestamp();
+        	Date date = new Date(unixSeconds*1000L); // *1000 is to convert seconds to milliseconds
+        	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); // the format of your date
+        	sdf.setTimeZone(TimeZone.getTimeZone("GMT-4")); // give a timezone reference for formating (see comment at the bottom
+        	String formattedDate = sdf.format(date);
         	
         	String stringIsPublic = "";
         	
@@ -170,7 +200,7 @@ public class AdminSectionRequestHandler {
         		stringIsPublic = "true";
         	}
         	
-        	String[] myStringArray = {id, userId, stringIsPublic};
+        	String[] myStringArray = {id, userId, stringIsPublic, formattedDate};
         	listEnvironmentContexts.add(myStringArray);
         }
         return listEnvironmentContexts;

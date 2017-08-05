@@ -59,7 +59,7 @@ $(document).ready(function() {
 		$('#divMyResources').removeClass("active");
 		$('#divMyGroups').removeClass("active");
 		$('#divHome').removeClass("active");
-	}else if(lastPathSegment == "myContexts"){
+	}else if(lastPathSegment.indexOf("myContexts") != -1){
 		$('#divAdministration').removeClass("active");
 		$('#divMyContexts').addClass("active");
 		$('#divMyProfile').removeClass("active");

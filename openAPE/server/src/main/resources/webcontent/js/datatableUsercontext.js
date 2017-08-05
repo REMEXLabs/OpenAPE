@@ -6,6 +6,8 @@ $(document).ready(function() {
 		$('#trTabUserContexts').attr("style", "background-color:#e8e5e5");
 	}
 	
+	$('#').append(""); 
+	
 	//resetting errormessages if closing the modal
 	$('#editUserContextModal').on('hidden.bs.modal', function () {
 		$('#editUserContextMainErrSection').empty();
@@ -15,17 +17,22 @@ $(document).ready(function() {
 		$('#addUserContextMainErrSection').empty();
 	});
 	
-	
+
 	//initialising the datatable
 	$('#userContextDataTable').DataTable( {
 		"lengthMenu": [[5, 10, 15, -1], [5, 10, 15, "All"]]
     } ); 
 	
-	//show modal by clicking the add button
-    $('#btnAddUserContext').click(function(){ 
-    	$('#addUserContextModal').modal('show');
-    	
-    })
+	//initialising the datatable
+	$('#myContextUserContextDataTable').DataTable( {
+		"lengthMenu": [[5, 10, 15, -1], [5, 10, 15, "All"]]
+    } );
+	
+		//show modal by clicking the add button
+	    $('#btnAddUserContext').click(function(){ 
+	    	$('#addUserContextModal').modal('show');
+	    	
+	    })
     
     //usercontext actions
     $('#btnConfirmDeleteUserContext').click(function(){ 

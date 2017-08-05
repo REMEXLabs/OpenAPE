@@ -372,13 +372,25 @@ public class DatabaseConnection implements ServerMonitorListener {
         FindIterable<Document> find = collectionToWorkOn.find();
                 
         MongoCursor<Document> cursor = find.iterator();
-
-        
-        while(cursor.hasNext()) {
-        	
+      
+        while(cursor.hasNext()) {        	
         	listDocuments.add(cursor.next());
         }
-
+        return listDocuments;
+    }
+    
+    public ArrayList<Document> getAllDocumentsByKey(MongoCollectionTypes type, String key) throws IOException {
+        final MongoCollection<Document> collectionToWorkOn = this.getCollectionByType(type);
+        ArrayList<Document> listDocuments = new ArrayList<Document>(); 
+        // Search for object in database.
+        
+        FindIterable<Document> find = collectionToWorkOn.find();
+                
+        MongoCursor<Document> cursor = find.iterator();
+      
+        while(cursor.hasNext()) {        	
+        	listDocuments.add(cursor.next());
+        }
         return listDocuments;
     }
     
