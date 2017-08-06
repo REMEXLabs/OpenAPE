@@ -337,7 +337,7 @@ public class DatabaseConnection implements ServerMonitorListener {
             }
             resultMap.put(oid.toString(), result);
         }
-        return null;
+        return resultMap;
 
     }
 

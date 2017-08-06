@@ -79,10 +79,6 @@ public class ResourceDescriptionRequestHandler {
         // Get all descriptions.
         final Map<String, DatabaseObject> resultMap = databaseConnection
                 .getAllObjectsOfType(MongoCollectionTypes.RESOURCEDESCRIPTION);
-        if(resultMap == null) {
-            //no objects of that type
-            return;
-        }
         final Set<String> descriptionIDs = resultMap.keySet();
         // Cast.
         final Map<String, ResourceDescription> descriptions = new HashMap<String, ResourceDescription>();
