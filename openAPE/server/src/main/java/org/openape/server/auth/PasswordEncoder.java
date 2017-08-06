@@ -34,21 +34,6 @@ public class PasswordEncoder {
         return iterations + ":" + PasswordEncoder.toHex(salt) + ":" + PasswordEncoder.toHex(hash);
     }
 
-    private static byte[] fromHex(final String hex) throws NoSuchAlgorithmException {
-        final byte[] bytes = new byte[hex.length() / 2];
-        for (int i = 0; i < bytes.length; i++) {
-            bytes[i] = (byte) Integer.parseInt(hex.substring(2 * i, (2 * i) + 2), 16);
-        }
-        return bytes;
-    }
-
-    private static byte[] getSalt() throws NoSuchAlgorithmException {
-        final SecureRandom sr = SecureRandom.getInstance("SHA1PRNG");
-        final byte[] salt = new byte[16];
-        sr.nextBytes(salt);
-        return salt;
-    }
-
     /**
      * Checks if a plain text password matches a hashed one.
      *
@@ -77,6 +62,13 @@ public class PasswordEncoder {
         return diff == 0;
     }
 
+    private static byte[] getSalt() throws NoSuchAlgorithmException {
+        final SecureRandom sr = SecureRandom.getInstance("SHA1PRNG");
+        final byte[] salt = new byte[16];
+        sr.nextBytes(salt);
+        return salt;
+    }
+
     private static String toHex(final byte[] array) throws NoSuchAlgorithmException {
         final BigInteger bi = new BigInteger(1, array);
         final String hex = bi.toString(16);
@@ -86,6 +78,14 @@ public class PasswordEncoder {
         } else {
             return hex;
         }
+    }
+
+    private static byte[] fromHex(final String hex) throws NoSuchAlgorithmException {
+        final byte[] bytes = new byte[hex.length() / 2];
+        for (int i = 0; i < bytes.length; i++) {
+            bytes[i] = (byte) Integer.parseInt(hex.substring(2 * i, (2 * i) + 2), 16);
+        }
+        return bytes;
     }
 
 }

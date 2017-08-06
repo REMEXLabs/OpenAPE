@@ -61,37 +61,71 @@ public class Molecule_5_DataTableContent {
         return tableContent;
     }
 
-    public String generateEnvironmentContextContent(
-            final ArrayList<String[]> listEnvironmentContexts) {
+    public String generateUserContextContent(final ArrayList<String[]> listUserContexts) {
 
         String tableContent = "";
 
-        for (final String[] environmentContext : listEnvironmentContexts) {
+        for (final String[] userContext : listUserContexts) {
 
-            tableContent += "<tr>" + "<td id='tdEnvironmentContextName_"
-                    + environmentContext[0]
+            tableContent += "<tr>" + "<td id='tdUserContextName_"
+                    + userContext[1]
                     + "'>"
-                    + environmentContext[0]
+                    + userContext[1]
                     + "</td>"
                     + "<td>"
-                    + environmentContext[1]
+                    + userContext[0]
                     + "</td>"
                     + "<td>"
-                    + environmentContext[3]
+                    + userContext[3]
                     + "</td>"
                     + "<td>"
-                    + environmentContext[2]
+                    + userContext[2]
                     + "</td>"
                     + "<td>"
                     + "<button id='"
-                    + environmentContext[0]
-                    + "' name='editEnvironmentContext' class='btn btn-md btn-default' onClick='editEnvironmentContext(this)' ><div class='glyphicon glyphicon-edit' ></div> Edit </button>"
+                    + userContext[1]
+                    + "' class='btn btn-md btn-default' onClick='editUserContext(this)' ><div class='glyphicon glyphicon-edit' ></div> Edit </button>"
                     + "<button id='"
-                    + environmentContext[0]
-                    + "' class='btn btn-md btn-default' onClick='deleteEnvironmentContext(this)'><div class='glyphicon glyphicon-trash'></div> Delete </button> "
+                    + userContext[1]
+                    + "' class='btn btn-md btn-default' onClick='deleteUserContext(this)'><div class='glyphicon glyphicon-trash'></div> Delete </button> "
                     + "<button id='"
-                    + environmentContext[0]
-                    + "' class='btn btn-md btn-default' onClick='copyEnvironmentContext(this)'><div class='glyphicon glyphicon-copy'></div> Copy </button> </td></tr>";
+                    + userContext[1]
+                    + "' class='btn btn-md btn-default' onClick='copyUserContext(this)'><div class='glyphicon glyphicon-copy'></div> Copy </button> </td></tr>";
+        }
+
+        return tableContent;
+    }
+
+    public String generateTaskContextContent(final ArrayList<String[]> listTaskContexts) {
+
+        String tableContent = "";
+
+        for (final String[] taskContext : listTaskContexts) {
+
+            tableContent += "<tr>" + "<td id='tdTaskContextName_"
+                    + taskContext[0]
+                    + "'>"
+                    + taskContext[0]
+                    + "</td>"
+                    + "<td>"
+                    + taskContext[1]
+                    + "</td>"
+                    + "<td>"
+                    + taskContext[3]
+                    + "</td>"
+                    + "<td>"
+                    + taskContext[2]
+                    + "</td>"
+                    + "<td>"
+                    + "<button id='"
+                    + taskContext[0]
+                    + "' name='editTaskContext' class='btn btn-md btn-default' onClick='editTaskContext(this)' ><div class='glyphicon glyphicon-edit' ></div> Edit </button>"
+                    + "<button id='"
+                    + taskContext[0]
+                    + "' class='btn btn-md btn-default' onClick='deleteTaskContext(this)'><div class='glyphicon glyphicon-trash'></div> Delete </button> "
+                    + "<button id='"
+                    + taskContext[0]
+                    + "' class='btn btn-md btn-default' onClick='copyTaskContext(this)'><div class='glyphicon glyphicon-copy'></div> Copy </button> </td></tr>";
         }
 
         return tableContent;
@@ -132,6 +166,42 @@ public class Molecule_5_DataTableContent {
         return tableContent;
     }
 
+    public String generateEnvironmentContextContent(
+            final ArrayList<String[]> listEnvironmentContexts) {
+
+        String tableContent = "";
+
+        for (final String[] environmentContext : listEnvironmentContexts) {
+
+            tableContent += "<tr>" + "<td id='tdEnvironmentContextName_"
+                    + environmentContext[0]
+                    + "'>"
+                    + environmentContext[0]
+                    + "</td>"
+                    + "<td>"
+                    + environmentContext[1]
+                    + "</td>"
+                    + "<td>"
+                    + environmentContext[3]
+                    + "</td>"
+                    + "<td>"
+                    + environmentContext[2]
+                    + "</td>"
+                    + "<td>"
+                    + "<button id='"
+                    + environmentContext[0]
+                    + "' name='editEnvironmentContext' class='btn btn-md btn-default' onClick='editEnvironmentContext(this)' ><div class='glyphicon glyphicon-edit' ></div> Edit </button>"
+                    + "<button id='"
+                    + environmentContext[0]
+                    + "' class='btn btn-md btn-default' onClick='deleteEnvironmentContext(this)'><div class='glyphicon glyphicon-trash'></div> Delete </button> "
+                    + "<button id='"
+                    + environmentContext[0]
+                    + "' class='btn btn-md btn-default' onClick='copyEnvironmentContext(this)'><div class='glyphicon glyphicon-copy'></div> Copy </button> </td></tr>";
+        }
+
+        return tableContent;
+    }
+
     public String generateGroupContent() {
         // TODO Auto-generated method stub
         String tableContent = "";
@@ -142,76 +212,6 @@ public class Molecule_5_DataTableContent {
                 + "<td>"
                 + "<button class='btn btn-md btn-default' onClick='editGroup(this)' ><div class='glyphicon glyphicon-edit' ></div> Edit </button>"
                 + "<button class='btn btn-md btn-default' onClick='deleteGroup(this)'><div class='glyphicon glyphicon-trash'></div> Delete </button></tr>";
-
-        return tableContent;
-    }
-
-    public String generateTaskContextContent(final ArrayList<String[]> listTaskContexts) {
-
-        String tableContent = "";
-
-        for (final String[] taskContext : listTaskContexts) {
-
-            tableContent += "<tr>" + "<td id='tdTaskContextName_"
-                    + taskContext[0]
-                    + "'>"
-                    + taskContext[0]
-                    + "</td>"
-                    + "<td>"
-                    + taskContext[1]
-                    + "</td>"
-                    + "<td>"
-                    + taskContext[3]
-                    + "</td>"
-                    + "<td>"
-                    + taskContext[2]
-                    + "</td>"
-                    + "<td>"
-                    + "<button id='"
-                    + taskContext[0]
-                    + "' name='editTaskContext' class='btn btn-md btn-default' onClick='editTaskContext(this)' ><div class='glyphicon glyphicon-edit' ></div> Edit </button>"
-                    + "<button id='"
-                    + taskContext[0]
-                    + "' class='btn btn-md btn-default' onClick='deleteTaskContext(this)'><div class='glyphicon glyphicon-trash'></div> Delete </button> "
-                    + "<button id='"
-                    + taskContext[0]
-                    + "' class='btn btn-md btn-default' onClick='copyTaskContext(this)'><div class='glyphicon glyphicon-copy'></div> Copy </button> </td></tr>";
-        }
-
-        return tableContent;
-    }
-
-    public String generateUserContextContent(final ArrayList<String[]> listUserContexts) {
-
-        String tableContent = "";
-
-        for (final String[] userContext : listUserContexts) {
-
-            tableContent += "<tr>" + "<td id='tdUserContextName_"
-                    + userContext[1]
-                    + "'>"
-                    + userContext[1]
-                    + "</td>"
-                    + "<td>"
-                    + userContext[0]
-                    + "</td>"
-                    + "<td>"
-                    + userContext[3]
-                    + "</td>"
-                    + "<td>"
-                    + userContext[2]
-                    + "</td>"
-                    + "<td>"
-                    + "<button id='"
-                    + userContext[1]
-                    + "' class='btn btn-md btn-default' onClick='editUserContext(this)' ><div class='glyphicon glyphicon-edit' ></div> Edit </button>"
-                    + "<button id='"
-                    + userContext[1]
-                    + "' class='btn btn-md btn-default' onClick='deleteUserContext(this)'><div class='glyphicon glyphicon-trash'></div> Delete </button> "
-                    + "<button id='"
-                    + userContext[1]
-                    + "' class='btn btn-md btn-default' onClick='copyUserContext(this)'><div class='glyphicon glyphicon-copy'></div> Copy </button> </td></tr>";
-        }
 
         return tableContent;
     }

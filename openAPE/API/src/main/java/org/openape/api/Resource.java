@@ -36,12 +36,12 @@ public class Resource extends DatabaseObject {
         return this.owner;
     }
 
-    public boolean isPublic() {
-        return this.isPublic;
-    }
-
     public void setOwner(final String owner) {
         this.owner = owner;
+    }
+
+    public boolean isPublic() {
+        return this.isPublic;
     }
 
     public void setPublic(final boolean aPublic) {

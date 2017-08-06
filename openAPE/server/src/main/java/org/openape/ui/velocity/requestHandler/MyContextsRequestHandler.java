@@ -13,7 +13,7 @@ public class MyContextsRequestHandler {
     public static final MongoCollectionTypes COLLECTIONTOUSE_EQUIPMENTCONTEXTS = MongoCollectionTypes.EQUIPMENTCONTEXT;
     public static final MongoCollectionTypes COLLECTIONTOUSE_ENVIRONMENTCONTEXTS = MongoCollectionTypes.ENVIRONMENTCONTEXT;
 
-    public ArrayList<String[]> getAllEnvironmentContexts() throws IOException,
+    public ArrayList<String[]> getAllUsercontextsByUserId(final String userId) throws IOException,
             IllegalArgumentException {
 
         // get database connection.
@@ -21,9 +21,41 @@ public class MyContextsRequestHandler {
 
         // Get the requested data.
         final ArrayList<Document> listDocuments = databaseConnection
-                .getAllDocuments(MyContextsRequestHandler.COLLECTIONTOUSE_ENVIRONMENTCONTEXTS);
+                .getAllDocuments(MyContextsRequestHandler.COLLECTIONTOUSE_USERCONTEXTS);
 
-        final ArrayList<String[]> listEnvironmentContexts = new ArrayList<String[]>();
+        final ArrayList<String[]> listContext = new ArrayList<String[]>();
+
+        for (final Document entry : listDocuments) {
+            final String userid = entry.getString("owner").toString();
+
+            System.out.println(userid.equals(userId));
+            if (userid.equals(userId)) {
+                final String id = entry.getObjectId("_id").toString();
+                final boolean isPublic = entry.getBoolean("public");
+                String stringIsPublic = "";
+                if (isPublic == false) {
+                    stringIsPublic = "false";
+                } else {
+                    stringIsPublic = "true";
+                }
+
+                final String[] myStringArray = { userid, id, stringIsPublic };
+                listContext.add(myStringArray);
+            }
+
+        }
+        return listContext;
+    }
+
+    public ArrayList<String[]> getAllTaskContexts() throws IOException, IllegalArgumentException {
+        // get database connection.
+        final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
+
+        // Get the requested data.
+        final ArrayList<Document> listDocuments = databaseConnection
+                .getAllDocuments(MyContextsRequestHandler.COLLECTIONTOUSE_TASKCONTEXTS);
+
+        final ArrayList<String[]> listTaskContexts = new ArrayList<String[]>();
 
         for (final Document entry : listDocuments) {
             final String id = entry.getObjectId("_id").toString();
@@ -40,9 +72,9 @@ public class MyContextsRequestHandler {
             }
 
             final String[] myStringArray = { id, userId, stringIsPublic };
-            listEnvironmentContexts.add(myStringArray);
+            listTaskContexts.add(myStringArray);
         }
-        return listEnvironmentContexts;
+        return listTaskContexts;
     }
 
     public ArrayList<String[]> getAllEquipmentContexts() throws IOException,
@@ -76,15 +108,17 @@ public class MyContextsRequestHandler {
         return listEquipmentContexts;
     }
 
-    public ArrayList<String[]> getAllTaskContexts() throws IOException, IllegalArgumentException {
+    public ArrayList<String[]> getAllEnvironmentContexts() throws IOException,
+            IllegalArgumentException {
+
         // get database connection.
         final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
 
         // Get the requested data.
         final ArrayList<Document> listDocuments = databaseConnection
-                .getAllDocuments(MyContextsRequestHandler.COLLECTIONTOUSE_TASKCONTEXTS);
+                .getAllDocuments(MyContextsRequestHandler.COLLECTIONTOUSE_ENVIRONMENTCONTEXTS);
 
-        final ArrayList<String[]> listTaskContexts = new ArrayList<String[]>();
+        final ArrayList<String[]> listEnvironmentContexts = new ArrayList<String[]>();
 
         for (final Document entry : listDocuments) {
             final String id = entry.getObjectId("_id").toString();
@@ -101,42 +135,8 @@ public class MyContextsRequestHandler {
             }
 
             final String[] myStringArray = { id, userId, stringIsPublic };
-            listTaskContexts.add(myStringArray);
+            listEnvironmentContexts.add(myStringArray);
         }
-        return listTaskContexts;
-    }
-
-    public ArrayList<String[]> getAllUsercontextsByUserId(final String userId) throws IOException,
-            IllegalArgumentException {
-
-        // get database connection.
-        final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
-
-        // Get the requested data.
-        final ArrayList<Document> listDocuments = databaseConnection
-                .getAllDocuments(MyContextsRequestHandler.COLLECTIONTOUSE_USERCONTEXTS);
-
-        final ArrayList<String[]> listContext = new ArrayList<String[]>();
-
-        for (final Document entry : listDocuments) {
-            final String userid = entry.getString("owner").toString();
-
-            System.out.println(userid.equals(userId));
-            if (userid.equals(userId)) {
-                final String id = entry.getObjectId("_id").toString();
-                final boolean isPublic = entry.getBoolean("public");
-                String stringIsPublic = "";
-                if (isPublic == false) {
-                    stringIsPublic = "false";
-                } else {
-                    stringIsPublic = "true";
-                }
-
-                final String[] myStringArray = { userid, id, stringIsPublic };
-                listContext.add(myStringArray);
-            }
-
-        }
-        return listContext;
+        return listEnvironmentContexts;
     }
 }

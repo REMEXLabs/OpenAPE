@@ -18,11 +18,6 @@ public class ClientTest {
     private static String testUser = "TestUser";
     private static String testPw = "TestPw";
 
-    @AfterClass
-    public static void afterClass() {
-        Spark.stop();
-    }
-
     @BeforeClass
     public static void beforeClass() {
 
@@ -35,8 +30,18 @@ public class ClientTest {
 
     }
 
-    private static OpenAPEClient getOpenApeClient() {
-        return new OpenAPEClient(ClientTest.testUser, ClientTest.testPw, "http://localhost:4567/");
+    @AfterClass
+    public static void afterClass() {
+        Spark.stop();
+    }
+
+    @Test
+    public void testFileDownload() throws URISyntaxException, InterruptedException {
+        // Thread.sleep(60000);;
+        final OpenAPEClient client = ClientTest.getOpenApeClient();
+        final File downloadedFile = client.getResource("http://localhost:4567/test.html",
+                "d:/testCopy.html");
+        Assert.assertFalse(downloadedFile.equals(null));
     }
 
     @Test
@@ -50,12 +55,7 @@ public class ClientTest {
 
     }
 
-    @Test
-    public void testFileDownload() throws URISyntaxException, InterruptedException {
-        // Thread.sleep(60000);;
-        final OpenAPEClient client = ClientTest.getOpenApeClient();
-        final File downloadedFile = client.getResource("http://localhost:4567/test.html",
-                "d:/testCopy.html");
-        Assert.assertFalse(downloadedFile.equals(null));
+    private static OpenAPEClient getOpenApeClient() {
+        return new OpenAPEClient(ClientTest.testUser, ClientTest.testPw, "http://localhost:4567/");
     }
 }

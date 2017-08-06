@@ -22,12 +22,12 @@ public class AuthError {
         return this.error;
     }
 
-    public String getErrorDescription() {
-        return this.errorDescription;
-    }
-
     public void setError(final String error) {
         this.error = error;
+    }
+
+    public String getErrorDescription() {
+        return this.errorDescription;
     }
 
     public void setErrorDescription(final String errorDescription) {

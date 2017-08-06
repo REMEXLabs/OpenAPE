@@ -15,6 +15,11 @@ import spark.template.velocity.VelocityTemplateEngine;
 public class MyGroups extends SuperRestInterface {
     private static Map<String, Object> model = new HashMap<>();
 
+    public MyGroups() throws IllegalArgumentException, IOException {
+        super();
+        // TODO Auto-generated constructor stub
+    }
+
     public static void setupMyGroupsVELOCITYInterface() throws IllegalArgumentException,
             IOException {
 
@@ -35,10 +40,5 @@ public class MyGroups extends SuperRestInterface {
                     // resources
                     // directory
                 }, new VelocityTemplateEngine());
-    }
-
-    public MyGroups() throws IllegalArgumentException, IOException {
-        super();
-        // TODO Auto-generated constructor stub
     }
 }

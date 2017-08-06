@@ -15,6 +15,11 @@ import spark.template.velocity.VelocityTemplateEngine;
 public class Downloads extends SuperRestInterface {
     private static Map<String, Object> model = new HashMap<>();
 
+    public Downloads() throws IllegalArgumentException, IOException {
+        super();
+        // TODO Auto-generated constructor stub
+    }
+
     public static void setupDownloadsVELOCITYInterface() throws IllegalArgumentException,
             IOException {
 
@@ -35,10 +40,5 @@ public class Downloads extends SuperRestInterface {
                     // resources
                     // directory
                 }, new VelocityTemplateEngine());
-    }
-
-    public Downloads() throws IllegalArgumentException, IOException {
-        super();
-        // TODO Auto-generated constructor stub
     }
 }
