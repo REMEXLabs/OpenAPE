@@ -49,6 +49,13 @@ public class SuperRestInterface {
     public static final int HTTP_STATUS_INTERNAL_SERVER_ERROR = 500;
     private static final boolean TEST_ENVIRONMENT = true;
 
+    public static GroupMembershipRequest extractFromRequest(
+            final Class<GroupMembershipRequest> class1, final Request req) {
+        // TODO Auto-generated method stub
+        return null;
+
+    }
+
     /**
      * Get a sent json object from a request.
      *
@@ -304,13 +311,6 @@ public class SuperRestInterface {
         if (SuperRestInterface.TEST_ENVIRONMENT) {
             TestRESTInterface.setupTestRESTInterface();
         }
-
-    }
-
-    public static GroupMembershipRequest extractFromRequest(
-            final Class<GroupMembershipRequest> class1, final Request req) {
-        // TODO Auto-generated method stub
-        return null;
 
     }
 

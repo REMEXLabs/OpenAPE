@@ -15,11 +15,6 @@ import spark.template.velocity.VelocityTemplateEngine;
 public class Contact extends SuperRestInterface {
     private static Map<String, Object> model = new HashMap<>();
 
-    public Contact() throws IllegalArgumentException, IOException {
-        super();
-        // TODO Auto-generated constructor stub
-    }
-
     public static void setupContactVELOCITYInterface() throws IllegalArgumentException, IOException {
 
         Spark.get(
@@ -39,5 +34,10 @@ public class Contact extends SuperRestInterface {
                     // resources
                     // directory
                 }, new VelocityTemplateEngine());
+    }
+
+    public Contact() throws IllegalArgumentException, IOException {
+        super();
+        // TODO Auto-generated constructor stub
     }
 }

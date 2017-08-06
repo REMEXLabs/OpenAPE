@@ -19,11 +19,6 @@ import spark.template.velocity.VelocityTemplateEngine;
 public class Administration extends SuperRestInterface {
     private static Map<String, Object> model = new HashMap<>();
 
-    public Administration() throws IllegalArgumentException, IOException {
-        super();
-        // TODO Auto-generated constructor stub
-    }
-
     public static void setupAdministrationVELOCITYInterface(
             final AdminSectionRequestHandler adminsectionRequestHandler)
             throws IllegalArgumentException, IOException {
@@ -54,5 +49,10 @@ public class Administration extends SuperRestInterface {
                 // resources
                 // directory
             }, new VelocityTemplateEngine());
+    }
+
+    public Administration() throws IllegalArgumentException, IOException {
+        super();
+        // TODO Auto-generated constructor stub
     }
 }

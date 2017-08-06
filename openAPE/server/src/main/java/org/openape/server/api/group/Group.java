@@ -102,15 +102,13 @@ public class Group extends DatabaseObject {
     }
 
     /**
-     * Setter for the group's id. It must not be empty and should not be null.
-     * Null is only allowed, if the group is not already stored in the database.
+     * Getter for the group's members. If the group has no members, an empty
+     * list will be returned.
      *
-     * @param id
-     *            the group's id
+     * @return a list with the group's members
      */
-    public void setId(final String id) {
-        // Checker.checkIntegerGreaterEquals(id, "id", -1);
-        this.id = id;
+    public List<GroupMember> getMembers() {
+        return this.members;
     }
 
     /**
@@ -123,24 +121,39 @@ public class Group extends DatabaseObject {
     }
 
     /**
-     * Setter for the group's name. It must not be null or empty.
+     * Checks, whether an user with the given id is an admin of this group or
+     * not. The userId must not be empty or null. If the user is not a member of
+     * this group, false will be returned.
      *
-     * @param name
-     *            the group's name
+     * @param userId
+     *            the user's id
+     * @return true if the user is an admin of this group and false if not or if
+     *         the user is not a member of the group.
      */
-    public void setName(final String name) {
-        // Checker.checkNullAndEmptiness(name, "name");
-        this.name = name;
+    public boolean isUserGroupAdmin(final String userId) {
+        // Checker.checkUserId(userId);
+        boolean isGroupAdmin = false;
+        for (final GroupMember groupMember : this.members) {
+            if (groupMember.getUserId().equals(userId)) {
+                if (groupMember.getState() == GroupMembershipStatus.ADMIN) {
+                    isGroupAdmin = true;
+                }
+                break;
+            }
+        }
+        return isGroupAdmin;
     }
 
     /**
-     * Getter for the group's members. If the group has no members, an empty
-     * list will be returned.
+     * Setter for the group's id. It must not be empty and should not be null.
+     * Null is only allowed, if the group is not already stored in the database.
      *
-     * @return a list with the group's members
+     * @param id
+     *            the group's id
      */
-    public List<GroupMember> getMembers() {
-        return this.members;
+    public void setId(final String id) {
+        // Checker.checkIntegerGreaterEquals(id, "id", -1);
+        this.id = id;
     }
 
     /**
@@ -168,27 +181,14 @@ public class Group extends DatabaseObject {
     // *********************************************************************************************************************************************
 
     /**
-     * Checks, whether an user with the given id is an admin of this group or
-     * not. The userId must not be empty or null. If the user is not a member of
-     * this group, false will be returned.
+     * Setter for the group's name. It must not be null or empty.
      *
-     * @param userId
-     *            the user's id
-     * @return true if the user is an admin of this group and false if not or if
-     *         the user is not a member of the group.
+     * @param name
+     *            the group's name
      */
-    public boolean isUserGroupAdmin(final String userId) {
-        // Checker.checkUserId(userId);
-        boolean isGroupAdmin = false;
-        for (final GroupMember groupMember : this.members) {
-            if (groupMember.getUserId().equals(userId)) {
-                if (groupMember.getState() == GroupMembershipStatus.ADMIN) {
-                    isGroupAdmin = true;
-                }
-                break;
-            }
-        }
-        return isGroupAdmin;
+    public void setName(final String name) {
+        // Checker.checkNullAndEmptiness(name, "name");
+        this.name = name;
     }
 
     // *********************************************************************************************************************************************

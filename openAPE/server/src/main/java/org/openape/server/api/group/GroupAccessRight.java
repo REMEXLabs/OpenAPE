@@ -115,16 +115,6 @@ public class GroupAccessRight {
     }
 
     /**
-     * Setter for the group's id. It must not be null or empty.
-     *
-     * @param groupId
-     *            the group's id
-     */
-    public void setGroupId(final String groupId) {
-        this.groupId = groupId;
-    }
-
-    /**
      * The id of the resource, for which the group access rights are defined.
      *
      * @return id of the resource
@@ -134,14 +124,23 @@ public class GroupAccessRight {
     }
 
     /**
-     * Setter for the resource id. The resource id must not be null or empty.
+     * Getter for the change rights right.
      *
-     * @param conceptId
-     *            id of the resource, for which the group access rights are
-     *            defined
+     * @return true if the group members are allowed to change the access rights
+     *         for the resource and false if not.
      */
-    public void setResourceId(final String resourceId) {
-        this.resourceId = resourceId;
+    public boolean hasChangeRightsRight() {
+        return this.changeRightsRight;
+    }
+
+    /**
+     * Getter for the delete right.
+     *
+     * @return true if the group members are allowed to delete the resource and
+     *         false if not.
+     */
+    public boolean hasDeleteRight() {
+        return this.deleteRight;
     }
 
     /**
@@ -155,17 +154,6 @@ public class GroupAccessRight {
     }
 
     /**
-     * Setter for the read right.
-     *
-     * @param readRight
-     *            true if the group members should have read right and false if
-     *            not
-     */
-    public void setReadRight(final boolean readRight) {
-        this.readRight = readRight;
-    }
-
-    /**
      * Getter for the update right.
      *
      * @return true if the group members are allowed to update the resource and
@@ -176,24 +164,14 @@ public class GroupAccessRight {
     }
 
     /**
-     * Setter for the update right.
+     * Setter for the change rights right.
      *
-     * @param updateRight
-     *            true if the group members should have update right and false
-     *            if not
+     * @param changeRightsRight
+     *            true if the group members should have change rights right and
+     *            false if not
      */
-    public void setUpdateRight(final boolean updateRight) {
-        this.updateRight = updateRight;
-    }
-
-    /**
-     * Getter for the delete right.
-     *
-     * @return true if the group members are allowed to delete the resource and
-     *         false if not.
-     */
-    public boolean hasDeleteRight() {
-        return this.deleteRight;
+    public void setChangeRightsRight(final boolean changeRightsRight) {
+        this.changeRightsRight = changeRightsRight;
     }
 
     /**
@@ -208,24 +186,46 @@ public class GroupAccessRight {
     }
 
     /**
-     * Getter for the change rights right.
+     * Setter for the group's id. It must not be null or empty.
      *
-     * @return true if the group members are allowed to change the access rights
-     *         for the resource and false if not.
+     * @param groupId
+     *            the group's id
      */
-    public boolean hasChangeRightsRight() {
-        return this.changeRightsRight;
+    public void setGroupId(final String groupId) {
+        this.groupId = groupId;
     }
 
     /**
-     * Setter for the change rights right.
+     * Setter for the read right.
      *
-     * @param changeRightsRight
-     *            true if the group members should have change rights right and
-     *            false if not
+     * @param readRight
+     *            true if the group members should have read right and false if
+     *            not
      */
-    public void setChangeRightsRight(final boolean changeRightsRight) {
-        this.changeRightsRight = changeRightsRight;
+    public void setReadRight(final boolean readRight) {
+        this.readRight = readRight;
+    }
+
+    /**
+     * Setter for the resource id. The resource id must not be null or empty.
+     *
+     * @param conceptId
+     *            id of the resource, for which the group access rights are
+     *            defined
+     */
+    public void setResourceId(final String resourceId) {
+        this.resourceId = resourceId;
+    }
+
+    /**
+     * Setter for the update right.
+     *
+     * @param updateRight
+     *            true if the group members should have update right and false
+     *            if not
+     */
+    public void setUpdateRight(final boolean updateRight) {
+        this.updateRight = updateRight;
     }
 
     // *********************************************************************************************************************************************

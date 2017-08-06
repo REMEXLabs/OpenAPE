@@ -52,22 +52,22 @@ public class ResourceAuthService extends AuthService {
     // *********************************************************************************************************************************************
     // *********************************************************************************************************************************************
 
-    public void allowReading(final Request request, final Response response, final Resource resource)
-            throws UnauthorizedException {
-        // TODO implement
-    }
-
-    public void allowUpdating(final Request request, final Response response,
-            final Resource resource) throws UnauthorizedException {
-        // TODO implement
-    }
-
     public void allowDeleting(final Request request, final Response response,
             final Resource resource) throws UnauthorizedException {
         // TODO implement
     }
 
+    public void allowReading(final Request request, final Response response, final Resource resource)
+            throws UnauthorizedException {
+        // TODO implement
+    }
+
     public void allowRightsChanging(final Request request, final Response response,
+            final Resource resource) throws UnauthorizedException {
+        // TODO implement
+    }
+
+    public void allowUpdating(final Request request, final Response response,
             final Resource resource) throws UnauthorizedException {
         // TODO implement
     }

@@ -17,8 +17,13 @@ public class AdminInterface {
     private static String ADMIN_PASSWORD = "admin";
     private static final List<String> ADMIN_ROLES = new LinkedList<>();
 
-    public static void setupAdminRestInterface(final AuthService authService) {
+    private static boolean adminExists() throws IOException {
 
+        final User response = ProfileHandler.getUser(AdminInterface.ADMIN_NAME);
+        if (response == null) {
+            return false;
+        }
+        return true;
     }
 
     public static void createAdmin() throws IllegalArgumentException, IOException {
@@ -39,13 +44,8 @@ public class AdminInterface {
         ProfileHandler.createUser(admin);
     }
 
-    private static boolean adminExists() throws IOException {
+    public static void setupAdminRestInterface(final AuthService authService) {
 
-        final User response = ProfileHandler.getUser(AdminInterface.ADMIN_NAME);
-        if (response == null) {
-            return false;
-        }
-        return true;
     }
 
 }

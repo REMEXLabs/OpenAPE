@@ -60,12 +60,31 @@ public class GroupMember {
     // *********************************************************************************************************************************************
 
     /**
+     * Getter for the state {@link #state} of the group member ship.
+     *
+     * @return state of the group member ship
+     */
+    public GroupMembershipStatus getState() {
+        return this.state;
+    }
+
+    /**
      * Getter for the user id {@link IUser#getId()} of the group member.
      *
      * @return user id of the group member
      */
     public String getUserId() {
         return this.userId;
+    }
+
+    /**
+     * Setter for the state {@link #state} of the group member ship.
+     *
+     * @param the
+     *            state of the group member ship. It must not be null!
+     */
+    public void setState(final GroupMembershipStatus state) {
+        this.state = state;
     }
 
     /**
@@ -78,25 +97,6 @@ public class GroupMember {
     public void setUserId(final String userId) {
         // Checker.checkUserId(userId);
         this.userId = userId;
-    }
-
-    /**
-     * Getter for the state {@link #state} of the group member ship.
-     *
-     * @return state of the group member ship
-     */
-    public GroupMembershipStatus getState() {
-        return this.state;
-    }
-
-    /**
-     * Setter for the state {@link #state} of the group member ship.
-     *
-     * @param the
-     *            state of the group member ship. It must not be null!
-     */
-    public void setState(final GroupMembershipStatus state) {
-        this.state = state;
     }
 
     // *********************************************************************************************************************************************

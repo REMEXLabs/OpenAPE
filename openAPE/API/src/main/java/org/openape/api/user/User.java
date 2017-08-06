@@ -15,13 +15,6 @@ public class User extends DatabaseObject {
 
     private static Logger logger = LoggerFactory.getLogger(User.class);
 
-    private String id;
-    private String username;
-    private String email;
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    private String password;
-    private List<String> roles;
-
     public static User getFromProfile(final CommonProfile profile) {
         User.logger.debug("Profile" + profile);
 
@@ -33,32 +26,40 @@ public class User extends DatabaseObject {
         return user;
     }
 
+    private String id;
+    private String username;
+    private String email;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private String password;
+
+    private List<String> roles;
+
+    public String getEmail() {
+        return this.email;
+    }
+
     public String getId() {
         return this.id;
     }
 
-    public void setId(final String id) {
-        this.id = id;
+    public String getPassword() {
+        return this.password;
+    }
+
+    public List<String> getRoles() {
+        return this.roles;
     }
 
     public String getUsername() {
         return this.username;
     }
 
-    public void setUsername(final String username) {
-        this.username = username;
-    }
-
-    public String getEmail() {
-        return this.email;
-    }
-
     public void setEmail(final String email) {
         this.email = email;
     }
 
-    public String getPassword() {
-        return this.password;
+    public void setId(final String id) {
+        this.id = id;
     }
 
     /**
@@ -69,12 +70,12 @@ public class User extends DatabaseObject {
         this.password = password;
     }
 
-    public List<String> getRoles() {
-        return this.roles;
-    }
-
     public void setRoles(final List<String> roles) {
         this.roles = roles;
+    }
+
+    public void setUsername(final String username) {
+        this.username = username;
     }
 
 }
