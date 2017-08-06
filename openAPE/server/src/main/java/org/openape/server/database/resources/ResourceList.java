@@ -46,7 +46,7 @@ public class ResourceList {
     }
 
     // List containing all resources stored on the file system.
-    private final List<String> resourceNameList = new LinkedList<String>();
+    private List<String> resourceNameList = new LinkedList<String>();
 
     /**
      * Private constructor, filling the resourceList with the filenames of the
@@ -91,8 +91,8 @@ public class ResourceList {
      * @throws IOException
      *             if a storing error occurs.
      */
-    public String addResource(final FileItem resource, final String mimeType)
-            throws IllegalArgumentException, IOException {
+    public String addResource(FileItem resource, String mimeType) throws IllegalArgumentException,
+            IOException {
         final String fileName = resource.getName();
 
         // Check if filename exists.
@@ -158,8 +158,7 @@ public class ResourceList {
      *             if the file is not found.
      * @throws IOException
      */
-    public boolean deleteResource(final String fileName) throws IllegalArgumentException,
-            IOException {
+    public boolean deleteResource(String fileName) throws IllegalArgumentException, IOException {
         if (this.resourceExists(fileName)) {
             new File(ResourceList.RESOURCEFOLDERPATH + File.separator + fileName).delete();
             this.resourceNameList.remove(fileName);
@@ -190,8 +189,8 @@ public class ResourceList {
      * @throws IllegalArgumentException
      *             if file is non existent.
      */
-    public GetResourceReturnType getResoureFile(final String fileName)
-            throws IllegalArgumentException, IOException {
+    public GetResourceReturnType getResoureFile(String fileName) throws IllegalArgumentException,
+            IOException {
         if (this.resourceExists(fileName)) {
             final File file = new File(ResourceList.RESOURCEFOLDERPATH + File.separator + fileName);
             // Get mime type from database

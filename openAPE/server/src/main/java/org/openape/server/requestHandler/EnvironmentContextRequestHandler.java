@@ -31,8 +31,8 @@ public class EnvironmentContextRequestHandler {
      * @throws IllegalArgumentException
      *             if the parameter is not a complete environment context.
      */
-    public String createEnvironmentContext(final Object environmentContext) throws IOException,
-    IllegalArgumentException {
+    public String createEnvironmentContext(Object environmentContext) throws IOException,
+            IllegalArgumentException {
         // get database connection.
         final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
         // try to store data. Class cast exceptions will be thrown as illegal
@@ -60,8 +60,8 @@ public class EnvironmentContextRequestHandler {
      * @throws IllegalArgumentException
      *             if the id is no valid id or not assigned.
      */
-    public boolean deleteEnvironmentContextById(final String id) throws IOException,
-    IllegalArgumentException {
+    public boolean deleteEnvironmentContextById(String id) throws IOException,
+            IllegalArgumentException {
         // get database connection.
         final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
 
@@ -87,8 +87,8 @@ public class EnvironmentContextRequestHandler {
      * @throws IllegalArgumentException
      *             if the id is no valid id or not assigned.
      */
-    public EnvironmentContext getEnvironmentContextById(final String id) throws IOException,
-    IllegalArgumentException {
+    public EnvironmentContext getEnvironmentContextById(String id) throws IOException,
+            IllegalArgumentException {
         // get database connection.
         final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
 
@@ -129,7 +129,7 @@ public class EnvironmentContextRequestHandler {
      *             if the id is no valid id, not assigned or the environment
      *             context is not valid.
      */
-    public boolean updateEnvironmentContextById(final String id, final Object environmentContext)
+    public boolean updateEnvironmentContextById(String id, Object environmentContext)
             throws IOException, IllegalArgumentException {
         // get database connection.
         final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();

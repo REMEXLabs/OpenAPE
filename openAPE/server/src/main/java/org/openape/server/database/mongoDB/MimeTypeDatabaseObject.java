@@ -14,7 +14,7 @@ public class MimeTypeDatabaseObject extends DatabaseObject {
     public MimeTypeDatabaseObject() {
     }
 
-    public MimeTypeDatabaseObject(final String mimeType) {
+    public MimeTypeDatabaseObject(String mimeType) {
         this.mimeType = mimeType;
     }
 
@@ -22,7 +22,7 @@ public class MimeTypeDatabaseObject extends DatabaseObject {
         return this.mimeType;
     }
 
-    public void setMimeType(final String mimeType) {
+    public void setMimeType(String mimeType) {
         this.mimeType = mimeType;
     }
 }

@@ -10,8 +10,8 @@ import org.pac4j.jwt.config.signature.SecretSignatureConfiguration;
 import org.pac4j.jwt.credentials.authenticator.JwtAuthenticator;
 
 /**
- * Factory class to build a PAC4J security configuration from properties and
- * return a Config containing required clients, authorizers and matchers.
+ * Factory class to build a PAC4J security configuration from properties and return a Config containing required clients,
+ * authorizers and matchers.
  */
 public class AuthConfigFactory implements ConfigFactory {
 
@@ -23,16 +23,13 @@ public class AuthConfigFactory implements ConfigFactory {
 
     @Override
     public Config build() {
-        // REST authentication with JWT for a token passed in the url as the
-        // token parameter
-        final HeaderClient headerClient = new HeaderClient("Authorization", new JwtAuthenticator(
-                new SecretSignatureConfiguration(this.salt)));
+        // REST authentication with JWT for a token passed in the url as the token parameter
+        final HeaderClient headerClient = new HeaderClient("Authorization", new JwtAuthenticator(new SecretSignatureConfiguration(salt)));
         final AnonymousClient anonymousClient = new AnonymousClient();
         // Define config
         final Clients clients = new Clients(headerClient, anonymousClient);
         final Config config = new Config(clients);
-        // Register HttpActionAdapter to respond with proper HTTP response codes
-        // on auth errors
+        // Register HttpActionAdapter to respond with proper HTTP response codes on auth errors
         config.setHttpActionAdapter(new HttpActionAdapter());
         // Set Authorizers to check of roles
         config.addAuthorizer("adminOnly", new RequireAnyRoleAuthorizer("admin"));

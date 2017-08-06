@@ -4,7 +4,7 @@
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
  *  You may obtain a copy of the License at
- *
+ *  
  *
  *      http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -20,25 +20,22 @@ import java.util.HashMap;
 import java.util.Map;
 
 import spark.ModelAndView;
-import spark.Spark;
 import spark.template.velocity.VelocityTemplateEngine;
+
+import static spark.Spark.get;
 
 /**
  * VelocityTemplateRoute example.
  */
 public final class VelocityExample {
 
-    public static void main(final String[] args) {
+    public static void main(String[] args) {
 
-        Spark.get("/hello", (request, response) -> {
-            final Map<String, Object> model = new HashMap<>();
+        get("/hello", (request, response) -> {
+            Map<String, Object> model = new HashMap<>();
             model.put("message", "Hello Velocity");
-            return new ModelAndView(model, "velocityTemplates/hello.vm"); // located
-                                                                          // in
-                                                                          // the
-                                                                          // resources
-                                                                          // directory
-            }, new VelocityTemplateEngine());
+            return new ModelAndView(model, "velocityTemplates/hello.vm"); // located in the resources directory
+        }, new VelocityTemplateEngine());
 
     }
 

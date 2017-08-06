@@ -17,7 +17,7 @@ import org.slf4j.LoggerFactory;
  * {@link DatabaseConnection}.
  */
 public class UserContextRequestHandler {
-    private static Logger logger = LoggerFactory.getLogger(UserContextRequestHandler.class);
+private static Logger logger = LoggerFactory.getLogger(UserContextRequestHandler.class );
 
     public static final MongoCollectionTypes COLLECTIONTOUSE = MongoCollectionTypes.USERCONTEXT;
 
@@ -34,8 +34,8 @@ public class UserContextRequestHandler {
      * @throws IllegalArgumentException
      *             if the parameter is not a complete user context.
      */
-    public String createUserContext(final Object userContext) throws IOException,
-    IllegalArgumentException {
+    public String createUserContext(Object userContext) throws IOException,
+            IllegalArgumentException {
         // get database connection.
         final DatabaseConnection databaseconnection = DatabaseConnection.getInstance();
         // try to store data. Class cast exceptions will be thrown as illegal
@@ -44,8 +44,7 @@ public class UserContextRequestHandler {
         try {
             id = databaseconnection.storeData(UserContextRequestHandler.COLLECTIONTOUSE,
                     (DatabaseObject) userContext);
-            UserContextRequestHandler.logger.debug("New user context in database with id \"" + id
-                    + "\".");
+            logger.debug("New user context in database with id \"" + id + "\".");
         } catch (final ClassCastException e) {
             throw new IllegalArgumentException(e.getMessage());
         }
@@ -65,8 +64,7 @@ public class UserContextRequestHandler {
      * @throws IllegalArgumentException
      *             if the id is no valid id or not assigned.
      */
-    public boolean deleteUserContextById(final String id) throws IOException,
-            IllegalArgumentException {
+    public boolean deleteUserContextById(String id) throws IOException, IllegalArgumentException {
         // get database connection.
         final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
 
@@ -92,8 +90,7 @@ public class UserContextRequestHandler {
      * @throws IllegalArgumentException
      *             if the id is no valid id or not assigned.
      */
-    public UserContext getUserContextById(final String id) throws IOException,
-            IllegalArgumentException {
+    public UserContext getUserContextById(String id) throws IOException, IllegalArgumentException {
         // get database connection.
         final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
 
@@ -135,8 +132,8 @@ public class UserContextRequestHandler {
      *             if the id is no valid id, not assigned or the user context is
      *             not valid.
      */
-    public boolean updateUserContextById(final String id, final Object userContext)
-            throws IOException, IllegalArgumentException {
+    public boolean updateUserContextById(String id, Object userContext) throws IOException,
+            IllegalArgumentException {
         // get database connection.
         final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
 

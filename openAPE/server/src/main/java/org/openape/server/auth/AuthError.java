@@ -13,24 +13,24 @@ public class AuthError {
     @SerializedName("error_description")
     private String errorDescription;
 
-    public AuthError(final String error, final String description) {
+    public AuthError(String error, String description) {
         this.error = error;
         this.errorDescription = description;
     }
 
     public String getError() {
-        return this.error;
+        return error;
     }
 
-    public void setError(final String error) {
+    public void setError(String error) {
         this.error = error;
     }
 
     public String getErrorDescription() {
-        return this.errorDescription;
+        return errorDescription;
     }
 
-    public void setErrorDescription(final String errorDescription) {
+    public void setErrorDescription(String errorDescription) {
         this.errorDescription = errorDescription;
     }
 
