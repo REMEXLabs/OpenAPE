@@ -28,18 +28,18 @@ import spark.template.velocity.VelocityTemplateEngine;
  */
 public final class VelocityExample {
 
-	public static void main(final String[] args) {
+    public static void main(final String[] args) {
 
-		Spark.get("/hello", (request, response) -> {
-			final Map<String, Object> model = new HashMap<>();
-			model.put("message", "Hello Velocity");
-			return new ModelAndView(model, "velocityTemplates/hello.vm"); // located
-																			// in
-																			// the
-																			// resources
-																			// directory
-		} , new VelocityTemplateEngine());
+        Spark.get("/hello", (request, response) -> {
+            final Map<String, Object> model = new HashMap<>();
+            model.put("message", "Hello Velocity");
+            return new ModelAndView(model, "velocityTemplates/hello.vm"); // located
+                                                                          // in
+                                                                          // the
+                                                                          // resources
+                                                                          // directory
+            }, new VelocityTemplateEngine());
 
-	}
+    }
 
 }

@@ -13,27 +13,32 @@ import spark.Spark;
 import spark.template.velocity.VelocityTemplateEngine;
 
 public class MyGroups extends SuperRestInterface {
-	private static Map<String, Object> model = new HashMap<>();
+    private static Map<String, Object> model = new HashMap<>();
 
-	public MyGroups() throws IllegalArgumentException, IOException {
-		super();
-		// TODO Auto-generated constructor stub
-	}
+    public static void setupMyGroupsVELOCITYInterface() throws IllegalArgumentException,
+            IOException {
 
-	public static void setupMyGroupsVELOCITYInterface() throws IllegalArgumentException, IOException {
+        Spark.get(
+                "/myGroups",
+                (request, response) -> {
 
-		Spark.get("/myGroups", (request, response) -> {
+                    MyGroups.model.put("footer", new Footer().generateFooter());
+                    MyGroups.model.put("logo", new OpenapeLogo().generateOpenAPELogo());
+                    MyGroups.model.put("topNavigation",
+                            new Organism_1_Topsection().generateTopNavigation());
+                    MyGroups.model.put("subSection",
+                            new Organism_2_SubSection().generateTopNavigation());
 
-			MyGroups.model.put("footer", new Footer().generateFooter());
-			MyGroups.model.put("logo", new OpenapeLogo().generateOpenAPELogo());
-			MyGroups.model.put("topNavigation", new Organism_1_Topsection().generateTopNavigation());
-			MyGroups.model.put("subSection", new Organism_2_SubSection().generateTopNavigation());
+                    return new ModelAndView(MyGroups.model, "velocityTemplates/myGroups.vm"); // located
+                                                                                              // in
+                                                                                              // the
+                                                                                              // resources
+                                                                                              // directory
+                }, new VelocityTemplateEngine());
+    }
 
-			return new ModelAndView(MyGroups.model, "velocityTemplates/myGroups.vm"); // located
-																						// in
-																						// the
-																						// resources
-																						// directory
-		} , new VelocityTemplateEngine());
-	}
+    public MyGroups() throws IllegalArgumentException, IOException {
+        super();
+        // TODO Auto-generated constructor stub
+    }
 }

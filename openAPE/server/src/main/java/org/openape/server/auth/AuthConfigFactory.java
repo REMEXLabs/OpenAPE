@@ -15,29 +15,29 @@ import org.pac4j.jwt.credentials.authenticator.JwtAuthenticator;
  */
 public class AuthConfigFactory implements ConfigFactory {
 
-	private final String salt;
+    private final String salt;
 
-	public AuthConfigFactory(final String salt) {
-		this.salt = salt;
-	}
+    public AuthConfigFactory(final String salt) {
+        this.salt = salt;
+    }
 
-	@Override
-	public Config build() {
-		// REST authentication with JWT for a token passed in the url as the
-		// token parameter
-		final HeaderClient headerClient = new HeaderClient("Authorization",
-				new JwtAuthenticator(new SecretSignatureConfiguration(this.salt)));
-		final AnonymousClient anonymousClient = new AnonymousClient();
-		// Define config
-		final Clients clients = new Clients(headerClient, anonymousClient);
-		final Config config = new Config(clients);
-		// Register HttpActionAdapter to respond with proper HTTP response codes
-		// on auth errors
-		config.setHttpActionAdapter(new HttpActionAdapter());
-		// Set Authorizers to check of roles
-		config.addAuthorizer("adminOnly", new RequireAnyRoleAuthorizer("admin"));
-		config.addAuthorizer("userAndAdmin", new RequireAnyRoleAuthorizer("user", "admin"));
-		return config;
-	}
+    @Override
+    public Config build() {
+        // REST authentication with JWT for a token passed in the url as the
+        // token parameter
+        final HeaderClient headerClient = new HeaderClient("Authorization", new JwtAuthenticator(
+                new SecretSignatureConfiguration(this.salt)));
+        final AnonymousClient anonymousClient = new AnonymousClient();
+        // Define config
+        final Clients clients = new Clients(headerClient, anonymousClient);
+        final Config config = new Config(clients);
+        // Register HttpActionAdapter to respond with proper HTTP response codes
+        // on auth errors
+        config.setHttpActionAdapter(new HttpActionAdapter());
+        // Set Authorizers to check of roles
+        config.addAuthorizer("adminOnly", new RequireAnyRoleAuthorizer("admin"));
+        config.addAuthorizer("userAndAdmin", new RequireAnyRoleAuthorizer("user", "admin"));
+        return config;
+    }
 
 }

@@ -1,15 +1,16 @@
 package org.openape.api;
 
 public class PasswordChangeRequest {
-	public PasswordChangeRequest() {
+    public String oldPassword;
 
-	}
+    public String newPassword;
 
-	public PasswordChangeRequest(final String oldPassword, final String newPassword) {
-		this.oldPassword = oldPassword;
-		this.newPassword = newPassword;
-	}
+    public PasswordChangeRequest() {
 
-	public String oldPassword;
-	public String newPassword;
+    }
+
+    public PasswordChangeRequest(final String oldPassword, final String newPassword) {
+        this.oldPassword = oldPassword;
+        this.newPassword = newPassword;
+    }
 }
