@@ -15,11 +15,6 @@ import spark.template.velocity.VelocityTemplateEngine;
 public class MyProfile extends SuperRestInterface {
     private static Map<String, Object> model = new HashMap<>();
 
-    public MyProfile() throws IllegalArgumentException, IOException {
-        super();
-        // TODO Auto-generated constructor stub
-    }
-
     public static void setupMyProfileVELOCITYInterface() throws IllegalArgumentException,
             IOException {
 
@@ -40,5 +35,10 @@ public class MyProfile extends SuperRestInterface {
                     // resources
                     // directory
                 }, new VelocityTemplateEngine());
+    }
+
+    public MyProfile() throws IllegalArgumentException, IOException {
+        super();
+        // TODO Auto-generated constructor stub
     }
 }
