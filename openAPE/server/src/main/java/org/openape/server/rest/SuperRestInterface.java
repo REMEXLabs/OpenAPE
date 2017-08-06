@@ -80,7 +80,7 @@ public class SuperRestInterface {
          * response.header("Access-Control-Request-Method",
          * "GET,PUT,POST,DELETE,OPTIONS"); //
          * response.header("Access-Control-Allow-Headers", headers);
-         *
+         * 
          * });
          */
 

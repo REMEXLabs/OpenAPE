@@ -21,6 +21,25 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class ProfileRESTInterface extends SuperRestInterface {
 
+    private static String createUser(final User user) throws IOException, IllegalArgumentException {
+        final DatabaseConnection databaseconnection = DatabaseConnection.getInstance();
+        String id;
+        try {
+            final String hashedPassword = PasswordEncoder.encode(user.getPassword());
+            user.setPassword(hashedPassword);
+            id = databaseconnection.storeData(MongoCollectionTypes.USERS, user);
+        } catch (final ClassCastException e) {
+            throw new IllegalArgumentException(e.getMessage());
+        } catch (final NoSuchAlgorithmException e) {
+            e.printStackTrace();
+            throw new IOException(e.getMessage());
+        } catch (final InvalidKeySpecException e) {
+            e.printStackTrace();
+            throw new IOException(e.getMessage());
+        }
+        return id;
+    }
+
     static void setupProfileRESTInterface() {
         final AuthService authService = new AuthService();
         Spark.before("/profile", authService.authorize("default"));
@@ -48,25 +67,6 @@ public class ProfileRESTInterface extends SuperRestInterface {
                     }
                 });
 
-    }
-
-    private static String createUser(final User user) throws IOException, IllegalArgumentException {
-        final DatabaseConnection databaseconnection = DatabaseConnection.getInstance();
-        String id;
-        try {
-            final String hashedPassword = PasswordEncoder.encode(user.getPassword());
-            user.setPassword(hashedPassword);
-            id = databaseconnection.storeData(MongoCollectionTypes.USERS, user);
-        } catch (final ClassCastException e) {
-            throw new IllegalArgumentException(e.getMessage());
-        } catch (final NoSuchAlgorithmException e) {
-            e.printStackTrace();
-            throw new IOException(e.getMessage());
-        } catch (final InvalidKeySpecException e) {
-            e.printStackTrace();
-            throw new IOException(e.getMessage());
-        }
-        return id;
     }
 
 }

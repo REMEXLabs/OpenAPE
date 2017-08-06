@@ -32,6 +32,11 @@ public class ResourceObject extends Resource {
         this.mimeType = mimeType;
     }
 
+    @JsonIgnore
+    public void addResourceDescription(final ResourceDescription resourceDescription) {
+        this.resourceDescriptions.add(resourceDescription);
+    }
+
     @XmlAttribute(name = "fileName")
     public String getFileName() {
         return this.fileName;
@@ -85,11 +90,6 @@ public class ResourceObject extends Resource {
 
     public void setResourceDescriptions(final List<ResourceDescription> resourceDescriptions) {
         this.resourceDescriptions = resourceDescriptions;
-    }
-
-    @JsonIgnore
-    public void addResourceDescription(final ResourceDescription resourceDescription) {
-        this.resourceDescriptions.add(resourceDescription);
     }
 
 }
