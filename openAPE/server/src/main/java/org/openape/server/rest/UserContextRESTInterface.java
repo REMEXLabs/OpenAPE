@@ -35,6 +35,7 @@ public class UserContextRESTInterface extends SuperRestInterface {
                 return null; // ucl;
             });
 
+
         /**
          * Request 7.2.2 create user-context. Can only be accessed by roles
          * "user" and "admin.
@@ -58,6 +59,7 @@ public class UserContextRESTInterface extends SuperRestInterface {
                         SuperRestInterface.logger.debug("lusm: requesting user");
                         final String id = auth.getAuthenticatedUser(req, res).getId();
                         SuperRestInterface.logger.info("id: " + id);
+
                         receivedUserContext.setOwner(auth.getAuthenticatedUser(req, res).getId());
                         SuperRestInterface.logger.debug("Lusm: success");
                         // Test the object for validity.

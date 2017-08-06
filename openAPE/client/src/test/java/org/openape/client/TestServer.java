@@ -2,8 +2,6 @@ package org.openape.client;
 
 import java.net.URISyntaxException;
 
-
-
 import spark.Response;
 
 public class TestServer {

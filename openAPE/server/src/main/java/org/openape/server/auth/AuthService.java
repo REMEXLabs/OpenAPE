@@ -22,6 +22,7 @@ import org.pac4j.sparkjava.SparkWebContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+
 import spark.Request;
 import spark.Response;
 
@@ -120,6 +121,7 @@ public class AuthService {
         final ProfileManager manager = new ProfileManager(new SparkWebContext(request, response));
         final Optional<CommonProfile> profile = manager.get(false);
         AuthService.logger.info("Profile: " + profile);
+
         if (profile.isPresent()) {
             return profile.get();
         } else {

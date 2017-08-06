@@ -1,6 +1,7 @@
 package org.openape.server.rest;
 
 import java.io.IOException;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,6 +44,7 @@ public class ProfileRESTInterface extends SuperRestInterface {
                         final User receivedUser = (User) SuperRestInterface
                                 .extractObjectFromRequest(req, User.class);
                         final String id = ProfileHandler.createUser(receivedUser);
+
                         return "Done! Your ID is " + id;
                     } catch (final IOException e) {
                         res.status(409);
@@ -170,4 +172,5 @@ public class ProfileRESTInterface extends SuperRestInterface {
                 });
 
     }
+
 }

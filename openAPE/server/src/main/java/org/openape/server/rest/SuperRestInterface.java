@@ -122,16 +122,16 @@ public class SuperRestInterface {
                     return 200;
                 });
 
-        /*
-         * Spark.before((request, response) -> {
-         * response.header("Access-Control-Allow-Origin", "*");
-         * response.header("Access-Control-Request-Method", "*");
-         * response.header("Access-Control-Allow-Headers", "*");
-         * response.header("Access-Control-Max-Age", "1728000");
-         * response.header("Cache-Control", "no-cache");
-         * 
-         * });
-         */
+
+        Spark.before((request, response) -> {
+            response.header("Access-Control-Allow-Origin", "*");
+            response.header("Access-Control-Request-Method", "*");
+            response.header("Access-Control-Allow-Headers", "*");
+            response.header("Access-Control-Max-Age", "1728000");
+            response.header("Cache-Control", "no-cache");
+
+        });
+
 
         Spark.get("api", (request, response) -> new API());
 
@@ -154,6 +154,15 @@ public class SuperRestInterface {
         AdminInterface.setupAdminRestInterface(authService);
         TokenRESTInterface.setupTokenRESTInterface(authService);
         ProfileRESTInterface.setupProfileRESTInterface();
+
+
+        // Resource endpoints
+        EnvironmentContextRESTInterface.setupEnvironmentContextRESTInterface(
+                new EnvironmentContextRequestHandler(), authService);
+        EquipmentContextRESTInterface.setupEquipmentContextRESTInterface(
+                new EquipmentContextRequestHandler(), authService);
+        ListingRESTInterface.setupListingRESTInterface(new ListingRequestHandler());
+
 
         ResourceDescriptionRESTInterface.setupResourceDescriptionRESTInterface(
                 new ResourceDescriptionRequestHandler(), authService);
@@ -286,6 +295,7 @@ public class SuperRestInterface {
         EquipmentContextRESTInterface.setupEquipmentContextRESTInterface(
                 new EquipmentContextRequestHandler(), authService);
         ListingRESTInterface.setupListingRESTInterface(new ListingRequestHandler());
+
         ResourceRESTInterface.setupResourceRESTInterface(new ResourceRequestHandler());
         TaskContextRESTInterface.setupTaskContextRESTInterface(new TaskContextRequestHandler(),
                 authService);
@@ -297,12 +307,14 @@ public class SuperRestInterface {
         if (SuperRestInterface.TEST_ENVIRONMENT) {
             TestRESTInterface.setupTestRESTInterface();
         }
+
     }
 
     public static GroupMembershipRequest extractFromRequest(
             final Class<GroupMembershipRequest> class1, final Request req) {
         // TODO Auto-generated method stub
         return null;
+
     }
 
 }
