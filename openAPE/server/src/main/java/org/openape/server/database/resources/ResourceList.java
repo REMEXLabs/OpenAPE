@@ -30,6 +30,8 @@ import org.pac4j.core.profile.CommonProfile;
  *
  */
 public class ResourceList {
+    private static final String RESOURCE_DOES_NOT_EXIST_MSG = "Resource does not exist.";
+
     private static final String RESOURCEFOLDERPATH = Messages.getString("ResourceList.rootFolder") + File.separator + Messages.getString("ResourceList.ResourceFolder"); //$NON-NLS-1$ //$NON-NLS-2$
 
     /**
@@ -214,6 +216,9 @@ public class ResourceList {
                     MongoCollectionTypes.RESOURCEOBJECTS, id);
         } catch (final ClassCastException e) {
             throw new IOException(e.getMessage());
+        }
+        if(resourceObject == null) {
+            throw new IllegalArgumentException(RESOURCE_DOES_NOT_EXIST_MSG);
         }
 
         // Check if user is allowed to delete the resource

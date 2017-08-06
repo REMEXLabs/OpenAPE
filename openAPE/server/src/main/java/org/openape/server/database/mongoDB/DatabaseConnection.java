@@ -308,8 +308,8 @@ public class DatabaseConnection implements ServerMonitorListener {
     /**
      * @param type
      *            of data. Needed to choose the right mongo collection.
-     * @return all objects in the collection of the given type and thair
-     *         corresponding ids.
+     * @return all objects in the collection of the given type and their
+     *         corresponding ids. Or null if none are found.
      * @throws IOException
      *             if database or parse error occurs.
      */
