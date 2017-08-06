@@ -21,7 +21,7 @@ public class LegalNotice extends SuperRestInterface {
     }
 
     public static void setupLegalNoticeVELOCITYInterface() throws IllegalArgumentException,
-            IOException {
+    IOException {
 
         Spark.get(
                 "/legalNotice",
@@ -35,10 +35,10 @@ public class LegalNotice extends SuperRestInterface {
                             new Organism_2_SubSection().generateTopNavigation());
 
                     return new ModelAndView(LegalNotice.model, "velocityTemplates/legalNotice.vm"); // located
-                                                                                                    // in
-                                                                                                    // the
-                                                                                                    // resources
-                                                                                                    // directory
+                    // in
+                    // the
+                    // resources
+                    // directory
                 }, new VelocityTemplateEngine());
     }
 }

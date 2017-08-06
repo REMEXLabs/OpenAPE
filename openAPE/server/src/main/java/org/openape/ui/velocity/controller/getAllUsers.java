@@ -34,10 +34,10 @@ public class getAllUsers extends SuperRestInterface {
                             new Organism_2_SubSection().generateTopNavigation());
 
                     return new ModelAndView(getAllUsers.model, "velocityTemplates/contact.vm"); // located
-                                                                                                // in
-                                                                                                // the
-                                                                                                // resources
-                                                                                                // directory
+                    // in
+                    // the
+                    // resources
+                    // directory
                 }, new VelocityTemplateEngine());
     }
 }

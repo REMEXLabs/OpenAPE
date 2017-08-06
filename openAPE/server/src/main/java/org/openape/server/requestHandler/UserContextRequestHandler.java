@@ -32,7 +32,7 @@ public class UserContextRequestHandler {
      *             if the parameter is not a complete user context.
      */
     public String createUserContext(final Object userContext) throws IOException,
-    IllegalArgumentException {
+            IllegalArgumentException {
         // get database connection.
         final DatabaseConnection databaseconnection = DatabaseConnection.getInstance();
         // try to store data. Class cast exceptions will be thrown as illegal
@@ -61,7 +61,7 @@ public class UserContextRequestHandler {
      *             if the id is no valid id or not assigned.
      */
     public boolean deleteUserContextById(final String id) throws IOException,
-            IllegalArgumentException {
+    IllegalArgumentException {
         // get database connection.
         final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
 
@@ -88,7 +88,7 @@ public class UserContextRequestHandler {
      *             if the id is no valid id or not assigned.
      */
     public UserContext getUserContextById(final String id) throws IOException,
-            IllegalArgumentException {
+    IllegalArgumentException {
         // get database connection.
         final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
 

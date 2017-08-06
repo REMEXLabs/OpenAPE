@@ -31,7 +31,7 @@ public class Adminsection extends SuperRestInterface {
 
     public static void setupAdminVELOCITYInterface(
             final AdminSectionRequestHandler adminsectionRequestHandler)
-            throws IllegalArgumentException, IOException {
+                    throws IllegalArgumentException, IOException {
 
         for (final User entry : adminsectionRequestHandler.getAllUsers()) {
             System.out.println(entry.getId());
@@ -54,14 +54,14 @@ public class Adminsection extends SuperRestInterface {
             Adminsection.model.put("subSection",
                     new Organism_2_SubSection().generateTopNavigation());
             Adminsection.model.put("tableContent", new Molecule_5_dataTable()
-                    .generateDataTableContent(adminsectionRequestHandler.getAllUsers()));
+            .generateDataTableContent(adminsectionRequestHandler.getAllUsers()));
             Adminsection.model.put("deleteUser", del);
 
             return new ModelAndView(Adminsection.model, "velocityTemplates/adminsection.vm"); // located
-                                                                                              // in
-                                                                                              // the
-                                                                                              // resources
-                                                                                              // directory
-            }, new VelocityTemplateEngine());
+            // in
+            // the
+            // resources
+            // directory
+        }, new VelocityTemplateEngine());
     }
 }

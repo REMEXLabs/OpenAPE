@@ -21,7 +21,7 @@ public class MyContexts extends SuperRestInterface {
     }
 
     public static void setupTutorialsVELOCITYInterface() throws IllegalArgumentException,
-            IOException {
+    IOException {
 
         Spark.get(
                 "/myContexts",
@@ -35,10 +35,10 @@ public class MyContexts extends SuperRestInterface {
                             new Organism_2_SubSection().generateTopNavigation());
 
                     return new ModelAndView(MyContexts.model, "velocityTemplates/myContexts.vm"); // located
-                                                                                                  // in
-                                                                                                  // the
-                                                                                                  // resources
-                                                                                                  // directory
+                    // in
+                    // the
+                    // resources
+                    // directory
                 }, new VelocityTemplateEngine());
     }
 }

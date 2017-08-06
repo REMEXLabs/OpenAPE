@@ -46,9 +46,9 @@ public class Property implements Serializable {
      * @param compare
      * @return true, if compare has the same preferences as base, false if not.
      */
-    private static boolean hasPropertyTheSameDescriptors(Property base, Property compare) {
-        Set<String> baseKeySet = base.getDescriptors().keySet();
-        Set<String> compareKeySet = compare.getDescriptors().keySet();
+    private static boolean hasPropertyTheSameDescriptors(final Property base, final Property compare) {
+        final Set<String> baseKeySet = base.getDescriptors().keySet();
+        final Set<String> compareKeySet = compare.getDescriptors().keySet();
         for (final String baseKey : baseKeySet) {
             // Match checks if for each descriptor in this there is one in
             // compare.
@@ -80,12 +80,12 @@ public class Property implements Serializable {
 
     }
 
-    public Property(String name, String value) {
+    public Property(final String name, final String value) {
         this.name = name;
         this.value = value;
     }
 
-    public void addDescriptor(String name, String value) {
+    public void addDescriptor(final String name, final String value) {
         this.descriptors.put(name, value);
     }
 
@@ -99,7 +99,7 @@ public class Property implements Serializable {
      *         the same descriptors, false else.
      */
     @JsonIgnore
-    public boolean equals(Property compare) {
+    public boolean equals(final Property compare) {
         // check if property attributes are equal.
         if (!(this.getName().equals(compare.getName()) && this.getValue()
                 .equals(compare.getValue()))) {
@@ -126,15 +126,15 @@ public class Property implements Serializable {
         return this.value;
     }
 
-    public void setDescriptors(Map<String, String> descriptors) {
+    public void setDescriptors(final Map<String, String> descriptors) {
         this.descriptors = descriptors;
     }
 
-    public void setName(String name) {
+    public void setName(final String name) {
         this.name = name;
     }
 
-    public void setValue(String value) {
+    public void setValue(final String value) {
         this.value = value;
     }
 

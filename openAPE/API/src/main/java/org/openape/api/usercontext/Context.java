@@ -39,7 +39,7 @@ public class Context implements Serializable {
      * @param compare
      * @return true, if compare has the same preferences as base, false if not.
      */
-    private static boolean hasContextTheSamePreferences(Context base, Context compare) {
+    private static boolean hasContextTheSamePreferences(final Context base, final Context compare) {
         final Set<String> baseKeySet = base.getPreferences().keySet();
         final Set<String> compareKeySet = compare.getPreferences().keySet();
         for (final String baseKey : baseKeySet) {
@@ -78,18 +78,18 @@ public class Context implements Serializable {
 
     }
 
-    public Context(String name) {
+    public Context(final String name) {
         this.name = name;
     }
 
-    public void addCondition(Condition condition) {
+    public void addCondition(final Condition condition) {
         if (this.getConditions() == null) {
             this.setConditions(new ArrayList<Condition>());
         }
         this.conditions.add(condition);
     }
 
-    public void addPreference(String key, String value) {
+    public void addPreference(final String key, final String value) {
         this.preferences.put(key, value);
     }
 
@@ -103,7 +103,7 @@ public class Context implements Serializable {
      *         the same preferences, false else.
      */
     @JsonIgnore
-    public boolean equals(Context compare) {
+    public boolean equals(final Context compare) {
         // check if preferences are equal
         return (Context.hasContextTheSamePreferences(compare, this) && Context
                 .hasContextTheSamePreferences(this, compare));
@@ -123,15 +123,15 @@ public class Context implements Serializable {
         return this.preferences;
     }
 
-    public void setConditions(List<Condition> conditions) {
+    public void setConditions(final List<Condition> conditions) {
         this.conditions = conditions;
     }
 
-    public void setName(String name) {
+    public void setName(final String name) {
         this.name = name;
     }
 
-    public void setPreferences(Map<String, String> preferences) {
+    public void setPreferences(final Map<String, String> preferences) {
         this.preferences = preferences;
     }
 

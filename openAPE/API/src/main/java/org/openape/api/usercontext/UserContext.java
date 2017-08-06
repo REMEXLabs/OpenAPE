@@ -23,8 +23,9 @@ import java.util.Set;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.openape.api.Resource;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  * User context object defined in 7.2.1
@@ -41,7 +42,8 @@ public class UserContext extends Resource {
      * @param compare
      * @return true, if compare has the same contexts as base, false if not.
      */
-    private static boolean hasUserContextTheSameContexts(UserContext base, UserContext compare) {
+    private static boolean hasUserContextTheSameContexts(final UserContext base,
+            final UserContext compare) {
         final Set<String> baseKeySet = base.getContexts().keySet();
         final Set<String> compareKeySet = compare.getContexts().keySet();
         for (final String baseKey : baseKeySet) {
@@ -71,7 +73,7 @@ public class UserContext extends Resource {
         this.contexts = new HashMap<String, Context>();
     }
 
-    public void addContext(String id, Context c) {
+    public void addContext(final String id, final Context c) {
         this.contexts.put(id, c);
 
     }
@@ -84,7 +86,7 @@ public class UserContext extends Resource {
      * @return true if contexts are equal in field values, false else.
      */
     @JsonIgnore
-    public boolean equals(UserContext compare) {
+    public boolean equals(final UserContext compare) {
         return (UserContext.hasUserContextTheSameContexts(compare, this) && UserContext
                 .hasUserContextTheSameContexts(this, compare));
 
@@ -95,7 +97,7 @@ public class UserContext extends Resource {
      * @return null if not found.
      */
     @JsonIgnore
-    public Context getContext(String id) {
+    public Context getContext(final String id) {
         return this.getContexts().get(id);
     }
 
@@ -110,7 +112,7 @@ public class UserContext extends Resource {
         return true;
     }
 
-    public void setContexts(Map<String, Context> contexts) {
+    public void setContexts(final Map<String, Context> contexts) {
         this.contexts = contexts;
     }
 

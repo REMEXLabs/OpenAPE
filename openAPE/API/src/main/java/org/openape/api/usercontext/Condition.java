@@ -52,7 +52,8 @@ public class Condition {
      * @throws IllegalArgumentException
      *             if this is not the case.
      */
-    public Condition(String type, List<Object> operands) throws IllegalArgumentException {
+    public Condition(final String type, final List<Object> operands)
+            throws IllegalArgumentException {
         this.checkType(type);
         this.checkOpernadListLength(type, operands);
         this.checkOperandClasses(operands);
@@ -66,14 +67,14 @@ public class Condition {
      * @throws IllegalArgumentException
      *             if this is not the case.
      */
-    private void checkOperandClasses(List<Object> operands) {
+    private void checkOperandClasses(final List<Object> operands) {
         for (final Object operand : operands) {
             if (!(operand instanceof Condition) && !(operand instanceof String)
                     && !(operand instanceof LinkedHashMap<?, ?>)) {// LinkedHashMap
-                                                                   // is used by
-                                                                   // json to
-                                                                   // store sub
-                                                                   // results.
+                // is used by
+                // json to
+                // store sub
+                // results.
                 throw new IllegalArgumentException(
                         Messages.getString("Condition.wrongOperandTypesErrorMsg")); //$NON-NLS-1$
             }
@@ -89,7 +90,7 @@ public class Condition {
      * @throws IllegalArgumentException
      *             if this is not the case.
      */
-    private void checkOpernadListLength(String type, List<Object> operands)
+    private void checkOpernadListLength(final String type, final List<Object> operands)
             throws IllegalArgumentException {
         if (type.equals(Messages.getString("Condition.not"))) { //$NON-NLS-1$
             if (operands.size() != 1) {
@@ -122,7 +123,7 @@ public class Condition {
      * @throws IllegalArgumentException
      *             if this is not the case.
      */
-    private void checkType(String type) throws IllegalArgumentException {
+    private void checkType(final String type) throws IllegalArgumentException {
         if (!(type.equals(Messages.getString("Condition.not")) || type.equals(Messages.getString("Condition.equal")) || type.equals(Messages.getString("Condition.notEqual")) || type.equals(Messages.getString("Condition.lessThen")) //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
                 || type.equals(Messages.getString("Condition.lessThenOrEqual")) || type.equals(Messages.getString("Condition.greaterThen")) || type.equals(Messages.getString("Condition.greaterThenOrEqual")) //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                 || type.equals(Messages.getString("Condition.and")) || type.equals(Messages.getString("Condition.or")))) { //$NON-NLS-1$ //$NON-NLS-2$
@@ -149,7 +150,7 @@ public class Condition {
      * @throws IllegalArgumentException
      *             if this is not the case.
      */
-    public void setOperands(List<Object> operands) throws IllegalArgumentException {
+    public void setOperands(final List<Object> operands) throws IllegalArgumentException {
         this.checkOperandClasses(operands);
         // Check the operands list length if type is already set.
         if (this.getType() != null) {
@@ -170,7 +171,7 @@ public class Condition {
      * @throws IllegalArgumentException
      *             if this is not the case.
      */
-    public void setType(String type) {
+    public void setType(final String type) {
         this.checkType(type);
         // Check the operands list length if operands are already set.
         if (this.getOperands() != null) {

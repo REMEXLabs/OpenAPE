@@ -89,7 +89,7 @@ public class ResourceRequestHandler {
      *             if the id is no valid id or not assigned.
      */
     public GetResourceReturnType getResourceById(final String id) throws IllegalArgumentException,
-    IOException {
+            IOException {
         return ResourceList.getInstance().getResoureFile(id);
     }
 

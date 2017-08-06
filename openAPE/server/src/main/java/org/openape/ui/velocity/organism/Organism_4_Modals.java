@@ -1,6 +1,5 @@
 package org.openape.ui.velocity.organism;
 
-
 public class Organism_4_Modals {
 
     public String generateSigninModal() {

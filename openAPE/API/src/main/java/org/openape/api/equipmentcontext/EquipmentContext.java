@@ -23,9 +23,9 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.openape.api.Property;
+import org.openape.api.Resource;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.openape.api.Resource;
 
 /**
  * Equipment context object defined in 7.4.1
@@ -42,8 +42,8 @@ public class EquipmentContext extends Resource {
      * @param compare
      * @return true, if compare has the same properties as base, false if not.
      */
-    private static boolean hasEquipmentContextTheSameProperties(EquipmentContext base,
-            EquipmentContext compare) {
+    private static boolean hasEquipmentContextTheSameProperties(final EquipmentContext base,
+            final EquipmentContext compare) {
         for (final Property baseProperty : base.getPropertys()) {
             // Match checks if for each property in this there is one in
             // compare.
@@ -70,7 +70,7 @@ public class EquipmentContext extends Resource {
         this.propertys = new ArrayList<Property>();
     }
 
-    public void addProperty(Property property) {
+    public void addProperty(final Property property) {
         this.propertys.add(property);
     }
 
@@ -82,7 +82,7 @@ public class EquipmentContext extends Resource {
      * @return true if contexts are equal in field values, false else.
      */
     @JsonIgnore
-    public boolean equals(EquipmentContext compare) {
+    public boolean equals(final EquipmentContext compare) {
         return (EquipmentContext.hasEquipmentContextTheSameProperties(compare, this) && EquipmentContext
                 .hasEquipmentContextTheSameProperties(this, compare));
 
@@ -99,7 +99,7 @@ public class EquipmentContext extends Resource {
         return true;
     }
 
-    public void setPropertys(List<Property> propertys) {
+    public void setPropertys(final List<Property> propertys) {
         this.propertys = propertys;
     }
 }

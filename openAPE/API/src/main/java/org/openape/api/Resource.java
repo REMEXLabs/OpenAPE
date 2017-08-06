@@ -19,7 +19,8 @@ package org.openape.api;
 import javax.ws.rs.DefaultValue;
 
 /**
- * A database object that is owned by a user and can be public (viewable by other users).
+ * A database object that is owned by a user and can be public (viewable by
+ * other users).
  */
 
 public class Resource extends DatabaseObject {
@@ -32,19 +33,19 @@ public class Resource extends DatabaseObject {
     private boolean isPublic;
 
     public String getOwner() {
-        return owner;
+        return this.owner;
     }
 
-    public void setOwner(String owner) {
+    public void setOwner(final String owner) {
         this.owner = owner;
     }
 
     public boolean isPublic() {
-        return isPublic;
+        return this.isPublic;
     }
 
-    public void setPublic(boolean aPublic) {
-        isPublic = aPublic;
+    public void setPublic(final boolean aPublic) {
+        this.isPublic = aPublic;
     }
 
 }

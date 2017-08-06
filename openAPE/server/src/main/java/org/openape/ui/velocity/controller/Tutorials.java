@@ -19,17 +19,17 @@ public class Tutorials extends SuperRestInterface {
     }
 
     public static void setupTutorialsVELOCITYInterface() throws IllegalArgumentException,
-            IOException {
+    IOException {
 
         Spark.get("/tutorials", (request, response) -> {
             final MainController mainController = new MainController();
             final Map<String, Object> model = mainController.getTemplateComponents();
 
             return new ModelAndView(model, "velocityTemplates/tutorials.vm"); // located
-                                                                              // in
-                                                                              // the
-                                                                              // resources
-                                                                              // directory
-            }, new VelocityTemplateEngine());
+            // in
+            // the
+            // resources
+            // directory
+        }, new VelocityTemplateEngine());
     }
 }

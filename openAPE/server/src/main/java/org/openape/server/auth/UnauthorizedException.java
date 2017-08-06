@@ -5,6 +5,11 @@ package org.openape.server.auth;
  */
 public class UnauthorizedException extends Exception {
 
+    /**
+     *
+     */
+    private static final long serialVersionUID = -1987250205279214600L;
+
     public UnauthorizedException() {
         super();
     }
