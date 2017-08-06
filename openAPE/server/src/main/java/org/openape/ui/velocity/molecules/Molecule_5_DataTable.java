@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import org.openape.api.user.User;
 
-public class Molecule_5_dataTable {
+public class Molecule_5_DataTable {
 
     public String generateDataTableContent(final ArrayList<User> listUsers) {
 

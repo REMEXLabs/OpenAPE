@@ -7,7 +7,7 @@ import java.util.Map;
 import org.openape.api.user.User;
 import org.openape.server.rest.SuperRestInterface;
 import org.openape.ui.velocity.models.deleteUser;
-import org.openape.ui.velocity.molecules.Molecule_5_dataTable;
+import org.openape.ui.velocity.molecules.Molecule_5_DataTable;
 import org.openape.ui.velocity.organism.Organism_1_Topsection;
 import org.openape.ui.velocity.organism.Organism_2_SubSection;
 import org.openape.ui.velocity.requestHandler.AdminSectionRequestHandler;
@@ -39,7 +39,7 @@ public class Administration extends SuperRestInterface {
                     new Organism_1_Topsection().generateTopNavigation());
             Administration.model.put("subSection",
                     new Organism_2_SubSection().generateTopNavigation());
-            Administration.model.put("tableContent", new Molecule_5_dataTable()
+            Administration.model.put("tableContent", new Molecule_5_DataTable()
                     .generateDataTableContent(adminsectionRequestHandler.getAllUsers()));
             Administration.model.put("deleteUser", del);
 
