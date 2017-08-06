@@ -21,7 +21,7 @@ public class MyProfile extends SuperRestInterface {
     }
 
     public static void setupMyProfileVELOCITYInterface() throws IllegalArgumentException,
-    IOException {
+            IOException {
 
         Spark.get(
                 "/myProfile",

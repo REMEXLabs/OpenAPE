@@ -119,7 +119,7 @@ public class TaskContextRESTInterface extends SuperRestInterface {
                     }
                     // Check if the task context does exist
                     final TaskContext taskContext = requestHandler
-                                .getTaskContextById(taskContextId);
+                            .getTaskContextById(taskContextId);
                     // Make sure only admins and the owner can update a context
                     auth.allowAdminAndOwner(req, res, taskContext.getOwner());
                     receivedTaskContext.setOwner(taskContext.getOwner()); // Make

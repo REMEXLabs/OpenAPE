@@ -24,7 +24,7 @@ public class PasswordEncoder {
      * @throws InvalidKeySpecException
      */
     public static String encode(final String password) throws NoSuchAlgorithmException,
-    InvalidKeySpecException {
+            InvalidKeySpecException {
         final int iterations = 1000;
         final char[] chars = password.toCharArray();
         final byte[] salt = PasswordEncoder.getSalt();

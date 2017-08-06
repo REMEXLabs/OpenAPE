@@ -122,7 +122,7 @@ public class EquipmentContextRESTInterface extends SuperRestInterface {
                     }
                     // Check if the user context does exist
                     final EquipmentContext equipmentContext = requestHandler
-                                .getEquipmentContextById(equipmentContextId);
+                            .getEquipmentContextById(equipmentContextId);
                     // Make sure only admins and the owner can update a context
                     auth.allowAdminAndOwner(req, res, equipmentContext.getOwner());
                     receivedEquipmentContext.setOwner(equipmentContext.getOwner()); // Make

@@ -21,7 +21,7 @@ public class Downloads extends SuperRestInterface {
     }
 
     public static void setupDownloadsVELOCITYInterface() throws IllegalArgumentException,
-    IOException {
+            IOException {
 
         Spark.get(
                 "/downloads",

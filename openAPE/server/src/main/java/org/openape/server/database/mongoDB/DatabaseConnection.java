@@ -156,7 +156,7 @@ public class DatabaseConnection implements ServerMonitorListener {
 
             // Add MongoDB Monitor with client options
             final MongoClientOptions clientOptions = new MongoClientOptions.Builder()
-            .addServerMonitorListener(this).build();
+                    .addServerMonitorListener(this).build();
 
             // Create database client for the openAPE database
             this.mongoClient = new MongoClient(new ServerAddress(DatabaseConnection.DATABASEURL,
@@ -480,7 +480,7 @@ public class DatabaseConnection implements ServerMonitorListener {
      */
     private DatabaseObject executeQuery(final MongoCollectionTypes type,
             final MongoCollection collection, final BasicDBObject query, final boolean includeId)
-                    throws IOException {
+            throws IOException {
         final Iterator<Document> resultIterator = collection.find(query).iterator();
         if (resultIterator.hasNext()) {
             final Document resultDocument = resultIterator.next();

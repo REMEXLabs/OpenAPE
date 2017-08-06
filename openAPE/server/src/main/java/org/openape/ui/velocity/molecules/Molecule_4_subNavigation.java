@@ -9,7 +9,7 @@ public class Molecule_4_subNavigation {
 
         String subNavigation = "";
         for (final Entry<String, String> entry : new Atom_1_navigationLinks()
-        .generateSubNavigationLinks().entrySet()) {
+                .generateSubNavigationLinks().entrySet()) {
             subNavigation += "<div class='subnav' style='float:left;padding:1em' id='div"
                     + entry.getKey() + "' hidden='true'><a href='#' id='link" + entry.getKey()
                     + "'>" + entry.getValue() + "</a></div>";

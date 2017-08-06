@@ -126,7 +126,7 @@ public class AdminSectionRequestHandler {
     }
 
     public ArrayList<String[]> getAllEquipmentContexts() throws IOException,
-    IllegalArgumentException {
+            IllegalArgumentException {
 
         // get database connection.
         final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
@@ -159,7 +159,7 @@ public class AdminSectionRequestHandler {
     }
 
     public ArrayList<String[]> getAllEnvironmentContexts() throws IOException,
-    IllegalArgumentException {
+            IllegalArgumentException {
 
         // get database connection.
         final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();

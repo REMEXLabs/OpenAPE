@@ -25,38 +25,38 @@ class TokenRESTInterface extends SuperRestInterface {
 
             // Return 400 Bad Request if either username or password are empty
             // (see RFC 6749 section 5.2)
-            if (StringUtils.isEmpty(username) || StringUtils.isEmpty(password)) {
-                res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
-                res.type("application/json");
-                return AuthService.buildAuthErrorJSON("invalid_grant",
-                        "Username and password are required");
-            }
+                if (StringUtils.isEmpty(username) || StringUtils.isEmpty(password)) {
+                    res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
+                    res.type("application/json");
+                    return AuthService.buildAuthErrorJSON("invalid_grant",
+                            "Username and password are required");
+                }
 
-            // Return 400 Bad Request if the grant_type parameter is not set
-            // to password
-            if (StringUtils.isEmpty(grantType) || !grantType.equals("password")) {
-                res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
-                res.type("application/json");
-                return AuthService.buildAuthErrorJSON("invalid_grant",
-                        "Grant type has to be set to `password`");
-            }
+                // Return 400 Bad Request if the grant_type parameter is not set
+                // to password
+                if (StringUtils.isEmpty(grantType) || !grantType.equals("password")) {
+                    res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
+                    res.type("application/json");
+                    return AuthService.buildAuthErrorJSON("invalid_grant",
+                            "Grant type has to be set to `password`");
+                }
 
-            // Create an access token from the given username and password
-            try {
-                res.type("application/json");
-                return authService.getJSONToken(username, password);
-            } catch (final UnauthorizedException e) {
-                // If user could not get authorized, return Bad Request
-                res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
-                return AuthService.buildAuthErrorJSON("invalid_grant",
-                        "Invalid or expired credentials");
-            } catch (final Exception e) {
-                // Catch any unexpected exceptions with status code 401
-                // Unauthorized
-                res.status(SuperRestInterface.HTTP_STATUS_UNAUTHORIZED);
-                return "Authorization failed";
-            }
-        });
+                // Create an access token from the given username and password
+                try {
+                    res.type("application/json");
+                    return authService.getJSONToken(username, password);
+                } catch (final UnauthorizedException e) {
+                    // If user could not get authorized, return Bad Request
+                    res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
+                    return AuthService.buildAuthErrorJSON("invalid_grant",
+                            "Invalid or expired credentials");
+                } catch (final Exception e) {
+                    // Catch any unexpected exceptions with status code 401
+                    // Unauthorized
+                    res.status(SuperRestInterface.HTTP_STATUS_UNAUTHORIZED);
+                    return "Authorization failed";
+                }
+            });
     }
 
 }
