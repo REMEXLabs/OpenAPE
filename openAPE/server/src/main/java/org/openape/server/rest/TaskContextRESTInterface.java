@@ -123,12 +123,12 @@ public class TaskContextRESTInterface extends SuperRestInterface {
                     // Make sure only admins and the owner can update a context
                     auth.allowAdminAndOwner(req, res, taskContext.getOwner());
                     receivedTaskContext.setOwner(taskContext.getOwner()); // Make
-                    // sure
-                    // the
-                    // owner
-                    // can't
-                    // be
-                    // changed
+                                                                          // sure
+                                                                          // the
+                                                                          // owner
+                                                                          // can't
+                                                                          // be
+                                                                          // changed
                     // Perform update
                     requestHandler.updateTaskContextById(taskContextId, receivedTaskContext);
                     res.status(SuperRestInterface.HTTP_STATUS_OK);

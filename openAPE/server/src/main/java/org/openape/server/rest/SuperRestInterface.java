@@ -156,6 +156,7 @@ public class SuperRestInterface {
         ResourceDescriptionRESTInterface.setupResourceDescriptionRESTInterface(
                 new ResourceDescriptionRequestHandler(), authService);
 
+        ResourceRESTInterface.setupResourceRESTInterface(new ResourceRequestHandler(), authService);
         try {
             Administration.setupAdministrationVELOCITYInterface(new AdminSectionRequestHandler());
         } catch (final IllegalArgumentException e) {
@@ -276,8 +277,6 @@ public class SuperRestInterface {
             e.printStackTrace();
         }
 
-        // REST-Interfaces
-        ResourceRESTInterface.setupResourceRESTInterface(new ResourceRequestHandler());
         TaskContextRESTInterface.setupTaskContextRESTInterface(new TaskContextRequestHandler(),
                 authService);
         UserContextRESTInterface.setupUserContextRESTInterface(new UserContextRequestHandler(),
