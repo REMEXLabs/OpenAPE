@@ -3,6 +3,18 @@ package org.openape.ui.velocity.atoms;
 import java.util.LinkedHashMap;
 
 public class Atom_1_NavigationLinks {
+    public LinkedHashMap<String, String> generateSubNavigationLinks() {
+        final LinkedHashMap<String, String> map = new LinkedHashMap<>();
+
+        map.put("MyProfile", "My Profile");
+        map.put("MyContexts", "My Contexts");
+        map.put("MyResources", "My Resources");
+        map.put("MyGroups", "My Groups");
+        map.put("Administration", "Administration");
+
+        return map;
+    }
+
     public LinkedHashMap<String, String> generateTopNavigationLinks() {
         final LinkedHashMap<String, String> map = new LinkedHashMap<>();
 
@@ -12,18 +24,6 @@ public class Atom_1_NavigationLinks {
         map.put("Downloads", "Downloads");
         map.put("Context", "Context");
         map.put("Contact", "Contact");
-
-        return map;
-    }
-
-    public LinkedHashMap<String, String> generateSubNavigationLinks() {
-        final LinkedHashMap<String, String> map = new LinkedHashMap<>();
-
-        map.put("MyProfile", "My Profile");
-        map.put("MyContexts", "My Contexts");
-        map.put("MyResources", "My Resources");
-        map.put("MyGroups", "My Groups");
-        map.put("Administration", "Administration");
 
         return map;
     }
