@@ -41,7 +41,7 @@ public class AuthService {
      * Tries to authorize using the given credentials (username and password)
      * and returns a JWT String for the user if the authorization was
      * successful.
-     * 
+     *
      * @param username
      *            username to use for the authorization
      * @param password
@@ -59,7 +59,7 @@ public class AuthService {
     /**
      * Tries to authorize using the given credentials (username and password)
      * and returns a TokenResponse as JSON.
-     * 
+     *
      * @param username
      *            username to use for the authorization
      * @param password
@@ -77,7 +77,7 @@ public class AuthService {
 
     /**
      * Authorize any profile that has the given role.
-     * 
+     *
      * @param role
      *            Name of the role that should be authorized.
      * @return PAC4J SecurityFilter containing the authorization for the given
@@ -103,7 +103,7 @@ public class AuthService {
     /**
      * Get the profile of the currently authenticated user. Throws an exception
      * if no user is authenticated.
-     * 
+     *
      * @param request
      *            Spark request object
      * @param response
@@ -126,7 +126,7 @@ public class AuthService {
     /**
      * Get a OpenAPE user object for the currently authenticated user. Throws an
      * exception if no user is authenticated.
-     * 
+     *
      * @param req
      *            Spark request object
      * @param res
@@ -143,7 +143,7 @@ public class AuthService {
     /**
      * Check if the authenticated user has either the role `admin` or equals the
      * provided owner.
-     * 
+     *
      * @param request
      *            Spark request object
      * @param response
@@ -165,7 +165,7 @@ public class AuthService {
     /**
      * Check if the authenticated user has either the role `admin`, equals the
      * provided owner or the resource is public.
-     * 
+     *
      * @param request
      *            Spark request object
      * @param response
@@ -188,7 +188,7 @@ public class AuthService {
     /**
      * Creates string error containing an RFC 6749 section 5.2 compliant JSON
      * form with the provided error and description.
-     * 
+     *
      * @param error
      *            The error code.
      * @param description
@@ -202,7 +202,7 @@ public class AuthService {
 
     /**
      * Check if the provided profile has the `admin` role.
-     * 
+     *
      * @param profile
      * @return True if admin role is present, otherwise false.
      */
@@ -213,7 +213,7 @@ public class AuthService {
     /**
      * Check if the provided profile has either the role `admin` or is equal to
      * the given owner.
-     * 
+     *
      * @param profile
      *            The authenticated profile
      * @param owner
@@ -227,7 +227,7 @@ public class AuthService {
     /**
      * Check if the provided profile has either the role `admin` or is equal to
      * the given owner.
-     * 
+     *
      * @param profile
      *            The authenticated profile
      * @param owner
@@ -240,7 +240,7 @@ public class AuthService {
 
     /**
      * Generates a Json Web Token (JWT) for the given CommonProfile.
-     * 
+     *
      * @param profile
      *            the profile the token should be created for
      * @return a JWT as String
@@ -259,7 +259,7 @@ public class AuthService {
     /**
      * Authorizes a user by the given username and password and returns a
      * CommonProfile for the user if he could be found.
-     * 
+     *
      * @param username
      *            username of the user to be authorized
      * @param password
@@ -294,7 +294,7 @@ public class AuthService {
 
     /**
      * Queries the database for a user with the given username.
-     * 
+     *
      * @param username
      *            username to query for
      * @return
@@ -313,7 +313,7 @@ public class AuthService {
 
     /**
      * Checks if a given plain text password matches the encrypted one.
-     * 
+     *
      * @param plainTextPassword
      *            the password in plain text to match
      * @param encryptedPassword
@@ -335,7 +335,7 @@ public class AuthService {
 
     /**
      * Get the expiration date for tokens.
-     * 
+     *
      * @return The time the token will expire.
      */
     private static Date getExpirationDate() {
