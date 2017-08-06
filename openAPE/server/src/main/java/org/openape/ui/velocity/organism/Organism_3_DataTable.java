@@ -7,39 +7,6 @@ import org.openape.ui.velocity.requestHandler.AdminSectionRequestHandler;
 
 public class Organism_3_DataTable {
 
-    public String generateAdministrationUserTable(
-            final AdminSectionRequestHandler adminsectionRequestHandler)
-            throws IllegalArgumentException, IOException {
-
-        final String administrationDatableContent = new Molecule_5_dataTableContent()
-                .generateAdministrationUserContent(adminsectionRequestHandler.getAllUsers());
-        adminsectionRequestHandler.getAllUsercontexts();
-        final String administrationUserTable = ""
-                + "<table id='user' class='table table-striped table-bordered' cellspacing='0' width='100%'>"
-                + "<thead>" + "<tr>" + "<th>Username</th>" + "<th>User ID</th>" + "<th>Email</th>"
-                + "<th>Role</th>" + "<th>Options</th>" + "</tr>" + "</thead>"
-                + "<tbody id='tableContent'>" + administrationDatableContent + "</tbody>"
-                + "</table>";
-        return administrationUserTable;
-
-    }
-
-    public String generateAdministrationUserContextTable(
-            final AdminSectionRequestHandler adminsectionRequestHandler)
-            throws IllegalArgumentException, IOException {
-
-        final String administrationDatableUserContextContent = new Molecule_5_dataTableContent()
-                .generateUserContextContent(adminsectionRequestHandler.getAllUsercontexts());
-        adminsectionRequestHandler.getAllUsercontexts();
-        final String administrationUserTable = ""
-                + "<table id='userContextDataTable' class='table table-striped table-bordered' cellspacing='0' width='100%'>"
-                + "<thead>" + "<tr>" + "<th>Name</th>" + "<th>ID</th>" + "<th>isPublic</th>"
-                + "<th>Options</th>" + "</tr>" + "</thead>" + "<tbody id='tableContent'>"
-                + administrationDatableUserContextContent + "</tbody>" + "</table>";
-        return administrationUserTable;
-
-    }
-
     public String generateAdministrationContextTable(
             final AdminSectionRequestHandler adminsectionRequestHandler, final String contextName)
             throws IllegalArgumentException, IOException {
@@ -72,6 +39,39 @@ public class Organism_3_DataTable {
                 + "<th>Options</th>" + "</tr>" + "</thead>" + "<tbody id='tableContent'>"
                 + administrationDatableContextContent + "</tbody>" + "</table>";
         return administrationContextTable;
+
+    }
+
+    public String generateAdministrationUserContextTable(
+            final AdminSectionRequestHandler adminsectionRequestHandler)
+            throws IllegalArgumentException, IOException {
+
+        final String administrationDatableUserContextContent = new Molecule_5_dataTableContent()
+                .generateUserContextContent(adminsectionRequestHandler.getAllUsercontexts());
+        adminsectionRequestHandler.getAllUsercontexts();
+        final String administrationUserTable = ""
+                + "<table id='userContextDataTable' class='table table-striped table-bordered' cellspacing='0' width='100%'>"
+                + "<thead>" + "<tr>" + "<th>Name</th>" + "<th>ID</th>" + "<th>isPublic</th>"
+                + "<th>Options</th>" + "</tr>" + "</thead>" + "<tbody id='tableContent'>"
+                + administrationDatableUserContextContent + "</tbody>" + "</table>";
+        return administrationUserTable;
+
+    }
+
+    public String generateAdministrationUserTable(
+            final AdminSectionRequestHandler adminsectionRequestHandler)
+            throws IllegalArgumentException, IOException {
+
+        final String administrationDatableContent = new Molecule_5_dataTableContent()
+                .generateAdministrationUserContent(adminsectionRequestHandler.getAllUsers());
+        adminsectionRequestHandler.getAllUsercontexts();
+        final String administrationUserTable = ""
+                + "<table id='user' class='table table-striped table-bordered' cellspacing='0' width='100%'>"
+                + "<thead>" + "<tr>" + "<th>Username</th>" + "<th>User ID</th>" + "<th>Email</th>"
+                + "<th>Role</th>" + "<th>Options</th>" + "</tr>" + "</thead>"
+                + "<tbody id='tableContent'>" + administrationDatableContent + "</tbody>"
+                + "</table>";
+        return administrationUserTable;
 
     }
 }

@@ -19,11 +19,6 @@ import spark.template.velocity.VelocityTemplateEngine;
 public class Adminsection extends SuperRestInterface {
     private static Map<String, Object> model = new HashMap<>();
 
-    public Adminsection() throws IllegalArgumentException, IOException {
-        super();
-        // TODO Auto-generated constructor stub
-    }
-
     public static Boolean ich() {
         System.out.println("ich bin gerufen");
         return true;
@@ -63,5 +58,10 @@ public class Adminsection extends SuperRestInterface {
                 // resources
                 // directory
             }, new VelocityTemplateEngine());
+    }
+
+    public Adminsection() throws IllegalArgumentException, IOException {
+        super();
+        // TODO Auto-generated constructor stub
     }
 }

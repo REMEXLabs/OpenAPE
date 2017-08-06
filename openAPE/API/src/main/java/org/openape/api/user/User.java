@@ -14,12 +14,6 @@ public class User extends DatabaseObject {
      *
      */
     private static final long serialVersionUID = -5694679880590931589L;
-    private String id;
-    private String username;
-    private String email;
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    private String password;
-    private List<String> roles;
 
     public static User getFromProfile(final CommonProfile profile) {
         final User user = new User();
@@ -30,44 +24,52 @@ public class User extends DatabaseObject {
         return user;
     }
 
-    public String getId() {
-        return this.id;
-    }
+    private String id;
+    private String username;
+    private String email;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private String password;
 
-    public void setId(final String id) {
-        this.id = id;
-    }
-
-    public String getUsername() {
-        return this.username;
-    }
-
-    public void setUsername(final String username) {
-        this.username = username;
-    }
+    private List<String> roles;
 
     public String getEmail() {
         return this.email;
     }
 
-    public void setEmail(final String email) {
-        this.email = email;
+    public String getId() {
+        return this.id;
     }
 
     public String getPassword() {
         return this.password;
     }
 
-    public void setPassword(final String password) {
-        this.password = password;
-    }
-
     public List<String> getRoles() {
         return this.roles;
     }
 
+    public String getUsername() {
+        return this.username;
+    }
+
+    public void setEmail(final String email) {
+        this.email = email;
+    }
+
+    public void setId(final String id) {
+        this.id = id;
+    }
+
+    public void setPassword(final String password) {
+        this.password = password;
+    }
+
     public void setRoles(final List<String> roles) {
         this.roles = roles;
+    }
+
+    public void setUsername(final String username) {
+        this.username = username;
     }
 
 }

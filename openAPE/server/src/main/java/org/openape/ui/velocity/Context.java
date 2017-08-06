@@ -15,11 +15,6 @@ import spark.template.velocity.VelocityTemplateEngine;
 public class Context extends SuperRestInterface {
     private static Map<String, Object> model = new HashMap<>();
 
-    public Context() throws IllegalArgumentException, IOException {
-        super();
-        // TODO Auto-generated constructor stub
-    }
-
     public static void setupContextVELOCITYInterface() throws IllegalArgumentException, IOException {
 
         Spark.get(
@@ -39,5 +34,10 @@ public class Context extends SuperRestInterface {
                     // resources
                     // directory
                 }, new VelocityTemplateEngine());
+    }
+
+    public Context() throws IllegalArgumentException, IOException {
+        super();
+        // TODO Auto-generated constructor stub
     }
 }

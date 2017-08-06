@@ -13,11 +13,6 @@ import spark.template.velocity.VelocityTemplateEngine;
 public class LegalNotice extends SuperRestInterface {
     private static Map<String, Object> model = new HashMap<>();
 
-    public LegalNotice() throws IllegalArgumentException, IOException {
-        super();
-        // TODO Auto-generated constructor stub
-    }
-
     public static void setupLegalNoticeVELOCITYInterface() throws IllegalArgumentException,
             IOException {
 
@@ -32,5 +27,10 @@ public class LegalNotice extends SuperRestInterface {
                 // resources
                 // directory
             }, new VelocityTemplateEngine());
+    }
+
+    public LegalNotice() throws IllegalArgumentException, IOException {
+        super();
+        // TODO Auto-generated constructor stub
     }
 }
