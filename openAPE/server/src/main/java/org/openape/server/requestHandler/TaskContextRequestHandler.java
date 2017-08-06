@@ -61,7 +61,7 @@ public class TaskContextRequestHandler {
      *             if the id is no valid id or not assigned.
      */
     public boolean deleteTaskContextById(final String id) throws IOException,
-    IllegalArgumentException {
+            IllegalArgumentException {
         // get database connection.
         final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
 
@@ -88,7 +88,7 @@ public class TaskContextRequestHandler {
      *             if the id is no valid id or not assigned.
      */
     public TaskContext getTaskContextById(final String id) throws IOException,
-    IllegalArgumentException {
+            IllegalArgumentException {
         // get database connection.
         final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
 

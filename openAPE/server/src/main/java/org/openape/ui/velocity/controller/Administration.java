@@ -26,7 +26,7 @@ public class Administration extends SuperRestInterface {
 
     public static void setupAdministrationVELOCITYInterface(
             final AdminSectionRequestHandler adminsectionRequestHandler)
-                    throws IllegalArgumentException, IOException {
+            throws IllegalArgumentException, IOException {
         adminsectionRequestHandler.getAllTaskContexts();
         Spark.get("/administration", (request, response) -> {
             Administration.model.put("footer", new Footer().generateFooter());
@@ -36,7 +36,7 @@ public class Administration extends SuperRestInterface {
             Administration.model.put("subSection",
                     new Organism_2_SubSection().generateTopNavigation());
             Administration.model.put("dataTableUserContext", new Organism_3_DataTable()
-            .generateAdministrationUserContextTable(adminsectionRequestHandler));
+                    .generateAdministrationUserContextTable(adminsectionRequestHandler));
 
             final String[] contexts = { "User", "User-Context", "Task-Context",
                     "Equipment-Context", "Environment-Context" };
@@ -51,7 +51,7 @@ public class Administration extends SuperRestInterface {
                         new Molecule_6_Modals().generateAddContextModal(context));
                 if (context == "User") {
                     Administration.model.put("dataTableUser", new Organism_3_DataTable()
-                    .generateAdministrationUserTable(adminsectionRequestHandler));
+                            .generateAdministrationUserTable(adminsectionRequestHandler));
                 } else {
                     Administration.model.put("dataTable" + contextIdName,
                             new Organism_3_DataTable().generateAdministrationContextTable(
@@ -60,10 +60,10 @@ public class Administration extends SuperRestInterface {
             }
 
             return new ModelAndView(Administration.model, "velocityTemplates/administration.vm"); // located
-            // in
-            // the
-            // resources
-            // directory
-        }, new VelocityTemplateEngine());
+                // in
+                // the
+                // resources
+                // directory
+            }, new VelocityTemplateEngine());
     }
 }

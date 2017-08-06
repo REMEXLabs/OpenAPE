@@ -21,7 +21,7 @@ public class MyGroups extends SuperRestInterface {
     }
 
     public static void setupMyGroupsVELOCITYInterface() throws IllegalArgumentException,
-    IOException {
+            IOException {
 
         Spark.get(
                 "/myGroups",

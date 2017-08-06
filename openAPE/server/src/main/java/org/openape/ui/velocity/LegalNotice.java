@@ -21,7 +21,7 @@ public class LegalNotice extends SuperRestInterface {
     }
 
     public static void setupLegalNoticeVELOCITYInterface() throws IllegalArgumentException,
-    IOException {
+            IOException {
 
         Spark.get(
                 "/legalNotice",

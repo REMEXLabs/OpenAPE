@@ -21,7 +21,7 @@ public class MyContexts extends SuperRestInterface {
     }
 
     public static void setupTutorialsVELOCITYInterface() throws IllegalArgumentException,
-    IOException {
+            IOException {
 
         Spark.get(
                 "/myContexts",

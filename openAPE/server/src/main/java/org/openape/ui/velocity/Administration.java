@@ -26,7 +26,7 @@ public class Administration extends SuperRestInterface {
 
     public static void setupAdministrationVELOCITYInterface(
             final AdminSectionRequestHandler adminsectionRequestHandler)
-                    throws IllegalArgumentException, IOException {
+            throws IllegalArgumentException, IOException {
 
         Spark.get("/administration", (request, response) -> {
             final User user = new User();
@@ -45,14 +45,14 @@ public class Administration extends SuperRestInterface {
             Administration.model.put("subSection",
                     new Organism_2_SubSection().generateTopNavigation());
             Administration.model.put("tableContent", new Molecule_5_dataTable()
-            .generateDataTableContent(adminsectionRequestHandler.getAllUsers()));
+                    .generateDataTableContent(adminsectionRequestHandler.getAllUsers()));
             Administration.model.put("deleteUser", del);
 
             return new ModelAndView(Administration.model, "velocityTemplates/administration.vm"); // located
-            // in
-            // the
-            // resources
-            // directory
-        }, new VelocityTemplateEngine());
+                // in
+                // the
+                // resources
+                // directory
+            }, new VelocityTemplateEngine());
     }
 }

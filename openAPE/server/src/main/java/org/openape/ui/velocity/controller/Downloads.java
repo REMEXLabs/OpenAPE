@@ -19,7 +19,7 @@ public class Downloads extends SuperRestInterface {
     }
 
     public static void setupDownloadsVELOCITYInterface() throws IllegalArgumentException,
-    IOException {
+            IOException {
 
         Spark.get("/downloads", (request, response) -> {
 
@@ -27,10 +27,10 @@ public class Downloads extends SuperRestInterface {
             final Map<String, Object> model = mainController.getTemplateComponents();
 
             return new ModelAndView(model, "velocityTemplates/downloads.vm"); // located
-            // in
-            // the
-            // resources
-            // directory
-        }, new VelocityTemplateEngine());
+                // in
+                // the
+                // resources
+                // directory
+            }, new VelocityTemplateEngine());
     }
 }

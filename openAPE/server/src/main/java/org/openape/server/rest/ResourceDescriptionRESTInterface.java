@@ -81,11 +81,11 @@ public class ResourceDescriptionRESTInterface extends SuperRestInterface {
                 try {
                     // if it is successful return resource description.
                     final ResourceDescription resourceDescription = requestHandler
-                                .getResourceDescriptionById(resourceDescriptionId);
+                            .getResourceDescriptionById(resourceDescriptionId);
                     // Make sure only admins or the owner can view the resource
-                        // description, except if it is public
+                    // description, except if it is public
                     auth.allowAdminOwnerAndPublic(req, res, resourceDescription.getOwner(),
-                                resourceDescription.isPublic());
+                            resourceDescription.isPublic());
                     res.status(SuperRestInterface.HTTP_STATUS_OK);
                     res.type(Messages.getString("ResourceDescriptionRESTInterface.jsonMimeType")); //$NON-NLS-1$
                     final ObjectMapper mapper = new ObjectMapper();
@@ -161,7 +161,7 @@ public class ResourceDescriptionRESTInterface extends SuperRestInterface {
                     }
                     // Check if the resource description does exist
                     final ResourceDescription resourceDescription = requestHandler
-                                .getResourceDescriptionById(resourceDescriptionId);
+                            .getResourceDescriptionById(resourceDescriptionId);
                     // Make sure only admins and the owner can update a context
                     auth.allowAdminAndOwner(req, res, resourceDescription.getOwner());
                     receivedResourceDescription.setOwner(resourceDescription.getOwner()); // Make

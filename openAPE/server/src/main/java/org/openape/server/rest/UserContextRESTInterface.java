@@ -32,8 +32,8 @@ public class UserContextRESTInterface extends SuperRestInterface {
                     // UserContextList ucl =
                     // requestHandler.getUserContextsForUser(auth.getAuthenticatedUser(req,
                     // res));
-                    return null; // ucl;
-                });
+                return null; // ucl;
+            });
 
         /**
          * Request 7.2.2 create user-context. Can only be accessed by roles
@@ -128,16 +128,16 @@ public class UserContextRESTInterface extends SuperRestInterface {
                         .getString("UserContextRESTInterface.IDParam")); //$NON-NLS-1$
                 try {
                     final UserContext receivedUserContext = (UserContext) SuperRestInterface
-                                .extractObjectFromRequest(req, UserContext.class);
+                            .extractObjectFromRequest(req, UserContext.class);
                     // Test the object for validity.
                     if (!receivedUserContext.isValid()) {
                         res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
                         return Messages
-                                    .getString("UserContextRESTInterface.NoValidObjectErrorMassage"); //$NON-NLS-1$
+                                .getString("UserContextRESTInterface.NoValidObjectErrorMassage"); //$NON-NLS-1$
                     }
                     // Check if the user context does exist
                     final UserContext userContext = requestHandler
-                                .getUserContextById(userContextId);
+                            .getUserContextById(userContextId);
                     // Make sure only admins and the owner can update a context
                     auth.allowAdminAndOwner(req, res, userContext.getOwner());
                     receivedUserContext.setOwner(userContext.getOwner()); // Make

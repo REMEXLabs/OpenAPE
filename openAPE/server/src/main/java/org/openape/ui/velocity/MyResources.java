@@ -21,7 +21,7 @@ public class MyResources extends SuperRestInterface {
     }
 
     public static void setupMyResourcesVELOCITYInterface() throws IllegalArgumentException,
-    IOException {
+            IOException {
 
         Spark.get(
                 "/myResources",

@@ -66,7 +66,7 @@ public class UserContextRequestHandler {
      *             if the id is no valid id or not assigned.
      */
     public boolean deleteUserContextById(final String id) throws IOException,
-    IllegalArgumentException {
+            IllegalArgumentException {
         // get database connection.
         final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
 
@@ -93,7 +93,7 @@ public class UserContextRequestHandler {
      *             if the id is no valid id or not assigned.
      */
     public UserContext getUserContextById(final String id) throws IOException,
-    IllegalArgumentException {
+            IllegalArgumentException {
         // get database connection.
         final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
 
