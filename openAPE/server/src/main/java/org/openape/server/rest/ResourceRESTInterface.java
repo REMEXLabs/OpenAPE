@@ -36,12 +36,12 @@ public class ResourceRESTInterface extends SuperRestInterface {
      *             if file is not found
      */
     private static ResponseBuilder createFileResponse(final File file) throws IOException,
-            FileNotFoundException {
+    FileNotFoundException {
         // Create file response
         final FileInputStream fileInputStream = new FileInputStream(file);
         final StreamingOutput streamingOutput = new StreamingOutput() {
             @Override
-            public void write(OutputStream outputStream) throws IOException {
+            public void write(final OutputStream outputStream) throws IOException {
                 try {
                     int n;
                     final byte[] buffer = new byte[1024];
@@ -76,7 +76,7 @@ public class ResourceRESTInterface extends SuperRestInterface {
                     final String mimeType = req.headers(Messages
                             .getString("ResourceRESTInterface.contentTypeString"));//$NON-NLS-1$
                     // req.contentType();
-                    if (mimeType == null || mimeType.equals(Messages.getString("EmptyString"))) { //$NON-NLS-1$
+                    if ((mimeType == null) || mimeType.equals(Messages.getString("EmptyString"))) { //$NON-NLS-1$
                         res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
                         return Messages.getString("ResourceRESTInterface.NoMimeTypeErrorMsg");//$NON-NLS-1$
                     }
@@ -119,36 +119,36 @@ public class ResourceRESTInterface extends SuperRestInterface {
          * identified by ID.
          */
         Spark.get(Messages.getString("ResourceRESTInterface.ResourcesURLWithID"), (req, res) -> { //$NON-NLS-1$
-                    // get the id;
-                final String resourceId = req.params(Messages
-                        .getString("ResourceRESTInterface.IDParam")); //$NON-NLS-1$
+            // get the id;
+            final String resourceId = req.params(Messages
+                    .getString("ResourceRESTInterface.IDParam")); //$NON-NLS-1$
 
-                try {
-                    // get the file from server.
-                    final GetResourceReturnType serverReturn = requestHandler
-                            .getResourceById(resourceId);
-                    final File file = serverReturn.getFile();
-                    final String mimeType = serverReturn.getMimeType();
+            try {
+                // get the file from server.
+                final GetResourceReturnType serverReturn = requestHandler
+                        .getResourceById(resourceId);
+                final File file = serverReturn.getFile();
+                final String mimeType = serverReturn.getMimeType();
 
-                    // create response from file.
-                    final ResponseBuilder response = ResourceRESTInterface.createFileResponse(file);
-                    // Set meta information.
-                    response.header(
-                            Messages.getString("ResourceRESTInterface.ceontentTypeString"), mimeType); //$NON-NLS-1$
-                    response.header(
-                            Messages.getString("ResourceRESTInterface.contentDistributionString"), Messages.getString("ResourceRESTInterface.inlineFilename") + file.getName()); //$NON-NLS-1$ //$NON-NLS-2$
-                    res.status(SuperRestInterface.HTTP_STATUS_OK);
-                    // return file.
-                    return response.build();
-                } catch (final IllegalArgumentException e) {
-                    // file by this name is not found.
-                    res.status(SuperRestInterface.HTTP_STATUS_NOT_FOUND);
-                    return e.getMessage();
-                } catch (final Exception e) {
-                    res.status(SuperRestInterface.HTTP_STATUS_INTERNAL_SERVER_ERROR);
-                    return e.getMessage();
-                }
-            });
+                // create response from file.
+                final ResponseBuilder response = ResourceRESTInterface.createFileResponse(file);
+                // Set meta information.
+                response.header(
+                        Messages.getString("ResourceRESTInterface.ceontentTypeString"), mimeType); //$NON-NLS-1$
+                response.header(
+                        Messages.getString("ResourceRESTInterface.contentDistributionString"), Messages.getString("ResourceRESTInterface.inlineFilename") + file.getName()); //$NON-NLS-1$ //$NON-NLS-2$
+                res.status(SuperRestInterface.HTTP_STATUS_OK);
+                // return file.
+                return response.build();
+            } catch (final IllegalArgumentException e) {
+                // file by this name is not found.
+                res.status(SuperRestInterface.HTTP_STATUS_NOT_FOUND);
+                return e.getMessage();
+            } catch (final Exception e) {
+                res.status(SuperRestInterface.HTTP_STATUS_INTERNAL_SERVER_ERROR);
+                return e.getMessage();
+            }
+        });
 
         /**
          * Request 7.6.4 get resource from listing.
