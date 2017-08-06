@@ -11,9 +11,6 @@ import org.slf4j.LoggerFactory;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 public class User extends DatabaseObject {
-    /**
-     *
-     */
     private static final long serialVersionUID = 5544621526965300349L;
 
     private static Logger logger = LoggerFactory.getLogger(User.class);
@@ -27,6 +24,7 @@ public class User extends DatabaseObject {
 
     public static User getFromProfile(final CommonProfile profile) {
         User.logger.debug("Profile" + profile);
+
         final User user = new User();
         user.setId(profile.getId());
         user.setUsername(profile.getUsername());

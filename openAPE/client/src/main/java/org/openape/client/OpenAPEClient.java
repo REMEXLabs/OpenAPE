@@ -37,6 +37,7 @@ public class OpenAPEClient {
     private final WebTarget webResource;
     private final String token;
     private final String userId;
+
     static final String ENVIRONMENT_CONTEXT_PATH = "api/environment-contexts";
     static final String EQUIPMENT_CONTEXT_PATH = "api/equipment-contexts";
     static final String TASK_CONTEXT_PATH = "api/task-contexts";
@@ -54,6 +55,7 @@ public class OpenAPEClient {
     public OpenAPEClient(final String userName, final String password, final String uri) {
         // create HTTP client that connects to the server
         OpenAPEClient.logger.info("Initialising OpenAPE client");
+        System.out.println("Constructor");
         // ClientConfig config = new ClientConfig();
         this.client = ClientBuilder.newClient();// config);
         this.webResource = this.client.target(uri);
@@ -76,6 +78,8 @@ public class OpenAPEClient {
     }
 
     private String getToken(final String userName, final String password) {
+        final String tokenRequest = "grant_type=password&username=" + userName + "&password="
+                + password;
 
         final Form form = new Form();
         form.param("grant_type", "password");
@@ -144,6 +148,8 @@ public class OpenAPEClient {
         if (response.getStatus() != 201) {
             throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
         }
+
+        final String output = response.readEntity(String.class);
 
         return new URI(response.getHeaderString("Location"));
     }

@@ -89,19 +89,20 @@ public class SuperRestInterface {
         Spark.staticFiles.externalLocation(System.getProperty("java.io.tmpdir") + "/extContent");
 
         // before filter enables CORS
+
         Spark.before("/*", (q, response) -> {
             SuperRestInterface.logger.info("lusm: " + q.headers("Authorization"));
             SuperRestInterface.logger.debug("Received api call: " + q.protocol() + "" + q.uri());
             response.header("Access-Control-Allow-Origin", "*");
             // response.header("Access-Control-Request-Method",
             // "GET,PUT,POST,DELETE,OPTIONS");
-            response.header("Access-Control-Request-Method", "*");
-            // response.header("Access-Control-Allow-Headers", headers);
-            response.header("Access-Control-Allow-Headers", "Authorization");
-            response.header("Access-Control-Max-Age", "1728000");
-            response.header("Cache-Control", "no-cache");
+                response.header("Access-Control-Request-Method", "*");
+                // response.header("Access-Control-Allow-Headers", headers);
+                response.header("Access-Control-Allow-Headers", "Authorization");
+                response.header("Access-Control-Max-Age", "1728000");
+                response.header("Cache-Control", "no-cache");
 
-        });
+            });
 
         Spark.options(
                 "/*",

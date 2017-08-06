@@ -19,20 +19,20 @@ import org.openape.server.api.group.Group;
 public enum MongoCollectionTypes {
     USERCONTEXT(
             Messages.getString("MongoCollectionTypes.userContextsCollectionName"), UserContext.class), //$NON-NLS-1$
-            ENVIRONMENTCONTEXT(
-                    Messages.getString("MongoCollectionTypes.environmentContextsCollectionName"), EnvironmentContext.class), //$NON-NLS-1$
-                    EQUIPMENTCONTEXT(
-                            Messages.getString("MongoCollectionTypes.equipmentContextsCollectionName"), EquipmentContext.class), //$NON-NLS-1$
-                            TASKCONTEXT(
-                                    Messages.getString("MongoCollectionTypes.taskContextsCollectionName"), TaskContext.class), //$NON-NLS-1$
-                                    RESOURCEDESCRIPTION(
-                                            Messages.getString("MongoCollectionTypes.resourceDescriptionCollectionName"), ResourceDescription.class), //$NON-NLS-1$
-                                            LISTING(Messages.getString("MongoCollectionTypes.lstingCollectionName"), Listing.class), //$NON-NLS-1$
-                                            RESOURCEMIMETYPES(
-                                                    Messages.getString("MongoCollectionTypes.resourceMimeTypesCollectionName"), null), //$NON-NLS-1$
 
-                                                    USERS("users", User.class), GROUPS(Messages
-                                                            .getString("MongoCollectionTypes.groupMimeTypesCollectionName"), Group.class); //$NON-NLS-1$
+    ENVIRONMENTCONTEXT(
+            Messages.getString("MongoCollectionTypes.environmentContextsCollectionName"), EnvironmentContext.class), //$NON-NLS-1$
+    EQUIPMENTCONTEXT(
+            Messages.getString("MongoCollectionTypes.equipmentContextsCollectionName"), EquipmentContext.class), //$NON-NLS-1$
+    TASKCONTEXT(
+            Messages.getString("MongoCollectionTypes.taskContextsCollectionName"), TaskContext.class), //$NON-NLS-1$
+    RESOURCEDESCRIPTION(
+            Messages.getString("MongoCollectionTypes.resourceDescriptionCollectionName"), ResourceDescription.class), //$NON-NLS-1$
+    LISTING(Messages.getString("MongoCollectionTypes.lstingCollectionName"), Listing.class), //$NON-NLS-1$
+    RESOURCEMIMETYPES(
+            Messages.getString("MongoCollectionTypes.resourceMimeTypesCollectionName"), null), //$NON-NLS-1$
+    USERS("users", User.class), GROUPS(Messages
+            .getString("MongoCollectionTypes.groupMimeTypesCollectionName"), Group.class); //$NON-NLS-1$
 
     /**
      * Get the collection type of a mongo database collection by its name.
