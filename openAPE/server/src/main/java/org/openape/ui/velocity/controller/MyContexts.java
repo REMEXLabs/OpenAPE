@@ -15,15 +15,6 @@ import spark.Spark;
 import spark.template.velocity.VelocityTemplateEngine;
 
 public class MyContexts extends SuperRestInterface {
-    public MyContexts() throws IllegalArgumentException, IOException {
-        super();
-    }
-
-    public static String Test() {
-        return "hi";
-
-    }
-
     public static void setupMyContextsVELOCITYInterface(
             final AdminSectionRequestHandler adminsectionRequestHandler)
             throws IllegalArgumentException, IOException {
@@ -60,5 +51,14 @@ public class MyContexts extends SuperRestInterface {
                                                                                // directory
 
             }, new VelocityTemplateEngine());
+    }
+
+    public static String Test() {
+        return "hi";
+
+    }
+
+    public MyContexts() throws IllegalArgumentException, IOException {
+        super();
     }
 }

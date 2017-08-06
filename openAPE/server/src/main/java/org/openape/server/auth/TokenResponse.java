@@ -21,12 +21,12 @@ public class TokenResponse {
         return this.accessToken;
     }
 
-    public void setAccessToken(final String accessToken) {
-        this.accessToken = accessToken;
-    }
-
     public String getExpiresIn() {
         return this.expiresIn;
+    }
+
+    public void setAccessToken(final String accessToken) {
+        this.accessToken = accessToken;
     }
 
     public void setExpiresIn(final String expiresIn) {

@@ -1,39 +1,6 @@
 package org.openape.ui.velocity.organism;
 
 public class Organism_4_Modals {
-    public String generateDeleteModal(final String destination) {
-
-        String idName = "";
-        if (destination.contains("Context")) {
-            idName = destination.replace("-", "");
-        } else {
-            idName = destination;
-        }
-
-        final String modalContruct = "" + "<div class='modal fade' id='delete"
-                + idName
-                + "Modal' tabindex='-1' role='dialog' aria-labelledby='exampleModalLongTitle' aria-hidden='true'>"
-                + "  <div class='modal-dialog' role='document'>"
-                + "    <div class='modal-content'>"
-                + "      <div class='modal-header' style='background-color:#e31134; color:white;text-align:center;border-bottom: 2px solid #AB112A;'>"
-                + "        <h3 id='exampleModalLongTitle'>Delete "
-                + destination
-                + "</h3>"
-                + "      </div>"
-                + "      <div class='modal-body' align='center' style='min-height:10em;padding:5em'>"
-                + "       <h4>Do you realy want to delete the "
-                + destination
-                + " ?</h4>"
-                + "      </div>"
-                + "      <div class='modal-footer' style='background-color:#ececec;border-top: 2px solid #ccc;'>"
-                + "       <button type='button' class='btn btn-secondary' data-dismiss='modal'>Cancel</button>"
-                + "        <button type='button' class='btn btn-danger' id='btnConfirmDelete"
-                + idName + "'>Delete " + destination + "</button>" + "      </div>" + "</div>"
-                + "</div>" + "</div>";
-
-        return modalContruct;
-    }
-
     public String generateAddContextModal(final String contextName) {
         String idName = "";
         if (contextName.contains("Context")) {
@@ -69,6 +36,64 @@ public class Organism_4_Modals {
         return modalContruct;
     }
 
+    public String generateAddGroupModal() {
+
+        final String modalContruct = ""
+                + "<div class='modal fade' id='addGroupModal' tabindex='-1' role='dialog' aria-labelledby='exampleModalLongTitle' aria-hidden='true'>"
+                + "  <div class='modal-dialog' role='document'>"
+                + "    <div class='modal-content'>"
+                + "      <div class='modal-header' style='background-color:#e31134; color:white;text-align:center;border-bottom: 2px solid #AB112A;'>"
+                + "        <h3 id='exampleModalLongTitle'>Add Group </h3>"
+                + "      </div>"
+                + "      <div class='modal-body' align='center' style='min-height:10em'>"
+                + "		<table style='width:80%'><tr><td style='padding:10px'>Group name"
+                + "  	<input type='text' class='form-control' id='inputSignupUsername' placeholder='Username'></td></tr><tr>"
+                + "      <td style='padding:10px'>User <textarea id='inputAdministrationAddGroup' class='form-control' rows='10' id='comment'></textarea>"
+                + "     </td></tr></table>"
+                + "      </div>"
+
+                + "      <div class='modal-footer' style='background-color:#ececec;border-top: 2px solid #ccc;'>"
+                + "		<span style='float:left;color:red;font-weight:bold;padding-top:0.5em' id='addGroupMainErrSection'> </span>"
+                + "       <button type='button' class='btn btn-secondary' data-dismiss='modal'>Cancel</button>"
+                + "        <button type='button' class='btn btn-danger' id='btnConfirmAddGroup'>Add Group</button>"
+                + "      </div>" + "</div>" + "</div>" + "</div>";
+
+        return modalContruct;
+    }
+
+    public String generateDeleteModal(final String destination) {
+
+        String idName = "";
+        if (destination.contains("Context")) {
+            idName = destination.replace("-", "");
+        } else {
+            idName = destination;
+        }
+
+        final String modalContruct = "" + "<div class='modal fade' id='delete"
+                + idName
+                + "Modal' tabindex='-1' role='dialog' aria-labelledby='exampleModalLongTitle' aria-hidden='true'>"
+                + "  <div class='modal-dialog' role='document'>"
+                + "    <div class='modal-content'>"
+                + "      <div class='modal-header' style='background-color:#e31134; color:white;text-align:center;border-bottom: 2px solid #AB112A;'>"
+                + "        <h3 id='exampleModalLongTitle'>Delete "
+                + destination
+                + "</h3>"
+                + "      </div>"
+                + "      <div class='modal-body' align='center' style='min-height:10em;padding:5em'>"
+                + "       <h4>Do you realy want to delete the "
+                + destination
+                + " ?</h4>"
+                + "      </div>"
+                + "      <div class='modal-footer' style='background-color:#ececec;border-top: 2px solid #ccc;'>"
+                + "       <button type='button' class='btn btn-secondary' data-dismiss='modal'>Cancel</button>"
+                + "        <button type='button' class='btn btn-danger' id='btnConfirmDelete"
+                + idName + "'>Delete " + destination + "</button>" + "      </div>" + "</div>"
+                + "</div>" + "</div>";
+
+        return modalContruct;
+    }
+
     public String generateEditContextModal(final String contextName) {
         String idName = "";
         if (contextName.contains("Context")) {
@@ -100,31 +125,6 @@ public class Organism_4_Modals {
                 + "        <button type='button' class='btn btn-danger' id='btnConfirmEdit"
                 + idName + "'>Edit " + contextName + "</button>" + "      </div>" + "</div>"
                 + "</div>" + "</div>";
-
-        return modalContruct;
-    }
-
-    public String generateAddGroupModal() {
-
-        final String modalContruct = ""
-                + "<div class='modal fade' id='addGroupModal' tabindex='-1' role='dialog' aria-labelledby='exampleModalLongTitle' aria-hidden='true'>"
-                + "  <div class='modal-dialog' role='document'>"
-                + "    <div class='modal-content'>"
-                + "      <div class='modal-header' style='background-color:#e31134; color:white;text-align:center;border-bottom: 2px solid #AB112A;'>"
-                + "        <h3 id='exampleModalLongTitle'>Add Group </h3>"
-                + "      </div>"
-                + "      <div class='modal-body' align='center' style='min-height:10em'>"
-                + "		<table style='width:80%'><tr><td style='padding:10px'>Group name"
-                + "  	<input type='text' class='form-control' id='inputSignupUsername' placeholder='Username'></td></tr><tr>"
-                + "      <td style='padding:10px'>User <textarea id='inputAdministrationAddGroup' class='form-control' rows='10' id='comment'></textarea>"
-                + "     </td></tr></table>"
-                + "      </div>"
-
-                + "      <div class='modal-footer' style='background-color:#ececec;border-top: 2px solid #ccc;'>"
-                + "		<span style='float:left;color:red;font-weight:bold;padding-top:0.5em' id='addGroupMainErrSection'> </span>"
-                + "       <button type='button' class='btn btn-secondary' data-dismiss='modal'>Cancel</button>"
-                + "        <button type='button' class='btn btn-danger' id='btnConfirmAddGroup'>Add Group</button>"
-                + "      </div>" + "</div>" + "</div>" + "</div>";
 
         return modalContruct;
     }
