@@ -23,9 +23,9 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.openape.api.Property;
+import org.openape.api.Resource;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.openape.api.Resource;
 
 /**
  * Environment context object defined in 7.5.1
@@ -42,8 +42,8 @@ public class EnvironmentContext extends Resource {
      * @param compare
      * @return true, if compare has the same properties as base, false if not.
      */
-    private static boolean hasEnvironmentContextTheSameProperties(EnvironmentContext base,
-            EnvironmentContext compare) {
+    private static boolean hasEnvironmentContextTheSameProperties(final EnvironmentContext base,
+            final EnvironmentContext compare) {
         for (final Property baseProperty : base.getPropertys()) {
             // Match checks if for each property in this there is one in
             // compare.
@@ -70,7 +70,7 @@ public class EnvironmentContext extends Resource {
         this.propertys = new ArrayList<Property>();
     }
 
-    public void addProperty(Property property) {
+    public void addProperty(final Property property) {
         this.propertys.add(property);
     }
 
@@ -82,7 +82,7 @@ public class EnvironmentContext extends Resource {
      * @return true if contexts are equal in field values, false else.
      */
     @JsonIgnore
-    public boolean equals(EnvironmentContext compare) {
+    public boolean equals(final EnvironmentContext compare) {
         return (EnvironmentContext.hasEnvironmentContextTheSameProperties(compare, this) && EnvironmentContext
                 .hasEnvironmentContextTheSameProperties(this, compare));
 
@@ -99,7 +99,7 @@ public class EnvironmentContext extends Resource {
         return true;
     }
 
-    public void setPropertys(List<Property> propertys) {
+    public void setPropertys(final List<Property> propertys) {
         this.propertys = propertys;
     }
 

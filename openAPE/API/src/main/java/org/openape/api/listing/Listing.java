@@ -71,23 +71,23 @@ public class Listing extends DatabaseObject {
         return true;
     }
 
-    public void setEnvironmantContextUris(List<String> environmantContextUris) {
+    public void setEnvironmantContextUris(final List<String> environmantContextUris) {
         this.environmantContextUris = environmantContextUris;
     }
 
-    public void setEquipmentContextUris(List<String> equipmentContextUris) {
+    public void setEquipmentContextUris(final List<String> equipmentContextUris) {
         this.equipmentContextUris = equipmentContextUris;
     }
 
-    public void setResourceDescriptionQurey(ResourceDescription resourceDescriptionQurey) {
+    public void setResourceDescriptionQurey(final ResourceDescription resourceDescriptionQurey) {
         this.resourceDescriptionQurey = resourceDescriptionQurey;
     }
 
-    public void setTaskContextUris(List<String> taskContextUris) {
+    public void setTaskContextUris(final List<String> taskContextUris) {
         this.taskContextUris = taskContextUris;
     }
 
-    public void setUserContextUris(List<String> userContextUris) {
+    public void setUserContextUris(final List<String> userContextUris) {
         this.userContextUris = userContextUris;
     }
 }

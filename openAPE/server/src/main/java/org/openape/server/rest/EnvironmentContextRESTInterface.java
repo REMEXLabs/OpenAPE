@@ -18,10 +18,15 @@ public class EnvironmentContextRESTInterface extends SuperRestInterface {
     public static void setupEnvironmentContextRESTInterface(
             final EnvironmentContextRequestHandler requestHandler, final AuthService auth) {
 
-        // Authentication: Make sure only registered principals (users and admins) can create a new context
-        Spark.before(Messages.getString("EnvironmentContextRESTInterface.EnvironmentContextsURLWithoutID"), auth.authorize("user"));
+        // Authentication: Make sure only registered principals (users and
+        // admins) can create a new context
+        Spark.before(Messages
+                .getString("EnvironmentContextRESTInterface.EnvironmentContextsURLWithoutID"), auth
+                .authorize("user"));
         // Authentication: Everyone can access the route for a specific context
-        Spark.before(Messages.getString("EnvironmentContextRESTInterface.EnvironmentContextsURLWithID"), auth.authorize("anonymous"));
+        Spark.before(
+                Messages.getString("EnvironmentContextRESTInterface.EnvironmentContextsURLWithID"),
+                auth.authorize("anonymous"));
 
         /**
          * Request 7.5.2 create environment-context.
@@ -33,11 +38,14 @@ public class EnvironmentContextRESTInterface extends SuperRestInterface {
                         return Messages.getString("Contexts.WrongMimeTypeErrorMsg");//$NON-NLS-1$
                     }
                     try {
-                        // Try to map the received json object to an EnvironmentContext object.
+                        // Try to map the received json object to an
+                        // EnvironmentContext object.
                         final EnvironmentContext receivedEnvironmentContext = (EnvironmentContext) SuperRestInterface
                                 .extractObjectFromRequest(req, EnvironmentContext.class);
-                        // Make sure to set the id of the authenticated user as the ownerId
-                        receivedEnvironmentContext.setOwner(auth.getAuthenticatedUser(req, res).getId());
+                        // Make sure to set the id of the authenticated user as
+                        // the ownerId
+                        receivedEnvironmentContext.setOwner(auth.getAuthenticatedUser(req, res)
+                                .getId());
                         // Test the object for validity.
                         if (!receivedEnvironmentContext.isValid()) {
                             res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
@@ -73,8 +81,10 @@ public class EnvironmentContextRESTInterface extends SuperRestInterface {
                         // if it is successful return environment context.
                         final EnvironmentContext environmentContext = requestHandler
                                 .getEnvironmentContextById(environmentContextId);
-                        // Make sure only admins or the owner can view the context, except if it is public
-                        auth.allowAdminOwnerAndPublic(req, res, environmentContext.getOwner(), environmentContext.isPublic());
+                        // Make sure only admins or the owner can view the
+                        // context, except if it is public
+                        auth.allowAdminOwnerAndPublic(req, res, environmentContext.getOwner(),
+                                environmentContext.isPublic());
                         res.status(SuperRestInterface.HTTP_STATUS_OK);
                         res.type(Messages.getString("EnvironmentContextRESTInterface.JsonMimeType")); //$NON-NLS-1$
                         final ObjectMapper mapper = new ObjectMapper();
@@ -113,10 +123,17 @@ public class EnvironmentContextRESTInterface extends SuperRestInterface {
                                 .getString("EnvironmentContextRESTInterface.NoValidObjectErrorMassage"); //$NON-NLS-1$
                     }
                     // Check if the user context does exist
-                    final EnvironmentContext environmentContext = requestHandler.getEnvironmentContextById(environmentContextId);
+                    final EnvironmentContext environmentContext = requestHandler
+                            .getEnvironmentContextById(environmentContextId);
                     // Make sure only admins and the owner can update a context
                     auth.allowAdminAndOwner(req, res, environmentContext.getOwner());
-                    receivedEnvironmentContext.setOwner(environmentContext.getOwner()); // Make sure the owner can't be changed
+                    receivedEnvironmentContext.setOwner(environmentContext.getOwner()); // Make
+                                                                                        // sure
+                                                                                        // the
+                                                                                        // owner
+                                                                                        // can't
+                                                                                        // be
+                                                                                        // changed
                     // Perform update
                     requestHandler.updateEnvironmentContextById(environmentContextId,
                             receivedEnvironmentContext);
@@ -143,8 +160,10 @@ public class EnvironmentContextRESTInterface extends SuperRestInterface {
                             .getString("EnvironmentContextRESTInterface.IDParam")); //$NON-NLS-1$
                     try {
                         // Check if the user context does exist
-                        final EnvironmentContext environmentContext = requestHandler.getEnvironmentContextById(environmentContextId);
-                        // Make sure only admins and the owner can delete a context
+                        final EnvironmentContext environmentContext = requestHandler
+                                .getEnvironmentContextById(environmentContextId);
+                        // Make sure only admins and the owner can delete a
+                        // context
                         auth.allowAdminAndOwner(req, res, environmentContext.getOwner());
                         // Perform delete and return empty string.
                         requestHandler.deleteEnvironmentContextById(environmentContextId);

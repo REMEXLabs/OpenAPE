@@ -1,29 +1,28 @@
 package org.openape.server;
 
-import java.io.IOException;
-import org.openape.server.database.mongoDB.DatabaseConnection;
+import java.util.Arrays;
 
+import org.openape.server.database.mongoDB.DatabaseConnection;
 import org.openape.server.rest.SuperRestInterface;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import java.util.Arrays;
 
 /**
  * Starting class of the project. Creates REST APIs.
  */
 public class Main {
-	 static Logger logger = LoggerFactory.getLogger(Main.class	);
+    static Logger logger = LoggerFactory.getLogger(Main.class);
 
-    public static void main(String[] args) {
-    	logger.info("Starting openAPE application");
-    	logger.debug("Working directory: " +             System.getProperty("user.dir"));
+    public static void main(final String[] args) {
+        Main.logger.info("Starting openAPE application");
+        Main.logger.debug("Working directory: " + System.getProperty("user.dir"));
 
-        if(Arrays.asList(args).contains("ensureIndexes")) {
+        if (Arrays.asList(args).contains("ensureIndexes")) {
             // Open database connection and make sure all indexes exist
-            logger.info("Checking for indexes...");
-            DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
+            Main.logger.info("Checking for indexes...");
+            final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
             databaseConnection.ensureIndexes();
-            
+
         }
         // Start the REST API.
         new SuperRestInterface();

@@ -37,7 +37,7 @@ public enum MongoCollectionTypes {
      * @param collectionName
      * @return type of the collection.
      */
-    public static MongoCollectionTypes getTypeFromCollectionName(String collectionName) {
+    public static MongoCollectionTypes getTypeFromCollectionName(final String collectionName) {
         if (collectionName.equals(Messages
                 .getString("MongoCollectionTypes.userContextsCollectionName"))) { //$NON-NLS-1$
             return USERCONTEXT;
@@ -78,8 +78,8 @@ public enum MongoCollectionTypes {
      * @param collectionName
      * @param objectType
      */
-    private <T extends DatabaseObject> MongoCollectionTypes(String collectionName,
-            Class<? extends DatabaseObject> objectType) {
+    private <T extends DatabaseObject> MongoCollectionTypes(final String collectionName,
+            final Class<? extends DatabaseObject> objectType) {
         this.objectType = objectType;
         this.mongoCollectionName = collectionName;
     }

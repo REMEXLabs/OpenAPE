@@ -41,7 +41,7 @@ public class ResourceRESTInterface extends SuperRestInterface {
         final FileInputStream fileInputStream = new FileInputStream(file);
         final StreamingOutput streamingOutput = new StreamingOutput() {
             @Override
-            public void write(OutputStream outputStream) throws IOException {
+            public void write(final OutputStream outputStream) throws IOException {
                 try {
                     int n;
                     final byte[] buffer = new byte[1024];
@@ -76,7 +76,7 @@ public class ResourceRESTInterface extends SuperRestInterface {
                     final String mimeType = req.headers(Messages
                             .getString("ResourceRESTInterface.contentTypeString"));//$NON-NLS-1$
                     // req.contentType();
-                    if (mimeType == null || mimeType.equals(Messages.getString("EmptyString"))) { //$NON-NLS-1$
+                    if ((mimeType == null) || mimeType.equals(Messages.getString("EmptyString"))) { //$NON-NLS-1$
                         res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
                         return Messages.getString("ResourceRESTInterface.NoMimeTypeErrorMsg");//$NON-NLS-1$
                     }
