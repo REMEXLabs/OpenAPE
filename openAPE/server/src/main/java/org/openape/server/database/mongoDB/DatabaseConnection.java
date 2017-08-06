@@ -1,6 +1,7 @@
 package org.openape.server.database.mongoDB;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -8,6 +9,7 @@ import java.util.Map;
 
 import org.bson.Document;
 import org.bson.codecs.configuration.CodecConfigurationException;
+import org.bson.conversions.Bson;
 import org.bson.json.JsonParseException;
 import org.bson.types.ObjectId;
 import org.openape.api.DatabaseObject;
@@ -22,16 +24,17 @@ import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mongodb.BasicDBObject;
-import com.mongodb.DBObject;
-import com.mongodb.Mongo;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientOptions;
 import com.mongodb.MongoCredential;
 import com.mongodb.MongoException;
 import com.mongodb.ServerAddress;
+import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.IndexOptions;
+import com.mongodb.client.result.UpdateResult;
 import com.mongodb.event.ServerHeartbeatFailedEvent;
 import com.mongodb.event.ServerHeartbeatStartedEvent;
 import com.mongodb.event.ServerHeartbeatSucceededEvent;
@@ -165,12 +168,9 @@ public class DatabaseConnection implements ServerMonitorListener {
 
             // Get a reference to the openAPE database.
             this.database = this.mongoClient.getDatabase(DatabaseConnection.DATABASENAME);
-
-            // Test if a connection to the MongoDB can be established
-            this.testDatabase();
+            DatabaseConnection.logger.info("Found openAPE dataBase");
         } catch (final Exception e) {
-            DatabaseConnection.logger.error("Failed to connect to database \""
-                    + DatabaseConnection.DATABASENAME + "\".");
+            DatabaseConnection.logger.error("Failed to connect to the openAPE database");
             return;
         }
 
@@ -281,6 +281,28 @@ public class DatabaseConnection implements ServerMonitorListener {
             // If no result is found return null.
             return null;
         }
+    }
+
+    public ArrayList<Document> getAllDocuments(final MongoCollectionTypes type) throws IOException {
+        final MongoCollection<Document> collectionToWorkOn = this.getCollectionByType(type);
+        final ArrayList<Document> listDocuments = new ArrayList<Document>();
+        // Search for object in database.
+
+        final FindIterable<Document> find = collectionToWorkOn.find();
+
+        final MongoCursor<Document> cursor = find.iterator();
+
+        while (cursor.hasNext()) {
+
+            listDocuments.add(cursor.next());
+        }
+
+        return listDocuments;
+    }
+
+    public ArrayList<Document> getAllDocuments(final String string) {
+        // TODO Auto-generated method stub
+        return null;
     }
 
     /**
@@ -438,6 +460,17 @@ public class DatabaseConnection implements ServerMonitorListener {
 
     }
 
+    /***************/
+
+    public void removeData(final MongoCollectionTypes type, final String id) throws IOException {
+        final MongoCollection<Document> collectionToWorkOn = this.getCollectionByType(type);
+        // Search for object in database.
+        final Bson filter = new Document(Messages.getString("DatabaseConnection._id"),
+                new ObjectId(id));
+        collectionToWorkOn.deleteOne(filter);
+
+    }
+
     /**
      * Replaces special chars '.' and '$' with '#046' and '#036".
      *
@@ -499,8 +532,7 @@ public class DatabaseConnection implements ServerMonitorListener {
                 + DatabaseConnection.DATABASEURL + ":" + DatabaseConnection.DATABASEPORT
                 + " failed.\n" + event);
         DatabaseConnection.firstTime = true; // logger can now indicate when new
-                                             // connection will be
-        // found again.
+        // connection will be found again.
     }
 
     @Override
@@ -562,15 +594,6 @@ public class DatabaseConnection implements ServerMonitorListener {
         return id.toHexString();
     }
 
-    private void testDatabase() {
-        final Mongo mongo = new Mongo();
-        final DBObject ping = new BasicDBObject("ping", "1");
-
-        mongo.getDB(DatabaseConnection.DATABASENAME).command(ping);
-        DatabaseConnection.logger.info("Database \"" + DatabaseConnection.DATABASENAME
-                + "\" available.");
-    }
-
     /**
      * Update a database object, either a context or a resource, in the
      * database. Choose the object via id and the collection via the collection
@@ -627,4 +650,24 @@ public class DatabaseConnection implements ServerMonitorListener {
         return true;
     }
 
+    public UpdateResult updateDocument(final MongoCollectionTypes type, final String id,
+            final String indexName, final String indexValue) throws Exception {
+
+        final MongoCollection<Document> collectionToWorkOn = this.getCollectionByType(type);
+
+        final Bson filter = new Document(Messages.getString("DatabaseConnection._id"),
+                new ObjectId(id));
+        final Bson newValue = new Document(indexName, indexValue);
+        final Bson updateOperationDocument = new Document("$set", newValue);
+
+        UpdateResult updateResult = null;
+
+        try {
+            updateResult = collectionToWorkOn.updateOne(filter, updateOperationDocument);
+        } catch (final Exception err) {
+            throw new Exception(err.getMessage());
+        }
+
+        return updateResult;
+    }
 }

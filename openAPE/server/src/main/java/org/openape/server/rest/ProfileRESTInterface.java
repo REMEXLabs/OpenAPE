@@ -5,12 +5,14 @@ import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.util.Optional;
 
+import org.json.JSONObject;
 import org.openape.api.Messages;
 import org.openape.api.user.User;
 import org.openape.server.auth.AuthService;
 import org.openape.server.auth.PasswordEncoder;
 import org.openape.server.database.mongoDB.DatabaseConnection;
 import org.openape.server.database.mongoDB.MongoCollectionTypes;
+import org.openape.ui.velocity.requestHandler.AdminSectionRequestHandler;
 import org.pac4j.core.profile.CommonProfile;
 import org.pac4j.core.profile.ProfileManager;
 import org.pac4j.sparkjava.SparkWebContext;
@@ -64,6 +66,45 @@ public class ProfileRESTInterface extends SuperRestInterface {
                     } catch (final IOException e) {
                         res.status(409);
                         return "Could not create user: " + e.getMessage();
+                    }
+                });
+
+        Spark.delete(
+                "/users",
+                (req, res) -> {
+                    final AdminSectionRequestHandler adminsectionRequestHandler = new AdminSectionRequestHandler();
+
+                    adminsectionRequestHandler.removeUser(req.queryParams("id"));
+                    System.out.println(req.queryParams("id"));
+
+                    return "";
+                });
+
+        // edit users
+        Spark.put(
+                "/users",
+                (req, res) -> {
+                    try {
+                        final AdminSectionRequestHandler adminsectionRequestHandler = new AdminSectionRequestHandler();
+
+                        final JSONObject jsonObj = new JSONObject(req.body().toString());
+
+                        adminsectionRequestHandler.updateUser(jsonObj.getString("id"), "username",
+                                jsonObj.getString("username"));
+                        adminsectionRequestHandler.updateUser(jsonObj.getString("id"), "email",
+                                jsonObj.getString("email"));
+
+                        for (final Object entry : jsonObj.getJSONArray("roles")) {
+                            adminsectionRequestHandler.updateUser(jsonObj.getString("id"), "roles",
+                                    entry.toString());
+                        }
+
+                        // adminsectionRequestHandler.updateUser(jsonObj.getString("id"),
+                        // "roles", jsonObj.getJSONArray("roles"));
+
+                        return "user updated";
+                    } catch (final Exception err) {
+                        return "Could not create user: " + err.getMessage();
                     }
                 });
 

@@ -114,7 +114,7 @@
 	   		var isEmailCorrect = false;
 	   		var isPasswordCorrect = false;
 	    	
-	   		arrRoles.push("admin");
+	   		arrRoles.push("user");
 	   		
 	   		//check if username is correct
 	   		if(username==""){

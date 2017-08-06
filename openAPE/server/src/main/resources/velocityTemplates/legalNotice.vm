@@ -1,0 +1,95 @@
+<html>
+<head>
+ <title>OpenAPE</title>
+ 
+<!--Vendor Stylesheets -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.6/semantic.min.css">
+
+<!--Custom Stylesheets -->
+ <link rel="stylesheet" href="css/style.css">
+
+<!--Vendor Javascript -->
+ <script src="https://code.jquery.com/jquery-3.2.1.js"></script>
+ <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+ 
+ 
+ <!--Custom Javascript -->
+ <script src="js/openape.js" type="text/javascript"></script>
+ <script src="js/usersection.js" type="text/javascript"></script>
+ <script src="js/navigation.js" type="text/javascript"></script>
+<script src="js/signin.js" type="text/javascript"></script>
+<script src="js/signup.js" type="text/javascript"></script>
+
+
+</head>
+<body>
+
+<div class="wrapper">
+   <div class="header">
+   	$signinModal
+	$signupModal
+	$topNavigation
+	$subSection
+   </div>		
+    
+	<div class="body">
+		<div class="oneContentBlock">
+		 <h1>Legal Notice</h1> <br>
+			<p>
+			OpenAPE is funded by the European Union Seventh Framework Programme (FP7/2007-2011) under grant agreement n° 610510, Prosperity4All ("Ecosystem infrastructure for smart and personalised inclusion and PROSPERITY for ALL stakeholders"), and under grant agreement n° 645215, “No one left behind”. This website reflects only the project’s view and the European Union is not liable for any use that may be made of the information contained herein.
+			</p>
+			<p>
+			<h4 ><b>OpenAPE coordinator:</b></h4>
+			
+			Prof. Dr. Gottfried Zimmermann<br>
+			gzimmermann@hdm-stuttgart.de<br>
+			Stuttgart Media University<br>
+			Nobelstr. 10<br>
+			70569 Stuttgart<br>
+			Germany<br><br>
+			</p>
+			
+			<h4 ><b>OpenAPE’s coordination is located at Stuttgart Media University, legally represented by</b></h4>
+			Prof. Dr. Alexander W. Roos<br>
+			info@hdm-stuttgart.de<br>
+			phone +49 711 8923-10<br>
+			fax +49 711 8923-11<br>
+			<br>
+			<div>
+			<h4 ><b>Controlling institution:</b></h4>
+			Ministerium für Wissenschaft, Forschung und Kunst Baden-Württemberg <br>
+			Königstraße 46 <br>
+			70173 Stuttgart <br>
+			Germany
+			<br><br>
+			VAT ID: DE 224 427 890
+			</div>
+			 
+			<br>
+			<h1>Disclaimer</h1><br>
+				 
+			<div>
+			<h4><b>1. Contents of the website</b></h4>
+			The contents of this website were written with due diligence and by the author’s best knowledge. We can be held liable only by general laws, especially for our own contents acc. § 7 TMG (German law on tele-media) and for external contents acc. §§ 8 – 10 TMG. As a provider of tele-media we can be held liable for external contents only once we have knowledge of a concrete infringement of law. We reserve the right to change or delete contents of this webpage which are not subject to any contractual obligation.
+			</div>
+			 
+			<br>
+			<div>
+			<h4><b>2. Links on external Websites</b></h4>
+			Contents of external websites on which we are linking direct or indirect (through „hyperlinks“ or „deeplinks“) are beyond our responsibility and are not adopted as our own content. When the links were published, we didn’t have knowledge of any illegal activities or contents on these websites. Since we do not have any control on the contents of these websites, we distance ourselves from all contents of all linked websites, which were updated after the setting of the links. For all contents and especially damages, resulting of the use of the linked websites, only the provider of these linked websites can be held liable. If we receive knowledge of illegal contents on these linked websites, we will delete the according links.
+			</div>
+			<br>
+			 
+			<div>
+			<h4><b>3. Intellectual property rights</b></h4>
+			All content of this website, especially texts, pictures, images, graphical presentations, music, trademarks, brands and so forth, are subject to copyright laws. The use, reproduction and so on are subject to the individual rights of the respective owner of the copyright or administrator of these rights. If you want to use such content, please let us know and we will establish contact with the respective owner/administrator.	
+			</div>
+		</div>
+	</div>
+	
+	<div id="footer">$footer</div>
+</div>
+</body>
+</html>
