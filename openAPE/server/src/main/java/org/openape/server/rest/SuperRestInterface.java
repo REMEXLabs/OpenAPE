@@ -160,16 +160,6 @@ public class SuperRestInterface {
         TokenRESTInterface.setupTokenRESTInterface(authService);
         ProfileRESTInterface.setupProfileRESTInterface();
 
-        // Resource endpoints
-        EnvironmentContextRESTInterface.setupEnvironmentContextRESTInterface(
-                new EnvironmentContextRequestHandler(), authService);
-        EquipmentContextRESTInterface.setupEquipmentContextRESTInterface(
-                new EquipmentContextRequestHandler(), authService);
-        ListingRESTInterface.setupListingRESTInterface(new ListingRequestHandler());
-
-        ResourceDescriptionRESTInterface.setupResourceDescriptionRESTInterface(
-                new ResourceDescriptionRequestHandler(), authService);
-
         try {
             Administration.setupAdministrationVELOCITYInterface(new AdminSectionRequestHandler());
         } catch (final IllegalArgumentException e) {
@@ -290,6 +280,7 @@ public class SuperRestInterface {
             e.printStackTrace();
         }
 
+        // Resource endpoints
         GroupManagementRestInterface.setupGroupManagementRestInterface(
                 new GroupManagementHandler(), authService);
         // REST-Interfaces defined in ISO/IEC 24752-8
@@ -298,8 +289,9 @@ public class SuperRestInterface {
         EquipmentContextRESTInterface.setupEquipmentContextRESTInterface(
                 new EquipmentContextRequestHandler(), authService);
         ListingRESTInterface.setupListingRESTInterface(new ListingRequestHandler());
-
-        ResourceRESTInterface.setupResourceRESTInterface(new ResourceRequestHandler());
+        ResourceDescriptionRESTInterface.setupResourceDescriptionRESTInterface(
+                new ResourceDescriptionRequestHandler(), authService);
+        ResourceRESTInterface.setupResourceRESTInterface(new ResourceRequestHandler(), authService);
         TaskContextRESTInterface.setupTaskContextRESTInterface(new TaskContextRequestHandler(),
                 authService);
         UserContextRESTInterface.setupUserContextRESTInterface(new UserContextRequestHandler(),

@@ -18,8 +18,12 @@ import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.openape.api.Messages;
 import org.openape.api.listing.Listing;
+import org.openape.api.user.User;
+import org.openape.server.auth.AuthService;
+import org.openape.server.auth.UnauthorizedException;
 import org.openape.server.database.resources.GetResourceReturnType;
 import org.openape.server.requestHandler.ResourceRequestHandler;
+import org.pac4j.core.profile.CommonProfile;
 
 import spark.Spark;
 
@@ -65,7 +69,8 @@ public class ResourceRESTInterface extends SuperRestInterface {
         return response;
     }
 
-    public static void setupResourceRESTInterface(final ResourceRequestHandler requestHandler) {
+    public static void setupResourceRESTInterface(final ResourceRequestHandler requestHandler,
+            final AuthService auth) {
         /**
          * Request 7.6.2 create resource.
          */
@@ -80,6 +85,7 @@ public class ResourceRESTInterface extends SuperRestInterface {
                         res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
                         return Messages.getString("ResourceRESTInterface.NoMimeTypeErrorMsg");//$NON-NLS-1$
                     }
+
                     // Return value.
                     String fileName = Messages.getString("EmptyString"); //$NON-NLS-1$
 
@@ -87,6 +93,9 @@ public class ResourceRESTInterface extends SuperRestInterface {
                     final File tmpFile = new File(Messages
                             .getString("ResourceRESTInterface.tmpFileName")); //$NON-NLS-1$
                     try {
+                        // get user from request response pair.
+                        final User user = auth.getAuthenticatedUser(req, res);
+
                         if (!tmpFile.exists() && !tmpFile.mkdirs()) {
                             throw new RuntimeException(Messages
                                     .getString("ResourceRESTInterface.FailedToCreateDirError") //$NON-NLS-1$
@@ -101,10 +110,14 @@ public class ResourceRESTInterface extends SuperRestInterface {
                         final List<FileItem> items = fileUpload.parseRequest(req.raw());
                         final FileItem item = items.get(0);
                         // hand off file to handler.
-                        fileName = requestHandler.createResource(item, mimeType);
+                        fileName = requestHandler.createResource(item, mimeType, user);
                     } catch (final IllegalArgumentException e) {
                         // occurs if the filename is taken or its not a file.
                         res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
+                        return e.getMessage();
+                    } catch (final UnauthorizedException e) {
+                        // Only authorized users may post resources
+                        res.status(SuperRestInterface.HTTP_STATUS_UNAUTHORIZED);
                         return e.getMessage();
                     } catch (final Exception e) {
                         res.status(SuperRestInterface.HTTP_STATUS_INTERNAL_SERVER_ERROR);
@@ -128,7 +141,7 @@ public class ResourceRESTInterface extends SuperRestInterface {
                     final GetResourceReturnType serverReturn = requestHandler
                             .getResourceById(resourceId);
                     final File file = serverReturn.getFile();
-                    final String mimeType = serverReturn.getMimeType();
+                    final String mimeType = serverReturn.getResourceObject().getMimeType();
 
                     // create response from file.
                     final ResponseBuilder response = ResourceRESTInterface.createFileResponse(file);
@@ -174,7 +187,7 @@ public class ResourceRESTInterface extends SuperRestInterface {
                         final int index = Integer.parseInt(listingIndex);
                         final GetResourceReturnType returnType = serverResponse.get(index);
                         file = returnType.getFile();
-                        mimeType = returnType.getMimeType();
+                        mimeType = returnType.getResourceObject().getMimeType();
                     } catch (NotFoundException | IllegalArgumentException
                             | IndexOutOfBoundsException e) {
                         res.status(SuperRestInterface.HTTP_STATUS_NOT_FOUND);
@@ -214,13 +227,18 @@ public class ResourceRESTInterface extends SuperRestInterface {
                     final String resourceId = req.params(Messages
                             .getString("ResourceRESTInterface.IDParam")); //$NON-NLS-1$
                     try {
-                        requestHandler.deleteResourceById(resourceId);
-
+                        // get user from request response pair.
+                        final CommonProfile profile = auth.getAuthenticatedProfile(req, res);
+                        requestHandler.deleteResourceById(resourceId, profile);
                     } catch (final IllegalArgumentException e) {
                         res.status(SuperRestInterface.HTTP_STATUS_NOT_FOUND);
                         return e.getMessage();
                     } catch (final IOException e) {
                         res.status(SuperRestInterface.HTTP_STATUS_INTERNAL_SERVER_ERROR);
+                        return e.getMessage();
+                    } catch (final UnauthorizedException e) {
+                        // Only authorized users may delete their resources.
+                        res.status(SuperRestInterface.HTTP_STATUS_UNAUTHORIZED);
                         return e.getMessage();
                     }
                     res.status(SuperRestInterface.HTTP_STATUS_NO_CONTENT);

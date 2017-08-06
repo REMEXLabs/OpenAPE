@@ -126,12 +126,12 @@ public class EquipmentContextRESTInterface extends SuperRestInterface {
                     // Make sure only admins and the owner can update a context
                     auth.allowAdminAndOwner(req, res, equipmentContext.getOwner());
                     receivedEquipmentContext.setOwner(equipmentContext.getOwner()); // Make
-                    // sure
-                    // the
-                    // owner
-                    // can't
-                    // be
-                    // changed
+                                                                                    // sure
+                                                                                    // the
+                                                                                    // owner
+                                                                                    // can't
+                                                                                    // be
+                                                                                    // changed
                     // Perform update
                     requestHandler.updateEquipmentContextById(equipmentContextId,
                             receivedEquipmentContext);
