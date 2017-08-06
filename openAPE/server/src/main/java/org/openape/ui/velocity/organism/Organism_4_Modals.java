@@ -19,10 +19,13 @@ public class Organism_4_Modals {
                 + contextName
                 + "</h3>"
                 + "      </div>"
-                + "      <div class='modal-body' align='center' style='min-height:10em;padding:5em'>"
+                + "      <div class='modal-body' style='min-height:10em;padding:5em'>"
                 + "      Add your Context in JSON-Format <textarea id='inputAdministrationAdd"
                 + idName
                 + "' class='form-control' rows='10' id='comment'></textarea>"
+                +" <div class='checkbox'>"
+                +"   <span style='margin-right:2.5em'><b>Public:</b></span> <span><input type='checkbox' id='cbAdd"+idName+"'  style='transform: scale(1.5)'></span>"
+            	+"</div>"
                 + "      </div>"
                 + "      <div class='modal-footer' style='background-color:#ececec;border-top: 2px solid #ccc;'>"
                 + "		<span style='float:left;color:red;font-weight:bold;padding-top:0.5em' id='add"
@@ -112,10 +115,13 @@ public class Organism_4_Modals {
                 + contextName
                 + "</h3>"
                 + "      </div>"
-                + "      <div class='modal-body' align='center' style='min-height:10em;padding:5em'>"
+                + "      <div class='modal-body' style='min-height:10em;padding:5em'>"
                 + "      Add your Context in JSON-Format <textarea id='inputAdministrationEdit"
                 + idName
                 + "' class='form-control' rows='10' id='comment'></textarea>"
+                +" <div class='checkbox'>"
+                +"   <span style='margin-right:2.5em'><b>Public:</b></span> <span><input id='cbEdit"+idName+"' type='checkbox'  style='transform: scale(1.5)'></span>"
+            	+"</div>"
                 + "      </div>"
                 + "      <div class='modal-footer' style='background-color:#ececec;border-top: 2px solid #ccc;'>"
                 + "		<span style='float:left;color:red;font-weight:bold;padding-top:0.5em' id='edit"
