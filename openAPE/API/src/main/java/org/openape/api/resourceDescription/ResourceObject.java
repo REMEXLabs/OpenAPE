@@ -1,6 +1,7 @@
 package org.openape.api.resourceDescription;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlAttribute;
@@ -25,6 +26,10 @@ public class ResourceObject extends Resource {
     private String mimeType = null;
     private List<ResourceDescription> resourceDescriptions = null;
 
+    public ResourceObject() {
+        this.resourceDescriptions = new ArrayList<ResourceDescription>();
+    }
+    
     public ResourceObject(final String fileName, final String ownerId, final String mimeType) {
         super();
         this.fileName = fileName;
@@ -65,6 +70,15 @@ public class ResourceObject extends Resource {
         final String resourceFolderPath = Messages.getString("ResourceList.rootFolder") + File.separator + Messages.getString("ResourceList.ResourceFolder"); //$NON-NLS-1$ //$NON-NLS-2$
         return resourceFolderPath + File.separator + this.getOwnerId() + File.separator
                 + this.getFileName();
+    }
+    
+    /**
+     * @return Storage path of the resource, excluding the filename.
+     */
+    @JsonIgnore
+    public String getFolder() {
+        final String resourceFolderPath = Messages.getString("ResourceList.rootFolder") + File.separator + Messages.getString("ResourceList.ResourceFolder"); //$NON-NLS-1$ //$NON-NLS-2$
+        return resourceFolderPath + File.separator + this.getOwnerId();
     }
 
     @XmlElement(name = "resourceDescription")

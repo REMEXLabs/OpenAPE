@@ -65,16 +65,8 @@ public class ResourceList {
         // Add all filenames of resources in the resource folder to resource
         // list.
         final File folder = new File(ResourceList.RESOURCEFOLDERPATH);
+        createFolderIfNotExistend(folder);
         final File[] listOfFiles = folder.listFiles();
-        if (listOfFiles == null) {
-            // If directory does not exist, create
-            final boolean success = (new File(ResourceList.RESOURCEFOLDERPATH)).mkdirs();
-            if (!success) {
-                throw new IOException(
-                        Messages.getString("ResourceList.CouldNotCreateResourceFolderErrorMassage")); //$NON-NLS-1$
-            }
-            return;
-        }
         for (int i = 0; i < listOfFiles.length; i++) {
             // There can be directories that would be listed, too. Therefore
             // check if file.
@@ -92,6 +84,24 @@ public class ResourceList {
                     }
                 }
             }
+        }
+    }
+
+    /**
+     * @param folder
+     * @throws IOException
+     *             if access denied
+     */
+    private void createFolderIfNotExistend(final File folder) throws IOException {
+        final File[] listOfFiles = folder.listFiles();
+        if (listOfFiles == null) {
+            // If directory does not exist, create
+            final boolean success = folder.mkdirs();
+            if (!success) {
+                throw new IOException(
+                        Messages.getString("ResourceList.CouldNotCreateResourceFolderErrorMassage")); //$NON-NLS-1$
+            }
+            return;
         }
     }
 
@@ -151,6 +161,8 @@ public class ResourceList {
             }
 
             // Specify where to store the file.
+            final File folder = new File(resourceObject.getFolder());
+            this.createFolderIfNotExistend(folder);
             final File fileToWrite = new File(resourceObject.getPath());
 
             // Read file content and write it into resource file.
