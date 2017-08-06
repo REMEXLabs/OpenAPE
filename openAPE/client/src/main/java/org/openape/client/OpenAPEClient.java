@@ -17,11 +17,9 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 
-import org.openape.api.Messages;
 import org.openape.api.environmentcontext.EnvironmentContext;
 import org.openape.api.equipmentcontext.EquipmentContext;
 import org.openape.api.listing.Listing;
-import org.openape.api.rest.RESTPaths;
 import org.openape.api.taskcontext.TaskContext;
 import org.openape.api.usercontext.UserContext;
 import org.slf4j.Logger;
@@ -166,7 +164,7 @@ Response response = invocationBuilder.get();
 				throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
 			}
 			
-			InputStream in = (InputStream) response.readEntity(InputStream.class);
+			InputStream in = response.readEntity(InputStream.class);
 			
 			File tf = new File(targetFile);
 					try {

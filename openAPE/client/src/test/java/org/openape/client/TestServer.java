@@ -1,10 +1,6 @@
 package org.openape.client;
 
-import static spark.Spark.post;
-
 import java.net.URISyntaxException;
-
-import org.openape.api.rest.RESTPaths;
 
 import spark.Response;
 
