@@ -96,7 +96,6 @@ public class SuperRestInterface {
         Spark.staticFiles.externalLocation(System.getProperty("java.io.tmpdir") + "/extContent");
 
         // before filter enables CORS
-
         Spark.before("/*", (q, response) -> {
             SuperRestInterface.logger.info("lusm: " + q.headers("Authorization"));
             SuperRestInterface.logger.debug("Received api call: " + q.protocol() + "" + q.uri());

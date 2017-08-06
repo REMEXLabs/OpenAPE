@@ -36,6 +36,7 @@ public class OpenAPEClient {
     static final String ENVIRONMENT_CONTEXT_PATH = "api/environment-contexts";
     static final String EQUIPMENT_CONTEXT_PATH = "api/equipment-contexts";
     static final String TASK_CONTEXT_PATH = "api/task-contexts";
+
     static final String USER_CONTEXT_PATH = "api/user-contexts";
 
     static final String LISTING_PATH = "api/listings";
@@ -173,6 +174,7 @@ public class OpenAPEClient {
     public File getResource(final String url, final String targetFile) throws URISyntaxException {
         final URI uri = new URI(url);
         return this.getResource(uri, targetFile);
+
     }
 
     public File getResource(final URI uri, final String targetFile) {
@@ -204,7 +206,6 @@ public class OpenAPEClient {
     private String getToken(final String userName, final String password) {
         final String tokenRequest = "grant_type=password&username=" + userName + "&password="
                 + password;
-
         final Form form = new Form();
         form.param("grant_type", "password");
         form.param("username", userName);
@@ -219,9 +220,7 @@ public class OpenAPEClient {
                     + ".\n Server message: " + response.readEntity(String.class));
             throw new RuntimeException("Failed : HTTP error code : " + status);
         }
-
         final String output = response.readEntity(TokenResponse.class).getAccessToken();
-
         return output;
 
     }
