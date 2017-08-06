@@ -69,6 +69,7 @@ public class AdminSectionRequestHandler {
         final ArrayList<String[]> listContext = new ArrayList<String[]>();
 
         for (final Document entry : listDocuments) {
+
             final String userid = entry.getString("owner").toString();
             final String id = entry.getObjectId("_id").toString();
 
@@ -98,6 +99,7 @@ public class AdminSectionRequestHandler {
             }
 
             final String[] myStringArray = { userid, id, stringIsPublic, formattedDate };
+
             listContext.add(myStringArray);
         }
 
@@ -195,6 +197,7 @@ public class AdminSectionRequestHandler {
 
             final String[] myStringArray = { id, userId, stringIsPublic, formattedDate };
             listEquipmentContexts.add(myStringArray);
+
         }
         return listEquipmentContexts;
     }
@@ -242,6 +245,7 @@ public class AdminSectionRequestHandler {
 
             final String[] myStringArray = { id, userId, stringIsPublic, formattedDate };
             listEnvironmentContexts.add(myStringArray);
+
         }
         return listEnvironmentContexts;
     }

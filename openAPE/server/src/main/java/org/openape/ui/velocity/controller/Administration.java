@@ -14,8 +14,11 @@ import spark.Spark;
 import spark.template.velocity.VelocityTemplateEngine;
 
 public class Administration extends SuperRestInterface {
+
     public Administration() throws IllegalArgumentException, IOException {
         super();
+        // TODO Auto-generated constructor stub
+
     }
 
     public static void setupAdministrationVELOCITYInterface(

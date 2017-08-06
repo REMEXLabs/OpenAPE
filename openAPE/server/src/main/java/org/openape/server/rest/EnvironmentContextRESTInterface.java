@@ -128,12 +128,12 @@ public class EnvironmentContextRESTInterface extends SuperRestInterface {
                     // Make sure only admins and the owner can update a context
                     auth.allowAdminAndOwner(req, res, environmentContext.getOwner());
                     receivedEnvironmentContext.setOwner(environmentContext.getOwner()); // Make
-                                                                                        // sure
-                                                                                        // the
-                                                                                        // owner
-                                                                                        // can't
-                                                                                        // be
-                                                                                        // changed
+                    // sure
+                    // the
+                    // owner
+                    // can't
+                    // be
+                    // changed
                     // Perform update
                     requestHandler.updateEnvironmentContextById(environmentContextId,
                             receivedEnvironmentContext);

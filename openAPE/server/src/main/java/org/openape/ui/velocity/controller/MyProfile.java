@@ -15,7 +15,6 @@ public class MyProfile extends SuperRestInterface {
             IOException {
 
         Spark.get("/myProfile", (request, response) -> {
-
             final MainComponents mainController = new MainComponents();
             final Map<String, Object> model = mainController.getTemplateComponents();
 

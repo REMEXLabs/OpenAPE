@@ -22,6 +22,7 @@ public class Contact extends SuperRestInterface {
                                                                             // the
                                                                             // resources
                                                                             // directory
+
             }, new VelocityTemplateEngine());
     }
 }

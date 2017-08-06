@@ -227,6 +227,7 @@ public class SuperRestInterface {
 
         try {
             MyContexts.setupMyContextsVELOCITYInterface(new AdminSectionRequestHandler());
+
         } catch (final IllegalArgumentException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

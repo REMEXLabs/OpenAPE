@@ -752,6 +752,7 @@ public class DatabaseConnection implements ServerMonitorListener {
                 + " failed.\n" + event);
         DatabaseConnection.firstTime = true; // logger can now indicate when new
                                              // connection will be found again.
+
     }
 
     public ArrayList<Document> getAllDocuments(final String string) {

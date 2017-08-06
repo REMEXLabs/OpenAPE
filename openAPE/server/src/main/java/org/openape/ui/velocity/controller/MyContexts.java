@@ -58,6 +58,7 @@ public class MyContexts extends SuperRestInterface {
                                                                                // the
                                                                                // resources
                                                                                // directory
+
             }, new VelocityTemplateEngine());
     }
 }

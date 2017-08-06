@@ -71,10 +71,10 @@ public class Condition {
         for (final Object operand : operands) {
             if (!(operand instanceof Condition) && !(operand instanceof String)
                     && !(operand instanceof LinkedHashMap<?, ?>)) {// LinkedHashMap
-                                                                   // is used by
-                                                                   // json to
-                                                                   // store sub
-                                                                   // results.
+                // is used by
+                // json to
+                // store sub
+                // results.
                 throw new IllegalArgumentException(
                         Messages.getString("Condition.wrongOperandTypesErrorMsg")); //$NON-NLS-1$
             }

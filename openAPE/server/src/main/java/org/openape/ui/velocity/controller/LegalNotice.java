@@ -15,7 +15,6 @@ public class LegalNotice extends SuperRestInterface {
             IOException {
 
         Spark.get("/legalNotice", (request, response) -> {
-
             final MainComponents mainController = new MainComponents();
             final Map<String, Object> model = mainController.getTemplateComponents();
 

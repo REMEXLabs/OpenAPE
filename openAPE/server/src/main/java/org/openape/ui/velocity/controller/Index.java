@@ -14,7 +14,6 @@ public class Index extends SuperRestInterface {
     public static void setupIndexVELOCITYInterface() throws IllegalArgumentException, IOException {
 
         Spark.get("/index", (request, response) -> {
-
             final MainComponents mainController = new MainComponents();
             final Map<String, Object> model = mainController.getTemplateComponents();
 
@@ -23,6 +22,7 @@ public class Index extends SuperRestInterface {
                                                                           // the
                                                                           // resources
                                                                           // directory
+
             }, new VelocityTemplateEngine());
     }
 }

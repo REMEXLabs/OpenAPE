@@ -15,7 +15,6 @@ public class GettingStarted extends SuperRestInterface {
             IOException {
 
         Spark.get("/gettingStarted", (request, response) -> {
-
             final MainComponents mainController = new MainComponents();
             final Map<String, Object> model = mainController.getTemplateComponents();
 

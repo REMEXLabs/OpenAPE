@@ -247,9 +247,9 @@ public class AuthService {
      */
     private static String generateJwt(final CommonProfile profile) {
         profile.addAttribute("exp", AuthService.getExpirationDate()); // Expire
-                                                                      // token
-                                                                      // in X
-                                                                      // minutes
+        // token
+        // in X
+        // minutes
         profile.addAttribute("iat", new Date()); // Issued at date (now)
         final JwtGenerator<CommonProfile> jwtGenerator = new JwtGenerator<>(
                 new SecretSignatureConfiguration(AuthService.JWT_SIGNATURE));

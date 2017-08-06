@@ -123,12 +123,12 @@ public class UserContextRESTInterface extends SuperRestInterface {
                     // Make sure only admins and the owner can update a context
                     auth.allowAdminAndOwner(req, res, userContext.getOwner());
                     receivedUserContext.setOwner(userContext.getOwner()); // Make
-                                                                          // sure
-                                                                          // the
-                                                                          // owner
-                                                                          // can't
-                                                                          // be
-                                                                          // changed
+                    // sure
+                    // the
+                    // owner
+                    // can't
+                    // be
+                    // changed
                     // Perform the update
                     requestHandler.updateUserContextById(userContextId, receivedUserContext);
                     res.status(SuperRestInterface.HTTP_STATUS_OK);

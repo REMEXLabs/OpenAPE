@@ -16,7 +16,6 @@ public class Downloads extends SuperRestInterface {
             IOException {
 
         Spark.get("/downloads", (request, response) -> {
-
             final MainComponents mainController = new MainComponents();
             final Map<String, Object> model = mainController.getTemplateComponents();
 
@@ -25,6 +24,7 @@ public class Downloads extends SuperRestInterface {
                                                                               // the
                                                                               // resources
                                                                               // directory
+
             }, new VelocityTemplateEngine());
     }
 }
