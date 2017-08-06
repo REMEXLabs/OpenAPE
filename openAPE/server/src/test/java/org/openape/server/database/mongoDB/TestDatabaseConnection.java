@@ -35,16 +35,16 @@ public class TestDatabaseConnection {
         darkPreference.addPreference("http://registry.gpii.net/common/magnifierEnabled", "true");
         darkPreference.addPreference("http://registry.gpii.net/common/magnification", "2");
 
-        List<Object> andConditionOperands = new ArrayList<Object>();
-        List<Object> geOperandList = new ArrayList<Object>();
+        final List<Object> andConditionOperands = new ArrayList<Object>();
+        final List<Object> geOperandList = new ArrayList<Object>();
         geOperandList.add("http://registry.gpii.net/common/env/visual.luminance");
         geOperandList.add("0");
-        List<Object> leOperandList = new ArrayList<Object>();
+        final List<Object> leOperandList = new ArrayList<Object>();
         leOperandList.add("http://registry.gpii.net/common/env/visual.luminance");
         leOperandList.add("200");
         andConditionOperands.add(new Condition("ge", geOperandList));
         andConditionOperands.add(new Condition("le", leOperandList));
-        Condition andCondition = new Condition("and", andConditionOperands);
+        final Condition andCondition = new Condition("and", andConditionOperands);
         darkPreference.addCondition(andCondition);
         final ObjectMapper mapper = new ObjectMapper();
         try {

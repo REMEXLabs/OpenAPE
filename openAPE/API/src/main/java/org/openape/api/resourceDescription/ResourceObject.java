@@ -25,7 +25,7 @@ public class ResourceObject extends Resource {
     private String mimeType = null;
     private List<ResourceDescription> resourceDescriptions = null;
 
-    public ResourceObject(String fileName, String ownerId, String mimeType) {
+    public ResourceObject(final String fileName, final String ownerId, final String mimeType) {
         super();
         this.fileName = fileName;
         this.ownerId = ownerId;
@@ -67,28 +67,28 @@ public class ResourceObject extends Resource {
         return this.resourceDescriptions;
     }
 
-    public void setFileName(String fileName) {
+    public void setFileName(final String fileName) {
         this.fileName = fileName;
     }
 
-    public void setId(String id) {
+    public void setId(final String id) {
         this.id = id;
     }
 
-    public void setMimeType(String mimeType) {
+    public void setMimeType(final String mimeType) {
         this.mimeType = mimeType;
     }
 
-    public void setOwnerId(String ownerId) {
+    public void setOwnerId(final String ownerId) {
         this.ownerId = ownerId;
     }
 
-    public void setResourceDescriptions(List<ResourceDescription> resourceDescriptions) {
+    public void setResourceDescriptions(final List<ResourceDescription> resourceDescriptions) {
         this.resourceDescriptions = resourceDescriptions;
     }
-    
+
     @JsonIgnore
-    public void addResourceDescription(ResourceDescription resourceDescription) {
+    public void addResourceDescription(final ResourceDescription resourceDescription) {
         this.resourceDescriptions.add(resourceDescription);
     }
 

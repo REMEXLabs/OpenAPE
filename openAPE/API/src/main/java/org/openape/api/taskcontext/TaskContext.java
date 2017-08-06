@@ -23,9 +23,9 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.openape.api.Property;
+import org.openape.api.Resource;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.openape.api.Resource;
 
 /**
  * Task context object defined in 7.3.1
@@ -42,7 +42,8 @@ public class TaskContext extends Resource {
      * @param compare
      * @return true, if compare has the same properties as base, false if not.
      */
-    private static boolean hasTaskContextTheSameProperties(TaskContext base, TaskContext compare) {
+    private static boolean hasTaskContextTheSameProperties(final TaskContext base,
+            final TaskContext compare) {
         for (final Property baseProperty : base.getPropertys()) {
             // Match checks if for each property in this there is one in
             // compare.
@@ -69,7 +70,7 @@ public class TaskContext extends Resource {
         this.propertys = new ArrayList<Property>();
     }
 
-    public void addProperty(Property property) {
+    public void addProperty(final Property property) {
         this.propertys.add(property);
 
     }
@@ -82,7 +83,7 @@ public class TaskContext extends Resource {
      * @return true if contexts are equal in field values, false else.
      */
     @JsonIgnore
-    public boolean equals(TaskContext compare) {
+    public boolean equals(final TaskContext compare) {
         return (TaskContext.hasTaskContextTheSameProperties(compare, this) && TaskContext
                 .hasTaskContextTheSameProperties(this, compare));
 
@@ -99,7 +100,7 @@ public class TaskContext extends Resource {
         return true;
     }
 
-    public void setPropertys(List<Property> propertys) {
+    public void setPropertys(final List<Property> propertys) {
         this.propertys = propertys;
     }
 

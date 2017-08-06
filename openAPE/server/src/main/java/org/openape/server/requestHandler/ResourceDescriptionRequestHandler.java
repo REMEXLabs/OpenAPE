@@ -48,7 +48,7 @@ public class ResourceDescriptionRequestHandler {
      * @throws IllegalArgumentException
      *             if the parameter is not a complete environment context.
      */
-    public String createResourceDescription(ResourceDescription resourceDescription)
+    public String createResourceDescription(final ResourceDescription resourceDescription)
             throws IOException, IllegalArgumentException {
         // Check if the resource description has a valid resource.
         this.hasDescriptionResource(resourceDescription);
@@ -74,7 +74,7 @@ public class ResourceDescriptionRequestHandler {
      * @throws IOException
      *             if database errors occur.
      */
-    public void deleteAllDescriptionsOfAResource(String resourceID) throws IOException {
+    public void deleteAllDescriptionsOfAResource(final String resourceID) throws IOException {
         final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
         // Get all descriptions.
         final Map<String, DatabaseObject> resultMap = databaseConnection
@@ -114,7 +114,7 @@ public class ResourceDescriptionRequestHandler {
      * @throws IllegalArgumentException
      *             if the id is no valid id or not assigned.
      */
-    public boolean deleteResourceDescriptionById(String id) throws IOException,
+    public boolean deleteResourceDescriptionById(final String id) throws IOException,
             IllegalArgumentException {
         // get database connection.
         final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
@@ -141,7 +141,7 @@ public class ResourceDescriptionRequestHandler {
      * @throws IllegalArgumentException
      *             if the id is no valid id or not assigned.
      */
-    public Listing getListingById(String id) throws IOException, IllegalArgumentException {
+    public Listing getListingById(final String id) throws IOException, IllegalArgumentException {
         final ListingRequestHandler listingRequestHandler = new ListingRequestHandler();
         return listingRequestHandler.getListingById(id);
     }
@@ -159,7 +159,7 @@ public class ResourceDescriptionRequestHandler {
      * @throws IllegalArgumentException
      *             if the id is no valid id or not assigned.
      */
-    public ResourceDescription getResourceDescriptionById(String id) throws IOException,
+    public ResourceDescription getResourceDescriptionById(final String id) throws IOException,
             IllegalArgumentException {
         // get database connection.
         final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
@@ -193,7 +193,7 @@ public class ResourceDescriptionRequestHandler {
      *             if it has no property with the name resource-uri or it has
      *             the wrong form.
      */
-    private String getResourceID(ResourceDescription resourceDescription)
+    private String getResourceID(final ResourceDescription resourceDescription)
             throws IllegalArgumentException {
         // Search for a property with the right name to contain the resource ID.
         boolean propertyFound = false;
@@ -229,7 +229,7 @@ public class ResourceDescriptionRequestHandler {
      * @throws IOException
      *             if database error occurs.
      */
-    private void hasDescriptionResource(ResourceDescription resourceDescription)
+    private void hasDescriptionResource(final ResourceDescription resourceDescription)
             throws IllegalArgumentException, IOException {
         final String resourceID = this.getResourceID(resourceDescription);
         final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
@@ -255,8 +255,9 @@ public class ResourceDescriptionRequestHandler {
      *             if the id is no valid id, not assigned or the environment
      *             context is not valid.
      */
-    public boolean updateResourceDescriptionById(String id, ResourceDescription resourceDescription)
-            throws IOException, IllegalArgumentException {
+    public boolean updateResourceDescriptionById(final String id,
+            final ResourceDescription resourceDescription) throws IOException,
+            IllegalArgumentException {
         // Check if the resource description has a valid resource.
         this.hasDescriptionResource(resourceDescription);
         // get database connection.

@@ -3,16 +3,17 @@ package org.openape.server.auth;
 import org.pac4j.core.context.HttpConstants;
 import org.pac4j.sparkjava.DefaultHttpActionAdapter;
 import org.pac4j.sparkjava.SparkWebContext;
-import static spark.Spark.halt;
+
+import spark.Spark;
 
 public class HttpActionAdapter extends DefaultHttpActionAdapter {
 
     @Override
-    public Object adapt(int code, SparkWebContext context) {
+    public Object adapt(final int code, final SparkWebContext context) {
         if (code == HttpConstants.UNAUTHORIZED) {
-            halt(401, "Unauthorized");
+            Spark.halt(401, "Unauthorized");
         } else if (code == HttpConstants.FORBIDDEN) {
-            halt(403, "Forbidden");
+            Spark.halt(403, "Forbidden");
         } else {
             return super.adapt(code, context);
         }

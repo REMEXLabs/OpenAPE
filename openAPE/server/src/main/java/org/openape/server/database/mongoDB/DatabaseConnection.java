@@ -1,11 +1,9 @@
 package org.openape.server.database.mongoDB;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
 import org.bson.Document;
@@ -213,7 +211,7 @@ public class DatabaseConnection implements ServerMonitorListener {
      * @throws IOException
      *             if a database problem occurs.
      */
-    public boolean deleteData(MongoCollectionTypes type, String id) throws IOException {
+    public boolean deleteData(final MongoCollectionTypes type, final String id) throws IOException {
         final MongoCollection<Document> collectionToWorkOn = this.getCollectionByType(type);
 
         // Create search query.
@@ -255,9 +253,9 @@ public class DatabaseConnection implements ServerMonitorListener {
      * @return
      * @throws IOException
      */
-    private DatabaseObject executeQuery(MongoCollectionTypes type,
-            MongoCollection<Document> collection, BasicDBObject query, boolean includeId)
-            throws IOException {
+    private DatabaseObject executeQuery(final MongoCollectionTypes type,
+            final MongoCollection<Document> collection, final BasicDBObject query,
+            final boolean includeId) throws IOException {
         final Iterator<Document> resultIterator = collection.find(query).iterator();
         if (resultIterator.hasNext()) {
             final Document resultDocument = resultIterator.next();
@@ -293,7 +291,7 @@ public class DatabaseConnection implements ServerMonitorListener {
      * @throws IOException
      *             if database or parse error occurs.
      */
-    public Map<String, DatabaseObject> getAllObjectsOfType(MongoCollectionTypes type)
+    public Map<String, DatabaseObject> getAllObjectsOfType(final MongoCollectionTypes type)
             throws IOException {
         final MongoCollection<Document> collectionToWorkOn = this.getCollectionByType(type);
         final Iterator<Document> resultIterator = collectionToWorkOn.find().iterator();
@@ -335,8 +333,8 @@ public class DatabaseConnection implements ServerMonitorListener {
      * @return
      * @throws IOException
      */
-    public DatabaseObject getByUniqueAttribute(MongoCollectionTypes type, String attribute,
-            String value) throws IOException {
+    public DatabaseObject getByUniqueAttribute(final MongoCollectionTypes type,
+            final String attribute, final String value) throws IOException {
         final MongoCollection<Document> collectionToWorkOn = this.getCollectionByType(type);
         // Search for object in database.
         final BasicDBObject query = new BasicDBObject();
@@ -350,7 +348,7 @@ public class DatabaseConnection implements ServerMonitorListener {
      * @param type
      * @return the collection reference or null if the type is unknown.
      */
-    private MongoCollection<Document> getCollectionByType(MongoCollectionTypes type) {
+    private MongoCollection<Document> getCollectionByType(final MongoCollectionTypes type) {
         if (type.equals(MongoCollectionTypes.USERCONTEXT)) {
             return this.userContextCollection;
         } else if (type.equals(MongoCollectionTypes.ENVIRONMENTCONTEXT)) {
@@ -385,7 +383,8 @@ public class DatabaseConnection implements ServerMonitorListener {
      * @throws IOException
      *             if a database problem occurs.
      */
-    public DatabaseObject getData(MongoCollectionTypes type, String id) throws IOException {
+    public DatabaseObject getData(final MongoCollectionTypes type, final String id)
+            throws IOException {
         final MongoCollection<Document> collectionToWorkOn = this.getCollectionByType(type);
         // Search for object in database.
         final BasicDBObject query = new BasicDBObject();
@@ -395,14 +394,14 @@ public class DatabaseConnection implements ServerMonitorListener {
 
     private void readConfigFile() {
         final String name = MongoConfig.getString("databaseName");//$NON-NLS-1$
-        if (name != null && !name.equals(Messages.getString("DatabaseConnection.EmptyString"))) {//$NON-NLS-1$
+        if ((name != null) && !name.equals(Messages.getString("DatabaseConnection.EmptyString"))) {//$NON-NLS-1$
             DatabaseConnection.DATABASENAME = name;
         } else {
             DatabaseConnection.DATABASENAME = Messages
                     .getString("DatabaseConnection.MongoDBDatabaseName"); //$NON-NLS-1$
         }
         final String address = MongoConfig.getString("databaseURL");//$NON-NLS-1$
-        if (address != null
+        if ((address != null)
                 && !address.equals(Messages.getString("DatabaseConnection.EmptyString"))) {//$NON-NLS-1$
             DatabaseConnection.DATABASEURL = address;
         } else {
@@ -410,7 +409,7 @@ public class DatabaseConnection implements ServerMonitorListener {
                     .getString("DatabaseConnection.MongoDBServerAddress"); //$NON-NLS-1$
         }
         final String port = MongoConfig.getString("databasePort");//$NON-NLS-1$
-        if (port != null && !port.equals(Messages.getString("DatabaseConnection.EmptyString"))) {//$NON-NLS-1$
+        if ((port != null) && !port.equals(Messages.getString("DatabaseConnection.EmptyString"))) {//$NON-NLS-1$
             DatabaseConnection.logger.debug("Using MongoDB port " + port
                     + " defined in mongo.properties");
             DatabaseConnection.DATABASEPORT = port;
@@ -421,7 +420,7 @@ public class DatabaseConnection implements ServerMonitorListener {
             DatabaseConnection.DATABASEPORT = standardPort;
         }
         final String password = MongoConfig.getString("databasePassword");//$NON-NLS-1$
-        if (password != null
+        if ((password != null)
                 && !password.equals(Messages.getString("DatabaseConnection.EmptyString"))) {//$NON-NLS-1$
             DatabaseConnection.DATABASEPASSWORD = password;
         } else {
@@ -429,7 +428,7 @@ public class DatabaseConnection implements ServerMonitorListener {
                     .getString("DatabaseConnection.MongoDBDatabaseUserPassword"); //$NON-NLS-1$
         }
         final String userName = MongoConfig.getString("databaseUsername");//$NON-NLS-1$
-        if (userName != null
+        if ((userName != null)
                 && !userName.equals(Messages.getString("DatabaseConnection.EmptyString"))) {//$NON-NLS-1$
             DatabaseConnection.DATABASEUSERNAME = userName;
         } else {
@@ -482,7 +481,7 @@ public class DatabaseConnection implements ServerMonitorListener {
     }
 
     @Override
-    public void serverHearbeatStarted(ServerHeartbeatStartedEvent event) {
+    public void serverHearbeatStarted(final ServerHeartbeatStartedEvent event) {
         if (DatabaseConnection.firstTime == true) {
             DatabaseConnection.logger.info("Found new heartbeat with connection ID: "
                     + event.getConnectionId());
@@ -494,7 +493,7 @@ public class DatabaseConnection implements ServerMonitorListener {
     }
 
     @Override
-    public void serverHeartbeatFailed(ServerHeartbeatFailedEvent event) {
+    public void serverHeartbeatFailed(final ServerHeartbeatFailedEvent event) {
 
         DatabaseConnection.logger.error("Connecting to MongoDB at "
                 + DatabaseConnection.DATABASEURL + ":" + DatabaseConnection.DATABASEPORT
@@ -505,7 +504,7 @@ public class DatabaseConnection implements ServerMonitorListener {
     }
 
     @Override
-    public void serverHeartbeatSucceeded(ServerHeartbeatSucceededEvent event) {
+    public void serverHeartbeatSucceeded(final ServerHeartbeatSucceededEvent event) {
         DatabaseConnection.logger.debug("Found heartbeat with connection ID: "
                 + event.getConnectionId());
 
@@ -525,7 +524,7 @@ public class DatabaseConnection implements ServerMonitorListener {
      * @throws IOException
      *             if a database problem occurs.
      */
-    public String storeData(MongoCollectionTypes type, DatabaseObject data)
+    public String storeData(final MongoCollectionTypes type, final DatabaseObject data)
             throws ClassCastException, IOException, IllegalArgumentException {
         // Check if data is of the correct type for the collection.
         if (!type.getDocumentType().equals(data.getClass())) {
@@ -590,8 +589,8 @@ public class DatabaseConnection implements ServerMonitorListener {
      * @throws IOException
      *             if a database problem occurs.
      */
-    public boolean updateData(MongoCollectionTypes type, DatabaseObject data, String id)
-            throws ClassCastException, IOException {
+    public boolean updateData(final MongoCollectionTypes type, final DatabaseObject data,
+            final String id) throws ClassCastException, IOException {
         // test if data can be found. Throws exceptions or is null if not.
         if (this.getData(type, id) == null) {
             return false;

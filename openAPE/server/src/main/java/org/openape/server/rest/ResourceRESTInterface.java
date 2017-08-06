@@ -45,7 +45,7 @@ public class ResourceRESTInterface extends SuperRestInterface {
         final FileInputStream fileInputStream = new FileInputStream(file);
         final StreamingOutput streamingOutput = new StreamingOutput() {
             @Override
-            public void write(OutputStream outputStream) throws IOException {
+            public void write(final OutputStream outputStream) throws IOException {
                 try {
                     int n;
                     final byte[] buffer = new byte[1024];
@@ -70,7 +70,7 @@ public class ResourceRESTInterface extends SuperRestInterface {
     }
 
     public static void setupResourceRESTInterface(final ResourceRequestHandler requestHandler,
-            AuthService auth) {
+            final AuthService auth) {
         /**
          * Request 7.6.2 create resource.
          */
@@ -81,7 +81,7 @@ public class ResourceRESTInterface extends SuperRestInterface {
                     final String mimeType = req.headers(Messages
                             .getString("ResourceRESTInterface.contentTypeString"));//$NON-NLS-1$
                     // req.contentType();
-                    if (mimeType == null || mimeType.equals(Messages.getString("EmptyString"))) { //$NON-NLS-1$
+                    if ((mimeType == null) || mimeType.equals(Messages.getString("EmptyString"))) { //$NON-NLS-1$
                         res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
                         return Messages.getString("ResourceRESTInterface.NoMimeTypeErrorMsg");//$NON-NLS-1$
                     }
@@ -94,7 +94,7 @@ public class ResourceRESTInterface extends SuperRestInterface {
                             .getString("ResourceRESTInterface.tmpFileName")); //$NON-NLS-1$
                     try {
                         // get user from request response pair.
-                        User user = auth.getAuthenticatedUser(req, res);
+                        final User user = auth.getAuthenticatedUser(req, res);
 
                         if (!tmpFile.exists() && !tmpFile.mkdirs()) {
                             throw new RuntimeException(Messages
@@ -115,7 +115,7 @@ public class ResourceRESTInterface extends SuperRestInterface {
                         // occurs if the filename is taken or its not a file.
                         res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
                         return e.getMessage();
-                    } catch (UnauthorizedException e) {
+                    } catch (final UnauthorizedException e) {
                         // Only authorized users may post resources
                         res.status(SuperRestInterface.HTTP_STATUS_UNAUTHORIZED);
                         return e.getMessage();
@@ -228,7 +228,7 @@ public class ResourceRESTInterface extends SuperRestInterface {
                             .getString("ResourceRESTInterface.IDParam")); //$NON-NLS-1$
                     try {
                         // get user from request response pair.
-                        CommonProfile profile = auth.getAuthenticatedProfile(req, res);
+                        final CommonProfile profile = auth.getAuthenticatedProfile(req, res);
                         requestHandler.deleteResourceById(resourceId, profile);
                     } catch (final IllegalArgumentException e) {
                         res.status(SuperRestInterface.HTTP_STATUS_NOT_FOUND);
@@ -236,7 +236,7 @@ public class ResourceRESTInterface extends SuperRestInterface {
                     } catch (final IOException e) {
                         res.status(SuperRestInterface.HTTP_STATUS_INTERNAL_SERVER_ERROR);
                         return e.getMessage();
-                    } catch (UnauthorizedException e) {
+                    } catch (final UnauthorizedException e) {
                         // Only authorized users may delete their resources.
                         res.status(SuperRestInterface.HTTP_STATUS_UNAUTHORIZED);
                         return e.getMessage();

@@ -52,7 +52,7 @@ public class ResourceList {
     }
 
     // List containing all resources stored on the file system.
-    private List<String> resourceNameList = new LinkedList<String>();
+    private final List<String> resourceNameList = new LinkedList<String>();
 
     /**
      * Private constructor, filling the resourceList with the filenames of the
@@ -110,7 +110,7 @@ public class ResourceList {
      * @throws IOException
      *             if a storing error occurs.
      */
-    public String addResource(FileItem resource, String mimeType, User user)
+    public String addResource(final FileItem resource, final String mimeType, final User user)
             throws IllegalArgumentException, IOException {
         final String fileName = resource.getName();
 
@@ -120,7 +120,7 @@ public class ResourceList {
                     Messages.getString("ResourceList.NoFileNameErrorMassage")); //$NON-NLS-1$
         }
         // Create resource reference object for the database.
-        ResourceObject resourceObject = new ResourceObject(fileName, user.getId(), mimeType);
+        final ResourceObject resourceObject = new ResourceObject(fileName, user.getId(), mimeType);
         // set owner.
         resourceObject.setOwner(user.getId());
         // store database resource object
@@ -128,14 +128,14 @@ public class ResourceList {
         String id = null;
         try {
             id = databaseConnection.storeData(MongoCollectionTypes.RESOURCEOBJECTS, resourceObject);
-        } catch (ClassCastException e) {
+        } catch (final ClassCastException e) {
             throw new IOException(e.getMessage());
         }
         // Add id to resource object and store again.
         resourceObject.setId(id);
         try {
             databaseConnection.updateData(MongoCollectionTypes.RESOURCEOBJECTS, resourceObject, id);
-        } catch (ClassCastException e) {
+        } catch (final ClassCastException e) {
             throw new IOException(e.getMessage());
         }
 
@@ -192,20 +192,20 @@ public class ResourceList {
      *             if the file is not found.
      * @throws IOException
      */
-    public boolean deleteResource(String id, CommonProfile profile)
+    public boolean deleteResource(final String id, final CommonProfile profile)
             throws IllegalArgumentException, IOException, UnauthorizedException {
         // get corresponding resource reference object.
-        DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
+        final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
         ResourceObject resourceObject = null;
         try {
             resourceObject = (ResourceObject) databaseConnection.getData(
                     MongoCollectionTypes.RESOURCEOBJECTS, id);
-        } catch (ClassCastException e) {
+        } catch (final ClassCastException e) {
             throw new IOException(e.getMessage());
         }
 
         // Check if user is allowed to delete the resource
-        AuthService auth = new AuthService();
+        final AuthService auth = new AuthService();
         auth.allowAdminAndOwner(profile, resourceObject.getOwnerId());
 
         if (this.resourceExists(resourceObject)) {
@@ -238,15 +238,15 @@ public class ResourceList {
      * @throws IllegalArgumentException
      *             if file is non existent.
      */
-    public GetResourceReturnType getResoureFile(String id) throws IllegalArgumentException,
+    public GetResourceReturnType getResoureFile(final String id) throws IllegalArgumentException,
             IOException {
         // get resource description object.
-        DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
+        final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
         ResourceObject resourceObject = null;
         try {
             resourceObject = (ResourceObject) databaseConnection.getData(
                     MongoCollectionTypes.RESOURCEOBJECTS, id);
-        } catch (ClassCastException e) {
+        } catch (final ClassCastException e) {
             throw new IOException(e.getMessage());
         }
         if (this.resourceExists(resourceObject)) {

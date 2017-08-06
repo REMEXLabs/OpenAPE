@@ -18,12 +18,18 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class ResourceDescriptionRESTInterface extends SuperRestInterface {
 
     public static void setupResourceDescriptionRESTInterface(
-            final ResourceDescriptionRequestHandler requestHandler, AuthService auth) {
+            final ResourceDescriptionRequestHandler requestHandler, final AuthService auth) {
 
-        // Authentication: Make sure only registered principals (users and admins) can create a new resource description
-        Spark.before(Messages.getString("ResourceDescriptionRESTInterface.ResourceDescriptionURLWithoutID"), auth.authorize("user"));
-        // Authentication: Everyone can access the route for a specific resource description
-        Spark.before(Messages.getString("ResourceDescriptionRESTInterface.ResourceDescriptionURLWithID"), auth.authorize("anonymous"));
+        // Authentication: Make sure only registered principals (users and
+        // admins) can create a new resource description
+        Spark.before(Messages
+                .getString("ResourceDescriptionRESTInterface.ResourceDescriptionURLWithoutID"),
+                auth.authorize("user"));
+        // Authentication: Everyone can access the route for a specific resource
+        // description
+        Spark.before(
+                Messages.getString("ResourceDescriptionRESTInterface.ResourceDescriptionURLWithID"),
+                auth.authorize("anonymous"));
 
         /**
          * Request 7.7.2 create resource description.
@@ -35,11 +41,14 @@ public class ResourceDescriptionRESTInterface extends SuperRestInterface {
                             res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
                             return Messages.getString("Contexts.WrongMimeTypeErrorMsg");//$NON-NLS-1$
                         }
-                        // Try to map the received json object to a resource description object.
+                        // Try to map the received json object to a resource
+                        // description object.
                         final ResourceDescription receivedResourceDescription = (ResourceDescription) SuperRestInterface
                                 .extractObjectFromRequest(req, ResourceDescription.class);
-                        // Make sure to set the id of the authenticated user as the ownerId
-                        receivedResourceDescription.setOwner(auth.getAuthenticatedUser(req, res).getId());
+                        // Make sure to set the id of the authenticated user as
+                        // the ownerId
+                        receivedResourceDescription.setOwner(auth.getAuthenticatedUser(req, res)
+                                .getId());
                         // Test the object for validity.
                         if (!receivedResourceDescription.isValid()) {
                             res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
@@ -59,8 +68,8 @@ public class ResourceDescriptionRESTInterface extends SuperRestInterface {
                     } catch (final IOException e) {
                         res.status(SuperRestInterface.HTTP_STATUS_INTERNAL_SERVER_ERROR);
                         return e.getMessage();
-                    } catch (UnauthorizedException e) {
-                        //Only authorized users may post resource descriptions
+                    } catch (final UnauthorizedException e) {
+                        // Only authorized users may post resource descriptions
                         res.status(SuperRestInterface.HTTP_STATUS_UNAUTHORIZED);
                         return e.getMessage();
                     }
@@ -76,9 +85,12 @@ public class ResourceDescriptionRESTInterface extends SuperRestInterface {
                     final String resourceDescriptionId = req.params(":resource-description-id"); //$NON-NLS-1$
                 try {
                     // if it is successful return resource description.
-                    final ResourceDescription resourceDescription = requestHandler.getResourceDescriptionById(resourceDescriptionId);
-                    // Make sure only admins or the owner can view the resource description, except if it is public
-                    auth.allowAdminOwnerAndPublic(req, res, resourceDescription.getOwner(), resourceDescription.isPublic());
+                    final ResourceDescription resourceDescription = requestHandler
+                            .getResourceDescriptionById(resourceDescriptionId);
+                    // Make sure only admins or the owner can view the resource
+                    // description, except if it is public
+                    auth.allowAdminOwnerAndPublic(req, res, resourceDescription.getOwner(),
+                            resourceDescription.isPublic());
                     res.status(SuperRestInterface.HTTP_STATUS_OK);
                     res.type(Messages.getString("ResourceDescriptionRESTInterface.jsonMimeType")); //$NON-NLS-1$
                     final ObjectMapper mapper = new ObjectMapper();
@@ -91,7 +103,7 @@ public class ResourceDescriptionRESTInterface extends SuperRestInterface {
                 } catch (final IOException e) {
                     res.status(SuperRestInterface.HTTP_STATUS_INTERNAL_SERVER_ERROR);
                     return e.getMessage();
-                } catch (UnauthorizedException e) {
+                } catch (final UnauthorizedException e) {
                     res.status(SuperRestInterface.HTTP_STATUS_UNAUTHORIZED);
                     return e.getMessage();
                 }
@@ -131,7 +143,7 @@ public class ResourceDescriptionRESTInterface extends SuperRestInterface {
                     } catch (final IOException e) {
                         res.status(SuperRestInterface.HTTP_STATUS_INTERNAL_SERVER_ERROR);
                         return e.getMessage();
-                    } 
+                    }
                 });
 
         /**
@@ -156,10 +168,17 @@ public class ResourceDescriptionRESTInterface extends SuperRestInterface {
                                 .getString("ResourceDescriptionRESTInterface.NoValidObjectErrorMassage"); //$NON-NLS-1$
                     }
                     // Check if the resource description does exist
-                    final ResourceDescription resourceDescription = requestHandler.getResourceDescriptionById(resourceDescriptionId);
+                    final ResourceDescription resourceDescription = requestHandler
+                            .getResourceDescriptionById(resourceDescriptionId);
                     // Make sure only admins and the owner can update a context
                     auth.allowAdminAndOwner(req, res, resourceDescription.getOwner());
-                    receivedResourceDescription.setOwner(resourceDescription.getOwner()); // Make sure the owner can't be changed
+                    receivedResourceDescription.setOwner(resourceDescription.getOwner()); // Make
+                                                                                          // sure
+                                                                                          // the
+                                                                                          // owner
+                                                                                          // can't
+                                                                                          // be
+                                                                                          // changed
                     // Perform the update
                     requestHandler.updateResourceDescriptionById(resourceDescriptionId,
                             receivedResourceDescription);
@@ -174,8 +193,8 @@ public class ResourceDescriptionRESTInterface extends SuperRestInterface {
                 } catch (final IOException e) {
                     res.status(SuperRestInterface.HTTP_STATUS_INTERNAL_SERVER_ERROR);
                     return e.getMessage();
-                } catch (UnauthorizedException e) {
-                    //Only authorized users may edit resource descriptions
+                } catch (final UnauthorizedException e) {
+                    // Only authorized users may edit resource descriptions
                     res.status(SuperRestInterface.HTTP_STATUS_UNAUTHORIZED);
                     return e.getMessage();
                 }
@@ -190,8 +209,10 @@ public class ResourceDescriptionRESTInterface extends SuperRestInterface {
                             .getString("ResourceDescriptionRESTInterface.IDParam")); //$NON-NLS-1$
                     try {
                         // Check if the resource description does exist
-                        final ResourceDescription resourceDescription = requestHandler.getResourceDescriptionById(resourceDescriptionId);
-                        // Make sure only admins and the owner can delete a context
+                        final ResourceDescription resourceDescription = requestHandler
+                                .getResourceDescriptionById(resourceDescriptionId);
+                        // Make sure only admins and the owner can delete a
+                        // context
                         auth.allowAdminAndOwner(req, res, resourceDescription.getOwner());
                         // Perform delete and return empty string.
                         requestHandler.deleteResourceDescriptionById(resourceDescriptionId);
@@ -204,8 +225,9 @@ public class ResourceDescriptionRESTInterface extends SuperRestInterface {
                     } catch (final IOException e) {
                         res.status(SuperRestInterface.HTTP_STATUS_INTERNAL_SERVER_ERROR);
                         return e.getMessage();
-                    } catch (UnauthorizedException e) {
-                        //Only authorized users may delete resource descriptions
+                    } catch (final UnauthorizedException e) {
+                        // Only authorized users may delete resource
+                        // descriptions
                         res.status(SuperRestInterface.HTTP_STATUS_UNAUTHORIZED);
                         return e.getMessage();
                     }

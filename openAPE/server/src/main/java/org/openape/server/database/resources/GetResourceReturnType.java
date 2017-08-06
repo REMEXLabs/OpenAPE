@@ -13,14 +13,14 @@ public class GetResourceReturnType {
     private ResourceObject resourceObject;
 
     public ResourceObject getResourceObject() {
-        return resourceObject;
+        return this.resourceObject;
     }
 
-    public void setResourceObject(ResourceObject resourceObject) {
+    public void setResourceObject(final ResourceObject resourceObject) {
         this.resourceObject = resourceObject;
     }
 
-    public GetResourceReturnType(File file, ResourceObject resourceObject) {
+    public GetResourceReturnType(final File file, final ResourceObject resourceObject) {
         this.file = file;
         this.resourceObject = resourceObject;
     }
@@ -29,7 +29,7 @@ public class GetResourceReturnType {
         return this.file;
     }
 
-    public void setFile(File file) {
+    public void setFile(final File file) {
         this.file = file;
     }
 

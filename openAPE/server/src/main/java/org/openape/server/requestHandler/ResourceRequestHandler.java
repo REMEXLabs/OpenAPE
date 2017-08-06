@@ -40,8 +40,8 @@ public class ResourceRequestHandler {
      * @throws IllegalArgumentException
      *             if the resource name is already taken.
      */
-    public String createResource(FileItem resource, String mimeType, User user) throws IOException,
-            IllegalArgumentException {
+    public String createResource(final FileItem resource, final String mimeType, final User user)
+            throws IOException, IllegalArgumentException {
         return ResourceList.getInstance().addResource(resource, mimeType, user);
     }
 
@@ -60,10 +60,10 @@ public class ResourceRequestHandler {
      * @throws IllegalArgumentException
      *             if the id is no valid id or not assigned.
      */
-    public boolean deleteResourceById(String id, CommonProfile profile) throws IOException,
-            IllegalArgumentException, UnauthorizedException {
-        boolean success = ResourceList.getInstance().deleteResource(id, profile);
-        ResourceDescriptionRequestHandler resourceDescriptionRequestHandler = new ResourceDescriptionRequestHandler();
+    public boolean deleteResourceById(final String id, final CommonProfile profile)
+            throws IOException, IllegalArgumentException, UnauthorizedException {
+        final boolean success = ResourceList.getInstance().deleteResource(id, profile);
+        final ResourceDescriptionRequestHandler resourceDescriptionRequestHandler = new ResourceDescriptionRequestHandler();
         resourceDescriptionRequestHandler.deleteAllDescriptionsOfAResource(id);
         return success;
 
@@ -82,7 +82,7 @@ public class ResourceRequestHandler {
      * @throws IllegalArgumentException
      *             if the id is no valid id or not assigned.
      */
-    public Listing getListingById(String id) throws IOException, IllegalArgumentException {
+    public Listing getListingById(final String id) throws IOException, IllegalArgumentException {
         final ListingRequestHandler listingRequestHandler = new ListingRequestHandler();
         return listingRequestHandler.getListingById(id);
     }
@@ -100,7 +100,7 @@ public class ResourceRequestHandler {
      * @throws IllegalArgumentException
      *             if the id is no valid id or not assigned.
      */
-    public GetResourceReturnType getResourceById(String id) throws IllegalArgumentException,
+    public GetResourceReturnType getResourceById(final String id) throws IllegalArgumentException,
             IOException {
         return ResourceList.getInstance().getResoureFile(id);
     }
@@ -121,8 +121,8 @@ public class ResourceRequestHandler {
      * @throws NotFoundException
      *             if no fitting resource is found.
      */
-    public List<GetResourceReturnType> getResourceByListing(Listing listing) throws IOException,
-            IllegalArgumentException, NotFoundException {
+    public List<GetResourceReturnType> getResourceByListing(final Listing listing)
+            throws IOException, IllegalArgumentException, NotFoundException {
         return ListingManager.getResourcesFromListing(listing);
     }
 
