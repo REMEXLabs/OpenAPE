@@ -19,7 +19,7 @@ public class MyGroups extends SuperRestInterface {
     }
 
     public static void setupMyGroupsVELOCITYInterface() throws IllegalArgumentException,
-            IOException {
+    IOException {
 
         Spark.get("/myGroups", (request, response) -> {
 
@@ -27,10 +27,10 @@ public class MyGroups extends SuperRestInterface {
             final Map<String, Object> model = mainController.getTemplateComponents();
 
             return new ModelAndView(model, "velocityTemplates/myGroups.vm"); // located
-                                                                             // in
-                                                                             // the
-                                                                             // resources
-                                                                             // directory
-            }, new VelocityTemplateEngine());
+            // in
+            // the
+            // resources
+            // directory
+        }, new VelocityTemplateEngine());
     }
 }

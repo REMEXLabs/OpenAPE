@@ -8,7 +8,7 @@ public class Molecule_3_userSection {
     public String generateUsersection() {
         String userSection = "";
         for (final Entry<String, String> entry : new Atom_1_navigationLinks()
-                .generateUserSectionLinksLoggedOut().entrySet()) {
+        .generateUserSectionLinksLoggedOut().entrySet()) {
             userSection += "<div class='userSectionLinks' id='div_" + entry.getKey()
                     + "'><a href='#' id='" + entry.getKey() + "'>" + entry.getValue()
                     + "</a></div>";

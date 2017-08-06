@@ -21,7 +21,7 @@ public class MyProfile extends SuperRestInterface {
     }
 
     public static void setupMyProfileVELOCITYInterface() throws IllegalArgumentException,
-            IOException {
+    IOException {
 
         Spark.get(
                 "/myProfile",
@@ -35,10 +35,10 @@ public class MyProfile extends SuperRestInterface {
                             new Organism_2_SubSection().generateTopNavigation());
 
                     return new ModelAndView(MyProfile.model, "velocityTemplates/myProfile.vm"); // located
-                                                                                                // in
-                                                                                                // the
-                                                                                                // resources
-                                                                                                // directory
+                    // in
+                    // the
+                    // resources
+                    // directory
                 }, new VelocityTemplateEngine());
     }
 }

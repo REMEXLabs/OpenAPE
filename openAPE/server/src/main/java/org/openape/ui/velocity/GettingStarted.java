@@ -21,7 +21,7 @@ public class GettingStarted extends SuperRestInterface {
     }
 
     public static void setupGettingStartedVELOCITYInterface() throws IllegalArgumentException,
-            IOException {
+    IOException {
 
         Spark.get("/gettingStarted", (request, response) -> {
 
@@ -33,10 +33,10 @@ public class GettingStarted extends SuperRestInterface {
                     new Organism_2_SubSection().generateTopNavigation());
 
             return new ModelAndView(GettingStarted.model, "velocityTemplates/gettingStarted.vm"); // located
-                                                                                                  // in
-                                                                                                  // the
-                                                                                                  // resources
-                                                                                                  // directory
-            }, new VelocityTemplateEngine());
+            // in
+            // the
+            // resources
+            // directory
+        }, new VelocityTemplateEngine());
     }
 }

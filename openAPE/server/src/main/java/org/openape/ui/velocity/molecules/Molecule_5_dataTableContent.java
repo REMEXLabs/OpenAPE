@@ -70,25 +70,25 @@ public class Molecule_5_dataTableContent {
             tableContent += "<tr>"
                     + "<td id='tdUserContextName_"
                     + userContext[1]
-                    + "'>"
-                    + userContext[1]
-                    + "</td>"
-                    + "<td>"
-                    + userContext[0]
-                    + "</td>"
-                    + "<td>"
-                    + userContext[2]
-                    + "</td>"
-                    + "<td>"
-                    + "<button id='"
-                    + userContext[1]
-                    + "' class='btn btn-md btn-default' onClick='editUserContext(this)' ><div class='glyphicon glyphicon-edit' ></div> Edit </button>"
-                    + "<button id='"
-                    + userContext[1]
-                    + "' class='btn btn-md btn-default' onClick='deleteUserContext(this)'><div class='glyphicon glyphicon-trash'></div> Delete </button> "
-                    + "<button id='"
-                    + userContext[1]
-                    + "' class='btn btn-md btn-default' onClick='copyUserContext(this)'><div class='glyphicon glyphicon-copy'></div> Copy </button> </td></tr>";
+                            + "'>"
+                            + userContext[1]
+                                    + "</td>"
+                                    + "<td>"
+                                    + userContext[0]
+                                            + "</td>"
+                                            + "<td>"
+                                            + userContext[2]
+                                                    + "</td>"
+                                                    + "<td>"
+                                                    + "<button id='"
+                                                    + userContext[1]
+                                                            + "' class='btn btn-md btn-default' onClick='editUserContext(this)' ><div class='glyphicon glyphicon-edit' ></div> Edit </button>"
+                                                            + "<button id='"
+                                                            + userContext[1]
+                                                                    + "' class='btn btn-md btn-default' onClick='deleteUserContext(this)'><div class='glyphicon glyphicon-trash'></div> Delete </button> "
+                                                                    + "<button id='"
+                                                                    + userContext[1]
+                                                                            + "' class='btn btn-md btn-default' onClick='copyUserContext(this)'><div class='glyphicon glyphicon-copy'></div> Copy </button> </td></tr>";
         }
 
         return tableContent;
@@ -103,25 +103,25 @@ public class Molecule_5_dataTableContent {
             tableContent += "<tr>"
                     + "<td id='tdTaskContextName_"
                     + taskContext[0]
-                    + "'>"
-                    + taskContext[0]
-                    + "</td>"
-                    + "<td>"
-                    + taskContext[1]
-                    + "</td>"
-                    + "<td>"
-                    + taskContext[2]
-                    + "</td>"
-                    + "<td>"
-                    + "<button id='"
-                    + taskContext[0]
-                    + "' name='editTaskContext' class='btn btn-md btn-default' onClick='editTaskContext(this)' ><div class='glyphicon glyphicon-edit' ></div> Edit </button>"
-                    + "<button id='"
-                    + taskContext[0]
-                    + "' class='btn btn-md btn-default' onClick='deleteTaskContext(this)'><div class='glyphicon glyphicon-trash'></div> Delete </button> "
-                    + "<button id='"
-                    + taskContext[0]
-                    + "' class='btn btn-md btn-default' onClick='copyTaskContext(this)'><div class='glyphicon glyphicon-copy'></div> Copy </button> </td></tr>";
+                            + "'>"
+                            + taskContext[0]
+                                    + "</td>"
+                                    + "<td>"
+                                    + taskContext[1]
+                                            + "</td>"
+                                            + "<td>"
+                                            + taskContext[2]
+                                                    + "</td>"
+                                                    + "<td>"
+                                                    + "<button id='"
+                                                    + taskContext[0]
+                                                            + "' name='editTaskContext' class='btn btn-md btn-default' onClick='editTaskContext(this)' ><div class='glyphicon glyphicon-edit' ></div> Edit </button>"
+                                                            + "<button id='"
+                                                            + taskContext[0]
+                                                                    + "' class='btn btn-md btn-default' onClick='deleteTaskContext(this)'><div class='glyphicon glyphicon-trash'></div> Delete </button> "
+                                                                    + "<button id='"
+                                                                    + taskContext[0]
+                                                                            + "' class='btn btn-md btn-default' onClick='copyTaskContext(this)'><div class='glyphicon glyphicon-copy'></div> Copy </button> </td></tr>";
         }
 
         return tableContent;
@@ -136,25 +136,25 @@ public class Molecule_5_dataTableContent {
             tableContent += "<tr>"
                     + "<td id='tdEquipmentContextName_"
                     + equipmentkContext[0]
-                    + "'>"
-                    + equipmentkContext[0]
-                    + "</td>"
-                    + "<td>"
-                    + equipmentkContext[1]
-                    + "</td>"
-                    + "<td>"
-                    + equipmentkContext[2]
-                    + "</td>"
-                    + "<td>"
-                    + "<button id='"
-                    + equipmentkContext[0]
-                    + "' name='editEquipmentContext' class='btn btn-md btn-default' onClick='editEquipmentContext(this)' ><div class='glyphicon glyphicon-edit' ></div> Edit </button>"
-                    + "<button id='"
-                    + equipmentkContext[0]
-                    + "' class='btn btn-md btn-default' onClick='deleteEquipmentContext(this)'><div class='glyphicon glyphicon-trash'></div> Delete </button> "
-                    + "<button id='"
-                    + equipmentkContext[0]
-                    + "' class='btn btn-md btn-default' onClick='copyEquipmentContext(this)'><div class='glyphicon glyphicon-copy'></div> Copy </button> </td></tr>";
+                            + "'>"
+                            + equipmentkContext[0]
+                                    + "</td>"
+                                    + "<td>"
+                                    + equipmentkContext[1]
+                                            + "</td>"
+                                            + "<td>"
+                                            + equipmentkContext[2]
+                                                    + "</td>"
+                                                    + "<td>"
+                                                    + "<button id='"
+                                                    + equipmentkContext[0]
+                                                            + "' name='editEquipmentContext' class='btn btn-md btn-default' onClick='editEquipmentContext(this)' ><div class='glyphicon glyphicon-edit' ></div> Edit </button>"
+                                                            + "<button id='"
+                                                            + equipmentkContext[0]
+                                                                    + "' class='btn btn-md btn-default' onClick='deleteEquipmentContext(this)'><div class='glyphicon glyphicon-trash'></div> Delete </button> "
+                                                                    + "<button id='"
+                                                                    + equipmentkContext[0]
+                                                                            + "' class='btn btn-md btn-default' onClick='copyEquipmentContext(this)'><div class='glyphicon glyphicon-copy'></div> Copy </button> </td></tr>";
         }
 
         return tableContent;
@@ -170,25 +170,25 @@ public class Molecule_5_dataTableContent {
             tableContent += "<tr>"
                     + "<td id='tdEnvironmentContextName_"
                     + environmentContext[0]
-                    + "'>"
-                    + environmentContext[0]
-                    + "</td>"
-                    + "<td>"
-                    + environmentContext[1]
-                    + "</td>"
-                    + "<td>"
-                    + environmentContext[2]
-                    + "</td>"
-                    + "<td>"
-                    + "<button id='"
-                    + environmentContext[0]
-                    + "' name='editEnvironmentContext' class='btn btn-md btn-default' onClick='editEnvironmentContext(this)' ><div class='glyphicon glyphicon-edit' ></div> Edit </button>"
-                    + "<button id='"
-                    + environmentContext[0]
-                    + "' class='btn btn-md btn-default' onClick='deleteEnvironmentContext(this)'><div class='glyphicon glyphicon-trash'></div> Delete </button> "
-                    + "<button id='"
-                    + environmentContext[0]
-                    + "' class='btn btn-md btn-default' onClick='copyEnvironmentContext(this)'><div class='glyphicon glyphicon-copy'></div> Copy </button> </td></tr>";
+                            + "'>"
+                            + environmentContext[0]
+                                    + "</td>"
+                                    + "<td>"
+                                    + environmentContext[1]
+                                            + "</td>"
+                                            + "<td>"
+                                            + environmentContext[2]
+                                                    + "</td>"
+                                                    + "<td>"
+                                                    + "<button id='"
+                                                    + environmentContext[0]
+                                                            + "' name='editEnvironmentContext' class='btn btn-md btn-default' onClick='editEnvironmentContext(this)' ><div class='glyphicon glyphicon-edit' ></div> Edit </button>"
+                                                            + "<button id='"
+                                                            + environmentContext[0]
+                                                                    + "' class='btn btn-md btn-default' onClick='deleteEnvironmentContext(this)'><div class='glyphicon glyphicon-trash'></div> Delete </button> "
+                                                                    + "<button id='"
+                                                                    + environmentContext[0]
+                                                                            + "' class='btn btn-md btn-default' onClick='copyEnvironmentContext(this)'><div class='glyphicon glyphicon-copy'></div> Copy </button> </td></tr>";
         }
 
         return tableContent;

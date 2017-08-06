@@ -21,7 +21,7 @@ public class ResourceManagerRESTInterface extends SuperRestInterface {
                         final InputStream inputStream = ResourceManagerRESTInterface.class
                                 .getClassLoader().getResourceAsStream(
                                         File.separator + "webcontent" + File.separator
-                                        + "resource-manager.html");
+                                                + "resource-manager.html");
                         final BufferedReader bufferedReader = new BufferedReader(
                                 new InputStreamReader(inputStream, "UTF-8"));
                         final StringBuilder fullContents = new StringBuilder();

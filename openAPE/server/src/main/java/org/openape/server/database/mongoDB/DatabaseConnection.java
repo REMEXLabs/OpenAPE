@@ -156,7 +156,7 @@ public class DatabaseConnection implements ServerMonitorListener {
 
             // Add MongoDB Monitor with client options
             final MongoClientOptions clientOptions = new MongoClientOptions.Builder()
-                    .addServerMonitorListener(this).build();
+            .addServerMonitorListener(this).build();
 
             // Create database client for the openAPE database
             this.mongoClient = new MongoClient(new ServerAddress(DatabaseConnection.DATABASEURL,
@@ -480,7 +480,7 @@ public class DatabaseConnection implements ServerMonitorListener {
      */
     private DatabaseObject executeQuery(final MongoCollectionTypes type,
             final MongoCollection collection, final BasicDBObject query, final boolean includeId)
-            throws IOException {
+                    throws IOException {
         final Iterator<Document> resultIterator = collection.find(query).iterator();
         if (resultIterator.hasNext()) {
             final Document resultDocument = resultIterator.next();
@@ -570,7 +570,7 @@ public class DatabaseConnection implements ServerMonitorListener {
         if (!type.getDocumentType().equals(data.getClass())) {
             throw new ClassCastException(
                     Messages.getString("DatabaseConnection.doctypeErrorMassage") //$NON-NLS-1$
-                    + type.getDocumentType().getName());
+                            + type.getDocumentType().getName());
         }
 
         final MongoCollection<Document> collectionToWorkOn = this.getCollectionByType(type);
@@ -615,7 +615,7 @@ public class DatabaseConnection implements ServerMonitorListener {
      *             if filename is already in use as a key.
      */
     public boolean storeMimeType(final String fileName, final String mimeType) throws IOException,
-    IllegalArgumentException {
+            IllegalArgumentException {
         // check if key is in use.
         if (this.getMimeType(fileName) != null) {
             throw new IllegalArgumentException(
@@ -672,7 +672,7 @@ public class DatabaseConnection implements ServerMonitorListener {
         if (!type.getDocumentType().equals(data.getClass())) {
             throw new ClassCastException(
                     Messages.getString("DatabaseConnection.doctypeErrorMassage") //$NON-NLS-1$
-                    + type.getDocumentType().getName());
+                            + type.getDocumentType().getName());
         }
 
         final MongoCollection<Document> collectionToWorkOn = this.getCollectionByType(type);
@@ -737,7 +737,7 @@ public class DatabaseConnection implements ServerMonitorListener {
                 + DatabaseConnection.DATABASEURL + ":" + DatabaseConnection.DATABASEPORT
                 + " failed.\n" + event);
         DatabaseConnection.firstTime = true; // logger can now indicate when new
-                                             // connection will be found again.
+        // connection will be found again.
     }
 
     public ArrayList<Document> getAllDocuments(final String string) {

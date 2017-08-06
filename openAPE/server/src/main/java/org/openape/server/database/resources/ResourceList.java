@@ -159,7 +159,7 @@ public class ResourceList {
      * @throws IOException
      */
     public boolean deleteResource(final String fileName) throws IllegalArgumentException,
-            IOException {
+    IOException {
         if (this.resourceExists(fileName)) {
             new File(ResourceList.RESOURCEFOLDERPATH + File.separator + fileName).delete();
             this.resourceNameList.remove(fileName);

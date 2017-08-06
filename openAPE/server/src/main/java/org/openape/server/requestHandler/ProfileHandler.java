@@ -34,7 +34,6 @@ public class ProfileHandler {
         return id;
     }
 
-
     public static User getUser(final String userName) throws IOException {
         final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
 

@@ -3,7 +3,6 @@ package org.openape.server;
 import java.util.Arrays;
 
 import org.openape.server.admin.AdminInterface;
-
 import org.openape.server.database.mongoDB.DatabaseConnection;
 import org.openape.server.rest.SuperRestInterface;
 import org.slf4j.Logger;
@@ -31,7 +30,7 @@ public class Main {
             AdminInterface.createAdmin();
         } catch (final Exception e) {
             Main.logger
-                    .error("Admin could not be created or no Admin found. System could not start.");
+            .error("Admin could not be created or no Admin found. System could not start.");
             return;
 
         }

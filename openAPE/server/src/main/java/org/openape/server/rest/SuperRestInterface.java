@@ -95,13 +95,13 @@ public class SuperRestInterface {
             response.header("Access-Control-Allow-Origin", "*");
             // response.header("Access-Control-Request-Method",
             // "GET,PUT,POST,DELETE,OPTIONS");
-                response.header("Access-Control-Request-Method", "*");
-                // response.header("Access-Control-Allow-Headers", headers);
-                response.header("Access-Control-Allow-Headers", "Authorization");
-                response.header("Access-Control-Max-Age", "1728000");
-                response.header("Cache-Control", "no-cache");
+            response.header("Access-Control-Request-Method", "*");
+            // response.header("Access-Control-Allow-Headers", headers);
+            response.header("Access-Control-Allow-Headers", "Authorization");
+            response.header("Access-Control-Max-Age", "1728000");
+            response.header("Cache-Control", "no-cache");
 
-            });
+        });
 
         Spark.options(
                 "/*",
@@ -122,7 +122,6 @@ public class SuperRestInterface {
                     return 200;
                 });
 
-
         Spark.before((request, response) -> {
             response.header("Access-Control-Allow-Origin", "*");
             response.header("Access-Control-Request-Method", "*");
@@ -131,7 +130,6 @@ public class SuperRestInterface {
             response.header("Cache-Control", "no-cache");
 
         });
-
 
         Spark.get("api", (request, response) -> new API());
 
@@ -155,14 +153,12 @@ public class SuperRestInterface {
         TokenRESTInterface.setupTokenRESTInterface(authService);
         ProfileRESTInterface.setupProfileRESTInterface();
 
-
         // Resource endpoints
         EnvironmentContextRESTInterface.setupEnvironmentContextRESTInterface(
                 new EnvironmentContextRequestHandler(), authService);
         EquipmentContextRESTInterface.setupEquipmentContextRESTInterface(
                 new EquipmentContextRequestHandler(), authService);
         ListingRESTInterface.setupListingRESTInterface(new ListingRequestHandler());
-
 
         ResourceDescriptionRESTInterface.setupResourceDescriptionRESTInterface(
                 new ResourceDescriptionRequestHandler(), authService);

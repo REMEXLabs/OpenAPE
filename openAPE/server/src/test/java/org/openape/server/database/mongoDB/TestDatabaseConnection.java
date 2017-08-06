@@ -28,7 +28,7 @@ public class TestDatabaseConnection {
         userContext.addContext("default", defaultPreference);
         userContext.addContext("dark", darkPreference);
         defaultPreference
-        .addPreference("http://registry.gpii.net/common/magnifierEnabled", "false");
+                .addPreference("http://registry.gpii.net/common/magnifierEnabled", "false");
         defaultPreference.addPreference(
                 "http://registry.gpii.net/applications/org.chrome.cloud4chrome/invertColours",
                 "false");
