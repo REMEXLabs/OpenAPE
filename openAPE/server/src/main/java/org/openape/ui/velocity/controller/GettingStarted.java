@@ -25,4 +25,9 @@ public class GettingStarted extends SuperRestInterface {
                                                                                    // directory
             }, new VelocityTemplateEngine());
     }
+
+    public GettingStarted() throws IllegalArgumentException, IOException {
+        super();
+        // TODO Auto-generated constructor stub
+    }
 }

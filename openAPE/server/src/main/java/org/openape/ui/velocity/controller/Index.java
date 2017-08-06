@@ -25,4 +25,9 @@ public class Index extends SuperRestInterface {
 
             }, new VelocityTemplateEngine());
     }
+
+    public Index() throws IllegalArgumentException, IOException {
+        super();
+        // TODO Auto-generated constructor stub
+    }
 }

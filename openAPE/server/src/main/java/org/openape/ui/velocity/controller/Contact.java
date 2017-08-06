@@ -25,4 +25,9 @@ public class Contact extends SuperRestInterface {
 
             }, new VelocityTemplateEngine());
     }
+
+    public Contact() throws IllegalArgumentException, IOException {
+        super();
+        // TODO Auto-generated constructor stub
+    }
 }

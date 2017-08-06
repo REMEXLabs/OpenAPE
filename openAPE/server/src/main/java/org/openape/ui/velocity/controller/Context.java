@@ -25,4 +25,9 @@ public class Context extends SuperRestInterface {
                                                                             // directory
             }, new VelocityTemplateEngine());
     }
+
+    public Context() throws IllegalArgumentException, IOException {
+        super();
+        // TODO Auto-generated constructor stub
+    }
 }

@@ -14,7 +14,6 @@ import spark.Spark;
 import spark.template.velocity.VelocityTemplateEngine;
 
 public class Administration extends SuperRestInterface {
-
     public static void setupAdministrationVELOCITYInterface(
             final AdminSectionRequestHandler adminsectionRequestHandler)
             throws IllegalArgumentException, IOException {

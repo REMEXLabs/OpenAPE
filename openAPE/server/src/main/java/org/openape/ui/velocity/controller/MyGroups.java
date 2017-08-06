@@ -27,4 +27,9 @@ public class MyGroups extends SuperRestInterface {
                                                                              // directory
             }, new VelocityTemplateEngine());
     }
+
+    public MyGroups() throws IllegalArgumentException, IOException {
+        super();
+        // TODO Auto-generated constructor stub
+    }
 }

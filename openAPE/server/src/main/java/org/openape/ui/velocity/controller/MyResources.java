@@ -25,4 +25,9 @@ public class MyResources extends SuperRestInterface {
                                                                                 // directory
             }, new VelocityTemplateEngine());
     }
+
+    public MyResources() throws IllegalArgumentException, IOException {
+        super();
+        // TODO Auto-generated constructor stub
+    }
 }

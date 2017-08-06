@@ -24,4 +24,9 @@ public class Tutorials extends SuperRestInterface {
                                                                               // directory
             }, new VelocityTemplateEngine());
     }
+
+    public Tutorials() throws IllegalArgumentException, IOException {
+        super();
+        // TODO Auto-generated constructor stub
+    }
 }

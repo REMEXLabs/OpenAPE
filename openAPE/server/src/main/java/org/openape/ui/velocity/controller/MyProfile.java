@@ -25,4 +25,9 @@ public class MyProfile extends SuperRestInterface {
                                                                               // directory
             }, new VelocityTemplateEngine());
     }
+
+    public MyProfile() throws IllegalArgumentException, IOException {
+        super();
+        // TODO Auto-generated constructor stub
+    }
 }

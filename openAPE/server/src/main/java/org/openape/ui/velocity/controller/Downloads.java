@@ -27,4 +27,9 @@ public class Downloads extends SuperRestInterface {
 
             }, new VelocityTemplateEngine());
     }
+
+    public Downloads() throws IllegalArgumentException, IOException {
+        super();
+        // TODO Auto-generated constructor stub
+    }
 }

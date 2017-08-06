@@ -25,4 +25,9 @@ public class LegalNotice extends SuperRestInterface {
                                                                                 // directory
             }, new VelocityTemplateEngine());
     }
+
+    public LegalNotice() throws IllegalArgumentException, IOException {
+        super();
+        // TODO Auto-generated constructor stub
+    }
 }

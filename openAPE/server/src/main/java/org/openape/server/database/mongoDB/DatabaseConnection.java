@@ -505,6 +505,7 @@ public class DatabaseConnection implements ServerMonitorListener {
                     .getString("DatabaseConnection.MongoDBDatabaseUsername"); //$NON-NLS-1$
         }
 
+
     }
 
     /***************/
@@ -580,6 +581,7 @@ public class DatabaseConnection implements ServerMonitorListener {
                 + " failed.\n" + event);
         DatabaseConnection.firstTime = true; // logger can now indicate when new
                                              // connection will be found again.
+
 
     }
 
