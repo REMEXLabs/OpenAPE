@@ -31,8 +31,8 @@ public class TaskContextRequestHandler {
      * @throws IllegalArgumentException
      *             if the parameter is not a complete task context.
      */
-    public String createTaskContext(Object taskContext) throws IOException,
-            IllegalArgumentException {
+    public String createTaskContext(final Object taskContext) throws IOException,
+    IllegalArgumentException {
         // get database connection.
         final DatabaseConnection databaseconnection = DatabaseConnection.getInstance();
         // try to store data. Class cast exceptions will be thrown as illegal
@@ -60,7 +60,8 @@ public class TaskContextRequestHandler {
      * @throws IllegalArgumentException
      *             if the id is no valid id or not assigned.
      */
-    public boolean deleteTaskContextById(String id) throws IOException, IllegalArgumentException {
+    public boolean deleteTaskContextById(final String id) throws IOException,
+            IllegalArgumentException {
         // get database connection.
         final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
 
@@ -86,7 +87,8 @@ public class TaskContextRequestHandler {
      * @throws IllegalArgumentException
      *             if the id is no valid id or not assigned.
      */
-    public TaskContext getTaskContextById(String id) throws IOException, IllegalArgumentException {
+    public TaskContext getTaskContextById(final String id) throws IOException,
+            IllegalArgumentException {
         // get database connection.
         final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
 
@@ -127,8 +129,8 @@ public class TaskContextRequestHandler {
      *             if the id is no valid id, not assigned or the task context is
      *             not valid.
      */
-    public boolean updateTaskContextById(String id, Object taskContext) throws IOException,
-            IllegalArgumentException {
+    public boolean updateTaskContextById(final String id, final Object taskContext)
+            throws IOException, IllegalArgumentException {
         // get database connection.
         final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
 

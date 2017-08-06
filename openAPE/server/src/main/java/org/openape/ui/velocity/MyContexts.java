@@ -7,27 +7,38 @@ import java.util.Map;
 import org.openape.server.rest.SuperRestInterface;
 import org.openape.ui.velocity.organism.Organism_1_Topsection;
 import org.openape.ui.velocity.organism.Organism_2_SubSection;
-import spark.ModelAndView;
-import spark.template.velocity.VelocityTemplateEngine;
-import spark.Spark;
 
-public class MyContexts  extends SuperRestInterface{
-	private static Map<String, Object> model = new HashMap<>();
-	public MyContexts() throws IllegalArgumentException, IOException {
-		super();
-		// TODO Auto-generated constructor stub
-	}
-    
-	public static void setupTutorialsVELOCITYInterface() throws IllegalArgumentException, IOException {
-		 
-    	 Spark.get("/myContexts", (request, response) -> {           
-    		 
-             model.put("footer", new Footer().generateFooter());
-             model.put("logo", new OpenapeLogo().generateOpenAPELogo());
-             model.put("topNavigation", new Organism_1_Topsection().generateTopNavigation());
-             model.put("subSection", new Organism_2_SubSection().generateTopNavigation());
-             
-             return new ModelAndView(model, "velocityTemplates/myContexts.vm"); // located in the resources directory
-         }, new VelocityTemplateEngine());
+import spark.ModelAndView;
+import spark.Spark;
+import spark.template.velocity.VelocityTemplateEngine;
+
+public class MyContexts extends SuperRestInterface {
+    private static Map<String, Object> model = new HashMap<>();
+
+    public MyContexts() throws IllegalArgumentException, IOException {
+        super();
+        // TODO Auto-generated constructor stub
+    }
+
+    public static void setupTutorialsVELOCITYInterface() throws IllegalArgumentException,
+            IOException {
+
+        Spark.get(
+                "/myContexts",
+                (request, response) -> {
+
+                    MyContexts.model.put("footer", new Footer().generateFooter());
+                    MyContexts.model.put("logo", new OpenapeLogo().generateOpenAPELogo());
+                    MyContexts.model.put("topNavigation",
+                            new Organism_1_Topsection().generateTopNavigation());
+                    MyContexts.model.put("subSection",
+                            new Organism_2_SubSection().generateTopNavigation());
+
+                    return new ModelAndView(MyContexts.model, "velocityTemplates/myContexts.vm"); // located
+                                                                                                  // in
+                                                                                                  // the
+                                                                                                  // resources
+                                                                                                  // directory
+                }, new VelocityTemplateEngine());
     }
 }

@@ -10,7 +10,7 @@ public class GetResourceReturnType {
     private File file;
     private String mimeType;
 
-    public GetResourceReturnType(File file, String mimeType) {
+    public GetResourceReturnType(final File file, final String mimeType) {
         this.file = file;
         this.mimeType = mimeType;
     }
@@ -23,11 +23,11 @@ public class GetResourceReturnType {
         return this.mimeType;
     }
 
-    public void setFile(File file) {
+    public void setFile(final File file) {
         this.file = file;
     }
 
-    public void setMimeType(String mimeType) {
+    public void setMimeType(final String mimeType) {
         this.mimeType = mimeType;
     }
 

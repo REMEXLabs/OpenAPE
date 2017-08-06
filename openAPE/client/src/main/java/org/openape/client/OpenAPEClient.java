@@ -181,7 +181,7 @@ Response response = invocationBuilder.get();
 				throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
 			}
 			
-			InputStream in = (InputStream) response.readEntity(InputStream.class);
+			InputStream in = response.readEntity(InputStream.class);
 			
 			File tf = new File(targetFile);
 					try {
