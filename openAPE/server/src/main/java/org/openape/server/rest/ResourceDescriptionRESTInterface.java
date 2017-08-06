@@ -60,7 +60,7 @@ public class ResourceDescriptionRESTInterface extends SuperRestInterface {
                                 .createResourceDescription(receivedResourceDescription);
                         res.status(SuperRestInterface.HTTP_STATUS_CREATED);
                         return resourceDescriptionId;
-                    } catch (JsonParseException | JsonMappingException e) {
+                    } catch (JsonParseException | JsonMappingException | IllegalArgumentException e) {
                         // If the parse is not successful return bad request
                         // error code.
                         res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
