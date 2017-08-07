@@ -1,4 +1,4 @@
-package org.openape.api.group;
+package org.openape.server.api.group;
 
 /**
  * This class defines the access rights of one group for one resource. There

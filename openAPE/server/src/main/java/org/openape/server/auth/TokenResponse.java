@@ -1,6 +1,5 @@
-package org.openape.api.auth;
+package org.openape.server.auth;
 
-import com.fasterxml.jackson.annotation.JsonSetter;
 import com.google.gson.annotations.SerializedName;
 
 /**
@@ -13,9 +12,6 @@ public class TokenResponse {
     @SerializedName("expires_in")
     private String expiresIn;
 
-    public TokenResponse() {
-
-    }
     public TokenResponse(final String accessToken, final String expiresIn) {
         this.accessToken = accessToken;
         this.expiresIn = expiresIn;
@@ -29,13 +25,10 @@ public class TokenResponse {
         return this.expiresIn;
     }
 
-    @JsonSetter("access_token")
     public void setAccessToken(final String accessToken) {
         this.accessToken = accessToken;
     }
 
-
-    @JsonSetter("expires_in")
     public void setExpiresIn(final String expiresIn) {
         this.expiresIn = expiresIn;
     }
