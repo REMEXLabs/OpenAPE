@@ -4,10 +4,10 @@ import org.openape.ui.velocity.molecules.Molecule_4_subNavigation;
 
 public class Organism_2_SubSection {
 
-	public String generateTopNavigation() {
-		final String subNavigation = new Molecule_4_subNavigation().generateSubNavigation();
-		final String subSection = "<div class='subSection'>" + subNavigation + "</div>";
-		return subSection;
-	}
+    public String generateTopNavigation() {
+        final String subNavigation = new Molecule_4_subNavigation().generateSubNavigation();
+        final String subSection = "<div class='subSection'>" + subNavigation + "</div>";
+        return subSection;
+    }
 
 }

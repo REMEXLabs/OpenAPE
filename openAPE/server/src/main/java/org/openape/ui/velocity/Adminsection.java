@@ -17,48 +17,51 @@ import spark.Spark;
 import spark.template.velocity.VelocityTemplateEngine;
 
 public class Adminsection extends SuperRestInterface {
-	private static Map<String, Object> model = new HashMap<>();
+    private static Map<String, Object> model = new HashMap<>();
 
-	public Adminsection() throws IllegalArgumentException, IOException {
-		super();
-		// TODO Auto-generated constructor stub
-	}
+    public static Boolean ich() {
+        System.out.println("ich bin gerufen");
+        return true;
+    }
 
-	public static Boolean ich() {
-		System.out.println("ich bin gerufen");
-		return true;
-	}
+    public static void setupAdminVELOCITYInterface(
+            final AdminSectionRequestHandler adminsectionRequestHandler)
+            throws IllegalArgumentException, IOException {
 
-	public static void setupAdminVELOCITYInterface(final AdminSectionRequestHandler adminsectionRequestHandler)
-			throws IllegalArgumentException, IOException {
+        for (final User entry : adminsectionRequestHandler.getAllUsers()) {
+            System.out.println(entry.getId());
+        }
 
-		for (final User entry : adminsectionRequestHandler.getAllUsers()) {
-			System.out.println(entry.getId());
-		}
+        Spark.get("/adminsection", (request, response) -> {
+            final User user = new User();
+            user.setEmail("wjaufmann");
 
-		Spark.get("/adminsection", (request, response) -> {
-			final User user = new User();
-			user.setEmail("wjaufmann");
+            final deleteUser del = new deleteUser();
 
-			final deleteUser del = new deleteUser();
+            for (final User entry : del.getAdminSectionRequestHandler().getAllUsers()) {
+                System.out.println(entry.getId());
+            }
 
-			for (final User entry : del.getAdminSectionRequestHandler().getAllUsers()) {
-				System.out.println(entry.getId());
-			}
+            Adminsection.model.put("footer", new Footer().generateFooter());
+            Adminsection.model.put("logo", new OpenapeLogo().generateOpenAPELogo());
+            Adminsection.model.put("topNavigation",
+                    new Organism_1_Topsection().generateTopNavigation());
+            Adminsection.model.put("subSection",
+                    new Organism_2_SubSection().generateTopNavigation());
+            Adminsection.model.put("tableContent", new Molecule_5_dataTable()
+                    .generateDataTableContent(adminsectionRequestHandler.getAllUsers()));
+            Adminsection.model.put("deleteUser", del);
 
-			Adminsection.model.put("footer", new Footer().generateFooter());
-			Adminsection.model.put("logo", new OpenapeLogo().generateOpenAPELogo());
-			Adminsection.model.put("topNavigation", new Organism_1_Topsection().generateTopNavigation());
-			Adminsection.model.put("subSection", new Organism_2_SubSection().generateTopNavigation());
-			Adminsection.model.put("tableContent",
-					new Molecule_5_dataTable().generateDataTableContent(adminsectionRequestHandler.getAllUsers()));
-			Adminsection.model.put("deleteUser", del);
+            return new ModelAndView(Adminsection.model, "velocityTemplates/adminsection.vm"); // located
+                                                                                              // in
+                                                                                              // the
+                                                                                              // resources
+                                                                                              // directory
+            }, new VelocityTemplateEngine());
+    }
 
-			return new ModelAndView(Adminsection.model, "velocityTemplates/adminsection.vm"); // located
-																								// in
-																								// the
-																								// resources
-																								// directory
-		} , new VelocityTemplateEngine());
-	}
+    public Adminsection() throws IllegalArgumentException, IOException {
+        super();
+        // TODO Auto-generated constructor stub
+    }
 }

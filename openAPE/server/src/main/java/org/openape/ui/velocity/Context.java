@@ -13,27 +13,31 @@ import spark.Spark;
 import spark.template.velocity.VelocityTemplateEngine;
 
 public class Context extends SuperRestInterface {
-	private static Map<String, Object> model = new HashMap<>();
+    private static Map<String, Object> model = new HashMap<>();
 
-	public Context() throws IllegalArgumentException, IOException {
-		super();
-		// TODO Auto-generated constructor stub
-	}
+    public static void setupContextVELOCITYInterface() throws IllegalArgumentException, IOException {
 
-	public static void setupContextVELOCITYInterface() throws IllegalArgumentException, IOException {
+        Spark.get(
+                "/context",
+                (request, response) -> {
 
-		Spark.get("/context", (request, response) -> {
+                    Context.model.put("footer", new Footer().generateFooter());
+                    Context.model.put("logo", new OpenapeLogo().generateOpenAPELogo());
+                    Context.model.put("topNavigation",
+                            new Organism_1_Topsection().generateTopNavigation());
+                    Context.model.put("subSection",
+                            new Organism_2_SubSection().generateTopNavigation());
 
-			Context.model.put("footer", new Footer().generateFooter());
-			Context.model.put("logo", new OpenapeLogo().generateOpenAPELogo());
-			Context.model.put("topNavigation", new Organism_1_Topsection().generateTopNavigation());
-			Context.model.put("subSection", new Organism_2_SubSection().generateTopNavigation());
+                    return new ModelAndView(Context.model, "velocityTemplates/context.vm"); // located
+                                                                                            // in
+                                                                                            // the
+                                                                                            // resources
+                                                                                            // directory
+                }, new VelocityTemplateEngine());
+    }
 
-			return new ModelAndView(Context.model, "velocityTemplates/context.vm"); // located
-																					// in
-																					// the
-																					// resources
-																					// directory
-		} , new VelocityTemplateEngine());
-	}
+    public Context() throws IllegalArgumentException, IOException {
+        super();
+        // TODO Auto-generated constructor stub
+    }
 }

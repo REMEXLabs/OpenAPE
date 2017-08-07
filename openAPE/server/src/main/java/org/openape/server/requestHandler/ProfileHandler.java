@@ -13,55 +13,55 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class ProfileHandler {
-	static Logger logger = LoggerFactory.getLogger(ProfileHandler.class);
+    static Logger logger = LoggerFactory.getLogger(ProfileHandler.class);
 
-	public static String createUser(final User user) throws IOException, IllegalArgumentException {
-		final DatabaseConnection databaseconnection = DatabaseConnection.getInstance();
-		String id;
-		try {
-			final String hashedPassword = PasswordEncoder.encode(user.getPassword());
-			user.setPassword(hashedPassword);
-			id = databaseconnection.storeData(MongoCollectionTypes.USERS, user);
-		} catch (final ClassCastException e) {
-			throw new IllegalArgumentException(e.getMessage());
-		} catch (final NoSuchAlgorithmException e) {
-			e.printStackTrace();
-			throw new IOException(e.getMessage());
-		} catch (final InvalidKeySpecException e) {
-			e.printStackTrace();
-			throw new IOException(e.getMessage());
-		}
-		return id;
-	}
+    public static String createUser(final User user) throws IOException, IllegalArgumentException {
+        final DatabaseConnection databaseconnection = DatabaseConnection.getInstance();
+        String id;
+        try {
+            final String hashedPassword = PasswordEncoder.encode(user.getPassword());
+            user.setPassword(hashedPassword);
+            id = databaseconnection.storeData(MongoCollectionTypes.USERS, user);
+        } catch (final ClassCastException e) {
+            throw new IllegalArgumentException(e.getMessage());
+        } catch (final NoSuchAlgorithmException e) {
+            e.printStackTrace();
+            throw new IOException(e.getMessage());
+        } catch (final InvalidKeySpecException e) {
+            e.printStackTrace();
+            throw new IOException(e.getMessage());
+        }
+        return id;
+    }
 
-	public static User getUser(final String userName) throws IOException {
-		final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
+    public static User getUser(final String userName) throws IOException {
+        final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
 
-		final DatabaseObject result = databaseConnection.getByUniqueAttribute(MongoCollectionTypes.USERS, "username",
-				userName);
+        final DatabaseObject result = databaseConnection.getByUniqueAttribute(
+                MongoCollectionTypes.USERS, "username", userName);
 
-		// If the result is null no user exists with the givn user name
-		if (result == null) {
-			ProfileHandler.logger.info("User with user name \"" + userName + "\" does not exist.");
-			return null;
-		}
+        // If the result is null no user exists with the givn user name
+        if (result == null) {
+            ProfileHandler.logger.info("User with user name \"" + userName + "\" does not exist.");
+            return null;
+        }
 
-		final User user = (User) result;
-		return user;
-	}
+        final User user = (User) result;
+        return user;
+    }
 
-	public static void updateUser(final User user) {
-		final DatabaseConnection databaseconnection = DatabaseConnection.getInstance();
-		try {
-			databaseconnection.updateData(MongoCollectionTypes.USERS, user, user.getId());
-		} catch (final ClassCastException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (final IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+    public static void updateUser(final User user) {
+        final DatabaseConnection databaseconnection = DatabaseConnection.getInstance();
+        try {
+            databaseconnection.updateData(MongoCollectionTypes.USERS, user, user.getId());
+        } catch (final ClassCastException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (final IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
 
-	}
+    }
 
 }
