@@ -98,6 +98,13 @@ public class GroupAccessRight {
         this.setDeleteRight(deleteRight);
         this.setChangeRightsRight(changeRightsRight);
     }
+    
+    /**
+     * Default constructor used by json.
+     */
+    public GroupAccessRight() {
+        
+    }
 
     // *********************************************************************************************************************************************
     // *********************************************************************************************************************************************
