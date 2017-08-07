@@ -108,7 +108,6 @@ public class SuperRestInterface {
                 response.header("Cache-Control", "no-cache");
 
             });
-
         Spark.options(
                 "/*",
                 (request, response) -> {
@@ -138,7 +137,6 @@ public class SuperRestInterface {
          * 
          * });
          */
-
         Spark.get("api", (request, response) -> new API());
 
         // AuthService singleton to enable security features on REST endpoints
@@ -160,10 +158,7 @@ public class SuperRestInterface {
         AdminInterface.setupAdminRestInterface(authService);
         TokenRESTInterface.setupTokenRESTInterface(authService);
         ProfileRESTInterface.setupProfileRESTInterface();
-
-        ResourceDescriptionRESTInterface.setupResourceDescriptionRESTInterface(
-                new ResourceDescriptionRequestHandler(), authService);
-
+        
         try {
             Administration.setupAdministrationVELOCITYInterface(new AdminSectionRequestHandler());
         } catch (final IllegalArgumentException e) {
@@ -283,7 +278,8 @@ public class SuperRestInterface {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-
+        
+        // Resource endpoints
         GroupManagementRestInterface.setupGroupManagementRestInterface(
                 new GroupManagementHandler(), authService);
         // REST-Interfaces defined in ISO/IEC 24752-8
@@ -292,7 +288,9 @@ public class SuperRestInterface {
         EquipmentContextRESTInterface.setupEquipmentContextRESTInterface(
                 new EquipmentContextRequestHandler(), authService);
         ListingRESTInterface.setupListingRESTInterface(new ListingRequestHandler());
-        ResourceRESTInterface.setupResourceRESTInterface(new ResourceRequestHandler());
+        ResourceRESTInterface.setupResourceRESTInterface(new ResourceRequestHandler(), authService);
+        ResourceDescriptionRESTInterface.setupResourceDescriptionRESTInterface(
+                new ResourceDescriptionRequestHandler(), authService);
         TaskContextRESTInterface.setupTaskContextRESTInterface(new TaskContextRequestHandler(),
                 authService);
         UserContextRESTInterface.setupUserContextRESTInterface(new UserContextRequestHandler(),

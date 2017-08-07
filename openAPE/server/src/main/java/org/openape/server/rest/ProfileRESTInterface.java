@@ -17,7 +17,6 @@ import org.openape.server.database.mongoDB.DatabaseConnection;
 import org.openape.server.database.mongoDB.MongoCollectionTypes;
 import org.openape.server.requestHandler.ProfileHandler;
 import org.openape.ui.velocity.requestHandler.AdminSectionRequestHandler;
-
 import spark.Spark;
 
 public class ProfileRESTInterface extends SuperRestInterface {

@@ -38,13 +38,11 @@ public class EquipmentContextRESTInterface extends SuperRestInterface {
                     }
                     try {
                         // Try to map the received json object to an
-                        // EquipmentContext
-                        // object.
+                        // EquipmentContext object.
                         final EquipmentContext receivedEquipmentContext = (EquipmentContext) SuperRestInterface
                                 .extractObjectFromRequest(req, EquipmentContext.class);
                         // Make sure to set the id of the authenticated user as
-                        // the
-                        // ownerId
+                        // the ownerId
                         receivedEquipmentContext.setOwner(auth.getAuthenticatedUser(req, res)
                                 .getId());
                         // Test the object for validity.
@@ -125,8 +123,7 @@ public class EquipmentContextRESTInterface extends SuperRestInterface {
                     // Check if the user context does exist
                     final EquipmentContext equipmentContext = requestHandler
                             .getEquipmentContextById(equipmentContextId);
-                    // Make sure only admins and the owner can update a
-                    // context
+                    // Make sure only admins and the owner can update a context
                     auth.allowAdminAndOwner(req, res, equipmentContext.getOwner());
                     receivedEquipmentContext.setOwner(equipmentContext.getOwner()); // Make
                                                                                     // sure

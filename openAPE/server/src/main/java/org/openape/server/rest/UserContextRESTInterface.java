@@ -97,8 +97,7 @@ public class UserContextRESTInterface extends SuperRestInterface {
                         final UserContext userContext = requestHandler
                                 .getUserContextById(userContextId);
                         // Make sure only admins or the owner can view the
-                        // context,
-                        // except if it is public
+                        // context, except if it is public
                         auth.allowAdminOwnerAndPublic(req, res, userContext.getOwner(),
                                 userContext.isPublic());
                         res.status(SuperRestInterface.HTTP_STATUS_OK);
@@ -139,8 +138,7 @@ public class UserContextRESTInterface extends SuperRestInterface {
                     // Check if the user context does exist
                     final UserContext userContext = requestHandler
                             .getUserContextById(userContextId);
-                    // Make sure only admins and the owner can update a
-                    // context
+                    // Make sure only admins and the owner can update a context
                     auth.allowAdminAndOwner(req, res, userContext.getOwner());
                     receivedUserContext.setOwner(userContext.getOwner()); // Make
                                                                           // sure

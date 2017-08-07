@@ -9,6 +9,8 @@ import java.util.Map;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.openape.api.Property;
+import org.openape.api.resourceDescription.ResourceDescription;
 import org.openape.api.usercontext.Condition;
 import org.openape.api.usercontext.Context;
 import org.openape.api.usercontext.UserContext;
@@ -54,6 +56,15 @@ public class TestDatabaseConnection {
             e.printStackTrace();
         }
         return userContext;
+    }
+    
+    public static ResourceDescription sampleResourceDescription() {
+        ResourceDescription resourceDescription = new ResourceDescription();
+        Property property = new Property();
+        resourceDescription.addProperty(property);
+        property.setName("resource-uri");
+        property.setValue("https://res.openurc.org/api/resources/R12345");
+        return resourceDescription;
     }
 
     private DatabaseConnection dataBaseConnection;

@@ -33,8 +33,7 @@ class TokenRESTInterface extends SuperRestInterface {
                 }
 
                 // Return 400 Bad Request if the grant_type parameter is not set
-                // to
-                // password
+                // to password
                 if (StringUtils.isEmpty(grantType) || !grantType.equals("password")) {
                     res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
                     res.type("application/json");

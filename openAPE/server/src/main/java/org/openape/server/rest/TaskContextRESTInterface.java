@@ -41,8 +41,7 @@ public class TaskContextRESTInterface extends SuperRestInterface {
                         final TaskContext receivedTaskContext = (TaskContext) SuperRestInterface
                                 .extractObjectFromRequest(req, TaskContext.class);
                         // Make sure to set the id of the authenticated user as
-                        // the
-                        // ownerId
+                        // the ownerId
                         receivedTaskContext.setOwner(auth.getAuthenticatedUser(req, res).getId());
                         // Test the object for validity.
                         if (!receivedTaskContext.isValid()) {
@@ -79,8 +78,7 @@ public class TaskContextRESTInterface extends SuperRestInterface {
                         final TaskContext taskContext = requestHandler
                                 .getTaskContextById(taskContextId);
                         // Make sure only admins or the owner can view the
-                        // context,
-                        // except if it is public
+                        // context, except if it is public
                         auth.allowAdminOwnerAndPublic(req, res, taskContext.getOwner(),
                                 taskContext.isPublic());
                         res.status(SuperRestInterface.HTTP_STATUS_OK);
@@ -122,8 +120,7 @@ public class TaskContextRESTInterface extends SuperRestInterface {
                     // Check if the task context does exist
                     final TaskContext taskContext = requestHandler
                             .getTaskContextById(taskContextId);
-                    // Make sure only admins and the owner can update a
-                    // context
+                    // Make sure only admins and the owner can update a context
                     auth.allowAdminAndOwner(req, res, taskContext.getOwner());
                     receivedTaskContext.setOwner(taskContext.getOwner()); // Make
                                                                           // sure

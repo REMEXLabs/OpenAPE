@@ -11,10 +11,7 @@ import org.slf4j.LoggerFactory;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 public class User extends DatabaseObject {
-    /**
-		 *
-		 */
-    private static final long serialVersionUID = 5544621526965300349L;
+    private static final long serialVersionUID = -5694679880590931589L;
 
     private static Logger logger = LoggerFactory.getLogger(User.class);
 

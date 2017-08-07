@@ -23,7 +23,6 @@ public class Main {
             Main.logger.info("Checking for indexes...");
             final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
             databaseConnection.ensureIndexes();
-
         }
 
         // create a standard Admin user

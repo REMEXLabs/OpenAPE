@@ -126,8 +126,7 @@ public class EnvironmentContextRESTInterface extends SuperRestInterface {
                     // Check if the user context does exist
                     final EnvironmentContext environmentContext = requestHandler
                             .getEnvironmentContextById(environmentContextId);
-                    // Make sure only admins and the owner can update a
-                    // context
+                    // Make sure only admins and the owner can update a context
                     auth.allowAdminAndOwner(req, res, environmentContext.getOwner());
                     receivedEnvironmentContext.setOwner(environmentContext.getOwner()); // Make
                                                                                         // sure
