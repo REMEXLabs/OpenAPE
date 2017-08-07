@@ -115,7 +115,7 @@ $(document).ready(function(){
   
     $('#btnConfirmEditEquipmentContext').click(function(){ 
     	var inputEquipmentContext = $('#inputAdministrationEditEquipmentContext').val();
-    	var isPublic = $("#cbEquipmentContext").is(':checked');
+    	var isPublic = $("#cbEditEquipmentContext").is(':checked');
     	
     	if(validateInput(inputEquipmentContext, "edit", "EquipmentContext") == true){
 	    	if(isPublic == true){
