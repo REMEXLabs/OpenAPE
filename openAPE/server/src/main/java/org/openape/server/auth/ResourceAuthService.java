@@ -1,6 +1,7 @@
 package org.openape.server.auth;
 
 import org.openape.api.Resource;
+import org.openape.api.user.User;
 
 import spark.Request;
 import spark.Response;
@@ -21,9 +22,11 @@ public class ResourceAuthService extends AuthService {
 	// *********************************************************************************************************************************************
 	// *********************************************************************************************************************************************
 
+	private static final String ADMIN_ROLE = "admin";
 
 
 
+	
 	// *********************************************************************************************************************************************
 	// *********************************************************************************************************************************************
 	// constructors
@@ -68,6 +71,14 @@ public class ResourceAuthService extends AuthService {
 
 	public void allowReading(Request request, Response response, Resource resource) throws UnauthorizedException{
 		// TODO implement
+		User user = this.getAuthenticatedUser(request, response);
+		if(user.getRoles().contains(ADMIN_ROLE)){
+			return;
+		}
+		if(resource.getOwner().equals(user.getId())){
+			return;
+		}
+		throw new UnauthorizedException("You are not allowed to perform this operation");
 	}
 	
 	public void allowUpdating(Request request, Response response, Resource resource) throws UnauthorizedException{
