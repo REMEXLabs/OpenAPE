@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import org.bson.Document;
@@ -22,6 +23,7 @@ import org.openape.server.requestHandler.UserContextRequestHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mongodb.BasicDBObject;
 import com.mongodb.MongoClient;
@@ -194,6 +196,30 @@ public class DatabaseConnection implements ServerMonitorListener {
 
 	}
 
+	// TODO java doc
+	private DatabaseObject convertDocumentToDatabaseObject(final MongoCollectionTypes type,
+			final Document resultDocument, final boolean includeId)
+			throws com.fasterxml.jackson.core.JsonParseException, JsonMappingException, IOException {
+		DatabaseObject databaseObject = null;
+		try {
+			// Remove the MongoDB id field
+			final ObjectId oid = (ObjectId) resultDocument.get("_id");
+			resultDocument.remove(Messages.getString("DatabaseConnection._id")); //$NON-NLS-1$
+			if (includeId) {
+				resultDocument.append("id", oid.toString());
+			}
+			String jsonResult = resultDocument.toJson();
+			// reverse mongo special character replacement.
+			jsonResult = this.reverseMongoSpecialCharsReplacement(jsonResult);
+			final ObjectMapper mapper = new ObjectMapper();
+			databaseObject = mapper.readValue(jsonResult, type.getDocumentType());
+		} catch (CodecConfigurationException | IOException | JsonParseException e) {
+			e.printStackTrace();
+			throw new IOException(e.getMessage());
+		}
+		return databaseObject;
+	}
+
 	/**
 	 * Delete a database object, either a context or a resource, from the
 	 * database. Choose the object via id and the collection via the collection
@@ -356,17 +382,6 @@ public class DatabaseConnection implements ServerMonitorListener {
 		return this.executeQuery(type, collectionToWorkOn, query, true);
 	}
 
-	/*
-	 * public List<DatabaseObject> getAllDocumentsByAttributes(final MongoCollectionTypes type, Map<String, String>
-	 * attributes){
-	 * final MongoCollection<Document> collectionToWorkOn = this.getCollectionByType(type);
-	 * final BasicDBObject query = new BasicDBObject();
-	 * for(String key : attributes.keySet()){
-	 * query.put(key, attributes.get(key));
-	 * }
-	 * }
-	 */
-
 	/**
 	 * Get a mongo collection reference by providing the collection type.
 	 *
@@ -397,6 +412,7 @@ public class DatabaseConnection implements ServerMonitorListener {
 		}
 	}
 
+
 	/**
 	 * Request a database object, either a context or a resource, from the
 	 * database. Choose the object via id and the collection via the collection
@@ -416,6 +432,24 @@ public class DatabaseConnection implements ServerMonitorListener {
 		final BasicDBObject query = new BasicDBObject();
 		query.put(Messages.getString("DatabaseConnection._id"), new ObjectId(id));
 		return this.executeQuery(type, collectionToWorkOn, query, false);
+	}
+
+	// TODO java doc
+	public List<DatabaseObject> getDocumentsByQuery(final MongoCollectionTypes type, BasicDBObject query,
+			final boolean includeId)
+			throws com.fasterxml.jackson.core.JsonParseException, JsonMappingException, IOException {
+		final List<DatabaseObject> databaseObjects = new ArrayList<DatabaseObject>();
+		if (query == null) {
+			query = new BasicDBObject();
+		}
+		final MongoCollection<Document> collectionToWorkOn = this.getCollectionByType(type);
+		final MongoCursor<Document> cursor = collectionToWorkOn.find(query).iterator();
+		while (cursor.hasNext()) {
+			final Document resultDocument = cursor.next();
+			databaseObjects.add(this.convertDocumentToDatabaseObject(type, resultDocument, includeId));
+		}
+		cursor.close();
+		return databaseObjects;
 	}
 
 	private void readConfigFile() {
