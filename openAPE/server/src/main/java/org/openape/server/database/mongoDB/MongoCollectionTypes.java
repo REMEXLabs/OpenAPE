@@ -6,6 +6,7 @@ import org.openape.api.environmentcontext.EnvironmentContext;
 import org.openape.api.equipmentcontext.EquipmentContext;
 import org.openape.api.listing.Listing;
 import org.openape.api.resourceDescription.ResourceDescription;
+import org.openape.api.resourceDescription.ResourceObject;
 import org.openape.api.taskcontext.TaskContext;
 import org.openape.api.user.User;
 import org.openape.api.usercontext.UserContext;
@@ -19,6 +20,7 @@ import org.openape.server.api.group.Group;
 public enum MongoCollectionTypes {
     USERCONTEXT(
             Messages.getString("MongoCollectionTypes.userContextsCollectionName"), UserContext.class), //$NON-NLS-1$
+
     ENVIRONMENTCONTEXT(
             Messages.getString("MongoCollectionTypes.environmentContextsCollectionName"), EnvironmentContext.class), //$NON-NLS-1$
     EQUIPMENTCONTEXT(
@@ -28,10 +30,12 @@ public enum MongoCollectionTypes {
     RESOURCEDESCRIPTION(
             Messages.getString("MongoCollectionTypes.resourceDescriptionCollectionName"), ResourceDescription.class), //$NON-NLS-1$
     LISTING(Messages.getString("MongoCollectionTypes.lstingCollectionName"), Listing.class), //$NON-NLS-1$
-    RESOURCEMIMETYPES(
-            Messages.getString("MongoCollectionTypes.resourceMimeTypesCollectionName"), null), //$NON-NLS-1$
-    USERS("users", User.class),
-    GROUPS(Messages.getString("MongoCollectionTypes.groupMimeTypesCollectionName"), Group.class); //$NON-NLS-1$
+    GROUPS(Messages
+            .getString("MongoCollectionTypes.groupMimeTypesCollectionName"), Group.class), //$NON-NLS-1$
+    RESOURCEOBJECTS(
+            Messages.getString("MongoCollectionTypes.resourceObjectsCollectionName"), ResourceObject.class), //$NON-NLS-1$
+    USERS("users", User.class);
+
 
     /**
      * Get the collection type of a mongo database collection by its name.
@@ -39,8 +43,8 @@ public enum MongoCollectionTypes {
      * @param collectionName
      * @return type of the collection.
      */
-    public static MongoCollectionTypes getTypeFromCollectionName(String collectionName) {
-    	if (collectionName.equals(Messages
+    public static MongoCollectionTypes getTypeFromCollectionName(final String collectionName) {
+        if (collectionName.equals(Messages
                 .getString("MongoCollectionTypes.userContextsCollectionName"))) { //$NON-NLS-1$
             return USERCONTEXT;
         } else if (collectionName.equals(Messages
@@ -59,12 +63,13 @@ public enum MongoCollectionTypes {
                 .getString("MongoCollectionTypes.lstingCollectionName"))) { //$NON-NLS-1$
             return LISTING;
         } else if (collectionName.endsWith(Messages
-                .getString("MongoCollectionTypes.resourceMimeTypesCollectionName"))) {//$NON-NLS-1$
-            return RESOURCEMIMETYPES;
+                .getString("MongoCollectionTypes.resourceObjectsCollectionName"))) {//$NON-NLS-1$
+            return RESOURCEOBJECTS;
         } else if (collectionName.equals("users")) {
             return USERS;
-        } else if (collectionName.equals(Messages.getString("MongoCollectionTypes.groupMimeTypesCollectionName"))){
-        	return GROUPS;
+        } else if (collectionName.equals(Messages
+                .getString("MongoCollectionTypes.groupMimeTypesCollectionName"))) {
+            return GROUPS;
         } else {
             return null;
         }
@@ -82,8 +87,8 @@ public enum MongoCollectionTypes {
      * @param collectionName
      * @param objectType
      */
-    private <T extends DatabaseObject> MongoCollectionTypes(String collectionName,
-            Class<? extends DatabaseObject> objectType) {
+    private <T extends DatabaseObject> MongoCollectionTypes(final String collectionName,
+            final Class<? extends DatabaseObject> objectType) {
         this.objectType = objectType;
         this.mongoCollectionName = collectionName;
     }

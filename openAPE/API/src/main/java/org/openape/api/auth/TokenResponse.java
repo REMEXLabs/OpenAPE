@@ -13,26 +13,26 @@ public class TokenResponse {
 	@SerializedName("expires_in")
 	private String expiresIn;
 
+	public TokenResponse() {
+
+	}
+
 	public TokenResponse(final String accessToken, final String expiresIn) {
 		this.accessToken = accessToken;
 		this.expiresIn = expiresIn;
-	}
-
-	public TokenResponse() {
-
 	}
 
 	public String getAccessToken() {
 		return this.accessToken;
 	}
 
+	public String getExpiresIn() {
+		return this.expiresIn;
+	}
+
 	@JsonSetter("access_token")
 	public void setAccessToken(final String accessToken) {
 		this.accessToken = accessToken;
-	}
-
-	public String getExpiresIn() {
-		return this.expiresIn;
 	}
 
 	@JsonSetter("expires_in")

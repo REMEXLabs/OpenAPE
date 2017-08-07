@@ -2,6 +2,7 @@ package org.openape.server.rest;
 
 import java.io.File;
 import java.io.IOException;
+
 import org.openape.api.Messages;
 import org.openape.api.groups.GroupMembershipRequest;
 import org.openape.server.admin.AdminInterface;
@@ -32,12 +33,13 @@ import org.slf4j.LoggerFactory;
 
 import spark.Request;
 import spark.Spark;
+
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class SuperRestInterface {
-	static Logger logger = LoggerFactory.getLogger(SuperRestInterface.class	);
+    static Logger logger = LoggerFactory.getLogger(SuperRestInterface.class);
     public static final int HTTP_STATUS_OK = 200;
     public static final int HTTP_STATUS_CREATED = 201;
     public static final int HTTP_STATUS_NO_CONTENT = 204;
@@ -47,18 +49,27 @@ public class SuperRestInterface {
     public static final int HTTP_STATUS_INTERNAL_SERVER_ERROR = 500;
     private static final boolean TEST_ENVIRONMENT = true;
 
+    public static GroupMembershipRequest extractFromRequest(
+            final Class<GroupMembershipRequest> class1, final Request req) {
+        // TODO Auto-generated method stub
+        return null;
+
+    }
+
     /**
      * Get a sent json object from a request.
      *
-     * @param req spark request containing the object.
-     * @param objectType expected class of the object.
+     * @param req
+     *            spark request containing the object.
+     * @param objectType
+     *            expected class of the object.
      * @return received java object of the type objectType.
      * @throws IOException
      * @throws JsonParseException
      * @throws JsonMappingException
      */
-    protected static <T> Object extractObjectFromRequest(Request req, Class<T> objectType)
-            throws IOException, JsonParseException, JsonMappingException {
+    protected static <T> Object extractObjectFromRequest(final Request req,
+            final Class<T> objectType) throws IOException, JsonParseException, JsonMappingException {
         final ObjectMapper mapper = new ObjectMapper();
         final Object recievedObject = mapper.readValue(req.body(), objectType);
         return recievedObject;
@@ -70,63 +81,65 @@ public class SuperRestInterface {
      */
     public SuperRestInterface() {
 
-    	logger.info("Setting up REST API");	
+        SuperRestInterface.logger.info("Setting up REST API");
 
-        
+        Spark.staticFiles.location("webcontent");
 
-    	Spark.staticFiles.location("webcontent");
-        
-    	File extContent = new File(System.getProperty("java.io.tmpdir")+"/extContent");
-    	if (!extContent.exists())
-    	{ 
-    		extContent.mkdir();
-    	logger.info("created new folder:" + extContent.getAbsolutePath() );	
-    	} else {
-    		logger.info("Found folder:" + extContent.getAbsolutePath() );
-    	
-    	}
-    	Spark.staticFiles.externalLocation(System.getProperty("java.io.tmpdir")+"/extContent");
-    	
-//   before filter enables CORS
+        final File extContent = new File(System.getProperty("java.io.tmpdir") + "/extContent");
+        if (!extContent.exists()) {
+            extContent.mkdir();
+            SuperRestInterface.logger.info("created new folder:" + extContent.getAbsolutePath());
+        } else {
+            SuperRestInterface.logger.info("Found folder:" + extContent.getAbsolutePath());
+
+        }
+        Spark.staticFiles.externalLocation(System.getProperty("java.io.tmpdir") + "/extContent");
+
+        // before filter enables CORS
         Spark.before("/*", (q, response) -> {
-        	logger.info("lusm: " + q.headers("Authorization")    );
-        	logger.debug("Received api call: " + q.protocol() + "" + q.uri());
-                response.header("Access-Control-Allow-Origin", "*");
-//                response.header("Access-Control-Request-Method", "GET,PUT,POST,DELETE,OPTIONS");
-    	        response.header("Access-Control-Request-Method", "*");
-//                response.header("Access-Control-Allow-Headers", headers);
-    	        response.header("Access-Control-Allow-Headers", "Authorization");
-    	        response.header("Access-Control-Max-Age", "1728000");
-    	        response.header("Cache-Control", "no-cache");
+            SuperRestInterface.logger.info("lusm: " + q.headers("Authorization"));
+            SuperRestInterface.logger.debug("Received api call: " + q.protocol() + "" + q.uri());
+            response.header("Access-Control-Allow-Origin", "*");
+            // response.header("Access-Control-Request-Method",
+            // "GET,PUT,POST,DELETE,OPTIONS");
+                response.header("Access-Control-Request-Method", "*");
+                // response.header("Access-Control-Allow-Headers", headers);
+                response.header("Access-Control-Allow-Headers", "Authorization");
+                response.header("Access-Control-Max-Age", "1728000");
+                response.header("Cache-Control", "no-cache");
+
+            });
+
+        Spark.options(
+                "/*",
+                (request, response) -> {
+
+                    final String accessControlRequestHeaders = request
+                            .headers("Access-Control-Request-Headers");
+                    if (accessControlRequestHeaders != null) {
+                        response.header("Access-Control-Allow-Headers", accessControlRequestHeaders);
+                    }
+
+                    final String accessControlRequestMethod = request
+                            .headers("Access-Control-Request-Method");
+                    if (accessControlRequestMethod != null) {
+                        response.header("Access-Control-Allow-Methods", accessControlRequestMethod);
+                    }
+
+                    return 200;
+                });
+
+        Spark.before((request, response) -> {
+            response.header("Access-Control-Allow-Origin", "*");
+            response.header("Access-Control-Request-Method", "*");
+            response.header("Access-Control-Allow-Headers", "*");
+            response.header("Access-Control-Max-Age", "1728000");
+            response.header("Cache-Control", "no-cache");
 
         });
-        
-   	 Spark.options("/*", (request, response) -> {
 
-	        String accessControlRequestHeaders = request.headers("Access-Control-Request-Headers");
-	        if (accessControlRequestHeaders != null) {
-	            response.header("Access-Control-Allow-Headers", accessControlRequestHeaders);
-	        }
+        Spark.get("api", (request, response) -> new API());
 
-	        String accessControlRequestMethod = request.headers("Access-Control-Request-Method");
-	        if (accessControlRequestMethod != null) {
-	            response.header("Access-Control-Allow-Methods", accessControlRequestMethod);
-	        }
-
-	        return 200;
-	    });
-
-	   /*Spark.before((request, response) -> {
-	        response.header("Access-Control-Allow-Origin", "*");
-	        response.header("Access-Control-Request-Method", "*");
-	        response.header("Access-Control-Allow-Headers", "*");
-	        response.header("Access-Control-Max-Age", "1728000");
-	        response.header("Cache-Control", "no-cache");
-	
-	    });*/
-
-    	Spark.get("api", (request, response) -> new API()                                                                    );
-    	
         // AuthService singleton to enable security features on REST endpoints
         final AuthService authService = new AuthService();
 
@@ -135,164 +148,161 @@ public class SuperRestInterface {
             exception.printStackTrace();
         });
 
-        // Test endpoint to see if server runs. Invoke locally: http://localhost:4567/hello
-    	Spark.get(
+        // Test endpoint to see if server runs. Invoke locally:
+        // http://localhost:4567/hello
+        Spark.get(
                 Messages.getString("UserContextRESTInterface.HelloWorldURL"), (request, response) -> Messages.getString("UserContextRESTInterface.HelloWorld")); //$NON-NLS-1$ //$NON-NLS-2$
 
-        
-
-    	Spark.get(Messages.getString("SuperRestInterface.HelloWorldURL"), (request, response) -> Messages.getString("SuperRestInterface.HelloWorld")); //$NON-NLS-1$ //$NON-NLS-2$
+        Spark.get(
+                Messages.getString("SuperRestInterface.HelloWorldURL"), (request, response) -> Messages.getString("SuperRestInterface.HelloWorld")); //$NON-NLS-1$ //$NON-NLS-2$
         // Endpoint to receive tokens
-AdminInterface.setupAdminRestInterface(authService);
+        AdminInterface.setupAdminRestInterface(authService);
         TokenRESTInterface.setupTokenRESTInterface(authService);
         ProfileRESTInterface.setupProfileRESTInterface();
 
-         
-ResourceDescriptionRESTInterface.setupResourceDescriptionRESTInterface(new ResourceDescriptionRequestHandler(), authService);
-        
-		
         try {
-			Administration.setupAdministrationVELOCITYInterface(new AdminSectionRequestHandler());
-		} catch (IllegalArgumentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-        
-        try {
-			GettingStarted.setupGettingStartedVELOCITYInterface();
-		} catch (IllegalArgumentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-        
-        try {
-			Tutorials.setupTutorialsVELOCITYInterface();
-		} catch (IllegalArgumentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-        
-        try {
-			Downloads.setupDownloadsVELOCITYInterface();
-		} catch (IllegalArgumentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-        
-        
-        try {
-			Context.setupContextVELOCITYInterface();
-		} catch (IllegalArgumentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-        
-        
-        
-        try {
-			Contact.setupContactVELOCITYInterface();
-		} catch (IllegalArgumentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-        
-        try {
-			MyProfile.setupMyProfileVELOCITYInterface();
-		} catch (IllegalArgumentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-        
-        try {
-			MyContexts.setupTutorialsVELOCITYInterface();
-		} catch (IllegalArgumentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-        
-        try {
-			MyResources.setupMyResourcesVELOCITYInterface();
-		} catch (IllegalArgumentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-        
-        try {
-			MyGroups.setupMyGroupsVELOCITYInterface();
-		} catch (IllegalArgumentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-        
-        try {
-			LegalNotice.setupLegalNoticeVELOCITYInterface();
-		} catch (IllegalArgumentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-        
-        try {
-			Index.setupIndexVELOCITYInterface();
-		} catch (IllegalArgumentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+            Administration.setupAdministrationVELOCITYInterface(new AdminSectionRequestHandler());
+        } catch (final IllegalArgumentException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (final IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
 
-        GroupManagementRestInterface.setupGroupManagementRestInterface(new GroupManagementHandler(), authService );
-        //REST-Interfaces defined in ISO/IEC 24752-8
-        EnvironmentContextRESTInterface.setupEnvironmentContextRESTInterface(new EnvironmentContextRequestHandler(), authService);
-        EquipmentContextRESTInterface.setupEquipmentContextRESTInterface(new EquipmentContextRequestHandler(), authService);
+        try {
+            GettingStarted.setupGettingStartedVELOCITYInterface();
+        } catch (final IllegalArgumentException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (final IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        try {
+            Tutorials.setupTutorialsVELOCITYInterface();
+        } catch (final IllegalArgumentException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (final IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        try {
+            Downloads.setupDownloadsVELOCITYInterface();
+        } catch (final IllegalArgumentException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (final IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        try {
+            Context.setupContextVELOCITYInterface();
+        } catch (final IllegalArgumentException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (final IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        try {
+            Contact.setupContactVELOCITYInterface();
+        } catch (final IllegalArgumentException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (final IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        try {
+            MyProfile.setupMyProfileVELOCITYInterface();
+        } catch (final IllegalArgumentException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (final IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        try {
+            MyContexts.setupTutorialsVELOCITYInterface();
+        } catch (final IllegalArgumentException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (final IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        try {
+            MyResources.setupMyResourcesVELOCITYInterface();
+        } catch (final IllegalArgumentException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (final IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        try {
+            MyGroups.setupMyGroupsVELOCITYInterface();
+        } catch (final IllegalArgumentException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (final IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        try {
+            LegalNotice.setupLegalNoticeVELOCITYInterface();
+        } catch (final IllegalArgumentException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (final IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        try {
+            Index.setupIndexVELOCITYInterface();
+        } catch (final IllegalArgumentException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (final IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        // Resource endpoints
+        GroupManagementRestInterface.setupGroupManagementRestInterface(
+                new GroupManagementHandler(), authService);
+        // REST-Interfaces defined in ISO/IEC 24752-8
+        EnvironmentContextRESTInterface.setupEnvironmentContextRESTInterface(
+                new EnvironmentContextRequestHandler(), authService);
+        EquipmentContextRESTInterface.setupEquipmentContextRESTInterface(
+                new EquipmentContextRequestHandler(), authService);
         ListingRESTInterface.setupListingRESTInterface(new ListingRequestHandler());
-		ResourceRESTInterface.setupResourceRESTInterface(new ResourceRequestHandler());
-        TaskContextRESTInterface.setupTaskContextRESTInterface(new TaskContextRequestHandler(), authService);
-        UserContextRESTInterface.setupUserContextRESTInterface(new UserContextRequestHandler(), authService);
-        logger.info("REST API successfully set up");
+        ResourceDescriptionRESTInterface.setupResourceDescriptionRESTInterface(
+                new ResourceDescriptionRequestHandler(), authService);
+        ResourceRESTInterface.setupResourceRESTInterface(new ResourceRequestHandler(), authService);
+        TaskContextRESTInterface.setupTaskContextRESTInterface(new TaskContextRequestHandler(),
+                authService);
+        UserContextRESTInterface.setupUserContextRESTInterface(new UserContextRequestHandler(),
+                authService);
+        SuperRestInterface.logger.info("REST API successfully set up");
 
         // Test html interface found
-        if(SuperRestInterface.TEST_ENVIRONMENT) {
+        if (SuperRestInterface.TEST_ENVIRONMENT) {
             TestRESTInterface.setupTestRESTInterface();
-        }           
-    }
+        }
 
-	public static GroupMembershipRequest extractFromRequest(Class<GroupMembershipRequest> class1, Request req) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    }
 
 }

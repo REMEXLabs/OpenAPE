@@ -18,10 +18,14 @@ public class EquipmentContextRESTInterface extends SuperRestInterface {
     public static void setupEquipmentContextRESTInterface(
             final EquipmentContextRequestHandler requestHandler, final AuthService auth) {
 
-        // Authentication: Make sure only registered principals (users and admins) can create a new context
-        Spark.before(Messages.getString("EquipmentContextRESTInterface.EquipmentContextURLWithoutID"), auth.authorize("user"));
+        // Authentication: Make sure only registered principals (users and
+        // admins) can create a new context
+        Spark.before(
+                Messages.getString("EquipmentContextRESTInterface.EquipmentContextURLWithoutID"),
+                auth.authorize("user"));
         // Authentication: Everyone can access the route for a specific context
-        Spark.before(Messages.getString("EquipmentContextRESTInterface.EquipmentContextURLWithID"), auth.authorize("anonymous"));
+        Spark.before(Messages.getString("EquipmentContextRESTInterface.EquipmentContextURLWithID"),
+                auth.authorize("anonymous"));
 
         /**
          * Request 7.4.2 create equipment-context.
@@ -33,11 +37,14 @@ public class EquipmentContextRESTInterface extends SuperRestInterface {
                         return Messages.getString("Contexts.WrongMimeTypeErrorMsg");//$NON-NLS-1$
                     }
                     try {
-                        // Try to map the received json object to an EquipmentContext object.
+                        // Try to map the received json object to an
+                        // EquipmentContext object.
                         final EquipmentContext receivedEquipmentContext = (EquipmentContext) SuperRestInterface
                                 .extractObjectFromRequest(req, EquipmentContext.class);
-                        // Make sure to set the id of the authenticated user as the ownerId
-                        receivedEquipmentContext.setOwner(auth.getAuthenticatedUser(req, res).getId());
+                        // Make sure to set the id of the authenticated user as
+                        // the ownerId
+                        receivedEquipmentContext.setOwner(auth.getAuthenticatedUser(req, res)
+                                .getId());
                         // Test the object for validity.
                         if (!receivedEquipmentContext.isValid()) {
                             res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
@@ -71,9 +78,12 @@ public class EquipmentContextRESTInterface extends SuperRestInterface {
                             .getString("EquipmentContextRESTInterface.IDParam")); //$NON-NLS-1$
                     try {
                         // if it is successful return equipment context.
-                        final EquipmentContext equipmentContext = requestHandler.getEquipmentContextById(equipmentContextId);
-                        // Make sure only admins or the owner can view the context, except if it is public
-                        auth.allowAdminOwnerAndPublic(req, res, equipmentContext.getOwner(), equipmentContext.isPublic());
+                        final EquipmentContext equipmentContext = requestHandler
+                                .getEquipmentContextById(equipmentContextId);
+                        // Make sure only admins or the owner can view the
+                        // context, except if it is public
+                        auth.allowAdminOwnerAndPublic(req, res, equipmentContext.getOwner(),
+                                equipmentContext.isPublic());
                         res.status(SuperRestInterface.HTTP_STATUS_OK);
                         res.type(Messages.getString("EquipmentContextRESTInterface.JsonMimeType")); //$NON-NLS-1$
                         final ObjectMapper mapper = new ObjectMapper();
@@ -111,10 +121,17 @@ public class EquipmentContextRESTInterface extends SuperRestInterface {
                                 .getString("EquipmentContextRESTInterface.NoValidObjectErrorMassage"); //$NON-NLS-1$
                     }
                     // Check if the user context does exist
-                    final EquipmentContext equipmentContext = requestHandler.getEquipmentContextById(equipmentContextId);
+                    final EquipmentContext equipmentContext = requestHandler
+                            .getEquipmentContextById(equipmentContextId);
                     // Make sure only admins and the owner can update a context
                     auth.allowAdminAndOwner(req, res, equipmentContext.getOwner());
-                    receivedEquipmentContext.setOwner(equipmentContext.getOwner()); // Make sure the owner can't be changed
+                    receivedEquipmentContext.setOwner(equipmentContext.getOwner()); // Make
+                                                                                    // sure
+                                                                                    // the
+                                                                                    // owner
+                                                                                    // can't
+                                                                                    // be
+                                                                                    // changed
                     // Perform update
                     requestHandler.updateEquipmentContextById(equipmentContextId,
                             receivedEquipmentContext);
@@ -141,8 +158,10 @@ public class EquipmentContextRESTInterface extends SuperRestInterface {
                             .getString("EquipmentContextRESTInterface.IDParam")); //$NON-NLS-1$
                     try {
                         // Check if the user context does exist
-                        final EquipmentContext equipmentContext = requestHandler.getEquipmentContextById(equipmentContextId);
-                        // Make sure only admins and the owner can delete a context
+                        final EquipmentContext equipmentContext = requestHandler
+                                .getEquipmentContextById(equipmentContextId);
+                        // Make sure only admins and the owner can delete a
+                        // context
                         auth.allowAdminAndOwner(req, res, equipmentContext.getOwner());
                         // if it is successful return empty string.
                         requestHandler.deleteEquipmentContextById(equipmentContextId);

@@ -1,7 +1,10 @@
 package org.openape.api;
 
-
 public class PasswordChangeRequest {
+	public String oldPassword;
+
+	public String newPassword;
+
 	public PasswordChangeRequest() {
 
 	}
@@ -10,7 +13,4 @@ public class PasswordChangeRequest {
 		this.oldPassword = oldPassword;
 		this.newPassword = newPassword;
 	}
-
-	public String oldPassword;
-	public String newPassword;
 }

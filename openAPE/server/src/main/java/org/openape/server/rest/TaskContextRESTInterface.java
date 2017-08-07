@@ -15,12 +15,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class TaskContextRESTInterface extends SuperRestInterface {
 
-    public static void setupTaskContextRESTInterface(final TaskContextRequestHandler requestHandler, final AuthService auth) {
+    public static void setupTaskContextRESTInterface(
+            final TaskContextRequestHandler requestHandler, final AuthService auth) {
 
-        // Authentication: Make sure only registered principals (users and admins) can create a new context
-        Spark.before(Messages.getString("TaskContextRESTInterface.TastContextURLWithoutID"), auth.authorize("user"));
+        // Authentication: Make sure only registered principals (users and
+        // admins) can create a new context
+        Spark.before(Messages.getString("TaskContextRESTInterface.TastContextURLWithoutID"),
+                auth.authorize("user"));
         // Authentication: Everyone can access the route for a specific context
-        Spark.before(Messages.getString("TaskContextRESTInterface.TastContextURLWithID"), auth.authorize("anonymous"));
+        Spark.before(Messages.getString("TaskContextRESTInterface.TastContextURLWithID"),
+                auth.authorize("anonymous"));
 
         /**
          * Request 7.3.2 create task-context.
@@ -36,7 +40,8 @@ public class TaskContextRESTInterface extends SuperRestInterface {
                         // object.
                         final TaskContext receivedTaskContext = (TaskContext) SuperRestInterface
                                 .extractObjectFromRequest(req, TaskContext.class);
-                        // Make sure to set the id of the authenticated user as the ownerId
+                        // Make sure to set the id of the authenticated user as
+                        // the ownerId
                         receivedTaskContext.setOwner(auth.getAuthenticatedUser(req, res).getId());
                         // Test the object for validity.
                         if (!receivedTaskContext.isValid()) {
@@ -72,8 +77,10 @@ public class TaskContextRESTInterface extends SuperRestInterface {
                         // if it is successful return task context.
                         final TaskContext taskContext = requestHandler
                                 .getTaskContextById(taskContextId);
-                        // Make sure only admins or the owner can view the context, except if it is public
-                        auth.allowAdminOwnerAndPublic(req, res, taskContext.getOwner(), taskContext.isPublic());
+                        // Make sure only admins or the owner can view the
+                        // context, except if it is public
+                        auth.allowAdminOwnerAndPublic(req, res, taskContext.getOwner(),
+                                taskContext.isPublic());
                         res.status(SuperRestInterface.HTTP_STATUS_OK);
                         res.type(Messages.getString("TaskContextRESTInterface.JsonMimeType")); //$NON-NLS-1$
                         final ObjectMapper mapper = new ObjectMapper();
@@ -111,10 +118,17 @@ public class TaskContextRESTInterface extends SuperRestInterface {
                                 .getString("TaskContextRESTInterface.NoValidObjectErrorMassage"); //$NON-NLS-1$
                     }
                     // Check if the task context does exist
-                    final TaskContext taskContext = requestHandler.getTaskContextById(taskContextId);
+                    final TaskContext taskContext = requestHandler
+                            .getTaskContextById(taskContextId);
                     // Make sure only admins and the owner can update a context
                     auth.allowAdminAndOwner(req, res, taskContext.getOwner());
-                    receivedTaskContext.setOwner(taskContext.getOwner()); // Make sure the owner can't be changed
+                    receivedTaskContext.setOwner(taskContext.getOwner()); // Make
+                                                                          // sure
+                                                                          // the
+                                                                          // owner
+                                                                          // can't
+                                                                          // be
+                                                                          // changed
                     // Perform update
                     requestHandler.updateTaskContextById(taskContextId, receivedTaskContext);
                     res.status(SuperRestInterface.HTTP_STATUS_OK);
@@ -140,8 +154,10 @@ public class TaskContextRESTInterface extends SuperRestInterface {
                             .getString("TaskContextRESTInterface.IDParam")); //$NON-NLS-1$
                     try {
                         // Check if the user context does exist
-                        final TaskContext taskContext = requestHandler.getTaskContextById(taskContextId);
-                        // Make sure only admins and the owner can delete a context
+                        final TaskContext taskContext = requestHandler
+                                .getTaskContextById(taskContextId);
+                        // Make sure only admins and the owner can delete a
+                        // context
                         auth.allowAdminAndOwner(req, res, taskContext.getOwner());
                         // if it is successful return empty string.
                         requestHandler.deleteTaskContextById(taskContextId);

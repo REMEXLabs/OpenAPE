@@ -22,7 +22,7 @@
 <setting id="cleanup.add_missing_annotations" value="true"/>
 <setting id="cleanup.always_use_this_for_non_static_field_access" value="true"/>
 <setting id="cleanup.make_parameters_final" value="true"/>
-<setting id="cleanup.sort_members" value="false"/>
+<setting id="cleanup.sort_members" value="true"/>
 <setting id="cleanup.remove_private_constructors" value="true"/>
 <setting id="cleanup.always_use_parentheses_in_expressions" value="true"/>
 <setting id="cleanup.remove_unused_local_variables" value="false"/>
@@ -56,7 +56,7 @@
 <setting id="cleanup.add_missing_override_annotations" value="true"/>
 <setting id="cleanup.use_blocks" value="true"/>
 <setting id="cleanup.make_variable_declarations_final" value="true"/>
-<setting id="cleanup.correct_indentation" value="true"/>
+<setting id="cleanup.correct_indentation" value="false"/>
 <setting id="cleanup.remove_unused_private_types" value="true"/>
 </profile>
 </profiles>
