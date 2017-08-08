@@ -19,22 +19,19 @@ import spark.template.velocity.VelocityTemplateEngine;
 public class Administration extends SuperRestInterface {
     private static Map<String, Object> model = new HashMap<>();
 
-    public static void setupAdministrationVELOCITYInterface(
-            final AdminSectionRequestHandler adminsectionRequestHandler)
+    public static void setupAdministrationVELOCITYInterface(final AdminSectionRequestHandler adminsectionRequestHandler)
             throws IllegalArgumentException, IOException {
         adminsectionRequestHandler.getAllTaskContexts();
         Spark.get("/administration", (request, response) -> {
             Administration.model.put("footer", new Footer().generateFooter());
             Administration.model.put("logo", new Atom_2_OpenAPEHeader().generateLogo());
-            Administration.model.put("topNavigation",
-                    new Organism_1_Topsection().generateTopNavigation());
-            Administration.model.put("subSection",
-                    new Organism_2_SubSection().generateTopNavigation());
-            Administration.model.put("dataTableUserContext", new Organism_3_DataTable()
-                    .generateAdministrationUserContextTable(adminsectionRequestHandler));
+            Administration.model.put("topNavigation", new Organism_1_Topsection().generateTopNavigation());
+            Administration.model.put("subSection", new Organism_2_SubSection().generateTopNavigation());
+            Administration.model.put("dataTableUserContext",
+                    new Organism_3_DataTable().generateAdministrationUserContextTable(adminsectionRequestHandler));
 
-            final String[] contexts = { "User", "User-Context", "Task-Context",
-                    "Equipment-Context", "Environment-Context" };
+            final String[] contexts = { "User", "User-Context", "Task-Context", "Equipment-Context",
+                    "Environment-Context" };
 
             for (final String context : contexts) {
                 final String contextIdName = context.replace("-", "");
@@ -45,21 +42,20 @@ public class Administration extends SuperRestInterface {
                 Administration.model.put("add" + contextIdName + "Modal",
                         new Molecule_6_Modals().generateAddContextModal(context));
                 if (context == "User") {
-                    Administration.model.put("dataTableUser", new Organism_3_DataTable()
-                            .generateAdministrationUserTable(adminsectionRequestHandler));
+                    Administration.model.put("dataTableUser",
+                            new Organism_3_DataTable().generateAdministrationUserTable(adminsectionRequestHandler));
                 } else {
-                    Administration.model.put("dataTable" + contextIdName,
-                            new Organism_3_DataTable().generateAdministrationContextTable(
-                                    adminsectionRequestHandler, context));
+                    Administration.model.put("dataTable" + contextIdName, new Organism_3_DataTable()
+                            .generateAdministrationContextTable(adminsectionRequestHandler, context));
                 }
             }
 
             return new ModelAndView(Administration.model, "velocityTemplates/administration.vm"); // located
-                // in
-                // the
-                // resources
-                // directory
-            }, new VelocityTemplateEngine());
+            // in
+            // the
+            // resources
+            // directory
+        } , new VelocityTemplateEngine());
     }
 
     public Administration() throws IllegalArgumentException, IOException {

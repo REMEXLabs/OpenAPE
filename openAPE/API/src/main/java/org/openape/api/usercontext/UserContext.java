@@ -42,8 +42,7 @@ public class UserContext extends Resource {
      * @param compare
      * @return true, if compare has the same contexts as base, false if not.
      */
-    private static boolean hasUserContextTheSameContexts(final UserContext base,
-            final UserContext compare) {
+    private static boolean hasUserContextTheSameContexts(final UserContext base, final UserContext compare) {
         final Set<String> baseKeySet = base.getContexts().keySet();
         final Set<String> compareKeySet = compare.getContexts().keySet();
         for (final String baseKey : baseKeySet) {
@@ -87,8 +86,8 @@ public class UserContext extends Resource {
      */
     @JsonIgnore
     public boolean equals(final UserContext compare) {
-        return (UserContext.hasUserContextTheSameContexts(compare, this) && UserContext
-                .hasUserContextTheSameContexts(this, compare));
+        return (UserContext.hasUserContextTheSameContexts(compare, this)
+                && UserContext.hasUserContextTheSameContexts(this, compare));
 
     }
 

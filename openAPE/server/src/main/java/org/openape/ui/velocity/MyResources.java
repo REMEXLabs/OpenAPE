@@ -15,26 +15,21 @@ import spark.template.velocity.VelocityTemplateEngine;
 public class MyResources extends SuperRestInterface {
     private static Map<String, Object> model = new HashMap<>();
 
-    public static void setupMyResourcesVELOCITYInterface() throws IllegalArgumentException,
-            IOException {
+    public static void setupMyResourcesVELOCITYInterface() throws IllegalArgumentException, IOException {
 
-        Spark.get(
-                "/myResources",
-                (request, response) -> {
+        Spark.get("/myResources", (request, response) -> {
 
-                    MyResources.model.put("footer", new Footer().generateFooter());
-                    MyResources.model.put("logo", new OpenapeLogo().generateOpenAPELogo());
-                    MyResources.model.put("topNavigation",
-                            new Organism_1_Topsection().generateTopNavigation());
-                    MyResources.model.put("subSection",
-                            new Organism_2_SubSection().generateTopNavigation());
+            MyResources.model.put("footer", new Footer().generateFooter());
+            MyResources.model.put("logo", new OpenapeLogo().generateOpenAPELogo());
+            MyResources.model.put("topNavigation", new Organism_1_Topsection().generateTopNavigation());
+            MyResources.model.put("subSection", new Organism_2_SubSection().generateTopNavigation());
 
-                    return new ModelAndView(MyResources.model, "velocityTemplates/myResources.vm"); // located
-                    // in
-                    // the
-                    // resources
-                    // directory
-                }, new VelocityTemplateEngine());
+            return new ModelAndView(MyResources.model, "velocityTemplates/myResources.vm"); // located
+            // in
+            // the
+            // resources
+            // directory
+        } , new VelocityTemplateEngine());
     }
 
     public MyResources() throws IllegalArgumentException, IOException {

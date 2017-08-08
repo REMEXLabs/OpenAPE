@@ -58,8 +58,7 @@ public class ResourceDescriptionRequestHandler {
         // argument exceptions. IO exceptions will just be thrown through.
         String id = null;
         try {
-            id = databaseConnection.storeData(ResourceDescriptionRequestHandler.COLLECTIONTOUSE,
-                    resourceDescription);
+            id = databaseConnection.storeData(ResourceDescriptionRequestHandler.COLLECTIONTOUSE, resourceDescription);
         } catch (final ClassCastException e) {
             throw new IllegalArgumentException(e.getMessage());
         }
@@ -95,8 +94,7 @@ public class ResourceDescriptionRequestHandler {
             final String resourceCompare = this.getResourceID(description);
             if (resourceCompare.equals(resourceID)) {
                 // If resource id fitts, delete the description
-                databaseConnection.deleteData(MongoCollectionTypes.RESOURCEDESCRIPTION,
-                        descriptionID);
+                databaseConnection.deleteData(MongoCollectionTypes.RESOURCEDESCRIPTION, descriptionID);
             }
         }
     }
@@ -114,13 +112,11 @@ public class ResourceDescriptionRequestHandler {
      * @throws IllegalArgumentException
      *             if the id is no valid id or not assigned.
      */
-    public boolean deleteResourceDescriptionById(final String id) throws IOException,
-            IllegalArgumentException {
+    public boolean deleteResourceDescriptionById(final String id) throws IOException, IllegalArgumentException {
         // get database connection.
         final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
 
-        final boolean success = databaseConnection.deleteData(
-                ResourceDescriptionRequestHandler.COLLECTIONTOUSE, id);
+        final boolean success = databaseConnection.deleteData(ResourceDescriptionRequestHandler.COLLECTIONTOUSE, id);
         if (!success) {
             throw new IllegalArgumentException(
                     Messages.getString("ResourceDescriptionRequestHandler.NoObjectWithThatIDErrorMsg")); //$NON-NLS-1$
@@ -159,14 +155,13 @@ public class ResourceDescriptionRequestHandler {
      * @throws IllegalArgumentException
      *             if the id is no valid id or not assigned.
      */
-    public ResourceDescription getResourceDescriptionById(final String id) throws IOException,
-            IllegalArgumentException {
+    public ResourceDescription getResourceDescriptionById(final String id)
+            throws IOException, IllegalArgumentException {
         // get database connection.
         final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
 
         // Get the requested data.
-        final DatabaseObject result = databaseConnection.getData(
-                ResourceDescriptionRequestHandler.COLLECTIONTOUSE, id);
+        final DatabaseObject result = databaseConnection.getData(ResourceDescriptionRequestHandler.COLLECTIONTOUSE, id);
 
         // If the result is null the id is not found.
         if (result == null) {
@@ -193,24 +188,20 @@ public class ResourceDescriptionRequestHandler {
      *             if it has no property with the name resource-uri or it has
      *             the wrong form.
      */
-    private String getResourceID(final ResourceDescription resourceDescription)
-            throws IllegalArgumentException {
+    private String getResourceID(final ResourceDescription resourceDescription) throws IllegalArgumentException {
         // Search for a property with the right name to contain the resource ID.
         boolean propertyFound = false;
         String resourceID = null;
         for (final Property property : resourceDescription.getPropertys()) {
-            if (property.getName()
-                    .equals(ResourceDescriptionRequestHandler.ResourceURIPropertyName)) {
+            if (property.getName().equals(ResourceDescriptionRequestHandler.ResourceURIPropertyName)) {
                 propertyFound = true;
                 // If a property with the right name is found check if value has
                 // the right pattern.
-                if (!Pattern.matches(ResourceDescriptionRequestHandler.ResourceURIPattern,
-                        property.getValue())) {
-                    throw new IllegalArgumentException(
-                            ResourceDescriptionRequestHandler.WrongURIFormatMsg);
+                if (!Pattern.matches(ResourceDescriptionRequestHandler.ResourceURIPattern, property.getValue())) {
+                    throw new IllegalArgumentException(ResourceDescriptionRequestHandler.WrongURIFormatMsg);
                 }
-                resourceID = property.getValue().replaceAll(
-                        ResourceDescriptionRequestHandler.ResourceURIPatternPrefix, "");
+                resourceID = property.getValue().replaceAll(ResourceDescriptionRequestHandler.ResourceURIPatternPrefix,
+                        "");
             }
         }
         if (!propertyFound) {
@@ -234,8 +225,7 @@ public class ResourceDescriptionRequestHandler {
         final String resourceID = this.getResourceID(resourceDescription);
         final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
         if (null == databaseConnection.getData(MongoCollectionTypes.RESOURCEOBJECTS, resourceID)) {
-            throw new IllegalArgumentException(
-                    ResourceDescriptionRequestHandler.NoResoruceWithThatID + resourceID);
+            throw new IllegalArgumentException(ResourceDescriptionRequestHandler.NoResoruceWithThatID + resourceID);
         }
     }
 
@@ -255,9 +245,8 @@ public class ResourceDescriptionRequestHandler {
      *             if the id is no valid id, not assigned or the environment
      *             context is not valid.
      */
-    public boolean updateResourceDescriptionById(final String id,
-            final ResourceDescription resourceDescription) throws IOException,
-            IllegalArgumentException {
+    public boolean updateResourceDescriptionById(final String id, final ResourceDescription resourceDescription)
+            throws IOException, IllegalArgumentException {
         // Check if the resource description has a valid resource.
         this.hasDescriptionResource(resourceDescription);
         // get database connection.
@@ -268,8 +257,8 @@ public class ResourceDescriptionRequestHandler {
         // is thrown. IO exceptions are thrown through.
         boolean success;
         try {
-            success = databaseConnection.updateData(
-                    ResourceDescriptionRequestHandler.COLLECTIONTOUSE, resourceDescription, id);
+            success = databaseConnection.updateData(ResourceDescriptionRequestHandler.COLLECTIONTOUSE,
+                    resourceDescription, id);
         } catch (final ClassCastException e) {
             throw new IllegalArgumentException(e.getMessage());
         }

@@ -19,8 +19,7 @@ import spark.template.velocity.VelocityTemplateEngine;
 public class Administration extends SuperRestInterface {
     private static Map<String, Object> model = new HashMap<>();
 
-    public static void setupAdministrationVELOCITYInterface(
-            final AdminSectionRequestHandler adminsectionRequestHandler)
+    public static void setupAdministrationVELOCITYInterface(final AdminSectionRequestHandler adminsectionRequestHandler)
             throws IllegalArgumentException, IOException {
 
         Spark.get("/administration", (request, response) -> {
@@ -35,20 +34,18 @@ public class Administration extends SuperRestInterface {
 
             Administration.model.put("footer", new Footer().generateFooter());
             Administration.model.put("logo", new OpenapeLogo().generateOpenAPELogo());
-            Administration.model.put("topNavigation",
-                    new Organism_1_Topsection().generateTopNavigation());
-            Administration.model.put("subSection",
-                    new Organism_2_SubSection().generateTopNavigation());
-            Administration.model.put("tableContent", new Molecule_5_dataTable()
-                    .generateDataTableContent(adminsectionRequestHandler.getAllUsers()));
+            Administration.model.put("topNavigation", new Organism_1_Topsection().generateTopNavigation());
+            Administration.model.put("subSection", new Organism_2_SubSection().generateTopNavigation());
+            Administration.model.put("tableContent",
+                    new Molecule_5_dataTable().generateDataTableContent(adminsectionRequestHandler.getAllUsers()));
             Administration.model.put("deleteUser", del);
 
             return new ModelAndView(Administration.model, "velocityTemplates/administration.vm"); // located
-                // in
-                // the
-                // resources
-                // directory
-            }, new VelocityTemplateEngine());
+            // in
+            // the
+            // resources
+            // directory
+        } , new VelocityTemplateEngine());
     }
 
     public Administration() throws IllegalArgumentException, IOException {

@@ -13,8 +13,7 @@ import spark.template.velocity.VelocityTemplateEngine;
 public class Downloads extends SuperRestInterface {
     private static Map<String, Object> model = new HashMap<>();
 
-    public static void setupDownloadsVELOCITYInterface() throws IllegalArgumentException,
-            IOException {
+    public static void setupDownloadsVELOCITYInterface() throws IllegalArgumentException, IOException {
 
         Spark.get("/downloads", (request, response) -> {
 
@@ -22,11 +21,11 @@ public class Downloads extends SuperRestInterface {
             final Map<String, Object> model = mainController.getTemplateComponents();
 
             return new ModelAndView(model, "velocityTemplates/downloads.vm"); // located
-                // in
-                // the
-                // resources
-                // directory
-            }, new VelocityTemplateEngine());
+            // in
+            // the
+            // resources
+            // directory
+        } , new VelocityTemplateEngine());
     }
 
     public Downloads() throws IllegalArgumentException, IOException {

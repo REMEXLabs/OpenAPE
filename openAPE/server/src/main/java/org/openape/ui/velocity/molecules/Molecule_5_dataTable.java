@@ -31,33 +31,14 @@ public class Molecule_5_dataTable {
                 email = users.getEmail();
             }
 
-            tableContent += "<tr>" + "<td id='tdUserName_"
-                    + users.getId()
-                    + "'>"
-                    + username
-                    + "</td>"
-                    + "<td>"
-                    + users.getId()
-                    + "</td>"
-                    + "<td id='tdEmail_"
-                    + users.getId()
-                    + "'>"
-                    + email
-                    + "</td>"
-                    + "<td id='tdRoles_"
-                    + users.getId()
-                    + "'>"
-                    + roles
-                    + "</td>"
-                    + "<td>"
-                    + "<button id='"
+            tableContent += "<tr>" + "<td id='tdUserName_" + users.getId() + "'>" + username + "</td>" + "<td>"
+                    + users.getId() + "</td>" + "<td id='tdEmail_" + users.getId() + "'>" + email + "</td>"
+                    + "<td id='tdRoles_" + users.getId() + "'>" + roles + "</td>" + "<td>" + "<button id='"
                     + users.getId()
                     + "' class='btn btn-md btn-default' onClick='editUser(this)' ><div class='glyphicon glyphicon-edit' ></div> Edit </button>"
-                    + "<button id='"
-                    + users.getId()
+                    + "<button id='" + users.getId()
                     + "' class='btn btn-md btn-default' onClick='deleteUser(this)'><div class='glyphicon glyphicon-trash'></div> Delete </button> "
-                    + "<button id='"
-                    + users.getId()
+                    + "<button id='" + users.getId()
                     + "' class='btn btn-md btn-default'><div class='glyphicon glyphicon-copy'></div> Copy to clipboard  </button> </td></tr>";
         }
 

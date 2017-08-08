@@ -17,23 +17,19 @@ public class getAllUsers extends SuperRestInterface {
 
     public static void setupContactVELOCITYInterface() throws IllegalArgumentException, IOException {
 
-        Spark.get(
-                "/contact",
-                (request, response) -> {
+        Spark.get("/contact", (request, response) -> {
 
-                    getAllUsers.model.put("footer", new Footer().generateFooter());
-                    getAllUsers.model.put("logo", new OpenapeLogo().generateOpenAPELogo());
-                    getAllUsers.model.put("topNavigation",
-                            new Organism_1_Topsection().generateTopNavigation());
-                    getAllUsers.model.put("subSection",
-                            new Organism_2_SubSection().generateTopNavigation());
+            getAllUsers.model.put("footer", new Footer().generateFooter());
+            getAllUsers.model.put("logo", new OpenapeLogo().generateOpenAPELogo());
+            getAllUsers.model.put("topNavigation", new Organism_1_Topsection().generateTopNavigation());
+            getAllUsers.model.put("subSection", new Organism_2_SubSection().generateTopNavigation());
 
-                    return new ModelAndView(getAllUsers.model, "velocityTemplates/contact.vm"); // located
-                    // in
-                    // the
-                    // resources
-                    // directory
-                }, new VelocityTemplateEngine());
+            return new ModelAndView(getAllUsers.model, "velocityTemplates/contact.vm"); // located
+            // in
+            // the
+            // resources
+            // directory
+        } , new VelocityTemplateEngine());
     }
 
     public getAllUsers() throws IllegalArgumentException, IOException {

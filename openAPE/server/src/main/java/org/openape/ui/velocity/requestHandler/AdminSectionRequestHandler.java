@@ -25,8 +25,7 @@ public class AdminSectionRequestHandler {
     public static final MongoCollectionTypes COLLECTIONTOUSE_EQUIPMENTCONTEXTS = MongoCollectionTypes.EQUIPMENTCONTEXT;
     public static final MongoCollectionTypes COLLECTIONTOUSE_ENVIRONMENTCONTEXTS = MongoCollectionTypes.ENVIRONMENTCONTEXT;
 
-    public ArrayList<String[]> getAllEnvironmentContexts() throws IOException,
-            IllegalArgumentException {
+    public ArrayList<String[]> getAllEnvironmentContexts() throws IOException, IllegalArgumentException {
 
         // get database connection.
         final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
@@ -58,8 +57,7 @@ public class AdminSectionRequestHandler {
         return listEnvironmentContexts;
     }
 
-    public ArrayList<String[]> getAllEquipmentContexts() throws IOException,
-            IllegalArgumentException {
+    public ArrayList<String[]> getAllEquipmentContexts() throws IOException, IllegalArgumentException {
 
         // get database connection.
         final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
@@ -174,8 +172,8 @@ public class AdminSectionRequestHandler {
             user.setUsername(entry.getString("username"));
             user.setId(entry.getObjectId("_id").toString());
 
-            final List<String> listRoles = Arrays.asList(entry.get("roles").toString()
-                    .replace("[", "").replace("]", ""));
+            final List<String> listRoles = Arrays
+                    .asList(entry.get("roles").toString().replace("[", "").replace("]", ""));
             user.setRoles(listRoles);
 
             listUsers.add(user);
@@ -191,16 +189,15 @@ public class AdminSectionRequestHandler {
         databaseConnection.removeData(AdminSectionRequestHandler.COLLECTIONTOUSE_USERS, id);
     }
 
-    public UpdateResult updateUser(final String id, final String indexName, final String indexValue)
-            throws Exception {
+    public UpdateResult updateUser(final String id, final String indexName, final String indexValue) throws Exception {
 
         // get database connection.
         final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
 
         UpdateResult updateResult = null;
 
-        updateResult = databaseConnection.updateDocument(
-                AdminSectionRequestHandler.COLLECTIONTOUSE_USERS, id, indexName, indexValue);
+        updateResult = databaseConnection.updateDocument(AdminSectionRequestHandler.COLLECTIONTOUSE_USERS, id,
+                indexName, indexValue);
 
         return updateResult;
     }

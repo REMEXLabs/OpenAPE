@@ -42,8 +42,7 @@ public class TaskContext extends Resource {
      * @param compare
      * @return true, if compare has the same properties as base, false if not.
      */
-    private static boolean hasTaskContextTheSameProperties(final TaskContext base,
-            final TaskContext compare) {
+    private static boolean hasTaskContextTheSameProperties(final TaskContext base, final TaskContext compare) {
         for (final Property baseProperty : base.getPropertys()) {
             // Match checks if for each property in this there is one in
             // compare.
@@ -84,8 +83,8 @@ public class TaskContext extends Resource {
      */
     @JsonIgnore
     public boolean equals(final TaskContext compare) {
-        return (TaskContext.hasTaskContextTheSameProperties(compare, this) && TaskContext
-                .hasTaskContextTheSameProperties(this, compare));
+        return (TaskContext.hasTaskContextTheSameProperties(compare, this)
+                && TaskContext.hasTaskContextTheSameProperties(this, compare));
 
     }
 

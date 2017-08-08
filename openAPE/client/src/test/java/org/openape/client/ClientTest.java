@@ -54,8 +54,7 @@ public class ClientTest {
     public void testFileDownload() throws URISyntaxException, InterruptedException {
         // Thread.sleep(60000);;
         final OpenAPEClient client = ClientTest.getOpenApeClient();
-        final File downloadedFile = client.getResource("http://localhost:4567/test.html",
-                "d:/testCopy.html");
+        final File downloadedFile = client.getResource("http://localhost:4567/test.html", "d:/testCopy.html");
         Assert.assertFalse(downloadedFile.equals(null));
     }
 }

@@ -13,8 +13,7 @@ import spark.template.velocity.VelocityTemplateEngine;
 public class MyContexts extends SuperRestInterface {
     private static Map<String, Object> model = new HashMap<>();
 
-    public static void setupTutorialsVELOCITYInterface() throws IllegalArgumentException,
-            IOException {
+    public static void setupTutorialsVELOCITYInterface() throws IllegalArgumentException, IOException {
 
         Spark.get("/myContexts", (request, response) -> {
 
@@ -22,11 +21,11 @@ public class MyContexts extends SuperRestInterface {
             final Map<String, Object> model = mainController.getTemplateComponents();
 
             return new ModelAndView(model, "velocityTemplates/myContexts.vm"); // located
-                // in
-                // the
-                // resources
-                // directory
-            }, new VelocityTemplateEngine());
+            // in
+            // the
+            // resources
+            // directory
+        } , new VelocityTemplateEngine());
     }
 
     public MyContexts() throws IllegalArgumentException, IOException {

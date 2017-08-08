@@ -3,8 +3,6 @@ package org.openape.server.requestHandler;
 import java.io.IOException;
 import java.util.List;
 
-import javassist.NotFoundException;
-
 import org.apache.commons.fileupload.FileItem;
 import org.openape.api.listing.Listing;
 import org.openape.api.user.User;
@@ -15,6 +13,8 @@ import org.openape.server.database.resources.ListingManager;
 import org.openape.server.database.resources.ResourceList;
 import org.openape.server.rest.ResourceRESTInterface;
 import org.pac4j.core.profile.CommonProfile;
+
+import javassist.NotFoundException;
 
 /**
  * Class with methods to manage resources on the server. It is used by the rest
@@ -100,8 +100,7 @@ public class ResourceRequestHandler {
      * @throws IllegalArgumentException
      *             if the id is no valid id or not assigned.
      */
-    public GetResourceReturnType getResourceById(final String id) throws IllegalArgumentException,
-            IOException {
+    public GetResourceReturnType getResourceById(final String id) throws IllegalArgumentException, IOException {
         return ResourceList.getInstance().getResoureFile(id);
     }
 

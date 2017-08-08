@@ -84,8 +84,8 @@ public class ResourceDescription extends Resource {
      */
     @JsonIgnore
     public boolean equals(final ResourceDescription compare) {
-        return (ResourceDescription.hasResourceDescriptionTheSameProperties(compare, this) && ResourceDescription
-                .hasResourceDescriptionTheSameProperties(this, compare));
+        return (ResourceDescription.hasResourceDescriptionTheSameProperties(compare, this)
+                && ResourceDescription.hasResourceDescriptionTheSameProperties(this, compare));
 
     }
 

@@ -15,26 +15,21 @@ import spark.template.velocity.VelocityTemplateEngine;
 public class Tutorials extends SuperRestInterface {
     private static Map<String, Object> model = new HashMap<>();
 
-    public static void setupTutorialsVELOCITYInterface() throws IllegalArgumentException,
-            IOException {
+    public static void setupTutorialsVELOCITYInterface() throws IllegalArgumentException, IOException {
 
-        Spark.get(
-                "/tutorials",
-                (request, response) -> {
+        Spark.get("/tutorials", (request, response) -> {
 
-                    Tutorials.model.put("footer", new Footer().generateFooter());
-                    Tutorials.model.put("logo", new OpenapeLogo().generateOpenAPELogo());
-                    Tutorials.model.put("topNavigation",
-                            new Organism_1_Topsection().generateTopNavigation());
-                    Tutorials.model.put("subSection",
-                            new Organism_2_SubSection().generateTopNavigation());
+            Tutorials.model.put("footer", new Footer().generateFooter());
+            Tutorials.model.put("logo", new OpenapeLogo().generateOpenAPELogo());
+            Tutorials.model.put("topNavigation", new Organism_1_Topsection().generateTopNavigation());
+            Tutorials.model.put("subSection", new Organism_2_SubSection().generateTopNavigation());
 
-                    return new ModelAndView(Tutorials.model, "velocityTemplates/tutorials.vm"); // located
-                    // in
-                    // the
-                    // resources
-                    // directory
-                }, new VelocityTemplateEngine());
+            return new ModelAndView(Tutorials.model, "velocityTemplates/tutorials.vm"); // located
+            // in
+            // the
+            // resources
+            // directory
+        } , new VelocityTemplateEngine());
     }
 
     public Tutorials() throws IllegalArgumentException, IOException {

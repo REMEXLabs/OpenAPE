@@ -57,8 +57,7 @@ public class Property implements Serializable {
                 // if key fits check if value fits.
                 if (baseKey.equals(compareKey)) {
                     match = true;
-                    if (!base.getDescriptors().get(baseKey)
-                            .equals(compare.getDescriptors().get(compareKey))) {
+                    if (!base.getDescriptors().get(baseKey).equals(compare.getDescriptors().get(compareKey))) {
                         return false;
                     }
                 }
@@ -101,13 +100,12 @@ public class Property implements Serializable {
     @JsonIgnore
     public boolean equals(final Property compare) {
         // check if property attributes are equal.
-        if (!(this.getName().equals(compare.getName()) && this.getValue()
-                .equals(compare.getValue()))) {
+        if (!(this.getName().equals(compare.getName()) && this.getValue().equals(compare.getValue()))) {
             return false;
         } else {
             // check if descriptors are equal
-            return (Property.hasPropertyTheSameDescriptors(compare, this) && Property
-                    .hasPropertyTheSameDescriptors(this, compare));
+            return (Property.hasPropertyTheSameDescriptors(compare, this)
+                    && Property.hasPropertyTheSameDescriptors(this, compare));
         }
     }
 

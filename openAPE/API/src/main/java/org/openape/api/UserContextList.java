@@ -6,8 +6,8 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlElement;
 
 public class UserContextList {
-private int totalContexts;
+    private int totalContexts;
 
-@XmlElement("user-context-uris")
-private List<URI> userContextUris;
+    @XmlElement("user-context-uris")
+    private List<URI> userContextUris;
 }

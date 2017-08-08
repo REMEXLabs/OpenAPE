@@ -31,16 +31,14 @@ public class TaskContextRequestHandler {
      * @throws IllegalArgumentException
      *             if the parameter is not a complete task context.
      */
-    public String createTaskContext(final Object taskContext) throws IOException,
-            IllegalArgumentException {
+    public String createTaskContext(final Object taskContext) throws IOException, IllegalArgumentException {
         // get database connection.
         final DatabaseConnection databaseconnection = DatabaseConnection.getInstance();
         // try to store data. Class cast exceptions will be thrown as illegal
         // argument exceptions. IO exceptions will just be thrown through.
         String id = null;
         try {
-            id = databaseconnection.storeData(TaskContextRequestHandler.COLLECTIONTOUSE,
-                    (DatabaseObject) taskContext);
+            id = databaseconnection.storeData(TaskContextRequestHandler.COLLECTIONTOUSE, (DatabaseObject) taskContext);
         } catch (final ClassCastException e) {
             throw new IllegalArgumentException(e.getMessage());
         }
@@ -60,13 +58,11 @@ public class TaskContextRequestHandler {
      * @throws IllegalArgumentException
      *             if the id is no valid id or not assigned.
      */
-    public boolean deleteTaskContextById(final String id) throws IOException,
-            IllegalArgumentException {
+    public boolean deleteTaskContextById(final String id) throws IOException, IllegalArgumentException {
         // get database connection.
         final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
 
-        final boolean success = databaseConnection.deleteData(
-                TaskContextRequestHandler.COLLECTIONTOUSE, id);
+        final boolean success = databaseConnection.deleteData(TaskContextRequestHandler.COLLECTIONTOUSE, id);
         if (!success) {
             throw new IllegalArgumentException(
                     Messages.getString("TaskContextRequestHandler.NoObjectWithThatIDErrorMsg")); //$NON-NLS-1$
@@ -87,14 +83,12 @@ public class TaskContextRequestHandler {
      * @throws IllegalArgumentException
      *             if the id is no valid id or not assigned.
      */
-    public TaskContext getTaskContextById(final String id) throws IOException,
-            IllegalArgumentException {
+    public TaskContext getTaskContextById(final String id) throws IOException, IllegalArgumentException {
         // get database connection.
         final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
 
         // Get the requested data.
-        final DatabaseObject result = databaseConnection.getData(
-                TaskContextRequestHandler.COLLECTIONTOUSE, id);
+        final DatabaseObject result = databaseConnection.getData(TaskContextRequestHandler.COLLECTIONTOUSE, id);
 
         // If the result is null the id is not found.
         if (result == null) {

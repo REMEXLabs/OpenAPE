@@ -9,8 +9,7 @@ public class deleteUser {
         return this.adminSectionRequestHandler;
     }
 
-    public void setAdminSectionRequestHandler(
-            final AdminSectionRequestHandler adminSectionRequestHandler) {
+    public void setAdminSectionRequestHandler(final AdminSectionRequestHandler adminSectionRequestHandler) {
         this.adminSectionRequestHandler = adminSectionRequestHandler;
     }
 

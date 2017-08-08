@@ -15,26 +15,21 @@ import spark.template.velocity.VelocityTemplateEngine;
 public class Downloads extends SuperRestInterface {
     private static Map<String, Object> model = new HashMap<>();
 
-    public static void setupDownloadsVELOCITYInterface() throws IllegalArgumentException,
-            IOException {
+    public static void setupDownloadsVELOCITYInterface() throws IllegalArgumentException, IOException {
 
-        Spark.get(
-                "/downloads",
-                (request, response) -> {
+        Spark.get("/downloads", (request, response) -> {
 
-                    Downloads.model.put("footer", new Footer().generateFooter());
-                    Downloads.model.put("logo", new OpenapeLogo().generateOpenAPELogo());
-                    Downloads.model.put("topNavigation",
-                            new Organism_1_Topsection().generateTopNavigation());
-                    Downloads.model.put("subSection",
-                            new Organism_2_SubSection().generateTopNavigation());
+            Downloads.model.put("footer", new Footer().generateFooter());
+            Downloads.model.put("logo", new OpenapeLogo().generateOpenAPELogo());
+            Downloads.model.put("topNavigation", new Organism_1_Topsection().generateTopNavigation());
+            Downloads.model.put("subSection", new Organism_2_SubSection().generateTopNavigation());
 
-                    return new ModelAndView(Downloads.model, "velocityTemplates/downloads.vm"); // located
-                    // in
-                    // the
-                    // resources
-                    // directory
-                }, new VelocityTemplateEngine());
+            return new ModelAndView(Downloads.model, "velocityTemplates/downloads.vm"); // located
+            // in
+            // the
+            // resources
+            // directory
+        } , new VelocityTemplateEngine());
     }
 
     public Downloads() throws IllegalArgumentException, IOException {

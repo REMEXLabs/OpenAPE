@@ -29,7 +29,7 @@ public class ResourceObject extends Resource {
     public ResourceObject() {
         this.resourceDescriptions = new ArrayList<ResourceDescription>();
     }
-    
+
     public ResourceObject(final String fileName, final String ownerId, final String mimeType) {
         super();
         this.fileName = fileName;
@@ -45,6 +45,16 @@ public class ResourceObject extends Resource {
     @XmlAttribute(name = "fileName")
     public String getFileName() {
         return this.fileName;
+    }
+
+    /**
+     * @return Storage path of the resource, excluding the filename.
+     */
+    @JsonIgnore
+    public String getFolder() {
+        final String resourceFolderPath = Messages.getString("ResourceList.rootFolder") + File.separator //$NON-NLS-1$
+                + Messages.getString("ResourceList.ResourceFolder"); //$NON-NLS-1$
+        return resourceFolderPath + File.separator + this.getOwnerId();
     }
 
     @XmlAttribute(name = "id")
@@ -67,18 +77,9 @@ public class ResourceObject extends Resource {
      */
     @JsonIgnore
     public String getPath() {
-        final String resourceFolderPath = Messages.getString("ResourceList.rootFolder") + File.separator + Messages.getString("ResourceList.ResourceFolder"); //$NON-NLS-1$ //$NON-NLS-2$
-        return resourceFolderPath + File.separator + this.getOwnerId() + File.separator
-                + this.getFileName();
-    }
-    
-    /**
-     * @return Storage path of the resource, excluding the filename.
-     */
-    @JsonIgnore
-    public String getFolder() {
-        final String resourceFolderPath = Messages.getString("ResourceList.rootFolder") + File.separator + Messages.getString("ResourceList.ResourceFolder"); //$NON-NLS-1$ //$NON-NLS-2$
-        return resourceFolderPath + File.separator + this.getOwnerId();
+        final String resourceFolderPath = Messages.getString("ResourceList.rootFolder") + File.separator //$NON-NLS-1$
+                + Messages.getString("ResourceList.ResourceFolder"); //$NON-NLS-1$
+        return resourceFolderPath + File.separator + this.getOwnerId() + File.separator + this.getFileName();
     }
 
     @XmlElement(name = "resourceDescription")

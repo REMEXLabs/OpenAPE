@@ -31,8 +31,7 @@ public class EquipmentContextRequestHandler {
      * @throws IllegalArgumentException
      *             if the parameter is not a complete equipment context.
      */
-    public String createEquipmentContext(final Object equipmentContext) throws IOException,
-            IllegalArgumentException {
+    public String createEquipmentContext(final Object equipmentContext) throws IOException, IllegalArgumentException {
         // get database connection.
         final DatabaseConnection databaseconnection = DatabaseConnection.getInstance();
         // try to store data. Class cast exceptions will be thrown as illegal
@@ -60,13 +59,11 @@ public class EquipmentContextRequestHandler {
      * @throws IllegalArgumentException
      *             if the id is no valid id or not assigned.
      */
-    public boolean deleteEquipmentContextById(final String id) throws IOException,
-            IllegalArgumentException {
+    public boolean deleteEquipmentContextById(final String id) throws IOException, IllegalArgumentException {
         // get database connection.
         final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
 
-        final boolean success = databaseConnection.deleteData(
-                EquipmentContextRequestHandler.COLLECTIONTOUSE, id);
+        final boolean success = databaseConnection.deleteData(EquipmentContextRequestHandler.COLLECTIONTOUSE, id);
         if (!success) {
             throw new IllegalArgumentException(
                     Messages.getString("EquipmentContextRequestHandler.NoObjectWithThatIDErrorMsg")); //$NON-NLS-1$
@@ -87,14 +84,12 @@ public class EquipmentContextRequestHandler {
      * @throws IllegalArgumentException
      *             if the id is no valid id or not assigned.
      */
-    public EquipmentContext getEquipmentContextById(final String id) throws IOException,
-            IllegalArgumentException {
+    public EquipmentContext getEquipmentContextById(final String id) throws IOException, IllegalArgumentException {
         // get database connection.
         final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
 
         // Get the requested data.
-        final DatabaseObject result = databaseConnection.getData(
-                EquipmentContextRequestHandler.COLLECTIONTOUSE, id);
+        final DatabaseObject result = databaseConnection.getData(EquipmentContextRequestHandler.COLLECTIONTOUSE, id);
 
         // If the result is null the id is not found.
         if (result == null) {
