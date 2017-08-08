@@ -1,6 +1,7 @@
 package org.openape.server.api.group;
 
 import org.openape.api.groups.GroupMembershipStatus;
+import org.openape.server.database.mongoDB.DatabaseConnection;
 
 /**
  * This class defines a group member. Therefore it contains the user's id
@@ -42,7 +43,9 @@ public class GroupMember {
 	// *********************************************************************************************************************************************
 	// *********************************************************************************************************************************************
 
-	// TODO java doc
+	 /**
+     * Empty constructor. It is needed for the object mapping in {@link DatabaseConnection}:
+     */
 	public GroupMember() {
 
 	}

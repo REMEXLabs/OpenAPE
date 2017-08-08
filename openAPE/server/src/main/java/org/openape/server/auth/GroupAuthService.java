@@ -2,6 +2,7 @@ package org.openape.server.auth;
 
 import java.util.List;
 
+import org.openape.api.groups.GroupMembershipStatus;
 import org.openape.api.user.User;
 import org.openape.server.api.group.Group;
 
@@ -53,21 +54,32 @@ public class GroupAuthService extends AuthService {
     // public methods
     // *********************************************************************************************************************************************
     // *********************************************************************************************************************************************
-
-    public void allowOpenAPEAndGroupAdmin(final Request request, final Response response,
-            final Group group) throws UnauthorizedException {
+    
+    /**
+     * Checks whether the logged in user is an openAPE admin or an admin of the group.
+     * 
+     * @param request
+     *            the request. It must not be null!
+     * @param response
+     *            the response. It must not be null!
+     * @param group
+     *            the group, for which should be checked, whether the logged in user is allowed to edit it or not. It
+     *            must not be null!
+     * @throws UnauthorizedException
+     *             if the the logged in user is neither an openAPE admin nor an admin of the group.
+     */
+    public void allowOpenAPEAndGroupAdmin(final Request request, final Response response, final Group group)
+            throws UnauthorizedException {
         final User user = this.getAuthenticatedUser(request, response);
         final List<String> roles = user.getRoles();
-        // TODO is role admin correct?
-        if (!group.isUserGroupAdmin(user.getId()) && !roles.contains("admin")) {
+        if (!group.isUserAssigendAs(user.getId(), GroupMembershipStatus.ADMIN) && !roles.contains("admin")) {
             throw new UnauthorizedException("You are not allowed to perform this operation");
         }
     }
 
-    public void allowGroupAdmin(Request req, Response response, Group group)
-            throws UnauthorizedException {
-        // TODO implement
-    }
+    
+    
+    
     // *********************************************************************************************************************************************
     // *********************************************************************************************************************************************
     // protected methods

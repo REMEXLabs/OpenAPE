@@ -36,9 +36,10 @@ public class GroupManagementRestInterface extends SuperRestInterface {
             final String jsonData = mapper.writeValueAsString(result);
             return jsonData;
         });
-/* receive requests for new resource groups
- *start the creation process of the group 
- */
+        /*
+         * receive requests for new resource groupsstart the creation process of
+         * the group
+         */
         Spark.post(
                 OpenAPEEndPoints.GROUPS,
                 (req, res) -> {
@@ -65,43 +66,50 @@ public class GroupManagementRestInterface extends SuperRestInterface {
                     }
 
                 });
-        /* Receive requests to add users to an existing group
-         * start adding process
+        /*
+         * Receive requests to add users to an existing group start adding
+         * process
          */
-        
+
         Spark.put(
                 OpenAPEEndPoints.GROUP_MEMBER,
                 (req, res) -> {
-                	try{
-                	final GroupMembershipRequest gmsr = SuperRestInterface.extractFromRequest(
-                                                		GroupMembershipRequest.class, req);
+                    try {
+                        final GroupMembershipRequest gmsr = SuperRestInterface.extractFromRequest(
+                                GroupMembershipRequest.class, req);
 
-                    DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
-                                        Group group = (Group) databaseConnection.getData(MongoCollectionTypes.GROUPS	 ,req.params(":groupId") ); 
-                    
-                                        String requestedUser = gmsr.getUserId();
-                                        if (!requestedUser.equals(req.params(":userId")) && ProfileHandler.userExists(requestedUser) ){
-                                        	res.status( 400);
-                                        	return "Bad request";
-                                        }
-                                        
-                                        if (!group.isMember(requestedUser) ) {
-                                        	if (authService.getAuthenticatedUser(req,res).getId().equals(requestedUser) && ((gmsr.getStatus() == GroupMembershipStatus.APPLYED) || group.isOpenAccess )) {
-                                        		GroupManagementHandler.addMember(requestedUser, gmsr.getStatus(), group);
-                                        }
-                	} else {
-                                        GroupAuthService.allowGroupAdmin(req, res, group);
-                                        GroupManagementHandler.addMember(requestedUser, gmsr.getStatus(), group);
-                	}
-                    return "Success";
-                            } catch (IllegalArgumentException e) {
-                            	res.status(404);
-                            	return OpenAPEEndPoints.GROUP_DOES_NOT_EXIST;	
-                            } catch (IOException e) {
-                            	res.status(500);
-                            	return "internal server error";
+                        DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
+                        Group group = (Group) databaseConnection.getData(
+                                MongoCollectionTypes.GROUPS, req.params(":groupId"));
+
+                        String requestedUser = gmsr.getUserId();
+                        if (!requestedUser.equals(req.params(":userId"))
+                                && ProfileHandler.userExists(requestedUser)) {
+                            res.status(400);
+                            return "Bad request";
+                        }
+
+                        if (!group.isUserAssigend(requestedUser)) {
+                            if (authService.getAuthenticatedUser(req, res).getId()
+                                    .equals(requestedUser)
+                                    && ((gmsr.getStatus() == GroupMembershipStatus.APPLYED) || group.isOpenAccess())) {
+                                GroupManagementHandler.addMember(requestedUser, gmsr.getStatus(),
+                                        group);
                             }
-                            
+                        } else {
+                            GroupAuthService groupAuthService = new GroupAuthService();
+                            groupAuthService.allowOpenAPEAndGroupAdmin(req, res, group);
+                            GroupManagementHandler.addMember(requestedUser, gmsr.getStatus(), group);
+                        }
+                        return "Success";
+                    } catch (IllegalArgumentException e) {
+                        res.status(404);
+                        return OpenAPEEndPoints.GROUP_DOES_NOT_EXIST;
+                    } catch (IOException e) {
+                        res.status(500);
+                        return "internal server error";
+                    }
+
                 });
     }
 }
