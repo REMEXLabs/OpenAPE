@@ -1,0 +1,16 @@
+#footer {
+  text-align: center;
+  border-top: 4px solid #740a1b;
+  padding: 2em;
+  color: white;
+  font-weight: bold;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 6em;
+  /* Height of the footer */
+  background-color: #3b3b3b; }
+  #footer a {
+    color: #e31134; }
+
+/*# sourceMappingURL=footer.css.map */

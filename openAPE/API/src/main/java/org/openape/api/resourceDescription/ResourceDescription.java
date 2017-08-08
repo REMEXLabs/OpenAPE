@@ -23,9 +23,9 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.openape.api.Property;
+import org.openape.api.Resource;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.openape.api.Resource;
 
 /**
  * Resource description object defined in 7.7.1
@@ -42,8 +42,8 @@ public class ResourceDescription extends Resource {
      * @param compare
      * @return true, if compare has the same properties as base, false if not.
      */
-    private static boolean hasResourceDescriptionTheSameProperties(ResourceDescription base,
-            ResourceDescription compare) {
+    private static boolean hasResourceDescriptionTheSameProperties(final ResourceDescription base,
+            final ResourceDescription compare) {
         for (final Property baseProperty : base.getPropertys()) {
             // Match checks if for each property in this there is one in
             // compare.
@@ -70,7 +70,7 @@ public class ResourceDescription extends Resource {
         this.propertys = new ArrayList<Property>();
     }
 
-    public void addProperty(Property property) {
+    public void addProperty(final Property property) {
         this.propertys.add(property);
 
     }
@@ -83,7 +83,7 @@ public class ResourceDescription extends Resource {
      * @return true if contexts are equal in field values, false else.
      */
     @JsonIgnore
-    public boolean equals(ResourceDescription compare) {
+    public boolean equals(final ResourceDescription compare) {
         return (ResourceDescription.hasResourceDescriptionTheSameProperties(compare, this) && ResourceDescription
                 .hasResourceDescriptionTheSameProperties(this, compare));
 
@@ -100,7 +100,7 @@ public class ResourceDescription extends Resource {
         return true;
     }
 
-    public void setPropertys(List<Property> propertys) {
+    public void setPropertys(final List<Property> propertys) {
         this.propertys = propertys;
     }
 

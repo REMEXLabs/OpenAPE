@@ -1,0 +1,34 @@
+.content{
+	padding-bottom:60px;   /* Height of the footer */
+	display: flex;
+	
+	
+	.leftContent {
+		min-height:30em;
+		float:left;
+		display:block;
+		min-width:16em;
+		text-align:center;	
+		
+		.shadow {
+   -moz-box-shadow:    inset 0 0 10px #000000;
+   -webkit-box-shadow: inset 0 0 10px #000000;
+   box-shadow:         inset 0 0 10px #000000;
+}
+	}
+
+	.rightContent {
+		min-height:30em;
+		display:block;
+		padding:1em;
+		border-left: 2px solid #cfc9c9;
+		
+	}
+
+	.mainContent {
+		
+		padding:3em;
+	}
+}
+
+

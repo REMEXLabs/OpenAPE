@@ -24,7 +24,7 @@ public class ListingRequestHandler {
      * @param value
      * @return
      */
-    public boolean confirmUserRating(float value) {
+    public boolean confirmUserRating(final float value) {
         return false;
     }
 
@@ -41,7 +41,7 @@ public class ListingRequestHandler {
      * @throws IllegalArgumentException
      *             if the parameter is not a complete environment context.
      */
-    public String createListing(Object listing) throws IOException, IllegalArgumentException {
+    public String createListing(final Object listing) throws IOException, IllegalArgumentException {
         // get database connection.
         final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
         // try to store data. Class cast exceptions will be thrown as illegal
@@ -69,7 +69,7 @@ public class ListingRequestHandler {
      * @throws IllegalArgumentException
      *             if the id is no valid id or not assigned.
      */
-    public boolean deleteListingById(String id) throws IOException, IllegalArgumentException {
+    public boolean deleteListingById(final String id) throws IOException, IllegalArgumentException {
         // get database connection.
         final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
 
@@ -95,7 +95,7 @@ public class ListingRequestHandler {
      * @throws IllegalArgumentException
      *             if the id is no valid id or not assigned.
      */
-    public Listing getListingById(String id) throws IOException, IllegalArgumentException {
+    public Listing getListingById(final String id) throws IOException, IllegalArgumentException {
         // get database connection.
         final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
 
