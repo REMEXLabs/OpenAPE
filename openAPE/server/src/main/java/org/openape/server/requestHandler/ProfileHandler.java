@@ -12,6 +12,8 @@ import org.openape.server.database.mongoDB.MongoCollectionTypes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.mongodb.internal.thread.DaemonThreadFactory;
+
 public class ProfileHandler {
     static Logger logger = LoggerFactory.getLogger(ProfileHandler.class);
 
@@ -63,5 +65,19 @@ public class ProfileHandler {
         }
 
     }
+
+	public static boolean userExists(String userId) throws IOException {
+		DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
+		
+		User user = (User) databaseConnection.getByUniqueAttribute(MongoCollectionTypes.USERS, "userid", userId);
+		if (user == null) {
+			return false;
+		} else {
+			return true;
+		}
+		
+		
+		
+	}
 
 }

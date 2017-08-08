@@ -1,21 +1,29 @@
 package org.openape.server.rest;
 
 import java.io.IOException;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.openape.api.OpenAPEEndPoints;
 import org.openape.api.groups.GroupListElement;
 import org.openape.api.groups.GroupMembershipRequest;
+import org.openape.api.groups.GroupMembershipStatus;
 import org.openape.api.groups.GroupRequest;
 import org.openape.api.user.User;
+import org.openape.server.api.group.Group;
+import org.openape.server.api.group.GroupMember;
 import org.openape.server.auth.AuthService;
+import org.openape.server.auth.GroupAuthService;
+import org.openape.server.database.mongoDB.DatabaseConnection;
+import org.openape.server.database.mongoDB.MongoCollectionTypes;
 import org.openape.server.requestHandler.GroupManagementHandler;
-
-import spark.Spark;
+import org.openape.server.requestHandler.ProfileHandler;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import spark.Spark;
 
 public class GroupManagementRestInterface extends SuperRestInterface {
 
@@ -28,7 +36,9 @@ public class GroupManagementRestInterface extends SuperRestInterface {
             final String jsonData = mapper.writeValueAsString(result);
             return jsonData;
         });
-
+/* receive requests for new resource groups
+ *start the creation process of the group 
+ */
         Spark.post(
                 OpenAPEEndPoints.GROUPS,
                 (req, res) -> {
@@ -55,13 +65,43 @@ public class GroupManagementRestInterface extends SuperRestInterface {
                     }
 
                 });
+        /* Receive requests to add users to an existing group
+         * start adding process
+         */
+        
         Spark.put(
                 OpenAPEEndPoints.GROUP_MEMBER,
                 (req, res) -> {
-                    final GroupMembershipRequest gmsr = SuperRestInterface.extractFromRequest(
-                            GroupMembershipRequest.class, req);
+                	try{
+                	final GroupMembershipRequest gmsr = SuperRestInterface.extractFromRequest(
+                                                		GroupMembershipRequest.class, req);
 
+                    DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
+                                        Group group = (Group) databaseConnection.getData(MongoCollectionTypes.GROUPS	 ,req.params(":groupId") ); 
+                    
+                                        String requestedUser = gmsr.getUserId();
+                                        if (!requestedUser.equals(req.params(":userId")) && ProfileHandler.userExists(requestedUser) ){
+                                        	res.status( 400);
+                                        	return "Bad request";
+                                        }
+                                        
+                                        if (!group.isMember(requestedUser) ) {
+                                        	if (authService.getAuthenticatedUser(req,res).getId().equals(requestedUser) && ((gmsr.getStatus() == GroupMembershipStatus.APPLYED) || group.isOpenAccess )) {
+                                        		GroupManagementHandler.addMember(requestedUser, gmsr.getStatus(), group);
+                                        }
+                	} else {
+                                        GroupAuthService.allowGroupAdmin(req, res, group);
+                                        GroupManagementHandler.addMember(requestedUser, gmsr.getStatus(), group);
+                	}
                     return "Success";
+                            } catch (IllegalArgumentException e) {
+                            	res.status(404);
+                            	return OpenAPEEndPoints.GROUP_DOES_NOT_EXIST;	
+                            } catch (IOException e) {
+                            	res.status(500);
+                            	return "internal server error";
+                            }
+                            
                 });
     }
 }

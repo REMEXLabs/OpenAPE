@@ -54,8 +54,7 @@ public class UserContextRESTInterface extends SuperRestInterface {
                         final UserContext receivedUserContext = (UserContext) SuperRestInterface
                                 .extractObjectFromRequest(req, UserContext.class);
                         // Make sure to set the id of the authenticated user as
-                        // the
-                        // ownerId
+                        // the                 ownerId
                         SuperRestInterface.logger.debug("lusm: requesting user");
                         final String id = auth.getAuthenticatedUser(req, res).getId();
                         SuperRestInterface.logger.info("id: " + id);

@@ -118,5 +118,4 @@ public class ResourceObject extends Resource {
     public void setResourceDescriptions(final List<ResourceDescription> resourceDescriptions) {
         this.resourceDescriptions = resourceDescriptions;
     }
-
 }

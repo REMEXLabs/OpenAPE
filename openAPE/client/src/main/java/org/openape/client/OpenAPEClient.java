@@ -29,6 +29,7 @@ import org.openape.api.usercontext.UserContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+
 /**
  * @author Lukas Smirek
  */
@@ -39,6 +40,7 @@ public class OpenAPEClient {
     static final String EQUIPMENT_CONTEXT_PATH = "api/equipment-contexts";
     static final String TASK_CONTEXT_PATH = "api/task-contexts";
     static final String USER_CONTEXT_PATH = "api/user-contexts";
+
     static final String LISTING_PATH = "api/listings";
     private final Client client;
     private final WebTarget webResource;
