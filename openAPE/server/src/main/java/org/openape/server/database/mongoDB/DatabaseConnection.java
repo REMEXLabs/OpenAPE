@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import org.bson.Document;
@@ -22,6 +23,7 @@ import org.openape.server.requestHandler.UserContextRequestHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mongodb.BasicDBObject;
 import com.mongodb.MongoClient;
@@ -144,6 +146,10 @@ public class DatabaseConnection implements ServerMonitorListener {
      * Database collection holding the users.
      */
     private MongoCollection<Document> userCollection;
+    /**
+     * Database collection holding the groups.
+     */
+    private MongoCollection<Document> groupCollection;
 
     /**
      * private constructor to create the singleton database connection instance.
@@ -195,6 +201,7 @@ public class DatabaseConnection implements ServerMonitorListener {
         this.resourceObjectCollection = this.database
                 .getCollection(MongoCollectionTypes.RESOURCEOBJECTS.toString());
         this.userCollection = this.database.getCollection(MongoCollectionTypes.USERS.toString());
+        this.groupCollection = this.database.getCollection(MongoCollectionTypes.GROUPS.toString()); 
 
     }
 
@@ -238,6 +245,30 @@ public class DatabaseConnection implements ServerMonitorListener {
         // Make sure username is unique for all users
         this.userCollection.createIndex(new BasicDBObject("username", 1),
                 new IndexOptions().unique(true));
+    }
+    
+    // TODO java doc
+    private DatabaseObject convertDocumentToDatabaseObject(final MongoCollectionTypes type,
+            final Document resultDocument, final boolean includeId)
+            throws com.fasterxml.jackson.core.JsonParseException, JsonMappingException, IOException {
+        DatabaseObject databaseObject = null;
+        try {
+            // Remove the MongoDB id field
+            final ObjectId oid = (ObjectId) resultDocument.get("_id");
+            resultDocument.remove(Messages.getString("DatabaseConnection._id")); //$NON-NLS-1$
+            if (includeId) {
+                resultDocument.append("id", oid.toString());
+            }
+            String jsonResult = resultDocument.toJson();
+            // reverse mongo special character replacement.
+            jsonResult = this.reverseMongoSpecialCharsReplacement(jsonResult);
+            final ObjectMapper mapper = new ObjectMapper();
+            databaseObject = mapper.readValue(jsonResult, type.getDocumentType());
+        } catch (CodecConfigurationException | IOException | JsonParseException e) {
+            e.printStackTrace();
+            throw new IOException(e.getMessage());
+        }
+        return databaseObject;
     }
 
     /**
@@ -387,6 +418,8 @@ public class DatabaseConnection implements ServerMonitorListener {
             return this.resourceObjectCollection;
         } else if (type.equals(MongoCollectionTypes.USERS)) {
             return this.userCollection;
+        } else if (type.equals(MongoCollectionTypes.GROUPS)) {
+            return this.groupCollection;
         } else {
             return null; // Should never occur.
         }
@@ -412,6 +445,23 @@ public class DatabaseConnection implements ServerMonitorListener {
         final BasicDBObject query = new BasicDBObject();
         query.put(Messages.getString("DatabaseConnection._id"), new ObjectId(id));
         return this.executeQuery(type, collectionToWorkOn, query, false);
+    }
+    
+    // TODO java doc
+    public List<DatabaseObject> getDocumentsByQuery(final MongoCollectionTypes type, BasicDBObject query,
+            final boolean includeId) throws IOException {
+        final List<DatabaseObject> databaseObjects = new ArrayList<DatabaseObject>();
+        if (query == null) {
+            query = new BasicDBObject();
+        }
+        final MongoCollection<Document> collectionToWorkOn = this.getCollectionByType(type);
+        final MongoCursor<Document> cursor = collectionToWorkOn.find(query).iterator();
+        while (cursor.hasNext()) {
+            final Document resultDocument = cursor.next();
+            databaseObjects.add(this.convertDocumentToDatabaseObject(type, resultDocument, includeId));
+        }
+        cursor.close();
+        return databaseObjects;
     }
 
     private void readConfigFile() {
@@ -468,7 +518,6 @@ public class DatabaseConnection implements ServerMonitorListener {
         final Bson filter = new Document(Messages.getString("DatabaseConnection._id"),
                 new ObjectId(id));
         collectionToWorkOn.deleteOne(filter);
-
     }
 
     /**
@@ -480,16 +529,16 @@ public class DatabaseConnection implements ServerMonitorListener {
      *             if it already contains '#046' or '#036".
      */
     private String replaceMongoSpecialChars(String jsonToStore) throws IllegalArgumentException {
-        if (jsonToStore.contains(Messages.getString("DatabaseConnection.pointAsciiCode")) || jsonToStore.contains(Messages.getString("DatabaseConnection.$AsciiCode"))) { //$NON-NLS-1$ //$NON-NLS-2$
+        if (jsonToStore.contains(Messages.getString("DatabaseConnection.pointAsciiCode")) //$NON-NLS-1$
+                || jsonToStore.contains(Messages.getString("DatabaseConnection.$AsciiCode"))) { //$NON-NLS-1$
             throw new IllegalArgumentException(
                     Messages.getString("DatabaseConnection.specialCharReplacementInUseErrorMsg")); //$NON-NLS-1$
-        } else if (jsonToStore.contains(Messages.getString("DatabaseConnection.point")) || jsonToStore.contains(Messages.getString("DatabaseConnection.$"))) { //$NON-NLS-1$ //$NON-NLS-2$
-            jsonToStore = jsonToStore
-                    .replace(
-                            Messages.getString("DatabaseConnection.point"), Messages.getString("DatabaseConnection.pointAsciiCode")); //$NON-NLS-1$ //$NON-NLS-2$
-            jsonToStore = jsonToStore
-                    .replace(
-                            Messages.getString("DatabaseConnection.$"), Messages.getString("DatabaseConnection.$AsciiCode")); //$NON-NLS-1$ //$NON-NLS-2$
+        } else if (jsonToStore.contains(Messages.getString("DatabaseConnection.point")) //$NON-NLS-1$
+                || jsonToStore.contains(Messages.getString("DatabaseConnection.$"))) { //$NON-NLS-1$
+            jsonToStore = jsonToStore.replace(Messages.getString("DatabaseConnection.point"), //$NON-NLS-1$
+                    Messages.getString("DatabaseConnection.pointAsciiCode")); //$NON-NLS-1$
+            jsonToStore = jsonToStore.replace(Messages.getString("DatabaseConnection.$"), //$NON-NLS-1$
+                    Messages.getString("DatabaseConnection.$AsciiCode")); //$NON-NLS-1$
         }
         return jsonToStore;
     }
@@ -502,13 +551,14 @@ public class DatabaseConnection implements ServerMonitorListener {
      */
     private String reverseMongoSpecialCharsReplacement(String jsonFromStorage)
             throws IllegalArgumentException {
-        if (jsonFromStorage.contains(Messages.getString("DatabaseConnection.pointAsciiCode")) || jsonFromStorage.contains(Messages.getString("DatabaseConnection.$AsciiCode"))) { //$NON-NLS-1$ //$NON-NLS-2$
-            jsonFromStorage = jsonFromStorage
-                    .replace(
-                            Messages.getString("DatabaseConnection.pointAsciiCode"), Messages.getString("DatabaseConnection.point")); //$NON-NLS-1$ //$NON-NLS-2$
-            jsonFromStorage = jsonFromStorage
-                    .replace(
-                            Messages.getString("DatabaseConnection.$AsciiCode"), Messages.getString("DatabaseConnection.$")); //$NON-NLS-1$ //$NON-NLS-2$
+        if (jsonFromStorage.contains(Messages.getString("DatabaseConnection.pointAsciiCode")) //$NON-NLS-1$
+                || jsonFromStorage.contains(Messages.getString("DatabaseConnection.$AsciiCode"))) { //$NON-NLS-1$
+            jsonFromStorage = jsonFromStorage.replace(
+                    Messages.getString("DatabaseConnection.pointAsciiCode"), //$NON-NLS-1$
+                    Messages.getString("DatabaseConnection.point")); //$NON-NLS-1$
+            jsonFromStorage = jsonFromStorage.replace(
+                    Messages.getString("DatabaseConnection.$AsciiCode"), //$NON-NLS-1$
+                    Messages.getString("DatabaseConnection.$")); //$NON-NLS-1$
         }
         return jsonFromStorage;
     }
@@ -532,7 +582,8 @@ public class DatabaseConnection implements ServerMonitorListener {
                 + DatabaseConnection.DATABASEURL + ":" + DatabaseConnection.DATABASEPORT
                 + " failed.\n" + event);
         DatabaseConnection.firstTime = true; // logger can now indicate when new
-        // connection will be found again.
+                                             // connection will be found
+                                             // again.
     }
 
     @Override
@@ -661,7 +712,6 @@ public class DatabaseConnection implements ServerMonitorListener {
         final Bson updateOperationDocument = new Document("$set", newValue);
 
         UpdateResult updateResult = null;
-
         try {
             updateResult = collectionToWorkOn.updateOne(filter, updateOperationDocument);
         } catch (final Exception err) {

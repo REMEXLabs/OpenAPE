@@ -27,7 +27,7 @@ public class GetResourceReturnType {
     public void setFile(final File file) {
         this.file = file;
     }
-
+    
     public void setResourceObject(final ResourceObject resourceObject) {
         this.resourceObject = resourceObject;
     }

@@ -1,19 +1,22 @@
-package org.openape.api.group;
+package org.openape.server.api.group;
 
-import java.util.List;
+import org.openape.api.groups.GroupMembershipStatus;
+import org.openape.server.database.mongoDB.DatabaseConnection;
 
 /**
- * This class defines a group. A group has members. Some of those members can also be admins of the group. Group admins
- * are allowed to edit a group and their memberships. The registry server uses groups to manage the access rights for
- * the concepts. For each concept it is defined which group is allowed to read, update and delete it. Thus which access
- * right an user has, depends on his group member ships.
- * 
- * This class is not thread safe.
- * 
+ * This class defines a group member. Therefore it contains the user's id
+ * {@link IUser#getId()} and a flag, whether this user is only a member or also
+ * an admin of the group. The group member will be stored in a list of the group
+ * {@link IGroup#getMembers()}. Thus this class does not contain a group id
+ * {@link IGroup#getId()}. The state of the group member ship is defined by
+ * {@link #state}.
+ *
+ * This class is thread safe.
+ *
  * @author Tobias Ableitner
  *
  */
-public class Group {
+public class GroupMember {
 
 	// *********************************************************************************************************************************************
 	// *********************************************************************************************************************************************
@@ -22,87 +25,95 @@ public class Group {
 	// *********************************************************************************************************************************************
 
 	/**
-	 * Group's id.
+	 * The members user id {@link IUser#getId()}.
 	 */
-	private int id;
+	private String userId;
 
 	/**
-	 * Group's name.
+	 * The state of the group member ship.
 	 */
-	private String name;
+	private GroupMembershipStatus state;
 
-	/**
-	 * Users who are members of the group.
-	 */
-	private List<GroupMember> members;
 
-	
-	
-	
+
+
 	// *********************************************************************************************************************************************
 	// *********************************************************************************************************************************************
 	// constructors
 	// *********************************************************************************************************************************************
 	// *********************************************************************************************************************************************
 
-	/**
-	 * Create a new group and set's the value of {@link Group#id} to -1. This constructor should be used, to instantiate groups, which are not already stored in the database.
-	 * @param name the name of the group. It must not be null or empty. Otherwise an {@link IllegalArgumentException} will be thrown.
-	 * @param members list with the members of this the group. If the group has no member(s) it can be empty but not null. If it is null, an {@link IllegalArgumentException} will be thrown.
-	 */
-	public Group(String name, List<GroupMember> members){
-		this(-1, name, members);
+	 /**
+     * Empty constructor. It is needed for the object mapping in {@link DatabaseConnection}:
+     */
+	public GroupMember() {
+
 	}
-	
+
 	/**
-	 * Create a new group. This constructor should be used, to instantiate groups, which are already stored in the database.
-	 * @param id the id of the group. It must be greater equals 1. Otherwise an {@link IllegalArgumentException} will be thrown.
-	 * @param name the name of the group. It must not be null or empty. Otherwise an {@link IllegalArgumentException} will be thrown.
-	 * @param members list with the members of this the group. If the group has no member(s) it can be empty but not null. If it is null, an {@link IllegalArgumentException} will be thrown.
+	 * Create a group member.
+	 *
+	 * @param userId
+	 *            user id {@link IUser#getId()} of the user, who is the group
+	 *            member. It must not be null or empty.
+	 * @param state
+	 *            the state of the group member ship. It must not be null!
 	 */
-	public Group(int id, String name, List<GroupMember> members){
-		this.setId(id);
-		this.setName(name);
-		this.setMembers(members);
+	public GroupMember(final String userId, final GroupMembershipStatus state) {
+		this.setUserId(userId);
+		this.setState(state);
 	}
-	
 
 
-	
+
+
 	// *********************************************************************************************************************************************
 	// *********************************************************************************************************************************************
 	// getters and setters
 	// *********************************************************************************************************************************************
 	// *********************************************************************************************************************************************
 
-	public int getId() {
-		return this.id;
+	/**
+	 * Getter for the state {@link #state} of the group member ship.
+	 *
+	 * @return state of the group member ship
+	 */
+	public GroupMembershipStatus getState() {
+		return this.state;
 	}
 
-	public void setId(int id) {
-		//Checker.checkIntegerGreaterEquals(id, "id", -1);
-		this.id = id;
+	/**
+	 * Getter for the user id {@link IUser#getId()} of the group member.
+	 *
+	 * @return user id of the group member
+	 */
+	public String getUserId() {
+		return this.userId;
 	}
 
-	public String getName() {
-		return this.name;
+	/**
+	 * Setter for the state {@link #state} of the group member ship.
+	 *
+	 * @param the
+	 *            state of the group member ship. It must not be null!
+	 */
+	public void setState(final GroupMembershipStatus state) {
+		this.state = state;
 	}
 
-	public void setName(String name) {
-		//Checker.checkNullAndEmptiness(name, "name");
-		this.name = name;
+	/**
+	 * Setter for the user id {@link IUser#getId()} of the group member. It must
+	 * not be null or empty.
+	 *
+	 * @param userId
+	 *            user id {@link IUser#getId()} of the group member
+	 */
+	public void setUserId(final String userId) {
+		// Checker.checkUserId(userId);
+		this.userId = userId;
 	}
 
-	public List<GroupMember> getMembers() {
-		return this.members;
-	}
 
-	public void setMembers(List<GroupMember> members) {
-		//Checker.checkNull(members, "members");
-		this.members = members;
-	}
-	
-	
 
 
 	// *********************************************************************************************************************************************
@@ -111,8 +122,8 @@ public class Group {
 	// *********************************************************************************************************************************************
 	// *********************************************************************************************************************************************
 
-	
-	
+
+
 
 	// *********************************************************************************************************************************************
 	// *********************************************************************************************************************************************
@@ -120,19 +131,6 @@ public class Group {
 	// *********************************************************************************************************************************************
 	// *********************************************************************************************************************************************
 
-	public boolean isUserGroupAdmin(int userId){
-		//Checker.checkUserId(userId);
-		boolean isGroupAdmin = false;
-		for(GroupMember groupMember : this.members){
-			if(groupMember.getUserId() == userId){
-				if(groupMember.isGroupAdmin()){
-					isGroupAdmin = true;
-				}
-				break;
-			}
-		}
-		return isGroupAdmin;
-	}
 
 
 

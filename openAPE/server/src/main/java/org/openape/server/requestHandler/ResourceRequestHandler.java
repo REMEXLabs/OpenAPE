@@ -66,7 +66,6 @@ public class ResourceRequestHandler {
         final ResourceDescriptionRequestHandler resourceDescriptionRequestHandler = new ResourceDescriptionRequestHandler();
         resourceDescriptionRequestHandler.deleteAllDescriptionsOfAResource(id);
         return success;
-
     }
 
     /**

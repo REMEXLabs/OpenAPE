@@ -186,6 +186,7 @@
 	<modules>
 		<module>API</module>
 		<module>server</module>
-		<!-- <module>client</module> -->
+		 
+<module>client</module> 
 	</modules>
 </project>

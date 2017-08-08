@@ -4,9 +4,12 @@ import java.io.File;
 import java.io.IOException;
 
 import org.openape.api.Messages;
+import org.openape.api.groups.GroupMembershipRequest;
+import org.openape.server.admin.AdminInterface;
 import org.openape.server.auth.AuthService;
 import org.openape.server.requestHandler.EnvironmentContextRequestHandler;
 import org.openape.server.requestHandler.EquipmentContextRequestHandler;
+import org.openape.server.requestHandler.GroupManagementHandler;
 import org.openape.server.requestHandler.ListingRequestHandler;
 import org.openape.server.requestHandler.ResourceDescriptionRequestHandler;
 import org.openape.server.requestHandler.ResourceRequestHandler;
@@ -45,6 +48,12 @@ public class SuperRestInterface {
     public static final int HTTP_STATUS_NOT_FOUND = 404;
     public static final int HTTP_STATUS_INTERNAL_SERVER_ERROR = 500;
     private static final boolean TEST_ENVIRONMENT = true;
+
+    public static GroupMembershipRequest extractFromRequest(
+            final Class<GroupMembershipRequest> class1, final Request req) {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
     /**
      * Get a sent json object from a request.
@@ -86,17 +95,19 @@ public class SuperRestInterface {
         Spark.staticFiles.externalLocation(System.getProperty("java.io.tmpdir") + "/extContent");
 
         // before filter enables CORS
-        /*
-         * Spark.before("/*", (q, response) -> {
-         * logger.debug("Received api call: " + q.protocol() + "" + q.uri());
-         * response.header("Access-Control-Allow-Origin", "*");
-         * response.header("Access-Control-Request-Method",
-         * "GET,PUT,POST,DELETE,OPTIONS"); //
-         * response.header("Access-Control-Allow-Headers", headers);
-         * 
-         * });
-         */
+        Spark.before("/*", (q, response) -> {
+            SuperRestInterface.logger.info("lusm: " + q.headers("Authorization"));
+            SuperRestInterface.logger.debug("Received api call: " + q.protocol() + "" + q.uri());
+            response.header("Access-Control-Allow-Origin", "*");
+            // response.header("Access-Control-Request-Method",
+            // "GET,PUT,POST,DELETE,OPTIONS");
+                response.header("Access-Control-Request-Method", "*");
+                // response.header("Access-Control-Allow-Headers", headers);
+                response.header("Access-Control-Allow-Headers", "Authorization");
+                response.header("Access-Control-Max-Age", "1728000");
+                response.header("Cache-Control", "no-cache");
 
+            });
         Spark.options(
                 "/*",
                 (request, response) -> {
@@ -116,15 +127,16 @@ public class SuperRestInterface {
                     return 200;
                 });
 
-        Spark.before((request, response) -> {
-            response.header("Access-Control-Allow-Origin", "*");
-            response.header("Access-Control-Request-Method", "*");
-            response.header("Access-Control-Allow-Headers", "*");
-            response.header("Access-Control-Max-Age", "1728000");
-            response.header("Cache-Control", "no-cache");
-
-        });
-
+        /*
+         * Spark.before((request, response) -> {
+         * response.header("Access-Control-Allow-Origin", "*");
+         * response.header("Access-Control-Request-Method", "*");
+         * response.header("Access-Control-Allow-Headers", "*");
+         * response.header("Access-Control-Max-Age", "1728000");
+         * response.header("Cache-Control", "no-cache");
+         * 
+         * });
+         */
         Spark.get("api", (request, response) -> new API());
 
         // AuthService singleton to enable security features on REST endpoints
@@ -137,26 +149,16 @@ public class SuperRestInterface {
 
         // Test endpoint to see if server runs. Invoke locally:
         // http://localhost:4567/hello
-        Spark.get(
-                Messages.getString("UserContextRESTInterface.HelloWorldURL"), (request, response) -> Messages.getString("UserContextRESTInterface.HelloWorld")); //$NON-NLS-1$ //$NON-NLS-2$
+        Spark.get(Messages.getString("UserContextRESTInterface.HelloWorldURL"), //$NON-NLS-1$
+                (request, response) -> Messages.getString("UserContextRESTInterface.HelloWorld")); //$NON-NLS-1$
 
-        Spark.get(
-                Messages.getString("SuperRestInterface.HelloWorldURL"), (request, response) -> Messages.getString("SuperRestInterface.HelloWorld")); //$NON-NLS-1$ //$NON-NLS-2$
+        Spark.get(Messages.getString("SuperRestInterface.HelloWorldURL"), //$NON-NLS-1$
+                (request, response) -> Messages.getString("SuperRestInterface.HelloWorld")); //$NON-NLS-1$
         // Endpoint to receive tokens
+        AdminInterface.setupAdminRestInterface(authService);
         TokenRESTInterface.setupTokenRESTInterface(authService);
         ProfileRESTInterface.setupProfileRESTInterface();
-
-        // Resource endpoints
-        EnvironmentContextRESTInterface.setupEnvironmentContextRESTInterface(
-                new EnvironmentContextRequestHandler(), authService);
-        EquipmentContextRESTInterface.setupEquipmentContextRESTInterface(
-                new EquipmentContextRequestHandler(), authService);
-        ListingRESTInterface.setupListingRESTInterface(new ListingRequestHandler());
-
-        ResourceDescriptionRESTInterface.setupResourceDescriptionRESTInterface(
-                new ResourceDescriptionRequestHandler(), authService);
-
-        ResourceRESTInterface.setupResourceRESTInterface(new ResourceRequestHandler(), authService);
+        
         try {
             Administration.setupAdministrationVELOCITYInterface(new AdminSectionRequestHandler());
         } catch (final IllegalArgumentException e) {
@@ -276,7 +278,19 @@ public class SuperRestInterface {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-
+        
+        // Resource endpoints
+        GroupManagementRestInterface.setupGroupManagementRestInterface(
+                new GroupManagementHandler(), authService);
+        // REST-Interfaces defined in ISO/IEC 24752-8
+        EnvironmentContextRESTInterface.setupEnvironmentContextRESTInterface(
+                new EnvironmentContextRequestHandler(), authService);
+        EquipmentContextRESTInterface.setupEquipmentContextRESTInterface(
+                new EquipmentContextRequestHandler(), authService);
+        ListingRESTInterface.setupListingRESTInterface(new ListingRequestHandler());
+        ResourceRESTInterface.setupResourceRESTInterface(new ResourceRequestHandler(), authService);
+        ResourceDescriptionRESTInterface.setupResourceDescriptionRESTInterface(
+                new ResourceDescriptionRequestHandler(), authService);
         TaskContextRESTInterface.setupTaskContextRESTInterface(new TaskContextRequestHandler(),
                 authService);
         UserContextRESTInterface.setupUserContextRESTInterface(new UserContextRequestHandler(),

@@ -22,10 +22,10 @@ public class Downloads extends SuperRestInterface {
             final Map<String, Object> model = mainController.getTemplateComponents();
 
             return new ModelAndView(model, "velocityTemplates/downloads.vm"); // located
-                // in
-                // the
-                // resources
-                // directory
+                                                                              // in
+                                                                              // the
+                                                                              // resources
+                                                                              // directory
             }, new VelocityTemplateEngine());
     }
 

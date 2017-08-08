@@ -30,10 +30,10 @@ public class MyProfile extends SuperRestInterface {
                             new Organism_2_SubSection().generateTopNavigation());
 
                     return new ModelAndView(MyProfile.model, "velocityTemplates/myProfile.vm"); // located
-                    // in
-                    // the
-                    // resources
-                    // directory
+                                                                                                // in
+                                                                                                // the
+                                                                                                // resources
+                                                                                                // directory
                 }, new VelocityTemplateEngine());
     }
 

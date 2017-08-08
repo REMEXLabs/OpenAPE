@@ -8,6 +8,7 @@ import java.util.ResourceBundle;
 
 import org.jboss.resteasy.spi.NotFoundException;
 import org.openape.api.DatabaseObject;
+import org.openape.api.auth.TokenResponse;
 import org.openape.api.user.User;
 import org.openape.server.database.mongoDB.DatabaseConnection;
 import org.openape.server.database.mongoDB.MongoCollectionTypes;
@@ -18,6 +19,8 @@ import org.pac4j.jwt.config.signature.SecretSignatureConfiguration;
 import org.pac4j.jwt.profile.JwtGenerator;
 import org.pac4j.sparkjava.SecurityFilter;
 import org.pac4j.sparkjava.SparkWebContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import spark.Request;
 import spark.Response;
@@ -29,7 +32,7 @@ import com.google.gson.Gson;
  */
 
 public class AuthService {
-
+    private static Logger logger = LoggerFactory.getLogger(AuthService.class);
     private static final ResourceBundle properties = ResourceBundle.getBundle("config/auth");
     private static final String JWT_SIGNATURE = AuthService.properties.getString("JwtSignature");
     private static final String EXPIRATION_TIME = AuthService.properties
@@ -224,9 +227,11 @@ public class AuthService {
             throws UnauthorizedException {
         final ProfileManager manager = new ProfileManager(new SparkWebContext(request, response));
         final Optional<CommonProfile> profile = manager.get(false);
+        AuthService.logger.info("Profile: " + profile);
         if (profile.isPresent()) {
             return profile.get();
         } else {
+            AuthService.logger.debug("Error: Couldn't find profile");
             throw new UnauthorizedException("Unauthorized");
         }
     }

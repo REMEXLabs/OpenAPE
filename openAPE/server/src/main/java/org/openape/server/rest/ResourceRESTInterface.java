@@ -149,7 +149,8 @@ public class ResourceRESTInterface extends SuperRestInterface {
                     response.header(
                             Messages.getString("ResourceRESTInterface.ceontentTypeString"), mimeType); //$NON-NLS-1$
                     response.header(
-                            Messages.getString("ResourceRESTInterface.contentDistributionString"), Messages.getString("ResourceRESTInterface.inlineFilename") + file.getName()); //$NON-NLS-1$ //$NON-NLS-2$
+                            Messages.getString("ResourceRESTInterface.contentDistributionString"), //$NON-NLS-1$
+                            Messages.getString("ResourceRESTInterface.inlineFilename") + file.getName()); //$NON-NLS-1$
                     res.status(SuperRestInterface.HTTP_STATUS_OK);
                     // return file.
                     return response.build();
@@ -204,7 +205,8 @@ public class ResourceRESTInterface extends SuperRestInterface {
                         response.header(
                                 Messages.getString("ResourceRESTInterface.ceontentTypeString"), mimeType); //$NON-NLS-1$
                         response.header(
-                                Messages.getString("ResourceRESTInterface.contentDistributionString"), Messages.getString("ResourceRESTInterface.inlineFilename") + file.getName()); //$NON-NLS-1$ //$NON-NLS-2$
+                                Messages.getString("ResourceRESTInterface.contentDistributionString"), //$NON-NLS-1$
+                                Messages.getString("ResourceRESTInterface.inlineFilename") + file.getName()); //$NON-NLS-1$
                         res.status(SuperRestInterface.HTTP_STATUS_OK);
                         // return file.
                         return response.build();

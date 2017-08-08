@@ -55,10 +55,10 @@ public class Administration extends SuperRestInterface {
             }
 
             return new ModelAndView(Administration.model, "velocityTemplates/administration.vm"); // located
-                // in
-                // the
-                // resources
-                // directory
+                                                                                                  // in
+                                                                                                  // the
+                                                                                                  // resources
+                                                                                                  // directory
             }, new VelocityTemplateEngine());
     }
 

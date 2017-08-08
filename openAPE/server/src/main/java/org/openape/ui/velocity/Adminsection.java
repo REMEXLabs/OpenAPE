@@ -53,10 +53,10 @@ public class Adminsection extends SuperRestInterface {
             Adminsection.model.put("deleteUser", del);
 
             return new ModelAndView(Adminsection.model, "velocityTemplates/adminsection.vm"); // located
-                // in
-                // the
-                // resources
-                // directory
+                                                                                              // in
+                                                                                              // the
+                                                                                              // resources
+                                                                                              // directory
             }, new VelocityTemplateEngine());
     }
 

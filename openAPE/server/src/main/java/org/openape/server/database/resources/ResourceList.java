@@ -31,8 +31,8 @@ import org.pac4j.core.profile.CommonProfile;
  */
 public class ResourceList {
     private static final String RESOURCE_DOES_NOT_EXIST_MSG = "Resource does not exist.";
-
     private static final String RESOURCEFOLDERPATH = Messages.getString("ResourceList.rootFolder") + File.separator + Messages.getString("ResourceList.ResourceFolder"); //$NON-NLS-1$ //$NON-NLS-2$
+
 
     /**
      * Singleton instance of this class.
