@@ -26,7 +26,7 @@ public class ListingManager {
      * @throws IOException
      *             if unable to create resource folder.
      */
-    public static List<GetResourceReturnType> getResourcesFromListing(Listing listing)
+    public static List<GetResourceReturnType> getResourcesFromListing(final Listing listing)
             throws IOException {
         // reset query
         ListingManager.query = Messages.getString("EmptyString"); //$NON-NLS-1$

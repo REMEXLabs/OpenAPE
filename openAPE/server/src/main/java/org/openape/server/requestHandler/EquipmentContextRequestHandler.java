@@ -31,7 +31,7 @@ public class EquipmentContextRequestHandler {
      * @throws IllegalArgumentException
      *             if the parameter is not a complete equipment context.
      */
-    public String createEquipmentContext(Object equipmentContext) throws IOException,
+    public String createEquipmentContext(final Object equipmentContext) throws IOException,
             IllegalArgumentException {
         // get database connection.
         final DatabaseConnection databaseconnection = DatabaseConnection.getInstance();
@@ -60,7 +60,7 @@ public class EquipmentContextRequestHandler {
      * @throws IllegalArgumentException
      *             if the id is no valid id or not assigned.
      */
-    public boolean deleteEquipmentContextById(String id) throws IOException,
+    public boolean deleteEquipmentContextById(final String id) throws IOException,
             IllegalArgumentException {
         // get database connection.
         final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
@@ -87,7 +87,7 @@ public class EquipmentContextRequestHandler {
      * @throws IllegalArgumentException
      *             if the id is no valid id or not assigned.
      */
-    public EquipmentContext getEquipmentContextById(String id) throws IOException,
+    public EquipmentContext getEquipmentContextById(final String id) throws IOException,
             IllegalArgumentException {
         // get database connection.
         final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
@@ -129,7 +129,7 @@ public class EquipmentContextRequestHandler {
      *             if the id is no valid id, not assigned or the equipment
      *             context is not valid.
      */
-    public boolean updateEquipmentContextById(String id, Object equipmentContext)
+    public boolean updateEquipmentContextById(final String id, final Object equipmentContext)
             throws IOException, IllegalArgumentException {
         // get database connection.
         final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();

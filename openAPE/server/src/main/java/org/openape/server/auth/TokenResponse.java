@@ -1,9 +1,6 @@
 package org.openape.server.auth;
 
 import com.google.gson.annotations.SerializedName;
-import org.openape.api.Messages;
-
-import java.util.ResourceBundle;
 
 /**
  * RFC 6749 compliant access token response.
@@ -15,24 +12,24 @@ public class TokenResponse {
     @SerializedName("expires_in")
     private String expiresIn;
 
-    public TokenResponse(String accessToken, String expiresIn) {
+    public TokenResponse(final String accessToken, final String expiresIn) {
         this.accessToken = accessToken;
         this.expiresIn = expiresIn;
     }
 
     public String getAccessToken() {
-        return accessToken;
-    }
-
-    public void setAccessToken(String accessToken) {
-        this.accessToken = accessToken;
+        return this.accessToken;
     }
 
     public String getExpiresIn() {
-        return expiresIn;
+        return this.expiresIn;
     }
 
-    public void setExpiresIn(String expiresIn) {
+    public void setAccessToken(final String accessToken) {
+        this.accessToken = accessToken;
+    }
+
+    public void setExpiresIn(final String expiresIn) {
         this.expiresIn = expiresIn;
     }
 }

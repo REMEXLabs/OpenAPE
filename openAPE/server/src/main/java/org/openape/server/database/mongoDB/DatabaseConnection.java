@@ -1,18 +1,15 @@
 package org.openape.server.database.mongoDB;
 
 import java.io.IOException;
-import java.net.ConnectException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Iterator;
-
-import com.mongodb.client.model.IndexOptions;
-import com.mongodb.event.ServerHeartbeatFailedEvent;
-import com.mongodb.event.ServerHeartbeatStartedEvent;
-import com.mongodb.event.ServerHeartbeatSucceededEvent;
-import com.mongodb.event.ServerMonitorListener;
+import java.util.Map;
 
 import org.bson.Document;
 import org.bson.codecs.configuration.CodecConfigurationException;
+import org.bson.conversions.Bson;
 import org.bson.json.JsonParseException;
 import org.bson.types.ObjectId;
 import org.openape.api.DatabaseObject;
@@ -27,8 +24,6 @@ import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mongodb.BasicDBObject;
-import com.mongodb.DBObject;
-import com.mongodb.Mongo;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientOptions;
 import com.mongodb.MongoCredential;
@@ -36,7 +31,14 @@ import com.mongodb.MongoException;
 import com.mongodb.ServerAddress;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.IndexOptions;
+import com.mongodb.client.result.UpdateResult;
+import com.mongodb.event.ServerHeartbeatFailedEvent;
+import com.mongodb.event.ServerHeartbeatStartedEvent;
+import com.mongodb.event.ServerHeartbeatSucceededEvent;
+import com.mongodb.event.ServerMonitorListener;
 
 /**
  * Singleton database connection class. Connects to the online mongo database to
@@ -46,10 +48,10 @@ import com.mongodb.client.MongoDatabase;
  * {@link UserContextRequestHandler}.
  */
 public class DatabaseConnection implements ServerMonitorListener {
-	
-	static Logger logger = LoggerFactory.getLogger(DatabaseConnection.class);
-	static boolean firstTime = true; // only for logging control needed
-	
+
+    static Logger logger = LoggerFactory.getLogger(DatabaseConnection.class);
+    static boolean firstTime = true; // only for logging control needed
+
     /**
      * The url to our mongo database server.
      */
@@ -91,11 +93,11 @@ public class DatabaseConnection implements ServerMonitorListener {
      */
     public static DatabaseConnection getInstance() {
         if (DatabaseConnection.databaseConnectionInstance == null) {
-        	logger.info("new database connection required");
+            DatabaseConnection.logger.info("new database connection required");
             DatabaseConnection.databaseConnectionInstance = new DatabaseConnection();
         } else {
-    	logger.info("Found existing database connection.");
-    }
+            DatabaseConnection.logger.info("Found existing database connection.");
+        }
         return DatabaseConnection.databaseConnectionInstance;
     }
 
@@ -134,9 +136,10 @@ public class DatabaseConnection implements ServerMonitorListener {
      */
     private MongoCollection<Document> listingContextCollection;
     /**
-     * Database collection holding the mime types of the stored resources.
+     * Database collection holding the describing objects of the stored
+     * resources.
      */
-    private MongoCollection<Document> resourceMimeTypesCollection;
+    private MongoCollection<Document> resourceObjectCollection;
     /**
      * Database collection holding the users.
      */
@@ -147,39 +150,38 @@ public class DatabaseConnection implements ServerMonitorListener {
      */
     private DatabaseConnection() {
         // import configuration file
-    	readConfigFile();
-     try {   
-//    	Create credentials for the openAPE database
-        final MongoCredential credential = MongoCredential.createCredential(
-                DatabaseConnection.DATABASEUSERNAME, DatabaseConnection.DATABASENAME,
-                DatabaseConnection.DATABASEPASSWORD.toCharArray());
+        this.readConfigFile();
+        try {
+            // Create credentials for the openAPE database
+            final MongoCredential credential = MongoCredential.createCredential(
+                    DatabaseConnection.DATABASEUSERNAME, DatabaseConnection.DATABASENAME,
+                    DatabaseConnection.DATABASEPASSWORD.toCharArray());
 
-//Add MongoDB Monitor with client options
-        MongoClientOptions clientOptions = new MongoClientOptions.Builder()
-                .addServerMonitorListener(this)
-                .build();
-        
-        // Create database client for the openAPE database
-        this.mongoClient = new MongoClient(new ServerAddress(DatabaseConnection.DATABASEURL,
-                Integer.parseInt(DatabaseConnection.DATABASEPORT)), Arrays.asList(credential), clientOptions);
-        
-        // Get a reference to the openAPE database.
-        this.database = this.mongoClient.getDatabase(DatabaseConnection.DATABASENAME);
+            // Add MongoDB Monitor with client options
+            final MongoClientOptions clientOptions = new MongoClientOptions.Builder()
+                    .addServerMonitorListener(this).build();
 
-        //Test if a connection to the MongoDB can be established        
-        testDatabase();
-    }  catch(Exception e){
-    	logger.error("Failed to connect to database \"" + DATABASENAME + "\"." );
-    	return;
-    }
-        
+            // Create database client for the openAPE database
+            this.mongoClient = new MongoClient(new ServerAddress(DatabaseConnection.DATABASEURL,
+                    Integer.parseInt(DatabaseConnection.DATABASEPORT)), Arrays.asList(credential),
+                    clientOptions);
+
+            // Get a reference to the openAPE database.
+            this.database = this.mongoClient.getDatabase(DatabaseConnection.DATABASENAME);
+            DatabaseConnection.logger.info("Found openAPE dataBase");
+        } catch (final Exception e) {
+            DatabaseConnection.logger.error("Failed to connect to the openAPE database");
+            return;
+        }
+
         // Get references to the database collections.
-     try{
-        this.userContextCollection = this.database.getCollection(MongoCollectionTypes.USERCONTEXT
-                .toString());
-     } catch (Exception e){
-    	 logger.error("Couldn't find collection \"" + MongoCollectionTypes.USERCONTEXT + "\"");
-     }
+        try {
+            this.userContextCollection = this.database
+                    .getCollection(MongoCollectionTypes.USERCONTEXT.toString());
+        } catch (final Exception e) {
+            DatabaseConnection.logger.error("Couldn't find collection \""
+                    + MongoCollectionTypes.USERCONTEXT + "\"");
+        }
         this.environmentContextCollection = this.database
                 .getCollection(MongoCollectionTypes.ENVIRONMENTCONTEXT.toString());
         this.equipmentContextCollection = this.database
@@ -190,67 +192,13 @@ public class DatabaseConnection implements ServerMonitorListener {
                 .getCollection(MongoCollectionTypes.RESOURCEDESCRIPTION.toString());
         this.listingContextCollection = this.database.getCollection(MongoCollectionTypes.LISTING
                 .toString());
-        this.resourceMimeTypesCollection = this.database
-                .getCollection(MongoCollectionTypes.RESOURCEMIMETYPES.toString());
-        this.userCollection = this.database
-                .getCollection(MongoCollectionTypes.USERS.toString());
+        this.resourceObjectCollection = this.database
+                .getCollection(MongoCollectionTypes.RESOURCEOBJECTS.toString());
+        this.userCollection = this.database.getCollection(MongoCollectionTypes.USERS.toString());
 
     }
 
-    private void testDatabase() {
-    	 Mongo mongo = new Mongo();
-    	 DBObject ping = new BasicDBObject("ping", "1");
-    	 
-    	       mongo.getDB(DATABASENAME ).command(ping);
-    	       logger.info("Database \"" + DATABASENAME + "\" available." );
-    	 	}
-
-	private void readConfigFile() {
-    	final String name = MongoConfig.getString("databaseName");//$NON-NLS-1$
-        if (name != null && !name.equals(Messages.getString("DatabaseConnection.EmptyString"))) {//$NON-NLS-1$
-            DatabaseConnection.DATABASENAME = name;
-        } else {
-            DatabaseConnection.DATABASENAME = Messages
-                    .getString("DatabaseConnection.MongoDBDatabaseName"); //$NON-NLS-1$
-        }
-        final String address = MongoConfig.getString("databaseURL");//$NON-NLS-1$
-        if (address != null
-                && !address.equals(Messages.getString("DatabaseConnection.EmptyString"))) {//$NON-NLS-1$
-            DatabaseConnection.DATABASEURL = address;
-        } else {
-            DatabaseConnection.DATABASEURL = Messages
-                    .getString("DatabaseConnection.MongoDBServerAddress"); //$NON-NLS-1$
-        }
-        final String port = MongoConfig.getString("databasePort");//$NON-NLS-1$
-        if (port != null && !port.equals(Messages.getString("DatabaseConnection.EmptyString"))) {//$NON-NLS-1$
-        	logger.debug("Using MongoDB port " + port + " defined in mongo.properties" );
-            DatabaseConnection.DATABASEPORT = port;
-        } else {
-        	String standardPort = Messages
-            .getString("DatabaseConnection.MongoDBServerPort"); //$NON-NLS-1$
-        	logger.debug("Using MongoDB port " + standardPort + " defined in Messages.properties"); 
-        	DatabaseConnection.DATABASEPORT = standardPort;
-        }
-        final String password = MongoConfig.getString("databasePassword");//$NON-NLS-1$
-        if (password != null
-                && !password.equals(Messages.getString("DatabaseConnection.EmptyString"))) {//$NON-NLS-1$
-            DatabaseConnection.DATABASEPASSWORD = password;
-        } else {
-            DatabaseConnection.DATABASEPASSWORD = Messages
-                    .getString("DatabaseConnection.MongoDBDatabaseUserPassword"); //$NON-NLS-1$
-        }
-        final String userName = MongoConfig.getString("databaseUsername");//$NON-NLS-1$
-        if (userName != null
-                && !userName.equals(Messages.getString("DatabaseConnection.EmptyString"))) {//$NON-NLS-1$
-            DatabaseConnection.DATABASEUSERNAME = userName;
-        } else {
-            DatabaseConnection.DATABASEUSERNAME = Messages
-                    .getString("DatabaseConnection.MongoDBDatabaseUsername"); //$NON-NLS-1$
-        }
-         		
-	}
-
-	/**
+    /**
      * Delete a database object, either a context or a resource, from the
      * database. Choose the object via id and the collection via the collection
      * type.
@@ -263,7 +211,7 @@ public class DatabaseConnection implements ServerMonitorListener {
      * @throws IOException
      *             if a database problem occurs.
      */
-    public boolean deleteData(MongoCollectionTypes type, String id) throws IOException {
+    public boolean deleteData(final MongoCollectionTypes type, final String id) throws IOException {
         final MongoCollection<Document> collectionToWorkOn = this.getCollectionByType(type);
 
         // Create search query.
@@ -281,30 +229,139 @@ public class DatabaseConnection implements ServerMonitorListener {
     }
 
     /**
-     * Delete a mime type of a stored resource.
-     *
-     * @param fileName
-     *            file name of the resource, used as id.
-     * @return true if successful of false if the object is not found.
-     * @throws IOException
-     *             if a database problem occurs.
+     * Make sure indexes for the application are set.
      */
-    public boolean deleteMimeType(String fileName) throws IOException {
-        final MongoCollection<Document> collectionToWorkOn = this
-                .getCollectionByType(MongoCollectionTypes.RESOURCEMIMETYPES);
+    public void ensureIndexes() {
+        // Make sure email is unique for all users
+        this.userCollection.createIndex(new BasicDBObject("email", 1),
+                new IndexOptions().unique(true));
+        // Make sure username is unique for all users
+        this.userCollection.createIndex(new BasicDBObject("username", 1),
+                new IndexOptions().unique(true));
+    }
 
-        // Create search query.
-        final BasicDBObject query = new BasicDBObject();
-        query.put(Messages.getString("DatabaseConnection._id"), fileName); //$NON-NLS-1$
-
-        // deleted will be null if no data with the given id is found.
-        final Document deleted = collectionToWorkOn.findOneAndDelete(query);
-        if (deleted == null) {
-            return false;
+    /**
+     * Execute a Mongo BasicDBObject query on the given collection and return
+     * the result as a DatabaseObject of the given collection.
+     *
+     * @param type
+     *            the type of the collections DatabaseObject
+     * @param collection
+     *            the collection in which the object is located.
+     * @param query
+     *            the Mongo query to be executed
+     * @return
+     * @throws IOException
+     */
+    private DatabaseObject executeQuery(final MongoCollectionTypes type,
+            final MongoCollection<Document> collection, final BasicDBObject query,
+            final boolean includeId) throws IOException {
+        final Iterator<Document> resultIterator = collection.find(query).iterator();
+        if (resultIterator.hasNext()) {
+            final Document resultDocument = resultIterator.next();
+            DatabaseObject result = null;
+            try {
+                // Remove the MongoDB id field
+                final ObjectId oid = (ObjectId) resultDocument.get("_id");
+                resultDocument.remove(Messages.getString("DatabaseConnection._id")); //$NON-NLS-1$
+                if (includeId) {
+                    resultDocument.append("id", oid.toString());
+                }
+                String jsonResult = resultDocument.toJson();
+                // reverse mongo special character replacement.
+                jsonResult = this.reverseMongoSpecialCharsReplacement(jsonResult);
+                final ObjectMapper mapper = new ObjectMapper();
+                result = mapper.readValue(jsonResult, type.getDocumentType());
+            } catch (CodecConfigurationException | IOException | JsonParseException e) {
+                e.printStackTrace();
+                throw new IOException(e.getMessage());
+            }
+            return result;
         } else {
-            return true;
+            // If no result is found return null.
+            return null;
+        }
+    }
+
+    public ArrayList<Document> getAllDocuments(final MongoCollectionTypes type) throws IOException {
+        final MongoCollection<Document> collectionToWorkOn = this.getCollectionByType(type);
+        final ArrayList<Document> listDocuments = new ArrayList<Document>();
+        // Search for object in database.
+
+        final FindIterable<Document> find = collectionToWorkOn.find();
+
+        final MongoCursor<Document> cursor = find.iterator();
+
+        while (cursor.hasNext()) {
+
+            listDocuments.add(cursor.next());
         }
 
+        return listDocuments;
+    }
+
+    public ArrayList<Document> getAllDocuments(final String string) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * @param type
+     *            of data. Needed to choose the right mongo collection.
+     * @return all objects in the collection of the given type and their
+     *         corresponding ids.
+     * @throws IOException
+     *             if database or parse error occurs.
+     */
+    public Map<String, DatabaseObject> getAllObjectsOfType(final MongoCollectionTypes type)
+            throws IOException {
+        final MongoCollection<Document> collectionToWorkOn = this.getCollectionByType(type);
+        final Iterator<Document> resultIterator = collectionToWorkOn.find().iterator();
+        final Map<String, DatabaseObject> resultMap = new HashMap<String, DatabaseObject>();
+        while (resultIterator.hasNext()) {
+            final Document resultDocument = resultIterator.next();
+            DatabaseObject result = null;
+            ObjectId oid = null;
+            try {
+                // Remove the MongoDB id field
+                oid = (ObjectId) resultDocument.get("_id");
+                resultDocument.remove(Messages.getString("DatabaseConnection._id")); //$NON-NLS-1$
+                String jsonResult = resultDocument.toJson();
+                // reverse mongo special character replacement.
+                jsonResult = this.reverseMongoSpecialCharsReplacement(jsonResult);
+                final ObjectMapper mapper = new ObjectMapper();
+                result = mapper.readValue(jsonResult, type.getDocumentType());
+            } catch (CodecConfigurationException | IOException | JsonParseException e) {
+                e.printStackTrace();
+                throw new IOException(e.getMessage());
+            }
+            resultMap.put(oid.toString(), result);
+        }
+        return resultMap;
+
+    }
+
+    /**
+     * Query a collection by a certain attribute and value. Will return the
+     * first document matching the query or null if no document matches the
+     * query.
+     *
+     * @param type
+     *            the collection in which the object is located.
+     * @param attribute
+     *            the attribute to query for
+     * @param value
+     *            the value for the attribute to query for
+     * @return
+     * @throws IOException
+     */
+    public DatabaseObject getByUniqueAttribute(final MongoCollectionTypes type,
+            final String attribute, final String value) throws IOException {
+        final MongoCollection<Document> collectionToWorkOn = this.getCollectionByType(type);
+        // Search for object in database.
+        final BasicDBObject query = new BasicDBObject();
+        query.put(attribute, value);
+        return this.executeQuery(type, collectionToWorkOn, query, true);
     }
 
     /**
@@ -313,7 +370,7 @@ public class DatabaseConnection implements ServerMonitorListener {
      * @param type
      * @return the collection reference or null if the type is unknown.
      */
-    private MongoCollection<Document> getCollectionByType(MongoCollectionTypes type) {
+    private MongoCollection<Document> getCollectionByType(final MongoCollectionTypes type) {
         if (type.equals(MongoCollectionTypes.USERCONTEXT)) {
             return this.userContextCollection;
         } else if (type.equals(MongoCollectionTypes.ENVIRONMENTCONTEXT)) {
@@ -326,8 +383,8 @@ public class DatabaseConnection implements ServerMonitorListener {
             return this.resourceDescriptionContectCollection;
         } else if (type.equals(MongoCollectionTypes.LISTING)) {
             return this.listingContextCollection;
-        } else if (type.equals(MongoCollectionTypes.RESOURCEMIMETYPES)) {
-            return this.resourceMimeTypesCollection;
+        } else if (type.equals(MongoCollectionTypes.RESOURCEOBJECTS)) {
+            return this.resourceObjectCollection;
         } else if (type.equals(MongoCollectionTypes.USERS)) {
             return this.userCollection;
         } else {
@@ -348,113 +405,70 @@ public class DatabaseConnection implements ServerMonitorListener {
      * @throws IOException
      *             if a database problem occurs.
      */
-    public DatabaseObject getData(MongoCollectionTypes type, String id) throws IOException {
+    public DatabaseObject getData(final MongoCollectionTypes type, final String id)
+            throws IOException {
         final MongoCollection<Document> collectionToWorkOn = this.getCollectionByType(type);
         // Search for object in database.
         final BasicDBObject query = new BasicDBObject();
         query.put(Messages.getString("DatabaseConnection._id"), new ObjectId(id));
-        return executeQuery(type, collectionToWorkOn, query, false);
+        return this.executeQuery(type, collectionToWorkOn, query, false);
     }
 
-    /**
-     * Query a collection by a certain attribute and value. Will return the first document matching the query or
-     * null if no document matches the query.
-     *
-     * @param type the collection in which the object is located.
-     * @param attribute the attribute to query for
-     * @param value the value for the attribute to query for
-     * @return
-     * @throws IOException
-     */
-    public DatabaseObject getByUniqueAttribute(MongoCollectionTypes type, String attribute, String value) throws IOException {
+    private void readConfigFile() {
+        final String name = MongoConfig.getString("databaseName");//$NON-NLS-1$
+        if ((name != null) && !name.equals(Messages.getString("DatabaseConnection.EmptyString"))) {//$NON-NLS-1$
+            DatabaseConnection.DATABASENAME = name;
+        } else {
+            DatabaseConnection.DATABASENAME = Messages
+                    .getString("DatabaseConnection.MongoDBDatabaseName"); //$NON-NLS-1$
+        }
+        final String address = MongoConfig.getString("databaseURL");//$NON-NLS-1$
+        if ((address != null)
+                && !address.equals(Messages.getString("DatabaseConnection.EmptyString"))) {//$NON-NLS-1$
+            DatabaseConnection.DATABASEURL = address;
+        } else {
+            DatabaseConnection.DATABASEURL = Messages
+                    .getString("DatabaseConnection.MongoDBServerAddress"); //$NON-NLS-1$
+        }
+        final String port = MongoConfig.getString("databasePort");//$NON-NLS-1$
+        if ((port != null) && !port.equals(Messages.getString("DatabaseConnection.EmptyString"))) {//$NON-NLS-1$
+            DatabaseConnection.logger.debug("Using MongoDB port " + port
+                    + " defined in mongo.properties");
+            DatabaseConnection.DATABASEPORT = port;
+        } else {
+            final String standardPort = Messages.getString("DatabaseConnection.MongoDBServerPort"); //$NON-NLS-1$
+            DatabaseConnection.logger.debug("Using MongoDB port " + standardPort
+                    + " defined in Messages.properties");
+            DatabaseConnection.DATABASEPORT = standardPort;
+        }
+        final String password = MongoConfig.getString("databasePassword");//$NON-NLS-1$
+        if ((password != null)
+                && !password.equals(Messages.getString("DatabaseConnection.EmptyString"))) {//$NON-NLS-1$
+            DatabaseConnection.DATABASEPASSWORD = password;
+        } else {
+            DatabaseConnection.DATABASEPASSWORD = Messages
+                    .getString("DatabaseConnection.MongoDBDatabaseUserPassword"); //$NON-NLS-1$
+        }
+        final String userName = MongoConfig.getString("databaseUsername");//$NON-NLS-1$
+        if ((userName != null)
+                && !userName.equals(Messages.getString("DatabaseConnection.EmptyString"))) {//$NON-NLS-1$
+            DatabaseConnection.DATABASEUSERNAME = userName;
+        } else {
+            DatabaseConnection.DATABASEUSERNAME = Messages
+                    .getString("DatabaseConnection.MongoDBDatabaseUsername"); //$NON-NLS-1$
+        }
+
+    }
+
+    /***************/
+
+    public void removeData(final MongoCollectionTypes type, final String id) throws IOException {
         final MongoCollection<Document> collectionToWorkOn = this.getCollectionByType(type);
         // Search for object in database.
-        final BasicDBObject query = new BasicDBObject();
-        query.put(attribute, value);
-        return executeQuery(type, collectionToWorkOn, query, true);
-    }
+        final Bson filter = new Document(Messages.getString("DatabaseConnection._id"),
+                new ObjectId(id));
+        collectionToWorkOn.deleteOne(filter);
 
-    /**
-     * Get stored mime type of a resource stored in the file system.
-     *
-     * @param fileName
-     *            of the resource, used as id.
-     * @return mime type as string or null if none is found.
-     * @throws IOException
-     *             if an error arouses.
-     */
-    public String getMimeType(String fileName) throws IOException {
-        final MongoCollection<Document> collectionToWorkOn = this
-                .getCollectionByType(MongoCollectionTypes.RESOURCEMIMETYPES);
-
-        // Search for object in database.
-        final BasicDBObject query = new BasicDBObject();
-        query.put(Messages.getString("DatabaseConnection._id"), fileName); //$NON-NLS-1$
-        final FindIterable<Document> resultIteratable = collectionToWorkOn.find(query);
-
-        final Iterator<Document> resultInterator = resultIteratable.iterator();
-        if (!resultInterator.hasNext()) {
-            // If no result is found return null.
-            return null;
-        } else {
-            // get the first result. Souldn't ever be more than one since _ids
-            // are supposed to be unique.
-            final Document resultDocument = resultInterator.next();
-            String mimetype = null;
-            try {
-                // Remove the automatically added id.
-                resultDocument.remove(Messages.getString("DatabaseConnection._id")); //$NON-NLS-1$
-                String jsonResult = resultDocument.toJson();
-                // reverse mongo special character replacement.
-                jsonResult = this.reverseMongoSpecialCharsReplacement(jsonResult);
-                final ObjectMapper mapper = new ObjectMapper();
-                final DatabaseObject mimeTypeObject = mapper.readValue(jsonResult,
-                        MimeTypeDatabaseObject.class);
-                mimetype = ((MimeTypeDatabaseObject) mimeTypeObject).getMimeType();
-            } catch (CodecConfigurationException | IOException | JsonParseException e) {
-                e.printStackTrace();
-                throw new IOException(e.getMessage());
-            }
-            return mimetype;
-        }
-    }
-
-    /**
-     * Execute a Mongo BasicDBObject query on the given collection and return the result as a DatabaseObject of the
-     * given collection.
-     *
-     * @param type the type of the collections DatabaseObject
-     * @param collection the collection in which the object is located.
-     * @param query the Mongo query to be executed
-     * @return
-     * @throws IOException
-     */
-    private DatabaseObject executeQuery(MongoCollectionTypes type, MongoCollection collection, BasicDBObject query, boolean includeId) throws IOException {
-        final Iterator<Document> resultIterator = collection.find(query).iterator();
-        if(resultIterator.hasNext()) {
-            final Document resultDocument = resultIterator.next();
-            DatabaseObject result = null;
-            try {
-                // Remove the MongoDB id field
-                ObjectId oid = (ObjectId) resultDocument.get("_id");
-                resultDocument.remove(Messages.getString("DatabaseConnection._id")); //$NON-NLS-1$
-                if(includeId) {
-                    resultDocument.append("id", oid.toString());
-                }
-                String jsonResult = resultDocument.toJson();
-                // reverse mongo special character replacement.
-                jsonResult = this.reverseMongoSpecialCharsReplacement(jsonResult);
-                final ObjectMapper mapper = new ObjectMapper();
-                result = mapper.readValue(jsonResult, type.getDocumentType());
-            } catch (CodecConfigurationException | IOException | JsonParseException e) {
-                e.printStackTrace();
-                throw new IOException(e.getMessage());
-            }
-            return result;
-        } else {
-            // If no result is found return null.
-            return null;
-        }
     }
 
     /**
@@ -499,6 +513,35 @@ public class DatabaseConnection implements ServerMonitorListener {
         return jsonFromStorage;
     }
 
+    @Override
+    public void serverHearbeatStarted(final ServerHeartbeatStartedEvent event) {
+        if (DatabaseConnection.firstTime == true) {
+            DatabaseConnection.logger.info("Found new heartbeat with connection ID: "
+                    + event.getConnectionId());
+            DatabaseConnection.firstTime = false;
+        } else {
+            DatabaseConnection.logger.debug("Found new heartbeat with connection ID: "
+                    + event.getConnectionId());
+        }
+    }
+
+    @Override
+    public void serverHeartbeatFailed(final ServerHeartbeatFailedEvent event) {
+
+        DatabaseConnection.logger.error("Connecting to MongoDB at "
+                + DatabaseConnection.DATABASEURL + ":" + DatabaseConnection.DATABASEPORT
+                + " failed.\n" + event);
+        DatabaseConnection.firstTime = true; // logger can now indicate when new
+        // connection will be found again.
+    }
+
+    @Override
+    public void serverHeartbeatSucceeded(final ServerHeartbeatSucceededEvent event) {
+        DatabaseConnection.logger.debug("Found heartbeat with connection ID: "
+                + event.getConnectionId());
+
+    }
+
     /**
      * Store a database object, either a context or a resource, into the
      * database. Choose the collection via the collection type.
@@ -513,7 +556,7 @@ public class DatabaseConnection implements ServerMonitorListener {
      * @throws IOException
      *             if a database problem occurs.
      */
-    public String storeData(MongoCollectionTypes type, DatabaseObject data)
+    public String storeData(final MongoCollectionTypes type, final DatabaseObject data)
             throws ClassCastException, IOException, IllegalArgumentException {
         // Check if data is of the correct type for the collection.
         if (!type.getDocumentType().equals(data.getClass())) {
@@ -552,47 +595,6 @@ public class DatabaseConnection implements ServerMonitorListener {
     }
 
     /**
-     * Used to store a string mime type of a stored resource.
-     *
-     * @param fileName
-     *            name of the file, used as id.
-     * @param mimeType
-     *            string mime type of the resource with the given name.
-     * @return true if successful else a exception will be thrown.
-     * @throws IOException
-     * @throws IllegalArgumentException
-     *             if filename is already in use as a key.
-     */
-    public boolean storeMimeType(String fileName, String mimeType) throws IOException,
-            IllegalArgumentException {
-        // check if key is in use.
-        if (this.getMimeType(fileName) != null) {
-            throw new IllegalArgumentException(
-                    Messages.getString("ResourceList.FilenameInUseErrorMassage"));
-        }
-        final MongoCollection<Document> collectionToWorkOn = this
-                .getCollectionByType(MongoCollectionTypes.RESOURCEMIMETYPES);
-        // Object representation of the string. Needed for storage.
-        final MimeTypeDatabaseObject data = new MimeTypeDatabaseObject(mimeType);
-        // Create Document from data.
-        Document dataDocument = null;
-        try {
-            final ObjectMapper mapper = new ObjectMapper();
-            String jsonData = mapper.writeValueAsString(data);
-            // Deal with special mongoDB characters '.' and '$'.
-            jsonData = this.replaceMongoSpecialChars(jsonData);
-            dataDocument = Document.parse(jsonData);
-            dataDocument.append(Messages.getString("DatabaseConnection._id"), fileName);//$NON-NLS-1$
-            // Insert the document.
-            collectionToWorkOn.insertOne(dataDocument);
-        } catch (IOException | JsonParseException | MongoException e) {
-            e.printStackTrace();
-            throw new IOException(e.getMessage());
-        }
-        return true;
-    }
-
-    /**
      * Update a database object, either a context or a resource, in the
      * database. Choose the object via id and the collection via the collection
      * type.
@@ -610,8 +612,8 @@ public class DatabaseConnection implements ServerMonitorListener {
      * @throws IOException
      *             if a database problem occurs.
      */
-    public boolean updateData(MongoCollectionTypes type, DatabaseObject data, String id)
-            throws ClassCastException, IOException {
+    public boolean updateData(final MongoCollectionTypes type, final DatabaseObject data,
+            final String id) throws ClassCastException, IOException {
         // test if data can be found. Throws exceptions or is null if not.
         if (this.getData(type, id) == null) {
             return false;
@@ -648,37 +650,24 @@ public class DatabaseConnection implements ServerMonitorListener {
         return true;
     }
 
-    /**
-     * Make sure indexes for the application are set.
-     */
-    public void ensureIndexes() {
-        // Make sure email is unique for all users
-        this.userCollection.createIndex(new BasicDBObject("email", 1), new IndexOptions().unique(true));
-        // Make sure username is unique for all users
-        this.userCollection.createIndex(new BasicDBObject("username", 1), new IndexOptions().unique(true));
+    public UpdateResult updateDocument(final MongoCollectionTypes type, final String id,
+            final String indexName, final String indexValue) throws Exception {
+
+        final MongoCollection<Document> collectionToWorkOn = this.getCollectionByType(type);
+
+        final Bson filter = new Document(Messages.getString("DatabaseConnection._id"),
+                new ObjectId(id));
+        final Bson newValue = new Document(indexName, indexValue);
+        final Bson updateOperationDocument = new Document("$set", newValue);
+
+        UpdateResult updateResult = null;
+
+        try {
+            updateResult = collectionToWorkOn.updateOne(filter, updateOperationDocument);
+        } catch (final Exception err) {
+            throw new Exception(err.getMessage());
+        }
+
+        return updateResult;
     }
-
-	@Override
-	public void serverHearbeatStarted(ServerHeartbeatStartedEvent event) {
-		if (firstTime == true){
-			logger.info("Found new heartbeat with connection ID: " + event.getConnectionId() );
-			firstTime = false;
-		} else {
-			logger.debug("Found new heartbeat with connection ID: " + event.getConnectionId() );
-		}	
-	}
-
-	@Override
-	public void serverHeartbeatSucceeded(ServerHeartbeatSucceededEvent event) {
-		logger.debug("Found heartbeat with connection ID: " + event.getConnectionId() );
-		
-	}
-
-	@Override
-	public void serverHeartbeatFailed(ServerHeartbeatFailedEvent event) {
-		
-		logger.error("Connecting to MongoDB at " + this.DATABASEURL + ":" + this.DATABASEPORT + " failed.\n" + event);
-		firstTime = true;  // logger can now indicate when new connection will be found again.
-			}
-
 }

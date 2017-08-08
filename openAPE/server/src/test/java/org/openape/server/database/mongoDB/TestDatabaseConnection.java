@@ -9,6 +9,8 @@ import java.util.Map;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.openape.api.Property;
+import org.openape.api.resourceDescription.ResourceDescription;
 import org.openape.api.usercontext.Condition;
 import org.openape.api.usercontext.Context;
 import org.openape.api.usercontext.UserContext;
@@ -35,16 +37,16 @@ public class TestDatabaseConnection {
         darkPreference.addPreference("http://registry.gpii.net/common/magnifierEnabled", "true");
         darkPreference.addPreference("http://registry.gpii.net/common/magnification", "2");
 
-        List<Object> andConditionOperands = new ArrayList<Object>();
-        List<Object> geOperandList = new ArrayList<Object>();
+        final List<Object> andConditionOperands = new ArrayList<Object>();
+        final List<Object> geOperandList = new ArrayList<Object>();
         geOperandList.add("http://registry.gpii.net/common/env/visual.luminance");
         geOperandList.add("0");
-        List<Object> leOperandList = new ArrayList<Object>();
+        final List<Object> leOperandList = new ArrayList<Object>();
         leOperandList.add("http://registry.gpii.net/common/env/visual.luminance");
         leOperandList.add("200");
         andConditionOperands.add(new Condition("ge", geOperandList));
         andConditionOperands.add(new Condition("le", leOperandList));
-        Condition andCondition = new Condition("and", andConditionOperands);
+        final Condition andCondition = new Condition("and", andConditionOperands);
         darkPreference.addCondition(andCondition);
         final ObjectMapper mapper = new ObjectMapper();
         try {
@@ -54,6 +56,15 @@ public class TestDatabaseConnection {
             e.printStackTrace();
         }
         return userContext;
+    }
+    
+    public static ResourceDescription sampleResourceDescription() {
+        ResourceDescription resourceDescription = new ResourceDescription();
+        Property property = new Property();
+        resourceDescription.addProperty(property);
+        property.setName("resource-uri");
+        property.setValue("https://res.openurc.org/api/resources/R12345");
+        return resourceDescription;
     }
 
     private DatabaseConnection dataBaseConnection;
