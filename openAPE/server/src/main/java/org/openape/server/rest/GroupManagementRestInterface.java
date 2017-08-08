@@ -89,15 +89,16 @@ public class GroupManagementRestInterface extends SuperRestInterface {
                             return "Bad request";
                         }
 
-                        if (!group.isMember(requestedUser)) {
+                        if (!group.isUserAssigend(requestedUser)) {
                             if (authService.getAuthenticatedUser(req, res).getId()
                                     .equals(requestedUser)
-                                    && ((gmsr.getStatus() == GroupMembershipStatus.APPLYED) || group.isOpenAccess)) {
+                                    && ((gmsr.getStatus() == GroupMembershipStatus.APPLYED) || group.isOpenAccess())) {
                                 GroupManagementHandler.addMember(requestedUser, gmsr.getStatus(),
                                         group);
                             }
                         } else {
-                            GroupAuthService.allowGroupAdmin(req, res, group);
+                            GroupAuthService groupAuthService = new GroupAuthService();
+                            groupAuthService.allowOpenAPEAndGroupAdmin(req, res, group);
                             GroupManagementHandler.addMember(requestedUser, gmsr.getStatus(), group);
                         }
                         return "Success";
