@@ -103,7 +103,7 @@ public class GroupAccessRight {
      * Default constructor used by json.
      */
     public GroupAccessRight() {
-        
+
     }
 
     // *********************************************************************************************************************************************

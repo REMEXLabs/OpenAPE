@@ -6,7 +6,7 @@ import java.util.List;
 import javassist.NotFoundException;
 
 import org.apache.commons.fileupload.FileItem;
-import org.openape.api.group.GroupAccessRight;
+import org.openape.api.group.GroupAccessRights;
 import org.openape.api.listing.Listing;
 import org.openape.api.user.User;
 import org.openape.server.auth.UnauthorizedException;
@@ -43,8 +43,8 @@ public class ResourceRequestHandler {
      *             if the resource name is already taken.
      */
     public String createResource(final FileItem resource, final String mimeType, final User user,
-            GroupAccessRight groupAccessRight) throws IOException, IllegalArgumentException {
-        return ResourceList.getInstance().addResource(resource, mimeType, user, groupAccessRight);
+            GroupAccessRights groupAccessRights) throws IOException, IllegalArgumentException {
+        return ResourceList.getInstance().addResource(resource, mimeType, user, groupAccessRights);
     }
 
     /**

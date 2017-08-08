@@ -17,7 +17,7 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.openape.api.Messages;
-import org.openape.api.group.GroupAccessRight;
+import org.openape.api.group.GroupAccessRights;
 import org.openape.api.listing.Listing;
 import org.openape.api.user.User;
 import org.openape.server.auth.AuthService;
@@ -31,8 +31,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import spark.Spark;
 
 public class ResourceRESTInterface extends SuperRestInterface {
-    private static final String GROUP_ACCESS_RIGHT_HEADER_NAME = "groupAccessRight";
-    private static final String HEADER_MUST_CONTAIN_GROUP_ACCESS_RIGHT_MSG = "Header must contain a field named 'groupAccessRight' with a valid GroupAccessRiths object as value.";
+    private static final String GROUP_ACCESS_RIGHT_HEADER_NAME = "groupAccessRights";
+    private static final String HEADER_MUST_CONTAIN_GROUP_ACCESS_RIGHT_MSG = "Header must contain a field named 'groupAccessRights' with a valid GroupAccessRights object as value.";
 
     /**
      * Create a send able response from file.
@@ -88,17 +88,17 @@ public class ResourceRESTInterface extends SuperRestInterface {
                             .getString("ResourceRESTInterface.contentTypeString"));//$NON-NLS-1$
                     // req.contentType();
                     // get group access rights.
-                    final String groupAccessRightString = req
+                    final String groupAccessRightsString = req
                             .headers(GROUP_ACCESS_RIGHT_HEADER_NAME);
-                    if (groupAccessRightString == null) {
+                    if (groupAccessRightsString == null) {
                         res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
                         return HEADER_MUST_CONTAIN_GROUP_ACCESS_RIGHT_MSG;
                     }
-                    GroupAccessRight groupAccessRight = null;
+                    GroupAccessRights groupAccessRights = null;
                     try {
                         final ObjectMapper mapper = new ObjectMapper();
-                        groupAccessRight = mapper.readValue(groupAccessRightString,
-                                GroupAccessRight.class);
+                        groupAccessRights = mapper.readValue(groupAccessRightsString,
+                                GroupAccessRights.class);
                     } catch (Exception e) {
                         res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
                         return HEADER_MUST_CONTAIN_GROUP_ACCESS_RIGHT_MSG;
@@ -134,7 +134,7 @@ public class ResourceRESTInterface extends SuperRestInterface {
                         final FileItem item = items.get(0);
                         // hand off file to handler.
                         fileName = requestHandler.createResource(item, mimeType, user,
-                                groupAccessRight);
+                                groupAccessRights);
                     } catch (final IllegalArgumentException e) {
                         // occurs if the filename is taken or its not a file.
                         res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);

@@ -9,7 +9,7 @@ import javax.xml.bind.annotation.XmlElement;
 
 import org.openape.api.Messages;
 import org.openape.api.Resource;
-import org.openape.api.group.GroupAccessRight;
+import org.openape.api.group.GroupAccessRights;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -25,7 +25,7 @@ public class ResourceObject extends Resource {
     private String fileName = null;
     private String ownerId = null;
     private String mimeType = null;
-    private GroupAccessRight groupAccessRight = null;
+    private GroupAccessRights groupAccessRights = null;
     private List<ResourceDescription> resourceDescriptions = null;
 
     public ResourceObject() {
@@ -33,12 +33,12 @@ public class ResourceObject extends Resource {
     }
 
     public ResourceObject(final String fileName, final String ownerId, final String mimeType,
-            final GroupAccessRight groupAccessRight) {
+            final GroupAccessRights groupAccessRights) {
         super();
         this.fileName = fileName;
         this.ownerId = ownerId;
         this.mimeType = mimeType;
-        this.groupAccessRight = groupAccessRight;
+        this.groupAccessRights = groupAccessRights;
     }
 
     @JsonIgnore
@@ -60,9 +60,9 @@ public class ResourceObject extends Resource {
         return resourceFolderPath + File.separator + this.getOwnerId();
     }
 
-    @XmlElement(name = "groupAccessRight")
-    public GroupAccessRight getGroupAccessRight() {
-        return this.groupAccessRight;
+    @XmlElement(name = "groupAccessRights")
+    public GroupAccessRights getGroupAccessRights() {
+        return this.groupAccessRights;
     }
 
     @XmlAttribute(name = "id")
@@ -99,8 +99,8 @@ public class ResourceObject extends Resource {
         this.fileName = fileName;
     }
 
-    public void setGroupAccessRight(final GroupAccessRight groupAccessRight) {
-        this.groupAccessRight = groupAccessRight;
+    public void setGroupAccessRights(final GroupAccessRights groupAccessRights) {
+        this.groupAccessRights = groupAccessRights;
     }
 
     public void setId(final String id) {

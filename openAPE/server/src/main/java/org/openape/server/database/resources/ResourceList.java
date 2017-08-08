@@ -10,7 +10,7 @@ import java.util.List;
 
 import org.apache.commons.fileupload.FileItem;
 import org.openape.api.Messages;
-import org.openape.api.group.GroupAccessRight;
+import org.openape.api.group.GroupAccessRights;
 import org.openape.api.resourceDescription.ResourceObject;
 import org.openape.api.user.User;
 import org.openape.server.auth.AuthService;
@@ -124,7 +124,7 @@ public class ResourceList {
      *             if a storing error occurs.
      */
     public String addResource(final FileItem resource, final String mimeType, final User user,
-            GroupAccessRight groupAccessRight) throws IllegalArgumentException, IOException {
+            GroupAccessRights groupAccessRights) throws IllegalArgumentException, IOException {
         final String fileName = resource.getName();
 
         // Check if filename exists.
@@ -134,7 +134,7 @@ public class ResourceList {
         }
         // Create resource reference object for the database.
         final ResourceObject resourceObject = new ResourceObject(fileName, user.getId(), mimeType,
-                groupAccessRight);
+                groupAccessRights);
         // set owner.
         resourceObject.setOwner(user.getId());
         // store database resource object
