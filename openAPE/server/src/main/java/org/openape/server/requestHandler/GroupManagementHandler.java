@@ -33,13 +33,18 @@ public class GroupManagementHandler {
         return id;
     }
 
-	public static void addMember(String userId, GroupMembershipStatus status, Group group) {
-		// TODO Auto-generated method stub
+    public static void addMember(String userId, GroupMembershipStatus status, Group group)
+            throws IOException {
+        // TODO Auto-generated method stub
         List<GroupMember> members = new LinkedList<GroupMember>();
         members.add(new GroupMember(userId, status));
         group.setMembers(members);
-DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
-databaseConnection.updateData(MongoCollectionTypes.GROUPS , group, group.getId() );
+        DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
+        try {
+            databaseConnection.updateData(MongoCollectionTypes.GROUPS, group, group.getId());
+        } catch (ClassCastException e) {
+            throw new IllegalArgumentException(e.getMessage());
+        }
 
-	}
+    }
 }
