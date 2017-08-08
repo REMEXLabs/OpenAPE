@@ -5,6 +5,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.openape.api.groups.GroupMembershipStatus;
+import org.openape.server.api.group.Group;
+import org.openape.server.api.group.GroupMember;
 import org.openape.server.database.mongoDB.DatabaseConnection;
 import org.openape.server.database.mongoDB.MongoCollectionTypes;
 
@@ -30,4 +32,14 @@ public class GroupManagementHandler {
 
         return id;
     }
+
+	public static void addMember(String userId, GroupMembershipStatus status, Group group) {
+		// TODO Auto-generated method stub
+        List<GroupMember> members = new LinkedList<GroupMember>();
+        members.add(new GroupMember(userId, status));
+        group.setMembers(members);
+DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
+databaseConnection.updateData(MongoCollectionTypes.GROUPS , group, group.getId() );
+
+	}
 }

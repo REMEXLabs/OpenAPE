@@ -191,6 +191,11 @@ public class Group extends DatabaseObject {
         this.name = name;
     }
 
+	public boolean isMember(String requestedUser) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
     // *********************************************************************************************************************************************
     // *********************************************************************************************************************************************
     // public methods

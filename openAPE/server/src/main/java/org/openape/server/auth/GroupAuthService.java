@@ -56,6 +56,9 @@ public class GroupAuthService extends AuthService {
         // TODO implement
     }
 
+    public void allowGroupAdmin(Request req, Response response, Group group)throws UnauthorizedException {
+        // TODO implement
+    }
     // *********************************************************************************************************************************************
     // *********************************************************************************************************************************************
     // protected methods
