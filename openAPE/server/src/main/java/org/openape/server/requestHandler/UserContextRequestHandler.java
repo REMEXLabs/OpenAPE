@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import org.openape.api.DatabaseObject;
 import org.openape.api.Messages;
+import org.openape.api.UserContextList;
 import org.openape.api.usercontext.UserContext;
 import org.openape.server.database.mongoDB.DatabaseConnection;
 import org.openape.server.database.mongoDB.MongoCollectionTypes;
@@ -151,4 +152,10 @@ public class UserContextRequestHandler {
         }
         return true;
     }
+
+    public UserContextList getUserContextList() {
+DatabaseConnection databaseconnection = DatabaseConnection.getInstance();
+databaseconnection.
+
+}
 }
