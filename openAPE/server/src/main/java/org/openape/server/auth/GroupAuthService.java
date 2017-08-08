@@ -1,5 +1,8 @@
 package org.openape.server.auth;
 
+import java.util.List;
+
+import org.openape.api.user.User;
 import org.openape.server.api.group.Group;
 
 import spark.Request;
@@ -53,10 +56,16 @@ public class GroupAuthService extends AuthService {
 
     public void allowOpenAPEAndGroupAdmin(final Request request, final Response response,
             final Group group) throws UnauthorizedException {
-        // TODO implement
+        final User user = this.getAuthenticatedUser(request, response);
+        final List<String> roles = user.getRoles();
+        // TODO is role admin correct?
+        if (!group.isUserGroupAdmin(user.getId()) && !roles.contains("admin")) {
+            throw new UnauthorizedException("You are not allowed to perform this operation");
+        }
     }
 
-    public void allowGroupAdmin(Request req, Response response, Group group)throws UnauthorizedException {
+    public void allowGroupAdmin(Request req, Response response, Group group)
+            throws UnauthorizedException {
         // TODO implement
     }
     // *********************************************************************************************************************************************

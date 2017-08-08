@@ -19,5 +19,4 @@ public class GroupMembershipRequest {
 	public void setStatus(GroupMembershipStatus status) {
 		this.status = status;
 	}
-    
 }

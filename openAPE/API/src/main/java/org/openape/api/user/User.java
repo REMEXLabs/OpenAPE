@@ -76,5 +76,4 @@ public class User extends DatabaseObject {
     public void setUsername(final String username) {
         this.username = username;
     }
-
 }
