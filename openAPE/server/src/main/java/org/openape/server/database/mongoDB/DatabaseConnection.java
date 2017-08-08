@@ -436,8 +436,7 @@ public class DatabaseConnection implements ServerMonitorListener {
 
 	// TODO java doc
 	public List<DatabaseObject> getDocumentsByQuery(final MongoCollectionTypes type, BasicDBObject query,
-			final boolean includeId)
-			throws com.fasterxml.jackson.core.JsonParseException, JsonMappingException, IOException {
+			final boolean includeId) throws IOException {
 		final List<DatabaseObject> databaseObjects = new ArrayList<DatabaseObject>();
 		if (query == null) {
 			query = new BasicDBObject();
