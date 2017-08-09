@@ -44,10 +44,10 @@ public class Administration extends SuperRestInterface {
             Administration.model.put("deleteUser", del);
 
             return new ModelAndView(Administration.model, "velocityTemplates/administration.vm"); // located
-                // in
-                // the
-                // resources
-                // directory
+                                                                                                  // in
+                                                                                                  // the
+                                                                                                  // resources
+                                                                                                  // directory
             }, new VelocityTemplateEngine());
     }
 

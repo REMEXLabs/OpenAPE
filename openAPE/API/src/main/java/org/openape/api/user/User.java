@@ -5,17 +5,18 @@ import java.util.List;
 
 import org.openape.api.DatabaseObject;
 import org.pac4j.core.profile.CommonProfile;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 public class User extends DatabaseObject {
-
-    /**
-     *
-     */
     private static final long serialVersionUID = -5694679880590931589L;
 
+    private static Logger logger = LoggerFactory.getLogger(User.class);
+
     public static User getFromProfile(final CommonProfile profile) {
+        User.logger.debug("Profile" + profile);
         final User user = new User();
         user.setId(profile.getId());
         user.setUsername(profile.getUsername());
@@ -60,6 +61,10 @@ public class User extends DatabaseObject {
         this.id = id;
     }
 
+    /**
+     * @param password
+     *            Hash of the user's password
+     */
     public void setPassword(final String password) {
         this.password = password;
     }
@@ -71,5 +76,4 @@ public class User extends DatabaseObject {
     public void setUsername(final String username) {
         this.username = username;
     }
-
 }

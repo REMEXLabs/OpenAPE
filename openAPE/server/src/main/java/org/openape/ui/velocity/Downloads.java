@@ -30,10 +30,10 @@ public class Downloads extends SuperRestInterface {
                             new Organism_2_SubSection().generateTopNavigation());
 
                     return new ModelAndView(Downloads.model, "velocityTemplates/downloads.vm"); // located
-                    // in
-                    // the
-                    // resources
-                    // directory
+                                                                                                // in
+                                                                                                // the
+                                                                                                // resources
+                                                                                                // directory
                 }, new VelocityTemplateEngine());
     }
 

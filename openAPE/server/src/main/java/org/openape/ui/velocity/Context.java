@@ -29,10 +29,10 @@ public class Context extends SuperRestInterface {
                             new Organism_2_SubSection().generateTopNavigation());
 
                     return new ModelAndView(Context.model, "velocityTemplates/context.vm"); // located
-                    // in
-                    // the
-                    // resources
-                    // directory
+                                                                                            // in
+                                                                                            // the
+                                                                                            // resources
+                                                                                            // directory
                 }, new VelocityTemplateEngine());
     }
 

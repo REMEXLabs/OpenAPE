@@ -6,16 +6,21 @@ import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
+import java.util.List;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.Invocation;
+import javax.ws.rs.client.Invocation.Builder;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Form;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.openape.api.OpenAPEEndPoints;
+import org.openape.api.PasswordChangeRequest;
+import org.openape.api.auth.TokenResponse;
 import org.openape.api.environmentcontext.EnvironmentContext;
 import org.openape.api.equipmentcontext.EquipmentContext;
 import org.openape.api.listing.Listing;
@@ -33,12 +38,13 @@ public class OpenAPEClient {
     static final String ENVIRONMENT_CONTEXT_PATH = "api/environment-contexts";
     static final String EQUIPMENT_CONTEXT_PATH = "api/equipment-contexts";
     static final String TASK_CONTEXT_PATH = "api/task-contexts";
-
     static final String USER_CONTEXT_PATH = "api/user-contexts";
+
     static final String LISTING_PATH = "api/listings";
     private final Client client;
     private final WebTarget webResource;
     private final String token;
+    private final String userId;
 
     /**
      * Standard constructor, sets server adress automatically to
@@ -50,7 +56,7 @@ public class OpenAPEClient {
 
     public OpenAPEClient(final String userName, final String password, final String uri) {
         // create HTTP client that connects to the server
-        System.out.println("Constructor");
+        OpenAPEClient.logger.info("Initialising OpenAPE client");
         // ClientConfig config = new ClientConfig();
         this.client = ClientBuilder.newClient();// config);
         this.webResource = this.client.target(uri);
@@ -58,6 +64,39 @@ public class OpenAPEClient {
         // get token for accessing server
         this.token = this.getToken(userName, password);
         OpenAPEClient.logger.info("OpenAPECLIENT received Token for: " + uri);
+        OpenAPEClient.logger.info("Token: " + this.token);
+
+        this.userId = this.getMyId();
+    }
+
+    public boolean changeUserPassword(final String oldPassword, final String newPassword) {
+        final PasswordChangeRequest pwChangeReq = new PasswordChangeRequest(oldPassword,
+                newPassword);
+        final Response response = this.getRequest("openape/users/" + this.userId + "/password")
+                .put(Entity.entity(pwChangeReq, MediaType.APPLICATION_JSON));
+
+        return this.checkResponse(response);
+    }
+
+    public boolean changeUserRoles(final String userId, final List<String> roles) {
+        final Response response = this.getRequest("users/" + userId + "/roles").put(
+                Entity.entity(roles, MediaType.APPLICATION_JSON));
+        return this.checkResponse(response);
+    }
+
+    private boolean checkResponse(final Response response) {
+        final int status = response.getStatus();
+
+        if (status != 200) {
+            OpenAPEClient.logger.error("Http Status: " + status + "\n" + "Server message: "
+                    + response.getStatus());
+            return false;
+        }
+
+        OpenAPEClient.logger.debug("Http Status: " + status + "\n Server message: "
+                + response.getStatusInfo());
+        return true;
+
     }
 
     private URI createContext(final String path, final Object uploadContext)
@@ -70,8 +109,6 @@ public class OpenAPEClient {
         if (response.getStatus() != 201) {
             throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
         }
-
-        final String output = response.readEntity(String.class);
 
         return new URI(response.getHeaderString("Location"));
     }
@@ -116,10 +153,24 @@ public class OpenAPEClient {
 
     }
 
+    private String getMyId() {
+
+        final Response response = this.getRequest(OpenAPEEndPoints.MY_ID).get();
+        this.checkResponse(response);
+        final String id = response.readEntity(String.class);
+        OpenAPEClient.logger.debug("Received user id: " + id);
+        return id;
+    }
+
+    Builder getRequest(final String path) {
+        OpenAPEClient.logger.debug("Building request for URL: " + path);
+        return this.webResource.path(path).request().header("Authorization", this.token);
+
+    }
+
     public File getResource(final String url, final String targetFile) throws URISyntaxException {
         final URI uri = new URI(url);
         return this.getResource(uri, targetFile);
-
     }
 
     public File getResource(final URI uri, final String targetFile) {
@@ -149,8 +200,7 @@ public class OpenAPEClient {
     }
 
     private String getToken(final String userName, final String password) {
-        final String tokenRequest = "grant_type=password&username=" + userName + "&password="
-                + password;
+
         final Form form = new Form();
         form.param("grant_type", "password");
         form.param("username", userName);
@@ -166,7 +216,7 @@ public class OpenAPEClient {
             throw new RuntimeException("Failed : HTTP error code : " + status);
         }
 
-        final String output = response.readEntity(String.class);
+        final String output = response.readEntity(TokenResponse.class).getAccessToken();
 
         return output;
 
@@ -185,5 +235,4 @@ public class OpenAPEClient {
         }
         return null;
     }
-
 }

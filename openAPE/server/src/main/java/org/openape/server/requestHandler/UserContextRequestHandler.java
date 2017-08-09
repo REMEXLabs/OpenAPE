@@ -13,6 +13,8 @@ import org.openape.api.usercontext.UserContext;
 import org.openape.server.database.mongoDB.DatabaseConnection;
 import org.openape.server.database.mongoDB.MongoCollectionTypes;
 import org.openape.server.rest.UserContextRESTInterface;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.mongodb.BasicDBObject;
 
@@ -22,6 +24,7 @@ import com.mongodb.BasicDBObject;
  * {@link DatabaseConnection}.
  */
 public class UserContextRequestHandler {
+    private static Logger logger = LoggerFactory.getLogger(UserContextRequestHandler.class);
 
     public static final MongoCollectionTypes COLLECTIONTOUSE = MongoCollectionTypes.USERCONTEXT;
 
@@ -48,6 +51,8 @@ public class UserContextRequestHandler {
         try {
             id = databaseconnection.storeData(UserContextRequestHandler.COLLECTIONTOUSE,
                     (DatabaseObject) userContext);
+            UserContextRequestHandler.logger.debug("New user context in database with id \"" + id
+                    + "\".");
         } catch (final ClassCastException e) {
             throw new IllegalArgumentException(e.getMessage());
         }

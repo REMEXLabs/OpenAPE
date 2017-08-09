@@ -34,7 +34,6 @@ public class ResourceList {
 
     private static final String RESOURCEFOLDERPATH = Messages.getString("ResourceList.rootFolder") + File.separator //$NON-NLS-1$
             + Messages.getString("ResourceList.ResourceFolder"); //$NON-NLS-1$
-
     /**
      * Singleton instance of this class.
      */

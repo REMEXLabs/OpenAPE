@@ -22,10 +22,10 @@ public class MyResources extends SuperRestInterface {
             final Map<String, Object> model = mainController.getTemplateComponents();
 
             return new ModelAndView(model, "velocityTemplates/myResources.vm"); // located
-                // in
-                // the
-                // resources
-                // directory
+                                                                                // in
+                                                                                // the
+                                                                                // resources
+                                                                                // directory
             }, new VelocityTemplateEngine());
     }
 

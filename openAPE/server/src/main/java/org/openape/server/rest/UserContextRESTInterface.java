@@ -74,15 +74,27 @@ public class UserContextRESTInterface extends SuperRestInterface {
         Spark.before(Messages.getString("UserContextRESTInterface.UserContextURLWithID"),
                 auth.authorize("anonymous"));
 
+        Spark.get(Messages.getString("UserContextRESTInterface.UserContextURLWithoutID"),
+                (req, res) -> {
+
+                    // UserContextList ucl =
+                    // requestHandler.getUserContextsForUser(auth.getAuthenticatedUser(req,
+                    // res));
+                return null; // ucl;
+            });
+
         /**
          * Request 7.2.2 create user-context. Can only be accessed by roles
          * "user" and "admin.
          */
         Spark.post(
                 Messages.getString("UserContextRESTInterface.UserContextURLWithoutID"), (req, res) -> { //$NON-NLS-1$
+                    SuperRestInterface.logger.info("bla");
                     if (!req.contentType().equals(Messages.getString("MimeTypeJson"))) {//$NON-NLS-1$
+                        SuperRestInterface.logger.debug("Received Message with wrong content-type");
                         res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
-                        return Messages.getString("Contexts.WrongMimeTypeErrorMsg");//$NON-NLS-1$
+                        return Messages
+                                .getString("Contexts.WrongMimeTypeErrorMsg" + " Received " + req.contentType() + " instead.");//$NON-NLS-1$
                     }
                     try {
                         // Try to map the received json object to a userContext
@@ -91,9 +103,14 @@ public class UserContextRESTInterface extends SuperRestInterface {
                                 .extractObjectFromRequest(req, UserContext.class);
                         // Make sure to set the id of the authenticated user as
                         // the ownerId
+                        SuperRestInterface.logger.debug("lusm: requesting user");
+                        final String id = auth.getAuthenticatedUser(req, res).getId();
+                        SuperRestInterface.logger.info("id: " + id);
                         receivedUserContext.setOwner(auth.getAuthenticatedUser(req, res).getId());
+                        SuperRestInterface.logger.debug("Lusm: success");
                         // Test the object for validity.
                         if (!receivedUserContext.isValid()) {
+                            SuperRestInterface.logger.info("lusm: none valide");
                             res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
                             return Messages
                                     .getString("UserContextRESTInterface.NoValidObjectErrorMassage"); //$NON-NLS-1$
