@@ -757,7 +757,7 @@ public class DatabaseConnection implements ServerMonitorListener {
     }
 
     public UpdateResult updateDocument(final MongoCollectionTypes type, final String id,
-            final String indexName, final String indexValue) throws Exception {
+            final String indexName, final Object indexValue) throws Exception {
 
         final MongoCollection<Document> collectionToWorkOn = this.getCollectionByType(type);
 

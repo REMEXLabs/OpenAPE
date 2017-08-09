@@ -78,14 +78,8 @@ public class ProfileRESTInterface extends SuperRestInterface {
                                 jsonObj.getString("username"));
                         adminsectionRequestHandler.updateUser(jsonObj.getString("id"), "email",
                                 jsonObj.getString("email"));
-
-                        for (final Object entry : jsonObj.getJSONArray("roles")) {
-                            adminsectionRequestHandler.updateUser(jsonObj.getString("id"), "roles",
-                                    entry.toString());
-                        }
-
-                        // adminsectionRequestHandler.updateUser(jsonObj.getString("id"),
-                        // "roles", jsonObj.getJSONArray("roles"));
+                        adminsectionRequestHandler.updateUser(jsonObj.getString("id"), "roles", 
+                        		jsonObj.getJSONArray("roles"));
 
                         return "user updated";
                     } catch (final Exception err) {

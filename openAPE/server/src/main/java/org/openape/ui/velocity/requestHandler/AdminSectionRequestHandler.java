@@ -250,7 +250,7 @@ public class AdminSectionRequestHandler {
         databaseConnection.removeData(AdminSectionRequestHandler.COLLECTIONTOUSE_USERS, id);
     }
 
-    public UpdateResult updateUser(final String id, final String indexName, final String indexValue)
+    public UpdateResult updateUser(final String id, final String indexName, final Object indexValue)
             throws Exception {
 
         // get database connection.
