@@ -2,6 +2,7 @@ package org.openape.server.requestHandler;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 import org.openape.api.DatabaseObject;
 import org.openape.api.Messages;
@@ -76,7 +77,7 @@ public class UserContextRequestHandler {
 
     public UserContextList getAllUserContexts(final String url) {
         final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
-        final List<UserContext> contexts = databaseConnection.getAllDocuments(MongoCollectionTypes.USERCONTEXT);
+        final Map<String, UserContext> contexts = databaseConnection.getAllDocuments(MongoCollectionTypes.USERCONTEXT);
         return new UserContextList(contexts, url);
     }
 
@@ -127,7 +128,7 @@ public class UserContextRequestHandler {
     public UserContextList getUserContexts(final BasicDBObject query, final String url) {
         final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
 
-        final List<UserContext> contexts = databaseConnection.getDocumentsByQuery(MongoCollectionTypes.USERCONTEXT,
+        final Map<String, UserContext> contexts = databaseConnection.getDocumentsByQuery(MongoCollectionTypes.USERCONTEXT,
                 query, true);
 
         return new UserContextList(contexts, url);

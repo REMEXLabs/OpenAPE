@@ -16,6 +16,7 @@ import org.openape.server.auth.UnauthorizedException;
 import org.openape.server.requestHandler.UserContextRequestHandler;
 
 import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -29,8 +30,14 @@ public class UserContextRESTInterface extends SuperRestInterface {
             final Object data) {
         final String contentType = req.contentType();
         if (contentType == MediaType.APPLICATION_JSON) {
+            try {
             final ObjectMapper mapper = new ObjectMapper();
-            final String jsonData = mapper.writeValueAsString(data);
+            
+                final String jsonData = mapper.writeValueAsString(data);
+            } catch (JsonProcessingException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
         } else if (contentType == MediaType.APPLICATION_XML) {
             try {
                 final JAXBContext context = JAXBContext.newInstance(type);
@@ -51,7 +58,6 @@ public class UserContextRESTInterface extends SuperRestInterface {
         } else {
             res.status(400);
             return "wrong content-type";
-            ;
         }
 
     }

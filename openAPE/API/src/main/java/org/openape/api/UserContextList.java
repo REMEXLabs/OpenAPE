@@ -1,8 +1,10 @@
 package org.openape.api;
 
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import javax.xml.bind.annotation.XmlElement;
 
@@ -15,11 +17,17 @@ public class UserContextList {
     @XmlElement(name = "user-context-uris")
     private List<URI> userContextUris;
 
-    public UserContextList(final List<UserContext> contexts, final String url) {
+    public UserContextList(final Map<String, UserContext> contexts, final String url) {
         this.userContextUris = new LinkedList<URI>();
-        for (final UserContext uc : contexts) {
-            this.userContextUris.add(new URI(url + uc.getId));
+        for (final String id : contexts.keySet()) {
+            try {
+                this.userContextUris.add(new URI(url + id));
+            } catch (URISyntaxException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
         }
+        totalContexts = userContextUris.size();
     }
 
     public int getTotalContexts() {
