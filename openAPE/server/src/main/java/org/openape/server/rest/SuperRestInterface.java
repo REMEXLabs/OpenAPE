@@ -159,7 +159,7 @@ public class SuperRestInterface {
         TokenRESTInterface.setupTokenRESTInterface(authService);
         ProfileRESTInterface.setupProfileRESTInterface();
 
-<<<<<<< HEAD
+
         // Resource endpoints
         EnvironmentContextRESTInterface.setupEnvironmentContextRESTInterface(
                 new EnvironmentContextRequestHandler(), authService);
@@ -169,8 +169,6 @@ public class SuperRestInterface {
         ResourceDescriptionRESTInterface.setupResourceDescriptionRESTInterface(
                 new ResourceDescriptionRequestHandler(), authService);
 
-=======
->>>>>>> refs/remotes/origin/newMaster
         try {
             Administration.setupAdministrationVELOCITYInterface(new AdminSectionRequestHandler());
         } catch (final IllegalArgumentException e) {

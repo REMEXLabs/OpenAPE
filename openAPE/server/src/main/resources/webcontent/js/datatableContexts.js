@@ -43,7 +43,7 @@ $(document).ready(function(){
 			}
 		}
 		
-	} else if (window.location.href.indexOf("context") != -1 ) {
+	} else if (window.location.href.indexOf("/context") != -1 ) {
 		
 		var hash = window.location.hash.substring(1, window.location.hash.length);
 		$('button').each(function() {
