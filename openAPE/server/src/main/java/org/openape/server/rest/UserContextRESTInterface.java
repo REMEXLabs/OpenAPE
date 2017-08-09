@@ -25,6 +25,37 @@ import spark.Spark;
 
 public class UserContextRESTInterface extends SuperRestInterface {
 
+    private static String createReturnString(final Request req, final Response res, final Class type,
+            final Object data) {
+        final String contentType = req.contentType();
+        if (contentType == MediaType.APPLICATION_JSON) {
+            final ObjectMapper mapper = new ObjectMapper();
+            final String jsonData = mapper.writeValueAsString(data);
+        } else if (contentType == MediaType.APPLICATION_XML) {
+            try {
+                final JAXBContext context = JAXBContext.newInstance(type);
+                Marshaller m;
+
+                m = context.createMarshaller();
+                final StringWriter sw = new StringWriter();
+
+                m.marshal(data, sw);
+                return sw.toString();
+
+            } catch (final JAXBException e) {
+                SuperRestInterface.logger.warn(e.toString());
+                res.status(500);
+                return "Internal server error";
+            }
+
+        } else {
+            res.status(400);
+            return "wrong content-type";
+            ;
+        }
+
+    }
+
     public static void setupUserContextRESTInterface(final UserContextRequestHandler requestHandler,
             final AuthService auth) {
 
@@ -132,8 +163,11 @@ public class UserContextRESTInterface extends SuperRestInterface {
                         requestHandler.updateUserContextById(userContextId, receivedUserContext);
                         res.status(SuperRestInterface.HTTP_STATUS_OK);
                         return Messages.getString("UserContextRESTInterface.EmptyString"); //$NON-NLS-1$ //TODO
+                                                                                           // $NON-NLS-1$
                                                                                            //$NON-NLS-1$ return
+                                                                                           // $NON-NLS-1$
                                                                                            //$NON-NLS-1$ right
+                                                                                           // $NON-NLS-1$
                                                                                            //$NON-NLS-1$ statuscode
                     } catch (JsonParseException | JsonMappingException | IllegalArgumentException e) {
                         // If the parse or update is not successful return bad
@@ -171,47 +205,21 @@ public class UserContextRESTInterface extends SuperRestInterface {
                 return e.getMessage();
             }
         });
-/*Request 7.2.6 for user-context-lists
- * 
- */
+        /*
+         * Request 7.2.6 for user-context-lists
+         * 
+         */
 
         Spark.get(Messages.getString("UserContextRESTInterface.UserContextURLWithoutID"), (req, res) -> { //$NON-NLS-1$
-     String url = req.uri().toString();
-            try{
-            auth.allowAdmin(req,res);
-            return createReturnString(req, res, UserContextList.class,  requestHandler.getAllUserContexts(url));
-     } catch (UnauthorizedException e){
-         return createReturnString(req, res, UserContextList.class,  requestHandler.getMyContexts(auth.getAuthenticatedUser(req, res).getId()  , url));
-     }
-    });
-    }
-
-    private static String createReturnString(Request req, Response res,Class type, Object data) {
-        String contentType = req.contentType();
-        if (contentType == MediaType.APPLICATION_JSON) {
-            final ObjectMapper mapper = new ObjectMapper();
-            final String jsonData = mapper.writeValueAsString(data);
-                    } else if (contentType == MediaType.APPLICATION_XML){
-                        try {
-                        JAXBContext context = JAXBContext.newInstance(type);
-                        Marshaller m;
-                        
-                            m = context.createMarshaller();
-                            StringWriter sw = new StringWriter();
-
-                            m.marshal(data, sw);
-                            return sw.toString();
-
-                        } catch (JAXBException e) {
-                                                        logger.warn(e.toString()); 
-                            res.status(500);
-                            return "Internal server error";
-                        }
-                        
-                                            } else {
-                        res.status(400);
-                        return "wrong content-type";;
-                    }
-
+            final String url = req.uri().toString();
+            try {
+                auth.allowAdmin(req, res);
+                return UserContextRESTInterface.createReturnString(req, res, UserContextList.class,
+                        requestHandler.getAllUserContexts(url));
+            } catch (final UnauthorizedException e) {
+                return UserContextRESTInterface.createReturnString(req, res, UserContextList.class,
+                        requestHandler.getMyContexts(auth.getAuthenticatedUser(req, res).getId(), url));
+            }
+        });
     }
 }

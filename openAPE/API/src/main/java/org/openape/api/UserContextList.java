@@ -9,32 +9,32 @@ import javax.xml.bind.annotation.XmlElement;
 import org.openape.api.usercontext.UserContext;
 
 public class UserContextList {
-    
-    public UserContextList(List<UserContext> contexts, String url) {
-    this.userContextUris= new LinkedList<URI>();    
-    for (UserContext uc: contexts){
-        userContextUris.add(new URI(      url + uc.getId));
-    }
-    }
 
     private int totalContexts;
 
-    @XmlElement(name="user-context-uris")
+    @XmlElement(name = "user-context-uris")
     private List<URI> userContextUris;
 
-    public int getTotalContexts() {
-        return totalContexts;
+    public UserContextList(final List<UserContext> contexts, final String url) {
+        this.userContextUris = new LinkedList<URI>();
+        for (final UserContext uc : contexts) {
+            this.userContextUris.add(new URI(url + uc.getId));
+        }
     }
 
-    public void setTotalContexts(int totalContexts) {
-        this.totalContexts = totalContexts;
+    public int getTotalContexts() {
+        return this.totalContexts;
     }
 
     public List<URI> getUserContextUris() {
-        return userContextUris;
+        return this.userContextUris;
     }
 
-    public void setUserContextUris(List<URI> userContextUris) {
+    public void setTotalContexts(final int totalContexts) {
+        this.totalContexts = totalContexts;
+    }
+
+    public void setUserContextUris(final List<URI> userContextUris) {
         this.userContextUris = userContextUris;
     }
 }

@@ -74,6 +74,18 @@ public class UserContextRequestHandler {
         return true;
     }
 
+    public UserContextList getAllUserContexts(final String url) {
+        final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
+        final List<UserContext> contexts = databaseConnection.getAllDocuments(MongoCollectionTypes.USERCONTEXT);
+        return new UserContextList(contexts, url);
+    }
+
+    public UserContextList getMyContexts(final String userId, final String url) {
+        final BasicDBObject query = new BasicDBObject();
+        query.put("owner", userId);
+        return this.getUserContexts(query, url);
+    }
+
     /**
      * Method to get an existing user context from the server. It is used by the
      * rest API {@link UserContextRESTInterface} and uses the server database
@@ -109,6 +121,16 @@ public class UserContextRequestHandler {
             throw new IOException(e.getMessage());
         }
         return returnObject;
+
+    }
+
+    public UserContextList getUserContexts(final BasicDBObject query, final String url) {
+        final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
+
+        final List<UserContext> contexts = databaseConnection.getDocumentsByQuery(MongoCollectionTypes.USERCONTEXT,
+                query, true);
+
+        return new UserContextList(contexts, url);
 
     }
 
@@ -149,26 +171,4 @@ public class UserContextRequestHandler {
         }
         return true;
     }
-
-    public UserContextList getMyContexts(String userId,String url) {
-        final BasicDBObject query = new BasicDBObject();
-        query.put("owner", userId);
-return getUserContexts(query, url);
-    }
-
-    public UserContextList getAllUserContexts(String url){
-        DatabaseConnection databaseConnection = DatabaseConnection.getInstance()   ;
-        List<UserContext> contexts = databaseConnection.getAllDocuments(MongoCollectionTypes.USERCONTEXT);
-    return new UserContextList(contexts, url);
-    }
-    
-    public UserContextList getUserContexts(BasicDBObject query, String url){
-        final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
-
-List<UserContext> contexts = databaseConnection.getDocumentsByQuery(MongoCollectionTypes.USERCONTEXT ,
-        query, true);
-
-return new UserContextList(contexts, url);
-
-}
 }
