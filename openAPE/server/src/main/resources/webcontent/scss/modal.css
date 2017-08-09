@@ -1,0 +1,15 @@
+.roles {
+  background-color: #ececec;
+  width: 8.4em;
+  height: 3em;
+  text-align: center;
+  padding-top: 0.7em;
+  float: left; }
+
+.roles:nth-child(2) {
+  margin-left: 1em; }
+
+.selected {
+  background-color: #64D329; }
+
+/*# sourceMappingURL=modal.css.map */
