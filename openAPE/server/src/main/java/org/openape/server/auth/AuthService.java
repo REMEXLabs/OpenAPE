@@ -81,6 +81,13 @@ public class AuthService {
 
     private final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
 
+    public void allowAdmin(Request request, Response response) throws UnauthorizedException{
+        final CommonProfile profile = this.getAuthenticatedProfile(request, response);
+        if (!this.isAdmin(profile)){
+            throw new UnauthorizedException("You are not allowed to perform this operation");
+        }
+    }
+    
     /**
      * Check if the authenticated user has either the role `admin` or equals the
      * provided owner.

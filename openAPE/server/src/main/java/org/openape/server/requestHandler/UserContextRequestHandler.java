@@ -1,6 +1,7 @@
 package org.openape.server.requestHandler;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.openape.api.DatabaseObject;
 import org.openape.api.Messages;
@@ -9,6 +10,8 @@ import org.openape.api.usercontext.UserContext;
 import org.openape.server.database.mongoDB.DatabaseConnection;
 import org.openape.server.database.mongoDB.MongoCollectionTypes;
 import org.openape.server.rest.UserContextRESTInterface;
+
+import com.mongodb.BasicDBObject;
 
 /**
  * Class with methods to manage user context on the server. It is used by the
@@ -147,9 +150,25 @@ public class UserContextRequestHandler {
         return true;
     }
 
-    public UserContextList getUserContextList() {
-final DatabaseConnection databaseconnection = DatabaseConnection.getInstance();
-databaseconnection.
+    public UserContextList getMyContexts(String userId,String url) {
+        final BasicDBObject query = new BasicDBObject();
+        query.put("owner", userId);
+return getUserContexts(query, url);
+    }
+
+    public UserContextList getAllUserContexts(String url){
+        DatabaseConnection databaseConnection = DatabaseConnection.getInstance()   ;
+        List<UserContext> contexts = databaseConnection.getAllDocuments(MongoCollectionTypes.USERCONTEXT);
+    return new UserContextList(contexts, url);
+    }
+    
+    public UserContextList getUserContexts(BasicDBObject query, String url){
+        final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
+
+List<UserContext> contexts = databaseConnection.getDocumentsByQuery(MongoCollectionTypes.USERCONTEXT ,
+        query, true);
+
+return new UserContextList(contexts, url);
 
 }
 }

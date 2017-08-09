@@ -1,16 +1,26 @@
 package org.openape.server.rest;
 
 import java.io.IOException;
+import java.io.StringWriter;
+
+import javax.ws.rs.core.MediaType;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
 
 import org.openape.api.Messages;
+import org.openape.api.UserContextList;
 import org.openape.api.usercontext.UserContext;
 import org.openape.server.auth.AuthService;
+import org.openape.server.auth.UnauthorizedException;
 import org.openape.server.requestHandler.UserContextRequestHandler;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import spark.Request;
+import spark.Response;
 import spark.Spark;
 
 public class UserContextRESTInterface extends SuperRestInterface {
@@ -161,7 +171,47 @@ public class UserContextRESTInterface extends SuperRestInterface {
                 return e.getMessage();
             }
         });
+/*Request 7.2.6 for user-context-lists
+ * 
+ */
 
+        Spark.get(Messages.getString("UserContextRESTInterface.UserContextURLWithoutID"), (req, res) -> { //$NON-NLS-1$
+     String url = req.uri().toString();
+            try{
+            auth.allowAdmin(req,res);
+            return createReturnString(req, res, UserContextList.class,  requestHandler.getAllUserContexts(url));
+     } catch (UnauthorizedException e){
+         return createReturnString(req, res, UserContextList.class,  requestHandler.getMyContexts(auth.getAuthenticatedUser(req, res).getId()  , url));
+     }
+    });
     }
 
+    private static String createReturnString(Request req, Response res,Class type, Object data) {
+        String contentType = req.contentType();
+        if (contentType == MediaType.APPLICATION_JSON) {
+            final ObjectMapper mapper = new ObjectMapper();
+            final String jsonData = mapper.writeValueAsString(data);
+                    } else if (contentType == MediaType.APPLICATION_XML){
+                        try {
+                        JAXBContext context = JAXBContext.newInstance(type);
+                        Marshaller m;
+                        
+                            m = context.createMarshaller();
+                            StringWriter sw = new StringWriter();
+
+                            m.marshal(data, sw);
+                            return sw.toString();
+
+                        } catch (JAXBException e) {
+                                                        logger.warn(e.toString()); 
+                            res.status(500);
+                            return "Internal server error";
+                        }
+                        
+                                            } else {
+                        res.status(400);
+                        return "wrong content-type";;
+                    }
+
+    }
 }
