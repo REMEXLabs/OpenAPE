@@ -1,24 +1,22 @@
 package org.openape.ui.velocity.controller;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Map;
 
 import org.openape.server.rest.SuperRestInterface;
+import org.openape.ui.velocity.controllerComponents.MainComponents;
 
 import spark.ModelAndView;
 import spark.Spark;
 import spark.template.velocity.VelocityTemplateEngine;
 
 public class Downloads extends SuperRestInterface {
-    private static Map<String, Object> model = new HashMap<>();
 
     public static void setupDownloadsVELOCITYInterface() throws IllegalArgumentException,
             IOException {
 
         Spark.get("/downloads", (request, response) -> {
-
-            final MainController mainController = new MainController();
+            final MainComponents mainController = new MainComponents();
             final Map<String, Object> model = mainController.getTemplateComponents();
 
             return new ModelAndView(model, "velocityTemplates/downloads.vm"); // located
@@ -26,6 +24,7 @@ public class Downloads extends SuperRestInterface {
                                                                               // the
                                                                               // resources
                                                                               // directory
+
             }, new VelocityTemplateEngine());
     }
 

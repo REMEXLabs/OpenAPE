@@ -1,43 +1,147 @@
 <html>
 <head>
  <title>OpenAPE</title>
+ <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
  
-<!--Vendor Stylesheets -->
+<!-- Vendor Stylesheets -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.6/semantic.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.15/css/dataTables.semanticui.min.css">
 
-<!--Custom Stylesheets -->
- <link rel="stylesheet" href="css/style.css">
+<!-- Custom Stylesheets -->
+<link rel="stylesheet" href="css/style.css">
 
-<!--Vendor Javascript -->
- <script src="https://code.jquery.com/jquery-3.2.1.js"></script>
- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
- 
- 
- <!--Custom Javascript -->
- <script src="js/openape.js" type="text/javascript"></script>
- <script src="js/usersection.js" type="text/javascript"></script>
- <script src="js/navigation.js" type="text/javascript"></script>
+<!-- Vendor Javascript -->
+<script src="https://code.jquery.com/jquery-3.2.1.js"></script>
+<script src=" https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src=" https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.15/js/dataTables.semanticui.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.6/semantic.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+<!-- Custom Javascript --> 
+<script src="js/openape.js" type="text/javascript"></script>
+<script src="js/navigation.js" type="text/javascript"></script>
+<script src="js/usersection.js" type="text/javascript"></script>
+<script src="js/datatableContexts.js" type="text/javascript"></script>
 <script src="js/signin.js" type="text/javascript"></script>
 <script src="js/signup.js" type="text/javascript"></script>
+
+
+
 </head>
+
 <body>
 
 <div class="wrapper">
    <div class="header">
-   	$signinModal
-	$signupModal
 	$topNavigation
 	$subSection
+	$signinModal
+	$signupModal
    </div>
-   <div class="body">
-	   <div class="oneContentBlock">
-	   	 <h1>Context</h1> <br>
-			  Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
-		</div> 
-   </div>
-   <div id="footer">$footer</div>
+
+<div class="content">
+	<div class="leftContent">
+		<br>
+		<div ><h4><b>Contexts</b></h4></div> <br>
+            <div class="panel-group" id="accordion">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo"><span class="glyphicon glyphicon-th">
+                            </span>Contexts</a>
+                        </h4>
+                    </div>
+                    <div id="collapseTwo" class="panel-collapse collapse in">
+                        <div class="panel-body" style="background-color:#f9f9f9">
+                            <table class="table" id="tbltabContexts">
+                                <tr id="trTabUserContexts">
+                                    <td>
+                                        <a id="tabUserContexts" href="#user-contexts" onclick="openCity(event, 'user-contexts')">User-Contexts</a>
+                                    </td>
+                                </tr>
+                                <tr id="trTabTaskContexts">
+                                    <td>
+                                        <a href="#task-contexts" onclick="openCity(event, 'task-contexts')">Task-Contexts</a>
+                                    </td>
+                                </tr>
+                                <tr id="trTabEquipmentContexts">
+                                    <td>
+                                        <a href="#equipment-contexts" onclick="openCity(event, 'equipment-contexts')">Equipment-Contexts</a>
+                                    </td>
+                                </tr>
+                                 <tr id="trTabEnvironmentContexts">
+                                    <td>
+                                        <a href="#environment-contexts" onclick="openCity(event, 'environment-contexts')">Environment-Contexts</a>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+		
+	</div>
+	
+	<div class="rightContent">
+		
+		<div id="user-contexts" class="tabcontent">
+		  <h1>User-Contexts</h1>
+		  <div style="padding:1.2em">
+			  $dataTableUserContext
+		  </div>
+		  <br> 
+		  $viewUserContextModal 
+		  
+		</div>
+			
+		<div id="task-contexts" class="tabcontent">
+		  <h1>Task-Contexts</h1>
+		  <div style="padding:1.2em">
+		  	$dataTableTaskContext
+		  </div>
+		 $viewTaskContextModal
+
+		</div>	
+		
+		<div id="environment-contexts" class="tabcontent">
+		  <h1>Environment-Contexts</h1>
+		  <div style="padding:1.2em">
+		  $dataTableEnvironmentContext
+		  $viewEnvironmentContextModal
+		  </div>
+			 
+		</div>
+			
+		<div id="equipment-contexts" class="tabcontent">
+		  <h1>Equipment-Contexts</h1>
+		  <div style="padding:1.2em">
+		 	 $dataTableEquipmentContext
+		 	 $viewEquipmentContextModal
+		 </div>
+			</div>	
+
+
+	</div>
 </div>
+
+<div id="footer">$footer</div>
+</div>
+<script src="js/clipboard.min.js"></script>
+    <!-- 3. Instantiate clipboard by passing a string selector -->
+    <script>
+    var clipboard = new Clipboard('.btn');
+
+    clipboard.on('success', function(e) {
+        console.log(e);
+    });
+
+    clipboard.on('error', function(e) {
+        console.log(e);
+    });
+    </script>
 </body>
 </html>

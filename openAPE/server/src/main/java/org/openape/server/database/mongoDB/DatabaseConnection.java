@@ -341,16 +341,30 @@ public class DatabaseConnection implements ServerMonitorListener {
         final MongoCursor<Document> cursor = find.iterator();
 
         while (cursor.hasNext()) {
-
             listDocuments.add(cursor.next());
         }
-
         return listDocuments;
     }
 
     public ArrayList<Document> getAllDocuments(final String string) {
         // TODO Auto-generated method stub
         return null;
+    }
+
+    public ArrayList<Document> getAllDocumentsByKey(final MongoCollectionTypes type,
+            final String key) throws IOException {
+        final MongoCollection<Document> collectionToWorkOn = this.getCollectionByType(type);
+        final ArrayList<Document> listDocuments = new ArrayList<Document>();
+        // Search for object in database.
+
+        final FindIterable<Document> find = collectionToWorkOn.find();
+
+        final MongoCursor<Document> cursor = find.iterator();
+
+        while (cursor.hasNext()) {
+            listDocuments.add(cursor.next());
+        }
+        return listDocuments;
     }
 
     /**
@@ -546,6 +560,7 @@ public class DatabaseConnection implements ServerMonitorListener {
                     .getString("DatabaseConnection.MongoDBDatabaseUsername"); //$NON-NLS-1$
         }
 
+
     }
 
     /***************/
@@ -620,8 +635,10 @@ public class DatabaseConnection implements ServerMonitorListener {
                 + DatabaseConnection.DATABASEURL + ":" + DatabaseConnection.DATABASEPORT
                 + " failed.\n" + event);
         DatabaseConnection.firstTime = true; // logger can now indicate when new
+                                             // connection will be found again.
                                              // connection will be found
                                              // again.
+
     }
 
     @Override

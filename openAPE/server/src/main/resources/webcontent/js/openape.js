@@ -232,6 +232,7 @@
 	    objOpenape.getUserContext = function (userContextId) {
 	    	var objGetUserContext_Result = {};
 	    	var objAjaxParameters = {};
+	    	localStorage.setItem("host", "http://"+window.location.host);
 	    	
 	    	var arrStatusText = [];
 	    	var isTokenCorrect = true;
@@ -1040,7 +1041,7 @@
 	    		request.type = objAjaxParameters.type;
 	    		request.url = objAjaxParameters.url;
 	    		
-	    		if (objAjaxParameters.token !== undefined) {
+	    		if (objAjaxParameters.token != null) {
 	    			request.headers = {
 			    	   	 "Authorization": objAjaxParameters.token,
 			    	}

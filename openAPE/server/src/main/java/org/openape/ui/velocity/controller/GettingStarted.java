@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Map;
 
 import org.openape.server.rest.SuperRestInterface;
+import org.openape.ui.velocity.controllerComponents.MainComponents;
 
 import spark.ModelAndView;
 import spark.Spark;
@@ -14,8 +15,7 @@ public class GettingStarted extends SuperRestInterface {
             IOException {
 
         Spark.get("/gettingStarted", (request, response) -> {
-
-            final MainController mainController = new MainController();
+            final MainComponents mainController = new MainComponents();
             final Map<String, Object> model = mainController.getTemplateComponents();
 
             return new ModelAndView(model, "velocityTemplates/gettingStarted.vm"); // located
