@@ -342,12 +342,10 @@
 		<div id="groups" class="tabcontent">
 		  <h1>Groups</h1>
 		  <div style="padding:1.2em">
-		  $dataTableGroup
 		  $deleteGroupModal
 		  </div>
 		  $addGroupModal
 		  $editGroupModal
-		  <button class='btn btn-md btn-default'" id="btnAddGroup"><div class="glyphicon glyphicon-plus"></div> Add </button>
 		</div>	
 		
 		
