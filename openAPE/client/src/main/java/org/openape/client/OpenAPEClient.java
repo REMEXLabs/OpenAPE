@@ -29,7 +29,6 @@ import org.openape.api.usercontext.UserContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
 /**
  * @author Lukas Smirek
  */
@@ -130,10 +129,10 @@ public class OpenAPEClient {
          * Response response = webResource.path(LISTING_PATH).request(MediaType.
          * APPLICATION_JSON_TYPE)
          * .post(Entity.entity(listingQuery,MediaType.APPLICATION_JSON));
-         * 
+         *
          * if (response.getStatus() != 201){ throw new RuntimeException(
          * "Failed : HTTP error code : " + response.getStatus()); }
-         * 
+         *
          * Listing output = response.readEntity(Listing.class); return output;
          */
         return null;

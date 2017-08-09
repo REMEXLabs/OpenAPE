@@ -31,12 +31,11 @@ public enum MongoCollectionTypes {
     RESOURCEDESCRIPTION(
             Messages.getString("MongoCollectionTypes.resourceDescriptionCollectionName"), ResourceDescription.class), //$NON-NLS-1$
     LISTING(Messages.getString("MongoCollectionTypes.lstingCollectionName"), Listing.class), //$NON-NLS-1$
-    GROUPS(Messages
-            .getString("MongoCollectionTypes.groupMimeTypesCollectionName"), Group.class), //$NON-NLS-1$
+    GROUPS(Messages.getString("MongoCollectionTypes.groupMimeTypesCollectionName"), Group.class), //$NON-NLS-1$
 
     RESOURCEOBJECTS(
             Messages.getString("MongoCollectionTypes.resourceObjectsCollectionName"), ResourceObject.class), //$NON-NLS-1$
-    
+
     USERS("users", User.class);
 
     /**
