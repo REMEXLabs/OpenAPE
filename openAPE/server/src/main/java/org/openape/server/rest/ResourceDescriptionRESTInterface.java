@@ -39,42 +39,41 @@ public class ResourceDescriptionRESTInterface extends SuperRestInterface {
                 (req, res) -> {
                     try {
                         if (!req.contentType().equals(Messages.getString("MimeTypeJson"))) {//$NON-NLS-1$
-                            res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
-                            return Messages.getString("Contexts.WrongMimeTypeErrorMsg");//$NON-NLS-1$
-                        }
-                        // Try to map the received json object to a resource
-                        // description object.
-                        final ResourceDescription receivedResourceDescription = (ResourceDescription) SuperRestInterface
-                                .extractObjectFromRequest(req, ResourceDescription.class);
-                        // Make sure to set the id of the authenticated user as
-                        // the ownerId
-                        receivedResourceDescription.setOwner(auth.getAuthenticatedUser(req, res)
-                                .getId());
-                        // Test the object for validity.
-                        if (!receivedResourceDescription.isValid()) {
-                            res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
-                            return Messages
-                                    .getString("ResourceDescriptionRESTInterface.NoValidObjectErrorMassage"); //$NON-NLS-1$
-                        }
-                        // If the object is okay, save it and return the id.
-                        final String resourceDescriptionId = requestHandler
-                                .createResourceDescription(receivedResourceDescription);
-                        res.status(SuperRestInterface.HTTP_STATUS_CREATED);
-                        return resourceDescriptionId;
-                    } catch (JsonParseException | JsonMappingException | IllegalArgumentException e) {
-                        // If the parse is not successful return bad request
-                        // error code.
-                        res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
-                        return e.getMessage();
-                    } catch (final IOException e) {
-                        res.status(SuperRestInterface.HTTP_STATUS_INTERNAL_SERVER_ERROR);
-                        return e.getMessage();
-                    } catch (final UnauthorizedException e) {
-                        // Only authorized users may post resource descriptions
-                        res.status(SuperRestInterface.HTTP_STATUS_UNAUTHORIZED);
-                        return e.getMessage();
-                    }
-                });
+                    res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
+                    return Messages.getString("Contexts.WrongMimeTypeErrorMsg");//$NON-NLS-1$
+                }
+                // Try to map the received json object to a resource
+                // description object.
+                final ResourceDescription receivedResourceDescription = (ResourceDescription) SuperRestInterface
+                        .extractObjectFromRequest(req, ResourceDescription.class);
+                // Make sure to set the id of the authenticated user as
+                // the ownerId
+                receivedResourceDescription.setOwner(auth.getAuthenticatedUser(req, res).getId());
+                // Test the object for validity.
+                if (!receivedResourceDescription.isValid()) {
+                    res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
+                    return Messages
+                            .getString("ResourceDescriptionRESTInterface.NoValidObjectErrorMassage"); //$NON-NLS-1$
+                }
+                // If the object is okay, save it and return the id.
+                final String resourceDescriptionId = requestHandler
+                        .createResourceDescription(receivedResourceDescription);
+                res.status(SuperRestInterface.HTTP_STATUS_CREATED);
+                return resourceDescriptionId;
+            } catch (JsonParseException | JsonMappingException | IllegalArgumentException e) {
+                // If the parse is not successful return bad request
+                // error code.
+                res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
+                return e.getMessage();
+            } catch (final IOException e) {
+                res.status(SuperRestInterface.HTTP_STATUS_INTERNAL_SERVER_ERROR);
+                return e.getMessage();
+            } catch (final UnauthorizedException e) {
+                // Only authorized users may post resource descriptions
+                res.status(SuperRestInterface.HTTP_STATUS_UNAUTHORIZED);
+                return e.getMessage();
+            }
+        });
 
         /**
          * Request 7.7.3 get resource description. Used to get a specific
@@ -88,7 +87,8 @@ public class ResourceDescriptionRESTInterface extends SuperRestInterface {
                     // if it is successful return resource description.
                     final ResourceDescription resourceDescription = requestHandler
                             .getResourceDescriptionById(resourceDescriptionId);
-                    // Make sure only admins or the owner can view the resource
+                    // Make sure only admins or the owner can view the
+                    // resource
                     // description, except if it is public
                     auth.allowAdminOwnerAndPublic(req, res, resourceDescription.getOwner(),
                             resourceDescription.isPublic());

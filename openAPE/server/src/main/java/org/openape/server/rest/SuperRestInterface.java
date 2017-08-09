@@ -134,7 +134,7 @@ public class SuperRestInterface {
          * response.header("Access-Control-Allow-Headers", "*");
          * response.header("Access-Control-Max-Age", "1728000");
          * response.header("Cache-Control", "no-cache");
-         * 
+         *
          * });
          */
         Spark.get("api", (request, response) -> new API());
@@ -159,6 +159,7 @@ public class SuperRestInterface {
         TokenRESTInterface.setupTokenRESTInterface(authService);
         ProfileRESTInterface.setupProfileRESTInterface();
 
+<<<<<<< HEAD
         // Resource endpoints
         EnvironmentContextRESTInterface.setupEnvironmentContextRESTInterface(
                 new EnvironmentContextRequestHandler(), authService);
@@ -168,6 +169,8 @@ public class SuperRestInterface {
         ResourceDescriptionRESTInterface.setupResourceDescriptionRESTInterface(
                 new ResourceDescriptionRequestHandler(), authService);
 
+=======
+>>>>>>> refs/remotes/origin/newMaster
         try {
             Administration.setupAdministrationVELOCITYInterface(new AdminSectionRequestHandler());
         } catch (final IllegalArgumentException e) {
@@ -288,7 +291,7 @@ public class SuperRestInterface {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        
+
         // Resource endpoints
         GroupManagementRestInterface.setupGroupManagementRestInterface(
                 new GroupManagementHandler(), authService);

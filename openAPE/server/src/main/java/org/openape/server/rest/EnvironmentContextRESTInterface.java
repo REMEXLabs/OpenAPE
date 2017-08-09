@@ -126,7 +126,8 @@ public class EnvironmentContextRESTInterface extends SuperRestInterface {
                     // Check if the user context does exist
                     final EnvironmentContext environmentContext = requestHandler
                             .getEnvironmentContextById(environmentContextId);
-                    // Make sure only admins and the owner can update a context
+                    // Make sure only admins and the owner can update a
+                    // context
                     auth.allowAdminAndOwner(req, res, environmentContext.getOwner());
                     receivedEnvironmentContext.setOwner(environmentContext.getOwner()); // Make
                                                                                         // sure
@@ -141,12 +142,9 @@ public class EnvironmentContextRESTInterface extends SuperRestInterface {
                     res.status(SuperRestInterface.HTTP_STATUS_OK);
                     return Messages.getString("EnvironmentContextRESTInterface.EmptyString"); //$NON-NLS-1$ //TODO
                                                                                               // $NON-NLS-1$
-                                                                                              // $NON-NLS-1$
                                                                                               //$NON-NLS-1$ return
                                                                                               // $NON-NLS-1$
-                                                                                              // $NON-NLS-1$
                                                                                               //$NON-NLS-1$ right
-                                                                                              // $NON-NLS-1$
                                                                                               // $NON-NLS-1$
                                                                                               //$NON-NLS-1$ statuscode
                 } catch (JsonParseException | JsonMappingException | IllegalArgumentException e) {

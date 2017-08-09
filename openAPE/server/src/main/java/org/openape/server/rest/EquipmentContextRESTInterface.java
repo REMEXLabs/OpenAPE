@@ -123,7 +123,8 @@ public class EquipmentContextRESTInterface extends SuperRestInterface {
                     // Check if the user context does exist
                     final EquipmentContext equipmentContext = requestHandler
                             .getEquipmentContextById(equipmentContextId);
-                    // Make sure only admins and the owner can update a context
+                    // Make sure only admins and the owner can update a
+                    // context
                     auth.allowAdminAndOwner(req, res, equipmentContext.getOwner());
                     receivedEquipmentContext.setOwner(equipmentContext.getOwner()); // Make
                                                                                     // sure
@@ -138,12 +139,9 @@ public class EquipmentContextRESTInterface extends SuperRestInterface {
                     res.status(SuperRestInterface.HTTP_STATUS_OK);
                     return Messages.getString("EquipmentContextRESTInterface.EmptyString"); //$NON-NLS-1$ //TODO
                                                                                             // $NON-NLS-1$
-                                                                                            // $NON-NLS-1$
                                                                                             //$NON-NLS-1$ return
                                                                                             // $NON-NLS-1$
-                                                                                            // $NON-NLS-1$
                                                                                             //$NON-NLS-1$ right
-                                                                                            // $NON-NLS-1$
                                                                                             // $NON-NLS-1$
                                                                                             //$NON-NLS-1$ statuscode
                 } catch (JsonParseException | JsonMappingException | IllegalArgumentException e) {

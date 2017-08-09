@@ -364,7 +364,7 @@ function getContext(id, contextName){
 function viewUserContext(event){
 	$('#viewUserContextModal').modal('show');
 	var objUserContext = new Object();
-	objUserContext.propertys = getContext(event.id, "userContext").contexts;
+	objUserContext.contexts = getContext(event.id, "userContext").contexts;
 	
 	var userContext = JSON.stringify(objUserContext, undefined, 2);
 

@@ -12,6 +12,21 @@ import org.openape.server.database.mongoDB.MongoCollectionTypes;
 
 public class GroupManagementHandler {
 
+    public static void addMember(final String userId, final GroupMembershipStatus status,
+            final Group group) throws IOException {
+        // TODO Auto-generated method stub
+        final List<GroupMember> members = new LinkedList<GroupMember>();
+        members.add(new GroupMember(userId, status));
+        group.setMembers(members);
+        final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
+        try {
+            databaseConnection.updateData(MongoCollectionTypes.GROUPS, group, group.getId());
+        } catch (final ClassCastException e) {
+            throw new IllegalArgumentException(e.getMessage());
+        }
+
+    }
+
     public static String createGroup(final String groupName, final String description,
             final String entryRequirements, final String ownerId) throws IllegalArgumentException,
             IOException {
@@ -31,20 +46,5 @@ public class GroupManagementHandler {
         }
 
         return id;
-    }
-
-    public static void addMember(String userId, GroupMembershipStatus status, Group group)
-            throws IOException {
-        // TODO Auto-generated method stub
-        List<GroupMember> members = new LinkedList<GroupMember>();
-        members.add(new GroupMember(userId, status));
-        group.setMembers(members);
-        DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
-        try {
-            databaseConnection.updateData(MongoCollectionTypes.GROUPS, group, group.getId());
-        } catch (ClassCastException e) {
-            throw new IllegalArgumentException(e.getMessage());
-        }
-
     }
 }

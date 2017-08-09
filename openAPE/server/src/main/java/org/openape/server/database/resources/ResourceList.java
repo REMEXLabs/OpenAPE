@@ -31,9 +31,9 @@ import org.pac4j.core.profile.CommonProfile;
  */
 public class ResourceList {
     private static final String RESOURCE_DOES_NOT_EXIST_MSG = "Resource does not exist.";
-    private static final String RESOURCEFOLDERPATH = Messages.getString("ResourceList.rootFolder") + File.separator + Messages.getString("ResourceList.ResourceFolder"); //$NON-NLS-1$ //$NON-NLS-2$
 
-
+    private static final String RESOURCEFOLDERPATH = Messages.getString("ResourceList.rootFolder") + File.separator //$NON-NLS-1$
+            + Messages.getString("ResourceList.ResourceFolder"); //$NON-NLS-1$
     /**
      * Singleton instance of this class.
      */
@@ -67,7 +67,7 @@ public class ResourceList {
         // Add all filenames of resources in the resource folder to resource
         // list.
         final File folder = new File(ResourceList.RESOURCEFOLDERPATH);
-        createFolderIfNotExistend(folder);
+        this.createFolderIfNotExistend(folder);
         final File[] listOfFiles = folder.listFiles();
         for (int i = 0; i < listOfFiles.length; i++) {
             // There can be directories that would be listed, too. Therefore
@@ -86,24 +86,6 @@ public class ResourceList {
                     }
                 }
             }
-        }
-    }
-
-    /**
-     * @param folder
-     * @throws IOException
-     *             if access denied
-     */
-    private void createFolderIfNotExistend(final File folder) throws IOException {
-        final File[] listOfFiles = folder.listFiles();
-        if (listOfFiles == null) {
-            // If directory does not exist, create
-            final boolean success = folder.mkdirs();
-            if (!success) {
-                throw new IOException(
-                        Messages.getString("ResourceList.CouldNotCreateResourceFolderErrorMassage")); //$NON-NLS-1$
-            }
-            return;
         }
     }
 
@@ -195,6 +177,24 @@ public class ResourceList {
     }
 
     /**
+     * @param folder
+     * @throws IOException
+     *             if access denied
+     */
+    private void createFolderIfNotExistend(final File folder) throws IOException {
+        final File[] listOfFiles = folder.listFiles();
+        if (listOfFiles == null) {
+            // If directory does not exist, create
+            final boolean success = folder.mkdirs();
+            if (!success) {
+                throw new IOException(
+                        Messages.getString("ResourceList.CouldNotCreateResourceFolderErrorMassage")); //$NON-NLS-1$
+            }
+            return;
+        }
+    }
+
+    /**
      * If found the method deletes the resource with the given name.
      *
      * @param id
@@ -217,8 +217,8 @@ public class ResourceList {
         } catch (final ClassCastException e) {
             throw new IOException(e.getMessage());
         }
-        if(resourceObject == null) {
-            throw new IllegalArgumentException(RESOURCE_DOES_NOT_EXIST_MSG);
+        if (resourceObject == null) {
+            throw new IllegalArgumentException(ResourceList.RESOURCE_DOES_NOT_EXIST_MSG);
         }
 
         // Check if user is allowed to delete the resource

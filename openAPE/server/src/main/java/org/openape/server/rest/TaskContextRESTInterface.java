@@ -120,7 +120,8 @@ public class TaskContextRESTInterface extends SuperRestInterface {
                     // Check if the task context does exist
                     final TaskContext taskContext = requestHandler
                             .getTaskContextById(taskContextId);
-                    // Make sure only admins and the owner can update a context
+                    // Make sure only admins and the owner can update a
+                    // context
                     auth.allowAdminAndOwner(req, res, taskContext.getOwner());
                     receivedTaskContext.setOwner(taskContext.getOwner()); // Make
                                                                           // sure
@@ -134,12 +135,9 @@ public class TaskContextRESTInterface extends SuperRestInterface {
                     res.status(SuperRestInterface.HTTP_STATUS_OK);
                     return Messages.getString("TaskContextRESTInterface.EmptyString"); //$NON-NLS-1$ //TODO
                                                                                        // $NON-NLS-1$
-                                                                                       // $NON-NLS-1$
                                                                                        //$NON-NLS-1$ return
                                                                                        // $NON-NLS-1$
-                                                                                       // $NON-NLS-1$
                                                                                        //$NON-NLS-1$ right
-                                                                                       // $NON-NLS-1$
                                                                                        // $NON-NLS-1$
                                                                                        //$NON-NLS-1$ statuscode
                 } catch (JsonParseException | JsonMappingException | IllegalArgumentException e) {
