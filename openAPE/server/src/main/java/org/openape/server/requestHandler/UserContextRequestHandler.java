@@ -147,8 +147,12 @@ public class UserContextRequestHandler {
     public UserContextList getUserContexts(final BasicDBObject query, final String url) {
         final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
 
-        final Map<String, UserContext> contexts = databaseConnection.getDocumentsByQuery(
-                MongoCollectionTypes.USERCONTEXT, query, true);
+        final Map<String, UserContext> contexts = null;
+        // TODO used Method not implemented yet.Implement later
+        // contexts =
+        // databaseConnection.getDocumentsByQuery(MongoCollectionTypes.USERCONTEXT,
+        // query,
+        // true);
 
         return new UserContextList(contexts, url);
 
