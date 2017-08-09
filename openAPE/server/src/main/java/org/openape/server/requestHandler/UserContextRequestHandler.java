@@ -1,11 +1,14 @@
 package org.openape.server.requestHandler;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import org.openape.api.DatabaseObject;
 import org.openape.api.Messages;
 import org.openape.api.UserContextList;
+import org.openape.api.resourceDescription.ResourceDescription;
 import org.openape.api.usercontext.UserContext;
 import org.openape.server.database.mongoDB.DatabaseConnection;
 import org.openape.server.database.mongoDB.MongoCollectionTypes;
@@ -78,10 +81,20 @@ public class UserContextRequestHandler {
         return true;
     }
 
-    public UserContextList getAllUserContexts(final String url) {
+    public UserContextList getAllUserContexts(final String url) throws IOException {
         final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
-        final Map<String, UserContext> contexts = databaseConnection
-                .getAllDocuments(MongoCollectionTypes.USERCONTEXT);
+        final Map<String, UserContext> contexts = new HashMap<String, UserContext>();
+        final Map<String, DatabaseObject> resultMap = databaseConnection
+                .getAllObjectsOfType(MongoCollectionTypes.USERCONTEXT);
+        // parse result from DatabaseObject to UserContext.
+        final Set<String> userContextIDs = resultMap.keySet();
+        try {
+            for (final String userContextID : userContextIDs) {
+                contexts.put(userContextID, (UserContext) resultMap.get(userContextID));
+            }
+        } catch (final ClassCastException e) {
+            throw new IOException(e.getMessage());
+        }
         return new UserContextList(contexts, url);
     }
 

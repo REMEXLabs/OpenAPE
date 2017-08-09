@@ -34,6 +34,7 @@ public class UserContextRESTInterface extends SuperRestInterface {
                 final ObjectMapper mapper = new ObjectMapper();
 
                 final String jsonData = mapper.writeValueAsString(data);
+                return jsonData;
             } catch (final JsonProcessingException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
@@ -59,7 +60,7 @@ public class UserContextRESTInterface extends SuperRestInterface {
             res.status(400);
             return "wrong content-type";
         }
-
+        return null;
     }
 
     public static void setupUserContextRESTInterface(
