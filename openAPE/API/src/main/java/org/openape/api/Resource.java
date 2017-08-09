@@ -25,27 +25,27 @@ import javax.ws.rs.DefaultValue;
 
 public class Resource extends DatabaseObject {
 
-    private static final long serialVersionUID = 4077081454613480332L;
+	private static final long serialVersionUID = 4077081454613480332L;
 
-    private String owner;
+	private String owner;
 
-    @DefaultValue("false")
-    private boolean isPublic;
+	@DefaultValue("false")
+	private boolean isPublic;
 
-    public String getOwner() {
-        return this.owner;
-    }
+	public String getOwner() {
+		return this.owner;
+	}
 
-    public boolean isPublic() {
-        return this.isPublic;
-    }
+	public boolean isPublic() {
+		return this.isPublic;
+	}
 
-    public void setOwner(final String owner) {
-        this.owner = owner;
-    }
+	public void setOwner(final String owner) {
+		this.owner = owner;
+	}
 
-    public void setPublic(final boolean aPublic) {
-        this.isPublic = aPublic;
-    }
+	public void setPublic(final boolean aPublic) {
+		this.isPublic = aPublic;
+	}
 
 }

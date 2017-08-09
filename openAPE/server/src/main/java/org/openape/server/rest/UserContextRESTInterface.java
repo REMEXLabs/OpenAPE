@@ -26,15 +26,27 @@ public class UserContextRESTInterface extends SuperRestInterface {
         Spark.before(Messages.getString("UserContextRESTInterface.UserContextURLWithID"),
                 auth.authorize("anonymous"));
 
+        Spark.get(Messages.getString("UserContextRESTInterface.UserContextURLWithoutID"),
+                (req, res) -> {
+
+                    // UserContextList ucl =
+                    // requestHandler.getUserContextsForUser(auth.getAuthenticatedUser(req,
+                    // res));
+                return null; // ucl;
+            });
+
         /**
          * Request 7.2.2 create user-context. Can only be accessed by roles
          * "user" and "admin.
          */
         Spark.post(
                 Messages.getString("UserContextRESTInterface.UserContextURLWithoutID"), (req, res) -> { //$NON-NLS-1$
+                    SuperRestInterface.logger.info("bla");
                     if (!req.contentType().equals(Messages.getString("MimeTypeJson"))) {//$NON-NLS-1$
+                        SuperRestInterface.logger.debug("Received Message with wrong content-type");
                         res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
-                        return Messages.getString("Contexts.WrongMimeTypeErrorMsg");//$NON-NLS-1$
+                        return Messages
+                                .getString("Contexts.WrongMimeTypeErrorMsg" + " Received " + req.contentType() + " instead.");//$NON-NLS-1$
                     }
                     try {
                         // Try to map the received json object to a userContext
@@ -42,10 +54,15 @@ public class UserContextRESTInterface extends SuperRestInterface {
                         final UserContext receivedUserContext = (UserContext) SuperRestInterface
                                 .extractObjectFromRequest(req, UserContext.class);
                         // Make sure to set the id of the authenticated user as
-                        // the ownerId
+                        // the                 ownerId
+                        SuperRestInterface.logger.debug("lusm: requesting user");
+                        final String id = auth.getAuthenticatedUser(req, res).getId();
+                        SuperRestInterface.logger.info("id: " + id);
                         receivedUserContext.setOwner(auth.getAuthenticatedUser(req, res).getId());
+                        SuperRestInterface.logger.debug("Lusm: success");
                         // Test the object for validity.
                         if (!receivedUserContext.isValid()) {
+                            SuperRestInterface.logger.info("lusm: none valide");
                             res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
                             return Messages
                                     .getString("UserContextRESTInterface.NoValidObjectErrorMassage"); //$NON-NLS-1$
@@ -123,16 +140,25 @@ public class UserContextRESTInterface extends SuperRestInterface {
                     // Make sure only admins and the owner can update a context
                     auth.allowAdminAndOwner(req, res, userContext.getOwner());
                     receivedUserContext.setOwner(userContext.getOwner()); // Make
-                    // sure
-                    // the
-                    // owner
-                    // can't
-                    // be
-                    // changed
+                                                                          // sure
+                                                                          // the
+                                                                          // owner
+                                                                          // can't
+                                                                          // be
+                                                                          // changed
                     // Perform the update
                     requestHandler.updateUserContextById(userContextId, receivedUserContext);
                     res.status(SuperRestInterface.HTTP_STATUS_OK);
-                    return Messages.getString("UserContextRESTInterface.EmptyString"); //$NON-NLS-1$ //TODO return right statuscode
+                    return Messages.getString("UserContextRESTInterface.EmptyString"); //$NON-NLS-1$ //TODO
+                                                                                       // $NON-NLS-1$
+                                                                                       // $NON-NLS-1$
+                                                                                       //$NON-NLS-1$ return
+                                                                                       // $NON-NLS-1$
+                                                                                       // $NON-NLS-1$
+                                                                                       //$NON-NLS-1$ right
+                                                                                       // $NON-NLS-1$
+                                                                                       // $NON-NLS-1$
+                                                                                       //$NON-NLS-1$ statuscode
                 } catch (JsonParseException | JsonMappingException | IllegalArgumentException e) {
                     // If the parse or update is not successful return bad
                     // request

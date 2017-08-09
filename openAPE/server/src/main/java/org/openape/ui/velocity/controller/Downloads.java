@@ -24,7 +24,10 @@ public class Downloads extends SuperRestInterface {
                                                                               // the
                                                                               // resources
                                                                               // directory
+<<<<<<< HEAD
 
+=======
+>>>>>>> refs/heads/newMaster
             }, new VelocityTemplateEngine());
     }
 

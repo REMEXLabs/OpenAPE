@@ -22,7 +22,10 @@ public class Index extends SuperRestInterface {
                                                                           // the
                                                                           // resources
                                                                           // directory
+<<<<<<< HEAD
 
+=======
+>>>>>>> refs/heads/newMaster
             }, new VelocityTemplateEngine());
     }
 

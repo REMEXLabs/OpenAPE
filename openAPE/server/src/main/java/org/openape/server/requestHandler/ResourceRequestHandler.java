@@ -7,11 +7,14 @@ import javassist.NotFoundException;
 
 import org.apache.commons.fileupload.FileItem;
 import org.openape.api.listing.Listing;
+import org.openape.api.user.User;
+import org.openape.server.auth.UnauthorizedException;
 import org.openape.server.database.mongoDB.DatabaseConnection;
 import org.openape.server.database.resources.GetResourceReturnType;
 import org.openape.server.database.resources.ListingManager;
 import org.openape.server.database.resources.ResourceList;
 import org.openape.server.rest.ResourceRESTInterface;
+import org.pac4j.core.profile.CommonProfile;
 
 /**
  * Class with methods to manage resources on the server. It is used by the rest
@@ -29,15 +32,17 @@ public class ResourceRequestHandler {
      *            to be stored.
      * @param mimeType
      *            mime type of the data to store
+     * @param user
+     *            owner of the resource
      * @return the ID of the stored resource.
      * @throws IOException
      *             if a storage problem still occurs, after to many tries.
      * @throws IllegalArgumentException
      *             if the resource name is already taken.
      */
-    public String createResource(final FileItem resource, final String mimeType)
+    public String createResource(final FileItem resource, final String mimeType, final User user)
             throws IOException, IllegalArgumentException {
-        return ResourceList.getInstance().addResource(resource, mimeType);
+        return ResourceList.getInstance().addResource(resource, mimeType, user);
     }
 
     /**
@@ -47,14 +52,20 @@ public class ResourceRequestHandler {
      *
      * @param id
      *            the ID of the resource to delete.
+     * @param profile
+     *            of the user who requests to delete the resource.
      * @return true if successful. Else an exception is thrown.
      * @throws IOException
      *             if a storage problem still occurs, after to many tries.
      * @throws IllegalArgumentException
      *             if the id is no valid id or not assigned.
      */
-    public boolean deleteResourceById(final String id) throws IOException, IllegalArgumentException {
-        return ResourceList.getInstance().deleteResource(id);
+    public boolean deleteResourceById(final String id, final CommonProfile profile)
+            throws IOException, IllegalArgumentException, UnauthorizedException {
+        final boolean success = ResourceList.getInstance().deleteResource(id, profile);
+        final ResourceDescriptionRequestHandler resourceDescriptionRequestHandler = new ResourceDescriptionRequestHandler();
+        resourceDescriptionRequestHandler.deleteAllDescriptionsOfAResource(id);
+        return success;
     }
 
     /**

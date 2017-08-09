@@ -6,6 +6,7 @@ import org.openape.api.Messages;
 import org.openape.api.listing.Listing;
 import org.openape.api.resourceDescription.ResourceDescription;
 import org.openape.server.auth.AuthService;
+import org.openape.server.auth.UnauthorizedException;
 import org.openape.server.requestHandler.ResourceDescriptionRequestHandler;
 
 import spark.Spark;
@@ -33,8 +34,9 @@ public class ResourceDescriptionRESTInterface extends SuperRestInterface {
         /**
          * Request 7.7.2 create resource description.
          */
-        Spark.post(
-                Messages.getString("ResourceDescriptionRESTInterface.ResourceDescriptionURLWithoutID"), (req, res) -> { //$NON-NLS-1$
+        Spark.post(Messages
+                .getString("ResourceDescriptionRESTInterface.ResourceDescriptionURLWithoutID"), //$NON-NLS-1$
+                (req, res) -> {
                     try {
                         if (!req.contentType().equals(Messages.getString("MimeTypeJson"))) {//$NON-NLS-1$
                             res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
@@ -59,13 +61,17 @@ public class ResourceDescriptionRESTInterface extends SuperRestInterface {
                                 .createResourceDescription(receivedResourceDescription);
                         res.status(SuperRestInterface.HTTP_STATUS_CREATED);
                         return resourceDescriptionId;
-                    } catch (JsonParseException | JsonMappingException e) {
+                    } catch (JsonParseException | JsonMappingException | IllegalArgumentException e) {
                         // If the parse is not successful return bad request
                         // error code.
                         res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
                         return e.getMessage();
                     } catch (final IOException e) {
                         res.status(SuperRestInterface.HTTP_STATUS_INTERNAL_SERVER_ERROR);
+                        return e.getMessage();
+                    } catch (final UnauthorizedException e) {
+                        // Only authorized users may post resource descriptions
+                        res.status(SuperRestInterface.HTTP_STATUS_UNAUTHORIZED);
                         return e.getMessage();
                     }
                 });
@@ -98,6 +104,9 @@ public class ResourceDescriptionRESTInterface extends SuperRestInterface {
                 } catch (final IOException e) {
                     res.status(SuperRestInterface.HTTP_STATUS_INTERNAL_SERVER_ERROR);
                     return e.getMessage();
+                } catch (final UnauthorizedException e) {
+                    res.status(SuperRestInterface.HTTP_STATUS_UNAUTHORIZED);
+                    return e.getMessage();
                 }
 
             });
@@ -106,37 +115,37 @@ public class ResourceDescriptionRESTInterface extends SuperRestInterface {
          * Request 7.7.4 get resource description. Used to get a specific
          * resource description identified by Listing.
          */
-        Spark.get(
-                Messages.getString("ResourceDescriptionRESTInterface.ResourceDescriptionFromListingURL"), (req, res) -> { //$NON-NLS-1$
+        Spark.get(Messages
+                .getString("ResourceDescriptionRESTInterface.ResourceDescriptionFromListingURL"), //$NON-NLS-1$
+                (req, res) -> {
 
                     // Currently not used parameter.
                     // final String index = req.params(":index");
-                    final String listingId = req.params(Messages
-                            .getString("ResourceDescriptionRESTInterface.listingIDParam")); //$NON-NLS-1$
+                final String listingId = req.params(Messages
+                        .getString("ResourceDescriptionRESTInterface.listingIDParam")); //$NON-NLS-1$
 
-                    try {
-                        // get listing from id.
-                        final Listing listing = requestHandler.getListingById(listingId);
-                        // get resource description from listing. If no listing
-                        // is found an exception will be thrown.
-                        final ResourceDescription resourceDescription = listing
-                                .getResourceDescriptionQurey();
-                        // json map the resource description, set return status
-                        // and mime type and return the resource description.
-                        final ObjectMapper mapper = new ObjectMapper();
-                        final String jsonData = mapper.writeValueAsString(resourceDescription);
-                        res.status(SuperRestInterface.HTTP_STATUS_OK);
-                        res.type(Messages
-                                .getString("ResourceDescriptionRESTInterface.jsonMimeType"));//$NON-NLS-1$
-                        return jsonData;
-                    } catch (final IllegalArgumentException e) {
-                        res.status(SuperRestInterface.HTTP_STATUS_NOT_FOUND);
-                        return e.getMessage();
-                    } catch (final IOException e) {
-                        res.status(SuperRestInterface.HTTP_STATUS_INTERNAL_SERVER_ERROR);
-                        return e.getMessage();
-                    }
-                });
+                try {
+                    // get listing from id.
+                    final Listing listing = requestHandler.getListingById(listingId);
+                    // get resource description from listing. If no listing
+                    // is found an exception will be thrown.
+                    final ResourceDescription resourceDescription = listing
+                            .getResourceDescriptionQurey();
+                    // json map the resource description, set return status
+                    // and mime type and return the resource description.
+                    final ObjectMapper mapper = new ObjectMapper();
+                    final String jsonData = mapper.writeValueAsString(resourceDescription);
+                    res.status(SuperRestInterface.HTTP_STATUS_OK);
+                    res.type(Messages.getString("ResourceDescriptionRESTInterface.jsonMimeType"));//$NON-NLS-1$
+                    return jsonData;
+                } catch (final IllegalArgumentException e) {
+                    res.status(SuperRestInterface.HTTP_STATUS_NOT_FOUND);
+                    return e.getMessage();
+                } catch (final IOException e) {
+                    res.status(SuperRestInterface.HTTP_STATUS_INTERNAL_SERVER_ERROR);
+                    return e.getMessage();
+                }
+            });
 
         /**
          * Request 7.7.5 update resource description.
@@ -162,7 +171,8 @@ public class ResourceDescriptionRESTInterface extends SuperRestInterface {
                     // Check if the resource description does exist
                     final ResourceDescription resourceDescription = requestHandler
                             .getResourceDescriptionById(resourceDescriptionId);
-                    // Make sure only admins and the owner can update a context
+                    // Make sure only admins and the owner can update a
+                    // context
                     auth.allowAdminAndOwner(req, res, resourceDescription.getOwner());
                     receivedResourceDescription.setOwner(resourceDescription.getOwner()); // Make
                                                                                           // sure
@@ -175,7 +185,10 @@ public class ResourceDescriptionRESTInterface extends SuperRestInterface {
                     requestHandler.updateResourceDescriptionById(resourceDescriptionId,
                             receivedResourceDescription);
                     res.status(SuperRestInterface.HTTP_STATUS_OK);
-                    return Messages.getString("ResourceDescriptionRESTInterface.EmptyString"); // TODO return right statuscode //$NON-NLS-1$
+                    return Messages.getString("ResourceDescriptionRESTInterface.EmptyString"); // TODO //$NON-NLS-1$
+                                                                                               // return
+                                                                                               // right
+                                                                                               // statuscode
                 } catch (JsonParseException | JsonMappingException | IllegalArgumentException e) {
                     // If the parse or update is not successful return bad
                     // request
@@ -185,6 +198,10 @@ public class ResourceDescriptionRESTInterface extends SuperRestInterface {
                 } catch (final IOException e) {
                     res.status(SuperRestInterface.HTTP_STATUS_INTERNAL_SERVER_ERROR);
                     return e.getMessage();
+                } catch (final UnauthorizedException e) {
+                    // Only authorized users may edit resource descriptions
+                    res.status(SuperRestInterface.HTTP_STATUS_UNAUTHORIZED);
+                    return e.getMessage();
                 }
             });
 
@@ -192,7 +209,8 @@ public class ResourceDescriptionRESTInterface extends SuperRestInterface {
          * Request 7.7.6 delete resource description.
          */
         Spark.delete(
-                Messages.getString("ResourceDescriptionRESTInterface.ResourceDescriptionURLWithID"), (req, res) -> { //$NON-NLS-1$
+                Messages.getString("ResourceDescriptionRESTInterface.ResourceDescriptionURLWithID"), //$NON-NLS-1$
+                (req, res) -> {
                     final String resourceDescriptionId = req.params(Messages
                             .getString("ResourceDescriptionRESTInterface.IDParam")); //$NON-NLS-1$
                     try {
@@ -212,6 +230,11 @@ public class ResourceDescriptionRESTInterface extends SuperRestInterface {
                         return e.getMessage();
                     } catch (final IOException e) {
                         res.status(SuperRestInterface.HTTP_STATUS_INTERNAL_SERVER_ERROR);
+                        return e.getMessage();
+                    } catch (final UnauthorizedException e) {
+                        // Only authorized users may delete resource
+                        // descriptions
+                        res.status(SuperRestInterface.HTTP_STATUS_UNAUTHORIZED);
                         return e.getMessage();
                     }
                 });

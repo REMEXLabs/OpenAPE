@@ -49,7 +49,10 @@ public class MyContexts extends SuperRestInterface {
                                                                                // the
                                                                                // resources
                                                                                // directory
+<<<<<<< HEAD
 
+=======
+>>>>>>> refs/heads/newMaster
             }, new VelocityTemplateEngine());
     }
 

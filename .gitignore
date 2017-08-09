@@ -34,3 +34,4 @@ documentation/build/*
 .Spotlight-V100
 .Trashes
 /openAPE/logs
+openAPE/server/src/main/resources/webcontent/restTests.html

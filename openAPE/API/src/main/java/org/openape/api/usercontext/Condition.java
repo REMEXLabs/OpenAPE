@@ -71,10 +71,11 @@ public class Condition {
         for (final Object operand : operands) {
             if (!(operand instanceof Condition) && !(operand instanceof String)
                     && !(operand instanceof LinkedHashMap<?, ?>)) {// LinkedHashMap
-                // is used by
-                // json to
-                // store sub
-                // results.
+                                                                   // is used
+                                                                   // by
+                                                                   // json to
+                                                                   // store sub
+                                                                   // results.
                 throw new IllegalArgumentException(
                         Messages.getString("Condition.wrongOperandTypesErrorMsg")); //$NON-NLS-1$
             }
@@ -124,9 +125,14 @@ public class Condition {
      *             if this is not the case.
      */
     private void checkType(final String type) throws IllegalArgumentException {
-        if (!(type.equals(Messages.getString("Condition.not")) || type.equals(Messages.getString("Condition.equal")) || type.equals(Messages.getString("Condition.notEqual")) || type.equals(Messages.getString("Condition.lessThen")) //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-                || type.equals(Messages.getString("Condition.lessThenOrEqual")) || type.equals(Messages.getString("Condition.greaterThen")) || type.equals(Messages.getString("Condition.greaterThenOrEqual")) //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                || type.equals(Messages.getString("Condition.and")) || type.equals(Messages.getString("Condition.or")))) { //$NON-NLS-1$ //$NON-NLS-2$
+        if (!(type.equals(Messages.getString("Condition.not")) || type.equals(Messages.getString("Condition.equal")) //$NON-NLS-1$ //$NON-NLS-2$
+                || type.equals(Messages.getString("Condition.notEqual")) //$NON-NLS-1$
+                || type.equals(Messages.getString("Condition.lessThen")) //$NON-NLS-1$
+                || type.equals(Messages.getString("Condition.lessThenOrEqual")) //$NON-NLS-1$
+                || type.equals(Messages.getString("Condition.greaterThen")) //$NON-NLS-1$
+                || type.equals(Messages.getString("Condition.greaterThenOrEqual")) //$NON-NLS-1$
+                || type.equals(Messages.getString("Condition.and")) //$NON-NLS-1$
+        || type.equals(Messages.getString("Condition.or")))) { //$NON-NLS-1$
             throw new IllegalArgumentException(Messages.getString("Condition.wrongTypeErrorMsg")); //$NON-NLS-1$
         }
     }
