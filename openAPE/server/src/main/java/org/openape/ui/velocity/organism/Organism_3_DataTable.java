@@ -10,7 +10,7 @@ import org.openape.ui.velocity.requestHandler.MyContextsRequestHandler;
 
 public class Organism_3_DataTable {
     public String generateAdministrationContextTable(
-            final AdminSectionRequestHandler adminsectionRequestHandler, final String contextName)
+            final AdminSectionRequestHandler adminsectionRequestHandler, final String contextName, final String destination)
             throws IllegalArgumentException, IOException {
 
         String administrationDatableContextContent = "";
@@ -19,18 +19,18 @@ public class Organism_3_DataTable {
 
         if (contextName == "User-Context") {
             administrationDatableContextContent = new Molecule_5_DataTableContent()
-                    .generateUserContextContent(adminsectionRequestHandler.getAllUsercontexts());
+                    .generateUserContextContent(adminsectionRequestHandler.getAllUsercontexts(), destination);
         } else if (contextName == "Task-Context") {
             administrationDatableContextContent = new Molecule_5_DataTableContent()
-                    .generateTaskContextContent(adminsectionRequestHandler.getAllTaskContexts());
+                    .generateTaskContextContent(adminsectionRequestHandler.getAllTaskContexts(), destination);
         } else if (contextName == "Equipment-Context") {
             administrationDatableContextContent = new Molecule_5_DataTableContent()
                     .generateEquipmentContextContent(adminsectionRequestHandler
-                            .getAllEquipmentContexts());
+                            .getAllEquipmentContexts(), destination);
         } else if (contextName == "Environment-Context") {
             administrationDatableContextContent = new Molecule_5_DataTableContent()
                     .generateEnvironmentContextContent(adminsectionRequestHandler
-                            .getAllEnvironmentContexts());
+                            .getAllEnvironmentContexts(), destination);
         }
 
         final String administrationContextTable = ""
@@ -61,23 +61,6 @@ public class Organism_3_DataTable {
                 + "<th >Options</th>" + "</tr>" + "</thead>" + "<tbody id='tableContent'>"
                 + administrationDatableGroupContent + "</tbody>" + "</table>";
         return administrationContextTable;
-
-    }
-
-    public String generateAdministrationUserContextTable(
-            final AdminSectionRequestHandler adminsectionRequestHandler)
-            throws IllegalArgumentException, IOException {
-
-        final String administrationDatableUserContextContent = new Molecule_5_DataTableContent()
-                .generateUserContextContent(adminsectionRequestHandler.getAllUsercontexts());
-        adminsectionRequestHandler.getAllUsercontexts();
-        final String administrationUserTable = ""
-                + "<table id='userContextDataTable' class='table table-striped table-bordered' cellspacing='0' width='100%'>"
-                + "<thead>" + "<tr>" + "<th>Name</th>" + "<th>ID</th>" + "<th>Created</th>"
-                + "<th>Public</th>" + "<th>Options</th>" + "</tr>" + "</thead>"
-                + "<tbody id='tableContent'>" + administrationDatableUserContextContent
-                + "</tbody>" + "</table>";
-        return administrationUserTable;
 
     }
 
@@ -154,22 +137,5 @@ public class Organism_3_DataTable {
         }
 
         return tableContent;
-    }
-
-    public String generateMyContextUserContextTable(
-            final MyContextsRequestHandler myContextRequestHandler, final String userId)
-            throws IllegalArgumentException, IOException {
-
-        final String myContextDatableUserContextContent = new Molecule_5_DataTableContent()
-                .generateUserContextContent(myContextRequestHandler
-                        .getAllUsercontextsByUserId(userId));
-        final String administrationUserTable = ""
-                + "<table id='myContextUserContextDataTable' class='table table-striped table-bordered' cellspacing='0' width='100%'>"
-                + "<thead>" + "<tr>" + "<th>Name</th>" + "<th>ID</th>" + "<th>Created</th>"
-                + "<th>Public</th>" + "<th>Options</th>" + "</tr>" + "</thead>"
-                + "<tbody id='tableContent'>" + myContextDatableUserContextContent + "</tbody>"
-                + "</table>";
-        return administrationUserTable;
-
     }
 }

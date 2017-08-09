@@ -62,12 +62,22 @@ public class Molecule_5_DataTableContent {
     }
 
     public String generateEnvironmentContextContent(
-            final ArrayList<String[]> listEnvironmentContexts) {
+            final ArrayList<String[]> listEnvironmentContexts, final String destination) {
 
         String tableContent = "";
+        String buttons = "";
 
         for (final String[] environmentContext : listEnvironmentContexts) {
 
+            if(destination == "context"){
+            	buttons = "<button id='"+ environmentContext[0]+"' class='btn btn-md btn-default' onClick='viewEnvironmentContext(this)' ><div class='glyphicon glyphicon-edit' ></div> View </button>"
+            			+ "<button id='"+ environmentContext[0]+"' class='btn btn-md btn-default' data-clipboard-text='http://gpi.eu/"+ environmentContext[0]+"' onClick='copyEnvironmentContextLink(this)'><div class='glyphicon glyphicon-trash'></div> Copy link to Clipboard</button> ";
+            } else {
+            	buttons = "<button id='"+ environmentContext[0]+"' class='btn btn-md btn-default' onClick='editEnvironmentContext(this)' ><div class='glyphicon glyphicon-edit' ></div> Edit </button>"
+                + "<button id='"+ environmentContext[0]+"' class='btn btn-md btn-default' onClick='deleteEnvironmentContext(this)'><div class='glyphicon glyphicon-trash'></div> Delete </button> "
+                + "<button id='"+ environmentContext[0]+"' class='btn btn-md btn-default' onClick='copyEnvironmentContext(this)'><div class='glyphicon glyphicon-copy'></div> Copy </button>";
+            }
+            
             tableContent += "<tr>" + "<td id='tdEnvironmentContextName_"
                     + environmentContext[0]
                     + "'>"
@@ -83,25 +93,28 @@ public class Molecule_5_DataTableContent {
                     + environmentContext[2]
                     + "</td>"
                     + "<td>"
-                    + "<button id='"
-                    + environmentContext[0]
-                    + "' name='editEnvironmentContext' class='btn btn-md btn-default' onClick='editEnvironmentContext(this)' ><div class='glyphicon glyphicon-edit' ></div> Edit </button>"
-                    + "<button id='"
-                    + environmentContext[0]
-                    + "' class='btn btn-md btn-default' onClick='deleteEnvironmentContext(this)'><div class='glyphicon glyphicon-trash'></div> Delete </button> "
-                    + "<button id='"
-                    + environmentContext[0]
-                    + "' class='btn btn-md btn-default' onClick='copyEnvironmentContext(this)'><div class='glyphicon glyphicon-copy'></div> Copy </button> </td></tr>";
+                    + buttons
+                    + "</td></tr>";
         }
 
         return tableContent;
     }
 
-    public String generateEquipmentContextContent(final ArrayList<String[]> listEquipmentContexts) {
+    public String generateEquipmentContextContent(final ArrayList<String[]> listEquipmentContexts, final String destination) {
 
         String tableContent = "";
-
+        String buttons = "";
+        
         for (final String[] equipmentkContext : listEquipmentContexts) {
+        	
+            if(destination == "context"){
+            	buttons = "<button id='"+ equipmentkContext[0]+"' class='btn btn-md btn-default' onClick='viewEquipmentContext(this)' ><div class='glyphicon glyphicon-edit' ></div> View </button>"
+            			+ "<button id='"+ equipmentkContext[0]+"' class='btn btn-md btn-default' data-clipboard-text='http://gpi.eu/"+ equipmentkContext[0]+"' onClick='copyEquipmentContextLink(this)'><div class='glyphicon glyphicon-trash'></div> Copy link to Clipboard</button> ";
+            } else {
+            	buttons = "<button id='"+ equipmentkContext[0]+"' class='btn btn-md btn-default' onClick='editEquipmentContext(this)' ><div class='glyphicon glyphicon-edit' ></div> Edit </button>"
+                + "<button id='"+ equipmentkContext[0]+"' class='btn btn-md btn-default' onClick='deleteEquipmentContext(this)'><div class='glyphicon glyphicon-trash'></div> Delete </button> "
+                + "<button id='"+ equipmentkContext[0]+"' class='btn btn-md btn-default' onClick='copyEquipmentContext(this)'><div class='glyphicon glyphicon-copy'></div> Copy </button>";
+            }
 
             tableContent += "<tr>" + "<td id='tdEquipmentContextName_"
                     + equipmentkContext[0]
@@ -118,15 +131,8 @@ public class Molecule_5_DataTableContent {
                     + equipmentkContext[2]
                     + "</td>"
                     + "<td>"
-                    + "<button id='"
-                    + equipmentkContext[0]
-                    + "' name='editEquipmentContext' class='btn btn-md btn-default' onClick='editEquipmentContext(this)' ><div class='glyphicon glyphicon-edit' ></div> Edit </button>"
-                    + "<button id='"
-                    + equipmentkContext[0]
-                    + "' class='btn btn-md btn-default' onClick='deleteEquipmentContext(this)'><div class='glyphicon glyphicon-trash'></div> Delete </button> "
-                    + "<button id='"
-                    + equipmentkContext[0]
-                    + "' class='btn btn-md btn-default' onClick='copyEquipmentContext(this)'><div class='glyphicon glyphicon-copy'></div> Copy </button> </td></tr>";
+                    + buttons
+                    + "</td></tr>";
         }
 
         return tableContent;
@@ -146,11 +152,20 @@ public class Molecule_5_DataTableContent {
         return tableContent;
     }
 
-    public String generateTaskContextContent(final ArrayList<String[]> listTaskContexts) {
+    public String generateTaskContextContent(final ArrayList<String[]> listTaskContexts, final String destination) {
 
         String tableContent = "";
+        String buttons = "";
 
         for (final String[] taskContext : listTaskContexts) {
+            if(destination == "context"){
+            	buttons = "<button id='"+ taskContext[0]+"' class='btn btn-md btn-default' onClick='viewTaskContext(this)' ><div class='glyphicon glyphicon-edit' ></div> View </button>"
+            			+ "<button id='"+ taskContext[0]+"' class='btn btn-md btn-default' data-clipboard-text='http://gpi.eu/"+ taskContext[0]+"' onClick='copyTaskContextLink(this)'><div class='glyphicon glyphicon-trash'></div> Copy link to Clipboard</button> ";
+            } else {
+            	buttons = "<button id='"+ taskContext[0]+"' class='btn btn-md btn-default' onClick='editTaskContext(this)' ><div class='glyphicon glyphicon-edit' ></div> Edit </button>"
+                + "<button id='"+ taskContext[0]+"' class='btn btn-md btn-default' onClick='deleteTaskContext(this)'><div class='glyphicon glyphicon-trash'></div> Delete </button> "
+                + "<button id='"+ taskContext[0]+"' class='btn btn-md btn-default' onClick='copyTaskContext(this)'><div class='glyphicon glyphicon-copy'></div> Copy </button>";
+            }
 
             tableContent += "<tr>" + "<td id='tdTaskContextName_"
                     + taskContext[0]
@@ -167,26 +182,31 @@ public class Molecule_5_DataTableContent {
                     + taskContext[2]
                     + "</td>"
                     + "<td>"
-                    + "<button id='"
-                    + taskContext[0]
-                    + "' name='editTaskContext' class='btn btn-md btn-default' onClick='editTaskContext(this)' ><div class='glyphicon glyphicon-edit' ></div> Edit </button>"
-                    + "<button id='"
-                    + taskContext[0]
-                    + "' class='btn btn-md btn-default' onClick='deleteTaskContext(this)'><div class='glyphicon glyphicon-trash'></div> Delete </button> "
-                    + "<button id='"
-                    + taskContext[0]
-                    + "' class='btn btn-md btn-default' onClick='copyTaskContext(this)'><div class='glyphicon glyphicon-copy'></div> Copy </button> </td></tr>";
+                    + buttons
+                    + "</td></tr>";
         }
 
         return tableContent;
     }
 
-    public String generateUserContextContent(final ArrayList<String[]> listUserContexts) {
+    public String generateUserContextContent(final ArrayList<String[]> listUserContexts, String destination) {
 
         String tableContent = "";
+        String buttons = "";
+        
 
         for (final String[] userContext : listUserContexts) {
 
+            if(destination == "context"){
+            	buttons = "<button id='"+ userContext[1]+"' class='btn btn-md btn-default' onClick='viewUserContext(this)' ><div class='glyphicon glyphicon-edit' ></div> View </button>"
+            			+ "<button id='"+ userContext[1]+"' class='btn btn-md btn-default' data-clipboard-text='"+ userContext[1]+"' onClick='copyUserContextLink(this)'><div class='glyphicon glyphicon-trash'></div>Copy link to Clipboard</button> ";
+            } else {
+            	buttons = "<button id='"+ userContext[1]+"' class='btn btn-md btn-default' onClick='editUserContext(this)' ><div class='glyphicon glyphicon-edit' ></div> Edit </button>"
+                + "<button id='"+ userContext[1]+"' class='btn btn-md btn-default' onClick='deleteUserContext(this)'><div class='glyphicon glyphicon-trash'></div> Delete </button> "
+                + "<button id='"+ userContext[1]+"' class='btn btn-md btn-default' onClick='copyUserContext(this)'><div class='glyphicon glyphicon-copy'></div> Copy </button>";
+            }
+
+            
             tableContent += "<tr>" + "<td id='tdUserContextName_"
                    + userContext[1]
                     + "'>"
@@ -202,15 +222,8 @@ public class Molecule_5_DataTableContent {
                     + userContext[2]
                     + "</td>"
                     + "<td>"
-                    + "<button id='"
-                    + userContext[1]
-                    + "' class='btn btn-md btn-default' onClick='editUserContext(this)' ><div class='glyphicon glyphicon-edit' ></div> Edit </button>"
-                    + "<button id='"
-                    + userContext[1]
-                    + "' class='btn btn-md btn-default' onClick='deleteUserContext(this)'><div class='glyphicon glyphicon-trash'></div> Delete </button> "
-                    + "<button id='"
-                    + userContext[1]
-                    + "' class='btn btn-md btn-default' onClick='copyUserContext(this)'><div class='glyphicon glyphicon-copy'></div> Copy </button> </td></tr>";
+                    + buttons
+                    +" </td></tr>";
         }
 
         return tableContent;
