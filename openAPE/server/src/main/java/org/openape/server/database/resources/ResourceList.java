@@ -82,8 +82,8 @@ public class ResourceList {
                 for (int j = 0; j < listOfUserFiles.length; j++) {
                     if (listOfUserFiles[j].isFile()) {
                         // Add 'user id / file name' to list.
-                        this.resourceNameList
-                                .add(listOfFiles[i].getName() + File.separator + listOfUserFiles[j].getName());
+                        this.resourceNameList.add(listOfFiles[i].getName() + File.separator
+                                + listOfUserFiles[j].getName());
                     }
                 }
             }
@@ -111,7 +111,8 @@ public class ResourceList {
 
         // Check if filename exists.
         if (fileName == null) {
-            throw new IllegalArgumentException(Messages.getString("ResourceList.NoFileNameErrorMassage")); //$NON-NLS-1$
+            throw new IllegalArgumentException(
+                    Messages.getString("ResourceList.NoFileNameErrorMassage")); //$NON-NLS-1$
         }
         // Create resource reference object for the database.
         final ResourceObject resourceObject = new ResourceObject(fileName, user.getId(), mimeType);
@@ -140,7 +141,8 @@ public class ResourceList {
         try {
             // Check if file already exists.
             if (this.resourceExists(resourceObject)) {
-                throw new IllegalArgumentException(Messages.getString("ResourceList.FilenameInUseErrorMassage")); //$NON-NLS-1$
+                throw new IllegalArgumentException(
+                        Messages.getString("ResourceList.FilenameInUseErrorMassage")); //$NON-NLS-1$
             }
 
             // Specify where to store the file.
@@ -152,7 +154,8 @@ public class ResourceList {
             resource.write(fileToWrite);
 
         } catch (final FileNotFoundException fne) {
-            throw new IllegalArgumentException(Messages.getString("ResourceList.NoUploadFileErrorMassage")); //$NON-NLS-1$
+            throw new IllegalArgumentException(
+                    Messages.getString("ResourceList.NoUploadFileErrorMassage")); //$NON-NLS-1$
         } catch (final Exception e) {
             throw new IOException(e.getMessage());
         } finally {
@@ -165,7 +168,8 @@ public class ResourceList {
                     filecontent.close();
                 }
             } catch (final IOException e) {
-                System.err.println(Messages.getString("ResourceList.StreamsCouldNotBeClousedErrorMassage")); //$NON-NLS-1$
+                System.err.println(Messages
+                        .getString("ResourceList.StreamsCouldNotBeClousedErrorMassage")); //$NON-NLS-1$
             }
 
         }
@@ -184,7 +188,8 @@ public class ResourceList {
             // If directory does not exist, create
             final boolean success = folder.mkdirs();
             if (!success) {
-                throw new IOException(Messages.getString("ResourceList.CouldNotCreateResourceFolderErrorMassage")); //$NON-NLS-1$
+                throw new IOException(
+                        Messages.getString("ResourceList.CouldNotCreateResourceFolderErrorMassage")); //$NON-NLS-1$
             }
             return;
         }
@@ -208,7 +213,8 @@ public class ResourceList {
         final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
         ResourceObject resourceObject = null;
         try {
-            resourceObject = (ResourceObject) databaseConnection.getData(MongoCollectionTypes.RESOURCEOBJECTS, id);
+            resourceObject = (ResourceObject) databaseConnection.getData(
+                    MongoCollectionTypes.RESOURCEOBJECTS, id);
         } catch (final ClassCastException e) {
             throw new IOException(e.getMessage());
         }
@@ -222,11 +228,13 @@ public class ResourceList {
 
         if (this.resourceExists(resourceObject)) {
             new File(resourceObject.getPath()).delete();
-            this.resourceNameList.remove(resourceObject.getOwnerId() + File.separator + resourceObject.getFileName());
+            this.resourceNameList.remove(resourceObject.getOwnerId() + File.separator
+                    + resourceObject.getFileName());
             // delete reference object from database.
             databaseConnection.deleteData(MongoCollectionTypes.RESOURCEOBJECTS, id);
         } else {
-            throw new IllegalArgumentException(Messages.getString("ResourceList.FileNotFoundErrorMassage")); //$NON-NLS-1$
+            throw new IllegalArgumentException(
+                    Messages.getString("ResourceList.FileNotFoundErrorMassage")); //$NON-NLS-1$
         }
         return true;
 
@@ -248,12 +256,14 @@ public class ResourceList {
      * @throws IllegalArgumentException
      *             if file is non existent.
      */
-    public GetResourceReturnType getResoureFile(final String id) throws IllegalArgumentException, IOException {
+    public GetResourceReturnType getResoureFile(final String id) throws IllegalArgumentException,
+            IOException {
         // get resource description object.
         final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
         ResourceObject resourceObject = null;
         try {
-            resourceObject = (ResourceObject) databaseConnection.getData(MongoCollectionTypes.RESOURCEOBJECTS, id);
+            resourceObject = (ResourceObject) databaseConnection.getData(
+                    MongoCollectionTypes.RESOURCEOBJECTS, id);
         } catch (final ClassCastException e) {
             throw new IOException(e.getMessage());
         }
@@ -261,7 +271,8 @@ public class ResourceList {
             final File file = new File(resourceObject.getPath());
             return new GetResourceReturnType(file, resourceObject);
         } else {
-            throw new IllegalArgumentException(Messages.getString("ResourceList.FileNotFoundErrorMassage")); //$NON-NLS-1$
+            throw new IllegalArgumentException(
+                    Messages.getString("ResourceList.FileNotFoundErrorMassage")); //$NON-NLS-1$
         }
 
     }

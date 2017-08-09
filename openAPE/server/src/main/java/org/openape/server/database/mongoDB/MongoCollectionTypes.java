@@ -17,20 +17,21 @@ import org.openape.api.usercontext.UserContext;
  * database and the class of the documents within the collections.
  */
 public enum MongoCollectionTypes {
-    USERCONTEXT(Messages.getString("MongoCollectionTypes.userContextsCollectionName"), UserContext.class), //$NON-NLS-1$
-    ENVIRONMENTCONTEXT(Messages.getString("MongoCollectionTypes.environmentContextsCollectionName"), //$NON-NLS-1$
-            EnvironmentContext.class), EQUIPMENTCONTEXT(
-                    Messages.getString("MongoCollectionTypes.equipmentContextsCollectionName"), //$NON-NLS-1$
-                    EquipmentContext.class), TASKCONTEXT(
-                            Messages.getString("MongoCollectionTypes.taskContextsCollectionName"), //$NON-NLS-1$
-                            TaskContext.class), RESOURCEDESCRIPTION(
-                                    Messages.getString("MongoCollectionTypes.resourceDescriptionCollectionName"), //$NON-NLS-1$
-                                    ResourceDescription.class), LISTING(
-                                            Messages.getString("MongoCollectionTypes.lstingCollectionName"), //$NON-NLS-1$
-                                            Listing.class), RESOURCEOBJECTS(
-                                                    Messages.getString(
-                                                            "MongoCollectionTypes.resourceObjectsCollectionName"), //$NON-NLS-1$
-                                                    ResourceObject.class), USERS("users", User.class);
+    USERCONTEXT(
+            Messages.getString("MongoCollectionTypes.userContextsCollectionName"), UserContext.class), //$NON-NLS-1$
+    ENVIRONMENTCONTEXT(
+            Messages.getString("MongoCollectionTypes.environmentContextsCollectionName"), //$NON-NLS-1$
+            EnvironmentContext.class), EQUIPMENTCONTEXT(Messages
+            .getString("MongoCollectionTypes.equipmentContextsCollectionName"), //$NON-NLS-1$
+            EquipmentContext.class), TASKCONTEXT(Messages
+            .getString("MongoCollectionTypes.taskContextsCollectionName"), //$NON-NLS-1$
+            TaskContext.class), RESOURCEDESCRIPTION(Messages
+            .getString("MongoCollectionTypes.resourceDescriptionCollectionName"), //$NON-NLS-1$
+            ResourceDescription.class), LISTING(Messages
+            .getString("MongoCollectionTypes.lstingCollectionName"), //$NON-NLS-1$
+            Listing.class), RESOURCEOBJECTS(Messages
+            .getString("MongoCollectionTypes.resourceObjectsCollectionName"), //$NON-NLS-1$
+            ResourceObject.class), USERS("users", User.class);
 
     /**
      * Get the collection type of a mongo database collection by its name.
@@ -39,21 +40,26 @@ public enum MongoCollectionTypes {
      * @return type of the collection.
      */
     public static MongoCollectionTypes getTypeFromCollectionName(final String collectionName) {
-        if (collectionName.equals(Messages.getString("MongoCollectionTypes.userContextsCollectionName"))) { //$NON-NLS-1$
+        if (collectionName.equals(Messages
+                .getString("MongoCollectionTypes.userContextsCollectionName"))) { //$NON-NLS-1$
             return USERCONTEXT;
-        } else
-            if (collectionName.equals(Messages.getString("MongoCollectionTypes.environmentContextsCollectionName"))) { //$NON-NLS-1$
+        } else if (collectionName.equals(Messages
+                .getString("MongoCollectionTypes.environmentContextsCollectionName"))) { //$NON-NLS-1$
             return ENVIRONMENTCONTEXT;
-        } else if (collectionName.equals(Messages.getString("MongoCollectionTypes.equipmentContextsCollectionName"))) { //$NON-NLS-1$
+        } else if (collectionName.equals(Messages
+                .getString("MongoCollectionTypes.equipmentContextsCollectionName"))) { //$NON-NLS-1$
             return EQUIPMENTCONTEXT;
-        } else if (collectionName.equals(Messages.getString("MongoCollectionTypes.taskContextsCollectionName"))) { //$NON-NLS-1$
+        } else if (collectionName.equals(Messages
+                .getString("MongoCollectionTypes.taskContextsCollectionName"))) { //$NON-NLS-1$
             return TASKCONTEXT;
-        } else
-            if (collectionName.equals(Messages.getString("MongoCollectionTypes.resourceDescriptionCollectionName"))) { //$NON-NLS-1$
+        } else if (collectionName.equals(Messages
+                .getString("MongoCollectionTypes.resourceDescriptionCollectionName"))) { //$NON-NLS-1$
             return RESOURCEDESCRIPTION;
-        } else if (collectionName.equals(Messages.getString("MongoCollectionTypes.lstingCollectionName"))) { //$NON-NLS-1$
+        } else if (collectionName.equals(Messages
+                .getString("MongoCollectionTypes.lstingCollectionName"))) { //$NON-NLS-1$
             return LISTING;
-        } else if (collectionName.endsWith(Messages.getString("MongoCollectionTypes.resourceObjectsCollectionName"))) {//$NON-NLS-1$
+        } else if (collectionName.endsWith(Messages
+                .getString("MongoCollectionTypes.resourceObjectsCollectionName"))) {//$NON-NLS-1$
             return RESOURCEOBJECTS;
         } else if (collectionName.equals("users")) {
             return USERS;

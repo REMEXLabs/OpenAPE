@@ -79,7 +79,8 @@ public class ResourceObject extends Resource {
     public String getPath() {
         final String resourceFolderPath = Messages.getString("ResourceList.rootFolder") + File.separator //$NON-NLS-1$
                 + Messages.getString("ResourceList.ResourceFolder"); //$NON-NLS-1$
-        return resourceFolderPath + File.separator + this.getOwnerId() + File.separator + this.getFileName();
+        return resourceFolderPath + File.separator + this.getOwnerId() + File.separator
+                + this.getFileName();
     }
 
     @XmlElement(name = "resourceDescription")

@@ -17,19 +17,23 @@ public class Context extends SuperRestInterface {
 
     public static void setupContextVELOCITYInterface() throws IllegalArgumentException, IOException {
 
-        Spark.get("/context", (request, response) -> {
+        Spark.get(
+                "/context",
+                (request, response) -> {
 
-            Context.model.put("footer", new Footer().generateFooter());
-            Context.model.put("logo", new OpenapeLogo().generateOpenAPELogo());
-            Context.model.put("topNavigation", new Organism_1_Topsection().generateTopNavigation());
-            Context.model.put("subSection", new Organism_2_SubSection().generateTopNavigation());
+                    Context.model.put("footer", new Footer().generateFooter());
+                    Context.model.put("logo", new OpenapeLogo().generateOpenAPELogo());
+                    Context.model.put("topNavigation",
+                            new Organism_1_Topsection().generateTopNavigation());
+                    Context.model.put("subSection",
+                            new Organism_2_SubSection().generateTopNavigation());
 
-            return new ModelAndView(Context.model, "velocityTemplates/context.vm"); // located
-            // in
-            // the
-            // resources
-            // directory
-        } , new VelocityTemplateEngine());
+                    return new ModelAndView(Context.model, "velocityTemplates/context.vm"); // located
+                    // in
+                    // the
+                    // resources
+                    // directory
+                }, new VelocityTemplateEngine());
     }
 
     public Context() throws IllegalArgumentException, IOException {

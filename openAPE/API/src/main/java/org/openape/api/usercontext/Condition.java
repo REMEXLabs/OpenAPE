@@ -42,8 +42,7 @@ public class Condition {
      * @param type
      *            must be 'not', 'eq', 'ne', 'lt', 'le', 'gt', 'ge', 'and' or
      *            'or'. <br>
-     *            If type is "not", operands shall have exactly one element.
-     *            <br>
+     *            If type is "not", operands shall have exactly one element. <br>
      *            If type is "eq", "ne", "lt", "le", "gt", or "ge", operands
      *            shall have exactly two elements. <br>
      *            If type is "and" or "or", operands shall have at least two
@@ -53,7 +52,8 @@ public class Condition {
      * @throws IllegalArgumentException
      *             if this is not the case.
      */
-    public Condition(final String type, final List<Object> operands) throws IllegalArgumentException {
+    public Condition(final String type, final List<Object> operands)
+            throws IllegalArgumentException {
         this.checkType(type);
         this.checkOpernadListLength(type, operands);
         this.checkOperandClasses(operands);
@@ -75,7 +75,8 @@ public class Condition {
                 // json to
                 // store sub
                 // results.
-                throw new IllegalArgumentException(Messages.getString("Condition.wrongOperandTypesErrorMsg")); //$NON-NLS-1$
+                throw new IllegalArgumentException(
+                        Messages.getString("Condition.wrongOperandTypesErrorMsg")); //$NON-NLS-1$
             }
         }
     }
@@ -93,7 +94,8 @@ public class Condition {
             throws IllegalArgumentException {
         if (type.equals(Messages.getString("Condition.not"))) { //$NON-NLS-1$
             if (operands.size() != 1) {
-                throw new IllegalArgumentException(Messages.getString("Condition.wrongNumberOfOperandsTypeNot")); //$NON-NLS-1$
+                throw new IllegalArgumentException(
+                        Messages.getString("Condition.wrongNumberOfOperandsTypeNot")); //$NON-NLS-1$
             }
         } else if (type.equals(Messages.getString("Condition.equal")) //$NON-NLS-1$
                 || type.equals(Messages.getString("Condition.notEqual")) //$NON-NLS-1$
@@ -102,12 +104,14 @@ public class Condition {
                 || type.equals(Messages.getString("Condition.greaterThen")) //$NON-NLS-1$
                 || type.equals(Messages.getString("Condition.greaterThenOrEqual"))) { //$NON-NLS-1$
             if (operands.size() != 2) {
-                throw new IllegalArgumentException(Messages.getString("Condition.wrongNumberOfOperands")); //$NON-NLS-1$
+                throw new IllegalArgumentException(
+                        Messages.getString("Condition.wrongNumberOfOperands")); //$NON-NLS-1$
             }
         } else if (type.equals(Messages.getString("Condition.and")) //$NON-NLS-1$
                 || type.equals(Messages.getString("Condition.or"))) { //$NON-NLS-1$
             if (operands.size() < 2) {
-                throw new IllegalArgumentException(Messages.getString("Condition.wrongNumberOfOperandsTypeAndOrOr")); //$NON-NLS-1$
+                throw new IllegalArgumentException(
+                        Messages.getString("Condition.wrongNumberOfOperandsTypeAndOrOr")); //$NON-NLS-1$
             }
         }
     }
@@ -127,7 +131,7 @@ public class Condition {
                 || type.equals(Messages.getString("Condition.greaterThen")) //$NON-NLS-1$
                 || type.equals(Messages.getString("Condition.greaterThenOrEqual")) //$NON-NLS-1$
                 || type.equals(Messages.getString("Condition.and")) //$NON-NLS-1$
-                || type.equals(Messages.getString("Condition.or")))) { //$NON-NLS-1$
+        || type.equals(Messages.getString("Condition.or")))) { //$NON-NLS-1$
             throw new IllegalArgumentException(Messages.getString("Condition.wrongTypeErrorMsg")); //$NON-NLS-1$
         }
     }
@@ -164,8 +168,7 @@ public class Condition {
      * @param type
      *            must be 'not', 'eq', 'ne', 'lt', 'le', 'gt', 'ge', 'and' or
      *            'or'. <br>
-     *            If type is "not", operands shall have exactly one element.
-     *            <br>
+     *            If type is "not", operands shall have exactly one element. <br>
      *            If type is "eq", "ne", "lt", "le", "gt", or "ge", operands
      *            shall have exactly two elements. <br>
      *            If type is "and" or "or", operands shall have at least two

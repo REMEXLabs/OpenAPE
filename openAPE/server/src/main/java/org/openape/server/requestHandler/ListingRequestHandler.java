@@ -48,7 +48,8 @@ public class ListingRequestHandler {
         // argument exceptions. IO exceptions will just be thrown through.
         String id = null;
         try {
-            id = databaseConnection.storeData(ListingRequestHandler.COLLECTIONTOUSE, (DatabaseObject) listing);
+            id = databaseConnection.storeData(ListingRequestHandler.COLLECTIONTOUSE,
+                    (DatabaseObject) listing);
         } catch (final ClassCastException e) {
             throw new IllegalArgumentException(e.getMessage());
         }
@@ -72,9 +73,11 @@ public class ListingRequestHandler {
         // get database connection.
         final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
 
-        final boolean success = databaseConnection.deleteData(ListingRequestHandler.COLLECTIONTOUSE, id);
+        final boolean success = databaseConnection.deleteData(
+                ListingRequestHandler.COLLECTIONTOUSE, id);
         if (!success) {
-            throw new IllegalArgumentException(Messages.getString("ListingRequestHandler.NoObjectWithThatIDErrorMsg")); //$NON-NLS-1$
+            throw new IllegalArgumentException(
+                    Messages.getString("ListingRequestHandler.NoObjectWithThatIDErrorMsg")); //$NON-NLS-1$
         }
         return true;
     }
@@ -97,11 +100,13 @@ public class ListingRequestHandler {
         final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
 
         // Get the requested data.
-        final DatabaseObject result = databaseConnection.getData(ListingRequestHandler.COLLECTIONTOUSE, id);
+        final DatabaseObject result = databaseConnection.getData(
+                ListingRequestHandler.COLLECTIONTOUSE, id);
 
         // If the result is null the id is not found.
         if (result == null) {
-            throw new IllegalArgumentException(Messages.getString("ListingRequestHandler.NoObjectWithThatIDErrorMsg")); //$NON-NLS-1$
+            throw new IllegalArgumentException(
+                    Messages.getString("ListingRequestHandler.NoObjectWithThatIDErrorMsg")); //$NON-NLS-1$
         }
 
         // convert into correct type.

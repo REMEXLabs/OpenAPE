@@ -22,12 +22,12 @@ public class UserContextList {
         for (final String id : contexts.keySet()) {
             try {
                 this.userContextUris.add(new URI(url + id));
-            } catch (URISyntaxException e) {
+            } catch (final URISyntaxException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         }
-        totalContexts = userContextUris.size();
+        this.totalContexts = this.userContextUris.size();
     }
 
     public int getTotalContexts() {

@@ -25,8 +25,8 @@ public class AuthConfigFactory implements ConfigFactory {
     public Config build() {
         // REST authentication with JWT for a token passed in the url as the
         // token parameter
-        final HeaderClient headerClient = new HeaderClient("Authorization",
-                new JwtAuthenticator(new SecretSignatureConfiguration(this.salt)));
+        final HeaderClient headerClient = new HeaderClient("Authorization", new JwtAuthenticator(
+                new SecretSignatureConfiguration(this.salt)));
         final AnonymousClient anonymousClient = new AnonymousClient();
         // Define config
         final Clients clients = new Clients(headerClient, anonymousClient);

@@ -83,8 +83,8 @@ public class EnvironmentContext extends Resource {
      */
     @JsonIgnore
     public boolean equals(final EnvironmentContext compare) {
-        return (EnvironmentContext.hasEnvironmentContextTheSameProperties(compare, this)
-                && EnvironmentContext.hasEnvironmentContextTheSameProperties(this, compare));
+        return (EnvironmentContext.hasEnvironmentContextTheSameProperties(compare, this) && EnvironmentContext
+                .hasEnvironmentContextTheSameProperties(this, compare));
 
     }
 

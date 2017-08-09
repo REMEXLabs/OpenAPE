@@ -10,7 +10,8 @@ import spark.Spark;
 import spark.template.velocity.VelocityTemplateEngine;
 
 public class GettingStarted extends SuperRestInterface {
-    public static void setupGettingStartedVELOCITYInterface() throws IllegalArgumentException, IOException {
+    public static void setupGettingStartedVELOCITYInterface() throws IllegalArgumentException,
+            IOException {
 
         Spark.get("/gettingStarted", (request, response) -> {
 
@@ -18,11 +19,11 @@ public class GettingStarted extends SuperRestInterface {
             final Map<String, Object> model = mainController.getTemplateComponents();
 
             return new ModelAndView(model, "velocityTemplates/gettingStarted.vm"); // located
-            // in
-            // the
-            // resources
-            // directory
-        } , new VelocityTemplateEngine());
+                // in
+                // the
+                // resources
+                // directory
+            }, new VelocityTemplateEngine());
     }
 
     public GettingStarted() throws IllegalArgumentException, IOException {

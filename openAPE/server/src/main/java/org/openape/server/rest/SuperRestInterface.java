@@ -28,12 +28,12 @@ import org.openape.ui.velocity.requestHandler.AdminSectionRequestHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import spark.Request;
+import spark.Spark;
+
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import spark.Request;
-import spark.Spark;
 
 public class SuperRestInterface {
     static Logger logger = LoggerFactory.getLogger(SuperRestInterface.class);
@@ -58,8 +58,8 @@ public class SuperRestInterface {
      * @throws JsonParseException
      * @throws JsonMappingException
      */
-    protected static <T> Object extractObjectFromRequest(final Request req, final Class<T> objectType)
-            throws IOException, JsonParseException, JsonMappingException {
+    protected static <T> Object extractObjectFromRequest(final Request req,
+            final Class<T> objectType) throws IOException, JsonParseException, JsonMappingException {
         final ObjectMapper mapper = new ObjectMapper();
         final Object recievedObject = mapper.readValue(req.body(), objectType);
         return recievedObject;
@@ -93,24 +93,28 @@ public class SuperRestInterface {
          * response.header("Access-Control-Request-Method",
          * "GET,PUT,POST,DELETE,OPTIONS"); //
          * response.header("Access-Control-Allow-Headers", headers);
-         *
+         * 
          * });
          */
 
-        Spark.options("/*", (request, response) -> {
+        Spark.options(
+                "/*",
+                (request, response) -> {
 
-            final String accessControlRequestHeaders = request.headers("Access-Control-Request-Headers");
-            if (accessControlRequestHeaders != null) {
-                response.header("Access-Control-Allow-Headers", accessControlRequestHeaders);
-            }
+                    final String accessControlRequestHeaders = request
+                            .headers("Access-Control-Request-Headers");
+                    if (accessControlRequestHeaders != null) {
+                        response.header("Access-Control-Allow-Headers", accessControlRequestHeaders);
+                    }
 
-            final String accessControlRequestMethod = request.headers("Access-Control-Request-Method");
-            if (accessControlRequestMethod != null) {
-                response.header("Access-Control-Allow-Methods", accessControlRequestMethod);
-            }
+                    final String accessControlRequestMethod = request
+                            .headers("Access-Control-Request-Method");
+                    if (accessControlRequestMethod != null) {
+                        response.header("Access-Control-Allow-Methods", accessControlRequestMethod);
+                    }
 
-            return 200;
-        });
+                    return 200;
+                });
 
         Spark.before((request, response) -> {
             response.header("Access-Control-Allow-Origin", "*");
@@ -143,14 +147,14 @@ public class SuperRestInterface {
         ProfileRESTInterface.setupProfileRESTInterface();
 
         // Resource endpoints
-        EnvironmentContextRESTInterface.setupEnvironmentContextRESTInterface(new EnvironmentContextRequestHandler(),
-                authService);
-        EquipmentContextRESTInterface.setupEquipmentContextRESTInterface(new EquipmentContextRequestHandler(),
-                authService);
+        EnvironmentContextRESTInterface.setupEnvironmentContextRESTInterface(
+                new EnvironmentContextRequestHandler(), authService);
+        EquipmentContextRESTInterface.setupEquipmentContextRESTInterface(
+                new EquipmentContextRequestHandler(), authService);
         ListingRESTInterface.setupListingRESTInterface(new ListingRequestHandler());
 
-        ResourceDescriptionRESTInterface.setupResourceDescriptionRESTInterface(new ResourceDescriptionRequestHandler(),
-                authService);
+        ResourceDescriptionRESTInterface.setupResourceDescriptionRESTInterface(
+                new ResourceDescriptionRequestHandler(), authService);
 
         ResourceRESTInterface.setupResourceRESTInterface(new ResourceRequestHandler(), authService);
         try {
@@ -273,8 +277,10 @@ public class SuperRestInterface {
             e.printStackTrace();
         }
 
-        TaskContextRESTInterface.setupTaskContextRESTInterface(new TaskContextRequestHandler(), authService);
-        UserContextRESTInterface.setupUserContextRESTInterface(new UserContextRequestHandler(), authService);
+        TaskContextRESTInterface.setupTaskContextRESTInterface(new TaskContextRequestHandler(),
+                authService);
+        UserContextRESTInterface.setupUserContextRESTInterface(new UserContextRequestHandler(),
+                authService);
         SuperRestInterface.logger.info("REST API successfully set up");
 
         // Test html interface found

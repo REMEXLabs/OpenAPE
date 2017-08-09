@@ -1,7 +1,6 @@
 package org.openape.server.requestHandler;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Map;
 
 import org.openape.api.DatabaseObject;
@@ -36,14 +35,16 @@ public class UserContextRequestHandler {
      * @throws IllegalArgumentException
      *             if the parameter is not a complete user context.
      */
-    public String createUserContext(final Object userContext) throws IOException, IllegalArgumentException {
+    public String createUserContext(final Object userContext) throws IOException,
+            IllegalArgumentException {
         // get database connection.
         final DatabaseConnection databaseconnection = DatabaseConnection.getInstance();
         // try to store data. Class cast exceptions will be thrown as illegal
         // argument exceptions. IO exceptions will just be thrown through.
         String id = null;
         try {
-            id = databaseconnection.storeData(UserContextRequestHandler.COLLECTIONTOUSE, (DatabaseObject) userContext);
+            id = databaseconnection.storeData(UserContextRequestHandler.COLLECTIONTOUSE,
+                    (DatabaseObject) userContext);
         } catch (final ClassCastException e) {
             throw new IllegalArgumentException(e.getMessage());
         }
@@ -63,11 +64,13 @@ public class UserContextRequestHandler {
      * @throws IllegalArgumentException
      *             if the id is no valid id or not assigned.
      */
-    public boolean deleteUserContextById(final String id) throws IOException, IllegalArgumentException {
+    public boolean deleteUserContextById(final String id) throws IOException,
+            IllegalArgumentException {
         // get database connection.
         final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
 
-        final boolean success = databaseConnection.deleteData(UserContextRequestHandler.COLLECTIONTOUSE, id);
+        final boolean success = databaseConnection.deleteData(
+                UserContextRequestHandler.COLLECTIONTOUSE, id);
         if (!success) {
             throw new IllegalArgumentException(
                     Messages.getString("UserContextRequestHandler.NoObjectWithThatIDErrorMsg")); //$NON-NLS-1$
@@ -77,7 +80,8 @@ public class UserContextRequestHandler {
 
     public UserContextList getAllUserContexts(final String url) {
         final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
-        final Map<String, UserContext> contexts = databaseConnection.getAllDocuments(MongoCollectionTypes.USERCONTEXT);
+        final Map<String, UserContext> contexts = databaseConnection
+                .getAllDocuments(MongoCollectionTypes.USERCONTEXT);
         return new UserContextList(contexts, url);
     }
 
@@ -100,12 +104,14 @@ public class UserContextRequestHandler {
      * @throws IllegalArgumentException
      *             if the id is no valid id or not assigned.
      */
-    public UserContext getUserContextById(final String id) throws IOException, IllegalArgumentException {
+    public UserContext getUserContextById(final String id) throws IOException,
+            IllegalArgumentException {
         // get database connection.
         final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
 
         // Get the requested data.
-        final DatabaseObject result = databaseConnection.getData(UserContextRequestHandler.COLLECTIONTOUSE, id);
+        final DatabaseObject result = databaseConnection.getData(
+                UserContextRequestHandler.COLLECTIONTOUSE, id);
 
         // If the result is null the id is not found.
         if (result == null) {
@@ -128,8 +134,8 @@ public class UserContextRequestHandler {
     public UserContextList getUserContexts(final BasicDBObject query, final String url) {
         final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
 
-        final Map<String, UserContext> contexts = databaseConnection.getDocumentsByQuery(MongoCollectionTypes.USERCONTEXT,
-                query, true);
+        final Map<String, UserContext> contexts = databaseConnection.getDocumentsByQuery(
+                MongoCollectionTypes.USERCONTEXT, query, true);
 
         return new UserContextList(contexts, url);
 

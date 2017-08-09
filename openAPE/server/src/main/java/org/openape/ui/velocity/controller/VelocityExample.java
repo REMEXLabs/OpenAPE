@@ -34,11 +34,11 @@ public final class VelocityExample {
             final Map<String, Object> model = new HashMap<>();
             model.put("message", "Hello Velocity");
             return new ModelAndView(model, "velocityTemplates/hello.vm"); // located
-            // in
-            // the
-            // resources
-            // directory
-        } , new VelocityTemplateEngine());
+                // in
+                // the
+                // resources
+                // directory
+            }, new VelocityTemplateEngine());
 
     }
 

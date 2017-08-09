@@ -83,8 +83,8 @@ public class EquipmentContext extends Resource {
      */
     @JsonIgnore
     public boolean equals(final EquipmentContext compare) {
-        return (EquipmentContext.hasEquipmentContextTheSameProperties(compare, this)
-                && EquipmentContext.hasEquipmentContextTheSameProperties(this, compare));
+        return (EquipmentContext.hasEquipmentContextTheSameProperties(compare, this) && EquipmentContext
+                .hasEquipmentContextTheSameProperties(this, compare));
 
     }
 

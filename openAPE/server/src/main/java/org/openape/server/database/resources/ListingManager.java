@@ -26,7 +26,8 @@ public class ListingManager {
      * @throws IOException
      *             if unable to create resource folder.
      */
-    public static List<GetResourceReturnType> getResourcesFromListing(final Listing listing) throws IOException {
+    public static List<GetResourceReturnType> getResourcesFromListing(final Listing listing)
+            throws IOException {
         // reset query
         ListingManager.query = Messages.getString("EmptyString"); //$NON-NLS-1$
         final ResourceList resourceList = ResourceList.getInstance();
@@ -39,8 +40,14 @@ public class ListingManager {
         }
         // add all values of descriptors of the resource description to the
         // query.
-        resourceDescription.getPropertys().forEach(property -> property.getDescriptors().keySet()
-                .forEach(key -> ListingManager.query += property.getDescriptors().get(key)));
+        resourceDescription.getPropertys()
+                .forEach(
+                        property -> property
+                                .getDescriptors()
+                                .keySet()
+                                .forEach(
+                                        key -> ListingManager.query += property.getDescriptors()
+                                                .get(key)));
         // get all resource names mentioned in the query and add the files into
         // the resources.
         for (final String name : allResourceNames) {
@@ -48,7 +55,8 @@ public class ListingManager {
                 try {
                     resources.add(resourceList.getResoureFile(name));
                 } catch (final IllegalArgumentException e) {
-                    System.err.println(Messages.getString("ListingManager.ResourceNotFoundErrorMsgPart1") //$NON-NLS-1$
+                    System.err.println(Messages
+                            .getString("ListingManager.ResourceNotFoundErrorMsgPart1") //$NON-NLS-1$
                             + Messages.getString("ListingManager.ResourceNotFoundErrorMsgPart2")); //$NON-NLS-1$
                 }
             }

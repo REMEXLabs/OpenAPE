@@ -9,7 +9,8 @@ public class OpenApeClientTester {
         System.out.println("starte test");
         try {
             final OpenAPEClient client = new OpenAPEClient("daniel", "ich", "http://localhost:4567");
-            final UserContext userContext = client.getUserContext(OpenApeClientTester.userContextId);
+            final UserContext userContext = client
+                    .getUserContext(OpenApeClientTester.userContextId);
             System.out.println(userContext);
             System.out.println("erledigt");
 

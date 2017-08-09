@@ -24,7 +24,8 @@ public class Adminsection extends SuperRestInterface {
         return true;
     }
 
-    public static void setupAdminVELOCITYInterface(final AdminSectionRequestHandler adminsectionRequestHandler)
+    public static void setupAdminVELOCITYInterface(
+            final AdminSectionRequestHandler adminsectionRequestHandler)
             throws IllegalArgumentException, IOException {
 
         for (final User entry : adminsectionRequestHandler.getAllUsers()) {
@@ -43,18 +44,20 @@ public class Adminsection extends SuperRestInterface {
 
             Adminsection.model.put("footer", new Footer().generateFooter());
             Adminsection.model.put("logo", new OpenapeLogo().generateOpenAPELogo());
-            Adminsection.model.put("topNavigation", new Organism_1_Topsection().generateTopNavigation());
-            Adminsection.model.put("subSection", new Organism_2_SubSection().generateTopNavigation());
-            Adminsection.model.put("tableContent",
-                    new Molecule_5_dataTable().generateDataTableContent(adminsectionRequestHandler.getAllUsers()));
+            Adminsection.model.put("topNavigation",
+                    new Organism_1_Topsection().generateTopNavigation());
+            Adminsection.model.put("subSection",
+                    new Organism_2_SubSection().generateTopNavigation());
+            Adminsection.model.put("tableContent", new Molecule_5_dataTable()
+                    .generateDataTableContent(adminsectionRequestHandler.getAllUsers()));
             Adminsection.model.put("deleteUser", del);
 
             return new ModelAndView(Adminsection.model, "velocityTemplates/adminsection.vm"); // located
-            // in
-            // the
-            // resources
-            // directory
-        } , new VelocityTemplateEngine());
+                // in
+                // the
+                // resources
+                // directory
+            }, new VelocityTemplateEngine());
     }
 
     public Adminsection() throws IllegalArgumentException, IOException {

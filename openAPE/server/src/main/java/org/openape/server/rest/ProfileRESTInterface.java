@@ -17,9 +17,9 @@ import org.pac4j.core.profile.CommonProfile;
 import org.pac4j.core.profile.ProfileManager;
 import org.pac4j.sparkjava.SparkWebContext;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import spark.Spark;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class ProfileRESTInterface extends SuperRestInterface {
 
@@ -55,49 +55,58 @@ public class ProfileRESTInterface extends SuperRestInterface {
         });
 
         // TODO: Remove this before live deployment!
-        Spark.post("/users", (req, res) -> {
-            try {
-                final User receivedUser = (User) SuperRestInterface.extractObjectFromRequest(req, User.class);
-                final String id = ProfileRESTInterface.createUser(receivedUser);
-                return "Done! Your ID is " + id;
-            } catch (final IOException e) {
-                res.status(409);
-                return "Could not create user: " + e.getMessage();
-            }
-        });
+        Spark.post(
+                "/users",
+                (req, res) -> {
+                    try {
+                        final User receivedUser = (User) SuperRestInterface
+                                .extractObjectFromRequest(req, User.class);
+                        final String id = ProfileRESTInterface.createUser(receivedUser);
+                        return "Done! Your ID is " + id;
+                    } catch (final IOException e) {
+                        res.status(409);
+                        return "Could not create user: " + e.getMessage();
+                    }
+                });
 
-        Spark.delete("/users", (req, res) -> {
-            final AdminSectionRequestHandler adminsectionRequestHandler = new AdminSectionRequestHandler();
+        Spark.delete(
+                "/users",
+                (req, res) -> {
+                    final AdminSectionRequestHandler adminsectionRequestHandler = new AdminSectionRequestHandler();
 
-            adminsectionRequestHandler.removeUser(req.queryParams("id"));
-            System.out.println(req.queryParams("id"));
+                    adminsectionRequestHandler.removeUser(req.queryParams("id"));
+                    System.out.println(req.queryParams("id"));
 
-            return "";
-        });
+                    return "";
+                });
 
         // edit users
-        Spark.put("/users", (req, res) -> {
-            try {
-                final AdminSectionRequestHandler adminsectionRequestHandler = new AdminSectionRequestHandler();
+        Spark.put(
+                "/users",
+                (req, res) -> {
+                    try {
+                        final AdminSectionRequestHandler adminsectionRequestHandler = new AdminSectionRequestHandler();
 
-                final JSONObject jsonObj = new JSONObject(req.body().toString());
+                        final JSONObject jsonObj = new JSONObject(req.body().toString());
 
-                adminsectionRequestHandler.updateUser(jsonObj.getString("id"), "username",
-                        jsonObj.getString("username"));
-                adminsectionRequestHandler.updateUser(jsonObj.getString("id"), "email", jsonObj.getString("email"));
+                        adminsectionRequestHandler.updateUser(jsonObj.getString("id"), "username",
+                                jsonObj.getString("username"));
+                        adminsectionRequestHandler.updateUser(jsonObj.getString("id"), "email",
+                                jsonObj.getString("email"));
 
-                for (final Object entry : jsonObj.getJSONArray("roles")) {
-                    adminsectionRequestHandler.updateUser(jsonObj.getString("id"), "roles", entry.toString());
-                }
+                        for (final Object entry : jsonObj.getJSONArray("roles")) {
+                            adminsectionRequestHandler.updateUser(jsonObj.getString("id"), "roles",
+                                    entry.toString());
+                        }
 
-                // adminsectionRequestHandler.updateUser(jsonObj.getString("id"),
-                // "roles", jsonObj.getJSONArray("roles"));
+                        // adminsectionRequestHandler.updateUser(jsonObj.getString("id"),
+                        // "roles", jsonObj.getJSONArray("roles"));
 
-                return "user updated";
-            } catch (final Exception err) {
-                return "Could not create user: " + err.getMessage();
-            }
-        });
+                        return "user updated";
+                    } catch (final Exception err) {
+                        return "Could not create user: " + err.getMessage();
+                    }
+                });
 
     }
 

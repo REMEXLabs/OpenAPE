@@ -50,7 +50,8 @@ public class Context implements Serializable {
                 // if key fits check if value fits.
                 if (baseKey.equals(compareKey)) {
                     match = true;
-                    if (!base.getPreferences().get(baseKey).equals(compare.getPreferences().get(compareKey))) {
+                    if (!base.getPreferences().get(baseKey)
+                            .equals(compare.getPreferences().get(compareKey))) {
                         return false;
                     }
                 }
@@ -104,8 +105,8 @@ public class Context implements Serializable {
     @JsonIgnore
     public boolean equals(final Context compare) {
         // check if preferences are equal
-        return (Context.hasContextTheSamePreferences(compare, this)
-                && Context.hasContextTheSamePreferences(this, compare));
+        return (Context.hasContextTheSamePreferences(compare, this) && Context
+                .hasContextTheSamePreferences(this, compare));
     }
 
     public List<Condition> getConditions() {

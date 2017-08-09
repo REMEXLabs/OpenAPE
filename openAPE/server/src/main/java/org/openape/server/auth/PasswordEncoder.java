@@ -23,7 +23,8 @@ public class PasswordEncoder {
      * @throws NoSuchAlgorithmException
      * @throws InvalidKeySpecException
      */
-    public static String encode(final String password) throws NoSuchAlgorithmException, InvalidKeySpecException {
+    public static String encode(final String password) throws NoSuchAlgorithmException,
+            InvalidKeySpecException {
         final int iterations = 1000;
         final char[] chars = password.toCharArray();
         final byte[] salt = PasswordEncoder.getSalt();
@@ -65,7 +66,8 @@ public class PasswordEncoder {
         final int iterations = Integer.parseInt(parts[0]);
         final byte[] salt = PasswordEncoder.fromHex(parts[1]);
         final byte[] hash = PasswordEncoder.fromHex(parts[2]);
-        final PBEKeySpec spec = new PBEKeySpec(plainPassword.toCharArray(), salt, iterations, hash.length * 8);
+        final PBEKeySpec spec = new PBEKeySpec(plainPassword.toCharArray(), salt, iterations,
+                hash.length * 8);
         final SecretKeyFactory skf = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
         final byte[] testHash = skf.generateSecret(spec).getEncoded();
         int diff = hash.length ^ testHash.length;

@@ -19,10 +19,10 @@ import org.pac4j.jwt.profile.JwtGenerator;
 import org.pac4j.sparkjava.SecurityFilter;
 import org.pac4j.sparkjava.SparkWebContext;
 
-import com.google.gson.Gson;
-
 import spark.Request;
 import spark.Response;
+
+import com.google.gson.Gson;
 
 /**
  * Authorize users and generate tokens.
@@ -32,7 +32,8 @@ public class AuthService {
 
     private static final ResourceBundle properties = ResourceBundle.getBundle("config/auth");
     private static final String JWT_SIGNATURE = AuthService.properties.getString("JwtSignature");
-    private static final String EXPIRATION_TIME = AuthService.properties.getString("TokenExpirationTimeInMinutes");
+    private static final String EXPIRATION_TIME = AuthService.properties
+            .getString("TokenExpirationTimeInMinutes");
 
     /**
      * Creates string error containing an RFC 6749 section 5.2 compliant JSON
@@ -73,7 +74,8 @@ public class AuthService {
      * @return The time the token will expire.
      */
     private static Date getExpirationDate() {
-        final int minutesToExpiration = Integer.parseInt(AuthService.EXPIRATION_TIME.replaceAll("[\\D]", ""));
+        final int minutesToExpiration = Integer.parseInt(AuthService.EXPIRATION_TIME.replaceAll(
+                "[\\D]", ""));
         return new Date(Calendar.getInstance().getTimeInMillis() + (minutesToExpiration * 60000));
     }
 
@@ -81,7 +83,8 @@ public class AuthService {
 
     private final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
 
-    public void allowAdmin(final Request request, final Response response) throws UnauthorizedException {
+    public void allowAdmin(final Request request, final Response response)
+            throws UnauthorizedException {
         final CommonProfile profile = this.getAuthenticatedProfile(request, response);
         if (!this.isAdmin(profile)) {
             throw new UnauthorizedException("You are not allowed to perform this operation");
@@ -100,7 +103,8 @@ public class AuthService {
      *             Will be thrown if authenticated user is no admin and also not
      *             the owner
      */
-    public void allowAdminAndOwner(final CommonProfile profile, final String owner) throws UnauthorizedException {
+    public void allowAdminAndOwner(final CommonProfile profile, final String owner)
+            throws UnauthorizedException {
         if (!this.isAdminOrOwner(profile, owner)) {
             throw new UnauthorizedException("You are not allowed to perform this operation");
         }
@@ -120,8 +124,8 @@ public class AuthService {
      *             Will be thrown if authenticated user is no admin and also not
      *             the owner
      */
-    public void allowAdminAndOwner(final Request request, final Response response, final String owner)
-            throws UnauthorizedException {
+    public void allowAdminAndOwner(final Request request, final Response response,
+            final String owner) throws UnauthorizedException {
         final CommonProfile profile = this.getAuthenticatedProfile(request, response);
         if (!this.isAdminOrOwner(profile, owner)) {
             throw new UnauthorizedException("You are not allowed to perform this operation");
@@ -143,8 +147,8 @@ public class AuthService {
      * @throws UnauthorizedException
      *             Will be thrown if non of the conditions are met.
      */
-    public void allowAdminOwnerAndPublic(final Request request, final Response response, final String owner,
-            final boolean isPublic) throws UnauthorizedException {
+    public void allowAdminOwnerAndPublic(final Request request, final Response response,
+            final String owner, final boolean isPublic) throws UnauthorizedException {
         final CommonProfile profile = this.getAuthenticatedProfile(request, response);
         if (!(isPublic || this.isAdminOrOwner(profile, owner))) {
             throw new UnauthorizedException("You are not allowed to perform this operation");
@@ -164,13 +168,13 @@ public class AuthService {
         // Authenticate only if role "admin" is present
         case "admin":
             return new SecurityFilter(this.config, "HeaderClient", "adminOnly");
-        // Authenticate if role "admin" or "user" is present
+            // Authenticate if role "admin" or "user" is present
         case "user":
             return new SecurityFilter(this.config, "HeaderClient", "userAndAdmin");
-        // Authenticate anyone, also anonymous users
+            // Authenticate anyone, also anonymous users
         case "anonymous":
             return new SecurityFilter(this.config, "HeaderClient,AnonymousClient");
-        // Require token, but authorize any role
+            // Require token, but authorize any role
         default:
             return new SecurityFilter(this.config, "HeaderClient");
         }
@@ -187,7 +191,8 @@ public class AuthService {
      * @return
      * @throws UnauthorizedException
      */
-    private CommonProfile authorizeUser(final String username, final String password) throws UnauthorizedException {
+    private CommonProfile authorizeUser(final String username, final String password)
+            throws UnauthorizedException {
         try {
             final User user = this.getUserByUsername(username);
             if (this.matchPassword(password, user.getPassword())) {
@@ -246,7 +251,8 @@ public class AuthService {
      * @throws UnauthorizedException
      *             Will be thrown if no user is authenticated.
      */
-    public User getAuthenticatedUser(final Request req, final Response res) throws UnauthorizedException {
+    public User getAuthenticatedUser(final Request req, final Response res)
+            throws UnauthorizedException {
         return User.getFromProfile(this.getAuthenticatedProfile(req, res));
     }
 
@@ -262,7 +268,8 @@ public class AuthService {
      * @throws UnauthorizedException
      *             if user can not be authorized
      */
-    public String getJSONToken(final String username, final String password) throws UnauthorizedException {
+    public String getJSONToken(final String username, final String password)
+            throws UnauthorizedException {
         final TokenResponse response = new TokenResponse(this.getToken(username, password),
                 AuthService.EXPIRATION_TIME);
         return new Gson().toJson(response);
@@ -281,7 +288,8 @@ public class AuthService {
      * @throws UnauthorizedException
      *             if user can not be authorized
      */
-    public String getToken(final String username, final String password) throws UnauthorizedException {
+    public String getToken(final String username, final String password)
+            throws UnauthorizedException {
         final CommonProfile profile = this.authorizeUser(username, password);
         return AuthService.generateJwt(profile);
     }
@@ -296,8 +304,8 @@ public class AuthService {
      * @throws NotFoundException
      */
     private User getUserByUsername(final String username) throws IOException, NotFoundException {
-        final DatabaseObject result = this.databaseConnection.getByUniqueAttribute(MongoCollectionTypes.USERS,
-                "username", username);
+        final DatabaseObject result = this.databaseConnection.getByUniqueAttribute(
+                MongoCollectionTypes.USERS, "username", username);
         if (result == null) {
             throw new NotFoundException("No user found with username: " + username);
         } else {

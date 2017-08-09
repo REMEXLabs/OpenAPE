@@ -60,9 +60,11 @@ public class OpenAPEClient {
         OpenAPEClient.logger.info("OpenAPECLIENT received Token for: " + uri);
     }
 
-    private URI createContext(final String path, final Object uploadContext) throws URISyntaxException {
+    private URI createContext(final String path, final Object uploadContext)
+            throws URISyntaxException {
 
-        final Response response = this.webResource.path(path).request(MediaType.APPLICATION_JSON_TYPE)
+        final Response response = this.webResource.path(path)
+                .request(MediaType.APPLICATION_JSON_TYPE)
                 .post(Entity.entity(uploadContext, MediaType.APPLICATION_JSON));
 
         if (response.getStatus() != 201) {
@@ -74,24 +76,26 @@ public class OpenAPEClient {
         return new URI(response.getHeaderString("Location"));
     }
 
-    public URI createEnvironmentContext(final EnvironmentContext envrionmentContext) throws URISyntaxException {
+    public URI createEnvironmentContext(final EnvironmentContext envrionmentContext)
+            throws URISyntaxException {
         return this.createContext(OpenAPEClient.ENVIRONMENT_CONTEXT_PATH, EnvironmentContext.class);
     }
 
-    public URI createEquipmentContext(final EquipmentContext equipmentContext) throws URISyntaxException {
+    public URI createEquipmentContext(final EquipmentContext equipmentContext)
+            throws URISyntaxException {
         return this.createContext(OpenAPEClient.EQUIPMENT_CONTEXT_PATH, equipmentContext);
     }
 
-    public Listing createListing(final URI userContextUri, final URI equipmentContextUri, final URI environMentUri,
-            final URI taskContextUri) {
+    public Listing createListing(final URI userContextUri, final URI equipmentContextUri,
+            final URI environMentUri, final URI taskContextUri) {
         /*
          * Response response = webResource.path(LISTING_PATH).request(MediaType.
          * APPLICATION_JSON_TYPE )
          * .post(Entity.entity(listingQuery,MediaType.APPLICATION_JSON));
-         *
+         * 
          * if (response.getStatus() != 201){ throw new RuntimeException(
          * "Failed : HTTP error code : " + response.getStatus()); }
-         *
+         * 
          * Listing output = response.readEntity(Listing.class); return output;
          */
         return null;
@@ -145,7 +149,8 @@ public class OpenAPEClient {
     }
 
     private String getToken(final String userName, final String password) {
-        final String tokenRequest = "grant_type=password&username=" + userName + "&password=" + password;
+        final String tokenRequest = "grant_type=password&username=" + userName + "&password="
+                + password;
         final Form form = new Form();
         form.param("grant_type", "password");
         form.param("username", userName);
@@ -156,8 +161,8 @@ public class OpenAPEClient {
         final int status = response.getStatus();
         OpenAPEClient.logger.debug("Response code: " + status);
         if (status != 200) {
-            OpenAPEClient.logger.error("Failed : HTTP error code : " + status + ".\n Server message: "
-                    + response.readEntity(String.class));
+            OpenAPEClient.logger.error("Failed : HTTP error code : " + status
+                    + ".\n Server message: " + response.readEntity(String.class));
             throw new RuntimeException("Failed : HTTP error code : " + status);
         }
 
@@ -168,8 +173,8 @@ public class OpenAPEClient {
     }
 
     public UserContext getUserContext(final String userContextId) {
-        final Invocation.Builder invocationBuilder = this.webResource
-                .path(OpenAPEClient.USER_CONTEXT_PATH + userContextId).request();
+        final Invocation.Builder invocationBuilder = this.webResource.path(
+                OpenAPEClient.USER_CONTEXT_PATH + userContextId).request();
         invocationBuilder.header("Authorization", this.token);
 
         final Response response = invocationBuilder.get();
