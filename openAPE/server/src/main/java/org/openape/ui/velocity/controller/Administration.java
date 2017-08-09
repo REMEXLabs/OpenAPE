@@ -24,14 +24,10 @@ public class Administration extends SuperRestInterface {
                     // site components
                     final Map<String, Object> model = new MainComponents().getTemplateComponents();
 
-                    // unique datatable
-                    model.put("dataTableUserContext", new Organism_3_DataTable()
-                            .generateAdministrationUserContextTable(adminsectionRequestHandler));
 
                     final String[] destinations = { "User", "User-Context", "Task-Context",
                             "Equipment-Context", "Environment-Context" };
 
-<<<<<<< HEAD
                     // modals
                     model.put("addGroupModal", new Organism_4_Modals().generateAddGroupModal());
                     model.put("dataTableGroup", new Organism_3_DataTable()
@@ -58,7 +54,7 @@ public class Administration extends SuperRestInterface {
                         } else {
                             model.put("dataTable" + idName, new Organism_3_DataTable()
                                     .generateAdministrationContextTable(adminsectionRequestHandler,
-                                            destination));
+                                            destination, "administration"));
                         }
                     }
 
@@ -68,14 +64,6 @@ public class Administration extends SuperRestInterface {
                                                                                            // resources
                                                                                            // directory
                 }, new VelocityTemplateEngine());
-=======
-            return new ModelAndView(Administration.model, "velocityTemplates/administration.vm"); // located
-                                                                                                  // in
-                                                                                                  // the
-                                                                                                  // resources
-                                                                                                  // directory
-            }, new VelocityTemplateEngine());
->>>>>>> refs/heads/newMaster
     }
 
     public Administration() throws IllegalArgumentException, IOException {

@@ -594,14 +594,10 @@ public class DatabaseConnection implements ServerMonitorListener {
         DatabaseConnection.logger.error("Connecting to MongoDB at " + DatabaseConnection.DATABASEURL + ":"
                 + DatabaseConnection.DATABASEPORT + " failed.\n" + event);
         DatabaseConnection.firstTime = true; // logger can now indicate when new
-<<<<<<< HEAD
                                              // connection will be found again.
-
-
-=======
                                              // connection will be found
                                              // again.
->>>>>>> refs/heads/newMaster
+
     }
 
     @Override

@@ -2,14 +2,11 @@ package org.openape.ui.velocity.controller;
 
 import java.io.IOException;
 import java.util.Map;
-
 import org.openape.server.rest.SuperRestInterface;
 import org.openape.ui.velocity.controllerComponents.MainComponents;
-import org.openape.ui.velocity.controllerComponents.myContexts;
 import org.openape.ui.velocity.organism.Organism_3_DataTable;
 import org.openape.ui.velocity.organism.Organism_4_Modals;
 import org.openape.ui.velocity.requestHandler.AdminSectionRequestHandler;
-
 import spark.ModelAndView;
 import spark.Spark;
 import spark.template.velocity.VelocityTemplateEngine;
@@ -39,26 +36,12 @@ public class MyContexts extends SuperRestInterface {
                         new Organism_4_Modals().generateAddContextModal(destination));
                 model.put("dataTable" + idName,
                         new Organism_3_DataTable().generateAdministrationContextTable(
-                                adminsectionRequestHandler, destination));
+                                adminsectionRequestHandler, destination, "myContext"));
             }
 
-            model.put("test", new myContexts());
+            return new ModelAndView(model, "velocityTemplates/myContexts.vm"); 
 
-            return new ModelAndView(model, "velocityTemplates/myContexts.vm"); // located
-                                                                               // in
-                                                                               // the
-                                                                               // resources
-                                                                               // directory
-<<<<<<< HEAD
-
-=======
->>>>>>> refs/heads/newMaster
             }, new VelocityTemplateEngine());
-    }
-
-    public static String Test() {
-        return "hi";
-
     }
 
     public MyContexts() throws IllegalArgumentException, IOException {
