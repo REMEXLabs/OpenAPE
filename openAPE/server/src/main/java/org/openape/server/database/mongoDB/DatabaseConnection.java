@@ -196,6 +196,43 @@ public class DatabaseConnection implements ServerMonitorListener {
     }
 
     /**
+     * Converts a MongoDB database object / document to an object of type {@link DatabaseObject}.
+     *
+     * @param type
+     *            the type of the object, to which the database document should be mapped. It must not be null!
+     * @param resultDocument
+     *            the database object / document, which will be mapped. It must not be null!
+     * @param includeId
+     *            true if the object's database id (_id) should be mapped to the object id and false if not.
+     * @return converted object
+     * @throws com.fasterxml.jackson.core.JsonParseException
+     * @throws JsonMappingException
+     * @throws IOException
+     */
+    private DatabaseObject convertDocumentToDatabaseObject(final MongoCollectionTypes type,
+            final Document resultDocument, final boolean includeId)
+            throws com.fasterxml.jackson.core.JsonParseException, JsonMappingException, IOException {
+        DatabaseObject databaseObject = null;
+        try {
+            // Remove the MongoDB id field
+            final ObjectId oid = (ObjectId) resultDocument.get("_id");
+            resultDocument.remove(Messages.getString("DatabaseConnection._id")); //$NON-NLS-1$
+            if (includeId) {
+                resultDocument.append("id", oid.toString());
+            }
+            String jsonResult = resultDocument.toJson();
+            // reverse mongo special character replacement.
+            jsonResult = this.reverseMongoSpecialCharsReplacement(jsonResult);
+            final ObjectMapper mapper = new ObjectMapper();
+            databaseObject = mapper.readValue(jsonResult, type.getDocumentType());
+        } catch (CodecConfigurationException | IOException | JsonParseException e) {
+            e.printStackTrace();
+            throw new IOException(e.getMessage());
+        }
+        return databaseObject;
+    }
+
+    /**
      * Delete a database object, either a context or a resource, from the
      * database. Choose the object via id and the collection via the collection
      * type.
@@ -233,43 +270,6 @@ public class DatabaseConnection implements ServerMonitorListener {
         this.userCollection.createIndex(new BasicDBObject("email", 1), new IndexOptions().unique(true));
         // Make sure username is unique for all users
         this.userCollection.createIndex(new BasicDBObject("username", 1), new IndexOptions().unique(true));
-    }
-
-    /**
-     * Converts a MongoDB database object / document to an object of type {@link DatabaseObject}.
-     * 
-     * @param type
-     *            the type of the object, to which the database document should be mapped. It must not be null!
-     * @param resultDocument
-     *            the database object / document, which will be mapped. It must not be null!
-     * @param includeId
-     *            true if the object's database id (_id) should be mapped to the object id and false if not.
-     * @return converted object
-     * @throws com.fasterxml.jackson.core.JsonParseException
-     * @throws JsonMappingException
-     * @throws IOException
-     */
-    private DatabaseObject convertDocumentToDatabaseObject(final MongoCollectionTypes type,
-            final Document resultDocument, final boolean includeId)
-            throws com.fasterxml.jackson.core.JsonParseException, JsonMappingException, IOException {
-        DatabaseObject databaseObject = null;
-        try {
-            // Remove the MongoDB id field
-            final ObjectId oid = (ObjectId) resultDocument.get("_id");
-            resultDocument.remove(Messages.getString("DatabaseConnection._id")); //$NON-NLS-1$
-            if (includeId) {
-                resultDocument.append("id", oid.toString());
-            }
-            String jsonResult = resultDocument.toJson();
-            // reverse mongo special character replacement.
-            jsonResult = this.reverseMongoSpecialCharsReplacement(jsonResult);
-            final ObjectMapper mapper = new ObjectMapper();
-            databaseObject = mapper.readValue(jsonResult, type.getDocumentType());
-        } catch (CodecConfigurationException | IOException | JsonParseException e) {
-            e.printStackTrace();
-            throw new IOException(e.getMessage());
-        }
-        return databaseObject;
     }
 
     /**
@@ -448,7 +448,7 @@ public class DatabaseConnection implements ServerMonitorListener {
     /**
      * Select objects of a given type from the database. It is possible to select all objects or to refine the selection
      * by a query.
-     * 
+     *
      * @param type
      *            the type of the objects, which should be selected from the database. It must not be null!
      * @param query
