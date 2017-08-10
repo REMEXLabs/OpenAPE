@@ -16,16 +16,23 @@
 
 package org.openape.api.usercontext;
 
+import java.io.IOException;
+import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.openape.api.Resource;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * User context object defined in 7.2.1
@@ -115,40 +122,63 @@ public class UserContext extends Resource {
     public void setContexts(final Map<String, Context> contexts) {
         this.contexts = contexts;
     }
-    
+
     /**
      * Generate the json representation from the object used for the front end.
+     * 
      * @return json string.
      */
     @JsonIgnore
-    public String getJson() {
-        return null;
+    public String getJson() throws IOException {
+        String jsonData = null;
+        try {
+            final ObjectMapper mapper = new ObjectMapper();
+            jsonData = mapper.writeValueAsString(this);
+        } catch (final JsonProcessingException e) {
+            throw new IOException(e.getMessage());
+        }
+        return jsonData;
     }
-    
+
     /**
      * Generate the xml representation from the object used for the front end.
+     * 
      * @return json string.
      */
     @JsonIgnore
-    public String getXML() {
-        return null;
+    public String getXML() throws IOException {
+        JAXBContext context;
+        StringWriter stringWriter = new StringWriter();
+        try {
+            context = JAXBContext.newInstance(UserContext.class);
+            Marshaller marshaller;
+            marshaller = context.createMarshaller();
+            stringWriter = new StringWriter();
+            marshaller.marshal(this, stringWriter);
+        } catch (JAXBException e) {
+            throw new IOException(e.getMessage());
+        }
+        return stringWriter.toString();
     }
-    
+
     /**
      * Generate the user context from the json string used in the the front end.
+     * 
      * @return user context object.
      */
     @JsonIgnore
-    public static UserContext getObjectFromJson(String json) {
+    public static UserContext getObjectFromJson(String json) throws IllegalArgumentException {
         return null;
     }
-    
+
     /**
      * Generate the user context from the xml string used in the the front end.
+     * 
      * @return user context object.
      */
     @JsonIgnore
-    public static UserContext getObjectFromXml(String xml) {
+    public static UserContext getObjectFromXml(String xml) throws IllegalArgumentException {
+
         return null;
     }
 
