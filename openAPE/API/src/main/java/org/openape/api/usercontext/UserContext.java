@@ -33,6 +33,7 @@ import org.openape.api.Resource;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
@@ -41,6 +42,43 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @XmlRootElement
 public class UserContext extends Resource {
     private static final long serialVersionUID = 5891055316807633786L;
+
+    /**
+     * Generate the user context from the json string used in the the front end.
+     *
+     * @return user context object.
+     */
+    @JsonIgnore
+    public static UserContext getObjectFromJson(final String json) throws IllegalArgumentException {
+        UserContext userContext = null;
+        try {
+            final ObjectMapper mapper = new ObjectMapper();
+            final JsonNode rootNode = mapper.readTree(json);
+            // TODO manipulate tree
+            userContext = mapper.treeToValue(rootNode, UserContext.class);
+        } catch (final IOException e) {
+            throw new IllegalArgumentException(e.getMessage());
+        }
+        return userContext;
+    }
+
+    /**
+     * Generate the user context from the xml string used in the the front end.
+     *
+     * @return user context object.
+     */
+    @JsonIgnore
+    public static UserContext getObjectFromXml(final String xml) throws IllegalArgumentException {
+        final UserContext userContext = null;
+        try {
+            final JAXBContext context = JAXBContext.newInstance(UserContext.class);
+            final Unmarshaller unmarshaller = context.createUnmarshaller();
+            // TODO
+        } catch (final JAXBException e) {
+            throw new IllegalArgumentException(e.getMessage());
+        }
+        return userContext;
+    }
 
     /**
      * Checks if a compare user context has the same contexts as a base context.
@@ -97,7 +135,6 @@ public class UserContext extends Resource {
     public boolean equals(final UserContext compare) {
         return (UserContext.hasUserContextTheSameContexts(compare, this) && UserContext
                 .hasUserContextTheSameContexts(this, compare));
-
     }
 
     /**
@@ -114,6 +151,47 @@ public class UserContext extends Resource {
         return this.contexts;
     }
 
+    /**
+     * Generate the json representation from the object used for the front end.
+     *
+     * @return json string.
+     */
+    @JsonIgnore
+    public String getJson() throws IOException {
+        String jsonString = null;
+        try {
+            final ObjectMapper mapper = new ObjectMapper();
+            final JsonNode rootNode = mapper.valueToTree(this);
+            // TODO manipulate tree
+            final StringWriter stringWriter = new StringWriter();
+            mapper.writeValue(stringWriter, rootNode);
+            jsonString = stringWriter.toString();
+        } catch (final JsonProcessingException e) {
+            throw new IOException(e.getMessage());
+        }
+        return jsonString;
+    }
+
+    /**
+     * Generate the xml representation from the object used for the front end.
+     *
+     * @return json string.
+     */
+    @JsonIgnore
+    public String getXML() throws IOException {
+        String xmlString = null;
+        try {
+            final JAXBContext context = JAXBContext.newInstance(UserContext.class);
+            final Marshaller marshaller = context.createMarshaller();
+            final StringWriter stringWriter = new StringWriter();
+            marshaller.marshal(this, stringWriter);
+            xmlString = stringWriter.toString();
+        } catch (final JAXBException e) {
+            throw new IOException(e.getMessage());
+        }
+        return xmlString;
+    }
+
     @Override
     @JsonIgnore
     public boolean isValid() {
@@ -122,77 +200,6 @@ public class UserContext extends Resource {
 
     public void setContexts(final Map<String, Context> contexts) {
         this.contexts = contexts;
-    }
-
-    /**
-     * Generate the json representation from the object used for the front end.
-     * 
-     * @return json string.
-     */
-    @JsonIgnore
-    public String getJson() throws IOException {
-        String jsonData = null;
-        try {
-            final ObjectMapper mapper = new ObjectMapper();
-            jsonData = mapper.writeValueAsString(this);
-        } catch (final JsonProcessingException e) {
-            throw new IOException(e.getMessage());
-        }
-        return jsonData;
-    }
-
-    /**
-     * Generate the xml representation from the object used for the front end.
-     * 
-     * @return json string.
-     */
-    @JsonIgnore
-    public String getXML() throws IOException {
-        StringWriter stringWriter = new StringWriter();
-        try {
-            JAXBContext context = JAXBContext.newInstance(UserContext.class);
-            Marshaller marshaller;
-            marshaller = context.createMarshaller();
-            stringWriter = new StringWriter();
-            marshaller.marshal(this, stringWriter);
-        } catch (JAXBException e) {
-            throw new IOException(e.getMessage());
-        }
-        return stringWriter.toString();
-    }
-
-    /**
-     * Generate the user context from the json string used in the the front end.
-     * 
-     * @return user context object.
-     */
-    @JsonIgnore
-    public static UserContext getObjectFromJson(String json) throws IllegalArgumentException {
-        UserContext userContext;
-        try {
-            final ObjectMapper mapper = new ObjectMapper();
-            userContext = mapper.readValue(json, UserContext.class);
-        } catch (IOException e) {
-            throw new IllegalArgumentException(e.getMessage());
-        }
-        return userContext;
-    }
-
-    /**
-     * Generate the user context from the xml string used in the the front end.
-     * 
-     * @return user context object.
-     */
-    @JsonIgnore
-    public static UserContext getObjectFromXml(String xml) throws IllegalArgumentException {
-        try {
-            JAXBContext context = JAXBContext.newInstance(UserContext.class);
-            Unmarshaller unmarshaller = context.createUnmarshaller();
-            // TODO
-        } catch (JAXBException e) {
-            throw new IllegalArgumentException(e.getMessage());
-        }
-        return null;
     }
 
 }
