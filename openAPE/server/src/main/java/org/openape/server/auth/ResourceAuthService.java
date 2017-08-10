@@ -111,6 +111,7 @@ public class ResourceAuthService extends AuthService {
         this.allow(request, response, resource, "update");
     }
 
+    @SuppressWarnings("unused")
     private Map<String, Group> getGroupsWithUserAsMember(final User user) throws IOException,
             UnauthorizedException {
         final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
@@ -125,7 +126,7 @@ public class ResourceAuthService extends AuthService {
         query.put("members", members);
 
         final Map<String, Group> groups = new HashMap<String, Group>();
-        for (final DatabaseObject databaseObject : databaseConnection.getDocumentsByQuery(
+        for (final DatabaseObject databaseObject : databaseConnection.getDatabaseObjectsByQuery(
                 MongoCollectionTypes.GROUPS, query, true)) {
             if (databaseObject instanceof Group) {
                 final Group group = (Group) databaseObject;

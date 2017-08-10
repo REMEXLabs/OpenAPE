@@ -499,7 +499,7 @@ public class DatabaseConnection implements ServerMonitorListener {
      *             if a problem with the database or during the object mapping
      *             occurs.
      */
-    public List<DatabaseObject> getDocumentsByQuery(final MongoCollectionTypes type,
+    public List<DatabaseObject> getDatabaseObjectsByQuery(final MongoCollectionTypes type,
             BasicDBObject query, final boolean includeId) throws IOException {
         final List<DatabaseObject> databaseObjects = new ArrayList<DatabaseObject>();
         if (query == null) {
@@ -515,6 +515,8 @@ public class DatabaseConnection implements ServerMonitorListener {
         cursor.close();
         return databaseObjects;
     }
+    
+    
 
     private void readConfigFile() {
         final String name = MongoConfig.getString("databaseName");//$NON-NLS-1$
