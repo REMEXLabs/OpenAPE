@@ -168,7 +168,14 @@ public class UserContext extends Resource {
      */
     @JsonIgnore
     public static UserContext getObjectFromJson(String json) throws IllegalArgumentException {
-        return null;
+        UserContext userContext;
+        try {
+            final ObjectMapper mapper = new ObjectMapper();
+            userContext = mapper.readValue(json, UserContext.class);
+        } catch (IOException e) {
+            throw new IllegalArgumentException(e.getMessage());
+        }
+        return userContext;
     }
 
     /**
@@ -181,10 +188,9 @@ public class UserContext extends Resource {
         try {
             JAXBContext context = JAXBContext.newInstance(UserContext.class);
             Unmarshaller unmarshaller = context.createUnmarshaller();
-            unmarshaller.
+            // TODO
         } catch (JAXBException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            throw new IllegalArgumentException(e.getMessage());
         }
         return null;
     }
