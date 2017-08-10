@@ -331,10 +331,10 @@ public class DatabaseConnection implements ServerMonitorListener {
         return listDocuments;
     }
 
-    public ArrayList<Document> getAllDocuments(final String string) {
+    /*public ArrayList<Document> getAllDocuments(final String string) {
         // TODO Auto-generated method stub
         return null;
-    }
+    }*/
 
     /**
      * @param type
