@@ -1,12 +1,14 @@
 package org.openape.server.database.mongoDB;
 
 import java.io.IOException;
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.bson.Document;
 import org.bson.codecs.configuration.CodecConfigurationException;
@@ -218,15 +220,15 @@ public class DatabaseConnection implements ServerMonitorListener {
      * @param includeId
      *            true if the object's database id (_id) should be mapped to the
      *            object id and false if not.
-     * @return converted object
+     * @return map entry containing the database id of the object as key and database object it self as value
      * @throws com.fasterxml.jackson.core.JsonParseException
      * @throws JsonMappingException
      * @throws IOException
      */
-    private DatabaseObject convertDocumentToDatabaseObject(final MongoCollectionTypes type,
+    private Map.Entry<String, DatabaseObject> convertDocumentToDatabaseObject(final MongoCollectionTypes type,
             final Document resultDocument, final boolean includeId)
             throws com.fasterxml.jackson.core.JsonParseException, JsonMappingException, IOException {
-        DatabaseObject databaseObject = null;
+        Map.Entry<String, DatabaseObject> entry = null;
         try {
             // Remove the MongoDB id field
             final ObjectId oid = (ObjectId) resultDocument.get("_id");
@@ -238,12 +240,13 @@ public class DatabaseConnection implements ServerMonitorListener {
             // reverse mongo special character replacement.
             jsonResult = this.reverseMongoSpecialCharsReplacement(jsonResult);
             final ObjectMapper mapper = new ObjectMapper();
-            databaseObject = mapper.readValue(jsonResult, type.getDocumentType());
+            DatabaseObject databaseObject = mapper.readValue(jsonResult, type.getDocumentType());
+            entry = new AbstractMap.SimpleEntry<String, DatabaseObject>(oid.toString(), databaseObject);
         } catch (CodecConfigurationException | IOException | JsonParseException e) {
             e.printStackTrace();
             throw new IOException(e.getMessage());
         }
-        return databaseObject;
+        return entry;
     }
 
     /**
@@ -489,19 +492,19 @@ public class DatabaseConnection implements ServerMonitorListener {
      *            the query. It defines which objects of the defined type should
      *            be selected. If all objects of the defined type should be
      *            selected, the query object has to be "empty" or null.
-     * @param includeId
-     *            true if the object's database id (_id) should be mapped to the
-     *            object id and false if not.
-     * @return a list of objects of the defined type, which comply the query
-     *         conditions. If no object complies the query conditions or the
-     *         collection is empty, an empty list will be returned.
+     * @return a map of objects of the defined type, which comply the query
+     *         conditions. The objects are the values and the objects database IDs are the keys. If no object complies the query conditions or the
+     *         collection is empty, an empty map will be returned.
      * @throws IOException
      *             if a problem with the database or during the object mapping
      *             occurs.
      */
-    public List<DatabaseObject> getDatabaseObjectsByQuery(final MongoCollectionTypes type,
-            BasicDBObject query, final boolean includeId) throws IOException {
-        final List<DatabaseObject> databaseObjects = new ArrayList<DatabaseObject>();
+    public Map<String, DatabaseObject> getDatabaseObjectsByQuery(final MongoCollectionTypes type, BasicDBObject query) throws IOException {
+        final Map<String, DatabaseObject> databaseObjects = new HashMap<String, DatabaseObject>();
+        boolean includeId = false;
+        if(type == MongoCollectionTypes.GROUPS || type == MongoCollectionTypes.USERS){
+            includeId = true;
+        }
         if (query == null) {
             query = new BasicDBObject();
         }
@@ -509,8 +512,8 @@ public class DatabaseConnection implements ServerMonitorListener {
         final MongoCursor<Document> cursor = collectionToWorkOn.find(query).iterator();
         while (cursor.hasNext()) {
             final Document resultDocument = cursor.next();
-            databaseObjects.add(this.convertDocumentToDatabaseObject(type, resultDocument,
-                    includeId));
+            Map.Entry<String, DatabaseObject> entry = this.convertDocumentToDatabaseObject(type, resultDocument, includeId);
+            databaseObjects.put(entry.getKey(), entry.getValue());
         }
         cursor.close();
         return databaseObjects;

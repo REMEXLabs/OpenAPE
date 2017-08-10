@@ -126,13 +126,13 @@ public class ResourceAuthService extends AuthService {
         query.put("members", members);
 
         final Map<String, Group> groups = new HashMap<String, Group>();
-        for (final DatabaseObject databaseObject : databaseConnection.getDatabaseObjectsByQuery(
+        /*for (final DatabaseObject databaseObject : databaseConnection.getDatabaseObjectsByQuery(
                 MongoCollectionTypes.GROUPS, query, true)) {
             if (databaseObject instanceof Group) {
                 final Group group = (Group) databaseObject;
                 groups.put(group.getId(), group);
             }
-        }
+        }*/
 
         return groups;
     }

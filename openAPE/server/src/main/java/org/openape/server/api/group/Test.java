@@ -112,12 +112,12 @@ public class Test {
         final Group group4 = new Group("group4", members4);
 
         final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
-        final List groups = databaseConnection.getDatabaseObjectsByQuery(MongoCollectionTypes.GROUPS,
+       /* final List groups = databaseConnection.getDatabaseObjectsByQuery(MongoCollectionTypes.GROUPS,
                 query4, true);
         for (final Object object : groups) {
             final Group group = (Group) object;
             System.out.println("groupName = " + group.getName());
-        }
+        }*/
         
         // databaseConnection.storeData(MongoCollectionTypes.USERS, user1);
         // databaseConnection.storeData(MongoCollectionTypes.GROUPS, group4);
