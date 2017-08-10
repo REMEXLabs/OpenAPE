@@ -6,9 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import org.bson.Document;
 import org.bson.codecs.configuration.CodecConfigurationException;
@@ -220,13 +218,14 @@ public class DatabaseConnection implements ServerMonitorListener {
      * @param includeId
      *            true if the object's database id (_id) should be mapped to the
      *            object id and false if not.
-     * @return map entry containing the database id of the object as key and database object it self as value
+     * @return map entry containing the database id of the object as key and
+     *         database object it self as value
      * @throws com.fasterxml.jackson.core.JsonParseException
      * @throws JsonMappingException
      * @throws IOException
      */
-    private Map.Entry<String, DatabaseObject> convertDocumentToDatabaseObject(final MongoCollectionTypes type,
-            final Document resultDocument, final boolean includeId)
+    private Map.Entry<String, DatabaseObject> convertDocumentToDatabaseObject(
+            final MongoCollectionTypes type, final Document resultDocument, final boolean includeId)
             throws com.fasterxml.jackson.core.JsonParseException, JsonMappingException, IOException {
         Map.Entry<String, DatabaseObject> entry = null;
         try {
@@ -240,8 +239,10 @@ public class DatabaseConnection implements ServerMonitorListener {
             // reverse mongo special character replacement.
             jsonResult = this.reverseMongoSpecialCharsReplacement(jsonResult);
             final ObjectMapper mapper = new ObjectMapper();
-            DatabaseObject databaseObject = mapper.readValue(jsonResult, type.getDocumentType());
-            entry = new AbstractMap.SimpleEntry<String, DatabaseObject>(oid.toString(), databaseObject);
+            final DatabaseObject databaseObject = mapper.readValue(jsonResult,
+                    type.getDocumentType());
+            entry = new AbstractMap.SimpleEntry<String, DatabaseObject>(oid.toString(),
+                    databaseObject);
         } catch (CodecConfigurationException | IOException | JsonParseException e) {
             e.printStackTrace();
             throw new IOException(e.getMessage());
@@ -349,10 +350,10 @@ public class DatabaseConnection implements ServerMonitorListener {
         return listDocuments;
     }
 
-    /*public ArrayList<Document> getAllDocuments(final String string) {
-        // TODO Auto-generated method stub
-        return null;
-    }*/
+    /*
+     * public ArrayList<Document> getAllDocuments(final String string) { // TODO
+     * Auto-generated method stub return null; }
+     */
 
     public ArrayList<Document> getAllDocumentsByKey(final MongoCollectionTypes type,
             final String key) throws IOException {
@@ -493,16 +494,18 @@ public class DatabaseConnection implements ServerMonitorListener {
      *            be selected. If all objects of the defined type should be
      *            selected, the query object has to be "empty" or null.
      * @return a map of objects of the defined type, which comply the query
-     *         conditions. The objects are the values and the objects database IDs are the keys. If no object complies the query conditions or the
-     *         collection is empty, an empty map will be returned.
+     *         conditions. The objects are the values and the objects database
+     *         IDs are the keys. If no object complies the query conditions or
+     *         the collection is empty, an empty map will be returned.
      * @throws IOException
      *             if a problem with the database or during the object mapping
      *             occurs.
      */
-    public Map<String, DatabaseObject> getDatabaseObjectsByQuery(final MongoCollectionTypes type, BasicDBObject query) throws IOException {
+    public Map<String, DatabaseObject> getDatabaseObjectsByQuery(final MongoCollectionTypes type,
+            BasicDBObject query) throws IOException {
         final Map<String, DatabaseObject> databaseObjects = new HashMap<String, DatabaseObject>();
         boolean includeId = false;
-        if(type == MongoCollectionTypes.GROUPS || type == MongoCollectionTypes.USERS){
+        if ((type == MongoCollectionTypes.GROUPS) || (type == MongoCollectionTypes.USERS)) {
             includeId = true;
         }
         if (query == null) {
@@ -512,14 +515,13 @@ public class DatabaseConnection implements ServerMonitorListener {
         final MongoCursor<Document> cursor = collectionToWorkOn.find(query).iterator();
         while (cursor.hasNext()) {
             final Document resultDocument = cursor.next();
-            Map.Entry<String, DatabaseObject> entry = this.convertDocumentToDatabaseObject(type, resultDocument, includeId);
+            final Map.Entry<String, DatabaseObject> entry = this.convertDocumentToDatabaseObject(
+                    type, resultDocument, includeId);
             databaseObjects.put(entry.getKey(), entry.getValue());
         }
         cursor.close();
         return databaseObjects;
     }
-    
-    
 
     private void readConfigFile() {
         final String name = MongoConfig.getString("databaseName");//$NON-NLS-1$
@@ -564,7 +566,6 @@ public class DatabaseConnection implements ServerMonitorListener {
             DatabaseConnection.DATABASEUSERNAME = Messages
                     .getString("DatabaseConnection.MongoDBDatabaseUsername"); //$NON-NLS-1$
         }
-
 
     }
 

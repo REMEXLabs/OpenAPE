@@ -8,7 +8,6 @@ import java.util.Set;
 import org.openape.api.DatabaseObject;
 import org.openape.api.Messages;
 import org.openape.api.UserContextList;
-import org.openape.api.resourceDescription.ResourceDescription;
 import org.openape.api.usercontext.UserContext;
 import org.openape.server.database.mongoDB.DatabaseConnection;
 import org.openape.server.database.mongoDB.MongoCollectionTypes;

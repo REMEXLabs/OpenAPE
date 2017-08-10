@@ -4,9 +4,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
 import javax.ws.rs.NotFoundException;
+
 import org.json.JSONObject;
 import org.openape.api.DatabaseObject;
+import org.openape.api.Messages;
 import org.openape.api.OpenAPEEndPoints;
 import org.openape.api.PasswordChangeRequest;
 import org.openape.api.user.User;
@@ -16,20 +19,19 @@ import org.openape.server.database.mongoDB.DatabaseConnection;
 import org.openape.server.database.mongoDB.MongoCollectionTypes;
 import org.openape.server.requestHandler.ProfileHandler;
 import org.openape.ui.velocity.requestHandler.AdminSectionRequestHandler;
-
-import spark.Spark;
 import org.pac4j.core.profile.CommonProfile;
-import org.openape.api.Messages;
 import org.pac4j.core.profile.ProfileManager;
 import org.pac4j.sparkjava.SparkWebContext;
+
+import spark.Spark;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class ProfileRESTInterface extends SuperRestInterface {
 
     static void setupProfileRESTInterface() {
-    	final AuthService authService = new AuthService();
-    	Spark.before("/profile", authService.authorize("default"));
+        final AuthService authService = new AuthService();
+        Spark.before("/profile", authService.authorize("default"));
         Spark.get("/profile", "app", (req, res) -> {
             final SparkWebContext context = new SparkWebContext(req, res);
             final ProfileManager manager = new ProfileManager(context);
@@ -38,7 +40,7 @@ public class ProfileRESTInterface extends SuperRestInterface {
             res.type(Messages.getString("UserContextRESTInterface.JsonMimeType"));
             return mapper.writeValueAsString(User.getFromProfile(profile.get()));
         });
-        
+
         // TODO: Remove this before live deployment!
         Spark.post(
                 "/users",
@@ -78,8 +80,8 @@ public class ProfileRESTInterface extends SuperRestInterface {
                                 jsonObj.getString("username"));
                         adminsectionRequestHandler.updateUser(jsonObj.getString("id"), "email",
                                 jsonObj.getString("email"));
-                        adminsectionRequestHandler.updateUser(jsonObj.getString("id"), "roles", 
-                        		jsonObj.getJSONArray("roles"));
+                        adminsectionRequestHandler.updateUser(jsonObj.getString("id"), "roles",
+                                jsonObj.getJSONArray("roles"));
 
                         return "user updated";
                     } catch (final Exception err) {

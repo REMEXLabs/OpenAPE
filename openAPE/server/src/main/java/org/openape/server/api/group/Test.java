@@ -9,7 +9,6 @@ import org.bson.Document;
 import org.openape.api.groups.GroupMembershipStatus;
 import org.openape.api.user.User;
 import org.openape.server.database.mongoDB.DatabaseConnection;
-import org.openape.server.database.mongoDB.MongoCollectionTypes;
 
 import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
@@ -112,13 +111,14 @@ public class Test {
         final Group group4 = new Group("group4", members4);
 
         final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
-       /* final List groups = databaseConnection.getDatabaseObjectsByQuery(MongoCollectionTypes.GROUPS,
-                query4, true);
-        for (final Object object : groups) {
-            final Group group = (Group) object;
-            System.out.println("groupName = " + group.getName());
-        }*/
-        
+        /*
+         * final List groups =
+         * databaseConnection.getDatabaseObjectsByQuery(MongoCollectionTypes
+         * .GROUPS, query4, true); for (final Object object : groups) { final
+         * Group group = (Group) object; System.out.println("groupName = " +
+         * group.getName()); }
+         */
+
         // databaseConnection.storeData(MongoCollectionTypes.USERS, user1);
         // databaseConnection.storeData(MongoCollectionTypes.GROUPS, group4);
         // List<Document> documents =
