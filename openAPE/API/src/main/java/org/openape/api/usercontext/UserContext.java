@@ -115,5 +115,41 @@ public class UserContext extends Resource {
     public void setContexts(final Map<String, Context> contexts) {
         this.contexts = contexts;
     }
+    
+    /**
+     * Generate the json representation from the object used for the front end.
+     * @return json string.
+     */
+    @JsonIgnore
+    public String getJson() {
+        return null;
+    }
+    
+    /**
+     * Generate the xml representation from the object used for the front end.
+     * @return json string.
+     */
+    @JsonIgnore
+    public String getXML() {
+        return null;
+    }
+    
+    /**
+     * Generate the user context from the json string used in the the front end.
+     * @return user context object.
+     */
+    @JsonIgnore
+    public static UserContext getObjectFromJson(String json) {
+        return null;
+    }
+    
+    /**
+     * Generate the user context from the xml string used in the the front end.
+     * @return user context object.
+     */
+    @JsonIgnore
+    public static UserContext getObjectFromXml(String xml) {
+        return null;
+    }
 
 }
