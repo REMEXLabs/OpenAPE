@@ -118,6 +118,9 @@ public class Test {
             final Group group = (Group) object;
             System.out.println("groupName = " + group.getName());
         }
+        
+        // pla
+        
         // databaseConnection.storeData(MongoCollectionTypes.USERS, user1);
         // databaseConnection.storeData(MongoCollectionTypes.GROUPS, group4);
         // List<Document> documents =
