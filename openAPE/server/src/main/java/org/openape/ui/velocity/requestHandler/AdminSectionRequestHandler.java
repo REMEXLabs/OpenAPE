@@ -1,23 +1,20 @@
 package org.openape.ui.velocity.requestHandler;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 import org.bson.Document;
 import org.openape.api.user.User;
 import org.openape.server.database.mongoDB.DatabaseConnection;
 import org.openape.server.database.mongoDB.MongoCollectionTypes;
-import org.openape.server.rest.UserContextRESTInterface;
 
 import com.mongodb.client.result.UpdateResult;
 
-/**
- * Class with methods to manage user context on the server. It is used by the
- * rest API {@link UserContextRESTInterface} and uses the server database
- * {@link DatabaseConnection}.
- */
 public class AdminSectionRequestHandler {
     public static final MongoCollectionTypes COLLECTIONTOUSE_USERS = MongoCollectionTypes.USERS;
     public static final MongoCollectionTypes COLLECTIONTOUSE_USERCONTEXTS = MongoCollectionTypes.USERCONTEXT;
@@ -42,6 +39,21 @@ public class AdminSectionRequestHandler {
             final String userId = entry.getString("owner").toString();
 
             final boolean isPublic = entry.getBoolean("public");
+            final long unixSeconds = entry.getObjectId("_id").getTimestamp();
+            final Date date = new Date(unixSeconds * 1000L); // *1000 is to
+                                                             // convert seconds
+                                                             // to milliseconds
+            final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); // the
+                                                                             // format
+                                                                             // of
+                                                                             // your
+                                                                             // date
+            sdf.setTimeZone(TimeZone.getTimeZone("GMT-4")); // give a timezone
+                                                            // reference for
+                                                            // formating (see
+                                                            // comment at the
+                                                            // bottom
+            final String formattedDate = sdf.format(date);
 
             String stringIsPublic = "";
 
@@ -51,9 +63,9 @@ public class AdminSectionRequestHandler {
                 stringIsPublic = "true";
             }
 
-            final String[] myStringArray = { id, userId, stringIsPublic };
+            final String[] myStringArray = { id, userId, stringIsPublic, formattedDate };
             listEnvironmentContexts.add(myStringArray);
-            System.out.println(myStringArray);
+
         }
         return listEnvironmentContexts;
     }
@@ -78,15 +90,31 @@ public class AdminSectionRequestHandler {
 
             String stringIsPublic = "";
 
+            final long unixSeconds = entry.getObjectId("_id").getTimestamp();
+            final Date date = new Date(unixSeconds * 1000L); // *1000 is to
+                                                             // convert seconds
+                                                             // to milliseconds
+            final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); // the
+                                                                             // format
+                                                                             // of
+                                                                             // your
+                                                                             // date
+            sdf.setTimeZone(TimeZone.getTimeZone("GMT-4")); // give a timezone
+                                                            // reference for
+                                                            // formating (see
+                                                            // comment at the
+                                                            // bottom
+            final String formattedDate = sdf.format(date);
+
             if (isPublic == false) {
                 stringIsPublic = "false";
             } else {
                 stringIsPublic = "true";
             }
 
-            final String[] myStringArray = { id, userId, stringIsPublic };
+            final String[] myStringArray = { id, userId, stringIsPublic, formattedDate };
             listEquipmentContexts.add(myStringArray);
-            System.out.println(myStringArray);
+
         }
         return listEquipmentContexts;
     }
@@ -108,6 +136,22 @@ public class AdminSectionRequestHandler {
 
             final boolean isPublic = entry.getBoolean("public");
 
+            final long unixSeconds = entry.getObjectId("_id").getTimestamp();
+            final Date date = new Date(unixSeconds * 1000L); // *1000 is to
+                                                             // convert seconds
+                                                             // to milliseconds
+            final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); // the
+                                                                             // format
+                                                                             // of
+                                                                             // your
+                                                                             // date
+            sdf.setTimeZone(TimeZone.getTimeZone("GMT-4")); // give a timezone
+                                                            // reference for
+                                                            // formating (see
+                                                            // comment at the
+                                                            // bottom
+            final String formattedDate = sdf.format(date);
+
             String stringIsPublic = "";
 
             if (isPublic == false) {
@@ -116,7 +160,7 @@ public class AdminSectionRequestHandler {
                 stringIsPublic = "true";
             }
 
-            final String[] myStringArray = { id, userId, stringIsPublic };
+            final String[] myStringArray = { id, userId, stringIsPublic, formattedDate };
             listTaskContexts.add(myStringArray);
         }
         return listTaskContexts;
@@ -135,11 +179,25 @@ public class AdminSectionRequestHandler {
 
         for (final Document entry : listDocuments) {
 
-            final Document documentContext = (Document) entry.get("contexts");
-            final Document documentDefault = (Document) documentContext.get("default");
-
             final String userid = entry.getString("owner").toString();
             final String id = entry.getObjectId("_id").toString();
+
+            final long unixSeconds = entry.getObjectId("_id").getTimestamp();
+            final Date date = new Date(unixSeconds * 1000L); // *1000 is to
+                                                             // convert seconds
+                                                             // to milliseconds
+            final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); // the
+                                                                             // format
+                                                                             // of
+                                                                             // your
+                                                                             // date
+            sdf.setTimeZone(TimeZone.getTimeZone("GMT-4")); // give a timezone
+                                                            // reference for
+                                                            // formating (see
+                                                            // comment at the
+                                                            // bottom
+            final String formattedDate = sdf.format(date);
+
             final boolean isPublic = entry.getBoolean("public");
             String stringIsPublic = "";
 
@@ -149,7 +207,8 @@ public class AdminSectionRequestHandler {
                 stringIsPublic = "true";
             }
 
-            final String[] myStringArray = { userid, id, stringIsPublic };
+            final String[] myStringArray = { userid, id, stringIsPublic, formattedDate };
+
             listContext.add(myStringArray);
         }
 
@@ -191,7 +250,7 @@ public class AdminSectionRequestHandler {
         databaseConnection.removeData(AdminSectionRequestHandler.COLLECTIONTOUSE_USERS, id);
     }
 
-    public UpdateResult updateUser(final String id, final String indexName, final String indexValue)
+    public UpdateResult updateUser(final String id, final String indexName, final Object indexValue)
             throws Exception {
 
         // get database connection.

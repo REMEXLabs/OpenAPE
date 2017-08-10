@@ -19,6 +19,15 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class TestDatabaseConnection {
+    public static ResourceDescription sampleResourceDescription() {
+        final ResourceDescription resourceDescription = new ResourceDescription();
+        final Property property = new Property();
+        resourceDescription.addProperty(property);
+        property.setName("resource-uri");
+        property.setValue("https://res.openurc.org/api/resources/R12345");
+        return resourceDescription;
+    }
+
     /**
      * @return a sample user context representing someone with restricted
      *         vision.
@@ -56,15 +65,6 @@ public class TestDatabaseConnection {
             e.printStackTrace();
         }
         return userContext;
-    }
-    
-    public static ResourceDescription sampleResourceDescription() {
-        ResourceDescription resourceDescription = new ResourceDescription();
-        Property property = new Property();
-        resourceDescription.addProperty(property);
-        property.setName("resource-uri");
-        property.setValue("https://res.openurc.org/api/resources/R12345");
-        return resourceDescription;
     }
 
     private DatabaseConnection dataBaseConnection;

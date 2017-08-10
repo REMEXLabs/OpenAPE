@@ -1,15 +1,22 @@
 package org.openape.server.requestHandler;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 import org.openape.api.DatabaseObject;
 import org.openape.api.Messages;
+import org.openape.api.UserContextList;
+import org.openape.api.resourceDescription.ResourceDescription;
 import org.openape.api.usercontext.UserContext;
 import org.openape.server.database.mongoDB.DatabaseConnection;
 import org.openape.server.database.mongoDB.MongoCollectionTypes;
 import org.openape.server.rest.UserContextRESTInterface;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.mongodb.BasicDBObject;
 
 /**
  * Class with methods to manage user context on the server. It is used by the
@@ -79,6 +86,29 @@ public class UserContextRequestHandler {
         return true;
     }
 
+    public UserContextList getAllUserContexts(final String url) throws IOException {
+        final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
+        final Map<String, UserContext> contexts = new HashMap<String, UserContext>();
+        final Map<String, DatabaseObject> resultMap = databaseConnection
+                .getAllObjectsOfType(MongoCollectionTypes.USERCONTEXT);
+        // parse result from DatabaseObject to UserContext.
+        final Set<String> userContextIDs = resultMap.keySet();
+        try {
+            for (final String userContextID : userContextIDs) {
+                contexts.put(userContextID, (UserContext) resultMap.get(userContextID));
+            }
+        } catch (final ClassCastException e) {
+            throw new IOException(e.getMessage());
+        }
+        return new UserContextList(contexts, url);
+    }
+
+    public UserContextList getMyContexts(final String userId, final String url) {
+        final BasicDBObject query = new BasicDBObject();
+        query.put("owner", userId);
+        return this.getUserContexts(query, url);
+    }
+
     /**
      * Method to get an existing user context from the server. It is used by the
      * rest API {@link UserContextRESTInterface} and uses the server database
@@ -116,6 +146,20 @@ public class UserContextRequestHandler {
             throw new IOException(e.getMessage());
         }
         return returnObject;
+
+    }
+
+    public UserContextList getUserContexts(final BasicDBObject query, final String url) {
+        final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
+
+        final Map<String, UserContext> contexts = null;
+        // TODO used Method not implemented yet.Implement later
+        // contexts =
+        // databaseConnection.getDocumentsByQuery(MongoCollectionTypes.USERCONTEXT,
+        // query,
+        // true);
+
+        return new UserContextList(contexts, url);
 
     }
 

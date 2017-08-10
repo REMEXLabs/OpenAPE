@@ -134,7 +134,7 @@ public class SuperRestInterface {
          * response.header("Access-Control-Allow-Headers", "*");
          * response.header("Access-Control-Max-Age", "1728000");
          * response.header("Cache-Control", "no-cache");
-         * 
+         *
          * });
          */
         Spark.get("api", (request, response) -> new API());
@@ -158,7 +158,17 @@ public class SuperRestInterface {
         AdminInterface.setupAdminRestInterface(authService);
         TokenRESTInterface.setupTokenRESTInterface(authService);
         ProfileRESTInterface.setupProfileRESTInterface();
-        
+
+
+        // Resource endpoints
+        EnvironmentContextRESTInterface.setupEnvironmentContextRESTInterface(
+                new EnvironmentContextRequestHandler(), authService);
+        EquipmentContextRESTInterface.setupEquipmentContextRESTInterface(
+                new EquipmentContextRequestHandler(), authService);
+        ListingRESTInterface.setupListingRESTInterface(new ListingRequestHandler());
+        ResourceDescriptionRESTInterface.setupResourceDescriptionRESTInterface(
+                new ResourceDescriptionRequestHandler(), authService);
+
         try {
             Administration.setupAdministrationVELOCITYInterface(new AdminSectionRequestHandler());
         } catch (final IllegalArgumentException e) {
@@ -200,7 +210,7 @@ public class SuperRestInterface {
         }
 
         try {
-            Context.setupContextVELOCITYInterface();
+            Context.setupContextVELOCITYInterface(new AdminSectionRequestHandler());
         } catch (final IllegalArgumentException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -230,7 +240,8 @@ public class SuperRestInterface {
         }
 
         try {
-            MyContexts.setupTutorialsVELOCITYInterface();
+            MyContexts.setupMyContextsVELOCITYInterface(new AdminSectionRequestHandler());
+
         } catch (final IllegalArgumentException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -278,7 +289,7 @@ public class SuperRestInterface {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        
+
         // Resource endpoints
         GroupManagementRestInterface.setupGroupManagementRestInterface(
                 new GroupManagementHandler(), authService);
@@ -301,6 +312,9 @@ public class SuperRestInterface {
         if (SuperRestInterface.TEST_ENVIRONMENT) {
             TestRESTInterface.setupTestRESTInterface();
         }
+
+        // redirect to index if no path was found in the url
+        Spark.redirect.get("/", "/index");
     }
 
 }
