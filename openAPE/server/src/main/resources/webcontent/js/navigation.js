@@ -1,6 +1,8 @@
 $(document).ready(function() {
 	
 	var token = localStorage.getItem("token");
+	var currentUrl = window.location.protocol + "//"+window.location.host;
+	
 	if(token === null || token === "undefined"){
 		$('.subSection').hide();
 	} else {
@@ -59,7 +61,7 @@ $(document).ready(function() {
 		$('#divMyResources').removeClass("active");
 		$('#divMyGroups').removeClass("active");
 		$('#divHome').removeClass("active");
-	}else if(lastPathSegment == "myContexts"){
+	}else if(lastPathSegment.indexOf("myContexts") != -1){
 		$('#divAdministration').removeClass("active");
 		$('#divMyContexts').addClass("active");
 		$('#divMyProfile').removeClass("active");
@@ -177,6 +179,7 @@ $(document).ready(function() {
 } );
 
 function openCity(evt, tabName) {
+	var currentUrl = window.location.protocol + "//"+window.location.host;
     // Declare all variables
     var i, tabcontent, tablinks;
 
@@ -196,7 +199,15 @@ function openCity(evt, tabName) {
     document.getElementById(tabName).style.display = "block";
     evt.currentTarget.className += " active";
     
-    
+
+	if(window.location.href.indexOf("administration") == -1 && window.location.href.indexOf("myContexts") == -1){
+		$('button').each(function() {
+			var buttonName = $.trim($(this).text());
+			if(buttonName == "Copy link to Clipboard"){
+				$(this).attr("data-clipboard-text", currentUrl+"/api/"+tabName+"/"+$(this).attr("id"));
+			}
+		})
+	}
    
     if(tabName == "user-contexts"){
     	$('#trTabUserContexts').attr("style", "background-color:#e8e5e5");
@@ -208,11 +219,13 @@ function openCity(evt, tabName) {
     	$('#trTabTaskContexts').removeAttr("style");
     	$('#trTabUserContexts').removeAttr("style");
     	$('#trTabEquipmentContexts').removeAttr("style");
+    	
     } else if(tabName == "task-contexts"){
     	$('#trTabTaskContexts').attr("style", "background-color:#e8e5e5");
     	$('#trTabEnvironmentContexts').removeAttr("style");
     	$('#trTabUserContexts').removeAttr("style");
     	$('#trTabEquipmentContexts').removeAttr("style");
+
     } else if(tabName == "equipment-contexts"){
     	$('#trTabEquipmentContexts').attr("style", "background-color:#e8e5e5");
     	$('#trTabEnvironmentContexts').removeAttr("style");

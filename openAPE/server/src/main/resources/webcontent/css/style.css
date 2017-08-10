@@ -184,17 +184,17 @@ div.tab button.active {
   /* Height of the footer */
   display: flex; }
   .content .leftContent {
-    min-height: 30em;
+    min-height: 80%;
     float: left;
     display: block;
-    min-width: 16em;
+    min-width: 17em;
     text-align: center; }
     .content .leftContent .shadow {
       -moz-box-shadow: inset 0 0 10px #000000;
       -webkit-box-shadow: inset 0 0 10px #000000;
       box-shadow: inset 0 0 10px #000000; }
   .content .rightContent {
-    min-height: 30em;
+    min-height: 80%;
     display: block;
     padding: 1em;
     border-left: 2px solid #cfc9c9; }

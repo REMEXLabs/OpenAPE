@@ -2,7 +2,7 @@ package org.openape.ui.velocity.atoms;
 
 import java.util.LinkedHashMap;
 
-public class Atom_1_navigationLinks {
+public class Atom_1_NavigationLinks {
     public LinkedHashMap<String, String> generateSubNavigationLinks() {
         final LinkedHashMap<String, String> map = new LinkedHashMap<>();
 

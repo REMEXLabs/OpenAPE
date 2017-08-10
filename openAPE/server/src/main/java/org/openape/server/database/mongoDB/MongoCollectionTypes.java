@@ -20,9 +20,7 @@ import org.openape.server.api.group.Group;
 public enum MongoCollectionTypes {
     USERCONTEXT(
             Messages.getString("MongoCollectionTypes.userContextsCollectionName"), UserContext.class), //$NON-NLS-1$
-
     ENVIRONMENTCONTEXT(
-
             Messages.getString("MongoCollectionTypes.environmentContextsCollectionName"), EnvironmentContext.class), //$NON-NLS-1$
     EQUIPMENTCONTEXT(
             Messages.getString("MongoCollectionTypes.equipmentContextsCollectionName"), EquipmentContext.class), //$NON-NLS-1$
@@ -31,12 +29,9 @@ public enum MongoCollectionTypes {
     RESOURCEDESCRIPTION(
             Messages.getString("MongoCollectionTypes.resourceDescriptionCollectionName"), ResourceDescription.class), //$NON-NLS-1$
     LISTING(Messages.getString("MongoCollectionTypes.lstingCollectionName"), Listing.class), //$NON-NLS-1$
-    GROUPS(Messages
-            .getString("MongoCollectionTypes.groupMimeTypesCollectionName"), Group.class), //$NON-NLS-1$
-
+    GROUPS(Messages.getString("MongoCollectionTypes.groupMimeTypesCollectionName"), Group.class), //$NON-NLS-1$
     RESOURCEOBJECTS(
             Messages.getString("MongoCollectionTypes.resourceObjectsCollectionName"), ResourceObject.class), //$NON-NLS-1$
-    
     USERS("users", User.class);
 
     /**

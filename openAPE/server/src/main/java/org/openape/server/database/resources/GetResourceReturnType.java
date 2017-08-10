@@ -11,6 +11,7 @@ import org.openape.api.resourceDescription.ResourceObject;
 public class GetResourceReturnType {
     private File file;
     private ResourceObject resourceObject;
+
     public GetResourceReturnType(final File file, final ResourceObject resourceObject) {
         this.file = file;
         this.resourceObject = resourceObject;
@@ -27,7 +28,7 @@ public class GetResourceReturnType {
     public void setFile(final File file) {
         this.file = file;
     }
-    
+
     public void setResourceObject(final ResourceObject resourceObject) {
         this.resourceObject = resourceObject;
     }

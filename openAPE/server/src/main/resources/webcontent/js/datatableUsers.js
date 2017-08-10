@@ -9,11 +9,8 @@ $(document).ready(function() {
 	$("#delete_"+localStorage.getItem("userid")).attr("disabled", true);
 	
 	$("#user").find("td").each(function() {
-		console.log($(this).find("button").text().trim() == "Edit");
+		
 		$("#"+localStorage.getItem("userid")).attr("disabled", true);
-		/*if($(this).text().indexOf(localStorage.getItem("userid")) != -1){
-			$(this).closest('tr').attr("hidden", true);
-		}*/
 	})
 	//add user
 	$('#errUsername').hide();
