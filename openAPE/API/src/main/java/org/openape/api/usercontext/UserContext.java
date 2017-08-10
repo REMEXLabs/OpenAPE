@@ -25,6 +25,7 @@ import java.util.Set;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -147,10 +148,9 @@ public class UserContext extends Resource {
      */
     @JsonIgnore
     public String getXML() throws IOException {
-        JAXBContext context;
         StringWriter stringWriter = new StringWriter();
         try {
-            context = JAXBContext.newInstance(UserContext.class);
+            JAXBContext context = JAXBContext.newInstance(UserContext.class);
             Marshaller marshaller;
             marshaller = context.createMarshaller();
             stringWriter = new StringWriter();
@@ -178,7 +178,14 @@ public class UserContext extends Resource {
      */
     @JsonIgnore
     public static UserContext getObjectFromXml(String xml) throws IllegalArgumentException {
-
+        try {
+            JAXBContext context = JAXBContext.newInstance(UserContext.class);
+            Unmarshaller unmarshaller = context.createUnmarshaller();
+            unmarshaller.
+        } catch (JAXBException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
         return null;
     }
 
