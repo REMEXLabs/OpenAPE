@@ -119,7 +119,7 @@ public class Test {
             System.out.println("groupName = " + group.getName());
         }*/
         
-        // databaseConnection.storeData(MongoCollectionTypes.USERS, user1);
+        databaseConnection.storeData(MongoCollectionTypes.USERS, user1);
         // databaseConnection.storeData(MongoCollectionTypes.GROUPS, group4);
         // List<Document> documents =
         // databaseConnection.getAllDocuments(MongoCollectionTypes.USERS);
