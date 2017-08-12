@@ -23,9 +23,11 @@ public class Organism_4_Modals {
                 + "      Add your Context in JSON-Format <textarea id='inputAdministrationAdd"
                 + idName
                 + "' class='form-control' rows='10' id='comment'></textarea>"
-                +" <div class='checkbox'>"
-                +"   <span style='margin-right:2.5em'><b>Public:</b></span> <span><input type='checkbox' id='cbAdd"+idName+"'  style='transform: scale(1.5)'></span>"
-            	+"</div>"
+                + " <div class='checkbox'>"
+                + "   <span style='margin-right:2.5em'><b>Public:</b></span> <span><input type='checkbox' id='cbAdd"
+                + idName
+                + "'  style='transform: scale(1.5)'></span>"
+                + "</div>"
                 + "      </div>"
                 + "      <div class='modal-footer' style='background-color:#ececec;border-top: 2px solid #ccc;'>"
                 + "		<span style='float:left;color:red;font-weight:bold;padding-top:0.5em' id='add"
@@ -119,9 +121,11 @@ public class Organism_4_Modals {
                 + "      Add your Context in JSON-Format <textarea id='inputAdministrationEdit"
                 + idName
                 + "' class='form-control' rows='10' id='comment'></textarea>"
-                +" <div class='checkbox'>"
-                +"   <span style='margin-right:2.5em'><b>Public:</b></span> <span><input id='cbEdit"+idName+"' type='checkbox'  style='transform: scale(1.5)'></span>"
-            	+"</div>"
+                + " <div class='checkbox'>"
+                + "   <span style='margin-right:2.5em'><b>Public:</b></span> <span><input id='cbEdit"
+                + idName
+                + "' type='checkbox'  style='transform: scale(1.5)'></span>"
+                + "</div>"
                 + "      </div>"
                 + "      <div class='modal-footer' style='background-color:#ececec;border-top: 2px solid #ccc;'>"
                 + "		<span style='float:left;color:red;font-weight:bold;padding-top:0.5em' id='edit"
@@ -131,41 +135,6 @@ public class Organism_4_Modals {
                 + "        <button type='button' class='btn btn-danger' id='btnConfirmEdit"
                 + idName + "'>Edit " + contextName + "</button>" + "      </div>" + "</div>"
                 + "</div>" + "</div>";
-
-        return modalContruct;
-    }
-    
-    
-    public String generateViewContextModal(final String contextName) {
-        String idName = "";
-        if (contextName.contains("Context")) {
-            idName = contextName.replace("-", "");
-        } else {
-            idName = contextName;
-        }
-
-        final String modalContruct = "" + "<div class='modal fade' id='view"
-                + idName
-                + "Modal' tabindex='-1' role='dialog' aria-labelledby='exampleModalLongTitle' aria-hidden='true'>"
-                + "  <div class='modal-dialog' role='document'>"
-                + "    <div class='modal-content'>"
-                + "      <div class='modal-header' style='background-color:#e31134; color:white;text-align:center;border-bottom: 2px solid #AB112A;'>"
-                + "        <h3 id='exampleModalLongTitle'>Edit "
-                + contextName
-                + "</h3>"
-                + "      </div>"
-                + "      <div class='modal-body' style='min-height:10em;padding:5em'>"
-                + "      <textarea id='inputView"
-                + idName
-                + "' class='form-control' rows='10'></textarea>"
-                + "      </div>"
-                + "      <div class='modal-footer' style='background-color:#ececec;border-top: 2px solid #ccc;'>"
-                + "		<span style='float:left;color:red;font-weight:bold;padding-top:0.5em' id='edit"
-                + idName
-                + "MainErrSection'> </span>"
-                + "       <button type='button' class='btn btn-secondary' data-dismiss='modal'>Cancel</button>"
-                + "       </div></div>"
-                + "</div></div>";
 
         return modalContruct;
     }
@@ -320,6 +289,40 @@ public class Organism_4_Modals {
                 + "      </span></div>" + "</div>" + "</div>" + "</div>";
 
         return modalSignup;
+    }
+
+    public String generateViewContextModal(final String contextName) {
+        String idName = "";
+        if (contextName.contains("Context")) {
+            idName = contextName.replace("-", "");
+        } else {
+            idName = contextName;
+        }
+
+        final String modalContruct = ""
+                + "<div class='modal fade' id='view"
+                + idName
+                + "Modal' tabindex='-1' role='dialog' aria-labelledby='exampleModalLongTitle' aria-hidden='true'>"
+                + "  <div class='modal-dialog' role='document'>"
+                + "    <div class='modal-content'>"
+                + "      <div class='modal-header' style='background-color:#e31134; color:white;text-align:center;border-bottom: 2px solid #AB112A;'>"
+                + "        <h3 id='exampleModalLongTitle'>Edit "
+                + contextName
+                + "</h3>"
+                + "      </div>"
+                + "      <div class='modal-body' style='min-height:10em;padding:5em'>"
+                + "      <textarea id='inputView"
+                + idName
+                + "' class='form-control' rows='10'></textarea>"
+                + "      </div>"
+                + "      <div class='modal-footer' style='background-color:#ececec;border-top: 2px solid #ccc;'>"
+                + "		<span style='float:left;color:red;font-weight:bold;padding-top:0.5em' id='edit"
+                + idName
+                + "MainErrSection'> </span>"
+                + "       <button type='button' class='btn btn-secondary' data-dismiss='modal'>Cancel</button>"
+                + "       </div></div>" + "</div></div>";
+
+        return modalContruct;
     }
 
 }

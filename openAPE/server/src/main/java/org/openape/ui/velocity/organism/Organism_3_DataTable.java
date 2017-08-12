@@ -6,12 +6,11 @@ import java.util.ArrayList;
 import org.openape.api.user.User;
 import org.openape.ui.velocity.molecules.Molecule_5_DataTableContent;
 import org.openape.ui.velocity.requestHandler.AdminSectionRequestHandler;
-import org.openape.ui.velocity.requestHandler.MyContextsRequestHandler;
 
 public class Organism_3_DataTable {
     public String generateAdministrationContextTable(
-            final AdminSectionRequestHandler adminsectionRequestHandler, final String contextName, final String destination)
-            throws IllegalArgumentException, IOException {
+            final AdminSectionRequestHandler adminsectionRequestHandler, final String contextName,
+            final String destination) throws IllegalArgumentException, IOException {
 
         String administrationDatableContextContent = "";
         final String idName = contextName.substring(0, 1).toLowerCase()
@@ -19,18 +18,20 @@ public class Organism_3_DataTable {
 
         if (contextName == "User-Context") {
             administrationDatableContextContent = new Molecule_5_DataTableContent()
-                    .generateUserContextContent(adminsectionRequestHandler.getAllUsercontexts(), destination);
+                    .generateUserContextContent(adminsectionRequestHandler.getAllUsercontexts(),
+                            destination);
         } else if (contextName == "Task-Context") {
             administrationDatableContextContent = new Molecule_5_DataTableContent()
-                    .generateTaskContextContent(adminsectionRequestHandler.getAllTaskContexts(), destination);
+                    .generateTaskContextContent(adminsectionRequestHandler.getAllTaskContexts(),
+                            destination);
         } else if (contextName == "Equipment-Context") {
             administrationDatableContextContent = new Molecule_5_DataTableContent()
-                    .generateEquipmentContextContent(adminsectionRequestHandler
-                            .getAllEquipmentContexts(), destination);
+                    .generateEquipmentContextContent(
+                            adminsectionRequestHandler.getAllEquipmentContexts(), destination);
         } else if (contextName == "Environment-Context") {
             administrationDatableContextContent = new Molecule_5_DataTableContent()
-                    .generateEnvironmentContextContent(adminsectionRequestHandler
-                            .getAllEnvironmentContexts(), destination);
+                    .generateEnvironmentContextContent(
+                            adminsectionRequestHandler.getAllEnvironmentContexts(), destination);
         }
 
         final String administrationContextTable = ""

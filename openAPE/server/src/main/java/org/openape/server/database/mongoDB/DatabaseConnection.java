@@ -214,7 +214,7 @@ public class DatabaseConnection implements ServerMonitorListener {
      * @param resultDocument
      *            the database object / document, which will be converted into a database object. It must
      *            not be null!
-     * @return database object
+     * @return converted database object
      * @throws com.fasterxml.jackson.core.JsonParseException
      * @throws JsonMappingException
      * @throws IOException
@@ -341,10 +341,10 @@ public class DatabaseConnection implements ServerMonitorListener {
         return listDocuments;
     }
 
-    /*public ArrayList<Document> getAllDocuments(final String string) {
-        // TODO Auto-generated method stub
-        return null;
-    }*/
+    /*
+     * public ArrayList<Document> getAllDocuments(final String string) { // TODO
+     * Auto-generated method stub return null; }
+     */
 
     public ArrayList<Document> getAllDocumentsByKey(final MongoCollectionTypes type,
             final String key) throws IOException {
@@ -485,16 +485,17 @@ public class DatabaseConnection implements ServerMonitorListener {
      *            be selected. If all objects of the defined type should be
      *            selected, the query object has to be "empty" or null.
      * @return a map of objects of the defined type, which comply the query
-     *         conditions. The objects are the values and the objects database IDs are the keys. If no object complies the query conditions or the
-     *         collection is empty, an empty map will be returned.
+     *         conditions. The objects are the values and the objects database
+     *         IDs are the keys. If no object complies the query conditions or
+     *         the collection is empty, an empty map will be returned.
      * @throws IOException
      *             if a problem with the database or during the object mapping
      *             occurs.
      */
-    /*public Map<String, DatabaseObject> getDatabaseObjectsByQuery(final MongoCollectionTypes type, BasicDBObject query) throws IOException {
+    public Map<String, DatabaseObject> getDatabaseObjectsByQuery(final MongoCollectionTypes type, BasicDBObject query) throws IOException {
         final Map<String, DatabaseObject> databaseObjects = new HashMap<String, DatabaseObject>();
         boolean includeId = false;
-        if(type == MongoCollectionTypes.GROUPS || type == MongoCollectionTypes.USERS){
+        if ((type == MongoCollectionTypes.GROUPS) || (type == MongoCollectionTypes.USERS)) {
             includeId = true;
         }
         if (query == null) {
@@ -504,12 +505,12 @@ public class DatabaseConnection implements ServerMonitorListener {
         final MongoCursor<Document> cursor = collectionToWorkOn.find(query).iterator();
         while (cursor.hasNext()) {
             final Document resultDocument = cursor.next();
-            Map.Entry<String, DatabaseObject> entry = this.convertDocumentToDatabaseObject(type, resultDocument);
-            databaseObjects.put(entry.getKey(), entry.getValue());
+            DatabaseObject databaseObject = this.convertDocumentToDatabaseObject(type, resultDocument);
+            databaseObjects.put(databaseObject.getId(), databaseObject);
         }
         cursor.close();
         return databaseObjects;
-    }*/
+    }
     
     /**
      * Select objects of a given type from the database. It is possible to
@@ -542,9 +543,9 @@ public class DatabaseConnection implements ServerMonitorListener {
         }
         cursor.close();
         return databaseObjects;
-    }
+   }
     
-    private void readConfigFile() {
+   private void readConfigFile() {
         final String name = MongoConfig.getString("databaseName");//$NON-NLS-1$
         if ((name != null) && !name.equals(Messages.getString("DatabaseConnection.EmptyString"))) {//$NON-NLS-1$
             DatabaseConnection.DATABASENAME = name;
@@ -587,7 +588,6 @@ public class DatabaseConnection implements ServerMonitorListener {
             DatabaseConnection.DATABASEUSERNAME = Messages
                     .getString("DatabaseConnection.MongoDBDatabaseUsername"); //$NON-NLS-1$
         }
-
 
     }
 

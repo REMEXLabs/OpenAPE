@@ -22,10 +22,9 @@ public class Context extends SuperRestInterface {
 
             final MainComponents mainController = new MainComponents();
             final Map<String, Object> model = mainController.getTemplateComponents();
-            
 
-            final String[] destinations = { "User-Context", "Task-Context",
-                    "Equipment-Context", "Environment-Context" };
+            final String[] destinations = { "User-Context", "Task-Context", "Equipment-Context",
+                    "Environment-Context" };
 
             for (final String destination : destinations) {
                 final String idName = destination.replace("-", "");
@@ -33,12 +32,11 @@ public class Context extends SuperRestInterface {
                 // modals
                 model.put("view" + idName + "Modal",
                         new Organism_4_Modals().generateViewContextModal(destination));
-               
-                model.put("dataTable" + idName,
-                        new Organism_3_DataTable().generateAdministrationContextTable(
-                                adminsectionRequestHandler, destination, "context"));
+
+                model.put("dataTable" + idName, new Organism_3_DataTable()
+                        .generateAdministrationContextTable(adminsectionRequestHandler,
+                                destination, "context"));
             }
-            
 
             return new ModelAndView(model, "velocityTemplates/context.vm"); // located
                                                                             // in

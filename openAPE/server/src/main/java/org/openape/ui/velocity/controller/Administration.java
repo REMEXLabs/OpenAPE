@@ -24,7 +24,6 @@ public class Administration extends SuperRestInterface {
                     // site components
                     final Map<String, Object> model = new MainComponents().getTemplateComponents();
 
-
                     final String[] destinations = { "User", "User-Context", "Task-Context",
                             "Equipment-Context", "Environment-Context" };
 
