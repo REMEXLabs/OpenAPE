@@ -13,6 +13,7 @@ import org.openape.api.Property;
 import org.openape.api.resourceDescription.ResourceDescription;
 import org.openape.api.usercontext.Condition;
 import org.openape.api.usercontext.Context;
+import org.openape.api.usercontext.Preference;
 import org.openape.api.usercontext.UserContext;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -34,17 +35,19 @@ public class TestDatabaseConnection {
      */
     public static UserContext sampleUserContext() {
         final UserContext userContext = new UserContext();
-        final Context defaultPreference = new Context("Default preferences");
-        final Context darkPreference = new Context("little environmental light");
-        userContext.addContext("default", defaultPreference);
-        userContext.addContext("dark", darkPreference);
-        defaultPreference
-                .addPreference("http://registry.gpii.net/common/magnifierEnabled", "false");
-        defaultPreference.addPreference(
+        final Context defaultPreference = new Context("default", "Default preferences");
+        final Context darkPreference = new Context("dark", "little environmental light");
+        userContext.addContext(defaultPreference);
+        userContext.addContext(darkPreference);
+        defaultPreference.addPreference(new Preference(
+                "http://registry.gpii.net/common/magnifierEnabled", "false"));
+        defaultPreference.addPreference(new Preference(
                 "http://registry.gpii.net/applications/org.chrome.cloud4chrome/invertColours",
-                "false");
-        darkPreference.addPreference("http://registry.gpii.net/common/magnifierEnabled", "true");
-        darkPreference.addPreference("http://registry.gpii.net/common/magnification", "2");
+                "false"));
+        darkPreference.addPreference(new Preference(
+                "http://registry.gpii.net/common/magnifierEnabled", "true"));
+        darkPreference.addPreference(new Preference(
+                "http://registry.gpii.net/common/magnification", "2"));
 
         final List<Object> andConditionOperands = new ArrayList<Object>();
         final List<Object> geOperandList = new ArrayList<Object>();
@@ -90,8 +93,8 @@ public class TestDatabaseConnection {
                     MongoCollectionTypes.USERCONTEXT, id);
             Assert.assertTrue(sampleContext.equals(recievedContext));
             // remove second context.
-            final Map<String, Context> newContexts = new HashMap<String, Context>();
-            newContexts.put("default", sampleContext.getContexts().get("default"));
+            final List<Context> newContexts = new ArrayList<Context>();
+            newContexts.add(sampleContext.getContext("default"));
             sampleContext.setContexts(newContexts);
             // test update
             this.dataBaseConnection.updateData(MongoCollectionTypes.USERCONTEXT, sampleContext, id);

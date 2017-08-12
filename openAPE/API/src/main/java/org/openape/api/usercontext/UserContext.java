@@ -18,15 +18,19 @@ package org.openape.api.usercontext;
 
 import java.io.IOException;
 import java.io.StringWriter;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.swing.text.StyledEditorKit.ForegroundAction;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlList;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.openape.api.Resource;
@@ -39,7 +43,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 /**
  * User context object defined in 7.2.1
  */
-@XmlRootElement(name="user-context")
+@XmlRootElement(name = "user-context")
 public class UserContext extends Resource {
     private static final long serialVersionUID = 5891055316807633786L;
 
@@ -90,17 +94,15 @@ public class UserContext extends Resource {
      */
     private static boolean hasUserContextTheSameContexts(final UserContext base,
             final UserContext compare) {
-        final Set<String> baseKeySet = base.getContexts().keySet();
-        final Set<String> compareKeySet = compare.getContexts().keySet();
-        for (final String baseKey : baseKeySet) {
+        for (final Context baseContext : base.getContexts()) {
             // Match checks if for each context in this there is one in
             // compare.
             boolean match = false;
-            for (final String compareKey : compareKeySet) {
+            for (final Context compareContext : compare.getContexts()) {
                 // if id fits check if context fits.
-                if (baseKey.equals(compareKey)) {
+                if (baseContext.getId().equals(compareContext.getId())) {
                     match = true;
-                    if (!base.getContext(baseKey).equals(compare.getContext(compareKey))) {
+                    if (!baseContext.equals(compareContext)) {
                         return false;
                     }
                 }
@@ -113,14 +115,15 @@ public class UserContext extends Resource {
         return true;
     }
 
-    private Map<String, Context> contexts;
+    private List<Context> contexts;
 
     public UserContext() {
-        this.contexts = new HashMap<String, Context>();
+        this.contexts = new ArrayList<Context>();
     }
 
-    public void addContext(final String id, final Context c) {
-        this.contexts.put(id, c);
+    @JsonIgnore
+    public void addContext(final Context c) {
+        this.contexts.add(c);
 
     }
 
@@ -143,11 +146,16 @@ public class UserContext extends Resource {
      */
     @JsonIgnore
     public Context getContext(final String id) {
-        return this.getContexts().get(id);
+        for (Context context : contexts) {
+            if (context.getId().equals(id)) {
+                return context;
+            }
+        }
+        return null;
     }
 
-    @XmlElement(name = "context")
-    public Map<String, Context> getContexts() {
+    @XmlElement(name="option")
+    public List<Context> getContexts() {
         return this.contexts;
     }
 
@@ -184,7 +192,7 @@ public class UserContext extends Resource {
             final JAXBContext context = JAXBContext.newInstance(UserContext.class);
             final Marshaller marshaller = context.createMarshaller();
             final StringWriter stringWriter = new StringWriter();
-           // marshaller.setSchema(schema);
+            // marshaller.setSchema(schema);
             marshaller.marshal(this, stringWriter);
             xmlString = stringWriter.toString();
         } catch (final JAXBException e) {
@@ -199,7 +207,7 @@ public class UserContext extends Resource {
         return true;
     }
 
-    public void setContexts(final Map<String, Context> contexts) {
+    public void setContexts(final List<Context> contexts) {
         this.contexts = contexts;
     }
 

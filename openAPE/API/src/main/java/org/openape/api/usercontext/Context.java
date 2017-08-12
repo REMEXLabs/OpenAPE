@@ -18,11 +18,9 @@ package org.openape.api.usercontext;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
+import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -40,18 +38,15 @@ public class Context implements Serializable {
      * @return true, if compare has the same preferences as base, false if not.
      */
     private static boolean hasContextTheSamePreferences(final Context base, final Context compare) {
-        final Set<String> baseKeySet = base.getPreferences().keySet();
-        final Set<String> compareKeySet = compare.getPreferences().keySet();
-        for (final String baseKey : baseKeySet) {
+        for (final Preference basePreference : base.getPreferences()) {
             // Match checks if for each preference in this there is one in
             // compare.
             boolean match = false;
-            for (final String compareKey : compareKeySet) {
+            for (final Preference comparePreference : compare.getPreferences()) {
                 // if key fits check if value fits.
-                if (baseKey.equals(compareKey)) {
+                if (basePreference.getKey().equals(comparePreference.getKey())) {
                     match = true;
-                    if (!base.getPreferences().get(baseKey)
-                            .equals(compare.getPreferences().get(compareKey))) {
+                    if (!basePreference.getValue().equals(comparePreference.getValue())) {
                         return false;
                     }
                 }
@@ -68,8 +63,8 @@ public class Context implements Serializable {
     // Ignores field if null.
     private List<Condition> conditions = null;
     private String name;
-
-    private Map<String, String> preferences = new HashMap<String, String>();
+    private String id;
+    private List<Preference> preferences = new ArrayList<Preference>();
 
     /**
      * Default Constructor needed for json object mapper.
@@ -78,7 +73,8 @@ public class Context implements Serializable {
 
     }
 
-    public Context(final String name) {
+    public Context(final String id, final String name) {
+        this.id = id;
         this.name = name;
     }
 
@@ -89,8 +85,8 @@ public class Context implements Serializable {
         this.conditions.add(condition);
     }
 
-    public void addPreference(final String key, final String value) {
-        this.preferences.put(key, value);
+    public void addPreference(final Preference preference) {
+        this.preferences.add(preference);
     }
 
     /**
@@ -113,13 +109,18 @@ public class Context implements Serializable {
         return this.conditions;
     }
 
+    @XmlAttribute(name = "id")
+    public String getId() {
+        return this.id;
+    }
+
     @XmlElement(name = "name")
     public String getName() {
         return this.name;
     }
 
     @XmlElement(name = "preference")
-    public Map<String, String> getPreferences() {
+    public List<Preference> getPreferences() {
         return this.preferences;
     }
 
@@ -127,11 +128,15 @@ public class Context implements Serializable {
         this.conditions = conditions;
     }
 
+    public void setId(final String id) {
+        this.id = id;
+    }
+
     public void setName(final String name) {
         this.name = name;
     }
 
-    public void setPreferences(final Map<String, String> preferences) {
+    public void setPreferences(final List<Preference> preferences) {
         this.preferences = preferences;
     }
 

@@ -44,7 +44,7 @@ public class ClientTest {
 
         final OpenAPEClient client = ClientTest.getOpenApeClient();
         final UserContext userContext = new UserContext();
-        userContext.addContext("testContext", new Context("test"));
+        userContext.addContext(new Context("testContext","test"));
         final URI newLocation = client.createUserContext(userContext);
         Assert.assertEquals("http://localhost:4567/testId", newLocation.toString());
 

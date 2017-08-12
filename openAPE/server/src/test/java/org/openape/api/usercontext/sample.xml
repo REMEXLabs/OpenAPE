@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<user-context>
+	<option id="default">
+		<name>Default preferences</name>
+		<preference key="http://registry.gpii.net/common/magnifierEnabled"
+			value="false" />
+		<preference
+			key="http://registry.gpii.net/applications/org.chrome.cloud4chrome/invertColours"
+			value="false" />
+	</option>
+	<option id="dark">
+		<conditions>
+			<operands xsi:type="condition"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+				<operands xsi:type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema">http://registry.gpii.net/common/env/visual.luminance
+				</operands>
+				<operands xsi:type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema">0</operands>
+				<type>ge</type>
+			</operands>
+			<operands xsi:type="condition"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+				<operands xsi:type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema">http://registry.gpii.net/common/env/visual.luminance
+				</operands>
+				<operands xsi:type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema">200</operands>
+				<type>le</type>
+			</operands>
+			<type>and</type>
+		</conditions>
+		<name>little environmental light</name>
+		<preference key="http://registry.gpii.net/common/magnifierEnabled"
+			value="true" />
+		<preference key="http://registry.gpii.net/common/magnification"
+			value="2" />
+	</option>
+</user-context>
