@@ -30,6 +30,7 @@ public abstract class DatabaseObject implements Serializable {
     /**
      * The id (field "_id" in MongoDB) of the object, which the database assigned to it.
      */
+    @JsonIgnore
     private String id;
 
     /**
