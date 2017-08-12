@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -272,70 +271,7 @@ public class DatabaseConnection implements ServerMonitorListener {
         this.userCollection.createIndex(new BasicDBObject("username", 1), new IndexOptions().unique(true));
     }
 
-    /**
-     * Execute a Mongo BasicDBObject query on the given collection and return
-     * the result as a DatabaseObject of the given collection.
-     *
-     * @param type
-     *            the type of the collections DatabaseObject
-     * @param collection
-     *            the collection in which the object is located.
-     * @param query
-     *            the Mongo query to be executed
-     * @return
-     * @throws IOException
-     */
-    private DatabaseObject executeQuery(final MongoCollectionTypes type, final MongoCollection<Document> collection,
-            final BasicDBObject query, final boolean includeId) throws IOException {
-        final Iterator<Document> resultIterator = collection.find(query).iterator();
-        if (resultIterator.hasNext()) {
-            final Document resultDocument = resultIterator.next();
-            DatabaseObject result = null;
-            try {
-                // Remove the MongoDB id field
-                final ObjectId oid = (ObjectId) resultDocument.get("_id");
-                resultDocument.remove(Messages.getString("DatabaseConnection._id")); //$NON-NLS-1$
-                if (includeId) {
-                    resultDocument.append("id", oid.toString());
-                }
-                String jsonResult = resultDocument.toJson();
-                // reverse mongo special character replacement.
-                jsonResult = this.reverseMongoSpecialCharsReplacement(jsonResult);
-                final ObjectMapper mapper = new ObjectMapper();
-                result = mapper.readValue(jsonResult, type.getDocumentType());
-            } catch (CodecConfigurationException | IOException | JsonParseException e) {
-                e.printStackTrace();
-                throw new IOException(e.getMessage());
-            }
-            return result;
-        } else {
-            // If no result is found return null.
-            return null;
-        }
-    }
-
     public ArrayList<Document> getAllDocuments(final MongoCollectionTypes type) throws IOException {
-        final MongoCollection<Document> collectionToWorkOn = this.getCollectionByType(type);
-        final ArrayList<Document> listDocuments = new ArrayList<Document>();
-        // Search for object in database.
-
-        final FindIterable<Document> find = collectionToWorkOn.find();
-
-        final MongoCursor<Document> cursor = find.iterator();
-
-        while (cursor.hasNext()) {
-            listDocuments.add(cursor.next());
-        }
-        return listDocuments;
-    }
-
-    /*
-     * public ArrayList<Document> getAllDocuments(final String string) { // TODO
-     * Auto-generated method stub return null; }
-     */
-
-    public ArrayList<Document> getAllDocumentsByKey(final MongoCollectionTypes type, final String key)
-            throws IOException {
         final MongoCollection<Document> collectionToWorkOn = this.getCollectionByType(type);
         final ArrayList<Document> listDocuments = new ArrayList<Document>();
         // Search for object in database.
@@ -358,31 +294,14 @@ public class DatabaseConnection implements ServerMonitorListener {
      * @throws IOException
      *             if database or parse error occurs.
      */
+    @Deprecated
     public Map<String, DatabaseObject> getAllObjectsOfType(final MongoCollectionTypes type) throws IOException {
-        final MongoCollection<Document> collectionToWorkOn = this.getCollectionByType(type);
-        final Iterator<Document> resultIterator = collectionToWorkOn.find().iterator();
         final Map<String, DatabaseObject> resultMap = new HashMap<String, DatabaseObject>();
-        while (resultIterator.hasNext()) {
-            final Document resultDocument = resultIterator.next();
-            DatabaseObject result = null;
-            ObjectId oid = null;
-            try {
-                // Remove the MongoDB id field
-                oid = (ObjectId) resultDocument.get("_id");
-                resultDocument.remove(Messages.getString("DatabaseConnection._id")); //$NON-NLS-1$
-                String jsonResult = resultDocument.toJson();
-                // reverse mongo special character replacement.
-                jsonResult = this.reverseMongoSpecialCharsReplacement(jsonResult);
-                final ObjectMapper mapper = new ObjectMapper();
-                result = mapper.readValue(jsonResult, type.getDocumentType());
-            } catch (CodecConfigurationException | IOException | JsonParseException e) {
-                e.printStackTrace();
-                throw new IOException(e.getMessage());
-            }
-            resultMap.put(oid.toString(), result);
+        final List<DatabaseObject> databaseObjects = this.getDatabaseObjectsByQuery(type, null);
+        for (final DatabaseObject databaseObject : databaseObjects) {
+            resultMap.put(databaseObject.getId(), databaseObject);
         }
         return resultMap;
-
     }
 
     /**
@@ -401,11 +320,15 @@ public class DatabaseConnection implements ServerMonitorListener {
      */
     public DatabaseObject getByUniqueAttribute(final MongoCollectionTypes type, final String attribute,
             final String value) throws IOException {
-        final MongoCollection<Document> collectionToWorkOn = this.getCollectionByType(type);
         // Search for object in database.
         final BasicDBObject query = new BasicDBObject();
         query.put(attribute, value);
-        return this.executeQuery(type, collectionToWorkOn, query, true);
+        final List<DatabaseObject> databaseObjects = this.getDatabaseObjectsByQuery(type, query);
+        if (databaseObjects.isEmpty()) {
+            return null;
+        } else {
+            return databaseObjects.get(0);
+        }
     }
 
     /**
@@ -452,51 +375,15 @@ public class DatabaseConnection implements ServerMonitorListener {
      *             if a database problem occurs.
      */
     public DatabaseObject getData(final MongoCollectionTypes type, final String id) throws IOException {
-        final MongoCollection<Document> collectionToWorkOn = this.getCollectionByType(type);
         // Search for object in database.
         final BasicDBObject query = new BasicDBObject();
         query.put(Messages.getString("DatabaseConnection._id"), new ObjectId(id));
-        return this.executeQuery(type, collectionToWorkOn, query, false);
-    }
-
-    /**
-     * Select objects of a given type from the database. It is possible to
-     * select all objects or to refine the selection by a query.
-     *
-     * @param type
-     *            the type of the objects, which should be selected from the
-     *            database. It must not be null!
-     * @param query
-     *            the query. It defines which objects of the defined type should
-     *            be selected. If all objects of the defined type should be
-     *            selected, the query object has to be "empty" or null.
-     * @return a map of objects of the defined type, which comply the query
-     *         conditions. The objects are the values and the objects database
-     *         IDs are the keys. If no object complies the query conditions or
-     *         the collection is empty, an empty map will be returned.
-     * @throws IOException
-     *             if a problem with the database or during the object mapping
-     *             occurs.
-     */
-    public Map<String, DatabaseObject> getDatabaseObjectsByQuery(final MongoCollectionTypes type, BasicDBObject query)
-            throws IOException {
-        final Map<String, DatabaseObject> databaseObjects = new HashMap<String, DatabaseObject>();
-        boolean includeId = false;
-        if ((type == MongoCollectionTypes.GROUPS) || (type == MongoCollectionTypes.USERS)) {
-            includeId = true;
+        final List<DatabaseObject> databaseObjects = this.getDatabaseObjectsByQuery(type, query);
+        if (databaseObjects.isEmpty()) {
+            return null;
+        } else {
+            return databaseObjects.get(0);
         }
-        if (query == null) {
-            query = new BasicDBObject();
-        }
-        final MongoCollection<Document> collectionToWorkOn = this.getCollectionByType(type);
-        final MongoCursor<Document> cursor = collectionToWorkOn.find(query).iterator();
-        while (cursor.hasNext()) {
-            final Document resultDocument = cursor.next();
-            final DatabaseObject databaseObject = this.convertDocumentToDatabaseObject(type, resultDocument);
-            databaseObjects.put(databaseObject.getId(), databaseObject);
-        }
-        cursor.close();
-        return databaseObjects;
     }
 
     /**
@@ -516,7 +403,7 @@ public class DatabaseConnection implements ServerMonitorListener {
      * @throws IOException
      *             if a problem with the database or during the object mapping occurs.
      */
-    public List<DatabaseObject> getDocumentsByQuery(final MongoCollectionTypes type, BasicDBObject query)
+    public List<DatabaseObject> getDatabaseObjectsByQuery(final MongoCollectionTypes type, BasicDBObject query)
             throws IOException {
         final List<DatabaseObject> databaseObjects = new ArrayList<DatabaseObject>();
         if (query == null) {
@@ -569,13 +456,9 @@ public class DatabaseConnection implements ServerMonitorListener {
 
     }
 
-    /***************/
-
+    @Deprecated
     public void removeData(final MongoCollectionTypes type, final String id) throws IOException {
-        final MongoCollection<Document> collectionToWorkOn = this.getCollectionByType(type);
-        // Search for object in database.
-        final Bson filter = new Document(Messages.getString("DatabaseConnection._id"), new ObjectId(id));
-        collectionToWorkOn.deleteOne(filter);
+        this.deleteData(type, id);
     }
 
     /**
@@ -660,6 +543,7 @@ public class DatabaseConnection implements ServerMonitorListener {
      * @throws IOException
      *             if a database problem occurs.
      */
+    @Deprecated
     public String storeData(final MongoCollectionTypes type, final DatabaseObject data)
             throws ClassCastException, IOException, IllegalArgumentException {
         // Check if data is of the correct type for the collection.
@@ -698,6 +582,25 @@ public class DatabaseConnection implements ServerMonitorListener {
     }
 
     /**
+     * Store a database object, either a context or a resource, into the
+     * database. Choose the collection via the collection type.
+     *
+     * @param type
+     *            the collection to store it into.
+     * @param data
+     *            the object to be stored.
+     * @return the id of the stored object within the collection.
+     * @throws ClassCastException
+     *             if the object class doesn't match the given collection type.
+     * @throws IOException
+     *             if a database problem occurs.
+     */
+    public String storeDatabaseObject(final MongoCollectionTypes type, final DatabaseObject data)
+            throws ClassCastException, IOException, IllegalArgumentException {
+        return this.storeData(type, data);
+    }
+
+    /**
      * Update a database object, either a context or a resource, in the
      * database. Choose the object via id and the collection via the collection
      * type.
@@ -715,6 +618,7 @@ public class DatabaseConnection implements ServerMonitorListener {
      * @throws IOException
      *             if a database problem occurs.
      */
+    @Deprecated
     public boolean updateData(final MongoCollectionTypes type, final DatabaseObject data, final String id)
             throws ClassCastException, IOException {
         // test if data can be found. Throws exceptions or is null if not.
@@ -750,6 +654,29 @@ public class DatabaseConnection implements ServerMonitorListener {
         }
 
         return true;
+    }
+
+    /**
+     * Update a database object, either a context or a resource, in the
+     * database. Choose the object via id and the collection via the collection
+     * type.
+     *
+     * @param type
+     *            the collection in which the object is located.
+     * @param data
+     *            the new version of the object.
+     * @param id
+     *            the database id within the collection of the object.
+     * @return true if successful or false if no object with that id is found
+     *         and nothing is stored.
+     * @throws ClassCastException
+     *             if the object class doesn't match the given collection type.
+     * @throws IOException
+     *             if a database problem occurs.
+     */
+    public boolean updateDatabaseObject(final MongoCollectionTypes type, final DatabaseObject data, final String id)
+            throws ClassCastException, IOException {
+        return this.updateData(type, data, id);
     }
 
     public UpdateResult updateDocument(final MongoCollectionTypes type, final String id, final String indexName,
