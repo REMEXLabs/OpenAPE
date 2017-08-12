@@ -17,6 +17,7 @@
 package org.openape.api;
 
 import javax.ws.rs.DefaultValue;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  * A database object that is owned by a user and can be public (viewable by
@@ -32,10 +33,12 @@ public class Resource extends DatabaseObject {
     @DefaultValue("false")
     private boolean isPublic;
 
+    @XmlTransient
     public String getOwner() {
         return this.owner;
     }
 
+    @XmlTransient
     public boolean isPublic() {
         return this.isPublic;
     }
