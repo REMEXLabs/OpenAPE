@@ -1,15 +1,12 @@
 package org.openape.server.database.mongoDB;
 
 import java.io.IOException;
-import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
-
 import org.bson.Document;
 import org.bson.codecs.configuration.CodecConfigurationException;
 import org.bson.conversions.Bson;
@@ -213,40 +210,35 @@ public class DatabaseConnection implements ServerMonitorListener {
      *
      * @param type
      *            the type of the object, to which the database document should
-     *            be mapped. It must not be null!
+     *            be converted. It must not be null!
      * @param resultDocument
-     *            the database object / document, which will be mapped. It must
+     *            the database object / document, which will be converted into a database object. It must
      *            not be null!
-     * @param includeId
-     *            true if the object's database id (_id) should be mapped to the
-     *            object id and false if not.
-     * @return map entry containing the database id of the object as key and database object it self as value
+     * @return database object
      * @throws com.fasterxml.jackson.core.JsonParseException
      * @throws JsonMappingException
      * @throws IOException
      */
-    private Map.Entry<String, DatabaseObject> convertDocumentToDatabaseObject(final MongoCollectionTypes type,
-            final Document resultDocument, final boolean includeId)
+    private DatabaseObject convertDocumentToDatabaseObject(final MongoCollectionTypes type,
+            final Document resultDocument)
             throws com.fasterxml.jackson.core.JsonParseException, JsonMappingException, IOException {
-        Map.Entry<String, DatabaseObject> entry = null;
+        DatabaseObject databaseObject = null;
         try {
             // Remove the MongoDB id field
             final ObjectId oid = (ObjectId) resultDocument.get("_id");
             resultDocument.remove(Messages.getString("DatabaseConnection._id")); //$NON-NLS-1$
-            if (includeId) {
-                resultDocument.append("id", oid.toString());
-            }
             String jsonResult = resultDocument.toJson();
             // reverse mongo special character replacement.
             jsonResult = this.reverseMongoSpecialCharsReplacement(jsonResult);
             final ObjectMapper mapper = new ObjectMapper();
-            DatabaseObject databaseObject = mapper.readValue(jsonResult, type.getDocumentType());
-            entry = new AbstractMap.SimpleEntry<String, DatabaseObject>(oid.toString(), databaseObject);
+            databaseObject = mapper.readValue(jsonResult, type.getDocumentType());
+            // Set MongoDB id field value as id
+            databaseObject.setId(oid.toString());
         } catch (CodecConfigurationException | IOException | JsonParseException e) {
             e.printStackTrace();
             throw new IOException(e.getMessage());
         }
-        return entry;
+        return databaseObject;
     }
 
     /**
@@ -499,7 +491,7 @@ public class DatabaseConnection implements ServerMonitorListener {
      *             if a problem with the database or during the object mapping
      *             occurs.
      */
-    public Map<String, DatabaseObject> getDatabaseObjectsByQuery(final MongoCollectionTypes type, BasicDBObject query) throws IOException {
+    /*public Map<String, DatabaseObject> getDatabaseObjectsByQuery(final MongoCollectionTypes type, BasicDBObject query) throws IOException {
         final Map<String, DatabaseObject> databaseObjects = new HashMap<String, DatabaseObject>();
         boolean includeId = false;
         if(type == MongoCollectionTypes.GROUPS || type == MongoCollectionTypes.USERS){
@@ -512,15 +504,46 @@ public class DatabaseConnection implements ServerMonitorListener {
         final MongoCursor<Document> cursor = collectionToWorkOn.find(query).iterator();
         while (cursor.hasNext()) {
             final Document resultDocument = cursor.next();
-            Map.Entry<String, DatabaseObject> entry = this.convertDocumentToDatabaseObject(type, resultDocument, includeId);
+            Map.Entry<String, DatabaseObject> entry = this.convertDocumentToDatabaseObject(type, resultDocument);
             databaseObjects.put(entry.getKey(), entry.getValue());
+        }
+        cursor.close();
+        return databaseObjects;
+    }*/
+    
+    /**
+     * Select objects of a given type from the database. It is possible to
+     * select all objects or to refine the selection by a query.
+     *
+     * @param type
+     *            the type of the objects, which should be selected from the
+     *            database. It must not be null!
+     * @param query
+     *            the query. It defines which objects of the defined type should
+     *            be selected. If all objects of the defined type should be
+     *            selected, the query object has to be "empty" or null.
+     * @return a list with objects of the defined type, which comply the query
+     *         conditions. If no object complies the query conditions or the collection is empty, an empty list will be
+     *         returned.
+     * @throws IOException
+     *             if a problem with the database or during the object mapping occurs.
+     */
+    public List<DatabaseObject> getDocumentsByQuery(final MongoCollectionTypes type, BasicDBObject query)
+            throws IOException {
+        final List<DatabaseObject> databaseObjects = new ArrayList<DatabaseObject>();
+        if (query == null) {
+            query = new BasicDBObject();
+        }
+        final MongoCollection<Document> collectionToWorkOn = this.getCollectionByType(type);
+        final MongoCursor<Document> cursor = collectionToWorkOn.find(query).iterator();
+        while (cursor.hasNext()) {
+            final Document resultDocument = cursor.next();
+            databaseObjects.add(this.convertDocumentToDatabaseObject(type, resultDocument));
         }
         cursor.close();
         return databaseObjects;
     }
     
-    
-
     private void readConfigFile() {
         final String name = MongoConfig.getString("databaseName");//$NON-NLS-1$
         if ((name != null) && !name.equals(Messages.getString("DatabaseConnection.EmptyString"))) {//$NON-NLS-1$
