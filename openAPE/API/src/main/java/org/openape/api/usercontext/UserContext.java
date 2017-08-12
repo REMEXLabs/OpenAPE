@@ -39,7 +39,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 /**
  * User context object defined in 7.2.1
  */
-@XmlRootElement
+@XmlRootElement(name="user-context")
 public class UserContext extends Resource {
     private static final long serialVersionUID = 5891055316807633786L;
 
@@ -184,6 +184,7 @@ public class UserContext extends Resource {
             final JAXBContext context = JAXBContext.newInstance(UserContext.class);
             final Marshaller marshaller = context.createMarshaller();
             final StringWriter stringWriter = new StringWriter();
+           // marshaller.setSchema(schema);
             marshaller.marshal(this, stringWriter);
             xmlString = stringWriter.toString();
         } catch (final JAXBException e) {
