@@ -2,17 +2,41 @@
 @import 'footer';
 @import 'content';
 @import 'modal';
+@import 'button';
 
 
 .wrapper {
    min-height:100%;
    position:relative;
+   
    h1 {
 	color:#740a1b;
 	font-weight:bold;
    }
   
   	.body {
+  		line-height: 2em;
+  		font-size: 18px;
+  		
+  		a {
+  			color: #e31134;
+  			
+  		}
+  	
+  		a:hover { 
+  			text-decoration: underline; 
+  		}
+  	
+  		h3 {
+  			color: #9e1616;
+  			margin-bottom: 1em;
+  			margin-top: 1em;
+  		}
+  	
+  		p {
+  			line-height: 2em;	
+  		}
+  	
    		.landingPage {
    			
    		}

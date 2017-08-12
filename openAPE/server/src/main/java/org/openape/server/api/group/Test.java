@@ -130,6 +130,14 @@ public class Test {
          * group.getName()); }
          */
 
+        /*
+         * final List groups =
+         * databaseConnection.getDatabaseObjectsByQuery(MongoCollectionTypes
+         * .GROUPS, query4, true); for (final Object object : groups) { final
+         * Group group = (Group) object; System.out.println("groupName = " +
+         * group.getName()); }
+         */
+
         // databaseConnection.storeData(MongoCollectionTypes.USERS, user1);
         // databaseConnection.storeData(MongoCollectionTypes.GROUPS, group4);
         // List<Document> documents =
