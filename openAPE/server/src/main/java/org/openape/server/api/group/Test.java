@@ -9,6 +9,7 @@ import org.bson.Document;
 import org.openape.api.groups.GroupMembershipStatus;
 import org.openape.api.user.User;
 import org.openape.server.database.mongoDB.DatabaseConnection;
+import org.openape.server.database.mongoDB.MongoCollectionTypes;
 
 import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
@@ -23,8 +24,7 @@ public class Test {
 
     public static void main(final String[] args) throws IOException {
 
-        final MongoCredential credential = MongoCredential.createCredential("openAPE", "openAPE",
-                "1234".toCharArray());
+        final MongoCredential credential = MongoCredential.createCredential("openAPE", "openAPE", "1234".toCharArray());
         final MongoClient mongoClient = new MongoClient(new ServerAddress("localhost", 27017),
                 Arrays.asList(credential));
 
@@ -70,8 +70,7 @@ public class Test {
         final BasicDBObject query4 = new BasicDBObject();
         query4.put("members", members);
 
-        final FindIterable<Document> groupsCollection = database.getCollection("groups")
-                .find(query);
+        final FindIterable<Document> groupsCollection = database.getCollection("groups").find(query);
         // FindIterable<Document> groupsCollection =
         // database.getCollection("groups").find(Document.parse("{\"members.userId\": \"12\"}"));
         final MongoCursor<Document> iterator = groupsCollection.iterator();
@@ -111,6 +110,28 @@ public class Test {
         final Group group4 = new Group("group4", members4);
 
         final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
+
+
+        /*
+         * final List groups = databaseConnection.getDatabaseObjectsByQuery(MongoCollectionTypes.GROUPS,
+         * query4, true);
+         * for (final Object object : groups) {
+         * final Group group = (Group) object;
+         * System.out.println("groupName = " + group.getName());
+         * }
+         */
+
+        databaseConnection.storeData(MongoCollectionTypes.USERS, user1);
+
+        /*
+         * final List groups =
+         * databaseConnection.getDatabaseObjectsByQuery(MongoCollectionTypes
+         * .GROUPS, query4, true); for (final Object object : groups) { final
+         * Group group = (Group) object; System.out.println("groupName = " +
+         * group.getName()); }
+         */
+
+
         /*
          * final List groups =
          * databaseConnection.getDatabaseObjectsByQuery(MongoCollectionTypes
