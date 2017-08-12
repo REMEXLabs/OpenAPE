@@ -38,7 +38,7 @@ public class Organism_3_DataTable {
                 + "<table id='"
                 + idName
                 + "DataTable' class='table table-striped table-bordered' cellspacing='0' width='100%'>"
-                + "<thead>" + "<tr>" + "<th>ID</th>" + "<th>UserID</th>" + "<th>Created</th>"
+                + "<thead>" + "<tr>" + "<th>ID</th>" + "<th>Owner</th>" + "<th>Created</th>"
                 + "<th>Public</th>" + "<th>Options</th>" + "</tr>" + "</thead>"
                 + "<tbody id='tableContent'>" + administrationDatableContextContent + "</tbody>"
                 + "</table>";
