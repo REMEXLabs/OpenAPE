@@ -37,7 +37,7 @@
 		<div style="height:50%;width:100%;padding-top:7em" align="center">
 			<div style="font-size:5em;margin-bottom:1em;color:#740a1b">OpenAPE</div>	
 			<div>
-				<a target="_blank" class="btn btn-lg btn-danger" href="https://groups.google.com/d/forum/openape"> Join our Mailinglist</a>
+				<a target="_blank" class="btn-white-red 	btn btn-lg btn-danger" href="https://groups.google.com/d/forum/openape"> Join our Mailinglist</a>
 			</div>	
 		</div>
 		<div style="clear:both; padding-top:1em; border-top:4px solid #d1cdcd;background-color: #e0e0e0;height:20%" align="center">
