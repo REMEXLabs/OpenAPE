@@ -16,12 +16,12 @@ public class Preference {
         this.value = value;
     }
 
-    @XmlAttribute(name="key")
+    @XmlAttribute(name = "key")
     public String getKey() {
         return this.key;
     }
 
-    @XmlAttribute(name="value")
+    @XmlAttribute(name = "value")
     public String getValue() {
         return this.value;
     }

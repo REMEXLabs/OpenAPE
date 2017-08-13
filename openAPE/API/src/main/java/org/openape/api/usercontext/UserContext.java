@@ -19,18 +19,13 @@ package org.openape.api.usercontext;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
-import javax.swing.text.StyledEditorKit.ForegroundAction;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlList;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.openape.api.Resource;
@@ -146,7 +141,7 @@ public class UserContext extends Resource {
      */
     @JsonIgnore
     public Context getContext(final String id) {
-        for (Context context : contexts) {
+        for (final Context context : this.contexts) {
             if (context.getId().equals(id)) {
                 return context;
             }
@@ -154,7 +149,7 @@ public class UserContext extends Resource {
         return null;
     }
 
-    @XmlElement(name="option")
+    @XmlElement(name = "option")
     public List<Context> getContexts() {
         return this.contexts;
     }

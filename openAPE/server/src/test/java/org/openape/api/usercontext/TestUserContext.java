@@ -18,9 +18,9 @@ public class TestUserContext {
     public void testGetXML() {
         final UserContext sample = TestDatabaseConnection.sampleUserContext();
         try {
-            String xml = sample.getXML();
+            final String xml = sample.getXML();
             System.out.println(xml);
-        } catch (IOException e) {
+        } catch (final IOException e) {
             e.printStackTrace();
         }
     }
