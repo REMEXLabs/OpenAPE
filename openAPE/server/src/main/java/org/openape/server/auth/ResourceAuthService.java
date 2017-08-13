@@ -33,7 +33,7 @@ import spark.Response;
 public class ResourceAuthService extends AuthService {
 
     /**
-     * The admin role.
+     * Constant for the role value admin.
      */
     private static final String ADMIN_ROLE = "admin";
 
