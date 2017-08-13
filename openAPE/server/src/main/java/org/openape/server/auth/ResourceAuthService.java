@@ -1,13 +1,17 @@
 package org.openape.server.auth;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.bson.Document;
 import org.openape.api.DatabaseObject;
 import org.openape.api.Resource;
+import org.openape.api.group.GroupAccessRight;
+import org.openape.api.groups.GroupMembershipStatus;
 import org.openape.api.user.User;
 import org.openape.server.api.group.Group;
 import org.openape.server.database.mongoDB.DatabaseConnection;
@@ -29,140 +33,165 @@ import spark.Response;
  */
 public class ResourceAuthService extends AuthService {
 
-	// *********************************************************************************************************************************************
-	// *********************************************************************************************************************************************
-	// attributes
-	// *********************************************************************************************************************************************
-	// *********************************************************************************************************************************************
+    // *********************************************************************************************************************************************
+    // *********************************************************************************************************************************************
+    // attributes
+    // *********************************************************************************************************************************************
+    // *********************************************************************************************************************************************
 
-	private static final String ADMIN_ROLE = "admin";
+    private static final String ADMIN_ROLE = "admin";
 
+    private static final String READ_RIGHT = "readRight";
 
+    private static final String UPDATE_RIGHT = "updateRight";
 
+    private static final String DELETE_RIGHT = "deleteRight";
 
-	// *********************************************************************************************************************************************
-	// *********************************************************************************************************************************************
-	// constructors
-	// *********************************************************************************************************************************************
-	// *********************************************************************************************************************************************
-
-
-
-
-	// *********************************************************************************************************************************************
-	// *********************************************************************************************************************************************
-	// getters and setters
-	// *********************************************************************************************************************************************
-	// *********************************************************************************************************************************************
+    private static final String CHANGE_RIGHTS_RIGHT = "changeRightsRight";
 
 
 
 
-	// *********************************************************************************************************************************************
-	// *********************************************************************************************************************************************
-	// abstract methods
-	// *********************************************************************************************************************************************
-	// *********************************************************************************************************************************************
+    // *********************************************************************************************************************************************
+    // *********************************************************************************************************************************************
+    // constructors
+    // *********************************************************************************************************************************************
+    // *********************************************************************************************************************************************
 
 
 
 
-	// *********************************************************************************************************************************************
-	// *********************************************************************************************************************************************
-	// override methods
-	// *********************************************************************************************************************************************
-	// *********************************************************************************************************************************************
+    // *********************************************************************************************************************************************
+    // *********************************************************************************************************************************************
+    // getters and setters
+    // *********************************************************************************************************************************************
+    // *********************************************************************************************************************************************
 
 
 
 
-	// *********************************************************************************************************************************************
-	// *********************************************************************************************************************************************
-	// public methods
-	// *********************************************************************************************************************************************
-	// *********************************************************************************************************************************************
-
-	public void allowDeleting(final Request request, final Response response, final Resource resource)
-			throws UnauthorizedException {
-		this.allow(request, response, resource, "delete");
-	}
-
-	public void allowReading(final Request request, final Response response, final Resource resource)
-			throws UnauthorizedException {
-		this.allow(request, response, resource, "read");
-	}
-
-	public void allowRightsChanging(final Request request, final Response response, final Resource resource)
-			throws UnauthorizedException {
-		this.allow(request, response, resource, "chnageRights");
-	}
-
-	public void allowUpdating(final Request request, final Response response, final Resource resource)
-			throws UnauthorizedException {
-		this.allow(request, response, resource, "update");
-	}
-
-
-
-	
-	// *********************************************************************************************************************************************
-	// *********************************************************************************************************************************************
-	// protected methods
-	// *********************************************************************************************************************************************
-	// *********************************************************************************************************************************************
+    // *********************************************************************************************************************************************
+    // *********************************************************************************************************************************************
+    // abstract methods
+    // *********************************************************************************************************************************************
+    // *********************************************************************************************************************************************
 
 
 
 
-	// *********************************************************************************************************************************************
-	// *********************************************************************************************************************************************
-	// private methods
-	// *********************************************************************************************************************************************
-	// *********************************************************************************************************************************************
-	
-	private void allow(final Request request, final Response response, final Resource resource, final String right)
-			throws UnauthorizedException {
-		final User user = this.getAuthenticatedUser(request, response);
-		if (user.getRoles().contains(ResourceAuthService.ADMIN_ROLE)) {
-			return;
-		}
-		if (resource.getOwner().equals(user.getId())) {
-			return;
-		}
-		throw new UnauthorizedException("You are not allowed to perform this operation");
-	}
-
-	private Map<String, Group> getGroupsWithUserAsMember(final User user) throws IOException, UnauthorizedException {
-		final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
-
-		final BasicDBObject elemMatch = new BasicDBObject();
-		elemMatch.put("userId", user.getId());
-		// TODO remove hard coded state values
-		elemMatch.put("state", new Document("$in", Arrays.asList("MEMBER", "ADMIN")));
-		final BasicDBObject members = new BasicDBObject();
-		members.put("$elemMatch", elemMatch);
-		final BasicDBObject query = new BasicDBObject();
-		query.put("members", members);
-
-		final Map<String, Group> groups = new HashMap<String, Group>();
-		for (final DatabaseObject databaseObject : databaseConnection.getDocumentsByQuery(MongoCollectionTypes.GROUPS,
-				query, true)) {
-			if (databaseObject instanceof Group) {
-				final Group group = (Group) databaseObject;
-				groups.put(group.getId(), group);
-			}
-		}
-
-		return groups;
-	}
+    // *********************************************************************************************************************************************
+    // *********************************************************************************************************************************************
+    // override methods
+    // *********************************************************************************************************************************************
+    // *********************************************************************************************************************************************
 
 
 
 
-	// *********************************************************************************************************************************************
-	// *********************************************************************************************************************************************
-	// inner classes
-	// *********************************************************************************************************************************************
-	// *********************************************************************************************************************************************
+    // *********************************************************************************************************************************************
+    // *********************************************************************************************************************************************
+    // public methods
+    // *********************************************************************************************************************************************
+    // *********************************************************************************************************************************************
+
+    private void allow(final Request request, final Response response, final Resource resource, final String right)
+            throws UnauthorizedException, IOException {
+        final User user = this.getAuthenticatedUser(request, response);
+        if (user.getRoles().contains(ResourceAuthService.ADMIN_ROLE)) {
+            return;
+        }
+        if (resource.getOwner().equals(user.getId())) {
+            return;
+        }
+        // TODO get group access rights from resource
+        final List<GroupAccessRight> groupAccessRights = new ArrayList<GroupAccessRight>();
+        final Map<String, Group> usersGroups = this.getGroupsWithUserAsMember(user);
+        for (final GroupAccessRight groupAccessRight : groupAccessRights) {
+            if (usersGroups.containsKey(groupAccessRight.getGroupId())) {
+                if (right.equals(ResourceAuthService.READ_RIGHT) && groupAccessRight.hasReadRight()) {
+                    return;
+                } else if (right.equals(ResourceAuthService.UPDATE_RIGHT) && groupAccessRight.hasUpdateRight()) {
+                    return;
+                } else if (right.equals(ResourceAuthService.DELETE_RIGHT) && groupAccessRight.hasDeleteRight()) {
+                    return;
+                } else if (right.equals(ResourceAuthService.CHANGE_RIGHTS_RIGHT)
+                        && groupAccessRight.hasChangeRightsRight()) {
+                    return;
+                }
+            }
+        }
+        throw new UnauthorizedException("You are not allowed to perform this operation");
+    }
+
+    public void allowDeleting(final Request request, final Response response, final Resource resource)
+            throws UnauthorizedException, IOException {
+        this.allow(request, response, resource, ResourceAuthService.DELETE_RIGHT);
+    }
+
+    public void allowReading(final Request request, final Response response, final Resource resource)
+            throws UnauthorizedException, IOException {
+        this.allow(request, response, resource, ResourceAuthService.READ_RIGHT);
+    }
+
+    public void allowRightsChanging(final Request request, final Response response, final Resource resource)
+            throws UnauthorizedException, IOException {
+        this.allow(request, response, resource, ResourceAuthService.CHANGE_RIGHTS_RIGHT);
+    }
+
+
+
+
+    // *********************************************************************************************************************************************
+    // *********************************************************************************************************************************************
+    // protected methods
+    // *********************************************************************************************************************************************
+    // *********************************************************************************************************************************************
+
+
+
+
+    // *********************************************************************************************************************************************
+    // *********************************************************************************************************************************************
+    // private methods
+    // *********************************************************************************************************************************************
+    // *********************************************************************************************************************************************
+
+    public void allowUpdating(final Request request, final Response response, final Resource resource)
+            throws UnauthorizedException, IOException {
+        this.allow(request, response, resource, ResourceAuthService.UPDATE_RIGHT);
+    }
+
+    private Map<String, Group> getGroupsWithUserAsMember(final User user) throws IOException, UnauthorizedException {
+        final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
+
+        final BasicDBObject elemMatch = new BasicDBObject();
+        elemMatch.put("userId", user.getId());
+        elemMatch.put("state",
+                new Document("$in", Arrays.asList(GroupMembershipStatus.MEMBER, GroupMembershipStatus.ADMIN)));
+        final BasicDBObject members = new BasicDBObject();
+        members.put("$elemMatch", elemMatch);
+        final BasicDBObject query = new BasicDBObject();
+        query.put("members", members);
+
+        final Map<String, Group> groups = new HashMap<String, Group>();
+        for (final DatabaseObject databaseObject : databaseConnection.getDocumentsByQuery(MongoCollectionTypes.GROUPS,
+                query, true)) {
+            if (databaseObject instanceof Group) {
+                final Group group = (Group) databaseObject;
+                groups.put(group.getId(), group);
+            }
+        }
+
+        return groups;
+    }
+
+
+
+
+    // *********************************************************************************************************************************************
+    // *********************************************************************************************************************************************
+    // inner classes
+    // *********************************************************************************************************************************************
+    // *********************************************************************************************************************************************
 
 }
