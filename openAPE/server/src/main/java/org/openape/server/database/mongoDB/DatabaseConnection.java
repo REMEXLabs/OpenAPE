@@ -243,8 +243,27 @@ public class DatabaseConnection implements ServerMonitorListener {
      * @return true if successful of false if the object is not found.
      * @throws IOException
      *             if a database problem occurs.
+     * @deprecated use {@link #deleteDatabaseObject(MongoCollectionTypes, String)} instead.
      */
+    @Deprecated
     public boolean deleteData(final MongoCollectionTypes type, final String id) throws IOException {
+        return this.deleteDatabaseObject(type, id);
+    }
+
+    /**
+     * Delete a database object, either a context or a resource, from the
+     * database. Choose the object via id and the collection via the collection
+     * type.
+     *
+     * @param type
+     *            the collection in which the object is located.
+     * @param id
+     *            the database id within the collection of the object
+     * @return true if successful of false if the object is not found.
+     * @throws IOException
+     *             if a database problem occurs.
+     */
+    public boolean deleteDatabaseObject(final MongoCollectionTypes type, final String id) throws IOException {
         final MongoCollection<Document> collectionToWorkOn = this.getCollectionByType(type);
 
         // Create search query.
@@ -258,8 +277,8 @@ public class DatabaseConnection implements ServerMonitorListener {
         } else {
             return true;
         }
-
     }
+
 
     /**
      * Make sure indexes for the application are set.
@@ -293,6 +312,7 @@ public class DatabaseConnection implements ServerMonitorListener {
      *         corresponding ids.
      * @throws IOException
      *             if database or parse error occurs.
+     * @deprecated use {@link #getDatabaseObjectsByQuery(MongoCollectionTypes, BasicDBObject)} instead.
      */
     @Deprecated
     public Map<String, DatabaseObject> getAllObjectsOfType(final MongoCollectionTypes type) throws IOException {
@@ -317,18 +337,12 @@ public class DatabaseConnection implements ServerMonitorListener {
      *            the value for the attribute to query for
      * @return
      * @throws IOException
+     * @deprecated use {@link #getDatabaseObjectByUniqueAttribute(MongoCollectionTypes, String, String)} instead.
      */
+    @Deprecated
     public DatabaseObject getByUniqueAttribute(final MongoCollectionTypes type, final String attribute,
             final String value) throws IOException {
-        // Search for object in database.
-        final BasicDBObject query = new BasicDBObject();
-        query.put(attribute, value);
-        final List<DatabaseObject> databaseObjects = this.getDatabaseObjectsByQuery(type, query);
-        if (databaseObjects.isEmpty()) {
-            return null;
-        } else {
-            return databaseObjects.get(0);
-        }
+        return this.getDatabaseObjectByUniqueAttribute(type, attribute, value);
     }
 
     /**
@@ -373,11 +387,57 @@ public class DatabaseConnection implements ServerMonitorListener {
      * @return the database object or null if no data with that id is found.
      * @throws IOException
      *             if a database problem occurs.
+     * @deprecated use {@link #getDatabaseObjectById(MongoCollectionTypes, String)} instead.
      */
+    @Deprecated
     public DatabaseObject getData(final MongoCollectionTypes type, final String id) throws IOException {
+        return this.getDatabaseObjectById(type, id);
+    }
+
+    /**
+     * Request a database object, either a context or a resource, from the
+     * database. Choose the object via id and the collection via the collection
+     * type. The object will remain in the database.
+     *
+     * @param type
+     *            the collection in which the object is located.
+     * @param id
+     *            the database id within the collection of the object.
+     * @return the database object or null if no data with that id is found.
+     * @throws IOException
+     *             if a problem with the database or during the object mapping occurs.
+     */
+    public DatabaseObject getDatabaseObjectById(final MongoCollectionTypes type, final String id) throws IOException {
         // Search for object in database.
         final BasicDBObject query = new BasicDBObject();
         query.put(Messages.getString("DatabaseConnection._id"), new ObjectId(id));
+        final List<DatabaseObject> databaseObjects = this.getDatabaseObjectsByQuery(type, query);
+        if (databaseObjects.isEmpty()) {
+            return null;
+        } else {
+            return databaseObjects.get(0);
+        }
+    }
+
+    /**
+     * Query a collection by a certain attribute and value. Will return the
+     * first database object matching the query or null if no database object matches the
+     * query.
+     *
+     * @param type
+     *            the collection in which the object is located.
+     * @param attribute
+     *            the name of the attribute to query for.
+     * @param value
+     *            the value for the attribute to query for.
+     * @return matching database object or null
+     * @throws IOException
+     */
+    public DatabaseObject getDatabaseObjectByUniqueAttribute(final MongoCollectionTypes type, final String attribute,
+            final String value) throws IOException {
+        // Search for object in database.
+        final BasicDBObject query = new BasicDBObject();
+        query.put(attribute, value);
         final List<DatabaseObject> databaseObjects = this.getDatabaseObjectsByQuery(type, query);
         if (databaseObjects.isEmpty()) {
             return null;
@@ -456,9 +516,16 @@ public class DatabaseConnection implements ServerMonitorListener {
 
     }
 
+    /**
+     *
+     * @param type
+     * @param id
+     * @throws IOException
+     * @deprecated use {@link #deleteDatabaseObject(MongoCollectionTypes, String)} instead.
+     */
     @Deprecated
     public void removeData(final MongoCollectionTypes type, final String id) throws IOException {
-        this.deleteData(type, id);
+        this.deleteDatabaseObject(type, id);
     }
 
     /**
@@ -542,12 +609,32 @@ public class DatabaseConnection implements ServerMonitorListener {
      *             if the object class doesn't match the given collection type.
      * @throws IOException
      *             if a database problem occurs.
+     * @deprecated use {@link #storeDatabaseObject(MongoCollectionTypes, DatabaseObject)} instead.
      */
     @Deprecated
     public String storeData(final MongoCollectionTypes type, final DatabaseObject data)
             throws ClassCastException, IOException, IllegalArgumentException {
+        return this.storeDatabaseObject(type, data);
+    }
+
+    /**
+     * Store a database object, either a context or a resource, into the
+     * database. Choose the collection via the collection type.
+     *
+     * @param type
+     *            the collection to store it into.
+     * @param databaseObject
+     *            the object to be stored.
+     * @return the id of the stored object within the collection.
+     * @throws ClassCastException
+     *             if the object class doesn't match the given collection type.
+     * @throws IOException
+     *             if a problem with the database or during the object mapping occurs.
+     */
+    public String storeDatabaseObject(final MongoCollectionTypes type, final DatabaseObject databaseObject)
+            throws ClassCastException, IOException, IllegalArgumentException {
         // Check if data is of the correct type for the collection.
-        if (!type.getDocumentType().equals(data.getClass())) {
+        if (!type.getDocumentType().equals(databaseObject.getClass())) {
             throw new ClassCastException(Messages.getString("DatabaseConnection.doctypeErrorMassage") //$NON-NLS-1$
                     + type.getDocumentType().getName());
         }
@@ -558,7 +645,7 @@ public class DatabaseConnection implements ServerMonitorListener {
         Document dataDocument = null;
         try {
             final ObjectMapper mapper = new ObjectMapper();
-            String jsonData = mapper.writeValueAsString(data);
+            String jsonData = mapper.writeValueAsString(databaseObject);
             // Deal with special mongoDB characters '.' and '$'.
             jsonData = this.replaceMongoSpecialChars(jsonData);
             dataDocument = Document.parse(jsonData);
@@ -582,22 +669,28 @@ public class DatabaseConnection implements ServerMonitorListener {
     }
 
     /**
-     * Store a database object, either a context or a resource, into the
-     * database. Choose the collection via the collection type.
+     * Update a database object, either a context or a resource, in the
+     * database. Choose the object via id and the collection via the collection
+     * type.
      *
      * @param type
-     *            the collection to store it into.
+     *            the collection in which the object is located.
      * @param data
-     *            the object to be stored.
-     * @return the id of the stored object within the collection.
+     *            the new version of the object.
+     * @param id
+     *            the database id within the collection of the object.
+     * @return true if successful or false if no object with that id is found
+     *         and nothing is stored.
      * @throws ClassCastException
      *             if the object class doesn't match the given collection type.
      * @throws IOException
      *             if a database problem occurs.
+     * @deprecated use {@link #updateDatabaseObject(MongoCollectionTypes, DatabaseObject, String)} instead.
      */
-    public String storeDatabaseObject(final MongoCollectionTypes type, final DatabaseObject data)
-            throws ClassCastException, IOException, IllegalArgumentException {
-        return this.storeData(type, data);
+    @Deprecated
+    public boolean updateData(final MongoCollectionTypes type, final DatabaseObject data, final String id)
+            throws ClassCastException, IOException {
+        return this.updateDatabaseObject(type, data, id);
     }
 
     /**
@@ -616,18 +709,17 @@ public class DatabaseConnection implements ServerMonitorListener {
      * @throws ClassCastException
      *             if the object class doesn't match the given collection type.
      * @throws IOException
-     *             if a database problem occurs.
+     *             if a problem with the database or during the object mapping occurs.
      */
-    @Deprecated
-    public boolean updateData(final MongoCollectionTypes type, final DatabaseObject data, final String id)
-            throws ClassCastException, IOException {
+    public boolean updateDatabaseObject(final MongoCollectionTypes type, final DatabaseObject databaseObject,
+            final String id) throws ClassCastException, IOException {
         // test if data can be found. Throws exceptions or is null if not.
-        if (this.getData(type, id) == null) {
+        if (this.getDatabaseObjectById(type, id) == null) {
             return false;
         }
 
         // Check if data is of the correct type for the collection.
-        if (!type.getDocumentType().equals(data.getClass())) {
+        if (!type.getDocumentType().equals(databaseObject.getClass())) {
             throw new ClassCastException(Messages.getString("DatabaseConnection.doctypeErrorMassage") //$NON-NLS-1$
                     + type.getDocumentType().getName());
         }
@@ -641,7 +733,7 @@ public class DatabaseConnection implements ServerMonitorListener {
         try {
             // Create document object from data.
             final ObjectMapper mapper = new ObjectMapper();
-            String jsonData = mapper.writeValueAsString(data);
+            String jsonData = mapper.writeValueAsString(databaseObject);
             // Deal with special mongoDB characters '.' and '$'.
             jsonData = this.replaceMongoSpecialChars(jsonData);
             final Document dataDocument = Document.parse(jsonData);
@@ -654,29 +746,6 @@ public class DatabaseConnection implements ServerMonitorListener {
         }
 
         return true;
-    }
-
-    /**
-     * Update a database object, either a context or a resource, in the
-     * database. Choose the object via id and the collection via the collection
-     * type.
-     *
-     * @param type
-     *            the collection in which the object is located.
-     * @param data
-     *            the new version of the object.
-     * @param id
-     *            the database id within the collection of the object.
-     * @return true if successful or false if no object with that id is found
-     *         and nothing is stored.
-     * @throws ClassCastException
-     *             if the object class doesn't match the given collection type.
-     * @throws IOException
-     *             if a database problem occurs.
-     */
-    public boolean updateDatabaseObject(final MongoCollectionTypes type, final DatabaseObject data, final String id)
-            throws ClassCastException, IOException {
-        return this.updateData(type, data, id);
     }
 
     public UpdateResult updateDocument(final MongoCollectionTypes type, final String id, final String indexName,
