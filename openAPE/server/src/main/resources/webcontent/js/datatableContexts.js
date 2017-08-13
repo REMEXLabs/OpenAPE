@@ -102,17 +102,18 @@ $(document).ready(function(){
 
 			$('#'+contexts[i]+'DataTable').find("th").each(function() { 
 				
-				console.log($(this).text());
-				if($(this).text() == "UserID"){
+		
+				if($(this).text() == "Owner"){
 					var index = $(this).index();
 					$('#'+contexts[i]+'DataTable').find("td").each(function() { 
-						if($(this).index() == index){
-							if($(this).text().indexOf(localStorage.getItem("userid")) == -1){
+						if($(this).index() == 1){
+							if($(this).attr("id") != localStorage.getItem("userid")){
 								$('#'+contexts[i]+'DataTable').DataTable().row( $(this).parents('tr') )
 						        .remove()
 						        .draw();
 							}
 						}
+						
 					})
 				}
 			})
