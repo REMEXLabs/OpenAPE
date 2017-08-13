@@ -123,6 +123,14 @@ public class ResourceAuthService extends AuthService {
         throw new UnauthorizedException("You are not allowed to perform this operation");
     }
 
+    /**
+     * Check whether the logged in user is allowed to delete a resource. Therefore it checks the user's roles, whether he is the owner of the resource or not and the group access rights.
+     * @param request the request. It must not be null!
+     * @param response the response. It must not be null!
+     * @param resource the resource which the user wants to delete. It must not be null!
+     * @throws UnauthorizedException if the logged in user is not allowed to delete the resource.
+     * @throws IOException if a problem with the database access occurs during the right check. 
+     */
     public void allowDeleting(final Request request, final Response response, final Resource resource)
             throws UnauthorizedException, IOException {
         this.allow(request, response, resource, ResourceAuthService.DELETE_RIGHT);
