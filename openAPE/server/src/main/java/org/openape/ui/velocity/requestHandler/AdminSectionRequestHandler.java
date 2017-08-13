@@ -67,7 +67,7 @@ public class AdminSectionRequestHandler {
                 stringIsPublic = "true";
             }
 
-            final String[] myStringArray = { id, owner, stringIsPublic, formattedDate };
+            final String[] myStringArray = { id, owner, stringIsPublic, formattedDate, userId };
             listEnvironmentContexts.add(myStringArray);
 
         }
@@ -120,7 +120,7 @@ public class AdminSectionRequestHandler {
                 stringIsPublic = "true";
             }
 
-            final String[] myStringArray = { id, owner, stringIsPublic, formattedDate };
+            final String[] myStringArray = { id, owner, stringIsPublic, formattedDate, userId };
             listEquipmentContexts.add(myStringArray);
 
         }
@@ -173,7 +173,7 @@ public class AdminSectionRequestHandler {
                 stringIsPublic = "true";
             }
 
-            final String[] myStringArray = { id, owner, stringIsPublic, formattedDate };
+            final String[] myStringArray = { id, owner, stringIsPublic, formattedDate, userId };
             listTaskContexts.add(myStringArray);
         }
         return listTaskContexts;
@@ -226,7 +226,7 @@ public class AdminSectionRequestHandler {
                 stringIsPublic = "true";
             }
 
-            final String[] myStringArray = { owner, id, stringIsPublic, formattedDate };
+            final String[] myStringArray = { owner, id, stringIsPublic, formattedDate, userid };
 
             listContext.add(myStringArray);
         }
