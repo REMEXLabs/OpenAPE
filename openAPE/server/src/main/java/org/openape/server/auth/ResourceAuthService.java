@@ -1,7 +1,6 @@
 package org.openape.server.auth;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -9,9 +8,9 @@ import java.util.Map;
 
 import org.bson.Document;
 import org.openape.api.DatabaseObject;
-import org.openape.api.Resource;
 import org.openape.api.group.GroupAccessRight;
 import org.openape.api.groups.GroupMembershipStatus;
+import org.openape.api.resourceDescription.ResourceObject;
 import org.openape.api.user.User;
 import org.openape.server.api.group.Group;
 import org.openape.server.database.mongoDB.DatabaseConnection;
@@ -64,7 +63,7 @@ public class ResourceAuthService extends AuthService {
      *            the request. It must not be null!
      * @param response
      *            the response. It must not be null!
-     * @param resource
+     * @param resourceObject
      *            the resource for which the user's rights should be checked. It must not be null!
      * @param right
      *            the right which should be checked. It must be one of the constants {@link #READ_RIGHT},
@@ -74,29 +73,31 @@ public class ResourceAuthService extends AuthService {
      * @throws IOException
      *             if a problem with the database access occurs during the right check.
      */
-    private void allow(final Request request, final Response response, final Resource resource, final String right)
-            throws UnauthorizedException, IOException {
+    private void allow(final Request request, final Response response, final ResourceObject resourceObject,
+            final String right) throws UnauthorizedException, IOException {
         final User user = this.getAuthenticatedUser(request, response);
         if (user.getRoles().contains(ResourceAuthService.ADMIN_ROLE)) {
             return;
         }
-        if (resource.getOwner().equals(user.getId())) {
+        if (resourceObject.getOwner().equals(user.getId())) {
             return;
         }
-        // TODO get group access rights from resource
-        final List<GroupAccessRight> groupAccessRights = new ArrayList<GroupAccessRight>();
-        final Map<String, Group> usersGroups = this.getGroupsWithUserAsMember(user);
-        for (final GroupAccessRight groupAccessRight : groupAccessRights) {
-            if (usersGroups.containsKey(groupAccessRight.getGroupId())) {
-                if (right.equals(ResourceAuthService.READ_RIGHT) && groupAccessRight.hasReadRight()) {
-                    return;
-                } else if (right.equals(ResourceAuthService.UPDATE_RIGHT) && groupAccessRight.hasUpdateRight()) {
-                    return;
-                } else if (right.equals(ResourceAuthService.DELETE_RIGHT) && groupAccessRight.hasDeleteRight()) {
-                    return;
-                } else if (right.equals(ResourceAuthService.CHANGE_RIGHTS_RIGHT)
-                        && groupAccessRight.hasChangeRightsRight()) {
-                    return;
+        if (resourceObject.getGroupAccessRights() != null) {
+            final List<GroupAccessRight> groupAccessRights = resourceObject.getGroupAccessRights()
+                    .getGroupAccessRights();
+            final Map<String, Group> usersGroups = this.getGroupsWithUserAsMember(user);
+            for (final GroupAccessRight groupAccessRight : groupAccessRights) {
+                if (usersGroups.containsKey(groupAccessRight.getGroupId())) {
+                    if (right.equals(ResourceAuthService.READ_RIGHT) && groupAccessRight.hasReadRight()) {
+                        return;
+                    } else if (right.equals(ResourceAuthService.UPDATE_RIGHT) && groupAccessRight.hasUpdateRight()) {
+                        return;
+                    } else if (right.equals(ResourceAuthService.DELETE_RIGHT) && groupAccessRight.hasDeleteRight()) {
+                        return;
+                    } else if (right.equals(ResourceAuthService.CHANGE_RIGHTS_RIGHT)
+                            && groupAccessRight.hasChangeRightsRight()) {
+                        return;
+                    }
                 }
             }
         }
@@ -111,16 +112,16 @@ public class ResourceAuthService extends AuthService {
      *            the request. It must not be null!
      * @param response
      *            the response. It must not be null!
-     * @param resource
+     * @param resourceObject
      *            the resource which the user wants to delete. It must not be null!
      * @throws UnauthorizedException
      *             if the logged in user is not allowed to delete the resource.
      * @throws IOException
      *             if a problem with the database access occurs during the right check.
      */
-    public void allowDeleting(final Request request, final Response response, final Resource resource)
+    public void allowDeleting(final Request request, final Response response, final ResourceObject resourceObject)
             throws UnauthorizedException, IOException {
-        this.allow(request, response, resource, ResourceAuthService.DELETE_RIGHT);
+        this.allow(request, response, resourceObject, ResourceAuthService.DELETE_RIGHT);
     }
 
     /**
@@ -131,16 +132,16 @@ public class ResourceAuthService extends AuthService {
      *            the request. It must not be null!
      * @param response
      *            the response. It must not be null!
-     * @param resource
+     * @param resourceObject
      *            the resource which the user wants to read. It must not be null!
      * @throws UnauthorizedException
      *             if the logged in user is not allowed to read the resource.
      * @throws IOException
      *             if a problem with the database access occurs during the right check.
      */
-    public void allowReading(final Request request, final Response response, final Resource resource)
+    public void allowReading(final Request request, final Response response, final ResourceObject resourceObject)
             throws UnauthorizedException, IOException {
-        this.allow(request, response, resource, ResourceAuthService.READ_RIGHT);
+        this.allow(request, response, resourceObject, ResourceAuthService.READ_RIGHT);
     }
 
     /**
@@ -151,16 +152,16 @@ public class ResourceAuthService extends AuthService {
      *            the request. It must not be null!
      * @param response
      *            the response. It must not be null!
-     * @param resource
+     * @param resourceObject
      *            the resource for which the user wants to change the group access rights. It must not be null!
      * @throws UnauthorizedException
      *             if the logged in user is not allowed to change the group access rights for the resource.
      * @throws IOException
      *             if a problem with the database access occurs during the right check.
      */
-    public void allowRightsChanging(final Request request, final Response response, final Resource resource)
+    public void allowRightsChanging(final Request request, final Response response, final ResourceObject resourceObject)
             throws UnauthorizedException, IOException {
-        this.allow(request, response, resource, ResourceAuthService.CHANGE_RIGHTS_RIGHT);
+        this.allow(request, response, resourceObject, ResourceAuthService.CHANGE_RIGHTS_RIGHT);
     }
 
     /**
@@ -171,16 +172,16 @@ public class ResourceAuthService extends AuthService {
      *            the request. It must not be null!
      * @param response
      *            the response. It must not be null!
-     * @param resource
+     * @param resourceObject
      *            the resource which the user wants to update. It must not be null!
      * @throws UnauthorizedException
      *             if the logged in user is not allowed to update the resource.
      * @throws IOException
      *             if a problem with the database access occurs during the right check.
      */
-    public void allowUpdating(final Request request, final Response response, final Resource resource)
+    public void allowUpdating(final Request request, final Response response, final ResourceObject resourceObject)
             throws UnauthorizedException, IOException {
-        this.allow(request, response, resource, ResourceAuthService.UPDATE_RIGHT);
+        this.allow(request, response, resourceObject, ResourceAuthService.UPDATE_RIGHT);
     }
 
     /**
