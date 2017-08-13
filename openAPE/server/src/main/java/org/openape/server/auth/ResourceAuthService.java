@@ -33,67 +33,47 @@ import spark.Response;
  */
 public class ResourceAuthService extends AuthService {
 
-    // *********************************************************************************************************************************************
-    // *********************************************************************************************************************************************
-    // attributes
-    // *********************************************************************************************************************************************
-    // *********************************************************************************************************************************************
-
+    /**
+     * The admin role.
+     */
     private static final String ADMIN_ROLE = "admin";
 
+    /**
+     * Constant for the parameter value read right.
+     */
     private static final String READ_RIGHT = "readRight";
 
+    /**
+     * Constant for the parameter value update right.
+     */
     private static final String UPDATE_RIGHT = "updateRight";
 
+    /**
+     * Constant for the parameter value delete right.
+     */
     private static final String DELETE_RIGHT = "deleteRight";
 
+    /**
+     * Constant for the parameter value change rights right.
+     */
     private static final String CHANGE_RIGHTS_RIGHT = "changeRightsRight";
 
-
-
-
-    // *********************************************************************************************************************************************
-    // *********************************************************************************************************************************************
-    // constructors
-    // *********************************************************************************************************************************************
-    // *********************************************************************************************************************************************
-
-
-
-
-    // *********************************************************************************************************************************************
-    // *********************************************************************************************************************************************
-    // getters and setters
-    // *********************************************************************************************************************************************
-    // *********************************************************************************************************************************************
-
-
-
-
-    // *********************************************************************************************************************************************
-    // *********************************************************************************************************************************************
-    // abstract methods
-    // *********************************************************************************************************************************************
-    // *********************************************************************************************************************************************
-
-
-
-
-    // *********************************************************************************************************************************************
-    // *********************************************************************************************************************************************
-    // override methods
-    // *********************************************************************************************************************************************
-    // *********************************************************************************************************************************************
-
-
-
-
-    // *********************************************************************************************************************************************
-    // *********************************************************************************************************************************************
-    // public methods
-    // *********************************************************************************************************************************************
-    // *********************************************************************************************************************************************
-
+    /**
+     *
+     * @param request
+     *            the request. It must not be null!
+     * @param response
+     *            the response. It must not be null!
+     * @param resource
+     *            the resource for which the user's rights should be checked. It must not be null!
+     * @param right
+     *            the right which should be checked. It must be one of the constants {@link #READ_RIGHT},
+     *            {@link #UPDATE_RIGHT}, {@link #DELETE_RIGHT} or {@link #CHANGE_RIGHTS_RIGHT}.
+     * @throws UnauthorizedException
+     *             if the user has not the required right.
+     * @throws IOException
+     *             if a problem with the database access occurs during the right check.
+     */
     private void allow(final Request request, final Response response, final Resource resource, final String right)
             throws UnauthorizedException, IOException {
         final User user = this.getAuthenticatedUser(request, response);
@@ -124,52 +104,95 @@ public class ResourceAuthService extends AuthService {
     }
 
     /**
-     * Check whether the logged in user is allowed to delete a resource. Therefore it checks the user's roles, whether he is the owner of the resource or not and the group access rights.
-     * @param request the request. It must not be null!
-     * @param response the response. It must not be null!
-     * @param resource the resource which the user wants to delete. It must not be null!
-     * @throws UnauthorizedException if the logged in user is not allowed to delete the resource.
-     * @throws IOException if a problem with the database access occurs during the right check. 
+     * Check whether the logged in user is allowed to delete a resource. Therefore it checks the user's roles, whether
+     * he is the owner of the resource or not and the group access rights.
+     *
+     * @param request
+     *            the request. It must not be null!
+     * @param response
+     *            the response. It must not be null!
+     * @param resource
+     *            the resource which the user wants to delete. It must not be null!
+     * @throws UnauthorizedException
+     *             if the logged in user is not allowed to delete the resource.
+     * @throws IOException
+     *             if a problem with the database access occurs during the right check.
      */
     public void allowDeleting(final Request request, final Response response, final Resource resource)
             throws UnauthorizedException, IOException {
         this.allow(request, response, resource, ResourceAuthService.DELETE_RIGHT);
     }
 
+    /**
+     * Check whether the logged in user is allowed to read a resource. Therefore it checks the user's roles, whether he
+     * is the owner of the resource or not and the group access rights.
+     *
+     * @param request
+     *            the request. It must not be null!
+     * @param response
+     *            the response. It must not be null!
+     * @param resource
+     *            the resource which the user wants to read. It must not be null!
+     * @throws UnauthorizedException
+     *             if the logged in user is not allowed to read the resource.
+     * @throws IOException
+     *             if a problem with the database access occurs during the right check.
+     */
     public void allowReading(final Request request, final Response response, final Resource resource)
             throws UnauthorizedException, IOException {
         this.allow(request, response, resource, ResourceAuthService.READ_RIGHT);
     }
 
+    /**
+     * Check whether the logged in user is allowed to change the group access rights for a resource. Therefore it checks
+     * the user's roles, whether he is the owner of the resource or not and the group access rights.
+     *
+     * @param request
+     *            the request. It must not be null!
+     * @param response
+     *            the response. It must not be null!
+     * @param resource
+     *            the resource for which the user wants to change the group access rights. It must not be null!
+     * @throws UnauthorizedException
+     *             if the logged in user is not allowed to change the group access rights for the resource.
+     * @throws IOException
+     *             if a problem with the database access occurs during the right check.
+     */
     public void allowRightsChanging(final Request request, final Response response, final Resource resource)
             throws UnauthorizedException, IOException {
         this.allow(request, response, resource, ResourceAuthService.CHANGE_RIGHTS_RIGHT);
     }
 
-
-
-
-    // *********************************************************************************************************************************************
-    // *********************************************************************************************************************************************
-    // protected methods
-    // *********************************************************************************************************************************************
-    // *********************************************************************************************************************************************
-
-
-
-
-    // *********************************************************************************************************************************************
-    // *********************************************************************************************************************************************
-    // private methods
-    // *********************************************************************************************************************************************
-    // *********************************************************************************************************************************************
-
+    /**
+     * Check whether the logged in user is allowed to update a resource. Therefore it checks the user's roles, whether
+     * he is the owner of the resource or not and the group access rights.
+     *
+     * @param request
+     *            the request. It must not be null!
+     * @param response
+     *            the response. It must not be null!
+     * @param resource
+     *            the resource which the user wants to update. It must not be null!
+     * @throws UnauthorizedException
+     *             if the logged in user is not allowed to update the resource.
+     * @throws IOException
+     *             if a problem with the database access occurs during the right check.
+     */
     public void allowUpdating(final Request request, final Response response, final Resource resource)
             throws UnauthorizedException, IOException {
         this.allow(request, response, resource, ResourceAuthService.UPDATE_RIGHT);
     }
 
-    private Map<String, Group> getGroupsWithUserAsMember(final User user) throws IOException, UnauthorizedException {
+    /**
+     * Load all groups where the user is a member.
+     *
+     * @param user
+     *            the user
+     * @return a map with the groups, where the user is a member, as value and their group ids as key.
+     * @throws IOException
+     *             if a problem with the database access occurs.
+     */
+    private Map<String, Group> getGroupsWithUserAsMember(final User user) throws IOException {
         final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
 
         final BasicDBObject elemMatch = new BasicDBObject();
@@ -192,14 +215,5 @@ public class ResourceAuthService extends AuthService {
 
         return groups;
     }
-
-
-
-
-    // *********************************************************************************************************************************************
-    // *********************************************************************************************************************************************
-    // inner classes
-    // *********************************************************************************************************************************************
-    // *********************************************************************************************************************************************
 
 }
