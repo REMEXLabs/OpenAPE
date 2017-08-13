@@ -9,13 +9,13 @@
 			value="false" />
 	</option>
 	<option id="dark">
-		<condition type="and" value="and">
-			<operand xsi:type="condition" type="ge" value="ge"
+		<condition type="and">
+			<operand xsi:type="condition" type="ge"
 				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 				<operand value="http://registry.gpii.net/common/env/visual.luminance" />
 				<operand value="0" />
 			</operand>
-			<operand xsi:type="condition" type="le" value="le"
+			<operand xsi:type="condition" type="le"
 				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 				<operand value="http://registry.gpii.net/common/env/visual.luminance" />
 				<operand value="200" />

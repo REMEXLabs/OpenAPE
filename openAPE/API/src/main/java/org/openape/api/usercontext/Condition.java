@@ -37,6 +37,7 @@ public class Condition extends Operand {
      * Either Condition or String.
      */
     private List<Operand> operands = null;
+    private String type;
 
     public Condition() {
     }
@@ -59,7 +60,7 @@ public class Condition extends Operand {
             throws IllegalArgumentException {
         this.checkType(type);
         this.checkOpernadListLength(type, operands);
-        this.setValue(type);
+        this.type = type;
         this.operands = operands;
     }
 
@@ -125,7 +126,7 @@ public class Condition extends Operand {
 
     @XmlAttribute(name = "type")
     public String getType() {
-        return this.getValue();
+        return this.type;
     }
 
     /**
@@ -141,8 +142,8 @@ public class Condition extends Operand {
      */
     public void setOperands(final List<Operand> operands) throws IllegalArgumentException {
         // Check the operands list length if type is already set.
-        if (this.getType() != null) {
-            this.checkOpernadListLength(this.getType(), operands);
+        if (this.type != null) {
+            this.checkOpernadListLength(this.type, operands);
         }
         this.operands = operands;
     }
@@ -165,7 +166,7 @@ public class Condition extends Operand {
         if (this.getOperands() != null) {
             this.checkOpernadListLength(type, this.getOperands());
         }
-        this.setValue(type);
+        this.type = type;
     }
 
 }
