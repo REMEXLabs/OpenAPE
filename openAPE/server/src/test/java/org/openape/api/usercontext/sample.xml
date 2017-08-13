@@ -9,23 +9,18 @@
 			value="false" />
 	</option>
 	<option id="dark">
-		<conditions>
-			<operands xsi:type="condition"
+		<condition type="and" value="and">
+			<operand xsi:type="condition" type="ge" value="ge"
 				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-				<operands xsi:type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema">http://registry.gpii.net/common/env/visual.luminance
-				</operands>
-				<operands xsi:type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema">0</operands>
-				<type>ge</type>
-			</operands>
-			<operands xsi:type="condition"
+				<operand value="http://registry.gpii.net/common/env/visual.luminance" />
+				<operand value="0" />
+			</operand>
+			<operand xsi:type="condition" type="le" value="le"
 				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-				<operands xsi:type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema">http://registry.gpii.net/common/env/visual.luminance
-				</operands>
-				<operands xsi:type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema">200</operands>
-				<type>le</type>
-			</operands>
-			<type>and</type>
-		</conditions>
+				<operand value="http://registry.gpii.net/common/env/visual.luminance" />
+				<operand value="200" />
+			</operand>
+		</condition>
 		<name>little environmental light</name>
 		<preference key="http://registry.gpii.net/common/magnifierEnabled"
 			value="true" />

@@ -13,6 +13,7 @@ import org.openape.api.Property;
 import org.openape.api.resourceDescription.ResourceDescription;
 import org.openape.api.usercontext.Condition;
 import org.openape.api.usercontext.Context;
+import org.openape.api.usercontext.Operand;
 import org.openape.api.usercontext.Preference;
 import org.openape.api.usercontext.UserContext;
 
@@ -49,13 +50,13 @@ public class TestDatabaseConnection {
         darkPreference.addPreference(new Preference(
                 "http://registry.gpii.net/common/magnification", "2"));
 
-        final List<Object> andConditionOperands = new ArrayList<Object>();
-        final List<Object> geOperandList = new ArrayList<Object>();
-        geOperandList.add("http://registry.gpii.net/common/env/visual.luminance");
-        geOperandList.add("0");
-        final List<Object> leOperandList = new ArrayList<Object>();
-        leOperandList.add("http://registry.gpii.net/common/env/visual.luminance");
-        leOperandList.add("200");
+        final List<Operand> andConditionOperands = new ArrayList<Operand>();
+        final List<Operand> geOperandList = new ArrayList<Operand>();
+        geOperandList.add(new Operand("http://registry.gpii.net/common/env/visual.luminance"));
+        geOperandList.add(new Operand("0"));
+        final List<Operand> leOperandList = new ArrayList<Operand>();
+        leOperandList.add(new Operand("http://registry.gpii.net/common/env/visual.luminance"));
+        leOperandList.add(new Operand("200"));
         andConditionOperands.add(new Condition("ge", geOperandList));
         andConditionOperands.add(new Condition("le", leOperandList));
         final Condition andCondition = new Condition("and", andConditionOperands);

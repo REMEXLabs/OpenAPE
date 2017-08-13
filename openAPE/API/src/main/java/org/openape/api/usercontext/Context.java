@@ -105,6 +105,7 @@ public class Context implements Serializable {
                 .hasContextTheSamePreferences(this, compare));
     }
 
+    @XmlElement(name = "condition")
     public List<Condition> getConditions() {
         return this.conditions;
     }
