@@ -20,6 +20,8 @@ public class TestUserContext {
         try {
             final String xml = sample.getXML();
             System.out.println(xml);
+            final UserContext userContext = UserContext.getObjectFromXml(xml);
+            Assert.assertTrue(userContext.equals(sample));
         } catch (final IOException e) {
             e.printStackTrace();
         }

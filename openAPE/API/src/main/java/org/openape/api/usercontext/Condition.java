@@ -75,6 +75,9 @@ public class Condition extends Operand {
      */
     private void checkOpernadListLength(final String type, final List<Operand> operands)
             throws IllegalArgumentException {
+        if (operands.size() == 0) {
+            return;// has to accept for jaxb building
+        }
         if (type.equals(Messages.getString("Condition.not"))) { //$NON-NLS-1$
             if (operands.size() != 1) {
                 throw new IllegalArgumentException(
