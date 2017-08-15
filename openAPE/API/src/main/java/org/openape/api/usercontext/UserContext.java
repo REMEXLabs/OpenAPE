@@ -234,7 +234,6 @@ public class UserContext extends Resource {
             final JAXBContext context = JAXBContext.newInstance(UserContext.class);
             final Marshaller marshaller = context.createMarshaller();
             final StringWriter stringWriter = new StringWriter();
-            // marshaller.setSchema(schema);
             marshaller.marshal(this, stringWriter);
             xmlString = stringWriter.toString();
         } catch (final JAXBException e) {
