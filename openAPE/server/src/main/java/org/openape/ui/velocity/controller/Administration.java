@@ -28,10 +28,9 @@ public class Administration extends SuperRestInterface {
                             "Equipment-Context", "Environment-Context" };
 
                     // modals
-                    model.put("addGroupModal", new Organism_4_Modals().generateAddGroupModal());
+                   
                     model.put("dataTableGroup", new Organism_3_DataTable()
                             .generateAdministrationGroupTable(adminsectionRequestHandler));
-                    model.put("editGroupModal", new Organism_4_Modals().generateEditGroupModal());
                     model.put("deleteGroupModal",
                             new Organism_4_Modals().generateDeleteModal("Group"));
 
@@ -42,9 +41,9 @@ public class Administration extends SuperRestInterface {
                         model.put("delete" + idName + "Modal",
                                 new Organism_4_Modals().generateDeleteModal(destination));
                         model.put("edit" + idName + "Modal",
-                                new Organism_4_Modals().generateEditContextModal(destination));
+                                new Organism_4_Modals().generateContextModal(destination, "Edit"));
                         model.put("add" + idName + "Modal",
-                                new Organism_4_Modals().generateAddContextModal(destination));
+                                new Organism_4_Modals().generateContextModal(destination, "Add"));
 
                         // Datatable creation
                         if (destination == "User") {

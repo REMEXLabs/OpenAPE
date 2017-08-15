@@ -33,9 +33,9 @@ public class MyContexts extends SuperRestInterface {
                 model.put("delete" + idName + "Modal",
                         new Organism_4_Modals().generateDeleteModal(destination));
                 model.put("edit" + idName + "Modal",
-                        new Organism_4_Modals().generateEditContextModal(destination));
+                        new Organism_4_Modals().generateContextModal(destination, "Edit"));
                 model.put("add" + idName + "Modal",
-                        new Organism_4_Modals().generateAddContextModal(destination));
+                        new Organism_4_Modals().generateContextModal(destination, "Add"));
                 model.put("dataTable" + idName, new Organism_3_DataTable()
                         .generateAdministrationContextTable(adminsectionRequestHandler,
                                 destination, "myContext"));

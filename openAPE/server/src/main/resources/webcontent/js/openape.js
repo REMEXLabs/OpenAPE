@@ -277,7 +277,7 @@
 		* @return      
 		* 	 A javascript object with all status information of the create process
 		*/	    
-	    objOpenape.createUserContext = function (UserContext) {
+	    objOpenape.createUserContext = function (UserContext, contentType) {
 	    	var objcreateUserContext_Result = {};
 	    	var objAjaxParameters = {};
 	    	
@@ -302,7 +302,12 @@
 	    		objAjaxParameters.data = UserContext;
 	    		objAjaxParameters.type = "POST";
 	    		objAjaxParameters.url = localStorage.getItem("host")+"/api/user-contexts";
-	    		objAjaxParameters.contentType = 'application/json';
+	    		
+	    		switch (contentType){
+	    			case "JSON" : objAjaxParameters.contentType = 'application/json'; break;
+	    			case "XML" : objAjaxParameters.contentType = 'text/xml';break;	
+	    		}
+	    	
 	    		objAjaxParameters.token = localStorage.getItem("token");
 	    		objcreateUserContext_Result = databaseCommunication(objAjaxParameters);
 	    	} else {

@@ -68,26 +68,28 @@ public class Molecule_5_DataTableContent {
         String buttons = "";
 
         for (final String[] environmentContext : listEnvironmentContexts) {
-
+        	//if the user is on the public context site than the view and copy to clipboard buttons will be enabled
             if (destination == "context") {
                 buttons = "<button id='"
                         + environmentContext[0]
-                        + "' class='btn btn-md btn-default' onClick='viewEnvironmentContext(this)' ><div class='glyphicon glyphicon-edit' ></div> View </button>"
+                        + "' class='btn btn-md btn-default' data-contexttype='EnvironmentContext' onClick='viewContext(this)' ><div class='glyphicon glyphicon-edit' ></div> View </button>"
                         + "<button id='"
                         + environmentContext[0]
                         + "' class='btn btn-md btn-default' data-clipboard-text='http://gpi.eu/"
                         + environmentContext[0]
                         + "' onClick='copyEnvironmentContextLink(this)'><div class='glyphicon glyphicon-trash'></div> Copy link to Clipboard</button> ";
-            } else {
+            } 
+          //if the user is on the MyContext site oder in the Administration section than the edit, delete and copy buttons will be enabled
+            else {
                 buttons = "<button id='"
                         + environmentContext[0]
-                        + "' class='btn btn-md btn-default' onClick='editEnvironmentContext(this)' ><div class='glyphicon glyphicon-edit' ></div> Edit </button>"
+                        + "' class='btn btn-md btn-default' data-contexttype='EnvironmentContext' onClick='editContext(this)' ><div class='glyphicon glyphicon-edit' ></div> Edit </button>"
                         + "<button id='"
                         + environmentContext[0]
-                        + "' class='btn btn-md btn-default' onClick='deleteEnvironmentContext(this)'><div class='glyphicon glyphicon-trash'></div> Delete </button> "
+                        + "' class='btn btn-md btn-default' data-contexttype='EnvironmentContext' onClick='deleteContext(this)'><div class='glyphicon glyphicon-trash'></div> Delete </button> "
                         + "<button id='"
                         + environmentContext[0]
-                        + "' class='btn btn-md btn-default' onClick='copyEnvironmentContext(this)'><div class='glyphicon glyphicon-copy'></div> Copy </button>";
+                        + "' class='btn btn-md btn-default' data-contexttype='EnvironmentContext' onClick='copyContext(this)'><div class='glyphicon glyphicon-copy'></div> Copy </button>";
             }
 
             tableContent += "<tr>" + "<td id='tdEnvironmentContextName_" + environmentContext[0]
@@ -110,7 +112,7 @@ public class Molecule_5_DataTableContent {
             if (destination == "context") {
                 buttons = "<button id='"
                         + equipmentkContext[0]
-                        + "' class='btn btn-md btn-default' onClick='viewEquipmentContext(this)' ><div class='glyphicon glyphicon-edit' ></div> View </button>"
+                        + "' class='btn btn-md btn-default' data-contexttype='EquipmentContext' onClick='viewContext(this)'><div class='glyphicon glyphicon-edit' ></div> View </button>"
                         + "<button id='"
                         + equipmentkContext[0]
                         + "' class='btn btn-md btn-default' data-clipboard-text='http://gpi.eu/"
@@ -119,13 +121,13 @@ public class Molecule_5_DataTableContent {
             } else {
                 buttons = "<button id='"
                         + equipmentkContext[0]
-                        + "' class='btn btn-md btn-default' onClick='editEquipmentContext(this)' ><div class='glyphicon glyphicon-edit' ></div> Edit </button>"
+                        + "' class='btn btn-md btn-default' data-contexttype='EquipmentContext' onClick='editContext(this)' ><div class='glyphicon glyphicon-edit' ></div> Edit </button>"
                         + "<button id='"
                         + equipmentkContext[0]
-                        + "' class='btn btn-md btn-default' onClick='deleteEquipmentContext(this)'><div class='glyphicon glyphicon-trash'></div> Delete </button> "
+                        + "' class='btn btn-md btn-default' data-contexttype='EquipmentContext' onClick='deleteContext(this)'><div class='glyphicon glyphicon-trash'></div> Delete </button> "
                         + "<button id='"
                         + equipmentkContext[0]
-                        + "' class='btn btn-md btn-default' onClick='copyEquipmentContext(this)'><div class='glyphicon glyphicon-copy'></div> Copy </button>";
+                        + "' class='btn btn-md btn-default' data-contexttype='EquipmentContext' onClick='copyContext(this)'><div class='glyphicon glyphicon-copy'></div> Copy </button>";
             }
 
             tableContent += "<tr>" + "<td id='tdEquipmentContextName_" + equipmentkContext[0]
@@ -161,7 +163,7 @@ public class Molecule_5_DataTableContent {
             if (destination == "context") {
                 buttons = "<button id='"
                         + taskContext[0]
-                        + "' class='btn btn-md btn-default' onClick='viewTaskContext(this)' ><div class='glyphicon glyphicon-edit' ></div> View </button>"
+                        + "' class='btn btn-md btn-default' data-contexttype='TaskContext' onClick='viewContext(this)' ><div class='glyphicon glyphicon-edit' ></div> View </button>"
                         + "<button id='"
                         + taskContext[0]
                         + "' class='btn btn-md btn-default' data-clipboard-text='http://gpi.eu/"
@@ -170,13 +172,13 @@ public class Molecule_5_DataTableContent {
             } else {
                 buttons = "<button id='"
                         + taskContext[0]
-                        + "' class='btn btn-md btn-default' onClick='editTaskContext(this)' ><div class='glyphicon glyphicon-edit' ></div> Edit </button>"
+                        + "' class='btn btn-md btn-default' data-contexttype='TaskContext' onClick='editContext(this)' ><div class='glyphicon glyphicon-edit' ></div> Edit </button>"
                         + "<button id='"
                         + taskContext[0]
-                        + "' class='btn btn-md btn-default' onClick='deleteTaskContext(this)'><div class='glyphicon glyphicon-trash'></div> Delete </button> "
+                        + "' class='btn btn-md btn-default' data-contexttype='TaskContext' onClick='deleteContext(this)'><div class='glyphicon glyphicon-trash'></div> Delete </button> "
                         + "<button id='"
                         + taskContext[0]
-                        + "' class='btn btn-md btn-default' onClick='copyTaskContext(this)'><div class='glyphicon glyphicon-copy'></div> Copy </button>";
+                        + "' class='btn btn-md btn-default' data-contexttype='TaskContext' onClick='copyContext(this)'><div class='glyphicon glyphicon-copy'></div> Copy </button>";
             }
 
             tableContent += "<tr>" + "<td id='tdTaskContextName_" + taskContext[0] + "'>"
@@ -199,7 +201,7 @@ public class Molecule_5_DataTableContent {
             if (destination == "context") {
                 buttons = "<button id='"
                         + userContext[1]
-                        + "' class='btn btn-md btn-default' onClick='viewUserContext(this)' ><div class='glyphicon glyphicon-edit' ></div> View </button>"
+                        + "' class='btn btn-md btn-default' data-contexttype='UserContext' onClick='viewContext(this)' ><div class='glyphicon glyphicon-edit' ></div> View </button>"
                         + "<button id='"
                         + userContext[1]
                         + "' class='btn btn-md btn-default' data-clipboard-text='"
@@ -208,13 +210,13 @@ public class Molecule_5_DataTableContent {
             } else {
                 buttons = "<button id='"
                         + userContext[1]
-                        + "' class='btn btn-md btn-default' onClick='editUserContext(this)' ><div class='glyphicon glyphicon-edit' ></div> Edit </button>"
+                        + "' class='btn btn-md btn-default' data-contexttype='UserContext' onClick='editContext(this)' ><div class='glyphicon glyphicon-edit' ></div> Edit </button>"
                         + "<button id='"
                         + userContext[1]
-                        + "' class='btn btn-md btn-default' onClick='deleteUserContext(this)'><div class='glyphicon glyphicon-trash'></div> Delete </button> "
+                        + "' class='btn btn-md btn-default' data-contexttype='UserContext' onClick='deleteContext(this)'><div class='glyphicon glyphicon-trash'></div> Delete </button> "
                         + "<button id='"
                         + userContext[1]
-                        + "' class='btn btn-md btn-default' onClick='copyUserContext(this)'><div class='glyphicon glyphicon-copy'></div> Copy </button>";
+                        + "' class='btn btn-md btn-default' data-contexttype='UserContext'  onClick='copyContext(this)'><div class='glyphicon glyphicon-copy'></div> Copy </button>";
             }
 
             tableContent += "<tr>" + "<td id='tdUserContextName_" + userContext[1] + "'>"
