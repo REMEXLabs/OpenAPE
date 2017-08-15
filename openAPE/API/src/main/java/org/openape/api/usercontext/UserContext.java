@@ -58,11 +58,33 @@ public class UserContext extends Resource {
 
     /**
      * Generate the user context from the json string used in the the front end.
+     * Sets public: false and owner: null.
      *
      * @return user context object.
      */
     @JsonIgnore
     public static UserContext getObjectFromJson(final String json) throws IllegalArgumentException {
+        UserContext userContext = null;
+        try {
+            final ObjectMapper mapper = new ObjectMapper();
+            final JsonNode rootNode = mapper.readTree(json);
+            // TODO manipulate tree
+            userContext = mapper.treeToValue(rootNode, UserContext.class);
+        } catch (final IOException e) {
+            throw new IllegalArgumentException(e.getMessage());
+        }
+        return userContext;
+    }
+
+    /**
+     * Generate the user context from the json string used in the the database
+     * end.
+     *
+     * @return user context object.
+     */
+    @JsonIgnore
+    public static UserContext getObjectFromBackendJson(final String json)
+            throws IllegalArgumentException {
         UserContext userContext = null;
         try {
             final ObjectMapper mapper = new ObjectMapper();
@@ -203,11 +225,33 @@ public class UserContext extends Resource {
 
     /**
      * Generate the json representation from the object used for the front end.
+     * Deletes owner and public field.
      *
      * @return json string.
      */
     @JsonIgnore
     public String getJson() throws IOException {
+        String jsonString = null;
+        try {
+            final ObjectMapper mapper = new ObjectMapper();
+            final JsonNode rootNode = mapper.valueToTree(this);
+            // TODO manipulate tree
+            final StringWriter stringWriter = new StringWriter();
+            mapper.writeValue(stringWriter, rootNode);
+            jsonString = stringWriter.toString();
+        } catch (final JsonProcessingException e) {
+            throw new IOException(e.getMessage());
+        }
+        return jsonString;
+    }
+
+    /**
+     * Generate the json representation from the object used for the database.
+     *
+     * @return json string.
+     */
+    @JsonIgnore
+    public String getBackEndJson() throws IOException {
         String jsonString = null;
         try {
             final ObjectMapper mapper = new ObjectMapper();

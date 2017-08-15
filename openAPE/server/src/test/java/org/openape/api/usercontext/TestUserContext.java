@@ -1,6 +1,7 @@
 package org.openape.api.usercontext;
 
 import java.io.IOException;
+import java.util.Iterator;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -8,6 +9,8 @@ import org.openape.server.database.mongoDB.TestDatabaseConnection;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 
 public class TestUserContext {
 
@@ -33,7 +36,20 @@ public class TestUserContext {
     @Test
     public void testGetJson() {
         final ObjectMapper mapper = new ObjectMapper();
-        final JsonNode rootNode = mapper.valueToTree(TestDatabaseConnection.sampleUserContext());
+        mapper.createArrayNode();
+        JsonNode rootNode = mapper.valueToTree(TestDatabaseConnection.sampleUserContext());
+        System.out.println(rootNode.getNodeType());
+        ObjectNode object = (ObjectNode) rootNode;
+        object.remove("public");
+        object.remove("owner");
+        JsonNode contextNode = rootNode.get("contexts");
+        System.out.println(contextNode.getNodeType());
+        ArrayNode contextArray = (ArrayNode) contextNode;
+        Iterator<JsonNode> iterator = contextArray.iterator();
+        while (iterator.hasNext()) {
+            JsonNode field = iterator.next();
+            System.out.println(field + ": " + field.toString());            
+        }
         System.out.println("bla");
         System.out.println(rootNode.toString());
     }
