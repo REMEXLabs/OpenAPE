@@ -9,6 +9,7 @@ import org.openape.server.database.mongoDB.TestDatabaseConnection;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 
@@ -35,23 +36,49 @@ public class TestUserContext {
     
     @Test
     public void testGetJson() {
+        JsonNodeFactory jsonNodeFactory = new JsonNodeFactory(false);
+        // get root node.
         final ObjectMapper mapper = new ObjectMapper();
-        mapper.createArrayNode();
         JsonNode rootNode = mapper.valueToTree(TestDatabaseConnection.sampleUserContext());
-        System.out.println(rootNode.getNodeType());
-        ObjectNode object = (ObjectNode) rootNode;
-        object.remove("public");
-        object.remove("owner");
+        ObjectNode rootObject = (ObjectNode) rootNode;
+
+        //remove owner attributes
+        rootObject.remove("public");
+        rootObject.remove("owner");
+        
+        // get context list.
         JsonNode contextNode = rootNode.get("contexts");
-        System.out.println(contextNode.getNodeType());
         ArrayNode contextArray = (ArrayNode) contextNode;
-        Iterator<JsonNode> iterator = contextArray.iterator();
-        while (iterator.hasNext()) {
-            JsonNode field = iterator.next();
-            System.out.println(field + ": " + field.toString());            
+        Iterator<JsonNode> contestIterator = contextArray.iterator();
+        
+        // Replace context list by context fields with id as key.
+        rootObject.remove("contexts");
+        while (contestIterator.hasNext()) {
+            JsonNode context = contestIterator.next();
+            ObjectNode contextObject = (ObjectNode) context;
+            String id = contextObject.get("id").textValue();
+            contextObject.remove("id");
+            rootObject.set(id, contextObject);
+            
+
+            //get preferences
+            JsonNode preferences = contextObject.get("preferences");
+            ArrayNode preferencesArray = (ArrayNode) preferences;
+            Iterator<JsonNode> pereferenceIterator = preferencesArray.iterator();
+          
+            //Format preferences
+            ObjectNode newPreferences = new ObjectNode(jsonNodeFactory);
+            while (pereferenceIterator.hasNext()) {
+                JsonNode preference = pereferenceIterator.next();
+                String key = preference.get("key").textValue();
+                String value = preference.get("value").textValue();
+                newPreferences.put(key, value);
+            }
+            contextObject.remove("preferences");
+            contextObject.set("preferences", newPreferences);
         }
         System.out.println("bla");
-        System.out.println(rootNode.toString());
+        System.out.println(rootObject.toString());
     }
 
 }
