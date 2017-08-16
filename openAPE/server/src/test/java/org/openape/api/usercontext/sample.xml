@@ -10,7 +10,7 @@
 	</option>
 	<option id="dark">
 		<condition type="and">
-			<operand xsi:type="condition" type="ge"
+			<operand type="ge"
 				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 				<operand value="http://registry.gpii.net/common/env/visual.luminance" />
 				<operand value="0" />

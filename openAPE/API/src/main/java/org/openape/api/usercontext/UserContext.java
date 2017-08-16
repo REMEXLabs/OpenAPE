@@ -36,12 +36,20 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 
 import org.openape.api.Resource;
+import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
@@ -144,7 +152,48 @@ public class UserContext extends Resource {
      * @return user context object.
      */
     @JsonIgnore
-    public static UserContext getObjectFromXml(final String xml) throws IllegalArgumentException {
+    public static UserContext getObjectFromXml(String xml) throws IllegalArgumentException {
+        // add type statements (xsi:type="condition" and
+        // xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance") to
+        // operands that are conditions, if missing.
+        try {
+            // Create document to work on.
+            final DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory
+                    .newInstance();
+            final DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+            final Document document = documentBuilder.parse(new InputSource(new StringReader(xml)));
+            // find all operands that are conditions.
+            final NodeList nodeList = document.getElementsByTagName("operand");
+            for (int i = 0; i < nodeList.getLength(); i++) {
+                final Node operandNode = nodeList.item(i);
+                final Element operandElement = (Element) operandNode;
+
+                // operand that is a condition.
+                if (operandElement.hasAttribute("type")) {
+                    // If type information is missing add it.
+                    if (!operandElement.hasAttribute("xsi:type")) {
+                        operandElement.setAttribute("xsi:type", "condition");
+                        operandElement.setAttribute("xmlns:xsi",
+                                "http://www.w3.org/2001/XMLSchema-instance");
+                        // System.out.println("bla");
+                    }
+                }
+            }
+
+            // Create String from document
+            final DOMSource domSource = new DOMSource(document);
+            final StringWriter writer = new StringWriter();
+            final StreamResult result = new StreamResult(writer);
+            final TransformerFactory tf = TransformerFactory.newInstance();
+            final Transformer transformer = tf.newTransformer();
+            transformer.transform(domSource, result);
+            // Update xml string.
+            xml = writer.toString();
+        } catch (DOMException | TransformerException | IOException | ParserConfigurationException
+                | SAXException exception) {
+            throw new IllegalArgumentException(exception.getMessage());
+        }
+
         UserContext userContext = null;
         try {
             final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
