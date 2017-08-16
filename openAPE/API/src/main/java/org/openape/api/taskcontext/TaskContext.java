@@ -30,7 +30,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 /**
  * Task context object defined in 7.3.1
  */
-@XmlRootElement
+@XmlRootElement(name = "task-context")
 public class TaskContext extends Resource {
     private static final long serialVersionUID = 3325722856059287182L;
 

@@ -30,7 +30,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 /**
  * Resource description object defined in 7.7.1
  */
-@XmlRootElement
+@XmlRootElement(name = "resource-description")
 public class ResourceDescription extends Resource {
     private static final long serialVersionUID = -3341210067495347309L;
 

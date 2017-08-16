@@ -16,21 +16,27 @@
 
 package org.openape.api.environmentcontext;
 
+import java.io.IOException;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.openape.api.Property;
 import org.openape.api.Resource;
+import org.openape.api.equipmentcontext.EquipmentContext;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  * Environment context object defined in 7.5.1
  */
-@XmlRootElement
+@XmlRootElement(name = "environment-context")
 public class EnvironmentContext extends Resource {
     private static final long serialVersionUID = -1706959529432920842L;
 
@@ -91,6 +97,26 @@ public class EnvironmentContext extends Resource {
     @XmlElement(name = "property")
     public List<Property> getPropertys() {
         return this.propertys;
+    }
+
+    /**
+     * Generate the xml representation from the object used for the front end.
+     *
+     * @return xml string.
+     */
+    @JsonIgnore
+    public String getXML() throws IOException {
+        String xmlString = null;
+        try {
+            final JAXBContext context = JAXBContext.newInstance(EnvironmentContext.class);
+            final Marshaller marshaller = context.createMarshaller();
+            final StringWriter stringWriter = new StringWriter();
+            marshaller.marshal(this, stringWriter);
+            xmlString = stringWriter.toString();
+        } catch (final JAXBException e) {
+            throw new IOException(e.getMessage());
+        }
+        return xmlString;
     }
 
     @Override

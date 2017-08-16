@@ -409,7 +409,7 @@ public class UserContext extends Resource {
     /**
      * Generate the xml representation from the object used for the front end.
      *
-     * @return json string.
+     * @return xml string.
      */
     @JsonIgnore
     public String getXML() throws IOException {

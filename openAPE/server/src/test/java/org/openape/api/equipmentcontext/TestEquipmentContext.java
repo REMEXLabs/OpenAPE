@@ -1,8 +1,11 @@
-package org.openape.api.taskcontext;
+package org.openape.api.equipmentcontext;
+
+import java.io.IOException;
 
 import org.junit.Assert;
 import org.junit.Test;
 import org.openape.api.Property;
+import org.openape.api.environmentcontext.EnvironmentContext;
 import org.openape.api.equipmentcontext.EquipmentContext;
 
 public class TestEquipmentContext {
@@ -28,7 +31,12 @@ public class TestEquipmentContext {
         Assert.assertTrue(sampleEquipmentContext().equals(sampleEquipmentContext()));
     }
     
-    
+    @Test
+    public void testGetXML() throws IOException {
+        EquipmentContext equipmentContext = sampleEquipmentContext();
+        String xml = equipmentContext.getXML();
+        System.out.println(xml);
+    }
     
 
 }

@@ -16,9 +16,14 @@
 
 package org.openape.api.equipmentcontext;
 
+import java.io.IOException;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -30,7 +35,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 /**
  * Equipment context object defined in 7.4.1
  */
-@XmlRootElement
+@XmlRootElement(name = "equipment-context")
 public class EquipmentContext extends Resource {
     private static final long serialVersionUID = 4810176872836108065L;
 
@@ -91,6 +96,26 @@ public class EquipmentContext extends Resource {
     @XmlElement(name = "property")
     public List<Property> getPropertys() {
         return this.propertys;
+    }
+
+    /**
+     * Generate the xml representation from the object used for the front end.
+     *
+     * @return xml string.
+     */
+    @JsonIgnore
+    public String getXML() throws IOException {
+        String xmlString = null;
+        try {
+            final JAXBContext context = JAXBContext.newInstance(EquipmentContext.class);
+            final Marshaller marshaller = context.createMarshaller();
+            final StringWriter stringWriter = new StringWriter();
+            marshaller.marshal(this, stringWriter);
+            xmlString = stringWriter.toString();
+        } catch (final JAXBException e) {
+            throw new IOException(e.getMessage());
+        }
+        return xmlString;
     }
 
     @Override
