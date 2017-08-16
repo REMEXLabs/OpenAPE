@@ -1,4 +1,6 @@
 {
+   "owner":"dude",
+   "public":true,
    "default":{
       "name":"Default preferences",
       "preferences":{

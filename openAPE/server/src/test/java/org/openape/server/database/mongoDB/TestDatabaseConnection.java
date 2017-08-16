@@ -34,6 +34,7 @@ public class TestDatabaseConnection {
      */
     public static UserContext sampleUserContext() {
         final UserContext userContext = new UserContext();
+        userContext.setPublic(true);
         final Context defaultPreference = new Context("default", "Default preferences");
         final Context darkPreference = new Context("dark", "little environmental light");
         userContext.addContext(defaultPreference);
