@@ -17,9 +17,8 @@
 package org.openape.api;
 
 import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
@@ -47,18 +46,16 @@ public class Property implements Serializable {
      * @return true, if compare has the same preferences as base, false if not.
      */
     private static boolean hasPropertyTheSameDescriptors(final Property base, final Property compare) {
-        final Set<String> baseKeySet = base.getDescriptors().keySet();
-        final Set<String> compareKeySet = compare.getDescriptors().keySet();
-        for (final String baseKey : baseKeySet) {
+        for (final Descriptor baseDescriptor : base.getDescriptors()) {
             // Match checks if for each descriptor in this there is one in
             // compare.
             boolean match = false;
-            for (final String compareKey : compareKeySet) {
+            for (final Descriptor compareDescriptor : compare.getDescriptors()) {
                 // if key fits check if value fits.
-                if (baseKey.equals(compareKey)) {
+                if (baseDescriptor.getName().equals(compareDescriptor.getName())) {
                     match = true;
-                    if (!base.getDescriptors().get(baseKey)
-                            .equals(compare.getDescriptors().get(compareKey))) {
+                    if (!baseDescriptor.getValue()
+                            .equals(compareDescriptor.getValue())) {
                         return false;
                     }
                 }
@@ -74,7 +71,7 @@ public class Property implements Serializable {
     private String name;
     private String value;
 
-    private Map<String, String> descriptors = new HashMap<String, String>();
+    private List<Descriptor> descriptors = new ArrayList<Descriptor>();
 
     public Property() {
 
@@ -85,8 +82,8 @@ public class Property implements Serializable {
         this.value = value;
     }
 
-    public void addDescriptor(final String name, final String value) {
-        this.descriptors.put(name, value);
+    public void addDescriptor(Descriptor descriptor) {
+        this.descriptors.add(descriptor);
     }
 
     /**
@@ -112,7 +109,7 @@ public class Property implements Serializable {
     }
 
     @XmlElement(name = "descriptor")
-    public Map<String, String> getDescriptors() {
+    public List<Descriptor> getDescriptors() {
         return this.descriptors;
     }
 
@@ -126,7 +123,7 @@ public class Property implements Serializable {
         return this.value;
     }
 
-    public void setDescriptors(final Map<String, String> descriptors) {
+    public void setDescriptors(final List<Descriptor> descriptors) {
         this.descriptors = descriptors;
     }
 

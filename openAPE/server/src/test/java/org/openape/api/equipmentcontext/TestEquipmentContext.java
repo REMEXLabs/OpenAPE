@@ -4,8 +4,8 @@ import java.io.IOException;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.openape.api.Descriptor;
 import org.openape.api.Property;
-import org.openape.api.environmentcontext.EnvironmentContext;
 import org.openape.api.equipmentcontext.EquipmentContext;
 
 public class TestEquipmentContext {
@@ -13,10 +13,10 @@ public class TestEquipmentContext {
         EquipmentContext equipmentContext = new EquipmentContext();
         Property prop1 = new Property("http://openurc.org/ns/res#friendlyName","My iPad");
         equipmentContext.addProperty(prop1);
-        prop1.addDescriptor("http://www.w3.org/XML/1998/namespace/lang", "en");
+        prop1.addDescriptor(new Descriptor("http://www.w3.org/XML/1998/namespace/lang", "en"));
         Property prop2 = new Property("http://openurc.org/ns/res#friendlyName", "Mein iPad");
         equipmentContext.addProperty(prop2);
-        prop2.addDescriptor("http://www.w3.org/XML/1998/namespace/lang", "de");
+        prop2.addDescriptor(new Descriptor("http://www.w3.org/XML/1998/namespace/lang", "de"));
         Property prop3 = new Property("http://openurc.org/ns/res#devicePlatform", "iOS");
         equipmentContext.addProperty(prop3);
         Property prop4 = new Property("http://openurc.org/ns/res#deviceType", "iPad-3gen");
