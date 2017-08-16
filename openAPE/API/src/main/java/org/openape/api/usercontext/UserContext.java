@@ -46,12 +46,14 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.NullNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.databind.node.TextNode;
 
 /**
  * User context object defined in 7.2.1
@@ -61,41 +63,75 @@ public class UserContext extends Resource {
     private static final long serialVersionUID = 5891055316807633786L;
 
     /**
-     * Generate the user context from the json string used in the the database
-     * end.
-     *
-     * @return user context object.
-     */
-    @JsonIgnore
-    public static UserContext getObjectFromBackendJson(final String json)
-            throws IllegalArgumentException {
-        UserContext userContext = null;
-        try {
-            final ObjectMapper mapper = new ObjectMapper();
-            final JsonNode rootNode = mapper.readTree(json);
-            // TODO manipulate tree
-            userContext = mapper.treeToValue(rootNode, UserContext.class);
-        } catch (final IOException e) {
-            throw new IllegalArgumentException(e.getMessage());
-        }
-        return userContext;
-    }
-
-    /**
-     * Generate the user context from the json string used in the the front end.
-     * Sets public: false and owner: null.
+     * Generate the user context from the json string used in the front or back
+     * end. Sets public: false and owner: null.
      *
      * @return user context object.
      */
     @JsonIgnore
     public static UserContext getObjectFromJson(final String json) throws IllegalArgumentException {
-        UserContext userContext = null;
+        // User context to build from tree
+        final UserContext userContext = new UserContext();
         try {
+            // Get tree from json.
             final ObjectMapper mapper = new ObjectMapper();
             final JsonNode rootNode = mapper.readTree(json);
-            // TODO manipulate tree
-            userContext = mapper.treeToValue(rootNode, UserContext.class);
-        } catch (final IOException e) {
+            final ObjectNode rootObject = (ObjectNode) rootNode;
+
+            // get owner and public if available.
+            final JsonNode owner = rootObject.get("owner");
+            if ((owner != null) && !(owner instanceof NullNode)) {
+                userContext.setOwner(owner.textValue());
+            }
+            final JsonNode publicField = rootObject.get("public");
+            if ((publicField != null) && !(publicField instanceof NullNode)) {
+                userContext.setPublic(publicField.booleanValue());
+            }
+
+            // Iterate over contexts and create corresponding context objects.
+            final Iterator<String> contextIterator = rootObject.fieldNames();
+            while (contextIterator.hasNext()) {
+                final String contextID = contextIterator.next();
+                if (!contextID.equals("owner") && !contextID.equals("public")) {
+                    final Context context = new Context();
+                    userContext.addContext(context);
+                    context.setId(contextID);
+                    final ObjectNode contextNode = (ObjectNode) rootObject.get(contextID);
+                    context.setName(contextNode.get("name").textValue());
+
+                    // add preference objects
+                    final ObjectNode preferences = (ObjectNode) contextNode.get("preferences");
+                    final Iterator<String> preferenceIterator = preferences.fieldNames();
+                    while (preferenceIterator.hasNext()) {
+                        final String preferenceKey = preferenceIterator.next();
+                        final Preference preference = new Preference();
+                        context.addPreference(preference);
+                        preference.setKey(preferenceKey);
+                        preference.setValue(preferences.get(preferenceKey).textValue());
+                    }
+
+                    // add condition objects
+                    final JsonNode conditions = contextNode.get("conditions");
+                    if ((conditions != null) && !(conditions instanceof NullNode)) {
+                        final ArrayNode conditionsArray = (ArrayNode) conditions;
+                        final Iterator<JsonNode> conditionsIterator = conditionsArray.iterator();
+                        while (conditionsIterator.hasNext()) {
+                            final ObjectNode conditionNode = (ObjectNode) conditionsIterator.next();
+                            final Condition condition = new Condition();
+                            context.addCondition(condition);
+                            condition.setType(conditionNode.get("type").textValue());
+                            final List<Operand> operandList = new ArrayList<>();
+
+                            // add operands.
+                            final ArrayNode operands = (ArrayNode) conditionNode.get("operands");
+                            UserContext.recursiveOperandCreation(operandList, operands);
+                            condition.setOperands(operandList);
+                        }
+                    }
+
+                }
+            }
+        } catch (IOException | ClassCastException e) {
             throw new IllegalArgumentException(e.getMessage());
         }
         return userContext;
@@ -181,6 +217,39 @@ public class UserContext extends Resource {
             }
         }
         return true;
+    }
+
+    /**
+     * Used in getObjectFromJson to generate operands.
+     *
+     * @param operandList
+     * @param operands
+     */
+    private static void recursiveOperandCreation(final List<Operand> operandList,
+            final ArrayNode operands) throws IOException, JsonParseException, ClassCastException {
+        final Iterator<JsonNode> operandsIterator = operands.iterator();
+        while (operandsIterator.hasNext()) {
+            final JsonNode operand = operandsIterator.next();
+
+            // Check if condition or operand level.
+            if (operand instanceof TextNode) {
+                // operand level.
+                operandList.add(new Operand(operand.textValue()));
+            } else {
+
+                // condition level
+                final Condition subCondition = new Condition();
+                subCondition.setType(operand.get("type").textValue());
+                operandList.add(subCondition);
+
+                // recursion to add operands to sub condition.
+                final List<Operand> subConditionOperandList = new ArrayList<Operand>();
+                final ArrayNode subOperands = (ArrayNode) operand.get("operands");
+                UserContext.recursiveOperandCreation(subConditionOperandList, subOperands);
+                subCondition.setOperands(subConditionOperandList);
+
+            }
+        }
     }
 
     private List<Context> contexts;
