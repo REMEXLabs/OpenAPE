@@ -208,7 +208,7 @@ public class DatabaseConnection implements ServerMonitorListener {
 
     /**
      * Generate store able Document from database object.
-     * 
+     *
      * @param type
      * @param databaseObject
      * @return

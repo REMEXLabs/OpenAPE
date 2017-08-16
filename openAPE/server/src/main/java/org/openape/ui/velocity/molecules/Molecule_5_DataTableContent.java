@@ -91,9 +91,10 @@ public class Molecule_5_DataTableContent {
             }
 
             tableContent += "<tr>" + "<td id='tdEnvironmentContextName_" + environmentContext[0]
-                    + "'>" + environmentContext[0] + "</td>" + "<td id='"+environmentContext[4]+"'>" + environmentContext[1]
-                    + "</td>" + "<td>" + environmentContext[3] + "</td>" + "<td>"
-                    + environmentContext[2] + "</td>" + "<td>" + buttons + "</td></tr>";
+                    + "'>" + environmentContext[0] + "</td>" + "<td id='" + environmentContext[4]
+                    + "'>" + environmentContext[1] + "</td>" + "<td>" + environmentContext[3]
+                    + "</td>" + "<td>" + environmentContext[2] + "</td>" + "<td>" + buttons
+                    + "</td></tr>";
         }
 
         return tableContent;
@@ -129,9 +130,10 @@ public class Molecule_5_DataTableContent {
             }
 
             tableContent += "<tr>" + "<td id='tdEquipmentContextName_" + equipmentkContext[0]
-                    + "'>" + equipmentkContext[0] + "</td>" + "<td id='"+equipmentkContext[4]+"'>" + equipmentkContext[1]
-                    + "</td>" + "<td>" + equipmentkContext[3] + "</td>" + "<td>"
-                    + equipmentkContext[2] + "</td>" + "<td>" + buttons + "</td></tr>";
+                    + "'>" + equipmentkContext[0] + "</td>" + "<td id='" + equipmentkContext[4]
+                    + "'>" + equipmentkContext[1] + "</td>" + "<td>" + equipmentkContext[3]
+                    + "</td>" + "<td>" + equipmentkContext[2] + "</td>" + "<td>" + buttons
+                    + "</td></tr>";
         }
 
         return tableContent;
@@ -180,9 +182,9 @@ public class Molecule_5_DataTableContent {
             }
 
             tableContent += "<tr>" + "<td id='tdTaskContextName_" + taskContext[0] + "'>"
-                    + taskContext[0] + "</td>" + "<td id='"+taskContext[4]+"'>" + taskContext[1] + "</td>" + "<td>"
-                    + taskContext[3] + "</td>" + "<td>" + taskContext[2] + "</td>" + "<td>"
-                    + buttons + "</td></tr>";
+                    + taskContext[0] + "</td>" + "<td id='" + taskContext[4] + "'>"
+                    + taskContext[1] + "</td>" + "<td>" + taskContext[3] + "</td>" + "<td>"
+                    + taskContext[2] + "</td>" + "<td>" + buttons + "</td></tr>";
         }
 
         return tableContent;
@@ -218,9 +220,9 @@ public class Molecule_5_DataTableContent {
             }
 
             tableContent += "<tr>" + "<td id='tdUserContextName_" + userContext[1] + "'>"
-                    + userContext[1] + "</td>" + "<td id='"+userContext[4]+"'>" + userContext[0] + "</td>" + "<td>"
-                    + userContext[3] + "</td>" + "<td>" + userContext[2] + "</td>" + "<td>"
-                    + buttons + " </td></tr>";
+                    + userContext[1] + "</td>" + "<td id='" + userContext[4] + "'>"
+                    + userContext[0] + "</td>" + "<td>" + userContext[3] + "</td>" + "<td>"
+                    + userContext[2] + "</td>" + "<td>" + buttons + " </td></tr>";
         }
 
         return tableContent;

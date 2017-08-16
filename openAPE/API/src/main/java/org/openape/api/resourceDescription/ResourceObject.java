@@ -57,6 +57,7 @@ public class ResourceObject extends Resource {
         return resourceFolderPath + File.separator + this.getOwnerId();
     }
 
+    @Override
     @XmlAttribute(name = "id")
     public String getId() {
         return this.id;
@@ -92,6 +93,7 @@ public class ResourceObject extends Resource {
         this.fileName = fileName;
     }
 
+    @Override
     public void setId(final String id) {
         this.id = id;
     }

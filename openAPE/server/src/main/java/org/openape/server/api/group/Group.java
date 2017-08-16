@@ -71,7 +71,8 @@ public class Group extends DatabaseObject {
      * @param name
      *            the name of the group. It must not be null or empty.
      * @param description
-     *            the description of the group. It is optional. Thus it can be null, but must not be empty!
+     *            the description of the group. It is optional. Thus it can be
+     *            null, but must not be empty!
      * @param members
      *            list with the members of this the group. If the group has no
      *            member(s) it can be empty but not null.
@@ -89,12 +90,14 @@ public class Group extends DatabaseObject {
      * @param name
      *            the name of the group. It must not be null or empty.
      * @param description
-     *            the description of the group. It is optional. Thus it can be null, but must not be empty!
+     *            the description of the group. It is optional. Thus it can be
+     *            null, but must not be empty!
      * @param members
      *            list with the members of this the group. If the group has no
      *            member(s) it can be empty but not null.
      */
-    public Group(final String id, final String name, final String description, final List<GroupMember> members) {
+    public Group(final String id, final String name, final String description,
+            final List<GroupMember> members) {
         this.setId(id);
         this.setName(name);
         this.setGroupDescription(description);
@@ -200,7 +203,8 @@ public class Group extends DatabaseObject {
     }
 
     /**
-     * Setter for the group's description. The group description is optional. Thus it can be set to null.
+     * Setter for the group's description. The group description is optional.
+     * Thus it can be set to null.
      *
      * @param description
      *            the group's description. It can be null but must not be empty!

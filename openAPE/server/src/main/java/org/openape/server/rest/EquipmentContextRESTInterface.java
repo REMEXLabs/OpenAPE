@@ -17,8 +17,21 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class EquipmentContextRESTInterface extends SuperRestInterface {
-    private static String createReturnString(final Request req, final EquipmentContext  equipmentContext)
-            throws IOException, IllegalArgumentException {
+    private static EquipmentContext createRequestObejct(final Request req)
+            throws IllegalArgumentException, IOException {
+        final String contentType = req.contentType();
+        if (contentType == MediaType.APPLICATION_JSON) {
+            return (EquipmentContext) SuperRestInterface.extractObjectFromRequest(req,
+                    EquipmentContext.class);
+        } else if (contentType == MediaType.APPLICATION_XML) {
+            return EquipmentContext.getObjectFromXml(req.body());
+        } else {
+            throw new IllegalArgumentException("wrong content-type");
+        }
+    }
+
+    private static String createReturnString(final Request req,
+            final EquipmentContext equipmentContext) throws IOException, IllegalArgumentException {
         final String contentType = req.contentType();
         if (contentType == MediaType.APPLICATION_JSON) {
             final ObjectMapper mapper = new ObjectMapper();
@@ -31,18 +44,6 @@ public class EquipmentContextRESTInterface extends SuperRestInterface {
         }
     }
 
-    private static EquipmentContext createRequestObejct(final Request req)
-            throws IllegalArgumentException, IOException {
-        final String contentType = req.contentType();
-        if (contentType == MediaType.APPLICATION_JSON) {
-            return (EquipmentContext) SuperRestInterface.extractObjectFromRequest(req, EquipmentContext.class);
-        } else if (contentType == MediaType.APPLICATION_XML) {
-            return EquipmentContext.getObjectFromXml(req.body());
-        } else {
-            throw new IllegalArgumentException("wrong content-type");
-        }
-    }
-    
     public static void setupEquipmentContextRESTInterface(
             final EquipmentContextRequestHandler requestHandler, final AuthService auth) {
 
@@ -67,7 +68,8 @@ public class EquipmentContextRESTInterface extends SuperRestInterface {
                     try {
                         // Try to map the received json object to an
                         // EquipmentContext object.
-                        final EquipmentContext receivedEquipmentContext = createRequestObejct(req);
+                        final EquipmentContext receivedEquipmentContext = EquipmentContextRESTInterface
+                                .createRequestObejct(req);
                         // Make sure to set the id of the authenticated user as
                         // the ownerId
                         receivedEquipmentContext.setOwner(auth.getAuthenticatedUser(req, res)
@@ -113,7 +115,8 @@ public class EquipmentContextRESTInterface extends SuperRestInterface {
                                 equipmentContext.isPublic());
                         res.status(SuperRestInterface.HTTP_STATUS_OK);
                         res.type(Messages.getString("EquipmentContextRESTInterface.JsonMimeType")); //$NON-NLS-1$
-                        final String jsonData = createReturnString(req, equipmentContext);
+                        final String jsonData = EquipmentContextRESTInterface.createReturnString(
+                                req, equipmentContext);
                         return jsonData;
                         // if not return corresponding error status.
                     } catch (final IllegalArgumentException e) {
@@ -138,7 +141,8 @@ public class EquipmentContextRESTInterface extends SuperRestInterface {
                 final String equipmentContextId = req.params(Messages
                         .getString("EquipmentContextRESTInterface.IDParam")); //$NON-NLS-1$
                 try {
-                    final EquipmentContext receivedEquipmentContext = createRequestObejct(req);
+                    final EquipmentContext receivedEquipmentContext = EquipmentContextRESTInterface
+                            .createRequestObejct(req);
                     // Test the object for validity.
                     if (!receivedEquipmentContext.isValid()) {
                         res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);

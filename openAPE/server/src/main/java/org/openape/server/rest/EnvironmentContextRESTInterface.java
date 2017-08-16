@@ -17,8 +17,22 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class EnvironmentContextRESTInterface extends SuperRestInterface {
-    private static String createReturnString(final Request req, final EnvironmentContext  environmentContext)
-            throws IOException, IllegalArgumentException {
+    private static EnvironmentContext createRequestObejct(final Request req)
+            throws IllegalArgumentException, IOException {
+        final String contentType = req.contentType();
+        if (contentType == MediaType.APPLICATION_JSON) {
+            return (EnvironmentContext) SuperRestInterface.extractObjectFromRequest(req,
+                    EnvironmentContext.class);
+        } else if (contentType == MediaType.APPLICATION_XML) {
+            return EnvironmentContext.getObjectFromXml(req.body());
+        } else {
+            throw new IllegalArgumentException("wrong content-type");
+        }
+    }
+
+    private static String createReturnString(final Request req,
+            final EnvironmentContext environmentContext) throws IOException,
+            IllegalArgumentException {
         final String contentType = req.contentType();
         if (contentType == MediaType.APPLICATION_JSON) {
             final ObjectMapper mapper = new ObjectMapper();
@@ -31,17 +45,6 @@ public class EnvironmentContextRESTInterface extends SuperRestInterface {
         }
     }
 
-    private static EnvironmentContext createRequestObejct(final Request req)
-            throws IllegalArgumentException, IOException {
-        final String contentType = req.contentType();
-        if (contentType == MediaType.APPLICATION_JSON) {
-            return (EnvironmentContext) SuperRestInterface.extractObjectFromRequest(req, EnvironmentContext.class);
-        } else if (contentType == MediaType.APPLICATION_XML) {
-            return EnvironmentContext.getObjectFromXml(req.body());
-        } else {
-            throw new IllegalArgumentException("wrong content-type");
-        }
-    }
     public static void setupEnvironmentContextRESTInterface(
             final EnvironmentContextRequestHandler requestHandler, final AuthService auth) {
 
@@ -68,7 +71,8 @@ public class EnvironmentContextRESTInterface extends SuperRestInterface {
                 try {
                     // Try to map the received json object to an
                     // EnvironmentContext object.
-                    final EnvironmentContext receivedEnvironmentContext = createRequestObejct(req);
+                    final EnvironmentContext receivedEnvironmentContext = EnvironmentContextRESTInterface
+                            .createRequestObejct(req);
                     // Make sure to set the id of the authenticated user as
                     // the ownerId
                     receivedEnvironmentContext
@@ -114,7 +118,8 @@ public class EnvironmentContextRESTInterface extends SuperRestInterface {
                                 environmentContext.isPublic());
                         res.status(SuperRestInterface.HTTP_STATUS_OK);
                         res.type(Messages.getString("EnvironmentContextRESTInterface.JsonMimeType")); //$NON-NLS-1$
-                        final String jsonData = createReturnString(req, environmentContext);
+                        final String jsonData = EnvironmentContextRESTInterface.createReturnString(
+                                req, environmentContext);
                         return jsonData;
                         // if not return corresponding error status.
                     } catch (final IllegalArgumentException e) {
@@ -140,7 +145,8 @@ public class EnvironmentContextRESTInterface extends SuperRestInterface {
                 final String environmentContextId = req.params(Messages
                         .getString("EnvironmentContextRESTInterface.IDParam")); //$NON-NLS-1$
                 try {
-                    final EnvironmentContext receivedEnvironmentContext = createRequestObejct(req);
+                    final EnvironmentContext receivedEnvironmentContext = EnvironmentContextRESTInterface
+                            .createRequestObejct(req);
                     // Test the object for validity.
                     if (!receivedEnvironmentContext.isValid()) {
                         res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
