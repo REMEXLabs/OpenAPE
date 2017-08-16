@@ -23,6 +23,7 @@ import java.io.StringWriter;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.xml.XMLConstants;
@@ -48,6 +49,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+import com.fasterxml.jackson.databind.node.NullNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 /**
  * User context object defined in 7.2.1
@@ -230,16 +235,11 @@ public class UserContext extends Resource {
      * @return json string.
      */
     @JsonIgnore
-    public String getJson() throws IOException {
+    public String getForntEndJson() throws IOException {
         String jsonString = null;
         try {
-            final ObjectMapper mapper = new ObjectMapper();
-            final JsonNode rootNode = mapper.valueToTree(this);
-            // TODO manipulate tree
-            final StringWriter stringWriter = new StringWriter();
-            mapper.writeValue(stringWriter, rootNode);
-            jsonString = stringWriter.toString();
-        } catch (final JsonProcessingException e) {
+            jsonString = this.getJson(true);
+        } catch (final ClassCastException e) {
             throw new IOException(e.getMessage());
         }
         return jsonString;
@@ -254,13 +254,8 @@ public class UserContext extends Resource {
     public String getBackEndJson() throws IOException {
         String jsonString = null;
         try {
-            final ObjectMapper mapper = new ObjectMapper();
-            final JsonNode rootNode = mapper.valueToTree(this);
-            // TODO manipulate tree
-            final StringWriter stringWriter = new StringWriter();
-            mapper.writeValue(stringWriter, rootNode);
-            jsonString = stringWriter.toString();
-        } catch (final JsonProcessingException e) {
+            jsonString = this.getJson(false);
+        } catch (final ClassCastException e) {
             throw new IOException(e.getMessage());
         }
         return jsonString;
@@ -296,4 +291,118 @@ public class UserContext extends Resource {
         this.contexts = contexts;
     }
 
+    /**
+     * Generates json string from Object.
+     * 
+     * @param frontEnd
+     *            if true public and owner field are excluded, else they are
+     *            included.
+     * @throws ClassCastException
+     * @throws IOException, JsonProcessingException 
+     */
+    private String getJson(boolean frontEnd) throws ClassCastException, IOException {
+        JsonNodeFactory jsonNodeFactory = new JsonNodeFactory(false);
+        // get root node.
+        final ObjectMapper mapper = new ObjectMapper();
+        JsonNode rootNode = mapper.valueToTree(this);
+        ObjectNode rootObject = (ObjectNode) rootNode;
+
+        if (frontEnd) {
+            // remove owner attributes
+            rootObject.remove("public");
+            rootObject.remove("owner");
+        }
+
+        // get context list.
+        JsonNode contextNode = rootNode.get("contexts");
+        ArrayNode contextArray = (ArrayNode) contextNode;
+        Iterator<JsonNode> contestIterator = contextArray.iterator();
+
+        // Replace context list by context fields with id as key.
+        rootObject.remove("contexts");
+        while (contestIterator.hasNext()) {
+            JsonNode context = contestIterator.next();
+            ObjectNode contextObject = (ObjectNode) context;
+            String id = contextObject.get("id").textValue();
+            contextObject.remove("id");
+            rootObject.set(id, contextObject);
+
+            // get preferences
+            JsonNode preferences = contextObject.get("preferences");
+            ArrayNode preferencesArray = (ArrayNode) preferences;
+            Iterator<JsonNode> pereferenceIterator = preferencesArray.iterator();
+
+            // Format preferences
+            ObjectNode newPreferences = new ObjectNode(jsonNodeFactory);
+            while (pereferenceIterator.hasNext()) {
+                JsonNode preference = pereferenceIterator.next();
+                String key = preference.get("key").textValue();
+                String value = preference.get("value").textValue();
+                newPreferences.put(key, value);
+            }
+            contextObject.remove("preferences");
+            contextObject.set("preferences", newPreferences);
+
+            // get conditions
+            JsonNode conditions = contextObject.get("conditions");
+            if (conditions != null && !(conditions instanceof NullNode)) {
+                ArrayNode conditionsArray = (ArrayNode) conditions;
+                Iterator<JsonNode> conditionsIterator = conditionsArray.iterator();
+
+                // Remove value field from root condition
+                while (conditionsIterator.hasNext()) {
+                    JsonNode condition = conditionsIterator.next();
+                    ObjectNode conditionObject = (ObjectNode) condition;
+                    conditionObject.remove("value");
+
+                    // Format operands
+                    ArrayNode operands = (ArrayNode) conditionObject.get("operands");
+                    recursiveOperandFormatting(operands);
+                }
+            }
+        }
+        final StringWriter stringWriter = new StringWriter();
+        mapper.writeValue(stringWriter, rootObject);
+        String jsonString = stringWriter.toString();
+        return jsonString;
+    }
+
+    /**
+     * Used by getJson to recursively format the conditions.
+     * 
+     * @param operands
+     * @throws ClassCastException
+     */
+    private void recursiveOperandFormatting(ArrayNode operands) throws ClassCastException {
+        // If the operands on this level are no conditions, store values to add
+        // to operands.
+        List<String> operandValues = new ArrayList<>();
+        Boolean valueLevel = false;
+        Iterator<JsonNode> operandsIterator = operands.iterator();
+        while (operandsIterator.hasNext()) {
+            JsonNode opernad = operandsIterator.next();
+            ObjectNode operandObject = (ObjectNode) opernad;
+            if (operandObject.get("value") instanceof NullNode) {
+                // operands on this level are conditions.
+                operandObject.remove("value");
+                ArrayNode operandsOfOperand = (ArrayNode) opernad.get("operands");
+                // recursion
+                recursiveOperandFormatting(operandsOfOperand);
+            } else {
+                // operands on this level are values.
+                valueLevel = true;
+                String value = operandObject.get("value").textValue();
+                operandValues.add(value);
+            }
+
+        }
+        // if level with values and not conditions, revome all operands and add
+        // values as strings.
+        if (valueLevel) {
+            operands.removeAll();
+            for (String value : operandValues) {
+                operands.add(value);
+            }
+        }
+    }
 }

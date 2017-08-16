@@ -9,29 +9,18 @@
    "dark":{
       "conditions":[
          {
-            "value":null,
             "operands":[
                {
-                  "value":null,
                   "operands":[
-                     {
-                        "value":"http://registry.gpii.net/common/env/visual.luminance"
-                     },
-                     {
-                        "value":"0"
-                     }
+                     "http://registry.gpii.net/common/env/visual.luminance",
+                     "0"
                   ],
                   "type":"ge"
                },
                {
-                  "value":null,
                   "operands":[
-                     {
-                        "value":"http://registry.gpii.net/common/env/visual.luminance"
-                     },
-                     {
-                        "value":"200"
-                     }
+                     "http://registry.gpii.net/common/env/visual.luminance",
+                     "200"
                   ],
                   "type":"le"
                }
