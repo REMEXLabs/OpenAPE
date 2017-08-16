@@ -63,7 +63,7 @@ public class TestDatabaseConnection {
         final ObjectMapper mapper = new ObjectMapper();
         try {
             final String jsonData = mapper.writeValueAsString(userContext);
-            //System.out.println(jsonData);
+            // System.out.println(jsonData);
         } catch (final JsonProcessingException e) {
             e.printStackTrace();
         }
