@@ -134,6 +134,7 @@ public class UserContext extends Resource {
         } catch (IOException | ClassCastException e) {
             throw new IllegalArgumentException(e.getMessage());
         }
+        userContext.validate();
         return userContext;
     }
 
@@ -185,6 +186,7 @@ public class UserContext extends Resource {
             e.printStackTrace();
             throw new IllegalArgumentException(e.getMessage());
         }
+        userContext.validate();
         return userContext;
     }
 
@@ -473,5 +475,17 @@ public class UserContext extends Resource {
 
     public void setContexts(final List<Context> contexts) {
         this.contexts = contexts;
+    }
+
+    /**
+     * Validate Conditions
+     *
+     * @throws IllegalArgumentException
+     */
+    @JsonIgnore
+    private void validate() throws IllegalArgumentException {
+        for (final Context context : this.contexts) {
+            context.vaidate();
+        }
     }
 }

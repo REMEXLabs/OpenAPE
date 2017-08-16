@@ -23,7 +23,10 @@ import javax.xml.bind.annotation.XmlElement;
 
 import org.openape.api.Messages;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class Condition extends Operand {
+    private static final String CONDITION_MUST_HAVE_MORE_THAN_0_OPERANDS = "Condition must have more than 0 operands.";
     private static final long serialVersionUID = -3346559128113703706L;
     /**
      * Type must be 'not', 'eq', 'ne', 'lt', 'le', 'gt', 'ge', and or 'or'. <br>
@@ -170,6 +173,20 @@ public class Condition extends Operand {
             this.checkOpernadListLength(type, this.getOperands());
         }
         this.type = type;
+    }
+
+    /**
+     * validate condition throws {@link IllegalArgumentException} if not valid.
+     *
+     * @throws IllegalArgumentException
+     */
+    @JsonIgnore
+    public void validate() throws IllegalArgumentException {
+        this.checkType(this.getType());
+        this.checkOpernadListLength(this.getType(), this.getOperands());
+        if (this.operands.size() == 0) {
+            throw new IllegalArgumentException(Condition.CONDITION_MUST_HAVE_MORE_THAN_0_OPERANDS);
+        }
     }
 
 }

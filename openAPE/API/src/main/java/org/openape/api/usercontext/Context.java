@@ -125,6 +125,22 @@ public class Context implements Serializable {
         return this.preferences;
     }
 
+    /**
+     * validates conditions recursively.
+     * 
+     * @param operands
+     */
+    private void recursiveConditionValidation(final List<Operand> operands) {
+        for (final Operand operand : operands) {
+            if (operand instanceof Condition) {
+                final Condition condition = (Condition) operand;
+                condition.validate();
+                final List<Operand> subOperands = condition.getOperands();
+                this.recursiveConditionValidation(subOperands);
+            }
+        }
+    }
+
     public void setConditions(final List<Condition> conditions) {
         this.conditions = conditions;
     }
@@ -139,6 +155,21 @@ public class Context implements Serializable {
 
     public void setPreferences(final List<Preference> preferences) {
         this.preferences = preferences;
+    }
+
+    /**
+     * validate all conditions
+     * 
+     * @throws IllegalArgumentException
+     */
+    public void vaidate() throws IllegalArgumentException {
+        if (this.conditions != null) {
+            for (final Condition condition : this.conditions) {
+                condition.validate();
+                final List<Operand> operands = condition.getOperands();
+                this.recursiveConditionValidation(operands);
+            }
+        }
     }
 
 }
