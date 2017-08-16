@@ -44,10 +44,8 @@ public class ListingManager {
                 .forEach(
                         property -> property
                                 .getDescriptors()
-                                .keySet()
                                 .forEach(
-                                        key -> ListingManager.query += property.getDescriptors()
-                                                .get(key)));
+                                        descriptor -> ListingManager.query += descriptor.getValue()));
         // get all resource names mentioned in the query and add the files into
         // the resources.
         for (final String name : allResourceNames) {
