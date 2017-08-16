@@ -54,8 +54,7 @@ public class Property implements Serializable {
                 // if key fits check if value fits.
                 if (baseDescriptor.getName().equals(compareDescriptor.getName())) {
                     match = true;
-                    if (!baseDescriptor.getValue()
-                            .equals(compareDescriptor.getValue())) {
+                    if (!baseDescriptor.getValue().equals(compareDescriptor.getValue())) {
                         return false;
                     }
                 }
@@ -82,7 +81,7 @@ public class Property implements Serializable {
         this.value = value;
     }
 
-    public void addDescriptor(Descriptor descriptor) {
+    public void addDescriptor(final Descriptor descriptor) {
         this.descriptors.add(descriptor);
     }
 
