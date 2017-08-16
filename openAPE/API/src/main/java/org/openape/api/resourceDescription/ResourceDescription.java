@@ -16,14 +16,20 @@
 
 package org.openape.api.resourceDescription;
 
+import java.io.IOException;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.openape.api.Property;
 import org.openape.api.Resource;
+import org.openape.api.equipmentcontext.EquipmentContext;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -63,6 +69,26 @@ public class ResourceDescription extends Resource {
         }
         return true;
     }
+    /**
+     * Generate the xml representation from the object used for the front end.
+     *
+     * @return xml string.
+     */
+    @JsonIgnore
+    public String getXML() throws IOException {
+        String xmlString = null;
+        try {
+            final JAXBContext context = JAXBContext.newInstance(ResourceDescription.class);
+            final Marshaller marshaller = context.createMarshaller();
+            final StringWriter stringWriter = new StringWriter();
+            marshaller.marshal(this, stringWriter);
+            xmlString = stringWriter.toString();
+        } catch (final JAXBException e) {
+            throw new IOException(e.getMessage());
+        }
+        return xmlString;
+    }
+
 
     private List<Property> propertys = new ArrayList<Property>();
 
