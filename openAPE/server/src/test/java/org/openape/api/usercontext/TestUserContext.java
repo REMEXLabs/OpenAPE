@@ -71,7 +71,32 @@ public class TestUserContext {
             userContext.setPublic(publicField.booleanValue());
         }
         
-        
+        //Iterate over contexts and create corresponding context objects.
+        Iterator<String> contextIterator = rootObject.fieldNames();
+        while (contextIterator.hasNext()) {
+            String contextID = contextIterator.next();
+            if(!contextID.equals("owner") && !contextID.equals("public")) {
+                Context context = new Context();
+                userContext.addContext(context);
+                context.setId(contextID);
+                ObjectNode contextNode = (ObjectNode) rootObject.get(contextID);
+                context.setName(contextNode.get("name").textValue());
+                
+                //add preference objects
+                ObjectNode preferences = (ObjectNode) contextNode.get("preferences");
+                Iterator<String> preferenceIterator = preferences.fieldNames();
+                while (preferenceIterator.hasNext()) {
+                    String preferenceKey = preferenceIterator.next();
+                    Preference preference = new Preference();
+                    context.addPreference(preference);
+                    preference.setKey(preferenceKey);
+                    preference.setValue(preferences.get(preferenceKey).textValue());
+                }
+                
+                //add condition objects
+                
+            }
+        }
         
 
 //        // get context list.
