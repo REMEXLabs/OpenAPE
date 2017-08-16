@@ -46,7 +46,6 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -62,13 +61,14 @@ public class UserContext extends Resource {
     private static final long serialVersionUID = 5891055316807633786L;
 
     /**
-     * Generate the user context from the json string used in the the front end.
-     * Sets public: false and owner: null.
+     * Generate the user context from the json string used in the the database
+     * end.
      *
      * @return user context object.
      */
     @JsonIgnore
-    public static UserContext getObjectFromJson(final String json) throws IllegalArgumentException {
+    public static UserContext getObjectFromBackendJson(final String json)
+            throws IllegalArgumentException {
         UserContext userContext = null;
         try {
             final ObjectMapper mapper = new ObjectMapper();
@@ -82,14 +82,13 @@ public class UserContext extends Resource {
     }
 
     /**
-     * Generate the user context from the json string used in the the database
-     * end.
+     * Generate the user context from the json string used in the the front end.
+     * Sets public: false and owner: null.
      *
      * @return user context object.
      */
     @JsonIgnore
-    public static UserContext getObjectFromBackendJson(final String json)
-            throws IllegalArgumentException {
+    public static UserContext getObjectFromJson(final String json) throws IllegalArgumentException {
         UserContext userContext = null;
         try {
             final ObjectMapper mapper = new ObjectMapper();
@@ -210,6 +209,22 @@ public class UserContext extends Resource {
     }
 
     /**
+     * Generate the json representation from the object used for the database.
+     *
+     * @return json string.
+     */
+    @JsonIgnore
+    public String getBackEndJson() throws IOException {
+        String jsonString = null;
+        try {
+            jsonString = this.getJson(false);
+        } catch (final ClassCastException e) {
+            throw new IOException(e.getMessage());
+        }
+        return jsonString;
+    }
+
+    /**
      * @param id
      * @return null if not found.
      */
@@ -246,18 +261,79 @@ public class UserContext extends Resource {
     }
 
     /**
-     * Generate the json representation from the object used for the database.
+     * Generates json string from Object.
      *
-     * @return json string.
+     * @param frontEnd
+     *            if true public and owner field are excluded, else they are
+     *            included.
+     * @throws ClassCastException
+     * @throws IOException
+     *             , JsonProcessingException
      */
-    @JsonIgnore
-    public String getBackEndJson() throws IOException {
-        String jsonString = null;
-        try {
-            jsonString = this.getJson(false);
-        } catch (final ClassCastException e) {
-            throw new IOException(e.getMessage());
+    private String getJson(final boolean frontEnd) throws ClassCastException, IOException {
+        final JsonNodeFactory jsonNodeFactory = new JsonNodeFactory(false);
+        // get root node.
+        final ObjectMapper mapper = new ObjectMapper();
+        final JsonNode rootNode = mapper.valueToTree(this);
+        final ObjectNode rootObject = (ObjectNode) rootNode;
+
+        if (frontEnd) {
+            // remove owner attributes
+            rootObject.remove("public");
+            rootObject.remove("owner");
         }
+
+        // get context list.
+        final JsonNode contextNode = rootNode.get("contexts");
+        final ArrayNode contextArray = (ArrayNode) contextNode;
+        final Iterator<JsonNode> contestIterator = contextArray.iterator();
+
+        // Replace context list by context fields with id as key.
+        rootObject.remove("contexts");
+        while (contestIterator.hasNext()) {
+            final JsonNode context = contestIterator.next();
+            final ObjectNode contextObject = (ObjectNode) context;
+            final String id = contextObject.get("id").textValue();
+            contextObject.remove("id");
+            rootObject.set(id, contextObject);
+
+            // get preferences
+            final JsonNode preferences = contextObject.get("preferences");
+            final ArrayNode preferencesArray = (ArrayNode) preferences;
+            final Iterator<JsonNode> pereferenceIterator = preferencesArray.iterator();
+
+            // Format preferences
+            final ObjectNode newPreferences = new ObjectNode(jsonNodeFactory);
+            while (pereferenceIterator.hasNext()) {
+                final JsonNode preference = pereferenceIterator.next();
+                final String key = preference.get("key").textValue();
+                final String value = preference.get("value").textValue();
+                newPreferences.put(key, value);
+            }
+            contextObject.remove("preferences");
+            contextObject.set("preferences", newPreferences);
+
+            // get conditions
+            final JsonNode conditions = contextObject.get("conditions");
+            if ((conditions != null) && !(conditions instanceof NullNode)) {
+                final ArrayNode conditionsArray = (ArrayNode) conditions;
+                final Iterator<JsonNode> conditionsIterator = conditionsArray.iterator();
+
+                // Remove value field from root condition
+                while (conditionsIterator.hasNext()) {
+                    final JsonNode condition = conditionsIterator.next();
+                    final ObjectNode conditionObject = (ObjectNode) condition;
+                    conditionObject.remove("value");
+
+                    // Format operands
+                    final ArrayNode operands = (ArrayNode) conditionObject.get("operands");
+                    this.recursiveOperandFormatting(operands);
+                }
+            }
+        }
+        final StringWriter stringWriter = new StringWriter();
+        mapper.writeValue(stringWriter, rootObject);
+        final String jsonString = stringWriter.toString();
         return jsonString;
     }
 
@@ -287,111 +363,31 @@ public class UserContext extends Resource {
         return true;
     }
 
-    public void setContexts(final List<Context> contexts) {
-        this.contexts = contexts;
-    }
-
-    /**
-     * Generates json string from Object.
-     * 
-     * @param frontEnd
-     *            if true public and owner field are excluded, else they are
-     *            included.
-     * @throws ClassCastException
-     * @throws IOException, JsonProcessingException 
-     */
-    private String getJson(boolean frontEnd) throws ClassCastException, IOException {
-        JsonNodeFactory jsonNodeFactory = new JsonNodeFactory(false);
-        // get root node.
-        final ObjectMapper mapper = new ObjectMapper();
-        JsonNode rootNode = mapper.valueToTree(this);
-        ObjectNode rootObject = (ObjectNode) rootNode;
-
-        if (frontEnd) {
-            // remove owner attributes
-            rootObject.remove("public");
-            rootObject.remove("owner");
-        }
-
-        // get context list.
-        JsonNode contextNode = rootNode.get("contexts");
-        ArrayNode contextArray = (ArrayNode) contextNode;
-        Iterator<JsonNode> contestIterator = contextArray.iterator();
-
-        // Replace context list by context fields with id as key.
-        rootObject.remove("contexts");
-        while (contestIterator.hasNext()) {
-            JsonNode context = contestIterator.next();
-            ObjectNode contextObject = (ObjectNode) context;
-            String id = contextObject.get("id").textValue();
-            contextObject.remove("id");
-            rootObject.set(id, contextObject);
-
-            // get preferences
-            JsonNode preferences = contextObject.get("preferences");
-            ArrayNode preferencesArray = (ArrayNode) preferences;
-            Iterator<JsonNode> pereferenceIterator = preferencesArray.iterator();
-
-            // Format preferences
-            ObjectNode newPreferences = new ObjectNode(jsonNodeFactory);
-            while (pereferenceIterator.hasNext()) {
-                JsonNode preference = pereferenceIterator.next();
-                String key = preference.get("key").textValue();
-                String value = preference.get("value").textValue();
-                newPreferences.put(key, value);
-            }
-            contextObject.remove("preferences");
-            contextObject.set("preferences", newPreferences);
-
-            // get conditions
-            JsonNode conditions = contextObject.get("conditions");
-            if (conditions != null && !(conditions instanceof NullNode)) {
-                ArrayNode conditionsArray = (ArrayNode) conditions;
-                Iterator<JsonNode> conditionsIterator = conditionsArray.iterator();
-
-                // Remove value field from root condition
-                while (conditionsIterator.hasNext()) {
-                    JsonNode condition = conditionsIterator.next();
-                    ObjectNode conditionObject = (ObjectNode) condition;
-                    conditionObject.remove("value");
-
-                    // Format operands
-                    ArrayNode operands = (ArrayNode) conditionObject.get("operands");
-                    recursiveOperandFormatting(operands);
-                }
-            }
-        }
-        final StringWriter stringWriter = new StringWriter();
-        mapper.writeValue(stringWriter, rootObject);
-        String jsonString = stringWriter.toString();
-        return jsonString;
-    }
-
     /**
      * Used by getJson to recursively format the conditions.
-     * 
+     *
      * @param operands
      * @throws ClassCastException
      */
-    private void recursiveOperandFormatting(ArrayNode operands) throws ClassCastException {
+    private void recursiveOperandFormatting(final ArrayNode operands) throws ClassCastException {
         // If the operands on this level are no conditions, store values to add
         // to operands.
-        List<String> operandValues = new ArrayList<>();
+        final List<String> operandValues = new ArrayList<>();
         Boolean valueLevel = false;
-        Iterator<JsonNode> operandsIterator = operands.iterator();
+        final Iterator<JsonNode> operandsIterator = operands.iterator();
         while (operandsIterator.hasNext()) {
-            JsonNode opernad = operandsIterator.next();
-            ObjectNode operandObject = (ObjectNode) opernad;
+            final JsonNode opernad = operandsIterator.next();
+            final ObjectNode operandObject = (ObjectNode) opernad;
             if (operandObject.get("value") instanceof NullNode) {
                 // operands on this level are conditions.
                 operandObject.remove("value");
-                ArrayNode operandsOfOperand = (ArrayNode) opernad.get("operands");
+                final ArrayNode operandsOfOperand = (ArrayNode) opernad.get("operands");
                 // recursion
-                recursiveOperandFormatting(operandsOfOperand);
+                this.recursiveOperandFormatting(operandsOfOperand);
             } else {
                 // operands on this level are values.
                 valueLevel = true;
-                String value = operandObject.get("value").textValue();
+                final String value = operandObject.get("value").textValue();
                 operandValues.add(value);
             }
 
@@ -400,9 +396,13 @@ public class UserContext extends Resource {
         // values as strings.
         if (valueLevel) {
             operands.removeAll();
-            for (String value : operandValues) {
+            for (final String value : operandValues) {
                 operands.add(value);
             }
         }
+    }
+
+    public void setContexts(final List<Context> contexts) {
+        this.contexts = contexts;
     }
 }
