@@ -215,16 +215,32 @@ div.tab button.active {
 .selected {
   background-color: #64D329; }
 
+.btn-white-red {
+  color: white !important; }
+
 .wrapper {
   min-height: 100%;
   position: relative; }
   .wrapper h1 {
     color: #740a1b;
     font-weight: bold; }
-  .wrapper .body .oneContentBlock {
-    padding: 3em;
-    padding-bottom: 10em;
-    /* Height of the footer */ }
+  .wrapper .body {
+    line-height: 2em;
+    font-size: 18px; }
+    .wrapper .body a {
+      color: #e31134; }
+    .wrapper .body a:hover {
+      text-decoration: underline; }
+    .wrapper .body h3 {
+      color: #9e1616;
+      margin-bottom: 1em;
+      margin-top: 1em; }
+    .wrapper .body p {
+      line-height: 2em; }
+    .wrapper .body .oneContentBlock {
+      padding: 3em;
+      padding-bottom: 10em;
+      /* Height of the footer */ }
 
 html,
 body {

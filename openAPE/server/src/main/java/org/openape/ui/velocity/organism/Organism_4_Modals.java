@@ -306,7 +306,7 @@ public class Organism_4_Modals {
                 + "  <div class='modal-dialog' role='document'>"
                 + "    <div class='modal-content'>"
                 + "      <div class='modal-header' style='background-color:#e31134; color:white;text-align:center;border-bottom: 2px solid #AB112A;'>"
-                + "        <h3 id='exampleModalLongTitle'>Edit "
+                + "        <h3 id='exampleModalLongTitle'>View "
                 + contextName
                 + "</h3>"
                 + "      </div>"

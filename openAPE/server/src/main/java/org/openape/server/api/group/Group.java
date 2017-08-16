@@ -25,12 +25,6 @@ import org.openape.server.database.mongoDB.DatabaseConnection;
  */
 public class Group extends DatabaseObject {
 
-    // *********************************************************************************************************************************************
-    // *********************************************************************************************************************************************
-    // attributes
-    // *********************************************************************************************************************************************
-    // *********************************************************************************************************************************************
-
     /**
      *
      */
@@ -47,6 +41,11 @@ public class Group extends DatabaseObject {
     private String name;
 
     /**
+     * Group's description.
+     */
+    private String description;
+
+    /**
      * Users who are members of the group.
      */
     private List<GroupMember> members;
@@ -55,12 +54,6 @@ public class Group extends DatabaseObject {
      * True if users can assign them self to this group and false if not.
      */
     private boolean openAccess;
-
-    // *********************************************************************************************************************************************
-    // *********************************************************************************************************************************************
-    // constructors
-    // *********************************************************************************************************************************************
-    // *********************************************************************************************************************************************
 
     /**
      * Empty constructor. It is needed for the object mapping in
@@ -77,12 +70,14 @@ public class Group extends DatabaseObject {
      *
      * @param name
      *            the name of the group. It must not be null or empty.
+     * @param description
+     *            the description of the group. It is optional. Thus it can be null, but must not be empty!
      * @param members
      *            list with the members of this the group. If the group has no
      *            member(s) it can be empty but not null.
      */
-    public Group(final String name, final List<GroupMember> members) {
-        this(null, name, members);
+    public Group(final String name, final String description, final List<GroupMember> members) {
+        this(null, name, description, members);
     }
 
     /**
@@ -93,22 +88,19 @@ public class Group extends DatabaseObject {
      *            the id of the group. It must not be null or empty.
      * @param name
      *            the name of the group. It must not be null or empty.
+     * @param description
+     *            the description of the group. It is optional. Thus it can be null, but must not be empty!
      * @param members
      *            list with the members of this the group. If the group has no
      *            member(s) it can be empty but not null.
      */
-    public Group(final String id, final String name, final List<GroupMember> members) {
+    public Group(final String id, final String name, final String description, final List<GroupMember> members) {
         this.setId(id);
         this.setName(name);
+        this.setGroupDescription(description);
         this.setMembers(members);
         this.setOpenAccess(false);
     }
-
-    // *********************************************************************************************************************************************
-    // *********************************************************************************************************************************************
-    // getters and setters
-    // *********************************************************************************************************************************************
-    // *********************************************************************************************************************************************
 
     private boolean executeIsUserAssigend(final String userId, final GroupMembershipStatus state) {
         boolean result = false;
@@ -128,11 +120,21 @@ public class Group extends DatabaseObject {
     }
 
     /**
+     * Getter for the group's description.
+     *
+     * @return the group's description or null
+     */
+    public String getDescription() {
+        return this.description;
+    }
+
+    /**
      * Getter for the group's id.
      *
      * @return the group's id, which is a string. If the group is not already
      *         stored in the database, null can be returned.
      */
+    @Override
     public String getId() {
         return this.id;
     }
@@ -150,7 +152,7 @@ public class Group extends DatabaseObject {
     /**
      * Getter for the group's name.
      *
-     * @return the groups name
+     * @return the group's name
      */
     public String getName() {
         return this.name;
@@ -198,33 +200,26 @@ public class Group extends DatabaseObject {
     }
 
     /**
+     * Setter for the group's description. The group description is optional. Thus it can be set to null.
+     *
+     * @param description
+     *            the group's description. It can be null but must not be empty!
+     */
+    public void setGroupDescription(final String description) {
+        this.description = description;
+    }
+
+    /**
      * Setter for the group's id. It must not be empty and should not be null.
      * Null is only allowed, if the group is not already stored in the database.
      *
      * @param id
      *            the group's id
      */
+    @Override
     public void setId(final String id) {
         this.id = id;
     }
-
-    // *********************************************************************************************************************************************
-    // *********************************************************************************************************************************************
-    // abstract methods
-    // *********************************************************************************************************************************************
-    // *********************************************************************************************************************************************
-
-    // *********************************************************************************************************************************************
-    // *********************************************************************************************************************************************
-    // override methods
-    // *********************************************************************************************************************************************
-    // *********************************************************************************************************************************************
-
-    // *********************************************************************************************************************************************
-    // *********************************************************************************************************************************************
-    // public methods
-    // *********************************************************************************************************************************************
-    // *********************************************************************************************************************************************
 
     /**
      * Setter for the group's members. If the group has no members, it can be
@@ -247,18 +242,6 @@ public class Group extends DatabaseObject {
         this.name = name;
     }
 
-    // *********************************************************************************************************************************************
-    // *********************************************************************************************************************************************
-    // protected methods
-    // *********************************************************************************************************************************************
-    // *********************************************************************************************************************************************
-
-    // *********************************************************************************************************************************************
-    // *********************************************************************************************************************************************
-    // private methods
-    // *********************************************************************************************************************************************
-    // *********************************************************************************************************************************************
-
     /**
      * Setter whether the group has an open access or not. Open access means,
      * that users can assign them self to the group. If the access is not open,
@@ -270,11 +253,5 @@ public class Group extends DatabaseObject {
     public void setOpenAccess(final boolean openAccess) {
         this.openAccess = openAccess;
     }
-
-    // *********************************************************************************************************************************************
-    // *********************************************************************************************************************************************
-    // inner classes
-    // *********************************************************************************************************************************************
-    // *********************************************************************************************************************************************
 
 }
