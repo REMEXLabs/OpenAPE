@@ -94,20 +94,20 @@ public class Test {
         final List<GroupMember> members1 = new ArrayList<>();
         members1.add(new GroupMember("5988cd85ebc8292bc07e953f", GroupMembershipStatus.MEMBER));
         members1.add(new GroupMember("12", GroupMembershipStatus.MEMBER));
-        final Group group1 = new Group("group1", members1);
+        final Group group1 = new Group("group1", null, members1);
 
         final List<GroupMember> members2 = new ArrayList<>();
         members2.add(new GroupMember("5988cd85ebc8292bc07e953f", GroupMembershipStatus.MEMBER));
-        final Group group2 = new Group("group2", members2);
+        final Group group2 = new Group("group2", null, members2);
 
         final List<GroupMember> members3 = new ArrayList<>();
         members3.add(new GroupMember("12", GroupMembershipStatus.ADMIN));
-        final Group group3 = new Group("group3", members3);
+        final Group group3 = new Group("group3", null, members3);
 
         final List<GroupMember> members4 = new ArrayList<>();
         members4.add(new GroupMember("5988cd85ebc8292bc07e953f", GroupMembershipStatus.ADMIN));
         members4.add(new GroupMember("12", GroupMembershipStatus.MEMBER));
-        final Group group4 = new Group("group4", members4);
+        final Group group4 = new Group("group4", null, members4);
 
         final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
 
