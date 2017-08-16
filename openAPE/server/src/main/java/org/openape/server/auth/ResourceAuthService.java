@@ -216,5 +216,17 @@ public class ResourceAuthService extends AuthService {
 
         return groups;
     }
+    
+    private void enableTestMode(){
+        
+    }
+    
+    private void disbaleTestMode(){
+        
+    }
+    
+    /*private User getUser(Request request, Response respone){
+        
+    }*/
 
 }
