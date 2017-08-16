@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xs:schema version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <xs:element name="environment-context" type="environmentContext"/>
+
+  <xs:element name="equipment-context" type="equipmentContext"/>
+
+  <xs:element name="resource-description" type="resourceDescription"/>
+
+  <xs:element name="task-context" type="taskContext"/>
+
+  <xs:complexType name="equipmentContext">
+    <xs:complexContent>
+      <xs:extension base="resource">
+        <xs:sequence>
+          <xs:element name="property" type="property" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="resource">
+    <xs:complexContent>
+      <xs:extension base="databaseObject">
+        <xs:sequence/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="databaseObject" abstract="true">
+    <xs:sequence/>
+  </xs:complexType>
+
+  <xs:complexType name="property">
+    <xs:sequence>
+      <xs:element name="descriptor" type="descriptor" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+    <xs:attribute name="name" type="xs:string"/>
+    <xs:attribute name="value" type="xs:string"/>
+  </xs:complexType>
+
+  <xs:complexType name="descriptor">
+    <xs:sequence/>
+    <xs:attribute name="name" type="xs:string"/>
+    <xs:attribute name="value" type="xs:string"/>
+  </xs:complexType>
+
+  <xs:complexType name="resourceDescription">
+    <xs:complexContent>
+      <xs:extension base="resource">
+        <xs:sequence>
+          <xs:element name="property" type="property" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="taskContext">
+    <xs:complexContent>
+      <xs:extension base="resource">
+        <xs:sequence>
+          <xs:element name="property" type="property" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="resourceObject">
+    <xs:complexContent>
+      <xs:extension base="resource">
+        <xs:sequence>
+          <xs:element name="resourceDescription" type="resourceDescription" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+        <xs:attribute name="fileName" type="xs:string"/>
+        <xs:attribute name="id" type="xs:string"/>
+        <xs:attribute name="mimeType" type="xs:string"/>
+        <xs:attribute name="ownerID" type="xs:string"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="environmentContext">
+    <xs:complexContent>
+      <xs:extension base="resource">
+        <xs:sequence>
+          <xs:element name="property" type="property" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+</xs:schema>
+
