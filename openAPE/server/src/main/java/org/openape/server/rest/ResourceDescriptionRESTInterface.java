@@ -2,6 +2,8 @@ package org.openape.server.rest;
 
 import java.io.IOException;
 
+import javax.ws.rs.core.MediaType;
+
 import org.openape.api.Messages;
 import org.openape.api.listing.Listing;
 import org.openape.api.resourceDescription.ResourceDescription;
@@ -9,6 +11,7 @@ import org.openape.server.auth.AuthService;
 import org.openape.server.auth.UnauthorizedException;
 import org.openape.server.requestHandler.ResourceDescriptionRequestHandler;
 
+import spark.Request;
 import spark.Spark;
 
 import com.fasterxml.jackson.core.JsonParseException;
@@ -16,7 +19,31 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class ResourceDescriptionRESTInterface extends SuperRestInterface {
+    private static String createReturnString(final Request req, final ResourceDescription  resourceDescription)
+            throws IOException, IllegalArgumentException {
+        final String contentType = req.contentType();
+        if (contentType == MediaType.APPLICATION_JSON) {
+            final ObjectMapper mapper = new ObjectMapper();
+            final String jsonData = mapper.writeValueAsString(resourceDescription);
+            return jsonData;
+        } else if (contentType == MediaType.APPLICATION_XML) {
+            return resourceDescription.getXML();
+        } else {
+            throw new IllegalArgumentException("wrong content-type");
+        }
+    }
 
+    private static ResourceDescription createRequestObejct(final Request req)
+            throws IllegalArgumentException, IOException {
+        final String contentType = req.contentType();
+        if (contentType == MediaType.APPLICATION_JSON) {
+            return (ResourceDescription) SuperRestInterface.extractObjectFromRequest(req, ResourceDescription.class);
+        } else if (contentType == MediaType.APPLICATION_XML) {
+            return ResourceDescription.getObjectFromXml(req.body());
+        } else {
+            throw new IllegalArgumentException("wrong content-type");
+        }
+    }
     public static void setupResourceDescriptionRESTInterface(
             final ResourceDescriptionRequestHandler requestHandler, final AuthService auth) {
 
@@ -44,8 +71,7 @@ public class ResourceDescriptionRESTInterface extends SuperRestInterface {
                 }
                 // Try to map the received json object to a resource
                 // description object.
-                final ResourceDescription receivedResourceDescription = (ResourceDescription) SuperRestInterface
-                        .extractObjectFromRequest(req, ResourceDescription.class);
+                final ResourceDescription receivedResourceDescription = createRequestObejct(req);
                 // Make sure to set the id of the authenticated user as
                 // the ownerId
                 receivedResourceDescription.setOwner(auth.getAuthenticatedUser(req, res).getId());
@@ -94,8 +120,7 @@ public class ResourceDescriptionRESTInterface extends SuperRestInterface {
                             resourceDescription.isPublic());
                     res.status(SuperRestInterface.HTTP_STATUS_OK);
                     res.type(Messages.getString("ResourceDescriptionRESTInterface.jsonMimeType")); //$NON-NLS-1$
-                    final ObjectMapper mapper = new ObjectMapper();
-                    final String jsonData = mapper.writeValueAsString(resourceDescription);
+                    final String jsonData = createReturnString(req, resourceDescription);
                     return jsonData;
                     // if not return corresponding error status.
                 } catch (final IllegalArgumentException e) {
@@ -133,8 +158,7 @@ public class ResourceDescriptionRESTInterface extends SuperRestInterface {
                             .getResourceDescriptionQurey();
                     // json map the resource description, set return status
                     // and mime type and return the resource description.
-                    final ObjectMapper mapper = new ObjectMapper();
-                    final String jsonData = mapper.writeValueAsString(resourceDescription);
+                    final String jsonData = createReturnString(req, resourceDescription);
                     res.status(SuperRestInterface.HTTP_STATUS_OK);
                     res.type(Messages.getString("ResourceDescriptionRESTInterface.jsonMimeType"));//$NON-NLS-1$
                     return jsonData;
@@ -160,8 +184,7 @@ public class ResourceDescriptionRESTInterface extends SuperRestInterface {
                 final String resourceDescriptionId = req.params(Messages
                         .getString("ResourceDescriptionRESTInterface.IDParam")); //$NON-NLS-1$
                 try {
-                    final ResourceDescription receivedResourceDescription = (ResourceDescription) SuperRestInterface
-                            .extractObjectFromRequest(req, ResourceDescription.class);
+                    final ResourceDescription receivedResourceDescription = createRequestObejct(req);
                     // Test the object for validity.
                     if (!receivedResourceDescription.isValid()) {
                         res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
