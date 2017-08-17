@@ -20,7 +20,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -29,15 +28,12 @@ import java.util.List;
 import javax.xml.XMLConstants;
 import javax.xml.bind.Binder;
 import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
@@ -45,13 +41,11 @@ import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 
 import org.openape.api.Resource;
-import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.core.JsonParseException;
@@ -139,7 +133,7 @@ public class UserContext extends Resource {
 
                 }
             }
-        } catch (IOException | ClassCastException e) {
+        } catch (final Exception e) {
             throw new IllegalArgumentException(e.getMessage());
         }
         userContext.validate();
@@ -153,10 +147,13 @@ public class UserContext extends Resource {
      */
     @JsonIgnore
     public static UserContext getObjectFromXml(String xml) throws IllegalArgumentException {
-        // add type statements (xsi:type="condition" and
-        // xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance") to
-        // operands that are conditions, if missing.
+        UserContext userContext = null;
         try {
+            /*
+             * add type statements (xsi:type="condition" and
+             * xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance") to
+             * operands that are conditions, if missing.
+             */
             // Create document to work on.
             final DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory
                     .newInstance();
@@ -189,13 +186,10 @@ public class UserContext extends Resource {
             transformer.transform(domSource, result);
             // Update xml string.
             xml = writer.toString();
-        } catch (DOMException | TransformerException | IOException | ParserConfigurationException
-                | SAXException exception) {
-            throw new IllegalArgumentException(exception.getMessage());
-        }
 
-        UserContext userContext = null;
-        try {
+            /*
+             * Create user context from xml.
+             */
             final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             factory.setValidating(false); // we will use schema instead of DTD
             factory.setNamespaceAware(true);
@@ -210,7 +204,7 @@ public class UserContext extends Resource {
 
             final DocumentBuilder builder = factory.newDocumentBuilder();
             // Convert xml to xml doc.
-            final Document document = builder.parse(new InputSource(new StringReader(xml)));
+            final Document document2 = builder.parse(new InputSource(new StringReader(xml)));
 
             // create JAXBContext which will be used to create a Binder
             final JAXBContext jc = JAXBContext.newInstance(UserContext.class);
@@ -222,7 +216,7 @@ public class UserContext extends Resource {
             binder.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 
             // get xml node
-            final Node xmlNode = document.getDocumentElement();
+            final Node xmlNode = document2.getDocumentElement();
 
             // set schema for binder
             binder.setSchema(schema);
@@ -230,8 +224,7 @@ public class UserContext extends Resource {
             // unmarshaling xml to JAXB object
             userContext = (UserContext) binder.unmarshal(xmlNode);
 
-        } catch (final JAXBException | ParserConfigurationException | SAXException | IOException
-                | URISyntaxException e) {
+        } catch (final Exception e) {
             e.printStackTrace();
             throw new IllegalArgumentException(e.getMessage());
         }
@@ -338,7 +331,7 @@ public class UserContext extends Resource {
         String jsonString = null;
         try {
             jsonString = this.getJson(false);
-        } catch (final ClassCastException e) {
+        } catch (final Exception e) {
             throw new IOException(e.getMessage());
         }
         return jsonString;
@@ -374,7 +367,7 @@ public class UserContext extends Resource {
         String jsonString = null;
         try {
             jsonString = this.getJson(true);
-        } catch (final ClassCastException e) {
+        } catch (final Exception e) {
             throw new IOException(e.getMessage());
         }
         return jsonString;
@@ -471,7 +464,7 @@ public class UserContext extends Resource {
             final StringWriter stringWriter = new StringWriter();
             marshaller.marshal(this, stringWriter);
             xmlString = stringWriter.toString();
-        } catch (final JAXBException e) {
+        } catch (final Exception e) {
             throw new IOException(e.getMessage());
         }
         return xmlString;

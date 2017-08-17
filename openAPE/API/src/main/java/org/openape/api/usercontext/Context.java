@@ -127,7 +127,7 @@ public class Context implements Serializable {
 
     /**
      * validates conditions recursively.
-     * 
+     *
      * @param operands
      */
     private void recursiveConditionValidation(final List<Operand> operands) {
@@ -159,7 +159,7 @@ public class Context implements Serializable {
 
     /**
      * validate all conditions
-     * 
+     *
      * @throws IllegalArgumentException
      */
     public void vaidate() throws IllegalArgumentException {

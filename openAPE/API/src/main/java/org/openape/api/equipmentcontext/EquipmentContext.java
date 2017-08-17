@@ -20,7 +20,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,13 +27,11 @@ import java.util.List;
 import javax.xml.XMLConstants;
 import javax.xml.bind.Binder;
 import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 
@@ -43,7 +40,6 @@ import org.openape.api.Resource;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -100,8 +96,7 @@ public class EquipmentContext extends Resource {
             // unmarshaling xml to JAXB object
             equipmentContext = (EquipmentContext) binder.unmarshal(xmlNode);
 
-        } catch (final JAXBException | ParserConfigurationException | SAXException | IOException
-                | URISyntaxException e) {
+        } catch (final Exception e) {
             e.printStackTrace();
             throw new IllegalArgumentException(e.getMessage());
         }
@@ -181,7 +176,7 @@ public class EquipmentContext extends Resource {
             final StringWriter stringWriter = new StringWriter();
             marshaller.marshal(this, stringWriter);
             xmlString = stringWriter.toString();
-        } catch (final JAXBException e) {
+        } catch (final Exception e) {
             throw new IOException(e.getMessage());
         }
         return xmlString;
