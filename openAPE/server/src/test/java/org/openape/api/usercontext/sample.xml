@@ -9,6 +9,11 @@
 			value="false" />
 	</option>
 	<option id="dark">
+		<name>little environmental light</name>
+		<preference key="http://registry.gpii.net/common/magnifierEnabled"
+			value="true" />
+		<preference key="http://registry.gpii.net/common/magnification"
+			value="2" />
 		<condition type="and">
 			<operand type="ge"
 				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
@@ -21,10 +26,5 @@
 				<operand value="200" />
 			</operand>
 		</condition>
-		<name>little environmental light</name>
-		<preference key="http://registry.gpii.net/common/magnifierEnabled"
-			value="true" />
-		<preference key="http://registry.gpii.net/common/magnification"
-			value="2" />
 	</option>
 </user-context>

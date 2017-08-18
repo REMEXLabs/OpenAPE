@@ -44,14 +44,16 @@
   </xs:complexType>
 
   <xs:complexType name="databaseObject" abstract="true">
-    <xs:sequence/>
+    <xs:sequence>
+      <xs:element name="id" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
   </xs:complexType>
 
   <xs:complexType name="context">
     <xs:sequence>
-      <xs:element name="condition" type="condition" minOccurs="0" maxOccurs="unbounded"/>
       <xs:element name="name" type="xs:string" minOccurs="0"/>
       <xs:element name="preference" type="preference" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="condition" type="condition" minOccurs="0" maxOccurs="unbounded"/>
     </xs:sequence>
     <xs:attribute name="id" type="xs:string"/>
   </xs:complexType>
