@@ -61,10 +61,6 @@ public class EquipmentContextRESTInterface extends SuperRestInterface {
          */
         Spark.post(
                 Messages.getString("EquipmentContextRESTInterface.EquipmentContextURLWithoutID"), (req, res) -> { //$NON-NLS-1$
-                    if (!req.contentType().equals(Messages.getString("MimeTypeJson"))) {//$NON-NLS-1$
-                        res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
-                        return Messages.getString("Contexts.WrongMimeTypeErrorMsg");//$NON-NLS-1$
-                    }
                     try {
                         // Try to map the received json object to an
                         // EquipmentContext object.
@@ -134,10 +130,6 @@ public class EquipmentContextRESTInterface extends SuperRestInterface {
          */
         Spark.put(Messages.getString("EquipmentContextRESTInterface.EquipmentContextURLWithID"), //$NON-NLS-1$
                 (req, res) -> {
-                    if (!req.contentType().equals(Messages.getString("MimeTypeJson"))) {//$NON-NLS-1$
-                    res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
-                    return Messages.getString("Contexts.WrongMimeTypeErrorMsg");//$NON-NLS-1$
-                }
                 final String equipmentContextId = req.params(Messages
                         .getString("EquipmentContextRESTInterface.IDParam")); //$NON-NLS-1$
                 try {

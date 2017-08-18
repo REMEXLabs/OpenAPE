@@ -68,10 +68,6 @@ public class ResourceDescriptionRESTInterface extends SuperRestInterface {
                 .getString("ResourceDescriptionRESTInterface.ResourceDescriptionURLWithoutID"), //$NON-NLS-1$
                 (req, res) -> {
                     try {
-                        if (!req.contentType().equals(Messages.getString("MimeTypeJson"))) {//$NON-NLS-1$
-                    res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
-                    return Messages.getString("Contexts.WrongMimeTypeErrorMsg");//$NON-NLS-1$
-                }
                 // Try to map the received json object to a resource
                 // description object.
                 final ResourceDescription receivedResourceDescription = ResourceDescriptionRESTInterface
@@ -183,10 +179,6 @@ public class ResourceDescriptionRESTInterface extends SuperRestInterface {
         Spark.put(Messages
                 .getString("ResourceDescriptionRESTInterface.ResourceDescriptionURLWithID"), //$NON-NLS-1$
                 (req, res) -> {
-                    if (!req.contentType().equals(Messages.getString("MimeTypeJson"))) {//$NON-NLS-1$
-                    res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
-                    return Messages.getString("Contexts.WrongMimeTypeErrorMsg");//$NON-NLS-1$
-                }
                 final String resourceDescriptionId = req.params(Messages
                         .getString("ResourceDescriptionRESTInterface.IDParam")); //$NON-NLS-1$
                 try {

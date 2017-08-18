@@ -64,10 +64,6 @@ public class EnvironmentContextRESTInterface extends SuperRestInterface {
         Spark.post(Messages
                 .getString("EnvironmentContextRESTInterface.EnvironmentContextsURLWithoutID"), //$NON-NLS-1$
                 (req, res) -> {
-                    if (!req.contentType().equals(Messages.getString("MimeTypeJson"))) {//$NON-NLS-1$
-                    res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
-                    return Messages.getString("Contexts.WrongMimeTypeErrorMsg");//$NON-NLS-1$
-                }
                 try {
                     // Try to map the received json object to an
                     // EnvironmentContext object.
@@ -138,10 +134,6 @@ public class EnvironmentContextRESTInterface extends SuperRestInterface {
         Spark.put(Messages
                 .getString("EnvironmentContextRESTInterface.EnvironmentContextsURLWithID"), //$NON-NLS-1$
                 (req, res) -> {
-                    if (!req.contentType().equals(Messages.getString("MimeTypeJson"))) {//$NON-NLS-1$
-                    res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
-                    return Messages.getString("Contexts.WrongMimeTypeErrorMsg");//$NON-NLS-1$
-                }
                 final String environmentContextId = req.params(Messages
                         .getString("EnvironmentContextRESTInterface.IDParam")); //$NON-NLS-1$
                 try {
