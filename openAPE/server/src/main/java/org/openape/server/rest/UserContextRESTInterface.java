@@ -29,9 +29,9 @@ public class UserContextRESTInterface extends SuperRestInterface {
     private static UserContext createRequestObejct(final Request req)
             throws IllegalArgumentException {
         final String contentType = req.contentType();
-        if (contentType == MediaType.APPLICATION_JSON) {
+        if (contentType.equals(MediaType.APPLICATION_JSON)) {
             return UserContext.getObjectFromJson(req.body());
-        } else if (contentType == MediaType.APPLICATION_XML) {
+        } else if (contentType.equals(MediaType.APPLICATION_XML)) {
             return UserContext.getObjectFromXml(req.body());
         } else {
             SuperRestInterface.logger.debug("Received Message with wrong content-type");
@@ -42,9 +42,9 @@ public class UserContextRESTInterface extends SuperRestInterface {
     private static String createReturnString(final Request req, final UserContext userContext)
             throws IOException, IllegalArgumentException {
         final String contentType = req.contentType();
-        if (contentType == MediaType.APPLICATION_JSON) {
+        if (contentType.equals(MediaType.APPLICATION_JSON)) {
             return userContext.getForntEndJson();
-        } else if (contentType == MediaType.APPLICATION_XML) {
+        } else if (contentType.equals(MediaType.APPLICATION_XML)) {
             return userContext.getXML();
         } else {
             throw new IllegalArgumentException("wrong content-type");
@@ -54,7 +54,7 @@ public class UserContextRESTInterface extends SuperRestInterface {
     private static String createReturnStringListRequest(final Request req, final Response res,
             final Class type, final Object data) {
         final String contentType = req.contentType();
-        if (contentType == MediaType.APPLICATION_JSON) {
+        if (contentType.equals(MediaType.APPLICATION_JSON)) {
             try {
                 final ObjectMapper mapper = new ObjectMapper();
 
@@ -64,7 +64,7 @@ public class UserContextRESTInterface extends SuperRestInterface {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
-        } else if (contentType == MediaType.APPLICATION_XML) {
+        } else if (contentType.equals(MediaType.APPLICATION_XML)) {
             try {
                 final JAXBContext context = JAXBContext.newInstance(type);
                 Marshaller m;

@@ -22,10 +22,10 @@ public class ResourceDescriptionRESTInterface extends SuperRestInterface {
     private static ResourceDescription createRequestObejct(final Request req)
             throws IllegalArgumentException, IOException {
         final String contentType = req.contentType();
-        if (contentType == MediaType.APPLICATION_JSON) {
+        if (contentType.equals(MediaType.APPLICATION_JSON)) {
             return (ResourceDescription) SuperRestInterface.extractObjectFromRequest(req,
                     ResourceDescription.class);
-        } else if (contentType == MediaType.APPLICATION_XML) {
+        } else if (contentType.equals(MediaType.APPLICATION_XML)) {
             return ResourceDescription.getObjectFromXml(req.body());
         } else {
             throw new IllegalArgumentException("wrong content-type");
@@ -36,11 +36,11 @@ public class ResourceDescriptionRESTInterface extends SuperRestInterface {
             final ResourceDescription resourceDescription) throws IOException,
             IllegalArgumentException {
         final String contentType = req.contentType();
-        if (contentType == MediaType.APPLICATION_JSON) {
+        if (contentType.equals(MediaType.APPLICATION_JSON)) {
             final ObjectMapper mapper = new ObjectMapper();
             final String jsonData = mapper.writeValueAsString(resourceDescription);
             return jsonData;
-        } else if (contentType == MediaType.APPLICATION_XML) {
+        } else if (contentType.equals(MediaType.APPLICATION_XML)) {
             return resourceDescription.getXML();
         } else {
             throw new IllegalArgumentException("wrong content-type");
