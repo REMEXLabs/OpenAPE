@@ -28,7 +28,8 @@ public abstract class DatabaseObject implements Serializable {
     private static final long serialVersionUID = -404247926481623440L;
 
     /**
-     * The id (field "_id" in MongoDB) of the object, which the database assigned to it.
+     * The id (field "_id" in MongoDB) of the object, which the database
+     * assigned to it.
      */
     @JsonIgnore
     private String id;
@@ -36,7 +37,8 @@ public abstract class DatabaseObject implements Serializable {
     /**
      * The id of the object, which the database assigned to it.
      *
-     * @return id of the object or null if it is not already stored in the database.
+     * @return id of the object or null if it is not already stored in the
+     *         database.
      */
     public String getId() {
         return this.id;

@@ -35,7 +35,7 @@ public class GroupManagementHandler {
         final List<org.openape.server.api.group.GroupMember> groupMembers = new LinkedList<org.openape.server.api.group.GroupMember>();
         groupMembers.add(admin);
         final org.openape.server.api.group.Group group = new org.openape.server.api.group.Group(
-                groupName, groupMembers);
+                groupName, null, groupMembers);
 
         final DatabaseConnection databaseconnection = DatabaseConnection.getInstance();
         String id;

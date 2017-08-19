@@ -14,6 +14,7 @@ import org.bson.json.JsonParseException;
 import org.bson.types.ObjectId;
 import org.openape.api.DatabaseObject;
 import org.openape.api.Messages;
+import org.openape.api.usercontext.UserContext;
 import org.openape.server.MongoConfig;
 import org.openape.server.requestHandler.EnvironmentContextRequestHandler;
 import org.openape.server.requestHandler.EquipmentContextRequestHandler;
@@ -22,6 +23,7 @@ import org.openape.server.requestHandler.UserContextRequestHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mongodb.BasicDBObject;
@@ -56,7 +58,8 @@ public class DatabaseConnection implements ServerMonitorListener {
     /**
      * The url to our mongo database server.
      */
-    private static String DATABASEURL = Messages.getString("DatabaseConnection.MongoDBServerAddress"); //$NON-NLS-1$
+    private static String DATABASEURL = Messages
+            .getString("DatabaseConnection.MongoDBServerAddress"); //$NON-NLS-1$
     /**
      * The standard port for online mongo databases.
      */
@@ -66,17 +69,20 @@ public class DatabaseConnection implements ServerMonitorListener {
      * The name of the mongo database holding the relevant data for this
      * application.
      */
-    private static String DATABASENAME = Messages.getString("DatabaseConnection.MongoDBDatabaseName"); //$NON-NLS-1$
+    private static String DATABASENAME = Messages
+            .getString("DatabaseConnection.MongoDBDatabaseName"); //$NON-NLS-1$
 
     /**
      * The user name used by this application to connect to the mongo database.
      */
-    private static String DATABASEUSERNAME = Messages.getString("DatabaseConnection.MongoDBDatabaseUsername"); //$NON-NLS-1$
+    private static String DATABASEUSERNAME = Messages
+            .getString("DatabaseConnection.MongoDBDatabaseUsername"); //$NON-NLS-1$
 
     /**
      * The password used by this application to connect to the mongo database.
      */
-    private static String DATABASEPASSWORD = Messages.getString("DatabaseConnection.MongoDBDatabaseUserPassword"); //$NON-NLS-1$
+    private static String DATABASEPASSWORD = Messages
+            .getString("DatabaseConnection.MongoDBDatabaseUserPassword"); //$NON-NLS-1$
 
     /**
      * Singleton instance of this class.
@@ -154,18 +160,18 @@ public class DatabaseConnection implements ServerMonitorListener {
         this.readConfigFile();
         try {
             // Create credentials for the openAPE database
-            final MongoCredential credential = MongoCredential.createCredential(DatabaseConnection.DATABASEUSERNAME,
-                    DatabaseConnection.DATABASENAME, DatabaseConnection.DATABASEPASSWORD.toCharArray());
+            final MongoCredential credential = MongoCredential.createCredential(
+                    DatabaseConnection.DATABASEUSERNAME, DatabaseConnection.DATABASENAME,
+                    DatabaseConnection.DATABASEPASSWORD.toCharArray());
 
             // Add MongoDB Monitor with client options
-            final MongoClientOptions clientOptions = new MongoClientOptions.Builder().addServerMonitorListener(this)
-                    .build();
+            final MongoClientOptions clientOptions = new MongoClientOptions.Builder()
+                    .addServerMonitorListener(this).build();
 
             // Create database client for the openAPE database
-            this.mongoClient = new MongoClient(
-                    new ServerAddress(DatabaseConnection.DATABASEURL,
-                            Integer.parseInt(DatabaseConnection.DATABASEPORT)),
-                    Arrays.asList(credential), clientOptions);
+            this.mongoClient = new MongoClient(new ServerAddress(DatabaseConnection.DATABASEURL,
+                    Integer.parseInt(DatabaseConnection.DATABASEPORT)), Arrays.asList(credential),
+                    clientOptions);
 
             // Get a reference to the openAPE database.
             this.database = this.mongoClient.getDatabase(DatabaseConnection.DATABASENAME);
@@ -177,21 +183,53 @@ public class DatabaseConnection implements ServerMonitorListener {
 
         // Get references to the database collections.
         try {
-            this.userContextCollection = this.database.getCollection(MongoCollectionTypes.USERCONTEXT.toString());
+            this.userContextCollection = this.database
+                    .getCollection(MongoCollectionTypes.USERCONTEXT.toString());
         } catch (final Exception e) {
-            DatabaseConnection.logger.error("Couldn't find collection \"" + MongoCollectionTypes.USERCONTEXT + "\"");
+            DatabaseConnection.logger.error("Couldn't find collection \""
+                    + MongoCollectionTypes.USERCONTEXT + "\"");
         }
         this.environmentContextCollection = this.database
                 .getCollection(MongoCollectionTypes.ENVIRONMENTCONTEXT.toString());
-        this.equipmentContextCollection = this.database.getCollection(MongoCollectionTypes.EQUIPMENTCONTEXT.toString());
-        this.taskContextCollection = this.database.getCollection(MongoCollectionTypes.TASKCONTEXT.toString());
+        this.equipmentContextCollection = this.database
+                .getCollection(MongoCollectionTypes.EQUIPMENTCONTEXT.toString());
+        this.taskContextCollection = this.database.getCollection(MongoCollectionTypes.TASKCONTEXT
+                .toString());
         this.resourceDescriptionContectCollection = this.database
                 .getCollection(MongoCollectionTypes.RESOURCEDESCRIPTION.toString());
-        this.listingContextCollection = this.database.getCollection(MongoCollectionTypes.LISTING.toString());
-        this.resourceObjectCollection = this.database.getCollection(MongoCollectionTypes.RESOURCEOBJECTS.toString());
+        this.listingContextCollection = this.database.getCollection(MongoCollectionTypes.LISTING
+                .toString());
+        this.resourceObjectCollection = this.database
+                .getCollection(MongoCollectionTypes.RESOURCEOBJECTS.toString());
         this.userCollection = this.database.getCollection(MongoCollectionTypes.USERS.toString());
         this.groupCollection = this.database.getCollection(MongoCollectionTypes.GROUPS.toString());
 
+    }
+
+    /**
+     * Generate store able Document from database object.
+     *
+     * @param type
+     * @param databaseObject
+     * @return
+     * @throws IOException
+     * @throws JsonProcessingException
+     */
+    private Document convertDatabaseObjectToDocument(final MongoCollectionTypes type,
+            final DatabaseObject databaseObject) throws IOException, JsonProcessingException {
+        String jsonData;
+        if (type.equals(MongoCollectionTypes.USERCONTEXT)) {
+            // user contexts have to use their json building. The standard
+            // mapping doesn't work due to recursive objects.
+            jsonData = ((UserContext) databaseObject).getBackEndJson();
+        } else {
+            final ObjectMapper mapper = new ObjectMapper();
+            jsonData = mapper.writeValueAsString(databaseObject);
+        }
+        // Deal with special mongoDB characters '.' and '$'.
+        jsonData = this.replaceMongoSpecialChars(jsonData);
+        final Document dataDocument = Document.parse(jsonData);
+        return dataDocument;
     }
 
     /**
@@ -202,16 +240,16 @@ public class DatabaseConnection implements ServerMonitorListener {
      *            the type of the object, to which the database document should
      *            be converted. It must not be null!
      * @param resultDocument
-     *            the database object / document, which will be converted into a database object. It must
-     *            not be null!
+     *            the database object / document, which will be converted into a
+     *            database object. It must not be null!
      * @return converted database object
      * @throws com.fasterxml.jackson.core.JsonParseException
      * @throws JsonMappingException
      * @throws IOException
      */
     private DatabaseObject convertDocumentToDatabaseObject(final MongoCollectionTypes type,
-            final Document resultDocument)
-            throws com.fasterxml.jackson.core.JsonParseException, JsonMappingException, IOException {
+            final Document resultDocument) throws com.fasterxml.jackson.core.JsonParseException,
+            JsonMappingException, IOException {
         DatabaseObject databaseObject = null;
         try {
             // Remove the MongoDB id field
@@ -220,8 +258,14 @@ public class DatabaseConnection implements ServerMonitorListener {
             String jsonResult = resultDocument.toJson();
             // reverse mongo special character replacement.
             jsonResult = this.reverseMongoSpecialCharsReplacement(jsonResult);
-            final ObjectMapper mapper = new ObjectMapper();
-            databaseObject = mapper.readValue(jsonResult, type.getDocumentType());
+            if (type.equals(MongoCollectionTypes.USERCONTEXT)) {
+                // user contexts have to use their json building. The standard
+                // mapping doesn't work due to recursive objects.
+                databaseObject = UserContext.getObjectFromJson(jsonResult);
+            } else {
+                final ObjectMapper mapper = new ObjectMapper();
+                databaseObject = mapper.readValue(jsonResult, type.getDocumentType());
+            }
             // Set MongoDB id field value as id
             databaseObject.setId(oid.toString());
         } catch (CodecConfigurationException | IOException | JsonParseException e) {
@@ -243,7 +287,9 @@ public class DatabaseConnection implements ServerMonitorListener {
      * @return true if successful of false if the object is not found.
      * @throws IOException
      *             if a database problem occurs.
-     * @deprecated use {@link #deleteDatabaseObject(MongoCollectionTypes, String)} instead.
+     * @deprecated use
+     *             {@link #deleteDatabaseObject(MongoCollectionTypes, String)}
+     *             instead.
      */
     @Deprecated
     public boolean deleteData(final MongoCollectionTypes type, final String id) throws IOException {
@@ -263,7 +309,8 @@ public class DatabaseConnection implements ServerMonitorListener {
      * @throws IOException
      *             if a database problem occurs.
      */
-    public boolean deleteDatabaseObject(final MongoCollectionTypes type, final String id) throws IOException {
+    public boolean deleteDatabaseObject(final MongoCollectionTypes type, final String id)
+            throws IOException {
         final MongoCollection<Document> collectionToWorkOn = this.getCollectionByType(type);
 
         // Create search query.
@@ -279,15 +326,16 @@ public class DatabaseConnection implements ServerMonitorListener {
         }
     }
 
-
     /**
      * Make sure indexes for the application are set.
      */
     public void ensureIndexes() {
         // Make sure email is unique for all users
-        this.userCollection.createIndex(new BasicDBObject("email", 1), new IndexOptions().unique(true));
+        this.userCollection.createIndex(new BasicDBObject("email", 1),
+                new IndexOptions().unique(true));
         // Make sure username is unique for all users
-        this.userCollection.createIndex(new BasicDBObject("username", 1), new IndexOptions().unique(true));
+        this.userCollection.createIndex(new BasicDBObject("username", 1),
+                new IndexOptions().unique(true));
     }
 
     public ArrayList<Document> getAllDocuments(final MongoCollectionTypes type) throws IOException {
@@ -312,10 +360,13 @@ public class DatabaseConnection implements ServerMonitorListener {
      *         corresponding ids.
      * @throws IOException
      *             if database or parse error occurs.
-     * @deprecated use {@link #getDatabaseObjectsByQuery(MongoCollectionTypes, BasicDBObject)} instead.
+     * @deprecated use
+     *             {@link #getDatabaseObjectsByQuery(MongoCollectionTypes, BasicDBObject)}
+     *             instead.
      */
     @Deprecated
-    public Map<String, DatabaseObject> getAllObjectsOfType(final MongoCollectionTypes type) throws IOException {
+    public Map<String, DatabaseObject> getAllObjectsOfType(final MongoCollectionTypes type)
+            throws IOException {
         final Map<String, DatabaseObject> resultMap = new HashMap<String, DatabaseObject>();
         final List<DatabaseObject> databaseObjects = this.getDatabaseObjectsByQuery(type, null);
         for (final DatabaseObject databaseObject : databaseObjects) {
@@ -337,11 +388,13 @@ public class DatabaseConnection implements ServerMonitorListener {
      *            the value for the attribute to query for
      * @return
      * @throws IOException
-     * @deprecated use {@link #getDatabaseObjectByUniqueAttribute(MongoCollectionTypes, String, String)} instead.
+     * @deprecated use
+     *             {@link #getDatabaseObjectByUniqueAttribute(MongoCollectionTypes, String, String)}
+     *             instead.
      */
     @Deprecated
-    public DatabaseObject getByUniqueAttribute(final MongoCollectionTypes type, final String attribute,
-            final String value) throws IOException {
+    public DatabaseObject getByUniqueAttribute(final MongoCollectionTypes type,
+            final String attribute, final String value) throws IOException {
         return this.getDatabaseObjectByUniqueAttribute(type, attribute, value);
     }
 
@@ -387,10 +440,13 @@ public class DatabaseConnection implements ServerMonitorListener {
      * @return the database object or null if no data with that id is found.
      * @throws IOException
      *             if a database problem occurs.
-     * @deprecated use {@link #getDatabaseObjectById(MongoCollectionTypes, String)} instead.
+     * @deprecated use
+     *             {@link #getDatabaseObjectById(MongoCollectionTypes, String)}
+     *             instead.
      */
     @Deprecated
-    public DatabaseObject getData(final MongoCollectionTypes type, final String id) throws IOException {
+    public DatabaseObject getData(final MongoCollectionTypes type, final String id)
+            throws IOException {
         return this.getDatabaseObjectById(type, id);
     }
 
@@ -405,9 +461,11 @@ public class DatabaseConnection implements ServerMonitorListener {
      *            the database id within the collection of the object.
      * @return the database object or null if no data with that id is found.
      * @throws IOException
-     *             if a problem with the database or during the object mapping occurs.
+     *             if a problem with the database or during the object mapping
+     *             occurs.
      */
-    public DatabaseObject getDatabaseObjectById(final MongoCollectionTypes type, final String id) throws IOException {
+    public DatabaseObject getDatabaseObjectById(final MongoCollectionTypes type, final String id)
+            throws IOException {
         // Search for object in database.
         final BasicDBObject query = new BasicDBObject();
         query.put(Messages.getString("DatabaseConnection._id"), new ObjectId(id));
@@ -421,8 +479,8 @@ public class DatabaseConnection implements ServerMonitorListener {
 
     /**
      * Query a collection by a certain attribute and value. Will return the
-     * first database object matching the query or null if no database object matches the
-     * query.
+     * first database object matching the query or null if no database object
+     * matches the query.
      *
      * @param type
      *            the collection in which the object is located.
@@ -433,8 +491,8 @@ public class DatabaseConnection implements ServerMonitorListener {
      * @return matching database object or null
      * @throws IOException
      */
-    public DatabaseObject getDatabaseObjectByUniqueAttribute(final MongoCollectionTypes type, final String attribute,
-            final String value) throws IOException {
+    public DatabaseObject getDatabaseObjectByUniqueAttribute(final MongoCollectionTypes type,
+            final String attribute, final String value) throws IOException {
         // Search for object in database.
         final BasicDBObject query = new BasicDBObject();
         query.put(attribute, value);
@@ -458,13 +516,14 @@ public class DatabaseConnection implements ServerMonitorListener {
      *            be selected. If all objects of the defined type should be
      *            selected, the query object has to be "empty" or null.
      * @return a list with objects of the defined type, which comply the query
-     *         conditions. If no object complies the query conditions or the collection is empty, an empty list will be
-     *         returned.
+     *         conditions. If no object complies the query conditions or the
+     *         collection is empty, an empty list will be returned.
      * @throws IOException
-     *             if a problem with the database or during the object mapping occurs.
+     *             if a problem with the database or during the object mapping
+     *             occurs.
      */
-    public List<DatabaseObject> getDatabaseObjectsByQuery(final MongoCollectionTypes type, BasicDBObject query)
-            throws IOException {
+    public List<DatabaseObject> getDatabaseObjectsByQuery(final MongoCollectionTypes type,
+            BasicDBObject query) throws IOException {
         final List<DatabaseObject> databaseObjects = new ArrayList<DatabaseObject>();
         if (query == null) {
             query = new BasicDBObject();
@@ -484,34 +543,43 @@ public class DatabaseConnection implements ServerMonitorListener {
         if ((name != null) && !name.equals(Messages.getString("DatabaseConnection.EmptyString"))) {//$NON-NLS-1$
             DatabaseConnection.DATABASENAME = name;
         } else {
-            DatabaseConnection.DATABASENAME = Messages.getString("DatabaseConnection.MongoDBDatabaseName"); //$NON-NLS-1$
+            DatabaseConnection.DATABASENAME = Messages
+                    .getString("DatabaseConnection.MongoDBDatabaseName"); //$NON-NLS-1$
         }
         final String address = MongoConfig.getString("databaseURL");//$NON-NLS-1$
-        if ((address != null) && !address.equals(Messages.getString("DatabaseConnection.EmptyString"))) {//$NON-NLS-1$
+        if ((address != null)
+                && !address.equals(Messages.getString("DatabaseConnection.EmptyString"))) {//$NON-NLS-1$
             DatabaseConnection.DATABASEURL = address;
         } else {
-            DatabaseConnection.DATABASEURL = Messages.getString("DatabaseConnection.MongoDBServerAddress"); //$NON-NLS-1$
+            DatabaseConnection.DATABASEURL = Messages
+                    .getString("DatabaseConnection.MongoDBServerAddress"); //$NON-NLS-1$
         }
         final String port = MongoConfig.getString("databasePort");//$NON-NLS-1$
         if ((port != null) && !port.equals(Messages.getString("DatabaseConnection.EmptyString"))) {//$NON-NLS-1$
-            DatabaseConnection.logger.debug("Using MongoDB port " + port + " defined in mongo.properties");
+            DatabaseConnection.logger.debug("Using MongoDB port " + port
+                    + " defined in mongo.properties");
             DatabaseConnection.DATABASEPORT = port;
         } else {
             final String standardPort = Messages.getString("DatabaseConnection.MongoDBServerPort"); //$NON-NLS-1$
-            DatabaseConnection.logger.debug("Using MongoDB port " + standardPort + " defined in Messages.properties");
+            DatabaseConnection.logger.debug("Using MongoDB port " + standardPort
+                    + " defined in Messages.properties");
             DatabaseConnection.DATABASEPORT = standardPort;
         }
         final String password = MongoConfig.getString("databasePassword");//$NON-NLS-1$
-        if ((password != null) && !password.equals(Messages.getString("DatabaseConnection.EmptyString"))) {//$NON-NLS-1$
+        if ((password != null)
+                && !password.equals(Messages.getString("DatabaseConnection.EmptyString"))) {//$NON-NLS-1$
             DatabaseConnection.DATABASEPASSWORD = password;
         } else {
-            DatabaseConnection.DATABASEPASSWORD = Messages.getString("DatabaseConnection.MongoDBDatabaseUserPassword"); //$NON-NLS-1$
+            DatabaseConnection.DATABASEPASSWORD = Messages
+                    .getString("DatabaseConnection.MongoDBDatabaseUserPassword"); //$NON-NLS-1$
         }
         final String userName = MongoConfig.getString("databaseUsername");//$NON-NLS-1$
-        if ((userName != null) && !userName.equals(Messages.getString("DatabaseConnection.EmptyString"))) {//$NON-NLS-1$
+        if ((userName != null)
+                && !userName.equals(Messages.getString("DatabaseConnection.EmptyString"))) {//$NON-NLS-1$
             DatabaseConnection.DATABASEUSERNAME = userName;
         } else {
-            DatabaseConnection.DATABASEUSERNAME = Messages.getString("DatabaseConnection.MongoDBDatabaseUsername"); //$NON-NLS-1$
+            DatabaseConnection.DATABASEUSERNAME = Messages
+                    .getString("DatabaseConnection.MongoDBDatabaseUsername"); //$NON-NLS-1$
         }
 
     }
@@ -521,7 +589,9 @@ public class DatabaseConnection implements ServerMonitorListener {
      * @param type
      * @param id
      * @throws IOException
-     * @deprecated use {@link #deleteDatabaseObject(MongoCollectionTypes, String)} instead.
+     * @deprecated use
+     *             {@link #deleteDatabaseObject(MongoCollectionTypes, String)}
+     *             instead.
      */
     @Deprecated
     public void removeData(final MongoCollectionTypes type, final String id) throws IOException {
@@ -557,12 +627,15 @@ public class DatabaseConnection implements ServerMonitorListener {
      * @param jsonFromStorage
      * @return The modified string.
      */
-    private String reverseMongoSpecialCharsReplacement(String jsonFromStorage) throws IllegalArgumentException {
+    private String reverseMongoSpecialCharsReplacement(String jsonFromStorage)
+            throws IllegalArgumentException {
         if (jsonFromStorage.contains(Messages.getString("DatabaseConnection.pointAsciiCode")) //$NON-NLS-1$
                 || jsonFromStorage.contains(Messages.getString("DatabaseConnection.$AsciiCode"))) { //$NON-NLS-1$
-            jsonFromStorage = jsonFromStorage.replace(Messages.getString("DatabaseConnection.pointAsciiCode"), //$NON-NLS-1$
+            jsonFromStorage = jsonFromStorage.replace(
+                    Messages.getString("DatabaseConnection.pointAsciiCode"), //$NON-NLS-1$
                     Messages.getString("DatabaseConnection.point")); //$NON-NLS-1$
-            jsonFromStorage = jsonFromStorage.replace(Messages.getString("DatabaseConnection.$AsciiCode"), //$NON-NLS-1$
+            jsonFromStorage = jsonFromStorage.replace(
+                    Messages.getString("DatabaseConnection.$AsciiCode"), //$NON-NLS-1$
                     Messages.getString("DatabaseConnection.$")); //$NON-NLS-1$
         }
         return jsonFromStorage;
@@ -571,18 +644,21 @@ public class DatabaseConnection implements ServerMonitorListener {
     @Override
     public void serverHearbeatStarted(final ServerHeartbeatStartedEvent event) {
         if (DatabaseConnection.firstTime == true) {
-            DatabaseConnection.logger.info("Found new heartbeat with connection ID: " + event.getConnectionId());
+            DatabaseConnection.logger.info("Found new heartbeat with connection ID: "
+                    + event.getConnectionId());
             DatabaseConnection.firstTime = false;
         } else {
-            DatabaseConnection.logger.debug("Found new heartbeat with connection ID: " + event.getConnectionId());
+            DatabaseConnection.logger.debug("Found new heartbeat with connection ID: "
+                    + event.getConnectionId());
         }
     }
 
     @Override
     public void serverHeartbeatFailed(final ServerHeartbeatFailedEvent event) {
 
-        DatabaseConnection.logger.error("Connecting to MongoDB at " + DatabaseConnection.DATABASEURL + ":"
-                + DatabaseConnection.DATABASEPORT + " failed.\n" + event);
+        DatabaseConnection.logger.error("Connecting to MongoDB at "
+                + DatabaseConnection.DATABASEURL + ":" + DatabaseConnection.DATABASEPORT
+                + " failed.\n" + event);
         DatabaseConnection.firstTime = true; // logger can now indicate when new
                                              // connection will be found again.
                                              // connection will be found
@@ -592,7 +668,8 @@ public class DatabaseConnection implements ServerMonitorListener {
 
     @Override
     public void serverHeartbeatSucceeded(final ServerHeartbeatSucceededEvent event) {
-        DatabaseConnection.logger.debug("Found heartbeat with connection ID: " + event.getConnectionId());
+        DatabaseConnection.logger.debug("Found heartbeat with connection ID: "
+                + event.getConnectionId());
 
     }
 
@@ -609,7 +686,9 @@ public class DatabaseConnection implements ServerMonitorListener {
      *             if the object class doesn't match the given collection type.
      * @throws IOException
      *             if a database problem occurs.
-     * @deprecated use {@link #storeDatabaseObject(MongoCollectionTypes, DatabaseObject)} instead.
+     * @deprecated use
+     *             {@link #storeDatabaseObject(MongoCollectionTypes, DatabaseObject)}
+     *             instead.
      */
     @Deprecated
     public String storeData(final MongoCollectionTypes type, final DatabaseObject data)
@@ -629,14 +708,17 @@ public class DatabaseConnection implements ServerMonitorListener {
      * @throws ClassCastException
      *             if the object class doesn't match the given collection type.
      * @throws IOException
-     *             if a problem with the database or during the object mapping occurs.
+     *             if a problem with the database or during the object mapping
+     *             occurs.
      */
-    public String storeDatabaseObject(final MongoCollectionTypes type, final DatabaseObject databaseObject)
-            throws ClassCastException, IOException, IllegalArgumentException {
+    public String storeDatabaseObject(final MongoCollectionTypes type,
+            final DatabaseObject databaseObject) throws ClassCastException, IOException,
+            IllegalArgumentException {
         // Check if data is of the correct type for the collection.
         if (!type.getDocumentType().equals(databaseObject.getClass())) {
-            throw new ClassCastException(Messages.getString("DatabaseConnection.doctypeErrorMassage") //$NON-NLS-1$
-                    + type.getDocumentType().getName());
+            throw new ClassCastException(
+                    Messages.getString("DatabaseConnection.doctypeErrorMassage") //$NON-NLS-1$
+                            + type.getDocumentType().getName());
         }
 
         final MongoCollection<Document> collectionToWorkOn = this.getCollectionByType(type);
@@ -644,11 +726,7 @@ public class DatabaseConnection implements ServerMonitorListener {
         // Create Document from data.
         Document dataDocument = null;
         try {
-            final ObjectMapper mapper = new ObjectMapper();
-            String jsonData = mapper.writeValueAsString(databaseObject);
-            // Deal with special mongoDB characters '.' and '$'.
-            jsonData = this.replaceMongoSpecialChars(jsonData);
-            dataDocument = Document.parse(jsonData);
+            dataDocument = this.convertDatabaseObjectToDocument(type, databaseObject);
             // Insert the document.
             collectionToWorkOn.insertOne(dataDocument);
         } catch (IOException | JsonParseException | MongoException e) {
@@ -685,11 +763,13 @@ public class DatabaseConnection implements ServerMonitorListener {
      *             if the object class doesn't match the given collection type.
      * @throws IOException
      *             if a database problem occurs.
-     * @deprecated use {@link #updateDatabaseObject(MongoCollectionTypes, DatabaseObject, String)} instead.
+     * @deprecated use
+     *             {@link #updateDatabaseObject(MongoCollectionTypes, DatabaseObject, String)}
+     *             instead.
      */
     @Deprecated
-    public boolean updateData(final MongoCollectionTypes type, final DatabaseObject data, final String id)
-            throws ClassCastException, IOException {
+    public boolean updateData(final MongoCollectionTypes type, final DatabaseObject data,
+            final String id) throws ClassCastException, IOException {
         return this.updateDatabaseObject(type, data, id);
     }
 
@@ -709,10 +789,12 @@ public class DatabaseConnection implements ServerMonitorListener {
      * @throws ClassCastException
      *             if the object class doesn't match the given collection type.
      * @throws IOException
-     *             if a problem with the database or during the object mapping occurs.
+     *             if a problem with the database or during the object mapping
+     *             occurs.
      */
-    public boolean updateDatabaseObject(final MongoCollectionTypes type, final DatabaseObject databaseObject,
-            final String id) throws ClassCastException, IOException {
+    public boolean updateDatabaseObject(final MongoCollectionTypes type,
+            final DatabaseObject databaseObject, final String id) throws ClassCastException,
+            IOException {
         // test if data can be found. Throws exceptions or is null if not.
         if (this.getDatabaseObjectById(type, id) == null) {
             return false;
@@ -720,8 +802,9 @@ public class DatabaseConnection implements ServerMonitorListener {
 
         // Check if data is of the correct type for the collection.
         if (!type.getDocumentType().equals(databaseObject.getClass())) {
-            throw new ClassCastException(Messages.getString("DatabaseConnection.doctypeErrorMassage") //$NON-NLS-1$
-                    + type.getDocumentType().getName());
+            throw new ClassCastException(
+                    Messages.getString("DatabaseConnection.doctypeErrorMassage") //$NON-NLS-1$
+                            + type.getDocumentType().getName());
         }
 
         final MongoCollection<Document> collectionToWorkOn = this.getCollectionByType(type);
@@ -732,11 +815,8 @@ public class DatabaseConnection implements ServerMonitorListener {
 
         try {
             // Create document object from data.
-            final ObjectMapper mapper = new ObjectMapper();
-            String jsonData = mapper.writeValueAsString(databaseObject);
-            // Deal with special mongoDB characters '.' and '$'.
-            jsonData = this.replaceMongoSpecialChars(jsonData);
-            final Document dataDocument = Document.parse(jsonData);
+            final Document dataDocument = this
+                    .convertDatabaseObjectToDocument(type, databaseObject);
 
             // update data.
             collectionToWorkOn.findOneAndReplace(query, dataDocument);
@@ -748,12 +828,13 @@ public class DatabaseConnection implements ServerMonitorListener {
         return true;
     }
 
-    public UpdateResult updateDocument(final MongoCollectionTypes type, final String id, final String indexName,
-            final Object indexValue) throws Exception {
+    public UpdateResult updateDocument(final MongoCollectionTypes type, final String id,
+            final String indexName, final Object indexValue) throws Exception {
 
         final MongoCollection<Document> collectionToWorkOn = this.getCollectionByType(type);
 
-        final Bson filter = new Document(Messages.getString("DatabaseConnection._id"), new ObjectId(id));
+        final Bson filter = new Document(Messages.getString("DatabaseConnection._id"),
+                new ObjectId(id));
         final Bson newValue = new Document(indexName, indexValue);
         final Bson updateOperationDocument = new Document("$set", newValue);
 

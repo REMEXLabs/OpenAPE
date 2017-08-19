@@ -37,9 +37,9 @@ public class AdminSectionRequestHandler {
         for (final Document entry : listDocuments) {
             final String id = entry.getObjectId("_id").toString();
             final String userId = entry.getString("owner").toString();
-            User user  = (User) databaseConnection
-                    .getData(AdminSectionRequestHandler.COLLECTIONTOUSE_USERS, userId);
-            
+            final User user = (User) databaseConnection.getData(
+                    AdminSectionRequestHandler.COLLECTIONTOUSE_USERS, userId);
+
             final String owner = user.getUsername();
 
             final boolean isPublic = entry.getBoolean("public");
@@ -91,9 +91,9 @@ public class AdminSectionRequestHandler {
             final String userId = entry.getString("owner").toString();
 
             final boolean isPublic = entry.getBoolean("public");
-            User user  = (User) databaseConnection
-                    .getData(AdminSectionRequestHandler.COLLECTIONTOUSE_USERS, userId);
-            
+            final User user = (User) databaseConnection.getData(
+                    AdminSectionRequestHandler.COLLECTIONTOUSE_USERS, userId);
+
             final String owner = user.getUsername();
 
             String stringIsPublic = "";
@@ -141,10 +141,10 @@ public class AdminSectionRequestHandler {
         for (final Document entry : listDocuments) {
             final String id = entry.getObjectId("_id").toString();
             final String userId = entry.getString("owner").toString();
-            
-            User user  = (User) databaseConnection
-                    .getData(AdminSectionRequestHandler.COLLECTIONTOUSE_USERS, userId);
-            
+
+            final User user = (User) databaseConnection.getData(
+                    AdminSectionRequestHandler.COLLECTIONTOUSE_USERS, userId);
+
             final String owner = user.getUsername();
 
             final boolean isPublic = entry.getBoolean("public");
@@ -193,12 +193,12 @@ public class AdminSectionRequestHandler {
         for (final Document entry : listDocuments) {
 
             final String userid = entry.getString("owner").toString();
-            
-            User user  = (User) databaseConnection
-                    .getData(AdminSectionRequestHandler.COLLECTIONTOUSE_USERS, userid);
-            
+
+            final User user = (User) databaseConnection.getData(
+                    AdminSectionRequestHandler.COLLECTIONTOUSE_USERS, userid);
+
             final String owner = user.getUsername();
-            
+
             final String id = entry.getObjectId("_id").toString();
 
             final long unixSeconds = entry.getObjectId("_id").getTimestamp();
