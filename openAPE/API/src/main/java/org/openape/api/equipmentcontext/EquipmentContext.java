@@ -57,10 +57,10 @@ public class EquipmentContext extends Resource {
      * @return equipment context object.
      */
     @JsonIgnore
-    public static EquipmentContext getObjectFromXml(final String xml)
-            throws IllegalArgumentException {
+    public static EquipmentContext getObjectFromXml(String xml) throws IllegalArgumentException {
         EquipmentContext equipmentContext = null;
         try {
+            xml = Resource.addPublicAttributeIfMissing(xml);
             final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             factory.setValidating(false); // we will use schema instead of DTD
             factory.setNamespaceAware(true);

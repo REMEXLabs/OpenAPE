@@ -176,7 +176,6 @@ public class UserContext extends Resource {
                     }
                 }
             }
-
             // Create String from document
             final DOMSource domSource = new DOMSource(document);
             final StringWriter writer = new StringWriter();
@@ -186,6 +185,8 @@ public class UserContext extends Resource {
             transformer.transform(domSource, result);
             // Update xml string.
             xml = writer.toString();
+
+            xml = Resource.addPublicAttributeIfMissing(xml);
 
             /*
              * Create user context from xml.
@@ -197,7 +198,7 @@ public class UserContext extends Resource {
                     .newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
 
             // get schema file from resource folder
-            final URL url = UserContext.class.getClassLoader().getResource("UserContextSchema.xsd");
+            final URL url = UserContext.class.getClassLoader().getResource("ContextsSchema.xsd");
             final File file = new File(url.toURI());
             final Schema schema = schemaFactory.newSchema(file);
             factory.setSchema(schema);

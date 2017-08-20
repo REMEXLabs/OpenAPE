@@ -56,9 +56,10 @@ public class TaskContext extends Resource {
      * @return task context object.
      */
     @JsonIgnore
-    public static TaskContext getObjectFromXml(final String xml) throws IllegalArgumentException {
+    public static TaskContext getObjectFromXml(String xml) throws IllegalArgumentException {
         TaskContext taskContext = null;
         try {
+            xml = Resource.addPublicAttributeIfMissing(xml);
             final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             factory.setValidating(false); // we will use schema instead of DTD
             factory.setNamespaceAware(true);

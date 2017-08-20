@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<equipment-context>
+<equipment-context public="false">
 	<property name="http://openurc.org/ns/res#friendlyName" value="My iPad">
 		<descriptor name="http://www.w3.org/XML/1998/namespace/lang"
 			value="en" />

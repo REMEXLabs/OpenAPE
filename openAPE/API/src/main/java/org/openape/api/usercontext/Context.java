@@ -27,7 +27,7 @@ import javax.xml.bind.annotation.XmlType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-@XmlType(propOrder={"name", "preferences", "conditions"})
+@XmlType(propOrder = { "name", "preferences", "conditions" })
 public class Context implements Serializable {
     private static final long serialVersionUID = -8602234372848554234L;
 

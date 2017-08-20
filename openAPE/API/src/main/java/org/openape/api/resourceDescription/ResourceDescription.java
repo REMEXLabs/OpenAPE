@@ -57,10 +57,10 @@ public class ResourceDescription extends Resource {
      * @return resource description object.
      */
     @JsonIgnore
-    public static ResourceDescription getObjectFromXml(final String xml)
-            throws IllegalArgumentException {
+    public static ResourceDescription getObjectFromXml(String xml) throws IllegalArgumentException {
         ResourceDescription resourceDescription = null;
         try {
+            xml = Resource.addPublicAttributeIfMissing(xml);
             final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             factory.setValidating(false); // we will use schema instead of DTD
             factory.setNamespaceAware(true);
