@@ -385,29 +385,7 @@ public class DatabaseConnection implements ServerMonitorListener {
             return null; // Should never occur.
         }
     }
-
-    /**
-     * Request a database object, either a context or a resource, from the
-     * database. Choose the object via id and the collection via the collection
-     * type. The object will remain in the database.
-     *
-     * @param type
-     *            the collection in which the object is located.
-     * @param id
-     *            the database id within the collection of the object.
-     * @return the database object or null if no data with that id is found.
-     * @throws IOException
-     *             if a database problem occurs.
-     * @deprecated use
-     *             {@link #getDatabaseObjectById(MongoCollectionTypes, String)}
-     *             instead.
-     */
-    @Deprecated
-    public DatabaseObject getData(final MongoCollectionTypes type, final String id)
-            throws IOException {
-        return this.getDatabaseObjectById(type, id);
-    }
-
+    
     /**
      * Request a database object, either a context or a resource, from the
      * database. Choose the object via id and the collection via the collection
@@ -541,21 +519,7 @@ public class DatabaseConnection implements ServerMonitorListener {
         }
 
     }
-
-    /**
-     *
-     * @param type
-     * @param id
-     * @throws IOException
-     * @deprecated use
-     *             {@link #deleteDatabaseObject(MongoCollectionTypes, String)}
-     *             instead.
-     */
-    @Deprecated
-    public void removeData(final MongoCollectionTypes type, final String id) throws IOException {
-        this.deleteDatabaseObject(type, id);
-    }
-
+    
     /**
      * Replaces special chars '.' and '$' with '#046' and '#036".
      *
@@ -637,29 +601,6 @@ public class DatabaseConnection implements ServerMonitorListener {
      *
      * @param type
      *            the collection to store it into.
-     * @param data
-     *            the object to be stored.
-     * @return the id of the stored object within the collection.
-     * @throws ClassCastException
-     *             if the object class doesn't match the given collection type.
-     * @throws IOException
-     *             if a database problem occurs.
-     * @deprecated use
-     *             {@link #storeDatabaseObject(MongoCollectionTypes, DatabaseObject)}
-     *             instead.
-     */
-    @Deprecated
-    public String storeData(final MongoCollectionTypes type, final DatabaseObject data)
-            throws ClassCastException, IOException, IllegalArgumentException {
-        return this.storeDatabaseObject(type, data);
-    }
-
-    /**
-     * Store a database object, either a context or a resource, into the
-     * database. Choose the collection via the collection type.
-     *
-     * @param type
-     *            the collection to store it into.
      * @param databaseObject
      *            the object to be stored.
      * @return the id of the stored object within the collection.
@@ -702,33 +643,6 @@ public class DatabaseConnection implements ServerMonitorListener {
         }
 
         return id.toHexString();
-    }
-
-    /**
-     * Update a database object, either a context or a resource, in the
-     * database. Choose the object via id and the collection via the collection
-     * type.
-     *
-     * @param type
-     *            the collection in which the object is located.
-     * @param data
-     *            the new version of the object.
-     * @param id
-     *            the database id within the collection of the object.
-     * @return true if successful or false if no object with that id is found
-     *         and nothing is stored.
-     * @throws ClassCastException
-     *             if the object class doesn't match the given collection type.
-     * @throws IOException
-     *             if a database problem occurs.
-     * @deprecated use
-     *             {@link #updateDatabaseObject(MongoCollectionTypes, DatabaseObject, String)}
-     *             instead.
-     */
-    @Deprecated
-    public boolean updateData(final MongoCollectionTypes type, final DatabaseObject data,
-            final String id) throws ClassCastException, IOException {
-        return this.updateDatabaseObject(type, data, id);
     }
 
     /**

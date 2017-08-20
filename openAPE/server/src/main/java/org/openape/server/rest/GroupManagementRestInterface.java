@@ -78,7 +78,7 @@ public class GroupManagementRestInterface extends SuperRestInterface {
 
                         final DatabaseConnection databaseConnection = DatabaseConnection
                                 .getInstance();
-                        final Group group = (Group) databaseConnection.getData(
+                        final Group group = (Group) databaseConnection.getDatabaseObjectById(
                                 MongoCollectionTypes.GROUPS, req.params(":groupId"));
 
                         final String requestedUser = gmsr.getUserId();
