@@ -16,7 +16,8 @@ $(document).ready(function(){
 			$('#inputViewEnvironmentContext').val("");
 			var responseXML = openape.getEnvironmentContext(id, "XML").responseText;
 			var formatedXML = "<environment-context>"+responseXML.substring(responseXML.indexOf("</id>")+5);
-			$('#inputViewEnvironmentContext').val(formatedXML);
+			var prettyXML = formatXml(formatedXML);
+			$('#inputViewEnvironmentContext').val(prettyXML);
 		}
 	})
 	
@@ -31,9 +32,10 @@ $(document).ready(function(){
 		} else {
 			var responseXML = openape.getTaskContext(id, "XML").responseText;
 			var formatedXML = "<task-context>"+responseXML.substring(responseXML.indexOf("</id>")+5);
+			var prettyXML = formatXml(formatedXML);
 			
 			$('#inputViewTaskContext').val("");
-			$('#inputViewTaskContext').val(formatedXML);
+			$('#inputViewTaskContext').val(prettyXML);
 		}
 	})
 	
@@ -46,11 +48,12 @@ $(document).ready(function(){
 			var json = JSON.parse(openape.getEquipmentContext(id, "JSON").responseText); 
 			$('#inputViewEquipmentContext').val(JSON.stringify(json, undefined, 2));
 		} else {
-			var responseXML = openape.getEquipmentContext(id, "JSON").responseText;
+			var responseXML = openape.getEquipmentContext(id, "XML").responseText;
 			var formatedXML = "<equipment-context>"+responseXML.substring(responseXML.indexOf("</id>")+5);
+			var prettyXML = formatXml(formatedXML);
 			
 			$('#inputViewEquipmentContext').val("");
-			$('#inputViewEquipmentContext').val(formatedXML);
+			$('#inputViewEquipmentContext').val(prettyXML);
 		}
 	})
 	
@@ -66,8 +69,10 @@ $(document).ready(function(){
 		} else {
 			var responseXML = openape.getUserContext(id, "XML").responseText;
 			var formatedXML = "<user-context>"+responseXML.substring(responseXML.indexOf("</id>")+5);
+			var prettyXML = formatXml(formatedXML);
+			
 			$('#inputViewUserContext').val("");
-			$('#inputViewUserContext').val(formatedXML);
+			$('#inputViewUserContext').val(prettyXML);
 		}
 	})
 	
@@ -83,9 +88,10 @@ $(document).ready(function(){
 		} else {
 			var responseXML = openape.getUserContext(id, "XML").responseText;
 			var formatedXML = "<user-context>"+responseXML.substring(responseXML.indexOf("</id>")+5);
+			var prettyXML = formatXml(formatedXML);
 			
 			$('#inputAdministrationEditUserContext').val("");
-			$('#inputAdministrationEditUserContext').val(formatedXML);
+			$('#inputAdministrationEditUserContext').val(prettyXML);
 		}
 	})
 	
@@ -102,9 +108,10 @@ $(document).ready(function(){
 		} else {
 			var responseXML = openape.getEnvironmentContext(id, "XML").responseText;
 			var formatedXML = "<environment-context>"+responseXML.substring(responseXML.indexOf("</id>")+5);
+			var prettyXML = formatXml(formatedXML);
 			
 			$('#inputAdministrationEditEnvironmentContext').val("");
-			$('#inputAdministrationEditEnvironmentContext').val(formatedXML);
+			$('#inputAdministrationEditEnvironmentContext').val(prettyXML);
 		}
 	})
 	
@@ -120,9 +127,10 @@ $(document).ready(function(){
 		} else {
 			var responseXML = openape.getTaskContext(id, "XML").responseText;
 			var formatedXML = "<task-context>"+responseXML.substring(responseXML.indexOf("</id>")+5);
+			var prettyXML = formatXml(formatedXML);
 			
 			$('#inputAdministrationEditTaskContext').val("");
-			$('#inputAdministrationEditTaskContext').val(formatedXML);
+			$('#inputAdministrationEditTaskContext').val(prettyXML);
 		}
 	})
 	
@@ -137,9 +145,10 @@ $(document).ready(function(){
 		} else {
 			var responseXML = openape.getEquipmentContext(id, "XML").responseText;
 			var formatedXML = "<equipment-context>"+responseXML.substring(responseXML.indexOf("</id>")+5);
+			var prettyXML = formatXml(formatedXML);
 			
 			$('#inputAdministrationEditEquipmentContext').val("");
-			$('#inputAdministrationEditEquipmentContext').val(formatedXML);
+			$('#inputAdministrationEditEquipmentContext').val(prettyXML);
 		}
 	})
 	
@@ -838,5 +847,37 @@ function copyContext(event){
 	} else {
 		alert("error occured");
 	}
+}
+
+
+function formatXml(xml) {
+    var formatted = '';
+    var reg = /(>)(<)(\/*)/g;
+    xml = xml.replace(reg, '$1\r\n$2$3');
+    var pad = 0;
+    jQuery.each(xml.split('\r\n'), function(index, node) {
+        var indent = 0;
+        if (node.match( /.+<\/\w[^>]*>$/ )) {
+            indent = 0;
+        } else if (node.match( /^<\/\w/ )) {
+            if (pad != 0) {
+                pad -= 1;
+            }
+        } else if (node.match( /^<\w[^>]*[^\/]>.*$/ )) {
+            indent = 1;
+        } else {
+            indent = 0;
+        }
+
+        var padding = '';
+        for (var i = 0; i < pad; i++) {
+            padding += '  ';
+        }
+
+        formatted += padding + node + '\r\n';
+        pad += indent;
+    });
+
+    return formatted;
 }
 
