@@ -4,6 +4,73 @@
 $(document).ready(function(){
 	var currentUrl = window.location.protocol + "//"+window.location.host;
 	
+	$('#viewEnvironmentContextOutputSelContentType').on('change', function() {
+		var outputType = $("#viewEnvironmentContextOutputSelContentType option:selected").text();
+		var id = localStorage.getItem("contextId");
+		
+		if(outputType == "JSON"){
+			$('#inputViewEnvironmentContext').val("");
+			var json = JSON.parse(openape.getEnvironmentContext(id, "JSON").responseText); 
+			$('#inputViewEnvironmentContext').val(JSON.stringify(json, undefined, 2));
+		} else {
+			$('#inputViewEnvironmentContext').val("");
+			var responseXML = openape.getEnvironmentContext(id, "XML").responseText;
+			var formatedXML = "<environment-context>"+responseXML.substring(responseXML.indexOf("</id>")+5);
+			$('#inputViewEnvironmentContext').val(formatedXML);
+		}
+	})
+	
+	$('#viewTaskContextOutputSelContentType').on('change', function() {
+		var outputType = $("#viewTaskContextOutputSelContentType option:selected").text();
+		var id = localStorage.getItem("contextId");
+		
+		if(outputType == "JSON"){
+			$('#inputViewTaskContext').val("");
+			var json = JSON.parse(openape.getTaskContext(id, "JSON").responseText); 
+			$('#inputViewTaskContext').val(JSON.stringify(json, undefined, 2));
+		} else {
+			var responseXML = openape.getTaskContext(id, "XML").responseText;
+			var formatedXML = "<task-context>"+responseXML.substring(responseXML.indexOf("</id>")+5);
+			
+			$('#inputViewTaskContext').val("");
+			$('#inputViewTaskContext').val(formatedXML);
+		}
+	})
+	
+	$('#viewEquipmentContextOutputSelContentType').on('change', function() {
+		var outputType = $("#viewEquipmentContextOutputSelContentType option:selected").text();
+		var id = localStorage.getItem("contextId");
+		
+		if(outputType == "JSON"){
+			$('#inputViewEquipmentContext').val("");
+			var json = JSON.parse(openape.getEquipmentContext(id, "JSON").responseText); 
+			$('#inputViewEquipmentContext').val(JSON.stringify(json, undefined, 2));
+		} else {
+			var responseXML = openape.getEquipmentContext(id, "JSON").responseText;
+			var formatedXML = "<equipment-context>"+responseXML.substring(responseXML.indexOf("</id>")+5);
+			
+			$('#inputViewEquipmentContext').val("");
+			$('#inputViewEquipmentContext').val(formatedXML);
+		}
+	})
+	
+	
+	$('#viewUserContextOutputSelContentType').on('change', function() {
+		var outputType = $("#viewUserContextOutputSelContentType option:selected").text();
+		var id = localStorage.getItem("contextId");
+		
+		if(outputType == "JSON"){
+			$('#inputViewUserContext').val("");
+			var json = JSON.parse(openape.getUserContext(id, "JSON").responseText); 
+			$('#inputViewUserContext').val(JSON.stringify(json, undefined, 2));
+		} else {
+			var responseXML = openape.getUserContext(id, "XML").responseText;
+			var formatedXML = "<user-context>"+responseXML.substring(responseXML.indexOf("</id>")+5);
+			$('#inputViewUserContext').val("");
+			$('#inputViewUserContext').val(formatedXML);
+		}
+	})
+	
 
 	$('#editUserContextOutputSelContentType').on('change', function() {
 		var outputType = $("#editUserContextOutputSelContentType option:selected").text();
@@ -14,10 +81,15 @@ $(document).ready(function(){
 			var json = JSON.parse(openape.getUserContext(id, "JSON").responseText); 
 			$('#inputAdministrationEditUserContext').val(JSON.stringify(json, undefined, 2));
 		} else {
+			var responseXML = openape.getUserContext(id, "XML").responseText;
+			var formatedXML = "<user-context>"+responseXML.substring(responseXML.indexOf("</id>")+5);
+			
 			$('#inputAdministrationEditUserContext').val("");
-			$('#inputAdministrationEditUserContext').val(openape.getUserContext(id, "XML").responseText);
+			$('#inputAdministrationEditUserContext').val(formatedXML);
 		}
 	})
+	
+	
 	
 	$('#editEnvironmentContextOutputSelContentType').on('change', function() {
 		var outputType = $("#editEnvironmentContextOutputSelContentType option:selected").text();
@@ -28,8 +100,11 @@ $(document).ready(function(){
 			var json = JSON.parse(openape.getEnvironmentContext(id, "JSON").responseText); 
 			$('#inputAdministrationEditEnvironmentContext').val(JSON.stringify(json, undefined, 2));
 		} else {
+			var responseXML = openape.getEnvironmentContext(id, "XML").responseText;
+			var formatedXML = "<environment-context>"+responseXML.substring(responseXML.indexOf("</id>")+5);
+			
 			$('#inputAdministrationEditEnvironmentContext').val("");
-			$('#inputAdministrationEditEnvironmentContext').val(openape.getEnvironmentContext(id, "XML").responseText);
+			$('#inputAdministrationEditEnvironmentContext').val(formatedXML);
 		}
 	})
 	
@@ -43,8 +118,11 @@ $(document).ready(function(){
 			var json = JSON.parse(openape.getTaskContext(id, "JSON").responseText); 
 			$('#inputAdministrationEditTaskContext').val(JSON.stringify(json, undefined, 2));
 		} else {
+			var responseXML = openape.getTaskContext(id, "XML").responseText;
+			var formatedXML = "<task-context>"+responseXML.substring(responseXML.indexOf("</id>")+5);
+			
 			$('#inputAdministrationEditTaskContext').val("");
-			$('#inputAdministrationEditTaskContext').val(openape.getTaskContext(id, "XML").responseText);
+			$('#inputAdministrationEditTaskContext').val(formatedXML);
 		}
 	})
 	
@@ -57,8 +135,11 @@ $(document).ready(function(){
 			var json = JSON.parse(openape.getEquipmentContext(id, "JSON").responseText); 
 			$('#inputAdministrationEditEquipmentContext').val(JSON.stringify(json, undefined, 2));
 		} else {
+			var responseXML = openape.getEquipmentContext(id, "XML").responseText;
+			var formatedXML = "<equipment-context>"+responseXML.substring(responseXML.indexOf("</id>")+5);
+			
 			$('#inputAdministrationEditEquipmentContext').val("");
-			$('#inputAdministrationEditEquipmentContext').val(openape.getEquipmentContext(id, "XML").responseText);
+			$('#inputAdministrationEditEquipmentContext').val(formatedXML);
 		}
 	})
 	
@@ -586,6 +667,7 @@ $(document).ready(function(){
         		}
           	} else {
           		if(isXML(environmentContext)){
+          			var withoutId = environmentContext;
           			parsedEnvironmentContext = environmentContext;
           			isFormatCorrect = true;
           		} else {
@@ -669,6 +751,8 @@ function viewContext(event){
 	var contextNameLowerCase = contextName.substring(0, 1).toLowerCase()+contextName.substring(1);
 	$('#view'+contextName+'Modal').modal('show');
 	var objContext = new Object();
+	
+	localStorage.setItem("contextId", event.id);
 	
 	if(contextName == "UserContext"){
 		objContext = getContext(event.id, contextNameLowerCase);
