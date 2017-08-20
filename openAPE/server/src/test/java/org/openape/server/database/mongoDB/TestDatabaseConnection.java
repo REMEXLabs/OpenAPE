@@ -85,11 +85,11 @@ public class TestDatabaseConnection {
             String id;
             Assert.assertNotEquals(
                     "",
-                    id = this.dataBaseConnection.storeData(MongoCollectionTypes.USERCONTEXT,
+                    id = this.dataBaseConnection.storeDatabaseObject(MongoCollectionTypes.USERCONTEXT,
                             sampleContext));
             System.out.println(id);
             // test get.
-            final UserContext recievedContext = (UserContext) this.dataBaseConnection.getData(
+            final UserContext recievedContext = (UserContext) this.dataBaseConnection.getDatabaseObjectById(
                     MongoCollectionTypes.USERCONTEXT, id);
             Assert.assertTrue(sampleContext.equals(recievedContext));
             // remove second context.
@@ -97,13 +97,13 @@ public class TestDatabaseConnection {
             newContexts.add(sampleContext.getContext("default"));
             sampleContext.setContexts(newContexts);
             // test update
-            this.dataBaseConnection.updateData(MongoCollectionTypes.USERCONTEXT, sampleContext, id);
-            final UserContext updatetContext = (UserContext) this.dataBaseConnection.getData(
+            this.dataBaseConnection.updateDatabaseObject(MongoCollectionTypes.USERCONTEXT, sampleContext, id);
+            final UserContext updatetContext = (UserContext) this.dataBaseConnection.getDatabaseObjectById(
                     MongoCollectionTypes.USERCONTEXT, id);
             Assert.assertTrue(sampleContext.equals(updatetContext));
             Assert.assertFalse(TestDatabaseConnection.sampleUserContext().equals(updatetContext));
             // test delete
-            Assert.assertTrue(this.dataBaseConnection.deleteData(MongoCollectionTypes.USERCONTEXT,
+            Assert.assertTrue(this.dataBaseConnection.deleteDatabaseObject(MongoCollectionTypes.USERCONTEXT,
                     id));
         } catch (ClassCastException | IOException e) {
             e.printStackTrace();

@@ -275,26 +275,7 @@ public class DatabaseConnection implements ServerMonitorListener {
         return databaseObject;
     }
 
-    /**
-     * Delete a database object, either a context or a resource, from the
-     * database. Choose the object via id and the collection via the collection
-     * type.
-     *
-     * @param type
-     *            the collection in which the object is located.
-     * @param id
-     *            the database id within the collection of the object
-     * @return true if successful of false if the object is not found.
-     * @throws IOException
-     *             if a database problem occurs.
-     * @deprecated use
-     *             {@link #deleteDatabaseObject(MongoCollectionTypes, String)}
-     *             instead.
-     */
-    @Deprecated
-    public boolean deleteData(final MongoCollectionTypes type, final String id) throws IOException {
-        return this.deleteDatabaseObject(type, id);
-    }
+
 
     /**
      * Delete a database object, either a context or a resource, from the
@@ -373,29 +354,6 @@ public class DatabaseConnection implements ServerMonitorListener {
             resultMap.put(databaseObject.getId(), databaseObject);
         }
         return resultMap;
-    }
-
-    /**
-     * Query a collection by a certain attribute and value. Will return the
-     * first document matching the query or null if no document matches the
-     * query.
-     *
-     * @param type
-     *            the collection in which the object is located.
-     * @param attribute
-     *            the attribute to query for
-     * @param value
-     *            the value for the attribute to query for
-     * @return
-     * @throws IOException
-     * @deprecated use
-     *             {@link #getDatabaseObjectByUniqueAttribute(MongoCollectionTypes, String, String)}
-     *             instead.
-     */
-    @Deprecated
-    public DatabaseObject getByUniqueAttribute(final MongoCollectionTypes type,
-            final String attribute, final String value) throws IOException {
-        return this.getDatabaseObjectByUniqueAttribute(type, attribute, value);
     }
 
     /**

@@ -53,7 +53,7 @@ public class ProfileHandler {
     public static void updateUser(final User user) {
         final DatabaseConnection databaseconnection = DatabaseConnection.getInstance();
         try {
-            databaseconnection.updateData(MongoCollectionTypes.USERS, user, user.getId());
+            databaseconnection.updateDatabaseObject(MongoCollectionTypes.USERS, user, user.getId());
         } catch (final ClassCastException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -67,7 +67,7 @@ public class ProfileHandler {
     public static boolean userExists(final String userId) throws IOException {
         final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
 
-        final User user = (User) databaseConnection.getByUniqueAttribute(
+        final User user = (User) databaseConnection.getDatabaseObjectByUniqueAttribute(
                 MongoCollectionTypes.USERS, "userid", userId);
         if (user == null) {
             return false;
