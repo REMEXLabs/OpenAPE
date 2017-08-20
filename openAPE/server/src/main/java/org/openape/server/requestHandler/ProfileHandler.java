@@ -21,7 +21,7 @@ public class ProfileHandler {
         try {
             final String hashedPassword = PasswordEncoder.encode(user.getPassword());
             user.setPassword(hashedPassword);
-            id = databaseconnection.storeData(MongoCollectionTypes.USERS, user);
+            id = databaseconnection.storeDatabaseObject(MongoCollectionTypes.USERS, user);
         } catch (final ClassCastException e) {
             throw new IllegalArgumentException(e.getMessage());
         } catch (final NoSuchAlgorithmException e) {
@@ -37,7 +37,7 @@ public class ProfileHandler {
     public static User getUser(final String userName) throws IOException {
         final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
 
-        final DatabaseObject result = databaseConnection.getByUniqueAttribute(
+        final DatabaseObject result = databaseConnection.getDatabaseObjectByUniqueAttribute(
                 MongoCollectionTypes.USERS, "username", userName);
 
         // If the result is null no user exists with the givn user name

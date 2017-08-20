@@ -20,7 +20,7 @@ public class GroupManagementHandler {
         group.setMembers(members);
         final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
         try {
-            databaseConnection.updateData(MongoCollectionTypes.GROUPS, group, group.getId());
+            databaseConnection.updateDatabaseObject(MongoCollectionTypes.GROUPS, group, group.getId());
         } catch (final ClassCastException e) {
             throw new IllegalArgumentException(e.getMessage());
         }
@@ -40,7 +40,7 @@ public class GroupManagementHandler {
         final DatabaseConnection databaseconnection = DatabaseConnection.getInstance();
         String id;
         try {
-            id = databaseconnection.storeData(MongoCollectionTypes.GROUPS, group);
+            id = databaseconnection.storeDatabaseObject(MongoCollectionTypes.GROUPS, group);
         } catch (final ClassCastException e) {
             throw new IllegalArgumentException(e.getMessage());
         }

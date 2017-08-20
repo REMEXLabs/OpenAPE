@@ -48,7 +48,7 @@ public class ListingRequestHandler {
         // argument exceptions. IO exceptions will just be thrown through.
         String id = null;
         try {
-            id = databaseConnection.storeData(ListingRequestHandler.COLLECTIONTOUSE,
+            id = databaseConnection.storeDatabaseObject(ListingRequestHandler.COLLECTIONTOUSE,
                     (DatabaseObject) listing);
         } catch (final ClassCastException e) {
             throw new IllegalArgumentException(e.getMessage());
@@ -73,8 +73,7 @@ public class ListingRequestHandler {
         // get database connection.
         final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
 
-        final boolean success = databaseConnection.deleteData(
-                ListingRequestHandler.COLLECTIONTOUSE, id);
+        final boolean success = databaseConnection.deleteDatabaseObject(ListingRequestHandler.COLLECTIONTOUSE, id);
         if (!success) {
             throw new IllegalArgumentException(
                     Messages.getString("ListingRequestHandler.NoObjectWithThatIDErrorMsg")); //$NON-NLS-1$
@@ -100,7 +99,7 @@ public class ListingRequestHandler {
         final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
 
         // Get the requested data.
-        final DatabaseObject result = databaseConnection.getData(
+        final DatabaseObject result = databaseConnection.getDatabaseObjectById(
                 ListingRequestHandler.COLLECTIONTOUSE, id);
 
         // If the result is null the id is not found.
