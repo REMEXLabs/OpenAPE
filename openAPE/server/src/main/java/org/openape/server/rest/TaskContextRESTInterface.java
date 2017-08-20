@@ -33,15 +33,21 @@ public class TaskContextRESTInterface extends SuperRestInterface {
     private static String createReturnString(final Request req, final TaskContext taskContext)
             throws IOException, IllegalArgumentException {
         final String contentType = req.contentType();
-        if (contentType.equals(MediaType.APPLICATION_JSON)) {
-            final ObjectMapper mapper = new ObjectMapper();
-            final String jsonData = mapper.writeValueAsString(taskContext);
-            return jsonData;
-        } else if (contentType.equals(MediaType.APPLICATION_XML)) {
-            return taskContext.getXML();
+        
+        if(contentType != null){
+        	 if (contentType.equals(MediaType.APPLICATION_JSON)) {
+                 final ObjectMapper mapper = new ObjectMapper();
+                 final String jsonData = mapper.writeValueAsString(taskContext);
+                 return jsonData;
+             } else if (contentType.equals(MediaType.APPLICATION_XML)) {
+                 return taskContext.getXML();
+             } else {
+                 throw new IllegalArgumentException("wrong content-type");
+             }
         } else {
-            throw new IllegalArgumentException("wrong content-type");
+        	 return taskContext.getXML();
         }
+       
     }
 
     public static void setupTaskContextRESTInterface(

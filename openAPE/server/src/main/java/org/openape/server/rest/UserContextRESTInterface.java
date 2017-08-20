@@ -42,13 +42,20 @@ public class UserContextRESTInterface extends SuperRestInterface {
     private static String createReturnString(final Request req, final UserContext userContext)
             throws IOException, IllegalArgumentException {
         final String contentType = req.contentType();
-        if (contentType.equals(MediaType.APPLICATION_JSON)) {
-            return userContext.getForntEndJson();
-        } else if (contentType.equals(MediaType.APPLICATION_XML)) {
-            return userContext.getXML();
+        
+        if(!contentType.equals(null)){
+        	 if (contentType.equals(MediaType.APPLICATION_JSON)) {
+                 return userContext.getForntEndJson();	
+             } else if (contentType.equals(MediaType.APPLICATION_XML)) {
+                 return userContext.getXML();
+             }
+             else {
+                 throw new IllegalArgumentException("wrong content-type");
+             }
         } else {
-            throw new IllegalArgumentException("wrong content-type");
+        	return userContext.getXML();
         }
+       
     }
 
     private static String createReturnStringListRequest(final Request req, final Response res,

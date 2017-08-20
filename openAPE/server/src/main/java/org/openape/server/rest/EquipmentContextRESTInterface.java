@@ -33,15 +33,21 @@ public class EquipmentContextRESTInterface extends SuperRestInterface {
     private static String createReturnString(final Request req,
             final EquipmentContext equipmentContext) throws IOException, IllegalArgumentException {
         final String contentType = req.contentType();
-        if (contentType.equals(MediaType.APPLICATION_JSON)) {
-            final ObjectMapper mapper = new ObjectMapper();
-            final String jsonData = mapper.writeValueAsString(equipmentContext);
-            return jsonData;
-        } else if (contentType.equals(MediaType.APPLICATION_XML)) {
-            return equipmentContext.getXML();
+        
+        if(contentType != null ){
+        	 if (contentType.equals(MediaType.APPLICATION_JSON)) {
+                 final ObjectMapper mapper = new ObjectMapper();
+                 final String jsonData = mapper.writeValueAsString(equipmentContext);
+                 return jsonData;
+             } else if (contentType.equals(MediaType.APPLICATION_XML)) {
+                 return equipmentContext.getXML();
+             } else {
+                 throw new IllegalArgumentException("wrong content-type");
+             }
         } else {
-            throw new IllegalArgumentException("wrong content-type");
+        	return equipmentContext.getXML();
         }
+       
     }
 
     public static void setupEquipmentContextRESTInterface(

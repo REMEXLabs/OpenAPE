@@ -34,15 +34,21 @@ public class EnvironmentContextRESTInterface extends SuperRestInterface {
             final EnvironmentContext environmentContext) throws IOException,
             IllegalArgumentException {
         final String contentType = req.contentType();
-        if (contentType.equals(MediaType.APPLICATION_JSON)) {
-            final ObjectMapper mapper = new ObjectMapper();
-            final String jsonData = mapper.writeValueAsString(environmentContext);
-            return jsonData;
-        } else if (contentType.equals(MediaType.APPLICATION_XML)) {
-            return environmentContext.getXML();
+        
+        if(contentType != null){
+        	 if (contentType.equals(MediaType.APPLICATION_JSON)) {
+                 final ObjectMapper mapper = new ObjectMapper();
+                 final String jsonData = mapper.writeValueAsString(environmentContext);
+                 return jsonData;
+             } else if (contentType.equals(MediaType.APPLICATION_XML)) {
+                 return environmentContext.getXML();
+             } else {
+                 throw new IllegalArgumentException("wrong content-type");
+             }
         } else {
-            throw new IllegalArgumentException("wrong content-type");
+        	  return environmentContext.getXML();
         }
+       
     }
 
     public static void setupEnvironmentContextRESTInterface(

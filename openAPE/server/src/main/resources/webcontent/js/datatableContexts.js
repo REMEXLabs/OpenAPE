@@ -4,6 +4,64 @@
 $(document).ready(function(){
 	var currentUrl = window.location.protocol + "//"+window.location.host;
 	
+
+	$('#editUserContextOutputSelContentType').on('change', function() {
+		var outputType = $("#editUserContextOutputSelContentType option:selected").text();
+		var id = localStorage.getItem("id");
+		
+		if(outputType == "JSON"){
+			$('#inputAdministrationEditUserContext').val("");
+			var json = JSON.parse(openape.getUserContext(id, "JSON").responseText); 
+			$('#inputAdministrationEditUserContext').val(JSON.stringify(json, undefined, 2));
+		} else {
+			$('#inputAdministrationEditUserContext').val("");
+			$('#inputAdministrationEditUserContext').val(openape.getUserContext(id, "XML").responseText);
+		}
+	})
+	
+	$('#editEnvironmentContextOutputSelContentType').on('change', function() {
+		var outputType = $("#editEnvironmentContextOutputSelContentType option:selected").text();
+		var id = localStorage.getItem("id");
+		
+		if(outputType == "JSON"){
+			$('#inputAdministrationEditEnvironmentContext').val("");
+			var json = JSON.parse(openape.getEnvironmentContext(id, "JSON").responseText); 
+			$('#inputAdministrationEditEnvironmentContext').val(JSON.stringify(json, undefined, 2));
+		} else {
+			$('#inputAdministrationEditEnvironmentContext').val("");
+			$('#inputAdministrationEditEnvironmentContext').val(openape.getEnvironmentContext(id, "XML").responseText);
+		}
+	})
+	
+
+	$('#editTaskContextOutputSelContentType').on('change', function() {
+		var outputType = $("#editTaskContextOutputSelContentType option:selected").text();
+		var id = localStorage.getItem("id");
+		
+		if(outputType == "JSON"){
+			$('#inputAdministrationEditTaskContext').val("");
+			var json = JSON.parse(openape.getTaskContext(id, "JSON").responseText); 
+			$('#inputAdministrationEditTaskContext').val(JSON.stringify(json, undefined, 2));
+		} else {
+			$('#inputAdministrationEditTaskContext').val("");
+			$('#inputAdministrationEditTaskContext').val(openape.getTaskContext(id, "XML").responseText);
+		}
+	})
+	
+	$('#editEquipmentContextOutputSelContentType').on('change', function() {
+		var outputType = $("#editEquipmentContextOutputSelContentType option:selected").text();
+		var id = localStorage.getItem("id");
+		
+		if(outputType == "JSON"){
+			$('#inputAdministrationEditEquipmentContext').val("");
+			var json = JSON.parse(openape.getEquipmentContext(id, "JSON").responseText); 
+			$('#inputAdministrationEditEquipmentContext').val(JSON.stringify(json, undefined, 2));
+		} else {
+			$('#inputAdministrationEditEquipmentContext').val("");
+			$('#inputAdministrationEditEquipmentContext').val(openape.getEquipmentContext(id, "XML").responseText);
+		}
+	})
+	
 	
 	$('#editEnvironmentContextModal').on('hidden.bs.modal', function () {
 		$('#editEnvironmentContextMainErrSection').empty();
@@ -97,11 +155,7 @@ $(document).ready(function(){
 		// Hide a column
 		
 		if(window.location.href.indexOf("myContexts") != -1){
-			
-
 			$('#'+contexts[i]+'DataTable').find("th").each(function() { 
-				
-		
 				if($(this).text() == "Owner"){
 					var index = $(this).index();
 					$('#'+contexts[i]+'DataTable').find("td").each(function() { 
@@ -111,14 +165,12 @@ $(document).ready(function(){
 						        .remove()
 						        .draw();
 							}
-						}
-						
+						}		
 					})
 				}
 			})
 			table.column( 1 ).visible( false );
 		} else if(window.location.href.indexOf("administration") == -1){
-			
 			$('#'+contexts[i]+'DataTable').find("td").each(function() {
 				if($(this).index() == 3){
 					if($(this).text() == "false"){
@@ -129,68 +181,14 @@ $(document).ready(function(){
 						}
 					}
 				}
-				
 			})
 			
 			table.column( 3 ).visible( false );
 		}	
 		
 	}
-	
-	//show modal by clicking the add button
-    $('#btnAddUserContext').click(function(){ 
-    	$('#addUserContextModal').modal('show');
-    })
-    
-    $('#btnConfirmAddUserContext').click(function(){ 
-    	var userContextJSON = $('#inputAdministrationAddUserContext').val();   
-    	var isPublic = $("#cbAddUserContext").is(':checked');
-    	var contentType = $('#addSelContentType option:selected').text();
-    	var parsedUserContext = "";
-    	
-    	if(validateInput(userContextJSON, "add", "UserContext") == true){
-    	
-	    	if(isPublic == true){
-	    		var objUserContext = JSON.parse(userContextJSON);
-	    		objUserContext.public = true;
-	    	} else {
-	    		var objUserContext = JSON.parse(userContextJSON);
-	    	}
-	    	
-	    	if(contentType == "JSON") {
-	    		parsedUserContext = JSON.stringify(objUserContext);
-	      	} else {
-	      		var x2js = new X2JS();
-	      		parsedUserContext = x2js.json2xml_str(objUserContext);
-	    	}
-	    	
-	  		validateContext(openape.createUserContext(parsedUserContext, contentType), "add", "UserContext") == true ? location.reload() : void 0;
-    	}
-    })
-    
-    
-    function objectToXml(obj) {
-        var xml = '';
 
-        for (var prop in obj) {
-            if (!obj.hasOwnProperty(prop)) {
-                continue;
-            }
-
-            if (obj[prop] == undefined)
-                continue;
-
-            xml += "<" + prop + ">";
-            if (typeof obj[prop] == "object")
-                xml += objectToXml(new Object(obj[prop]));
-            else
-                xml += obj[prop];
-
-            xml += "<!--" + prop + "-->";
-        }
-
-        return xml;
-    }
+     
 	
     $('#btnConfirmDeleteTaskContext').click(function(){ 
     	openape.deleteTaskContext(localStorage.getItem("id")); 
@@ -222,136 +220,408 @@ $(document).ready(function(){
     		location.reload();
    		}, 1000);
     })
-  
-    $('#btnConfirmEditEquipmentContext').click(function(){ 
-    	var inputEquipmentContext = $('#inputAdministrationEditEquipmentContext').val();
-    	var isPublic = $("#cbEditEquipmentContext").is(':checked');
-    	
-    	if(validateInput(inputEquipmentContext, "edit", "EquipmentContext") == true){
-	    	if(isPublic == true){
-	    		var objEquipmentContext = JSON.parse(inputEquipmentContext);
-	    		objEquipmentContext.public = true;
-	    	} else {
-	    		var objEquipmentContext = JSON.parse(inputEquipmentContext);
-	    	}
-	    	
-	      	validateContext(openape.updateEquipmentContext(localStorage.getItem("id"), JSON.stringify(objEquipmentContext)), "edit", "EquipmentContext") == true ? location.reload() : void 0;
-    	}
-    })
-    
-    $('#btnConfirmEditTaskContext').click(function(){ 
-    	var inputTaskContext = $('#inputAdministrationEditTaskContext').val();
-    	var isPublic = $("#cbEditTaskContext").is(':checked');
-    	
-	    if(validateInput(inputTaskContext, "edit", "TaskContext") == true){
-	    	if(isPublic == true){
-	    		var objTaskContext = JSON.parse(inputTaskContext);
-	    		objTaskContext.public = true;
-	    	} else {
-	    		var objTaskContext = JSON.parse(inputTaskContext);
-	    	}
-	    	
-	      	validateContext(openape.updateTaskContext(localStorage.getItem("id"), JSON.stringify(objTaskContext)), "edit", "TaskContext") == true ? location.reload() : void 0;
-	    }
-	 }) 
    
-    	//show modal by clicking the add button
+//------ADD CONTEXT MODAL INITIAL----------------------------------------------------------------------------
     $('#btnAddEquipmentContext').click(function(){ 
+    	$('#addEquipmentContextOutputSelContentType').css("display", "none");
+    	$('#addEquipmentContextlbOutput').css("display", "none");
+    	$('#addEquipmentContextdivPublicCb').css("margin-right", "19em"); 
+    	
     	$('#addEquipmentContextModal').modal('show');
     })
     
     //show modal by clicking the add button
     $('#btnAddEnvironmentContext').click(function(){ 
+    	$('#addEnvironmentContextOutputSelContentType').css("display", "none");
+    	$('#addEnvironmentContextlbOutput').css("display", "none");
+    	$('#addEnvironmentContextdivPublicCb').css("margin-right", "19em"); 
+    	
     	$('#addEnvironmentContextModal').modal('show');
     })
     
-     $('#btnConfirmAddEnvironmentContext').click(function(){ 
-    	var environmentContextJSON = $('#inputAdministrationAddEnvironmentContext').val();   
-    	var isPublic = $("#cbAddEnvironmentContext").is(':checked');
     	
+	//show modal by clicking the add button
+    $('#btnAddUserContext').click(function(){ 
+    	$('#addUserContextOutputSelContentType').css("display", "none");
+    	$('#addUserContextlbOutput').css("display", "none");
+    	$('#addUserContextdivPublicCb').css("margin-right", "19em"); 
     	
-    	if(validateInput(environmentContextJSON, "add", "EnvironmentContext") == true){
-    		if(isPublic == true){
-        		var objEnvironmentContext = JSON.parse(environmentContextJSON);
-        		objEnvironmentContext.public = true;
-        	} else {
-        		var objEnvironmentContext = JSON.parse(environmentContextJSON);
-        	}
-    		
-    		validateContext(openape.createEnvironmentContext(JSON.stringify(objEnvironmentContext)), "add", "EnvironmentContext") == true ? location.reload() : void 0;	
-    	}
-    	
+    	$('#addUserContextModal').modal('show');
     })
     
     $('#btnAddTaskContext').click(function(){ 
+    	$('#addTaskContextOutputSelContentType').css("display", "none");
+    	$('#addTaskContextlbOutput').css("display", "none");
+    	$('#addTaskContextdivPublicCb').css("margin-right", "19em"); 
+    	
     	$('#addTaskContextModal').modal('show');
     })
     
-    $('#btnConfirmAddEquipmentContext').click(function(){ 
-    	var equipmentContextJSON = $('#inputAdministrationAddEquipmentContext').val();  
-    	var isPublic = $("#cbAddEquipmentContext").is(':checked');
+    
+//-----ADD CONTEXT FUNCTIONS--------------------------------------------------------------------------------------
+    $('#btnConfirmAddUserContext').click(function(){ 
+    	var userContext = $('#inputAdministrationAddUserContext').val();   
+    	var isPublic = $("#cbAddUserContext").is(':checked');
+    	var contentType = $('#addUserContextSelContentType option:selected').text();
+    	var parsedUserContext = "";   	
+    	var objUserContext = {};
+    	var isFormatCorrect = true;
     	
-    	if(validateInput(equipmentContextJSON, "add", "EquipmentContext") == true){
-    		if(isPublic == true){
-        		var objEquipmentContext = JSON.parse(equipmentContextJSON);
-        		objEquipmentContext.public = true;
-        	} else {
-        		var objEquipmentContext = JSON.parse(equipmentContextJSON);
+    	if(validateInput(userContext, "add", "UserContext") == true){
+	    	if(contentType == "JSON") {
+	    		if(isJSON(userContext)){
+		    		objUserContext = JSON.parse(userContext);
+	    			
+		    		if(isPublic){
+	    				objUserContext.public = true;
+	    			}
+		    		
+		    		parsedUserContext = JSON.stringify(objUserContext);
+		    		isFormatCorrect = true;
+	    		} else {
+	    			isFormatCorrect = false;
+	    			$('#addUserContextMainErrSection').empty();
+          			$('#addUserContextMainErrSection').append("<img width='20px' height='20px' src='img/attention_icon.png'> No JSON found. Wrong Content-Type!");
+	    		}
+	    		
+	      	} else {
+	      		if(isXML(userContext)){
+	      			var x2js = new X2JS();
+		      		objUserContext = x2js.xml_str2json(userContext);
+		      		parsedUserContext = userContext;
+		      		isFormatCorrect = true;
+	      		} else {
+	      			isFormatCorrect = false;
+	    			$('#addUserContextMainErrSection').empty();
+          			$('#addUserContextMainErrSection').append("<img width='20px' height='20px' src='img/attention_icon.png'> No XML found. Wrong Content-Type!");
+	      		}
+	    	}
+	    	
+      		if(isPublic == true){
+	    		objUserContext.public = true;
+	    	} else {
+	    		objUserContext.public = false;
+	    	}
+	    	
+      		if(isFormatCorrect){
+      			validateContext(openape.createUserContext(parsedUserContext, contentType), "add", "UserContext") == true ? location.reload() : void 0;
+      		}
+      	}
+    })
+    
+     $('#btnConfirmAddEnvironmentContext').click(function(){ 
+    	var environmentContext = $('#inputAdministrationAddEnvironmentContext').val();   
+    	var isPublic = $("#cbAddEnvironmentContext").is(':checked');
+    	var contentType = $('#addEnvironmentContextSelContentType option:selected').text();
+    	var objEnvironmentContext = {};
+    	var parsedEnvironmentContext = "";
+    	var isFormatCorrect = true;
+    	
+    	if(validateInput(environmentContext, "add", "EnvironmentContext") == true){
+        	if(contentType == "JSON") {
+        		if(isJSON(environmentContext)){
+        			objEnvironmentContext = JSON.parse(environmentContext);
+		    		
+        			if(isPublic){
+        				objEnvironmentContext.public = true;
+	    			}
+        			
+            		parsedEnvironmentContext = JSON.stringify(objEnvironmentContext);
+            		isFormatCorrect = true;
+        		} else {
+        			isFormatCorrect = false;
+        			$('#addEnvironmentContextMainErrSection').empty();
+          			$('#addEnvironmentContextMainErrSection').append("<img width='20px' height='20px' src='img/attention_icon.png'> No JSON found. Wrong Content-Type!");
+        		}
+        		
+          	} else {
+          		if(isXML(environmentContext)){
+          			var x2js = new X2JS();
+              		objEnvironmentContext = x2js.xml_str2json(environmentContext);
+              		parsedEnvironmentContext = environmentContext;
+              		isFormatCorrect = true;
+          		} else {
+          			isFormatCorrect = false;		
+          			$('#addEnvironmentContextMainErrSection').empty();
+          			$('#addEnvironmentContextMainErrSection').append("<img width='20px' height='20px' src='img/attention_icon.png'> No XML found. Wrong Content-Type!"); 	
+          		}
+        	}
+    		
+    		if(isFormatCorrect){
+    			validateContext(openape.createEnvironmentContext(parsedEnvironmentContext, contentType), "add", "EnvironmentContext") == true ? location.reload() : void 0;	
+    		}
+    	}	
+    })
+    
+    $('#btnConfirmAddEquipmentContext').click(function(){ 
+    	var equipmentContext = $('#inputAdministrationAddEquipmentContext').val();  
+    	var isPublic = $("#cbAddEquipmentContext").is(':checked');
+    	var contentType = $('#addEquipmentContextSelContentType option:selected').text();
+    	var objEquipmentContext = {};
+    	var parsedEquipmentContext = "";
+    	var isFormatCorrect = true;
+    	
+    	if(validateInput(equipmentContext, "add", "EquipmentContext") == true){
+        	if(contentType == "JSON") {
+        		if(isJSON(equipmentContext)){
+	        		objEquipmentContext = JSON.parse(equipmentContext);
+        			
+	        		if(isPublic){
+	        			objEquipmentContext.public = true;
+	    			}
+        			
+	        		parsedEquipmentContext = JSON.stringify(objEquipmentContext);
+	        		isFormatCorrect = true;
+        		} else {
+        			isFormatCorrect = false;
+        			$('#addEquipmentContextMainErrSection').empty();
+          			$('#addEquipmentContextMainErrSection').append("<img width='20px' height='20px' src='img/attention_icon.png'> No JSON found. Wrong Content-Type!"); 	
+        		}
+          	} else {
+          		if(isXML(equipmentContext)){
+          			parsedEquipmentContext = equipmentContext;
+          			isFormatCorrect = true;
+          		} else {
+          			isFormatCorrect = false;
+           			$('#addEquipmentContextMainErrSection').empty();
+          			$('#addEquipmentContextMainErrSection').append("<img width='20px' height='20px' src='img/attention_icon.png'> No XML found. Wrong Content-Type!"); 	
+          		}
+        	}
+        	
+        	if(isFormatCorrect){
+        		validateContext(openape.createEquipmentContext(parsedEquipmentContext, contentType), "add", "EquipmentContext") == true ? location.reload() : void 0;	
         	}
     	}
-    	
-    	validateContext(openape.createEquipmentContext(JSON.stringify(objEquipmentContext)), "add", "EquipmentContext") == true ? location.reload() : void 0;	
     })
     
     $('#btnConfirmAddTaskContext').click(function(){ 
-    	var taskContextJSON = $('#inputAdministrationAddTaskContext').val(); 
+    	var taskContext = $('#inputAdministrationAddTaskContext').val(); 
     	var isPublic = $("#cbAddTaskContext").is(':checked');
+    	var contentType = $('#addTaskContextSelContentType option:selected').text();
+    	var objTaskContext = {};
+    	var parsedTaskContext = "";
+    	var isFormatCorrect = true;
     	
-    	if(validateInput(taskContextJSON, "add", "TaskContext") == true){
-	    	if(isPublic == true){
-	    		var objTaskContext = JSON.parse(taskContextJSON);
-	    		objTaskContext.public = true;
-	    	} else {
-	    		var objTaskContext = JSON.parse(taskContextJSON);
-	    	}
-    	}
-    	validateContext(openape.createTaskContext(JSON.stringify(objTaskContext)), "add", "TaskContext") == true ? window.location.reload() : void 0;	
-    })
-    
-    $('#btnConfirmEditUserContext').click(function(){ 
-    	var inputUserContext = $('#inputAdministrationEditUserContext').val();
-    	
-    	var isPublic = $("#cbEditUserContext").is(':checked');
-    	
-    	if(validateInput(inputUserContext, "edit", "UserContext") == true){
-	    	if(isPublic == true){
-	    		var objUserContext = JSON.parse(inputUserContext);
-	    		objUserContext.public = true;
-	    	} else {
-	    		var objUserContext = JSON.parse(inputUserContext);
-	    	}
- 	
-	    	validateContext(openape.updateUserContext(localStorage.getItem("id"), JSON.stringify(objUserContext)), "edit", "UserContext") == true ? location.reload() : void 0;
-    	}
-    })
-    $('#btnConfirmEditEnvironmentContext').click(function(){ 
-    	var inputEnvironmentContext = $('#inputAdministrationEditEnvironmentContext').val();
-    	
-    	var isPublic = $("#cbEditEnvironmentContext").is(':checked');
-    	
-    	if(validateInput(inputEnvironmentContext, "edit", "EnvironmentContext") == true){
-    		if(isPublic == true){
-        		var objEnvironmentContext = JSON.parse(inputEnvironmentContext);
-        		objEnvironmentContext.public = true;
-        	} else {
-        		var objEnvironmentContext = JSON.parse(inputEnvironmentContext);
+    	if(validateInput(taskContext, "add", "TaskContext") == true){
+        	if(contentType == "JSON") {
+        		if(isJSON(taskContext)){
+	        		objTaskContext = JSON.parse(taskContext);
+	        		
+	        		if(isPublic){
+	        			objTaskContext.public = true;
+	    			}
+        			
+	        		parsedTaskContext = JSON.stringify(objTaskContext);
+	        		isFormatCorrect = true;
+        		} else {
+        			isFormatCorrect = false;
+           			$('#addTaskContextMainErrSection').empty();
+          			$('#addTaskContextMainErrSection').append("<img width='20px' height='20px' src='img/attention_icon.png'> No JSON found. Wrong Content-Type!"); 	
+        		}
+          	} else {
+          		if(isXML(taskContext)){
+          			isFormatCorrect = true;
+          			parsedTaskContext = taskContext;
+          		} else {
+          			isFormatCorrect = false;
+           			$('#addTaskContextMainErrSection').empty();
+          			$('#addTaskContextMainErrSection').append("<img width='20px' height='20px' src='img/attention_icon.png'> No XML found. Wrong Content-Type!"); 	
+          		}
         	}
         	
-          	validateContext(openape.updateEnvironmentContext(localStorage.getItem("id"), JSON.stringify(objEnvironmentContext)), "edit", "EnvironmentContext") == true ? location.reload() : void 0;
+        	if(isFormatCorrect){
+        		validateContext(openape.createTaskContext(parsedTaskContext, contentType), "add", "TaskContext") == true ? window.location.reload() : void 0;	
+        	}
+    	}
+    })
+    
+    //-----EDIT CONTEXT FUNCTIONS---------------------------------------------------------------------
+    
+    $('#btnConfirmEditUserContext').click(function(){ 
+    	var userContext = $('#inputAdministrationEditUserContext').val();
+    	var contentType = $('#editUserContextSelContentType option:selected').text();	
+    	var isPublic = $("#cbEditUserContext").is(':checked');
+    	var objUserContext = {};
+    	var parsedUserContext = "";
+    	var isFormatCorrect = true;
+    	
+    	if(validateInput(userContext, "edit", "UserContext") == true){
+        	if(contentType == "JSON") {
+        		if(isJSON(userContext)){
+	        		objUserContext = JSON.parse(userContext);
+	        		       			
+        			if(isPublic){
+        				objUserContext.public = true;
+	    			}		
+	        		
+	        		parsedUserContext = JSON.stringify(objUserContext);
+	        		isFormatCorrect = true;
+        		} else {
+        			$('#editUserContextMainErrSection').empty();
+        			$('#editUserContextMainErrSection').append("<img width='20px' height='20px' src='img/attention_icon.png'>  No JSON found. Wrong Content-Type!");
+          			isFormatCorrect = false;
+        		}
+          	} else {
+          		if(isXML(userContext)){
+          			parsedUserContext = userContext;
+          			isFormatCorrect = true;
+          		} else {
+          			$('#editUserContextMainErrSection').empty();
+          			$('#editUserContextMainErrSection').append("<img width='20px' height='20px' src='img/attention_icon.png'>  No XML found. Wrong Content-Type!");
+          			isFormatCorrect = false;
+          		}
+        	}
+ 	
+        	if(isFormatCorrect){
+        		validateContext(openape.updateUserContext(localStorage.getItem("id"), parsedUserContext, contentType), "edit", "UserContext") == true ? location.reload() : void 0;
+        	}
+    	}
+    })
+    
+     $('#btnConfirmEditEquipmentContext').click(function(){ 
+    	var equipmentContext = $('#inputAdministrationEditEquipmentContext').val();
+    	var isPublic = $("#cbEditEquipmentContext").is(':checked');
+    	var isFormatCorrect = true;
+    	var parsedEquipmentContext = "";
+    	var contentType = $('#editEquipmentContextSelContentType option:selected').text();
+    	var objEquipmentContext = {};
+    	
+    	if(validateInput(equipmentContext, "edit", "EquipmentContext") == true){
+        	if(contentType == "JSON") {
+        		if(isJSON(equipmentContext)){
+        			objEquipmentContext = JSON.parse(equipmentContext);
+        			
+        			if(isPublic){
+        				objEquipmentContext.public = true;
+	    			}
+        			
+        			parsedEquipmentContext = JSON.stringify(objEquipmentContext);
+	        		isFormatCorrect = true;
+        		} else {
+        			$('#editEquipmentContextMainErrSection').empty();
+        			$('#editEquipmentContextMainErrSection').append("<img width='20px' height='20px' src='img/attention_icon.png'>  No JSON found. Wrong Content-Type!");
+          			isFormatCorrect = false;
+        		}
+          	} else {
+          		if(isXML(equipmentContext)){
+          			parsedEquipmentContext  = equipmentContext ;
+          			isFormatCorrect = true;
+          		} else {
+          			$('#editEquipmentContextMainErrSection').empty();
+          			$('#editEquipmentContextMainErrSection').append("<img width='20px' height='20px' src='img/attention_icon.png'>  No XML found. Wrong Content-Type!");
+          			isFormatCorrect = false;
+          		}
+        	}
+	    	
+	    	if(isFormatCorrect){
+	    		validateContext(openape.updateEquipmentContext(localStorage.getItem("id"), parsedEquipmentContext, contentType), "edit", "EquipmentContext") == true ? location.reload() : void 0;
+	    	}
+	    }
+    })
+    
+    $('#btnConfirmEditTaskContext').click(function(){ 
+    	var taskContext = $('#inputAdministrationEditTaskContext').val();
+    	var isPublic = $("#cbEditTaskContext").is(':checked');
+    	var isFormatCorrect = true;
+    	var parsedTaskContext = "";
+    	var contentType = $('#editTaskContextSelContentType option:selected').text();
+    	var objTaskContext = {};
+    	
+	    if(validateInput(taskContext, "edit", "TaskContext") == true){
+        	if(contentType == "JSON") {
+        		if(isJSON(taskContext)){
+        			objTaskContext = JSON.parse(taskContext);
+	        		
+        			if(isPublic){
+	        			objTaskContext.public = true;
+	    			}
+        			
+        			parsedTaskContext = JSON.stringify(objTaskContext);
+	        		isFormatCorrect = true;
+        		} else {
+        			$('#editTaskContextMainErrSection').empty();
+        			$('#editTaskContextMainErrSection').append("<img width='20px' height='20px' src='img/attention_icon.png'>  No JSON found. Wrong Content-Type!");
+          			isFormatCorrect = false;
+        		}
+          	} else {
+          		if(isXML(taskContext)){
+          			parsedTaskContext  = taskContext ;
+          			isFormatCorrect = true;
+          		} else {
+          			$('#editTaskContextMainErrSection').empty();
+          			$('#editTaskContextMainErrSection').append("<img width='20px' height='20px' src='img/attention_icon.png'>  No XML found. Wrong Content-Type!");
+          			isFormatCorrect = false;
+          		}
+        	}
+	    	
+        	if(isFormatCorrect){
+        		validateContext(openape.updateTaskContext(localStorage.getItem("id"), parsedTaskContext, contentType), "edit", "TaskContext") == true ? location.reload() : void 0;
+        	}
+        }
+	 }) 
+	 
+    $('#btnConfirmEditEnvironmentContext').click(function(){ 
+    	var environmentContext = $('#inputAdministrationEditEnvironmentContext').val();
+    	var isFormatCorrect = true;
+    	var isPublic = $("#cbEditEnvironmentContext").is(':checked');
+    	var parsedEnvironmentContext = "";
+    	var objEnvironmentContext = {};
+    	var contentType = $('#editEnvironmentContextSelContentType option:selected').text();	
+    	
+    	if(validateInput(environmentContext, "edit", "EnvironmentContext") == true){
+    		if(contentType == "JSON") {
+        		if(isJSON(environmentContext)){
+        			objEnvironmentContext = JSON.parse(environmentContext);
+        			
+        			if(isPublic){
+        				objEnvironmentContext.public = true;
+	    			}
+        			
+	        		parsedEnvironmentContext = JSON.stringify(objEnvironmentContext);
+	        		isFormatCorrect = true;
+        		} else {
+        			$('#editEnvironmentContextMainErrSection').empty();
+        			$('#editEnvironmentContextMainErrSection').append("<img width='20px' height='20px' src='img/attention_icon.png'>  No JSON found. Wrong Content-Type!");
+          			isFormatCorrect = false;
+        		}
+          	} else {
+          		if(isXML(environmentContext)){
+          			parsedEnvironmentContext = environmentContext;
+          			isFormatCorrect = true;
+          		} else {
+          			$('#editEnvironmentContextMainErrSection').empty();
+          			$('#editEnvironmentContextMainErrSection').append("<img width='20px' height='20px' src='img/attention_icon.png'>  No XML found. Wrong Content-Type!");
+          			isFormatCorrect = false;
+          		}
+        	}
+        	
+    		if(isFormatCorrect){
+    			validateContext(openape.updateEnvironmentContext(localStorage.getItem("id"), parsedEnvironmentContext, contentType), "edit", "EnvironmentContext") == true ? location.reload() : void 0;
+    		}
     	}
      })  
 })
 
+
+function isXML(xml){
+    try {
+        xmlDoc = $.parseXML(xml); //is valid XML
+        return true;
+    } catch (err) {
+        // was not XML
+        return false;
+    }
+}
+
+function isJSON(json){
+    try {
+        jsonDoc = $.parseJSON(json); //is valid JSON
+        return true;
+    } catch (err) {
+        // was not JSON
+        return false;
+    }
+}
 
 function validateContext (contextAction, contextActionName, contextName){
 	var errSectionName =  "";
@@ -376,7 +646,7 @@ function validateInput (contextInput, contextActionName, contextName){
 		
 	if(contextInput == ""){
 		$(errSectionName).empty();
-		$(errSectionName).append("<img width='20px' height='20px' src='img/attention_icon.png'>  Please add a task context");
+		$(errSectionName).append("<img width='20px' height='20px' src='img/attention_icon.png'>  Please add a "+contextName);
 		return false; 
 	} else {
 		return true;
@@ -385,12 +655,13 @@ function validateInput (contextInput, contextActionName, contextName){
 
 function getContext(id, contextName){
 	switch(contextName){
-		case "taskContext" : return JSON.parse(openape.getTaskContext(id).responseText); break;
-		case "equipmentContext" : console.log(id);return JSON.parse(openape.getEquipmentContext(id).responseText); break;
-		case "environmentContext" : return JSON.parse(openape.getEnvironmentContext(id).responseText); break;
-		case "userContext" : return JSON.parse(openape.getUserContext(id).responseText); break;
+		case "taskContext" : return JSON.parse(openape.getTaskContext(id, "JSON").responseText); break;
+		case "equipmentContext" : return JSON.parse(openape.getEquipmentContext(id, "JSON").responseText); break;
+		case "environmentContext" : return JSON.parse(openape.getEnvironmentContext(id, "JSON").responseText); break;
+		case "userContext" : return JSON.parse(openape.getUserContext(id, "JSON").responseText); break;
 	}	
 }
+
 
 //View
 function viewContext(event){
@@ -400,7 +671,7 @@ function viewContext(event){
 	var objContext = new Object();
 	
 	if(contextName == "UserContext"){
-		objContext.contexts = getContext(event.id, contextNameLowerCase).contexts;
+		objContext = getContext(event.id, contextNameLowerCase);
 	} else {
 		objContext.propertys = getContext(event.id, contextNameLowerCase).propertys;
 	}
@@ -421,9 +692,9 @@ function editContext(event){
 	if(contextName != "UserContext"){
 		objContext.propertys = getContext(event.id, contextNameLowerCase).propertys;
 	} else {
-		objContext.contexts = getContext(event.id, "userContext").contexts;
+		objContext = getContext(event.id, "userContext");
 	}
-	
+		
 	if(isPublic == true){
 		$("#cbEdit"+contextName).prop('checked', true);
 	} else {
@@ -459,18 +730,22 @@ function copyContext(event){
 	}
 
 	if(contextName == "UserContext"){
-		objContext.contexts = getContext(event.id, "userContext").contexts;
+		objContext = getContext(event.id, "userContext");
 		var context = JSON.stringify(objContext);
 		copyResponse = openape.createUserContext(context, "JSON").status;
 	} else {
-		var context = JSON.stringify(objContext);
-		
 		if(contextName == "TaskContext"){
-			copyResponse = openape.createTaskContext(context).status;
+			objContext = getContext(event.id, "taskContext");
+			var context = JSON.stringify(objContext);
+			copyResponse = openape.createTaskContext(context, "JSON").status;
 		} else if(contextName == "EnvironmentContext"){
-			copyResponse = openape.createEnvironmentContext(context).status;
+			objContext = getContext(event.id, "environmentContext");
+			var context = JSON.stringify(objContext);
+			copyResponse = openape.createEnvironmentContext(context, "JSON").status;
 		} else if(contextName == "EquipmentContext"){
-			copyResponse = openape.createEquipmentContext(context).status;
+			objContext = getContext(event.id, "equipmentContext");
+			var context = JSON.stringify(objContext);
+			copyResponse = openape.createEquipmentContext(context, "JSON").status;
 		}
 	}
 	
@@ -480,3 +755,4 @@ function copyContext(event){
 		alert("error occured");
 	}
 }
+
