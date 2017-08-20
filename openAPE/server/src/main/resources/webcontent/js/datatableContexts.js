@@ -7,11 +7,12 @@ $(document).ready(function(){
 	$('#viewEnvironmentContextOutputSelContentType').on('change', function() {
 		var outputType = $("#viewEnvironmentContextOutputSelContentType option:selected").text();
 		var id = localStorage.getItem("contextId");
+		var objEnvironmentContext = {};
 		
 		if(outputType == "JSON"){
 			$('#inputViewEnvironmentContext').val("");
-			var json = JSON.parse(openape.getEnvironmentContext(id, "JSON").responseText); 
-			$('#inputViewEnvironmentContext').val(JSON.stringify(json, undefined, 2));
+			objEnvironmentContext.propertys = JSON.parse(openape.getEnvironmentContext(id, "JSON").responseText).propertys; 
+			$('#inputViewEnvironmentContext').val(JSON.stringify(objEnvironmentContext, undefined, 2));
 		} else {
 			$('#inputViewEnvironmentContext').val("");
 			var responseXML = openape.getEnvironmentContext(id, "XML").responseText;
@@ -24,11 +25,12 @@ $(document).ready(function(){
 	$('#viewTaskContextOutputSelContentType').on('change', function() {
 		var outputType = $("#viewTaskContextOutputSelContentType option:selected").text();
 		var id = localStorage.getItem("contextId");
+		var objTaskContext = {};
 		
 		if(outputType == "JSON"){
 			$('#inputViewTaskContext').val("");
-			var json = JSON.parse(openape.getTaskContext(id, "JSON").responseText); 
-			$('#inputViewTaskContext').val(JSON.stringify(json, undefined, 2));
+			objTaskContext.propertys = JSON.parse(openape.getTaskContext(id, "JSON").responseText).propertys; 
+			$('#inputViewTaskContext').val(JSON.stringify(objTaskContext, undefined, 2));
 		} else {
 			var responseXML = openape.getTaskContext(id, "XML").responseText;
 			var formatedXML = "<task-context>"+responseXML.substring(responseXML.indexOf("</id>")+5);
@@ -42,11 +44,12 @@ $(document).ready(function(){
 	$('#viewEquipmentContextOutputSelContentType').on('change', function() {
 		var outputType = $("#viewEquipmentContextOutputSelContentType option:selected").text();
 		var id = localStorage.getItem("contextId");
+		var objEquipmentContext = {};
 		
 		if(outputType == "JSON"){
 			$('#inputViewEquipmentContext').val("");
-			var json = JSON.parse(openape.getEquipmentContext(id, "JSON").responseText); 
-			$('#inputViewEquipmentContext').val(JSON.stringify(json, undefined, 2));
+			objEquipmentContext.propertys = JSON.parse(openape.getEquipmentContext(id, "JSON").responseText).propertys; 
+			$('#inputViewEquipmentContext').val(JSON.stringify(objEquipmentContext, undefined, 2));
 		} else {
 			var responseXML = openape.getEquipmentContext(id, "XML").responseText;
 			var formatedXML = "<equipment-context>"+responseXML.substring(responseXML.indexOf("</id>")+5);
