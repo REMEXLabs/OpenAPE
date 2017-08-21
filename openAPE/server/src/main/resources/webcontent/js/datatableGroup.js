@@ -12,7 +12,6 @@ $(document).ready(function() {
     } ); 
 	
 	$('#btnAddGroup').click(function () {
-		
 		$('#addGroupModal').modal("show");
 	})
 	
@@ -34,12 +33,11 @@ $(document).ready(function() {
 	})
 	
 	$('#btnConfirmDeleteGroup').click(function () {
+		removeGroupFromDB(window.eventId);
 		
-		window.eventId
 	})
-	
-	
-	    
+
+	  
 })
 
 
@@ -54,9 +52,8 @@ function removeGroupFromDB(groupId) {
 	$.ajax({
         type: 'DELETE',
         contentType: 'application/json',
-        url: url+'/openape/groups',
+        url: url+'/openape/groups/'+groupId,
         dataType: "json",
-        data: group,
         headers: {
         	"Authorization": localStorage.getItem("token"),
         },
@@ -67,10 +64,7 @@ function removeGroupFromDB(groupId) {
     		}, 1000);
         },
         error: function(jqXHR, textStatus, errorThrown){
-      		 $('#addGroupModal').modal('hide');
-             setTimeout(function(){ 
-         		location.reload();
-        		}, 1000);
+        	console.log(jqXHR);
         }
     });
 }

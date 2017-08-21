@@ -74,13 +74,12 @@ public class GroupManagementRestInterface extends SuperRestInterface {
                 });
         
         
-        Spark.delete( Messages.getString("GroupManagementRestInterface.GroupURLWithID"), (req, res) -> { //$NON-NLS-1$
-        	 final String resourceDescriptionId = req.params(Messages
-                     .getString("GroupManagementRestInterface.IDParam")); //$NON-NLS-1$
-        	 
+        Spark.delete( OpenAPEEndPoints.GROUP_ID, (req, res) -> { //$NON-NLS-1$
+        	 final String groupId = req.params(":groupId");
+        	boolean isDeleted =  new GroupManagementHandler().deleteGroupById(groupId);
         	 
 
-        	return resourceDescriptionId;
+        	return isDeleted;
         });
         
         /*
