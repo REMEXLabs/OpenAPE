@@ -57,6 +57,8 @@ function deleteGroup(event){
 function editGroup(event){
 	$('#editGroupModal').modal('show');
 	var id = event.id;
+	getGroupFromDB(id);
+	
 	window.groupId = id;
 }
 
@@ -103,6 +105,26 @@ function updateGroupDB(groupId, group) {
              setTimeout(function(){ 
          		location.reload();
         		}, 1000);
+        }
+    });
+}
+
+function getGroupFromDB(groupId) {
+	$.ajax({
+        type: 'GET',
+        contentType: 'application/json',
+        url: url+'/openape/groups/'+groupId,
+        headers: {
+        	"Authorization": localStorage.getItem("token"),
+        },
+        success: function(data, textStatus, jqXHR){
+        	var objGroup = JSON.parse(jqXHR.responseText);
+    		$('#editGroupNameInput').val(objGroup.name);
+    		$('#editGroupDescriptionInput').val(objGroup.description);
+        	
+        },
+        error: function(jqXHR, textStatus, errorThrown){
+        	console.log(jqXHR);
         }
     });
 }

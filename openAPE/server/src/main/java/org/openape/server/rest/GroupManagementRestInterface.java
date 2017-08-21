@@ -89,6 +89,20 @@ public class GroupManagementRestInterface extends SuperRestInterface {
 	       	return 	group.getDescription();
         });
         
+        
+        Spark.get( OpenAPEEndPoints.GROUP_ID, (req, res) -> { //$NON-NLS-1$
+	       	final String groupId = req.params(":groupId");
+	        
+	    
+	       	
+	       	GroupManagementHandler groupManagement = new GroupManagementHandler();
+	        Group group = groupManagement.getGroupById(groupId);
+	        final ObjectMapper mapper = new ObjectMapper();
+
+	        return mapper.writeValueAsString(group);
+	       
+        });
+        
         Spark.delete( OpenAPEEndPoints.GROUP_ID, (req, res) -> { //$NON-NLS-1$
         	final String groupId = req.params(":groupId");
         	boolean isDeleted =  new GroupManagementHandler().deleteGroupById(groupId);
