@@ -41,6 +41,7 @@ $(document).ready(function(){
 		}
 	})
 	
+	
 	$('#viewEquipmentContextOutputSelContentType').on('change', function() {
 		var outputType = $("#viewEquipmentContextOutputSelContentType option:selected").text();
 		var id = localStorage.getItem("contextId");
