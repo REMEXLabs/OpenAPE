@@ -70,7 +70,6 @@ public class GroupManagementRestInterface extends SuperRestInterface {
                         res.status(SuperRestInterface.HTTP_STATUS_INTERNAL_SERVER_ERROR);
                         return e.getMessage();
                     }
-
                 });
         
         
@@ -85,15 +84,12 @@ public class GroupManagementRestInterface extends SuperRestInterface {
 	        
 	       	boolean status = new GroupManagementHandler().updateGroupById(groupId, group);
 
-
 	       	return 	group.getDescription();
         });
         
         
         Spark.get( OpenAPEEndPoints.GROUP_ID, (req, res) -> { //$NON-NLS-1$
-	       	final String groupId = req.params(":groupId");
-	        
-	    
+	       	final String groupId = req.params(":groupId");     	    
 	       	
 	       	GroupManagementHandler groupManagement = new GroupManagementHandler();
 	        Group group = groupManagement.getGroupById(groupId);
@@ -114,7 +110,6 @@ public class GroupManagementRestInterface extends SuperRestInterface {
          * Receive requests to add users to an existing group start adding
          * process
          */
-
         
         Spark.put(
                 OpenAPEEndPoints.GROUP_MEMBER,
@@ -158,9 +153,7 @@ public class GroupManagementRestInterface extends SuperRestInterface {
                     }
 
                 });
-    
 
-    }
-    
+    }   
     
 }
