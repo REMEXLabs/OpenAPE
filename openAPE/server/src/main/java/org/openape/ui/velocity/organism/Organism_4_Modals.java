@@ -1,70 +1,61 @@
 package org.openape.ui.velocity.organism;
 
 public class Organism_4_Modals {
-    public String generateAddContextModal(final String contextName) {
-        String idName = "";
+    public String generateContextModal(final String contextName, final String actionNameUpperCase) {
+        String actionNameLowerCase = actionNameUpperCase.substring(0, 1).toLowerCase()+actionNameUpperCase.substring(1);
+
+    	String idName = "";
         if (contextName.contains("Context")) {
             idName = contextName.replace("-", "");
         } else {
             idName = contextName;
         }
 
-        final String modalContruct = "" + "<div class='modal fade' id='add"
+        final String modalContruct = "" + "<div class='modal fade' id='"+actionNameLowerCase+""
                 + idName
                 + "Modal' tabindex='-1' role='dialog' aria-labelledby='exampleModalLongTitle' aria-hidden='true'>"
                 + "  <div class='modal-dialog' role='document'>"
                 + "    <div class='modal-content'>"
                 + "      <div class='modal-header' style='background-color:#e31134; color:white;text-align:center;border-bottom: 2px solid #AB112A;'>"
-                + "        <h3 id='exampleModalLongTitle'>Add "
+                + "        <h3 id='exampleModalLongTitle'>"+actionNameUpperCase+" "
                 + contextName
                 + "</h3>"
                 + "      </div>"
-                + "      <div class='modal-body' style='min-height:10em;padding:5em'>"
-                + "      Add your Context in JSON-Format <textarea id='inputAdministrationAdd"
+                + "      <div class='modal-body' style='min-height:10em;padding-bottom: 4em; padding-left: 2em; padding-top: 2em'>"
+                + "      Add your Context in JSON- or XML-Format <textarea style='width: 100% !important' id='inputAdministration"+actionNameUpperCase+""
                 + idName
-                + "' class='form-control' rows='10' id='comment'></textarea>"
-                + " <div class='checkbox'>"
-                + "   <span style='margin-right:2.5em'><b>Public:</b></span> <span><input type='checkbox' id='cbAdd"
+                + "' class='form-control' rows='13' id='comment'></textarea>"
+                + " <div style='margin-top:1em'>"
+                + "	<div style='float:left; margin-right:3em;' id='"+actionNameLowerCase+""+idName+"divPublicCb'>"
+
+                + "   <span style='margin-right:2.5em'><b>Public:</b></span> <span><input type='checkbox' id='cb"+actionNameUpperCase+""
                 + idName
                 + "'  style='transform: scale(1.5)'></span>"
-                + "</div>"
+                + "</div><div style='float:left'> "
+                + " <span style='margin-right: 2em;margin-left: 1.5em;' id='"+actionNameLowerCase+""+idName+"lbOutput'><b>Output:</b></span>"
+                + "<select style='margin-right:5em' class='selectpicker' id='"+actionNameLowerCase+""+idName+"OutputSelContentType'>"
+                + "<option>JSON</option>"
+                + "<option>XML</option>"
+                + "</select>"
+                + "<span style='margin-right:2.5em'><b>Content-Type:</b></span> "
+                + "<select class='selectpicker' id='"+actionNameLowerCase+""+idName+"SelContentType'>"
+                + "<option>JSON</option>"
+                + "<option>XML</option>"
+                + "</select>"
+                + "</div></div>"
                 + "      </div>"
                 + "      <div class='modal-footer' style='background-color:#ececec;border-top: 2px solid #ccc;'>"
-                + "		<span style='float:left;color:red;font-weight:bold;padding-top:0.5em' id='add"
+                + "		<span style='float:left;color:red;font-weight:bold;padding-top:0.5em' id='"+actionNameLowerCase+""
                 + idName
                 + "MainErrSection'> </span>"
                 + "       <button type='button' class='btn btn-secondary' data-dismiss='modal'>Cancel</button>"
-                + "        <button type='button' class='btn btn-danger' id='btnConfirmAdd" + idName
-                + "'>Add " + contextName + "</button>" + "      </div>" + "</div>" + "</div>"
+                + "        <button type='button' class='btn btn-danger' id='btnConfirm" + actionNameUpperCase + "" + idName
+                + "'>"+actionNameUpperCase+" " + contextName + "</button>" + "      </div>" + "</div>" + "</div>"
                 + "</div>";
 
         return modalContruct;
     }
 
-    public String generateAddGroupModal() {
-
-        final String modalContruct = ""
-                + "<div class='modal fade' id='addGroupModal' tabindex='-1' role='dialog' aria-labelledby='exampleModalLongTitle' aria-hidden='true'>"
-                + "  <div class='modal-dialog' role='document'>"
-                + "    <div class='modal-content'>"
-                + "      <div class='modal-header' style='background-color:#e31134; color:white;text-align:center;border-bottom: 2px solid #AB112A;'>"
-                + "        <h3 id='exampleModalLongTitle'>Add Group </h3>"
-                + "      </div>"
-                + "      <div class='modal-body' align='center' style='min-height:10em'>"
-                + "		<table style='width:80%'><tr><td style='padding:10px'>Group name"
-                + "  	<input type='text' class='form-control' id='inputSignupUsername' placeholder='Username'></td></tr><tr>"
-                + "      <td style='padding:10px'>User <textarea id='inputAdministrationAddGroup' class='form-control' rows='10' id='comment'></textarea>"
-                + "     </td></tr></table>"
-                + "      </div>"
-
-                + "      <div class='modal-footer' style='background-color:#ececec;border-top: 2px solid #ccc;'>"
-                + "		<span style='float:left;color:red;font-weight:bold;padding-top:0.5em' id='addGroupMainErrSection'> </span>"
-                + "       <button type='button' class='btn btn-secondary' data-dismiss='modal'>Cancel</button>"
-                + "        <button type='button' class='btn btn-danger' id='btnConfirmAddGroup'>Add Group</button>"
-                + "      </div>" + "</div>" + "</div>" + "</div>";
-
-        return modalContruct;
-    }
 
     public String generateDeleteModal(final String destination) {
 
@@ -99,70 +90,6 @@ public class Organism_4_Modals {
         return modalContruct;
     }
 
-    public String generateEditContextModal(final String contextName) {
-        String idName = "";
-        if (contextName.contains("Context")) {
-            idName = contextName.replace("-", "");
-        } else {
-            idName = contextName;
-        }
-
-        final String modalContruct = "" + "<div class='modal fade' id='edit"
-                + idName
-                + "Modal' tabindex='-1' role='dialog' aria-labelledby='exampleModalLongTitle' aria-hidden='true'>"
-                + "  <div class='modal-dialog' role='document'>"
-                + "    <div class='modal-content'>"
-                + "      <div class='modal-header' style='background-color:#e31134; color:white;text-align:center;border-bottom: 2px solid #AB112A;'>"
-                + "        <h3 id='exampleModalLongTitle'>Edit "
-                + contextName
-                + "</h3>"
-                + "      </div>"
-                + "      <div class='modal-body' style='min-height:10em;padding:5em'>"
-                + "      Add your Context in JSON-Format <textarea id='inputAdministrationEdit"
-                + idName
-                + "' class='form-control' rows='10' id='comment'></textarea>"
-                + " <div class='checkbox'>"
-                + "   <span style='margin-right:2.5em'><b>Public:</b></span> <span><input id='cbEdit"
-                + idName
-                + "' type='checkbox'  style='transform: scale(1.5)'></span>"
-                + "</div>"
-                + "      </div>"
-                + "      <div class='modal-footer' style='background-color:#ececec;border-top: 2px solid #ccc;'>"
-                + "		<span style='float:left;color:red;font-weight:bold;padding-top:0.5em' id='edit"
-                + idName
-                + "MainErrSection'> </span>"
-                + "       <button type='button' class='btn btn-secondary' data-dismiss='modal'>Cancel</button>"
-                + "        <button type='button' class='btn btn-danger' id='btnConfirmEdit"
-                + idName + "'>Edit " + contextName + "</button>" + "      </div>" + "</div>"
-                + "</div>" + "</div>";
-
-        return modalContruct;
-    }
-
-    public String generateEditGroupModal() {
-
-        final String modalContruct = ""
-                + "<div class='modal fade' id='editGroupModal' tabindex='-1' role='dialog' aria-labelledby='exampleModalLongTitle' aria-hidden='true'>"
-                + "  <div class='modal-dialog' role='document'>"
-                + "    <div class='modal-content'>"
-                + "      <div class='modal-header' style='background-color:#e31134; color:white;text-align:center;border-bottom: 2px solid #AB112A;'>"
-                + "        <h3 id='exampleModalLongTitle'>edit Group </h3>"
-                + "      </div>"
-                + "      <div class='modal-body' align='center' style='min-height:10em'>"
-                + "		<table style='width:80%'><tr><td style='padding:10px'>Group name"
-                + "  	<input type='text' class='form-control' id='inputGroupName' placeholder='Username'></td></tr><tr>"
-                + "      <td style='padding:10px'>User <textarea id='inputAdministrationEditGroup' class='form-control' rows='10' id='comment'></textarea>"
-                + "     </td></tr></table>"
-                + "      </div>"
-
-                + "      <div class='modal-footer' style='background-color:#ececec;border-top: 2px solid #ccc;'>"
-                + "		<span style='float:left;color:red;font-weight:bold;padding-top:0.5em' id='addGroupMainErrSection'> </span>"
-                + "       <button type='button' class='btn btn-secondary' data-dismiss='modal'>Cancel</button>"
-                + "        <button type='button' class='btn btn-danger' id='btnConfirmEditGroup'>Edit Group</button>"
-                + "      </div>" + "</div>" + "</div>" + "</div>";
-
-        return modalContruct;
-    }
 
     public String generateSigninModal() {
 
@@ -310,10 +237,15 @@ public class Organism_4_Modals {
                 + contextName
                 + "</h3>"
                 + "      </div>"
-                + "      <div class='modal-body' style='min-height:10em;padding:5em'>"
-                + "      <textarea id='inputView"
+                + "      <div class='modal-body' style='min-height:10em; min-height: 10em; padding-bottom: 2em; padding-left: 2em; padding-top: 2em;'>"
+                + "      <textarea disabled='true' style='width: 100% !important' id='inputView"
                 + idName
-                + "' class='form-control' rows='10'></textarea>"
+                + "' class='form-control' rows='14'></textarea>"
+                + " <span style='margin-right: 2em; margin-left:29em; margin-top:2em' id='view"+idName+"lbOutput'><b>Output:</b></span>"
+                + "<select style='margin-top:1em' class='selectpicker' id='view"+idName+"OutputSelContentType'>"
+                + "<option>JSON</option>"
+                + "<option>XML</option>"
+                + "</select>"
                 + "      </div>"
                 + "      <div class='modal-footer' style='background-color:#ececec;border-top: 2px solid #ccc;'>"
                 + "		<span style='float:left;color:red;font-weight:bold;padding-top:0.5em' id='edit"
@@ -324,5 +256,4 @@ public class Organism_4_Modals {
 
         return modalContruct;
     }
-
 }

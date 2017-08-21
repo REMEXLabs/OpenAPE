@@ -16,24 +16,31 @@
 
 package org.openape.api.usercontext;
 
-import java.util.LinkedHashMap;
 import java.util.List;
+
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
 
 import org.openape.api.Messages;
 
-public class Condition {
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+public class Condition extends Operand {
+    private static final String CONDITION_MUST_HAVE_MORE_THAN_0_OPERANDS = "Condition must have more than 0 operands.";
+    private static final long serialVersionUID = -3346559128113703706L;
     /**
-     * must be 'not', 'eq', 'ne', 'lt', 'le', 'gt', 'ge', and or 'or'. <br>
+     * Type must be 'not', 'eq', 'ne', 'lt', 'le', 'gt', 'ge', and or 'or'. <br>
      * If type is "not", operands shall have exactly one element. <br>
      * If type is "eq", "ne", "lt", "le", "gt", or "ge", operands shall have
      * exactly two elements. <br>
      * If type is "and" or "or", operands shall have at least two elements.
      */
-    private String type = null;
+
     /**
      * Either Condition or String.
      */
-    private List<Object> operands = null;
+    private List<Operand> operands = null;
+    private String type;
 
     public Condition() {
     }
@@ -52,34 +59,12 @@ public class Condition {
      * @throws IllegalArgumentException
      *             if this is not the case.
      */
-    public Condition(final String type, final List<Object> operands)
+    public Condition(final String type, final List<Operand> operands)
             throws IllegalArgumentException {
         this.checkType(type);
         this.checkOpernadListLength(type, operands);
-        this.checkOperandClasses(operands);
         this.type = type;
         this.operands = operands;
-    }
-
-    /**
-     * @param operands
-     *            must be a list of either conditions or strings.
-     * @throws IllegalArgumentException
-     *             if this is not the case.
-     */
-    private void checkOperandClasses(final List<Object> operands) {
-        for (final Object operand : operands) {
-            if (!(operand instanceof Condition) && !(operand instanceof String)
-                    && !(operand instanceof LinkedHashMap<?, ?>)) {// LinkedHashMap
-                                                                   // is used
-                                                                   // by
-                                                                   // json to
-                                                                   // store sub
-                                                                   // results.
-                throw new IllegalArgumentException(
-                        Messages.getString("Condition.wrongOperandTypesErrorMsg")); //$NON-NLS-1$
-            }
-        }
     }
 
     /**
@@ -91,8 +76,11 @@ public class Condition {
      * @throws IllegalArgumentException
      *             if this is not the case.
      */
-    private void checkOpernadListLength(final String type, final List<Object> operands)
+    private void checkOpernadListLength(final String type, final List<Operand> operands)
             throws IllegalArgumentException {
+        if (operands.size() == 0) {
+            return;// has to accept for jaxb building
+        }
         if (type.equals(Messages.getString("Condition.not"))) { //$NON-NLS-1$
             if (operands.size() != 1) {
                 throw new IllegalArgumentException(
@@ -137,10 +125,12 @@ public class Condition {
         }
     }
 
-    public List<Object> getOperands() {
+    @XmlElement(name = "operand")
+    public List<Operand> getOperands() {
         return this.operands;
     }
 
+    @XmlAttribute(name = "type")
     public String getType() {
         return this.type;
     }
@@ -156,11 +146,10 @@ public class Condition {
      * @throws IllegalArgumentException
      *             if this is not the case.
      */
-    public void setOperands(final List<Object> operands) throws IllegalArgumentException {
-        this.checkOperandClasses(operands);
+    public void setOperands(final List<Operand> operands) throws IllegalArgumentException {
         // Check the operands list length if type is already set.
-        if (this.getType() != null) {
-            this.checkOpernadListLength(this.getType(), operands);
+        if (this.type != null) {
+            this.checkOpernadListLength(this.type, operands);
         }
         this.operands = operands;
     }
@@ -184,6 +173,20 @@ public class Condition {
             this.checkOpernadListLength(type, this.getOperands());
         }
         this.type = type;
+    }
+
+    /**
+     * validate condition throws {@link IllegalArgumentException} if not valid.
+     *
+     * @throws IllegalArgumentException
+     */
+    @JsonIgnore
+    public void validate() throws IllegalArgumentException {
+        this.checkType(this.getType());
+        this.checkOpernadListLength(this.getType(), this.getOperands());
+        if (this.operands.size() == 0) {
+            throw new IllegalArgumentException(Condition.CONDITION_MUST_HAVE_MORE_THAN_0_OPERANDS);
+        }
     }
 
 }

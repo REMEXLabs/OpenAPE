@@ -27,6 +27,8 @@
 <script src="js/datatableUsers.js" type="text/javascript"></script>
 <script src="js/usersection.js" type="text/javascript"></script>
 <script src="js/datatableGroup.js" type="text/javascript"></script>
+<script src="js/xml2json.js" type="text/javascript"></script>
+
 
 <script src="js/datatableContexts.js" type="text/javascript"></script>
 
@@ -102,35 +104,12 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h4 class="panel-title">
-                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseFour"><span class="glyphicon glyphicon-file">
+                             <a href="#resources" onclick="openCity(event, 'resources')"><span class="glyphicon glyphicon-file">
                             </span>Resources</a>
                         </h4>
                     </div>
                     <div id="collapseFour" class="panel-collapse collapse">
-                      <!--  <div class="panel-body">
-                            <table class="table">
-                                <tr>
-                                    <td>
-                                        <span class="glyphicon glyphicon-usd"></span><a href="http://www.jquery2dotnet.com">Sales</a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <span class="glyphicon glyphicon-user"></span><a href="http://www.jquery2dotnet.com">Customers</a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <span class="glyphicon glyphicon-tasks"></span><a href="http://www.jquery2dotnet.com">Products</a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <span class="glyphicon glyphicon-shopping-cart"></span><a href="http://www.jquery2dotnet.com">Shopping Cart</a>
-                                    </td>
-                                </tr>
-                            </table>
-                        </div>-->
+
                     </div>
                 </div>
             </div>
@@ -341,12 +320,16 @@
 
 		<div id="groups" class="tabcontent">
 		  <h1>Groups</h1>
-		  <div style="padding:1.2em">
-		  $deleteGroupModal
-		  </div>
-		  $addGroupModal
-		  $editGroupModal
+		  Under Construction...
+
 		</div>	
+		
+		<div id="resources" class="tabcontent">
+		  <h1>Resources</h1>
+		  Under Construction...
+
+		</div>	
+		
 		
 		
 	</div>

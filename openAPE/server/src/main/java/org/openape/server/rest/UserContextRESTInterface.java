@@ -26,10 +26,42 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class UserContextRESTInterface extends SuperRestInterface {
 
-    private static String createReturnString(final Request req, final Response res,
+    private static UserContext createRequestObejct(final Request req)
+            throws IllegalArgumentException {
+        final String contentType = req.contentType();
+        if (contentType.equals(MediaType.APPLICATION_JSON)) {
+            return UserContext.getObjectFromJson(req.body());
+        } else if (contentType.equals(MediaType.APPLICATION_XML)) {
+            return UserContext.getObjectFromXml(req.body());
+        } else {
+            SuperRestInterface.logger.debug("Received Message with wrong content-type");
+            throw new IllegalArgumentException("wrong content-type");
+        }
+    }
+
+    private static String createReturnString(final Request req, final UserContext userContext)
+            throws IOException, IllegalArgumentException {
+        final String contentType = req.contentType();
+        
+        if(contentType != null){
+        	 if (contentType.equals(MediaType.APPLICATION_JSON)) {
+                 return userContext.getForntEndJson();	
+             } else if (contentType.equals(MediaType.APPLICATION_XML)) {
+                 return userContext.getXML();
+             }
+             else {
+                 throw new IllegalArgumentException("wrong content-type");
+             }
+        } else {
+        	return userContext.getXML();
+        }
+       
+    }
+
+    private static String createReturnStringListRequest(final Request req, final Response res,
             final Class type, final Object data) {
         final String contentType = req.contentType();
-        if (contentType == MediaType.APPLICATION_JSON) {
+        if (contentType.equals(MediaType.APPLICATION_JSON)) {
             try {
                 final ObjectMapper mapper = new ObjectMapper();
 
@@ -39,7 +71,7 @@ public class UserContextRESTInterface extends SuperRestInterface {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
-        } else if (contentType == MediaType.APPLICATION_XML) {
+        } else if (contentType.equals(MediaType.APPLICATION_XML)) {
             try {
                 final JAXBContext context = JAXBContext.newInstance(type);
                 Marshaller m;
@@ -90,17 +122,11 @@ public class UserContextRESTInterface extends SuperRestInterface {
         Spark.post(
                 Messages.getString("UserContextRESTInterface.UserContextURLWithoutID"), (req, res) -> { //$NON-NLS-1$
                     SuperRestInterface.logger.info("bla");
-                    if (!req.contentType().equals(Messages.getString("MimeTypeJson"))) {//$NON-NLS-1$
-                        SuperRestInterface.logger.debug("Received Message with wrong content-type");
-                        res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
-                        return Messages
-                                .getString("Contexts.WrongMimeTypeErrorMsg" + " Received " + req.contentType() + " instead.");//$NON-NLS-1$
-                    }
                     try {
                         // Try to map the received json object to a userContext
                         // object.
-                        final UserContext receivedUserContext = (UserContext) SuperRestInterface
-                                .extractObjectFromRequest(req, UserContext.class);
+                        final UserContext receivedUserContext = UserContextRESTInterface
+                                .createRequestObejct(req);
                         // Make sure to set the id of the authenticated user as
                         // the ownerId
                         SuperRestInterface.logger.debug("lusm: requesting user");
@@ -120,7 +146,7 @@ public class UserContextRESTInterface extends SuperRestInterface {
                                 .createUserContext(receivedUserContext);
                         res.status(SuperRestInterface.HTTP_STATUS_CREATED);
                         return userContextId;
-                    } catch (JsonParseException | JsonMappingException e) {
+                    } catch (final IllegalArgumentException e) {
                         // If the parse is not successful return bad request
                         // error code.
                         res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
@@ -149,8 +175,8 @@ public class UserContextRESTInterface extends SuperRestInterface {
                                 userContext.isPublic());
                         res.status(SuperRestInterface.HTTP_STATUS_OK);
                         res.type(Messages.getString("UserContextRESTInterface.JsonMimeType")); //$NON-NLS-1$
-                        final ObjectMapper mapper = new ObjectMapper();
-                        final String jsonData = mapper.writeValueAsString(userContext);
+                        final String jsonData = UserContextRESTInterface.createReturnString(req,
+                                userContext);
                         return jsonData;
                         // if not return corresponding error status.
                     } catch (final IllegalArgumentException e) {
@@ -167,15 +193,11 @@ public class UserContextRESTInterface extends SuperRestInterface {
          */
         Spark.put(Messages.getString("UserContextRESTInterface.UserContextURLWithID"), //$NON-NLS-1$
                 (req, res) -> {
-                    if (!req.contentType().equals(Messages.getString("MimeTypeJson"))) {//$NON-NLS-1$
-                    res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
-                    return Messages.getString("Contexts.WrongMimeTypeErrorMsg");//$NON-NLS-1$
-                }
                 final String userContextId = req.params(Messages
                         .getString("UserContextRESTInterface.IDParam")); //$NON-NLS-1$
                 try {
-                    final UserContext receivedUserContext = (UserContext) SuperRestInterface
-                            .extractObjectFromRequest(req, UserContext.class);
+                    final UserContext receivedUserContext = UserContextRESTInterface
+                            .createRequestObejct(req);
                     // Test the object for validity.
                     if (!receivedUserContext.isValid()) {
                         res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
@@ -253,10 +275,10 @@ public class UserContextRESTInterface extends SuperRestInterface {
                     final String url = req.uri().toString();
                     try {
                         auth.allowAdmin(req, res);
-                        return UserContextRESTInterface.createReturnString(req, res,
+                        return UserContextRESTInterface.createReturnStringListRequest(req, res,
                                 UserContextList.class, requestHandler.getAllUserContexts(url));
                     } catch (final UnauthorizedException e) {
-                        return UserContextRESTInterface.createReturnString(req, res,
+                        return UserContextRESTInterface.createReturnStringListRequest(req, res,
                                 UserContextList.class, requestHandler.getMyContexts(auth
                                         .getAuthenticatedUser(req, res).getId(), url));
                     }

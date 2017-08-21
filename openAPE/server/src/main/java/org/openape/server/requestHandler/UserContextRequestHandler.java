@@ -48,7 +48,7 @@ public class UserContextRequestHandler {
         // argument exceptions. IO exceptions will just be thrown through.
         String id = null;
         try {
-            id = databaseconnection.storeData(UserContextRequestHandler.COLLECTIONTOUSE,
+            id = databaseconnection.storeDatabaseObject(UserContextRequestHandler.COLLECTIONTOUSE,
                     (DatabaseObject) userContext);
             UserContextRequestHandler.logger.debug("New user context in database with id \"" + id
                     + "\".");
@@ -76,7 +76,7 @@ public class UserContextRequestHandler {
         // get database connection.
         final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
 
-        final boolean success = databaseConnection.deleteData(
+        final boolean success = databaseConnection.deleteDatabaseObject(
                 UserContextRequestHandler.COLLECTIONTOUSE, id);
         if (!success) {
             throw new IllegalArgumentException(
@@ -127,7 +127,7 @@ public class UserContextRequestHandler {
         final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
 
         // Get the requested data.
-        final DatabaseObject result = databaseConnection.getData(
+        final DatabaseObject result = databaseConnection.getDatabaseObjectById(
                 UserContextRequestHandler.COLLECTIONTOUSE, id);
 
         // If the result is null the id is not found.
@@ -188,7 +188,7 @@ public class UserContextRequestHandler {
         // is thrown. IO exceptions are thrown through.
         boolean success;
         try {
-            success = databaseConnection.updateData(UserContextRequestHandler.COLLECTIONTOUSE,
+            success = databaseConnection.updateDatabaseObject(UserContextRequestHandler.COLLECTIONTOUSE,
                     (DatabaseObject) userContext, id);
         } catch (final ClassCastException e) {
             throw new IllegalArgumentException(e.getMessage());

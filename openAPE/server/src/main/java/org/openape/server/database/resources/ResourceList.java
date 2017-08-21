@@ -121,14 +121,14 @@ public class ResourceList {
         final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
         String id = null;
         try {
-            id = databaseConnection.storeData(MongoCollectionTypes.RESOURCEOBJECTS, resourceObject);
+            id = databaseConnection.storeDatabaseObject(MongoCollectionTypes.RESOURCEOBJECTS, resourceObject);
         } catch (final ClassCastException e) {
             throw new IOException(e.getMessage());
         }
         // Add id to resource object and store again.
         resourceObject.setId(id);
         try {
-            databaseConnection.updateData(MongoCollectionTypes.RESOURCEOBJECTS, resourceObject, id);
+            databaseConnection.updateDatabaseObject(MongoCollectionTypes.RESOURCEOBJECTS, resourceObject, id);
         } catch (final ClassCastException e) {
             throw new IOException(e.getMessage());
         }
@@ -212,7 +212,7 @@ public class ResourceList {
         final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
         ResourceObject resourceObject = null;
         try {
-            resourceObject = (ResourceObject) databaseConnection.getData(
+            resourceObject = (ResourceObject) databaseConnection.getDatabaseObjectById(
                     MongoCollectionTypes.RESOURCEOBJECTS, id);
         } catch (final ClassCastException e) {
             throw new IOException(e.getMessage());
@@ -230,7 +230,7 @@ public class ResourceList {
             this.resourceNameList.remove(resourceObject.getOwnerId() + File.separator
                     + resourceObject.getFileName());
             // delete reference object from database.
-            databaseConnection.deleteData(MongoCollectionTypes.RESOURCEOBJECTS, id);
+            databaseConnection.deleteDatabaseObject(MongoCollectionTypes.RESOURCEOBJECTS, id);
         } else {
             throw new IllegalArgumentException(
                     Messages.getString("ResourceList.FileNotFoundErrorMassage")); //$NON-NLS-1$
@@ -261,7 +261,7 @@ public class ResourceList {
         final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
         ResourceObject resourceObject = null;
         try {
-            resourceObject = (ResourceObject) databaseConnection.getData(
+            resourceObject = (ResourceObject) databaseConnection.getDatabaseObjectById(
                     MongoCollectionTypes.RESOURCEOBJECTS, id);
         } catch (final ClassCastException e) {
             throw new IOException(e.getMessage());

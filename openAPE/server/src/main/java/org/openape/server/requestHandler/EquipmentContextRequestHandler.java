@@ -39,7 +39,7 @@ public class EquipmentContextRequestHandler {
         // argument exceptions. IO exceptions will just be thrown through.
         String id = null;
         try {
-            id = databaseconnection.storeData(EquipmentContextRequestHandler.COLLECTIONTOUSE,
+            id = databaseconnection.storeDatabaseObject(EquipmentContextRequestHandler.COLLECTIONTOUSE,
                     (DatabaseObject) equipmentContext);
         } catch (final ClassCastException e) {
             throw new IllegalArgumentException(e.getMessage());
@@ -65,7 +65,7 @@ public class EquipmentContextRequestHandler {
         // get database connection.
         final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
 
-        final boolean success = databaseConnection.deleteData(
+        final boolean success = databaseConnection.deleteDatabaseObject(
                 EquipmentContextRequestHandler.COLLECTIONTOUSE, id);
         if (!success) {
             throw new IllegalArgumentException(
@@ -93,7 +93,7 @@ public class EquipmentContextRequestHandler {
         final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
 
         // Get the requested data.
-        final DatabaseObject result = databaseConnection.getData(
+        final DatabaseObject result = databaseConnection.getDatabaseObjectById(
                 EquipmentContextRequestHandler.COLLECTIONTOUSE, id);
 
         // If the result is null the id is not found.
@@ -139,7 +139,7 @@ public class EquipmentContextRequestHandler {
         // is thrown. IO exceptions are thrown through.
         boolean success;
         try {
-            success = databaseConnection.updateData(EquipmentContextRequestHandler.COLLECTIONTOUSE,
+            success = databaseConnection.updateDatabaseObject(EquipmentContextRequestHandler.COLLECTIONTOUSE,
                     (DatabaseObject) equipmentContext, id);
         } catch (final ClassCastException e) {
             throw new IllegalArgumentException(e.getMessage());

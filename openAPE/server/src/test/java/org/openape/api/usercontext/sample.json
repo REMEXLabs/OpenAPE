@@ -1,0 +1,39 @@
+{
+   "owner":"dude",
+   "public":true,
+   "default":{
+      "name":"Default preferences",
+      "preferences":{
+         "http://registry.gpii.net/common/magnifierEnabled":"false",
+         "http://registry.gpii.net/applications/org.chrome.cloud4chrome/invertColours":"false"
+      }
+   },
+   "dark":{
+      "conditions":[
+         {
+            "operands":[
+               {
+                  "operands":[
+                     "http://registry.gpii.net/common/env/visual.luminance",
+                     "0"
+                  ],
+                  "type":"ge"
+               },
+               {
+                  "operands":[
+                     "http://registry.gpii.net/common/env/visual.luminance",
+                     "200"
+                  ],
+                  "type":"le"
+               }
+            ],
+            "type":"and"
+         }
+      ],
+      "name":"little environmental light",
+      "preferences":{
+         "http://registry.gpii.net/common/magnifierEnabled":"true",
+         "http://registry.gpii.net/common/magnification":"2"
+      }
+   }
+}

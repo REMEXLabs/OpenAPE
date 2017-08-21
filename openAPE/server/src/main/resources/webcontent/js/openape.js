@@ -229,7 +229,7 @@
 		* @return      
 		* 	 A javascript object with all user contexts information
 		*/
-	    objOpenape.getUserContext = function (userContextId) {
+	    objOpenape.getUserContext = function (userContextId, outputType) {
 	    	var objGetUserContext_Result = {};
 	    	var objAjaxParameters = {};
 	    	localStorage.setItem("host", "http://"+window.location.host);
@@ -252,6 +252,12 @@
 	    	}
 	    	
 	    	if(isTokenCorrect && isuserContextIdCorrect){
+	    		if(outputType == "JSON"){
+	    			objAjaxParameters.contentType = "application/json";
+	    		} else {
+	    			objAjaxParameters.contentType = "application/xml";
+	    		}
+	    		
 	    		objAjaxParameters.type = "GET";
 	    		objAjaxParameters.url = localStorage.getItem("host")+"/api/user-contexts/"+userContextId;
 	    		objAjaxParameters.token = localStorage.getItem("token");
@@ -277,7 +283,7 @@
 		* @return      
 		* 	 A javascript object with all status information of the create process
 		*/	    
-	    objOpenape.createUserContext = function (UserContext) {
+	    objOpenape.createUserContext = function (UserContext, contentType) {
 	    	var objcreateUserContext_Result = {};
 	    	var objAjaxParameters = {};
 	    	
@@ -302,7 +308,12 @@
 	    		objAjaxParameters.data = UserContext;
 	    		objAjaxParameters.type = "POST";
 	    		objAjaxParameters.url = localStorage.getItem("host")+"/api/user-contexts";
-	    		objAjaxParameters.contentType = 'application/json';
+	    		
+	    		switch (contentType){
+	    			case "JSON" : objAjaxParameters.contentType = 'application/json'; break;
+	    			case "XML" : objAjaxParameters.contentType = 'application/xml';break;	
+	    		}
+	    	
 	    		objAjaxParameters.token = localStorage.getItem("token");
 	    		objcreateUserContext_Result = databaseCommunication(objAjaxParameters);
 	    	} else {
@@ -376,7 +387,7 @@
 		* @return      
 		* 	 A javascript object with all status information of the update process
 		*/	
-	    objOpenape.updateUserContext = function (userContextId, UserContext) {
+	    objOpenape.updateUserContext = function (userContextId, UserContext, contentType) {
 	    	var objUpdateUserContext_Result = {};
 	    	var objAjaxParameters = {};
 	    	var arrStatusText = [];
@@ -408,7 +419,11 @@
 	    	if(isTokenCorrect && isUserContextCorrect && isuserContextIdCorrect ){
 	    		objAjaxParameters.data = UserContext;
 	    		objAjaxParameters.type = "PUT";
-		    	objAjaxParameters.contentType = 'application/json';
+	    		
+	    		switch (contentType){
+    				case "JSON" : objAjaxParameters.contentType = 'application/json'; break;
+    				case "XML" : objAjaxParameters.contentType = 'application/xml';break;	
+	    		}
 	    		objAjaxParameters.url = localStorage.getItem("host")+"/api/user-contexts/"+userContextId;
 	    		objAjaxParameters.token = localStorage.getItem("token");
 	    		objUpdateUserContext_Result = databaseCommunication(objAjaxParameters);
@@ -435,7 +450,7 @@
 	     * 
 	     * @return      An JavaScript-Object with the create result
 	     */
-	    objOpenape.createTaskContext = function (taskContext) {
+	    objOpenape.createTaskContext = function (taskContext, contentType) {
 	    	var objcreateTaskContext_Result = {};
 	    	var objAjaxParameters = {};
 	    	
@@ -457,9 +472,13 @@
 	    	}
 	    	
 	    	if(isTokenCorrect && isTaskContextCorrect){	
+	    		switch (contentType){
+    				case "JSON" : objAjaxParameters.contentType = 'application/json'; break;
+    				case "XML" : objAjaxParameters.contentType = 'application/xml';break;	
+	    		}
+	    		
 	    		objAjaxParameters.data = taskContext;
 	    		objAjaxParameters.type = "POST";
-	    		objAjaxParameters.contentType = 'application/json';
 	    		objAjaxParameters.url = localStorage.getItem("host")+"/api/task-contexts";
 	    		objAjaxParameters.token = localStorage.getItem("token");
 	    		objcreateTaskContext_Result = databaseCommunication(objAjaxParameters);
@@ -480,7 +499,7 @@
 	     * @return      
 	     * 	An JavaScript-Object with the get result and the corresponding task-context to the given taskContextId
 	     */
-	    objOpenape.getTaskContext = function (taskContextId) {
+	    objOpenape.getTaskContext = function (taskContextId, outputType) {
 	    	var objGetTaskContext_Result = {};
 	    	var objAjaxParameters = {};
 	    	
@@ -502,6 +521,12 @@
 	    	}
 	    	
 	    	if(isTokenCorrect && isTaskContextIdCorrect){
+	    		if(outputType == "JSON"){
+	    			objAjaxParameters.contentType = "application/json";
+	    		} else {
+	    			objAjaxParameters.contentType = "application/xml";
+	    		}
+	    		
 	    		objAjaxParameters.type = "GET";
 	    		objAjaxParameters.url = localStorage.getItem("host")+"/api/task-contexts/"+taskContextId;
 	    		objAjaxParameters.token = localStorage.getItem("token");
@@ -571,7 +596,7 @@
 	     * @return      
 	     * 	An JavaScript-Object with the update result
 	     */
-	    objOpenape.updateTaskContext = function (taskContextId, taskContext) {
+	    objOpenape.updateTaskContext = function (taskContextId, taskContext, contentType) {
 	    	var objUpdateUserContext_Result = {};
 	    	var objAjaxParameters = {};
 	    	var arrStatusText = [];
@@ -603,7 +628,12 @@
 	    	if(isTokenCorrect && isTaskContextCorrect && isTaskContextIdCorrect ){
 	    		objAjaxParameters.data = taskContext;
 	    		objAjaxParameters.type = "PUT";
-	    		objAjaxParameters.contentType = 'application/json';
+	    		
+	    		switch (contentType){
+					case "JSON" : objAjaxParameters.contentType = 'application/json'; break;
+					case "XML" : objAjaxParameters.contentType = 'application/xml';break;	
+	    		}
+	    		
 	    		objAjaxParameters.url = localStorage.getItem("host")+"/api/task-contexts/"+taskContextId;
 	    		objAjaxParameters.token = localStorage.getItem("token");
 	    		objUpdateUserContext_Result = databaseCommunication(objAjaxParameters);
@@ -629,7 +659,7 @@
 	     * @return      
 	     * 	An JavaScript-Object with the equipment-context result
 	     */
-	    objOpenape.getEquipmentContext = function (equipmentContextId) {
+	    objOpenape.getEquipmentContext = function (equipmentContextId, outputType) {
 	    	var objGetEquipmentContext_Result = {};
 	    	var objAjaxParameters = {};
 	    	
@@ -651,6 +681,12 @@
 	    	}
 	    	
 	    	if(isTokenCorrect && isEquipmentContextIdCorrect){
+	    		if(outputType == "JSON"){
+	    			objAjaxParameters.contentType = "application/json";
+	    		} else {
+	    			objAjaxParameters.contentType = "application/xml";
+	    		}
+	    		
 	    		objAjaxParameters.type = "GET";
 	    		objAjaxParameters.url = localStorage.getItem("host")+"/api/equipment-contexts/"+equipmentContextId;
 	    		objAjaxParameters.token = localStorage.getItem("token");
@@ -718,7 +754,7 @@
 	     * @return      
 	     * 	 An JavaScript-Object with the create result
 	     */	    
-	    objOpenape.createEquipmentContext = function (equipmentContext) {
+	    objOpenape.createEquipmentContext = function (equipmentContext, contentType) {
 	    	var objcreateEquipmentContext_Result = {};
 	    	var objAjaxParameters = {};
 	    	
@@ -742,7 +778,12 @@
 	    	if(isTokenCorrect && isEquipmentContextCorrect){	
 	    		objAjaxParameters.data = equipmentContext;
 	    		objAjaxParameters.type = "POST";
-	    		objAjaxParameters.contentType = 'application/json';
+	    		
+	    		switch (contentType){
+					case "JSON" : objAjaxParameters.contentType = 'application/json'; break;
+					case "XML" : objAjaxParameters.contentType = 'application/xml';break;	
+	    		}
+	    		
 	    		objAjaxParameters.url = localStorage.getItem("host")+"/api/equipment-contexts";
 	    		objAjaxParameters.token = localStorage.getItem("token");
 	    		objcreateEquipmentContext_Result = databaseCommunication(objAjaxParameters);
@@ -766,7 +807,7 @@
 	     * @return      
 	     * 	An JavaScript-Object with the update result
 	     */
-	    objOpenape.updateEquipmentContext = function (equipmentContextId, equipmentContext) {
+	    objOpenape.updateEquipmentContext = function (equipmentContextId, equipmentContext, contentType) {
 	    	var objUpdateEquipmentContext_Result = {};
 	    	var objAjaxParameters = {};
 	    	var arrStatusText = [];
@@ -798,7 +839,12 @@
 	    	if(isTokenCorrect && isEquipmentContextCorrect && isEquipmentContextIdCorrect ){
 	    		objAjaxParameters.data = equipmentContext;
 	    		objAjaxParameters.type = "PUT";
-	    		objAjaxParameters.contentType = 'application/json';
+	    		
+	    		switch (contentType){
+					case "JSON" : objAjaxParameters.contentType = 'application/json'; break;
+					case "XML" : objAjaxParameters.contentType = 'application/xml';break;	
+	    		}
+	    		
 	    		objAjaxParameters.url = localStorage.getItem("host")+"/api/equipment-contexts/"+equipmentContextId;
 	    		objAjaxParameters.token = localStorage.getItem("token");
 	    		objUpdateEquipmentContext_Result = databaseCommunication(objAjaxParameters);
@@ -824,7 +870,7 @@
 	     * @return      
 	     * 	An JavaScript-Object with the environment-context result
 	     */
-	    objOpenape.getEnvironmentContext = function (environmentContextId) {
+	    objOpenape.getEnvironmentContext = function (environmentContextId, outputType) {
 	    	var objGetEnvironmentContext_Result = {};
 	    	var objAjaxParameters = {};
 	    	
@@ -846,6 +892,12 @@
 	    	}
 	    	
 	    	if(isTokenCorrect && isEnvironmentContextIdCorrect ){
+	    		if(outputType == "JSON"){
+	    			objAjaxParameters.contentType = "application/json";
+	    		} else {
+	    			objAjaxParameters.contentType = "application/xml";
+	    		}
+	    		
 	    		objAjaxParameters.type = "GET";
 	    		objAjaxParameters.url = localStorage.getItem("host")+"/api/environment-contexts/"+environmentContextId;
 	    		objAjaxParameters.token = localStorage.getItem("token");
@@ -913,7 +965,7 @@
 	     * @return      
 	     * 	 An JavaScript-Object with the create result
 	     */	    
-	    objOpenape.createEnvironmentContext = function (environmentContext) {
+	    objOpenape.createEnvironmentContext = function (environmentContext, contentType) {
 	    	var objcreateEnvironmentContext_Result = {};
 	    	var objAjaxParameters = {};
 	    	
@@ -937,7 +989,12 @@
 	    	if(isTokenCorrect && isEnvironmentContextCorrect){	
 	    		objAjaxParameters.data = environmentContext;
 	    		objAjaxParameters.type = "POST";
-	    		objAjaxParameters.contentType = 'application/json';
+	    		
+	    		switch (contentType){
+    				case "JSON" : objAjaxParameters.contentType = 'application/json'; break;
+    				case "XML" : objAjaxParameters.contentType = 'application/xml';break;	
+	    		}
+	    		
 	    		objAjaxParameters.url = localStorage.getItem("host")+"/api/environment-contexts";
 	    		objAjaxParameters.token = localStorage.getItem("token");
 	    		objcreateEnvironmentContext_Result = databaseCommunication(objAjaxParameters);
@@ -961,7 +1018,7 @@
 	     * @return      
 	     * 	An JavaScript-Object with the update result
 	     */
-	    objOpenape.updateEnvironmentContext = function (environmentContextId, environmentContext) {
+	    objOpenape.updateEnvironmentContext = function (environmentContextId, environmentContext, contentType) {
 	    	var objUpdateEnvironmentContext_Result = {};
 	    	var objAjaxParameters = {};
 	    	var arrStatusText = [];
@@ -993,7 +1050,12 @@
 	    	if(isTokenCorrect && isEnvironmentContextCorrect && isEnvironmentContextIdCorrect ){
 	    		objAjaxParameters.data = environmentContext;
 	    		objAjaxParameters.type = "PUT";
-	    		objAjaxParameters.contentType = 'application/json';
+	    		
+	    		switch (contentType){
+					case "JSON" : objAjaxParameters.contentType = 'application/json'; break;
+					case "XML" : objAjaxParameters.contentType = 'application/xml';break;	
+	    		}
+	    		
 	    		objAjaxParameters.url = localStorage.getItem("host")+"/api/environment-contexts/"+environmentContextId;
 	    		objAjaxParameters.token = localStorage.getItem("token");
 	    		objUpdateEnvironmentContext_Result = databaseCommunication(objAjaxParameters);
@@ -1040,6 +1102,7 @@
 	    	} else if(objAjaxParameters.type == "GET"){
 	    		request.type = objAjaxParameters.type;
 	    		request.url = objAjaxParameters.url;
+	    		request.contentType = objAjaxParameters.contentType;
 	    		
 	    		if (objAjaxParameters.token != null) {
 	    			request.headers = {

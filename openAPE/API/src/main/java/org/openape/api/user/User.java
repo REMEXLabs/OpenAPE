@@ -37,6 +37,7 @@ public class User extends DatabaseObject {
         return this.email;
     }
 
+    @Override
     public String getId() {
         return this.id;
     }
@@ -57,6 +58,7 @@ public class User extends DatabaseObject {
         this.email = email;
     }
 
+    @Override
     public void setId(final String id) {
         this.id = id;
     }

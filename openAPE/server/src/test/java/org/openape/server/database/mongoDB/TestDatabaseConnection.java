@@ -2,9 +2,7 @@ package org.openape.server.database.mongoDB;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -13,6 +11,8 @@ import org.openape.api.Property;
 import org.openape.api.resourceDescription.ResourceDescription;
 import org.openape.api.usercontext.Condition;
 import org.openape.api.usercontext.Context;
+import org.openape.api.usercontext.Operand;
+import org.openape.api.usercontext.Preference;
 import org.openape.api.usercontext.UserContext;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -34,25 +34,28 @@ public class TestDatabaseConnection {
      */
     public static UserContext sampleUserContext() {
         final UserContext userContext = new UserContext();
-        final Context defaultPreference = new Context("Default preferences");
-        final Context darkPreference = new Context("little environmental light");
-        userContext.addContext("default", defaultPreference);
-        userContext.addContext("dark", darkPreference);
-        defaultPreference
-                .addPreference("http://registry.gpii.net/common/magnifierEnabled", "false");
-        defaultPreference.addPreference(
+        userContext.setPublic(true);
+        final Context defaultPreference = new Context("default", "Default preferences");
+        final Context darkPreference = new Context("dark", "little environmental light");
+        userContext.addContext(defaultPreference);
+        userContext.addContext(darkPreference);
+        defaultPreference.addPreference(new Preference(
+                "http://registry.gpii.net/common/magnifierEnabled", "false"));
+        defaultPreference.addPreference(new Preference(
                 "http://registry.gpii.net/applications/org.chrome.cloud4chrome/invertColours",
-                "false");
-        darkPreference.addPreference("http://registry.gpii.net/common/magnifierEnabled", "true");
-        darkPreference.addPreference("http://registry.gpii.net/common/magnification", "2");
+                "false"));
+        darkPreference.addPreference(new Preference(
+                "http://registry.gpii.net/common/magnifierEnabled", "true"));
+        darkPreference.addPreference(new Preference(
+                "http://registry.gpii.net/common/magnification", "2"));
 
-        final List<Object> andConditionOperands = new ArrayList<Object>();
-        final List<Object> geOperandList = new ArrayList<Object>();
-        geOperandList.add("http://registry.gpii.net/common/env/visual.luminance");
-        geOperandList.add("0");
-        final List<Object> leOperandList = new ArrayList<Object>();
-        leOperandList.add("http://registry.gpii.net/common/env/visual.luminance");
-        leOperandList.add("200");
+        final List<Operand> andConditionOperands = new ArrayList<Operand>();
+        final List<Operand> geOperandList = new ArrayList<Operand>();
+        geOperandList.add(new Operand("http://registry.gpii.net/common/env/visual.luminance"));
+        geOperandList.add(new Operand("0"));
+        final List<Operand> leOperandList = new ArrayList<Operand>();
+        leOperandList.add(new Operand("http://registry.gpii.net/common/env/visual.luminance"));
+        leOperandList.add(new Operand("200"));
         andConditionOperands.add(new Condition("ge", geOperandList));
         andConditionOperands.add(new Condition("le", leOperandList));
         final Condition andCondition = new Condition("and", andConditionOperands);
@@ -60,7 +63,7 @@ public class TestDatabaseConnection {
         final ObjectMapper mapper = new ObjectMapper();
         try {
             final String jsonData = mapper.writeValueAsString(userContext);
-            System.out.println(jsonData);
+            // System.out.println(jsonData);
         } catch (final JsonProcessingException e) {
             e.printStackTrace();
         }
@@ -82,25 +85,25 @@ public class TestDatabaseConnection {
             String id;
             Assert.assertNotEquals(
                     "",
-                    id = this.dataBaseConnection.storeData(MongoCollectionTypes.USERCONTEXT,
+                    id = this.dataBaseConnection.storeDatabaseObject(MongoCollectionTypes.USERCONTEXT,
                             sampleContext));
             System.out.println(id);
             // test get.
-            final UserContext recievedContext = (UserContext) this.dataBaseConnection.getData(
+            final UserContext recievedContext = (UserContext) this.dataBaseConnection.getDatabaseObjectById(
                     MongoCollectionTypes.USERCONTEXT, id);
             Assert.assertTrue(sampleContext.equals(recievedContext));
             // remove second context.
-            final Map<String, Context> newContexts = new HashMap<String, Context>();
-            newContexts.put("default", sampleContext.getContexts().get("default"));
+            final List<Context> newContexts = new ArrayList<Context>();
+            newContexts.add(sampleContext.getContext("default"));
             sampleContext.setContexts(newContexts);
             // test update
-            this.dataBaseConnection.updateData(MongoCollectionTypes.USERCONTEXT, sampleContext, id);
-            final UserContext updatetContext = (UserContext) this.dataBaseConnection.getData(
+            this.dataBaseConnection.updateDatabaseObject(MongoCollectionTypes.USERCONTEXT, sampleContext, id);
+            final UserContext updatetContext = (UserContext) this.dataBaseConnection.getDatabaseObjectById(
                     MongoCollectionTypes.USERCONTEXT, id);
             Assert.assertTrue(sampleContext.equals(updatetContext));
             Assert.assertFalse(TestDatabaseConnection.sampleUserContext().equals(updatetContext));
             // test delete
-            Assert.assertTrue(this.dataBaseConnection.deleteData(MongoCollectionTypes.USERCONTEXT,
+            Assert.assertTrue(this.dataBaseConnection.deleteDatabaseObject(MongoCollectionTypes.USERCONTEXT,
                     id));
         } catch (ClassCastException | IOException e) {
             e.printStackTrace();

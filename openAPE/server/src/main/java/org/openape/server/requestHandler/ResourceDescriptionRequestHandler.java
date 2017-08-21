@@ -58,7 +58,7 @@ public class ResourceDescriptionRequestHandler {
         // argument exceptions. IO exceptions will just be thrown through.
         String id = null;
         try {
-            id = databaseConnection.storeData(ResourceDescriptionRequestHandler.COLLECTIONTOUSE,
+            id = databaseConnection.storeDatabaseObject(ResourceDescriptionRequestHandler.COLLECTIONTOUSE,
                     resourceDescription);
         } catch (final ClassCastException e) {
             throw new IllegalArgumentException(e.getMessage());
@@ -95,7 +95,7 @@ public class ResourceDescriptionRequestHandler {
             final String resourceCompare = this.getResourceID(description);
             if (resourceCompare.equals(resourceID)) {
                 // If resource id fitts, delete the description
-                databaseConnection.deleteData(MongoCollectionTypes.RESOURCEDESCRIPTION,
+                databaseConnection.deleteDatabaseObject(MongoCollectionTypes.RESOURCEDESCRIPTION,
                         descriptionID);
             }
         }
@@ -119,7 +119,7 @@ public class ResourceDescriptionRequestHandler {
         // get database connection.
         final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
 
-        final boolean success = databaseConnection.deleteData(
+        final boolean success = databaseConnection.deleteDatabaseObject(
                 ResourceDescriptionRequestHandler.COLLECTIONTOUSE, id);
         if (!success) {
             throw new IllegalArgumentException(
@@ -165,7 +165,7 @@ public class ResourceDescriptionRequestHandler {
         final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
 
         // Get the requested data.
-        final DatabaseObject result = databaseConnection.getData(
+        final DatabaseObject result = databaseConnection.getDatabaseObjectById(
                 ResourceDescriptionRequestHandler.COLLECTIONTOUSE, id);
 
         // If the result is null the id is not found.
@@ -233,7 +233,7 @@ public class ResourceDescriptionRequestHandler {
             throws IllegalArgumentException, IOException {
         final String resourceID = this.getResourceID(resourceDescription);
         final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
-        if (null == databaseConnection.getData(MongoCollectionTypes.RESOURCEOBJECTS, resourceID)) {
+        if (null == databaseConnection.getDatabaseObjectById(MongoCollectionTypes.RESOURCEOBJECTS, resourceID)) {
             throw new IllegalArgumentException(
                     ResourceDescriptionRequestHandler.NoResoruceWithThatID + resourceID);
         }
@@ -268,7 +268,7 @@ public class ResourceDescriptionRequestHandler {
         // is thrown. IO exceptions are thrown through.
         boolean success;
         try {
-            success = databaseConnection.updateData(
+            success = databaseConnection.updateDatabaseObject(
                     ResourceDescriptionRequestHandler.COLLECTIONTOUSE, resourceDescription, id);
         } catch (final ClassCastException e) {
             throw new IllegalArgumentException(e.getMessage());

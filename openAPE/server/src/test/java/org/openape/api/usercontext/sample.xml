@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<user-context>
+	<option id="default">
+		<name>Default preferences</name>
+		<preference key="http://registry.gpii.net/common/magnifierEnabled"
+			value="false" />
+		<preference
+			key="http://registry.gpii.net/applications/org.chrome.cloud4chrome/invertColours"
+			value="false" />
+	</option>
+	<option id="dark">
+		<name>little environmental light</name>
+		<preference key="http://registry.gpii.net/common/magnifierEnabled"
+			value="true" />
+		<preference key="http://registry.gpii.net/common/magnification"
+			value="2" />
+		<condition type="and">
+			<operand type="ge"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+				<operand value="http://registry.gpii.net/common/env/visual.luminance" />
+				<operand value="0" />
+			</operand>
+			<operand xsi:type="condition" type="le"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+				<operand value="http://registry.gpii.net/common/env/visual.luminance" />
+				<operand value="200" />
+			</operand>
+		</condition>
+	</option>
+</user-context>

@@ -39,7 +39,7 @@ public class EnvironmentContextRequestHandler {
         // argument exceptions. IO exceptions will just be thrown through.
         String id = null;
         try {
-            id = databaseConnection.storeData(EnvironmentContextRequestHandler.COLLECTIONTOUSE,
+            id = databaseConnection.storeDatabaseObject(EnvironmentContextRequestHandler.COLLECTIONTOUSE,
                     (DatabaseObject) environmentContext);
         } catch (final ClassCastException e) {
             throw new IllegalArgumentException(e.getMessage());
@@ -65,7 +65,7 @@ public class EnvironmentContextRequestHandler {
         // get database connection.
         final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
 
-        final boolean success = databaseConnection.deleteData(
+        final boolean success = databaseConnection.deleteDatabaseObject(
                 EnvironmentContextRequestHandler.COLLECTIONTOUSE, id);
         if (!success) {
             throw new IllegalArgumentException(
@@ -93,7 +93,7 @@ public class EnvironmentContextRequestHandler {
         final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
 
         // Get the requested data.
-        final DatabaseObject result = databaseConnection.getData(
+        final DatabaseObject result = databaseConnection.getDatabaseObjectById(
                 EnvironmentContextRequestHandler.COLLECTIONTOUSE, id);
 
         // If the result is null the id is not found.
@@ -139,7 +139,7 @@ public class EnvironmentContextRequestHandler {
         // is thrown. IO exceptions are thrown through.
         boolean success;
         try {
-            success = databaseConnection.updateData(
+            success = databaseConnection.updateDatabaseObject(
                     EnvironmentContextRequestHandler.COLLECTIONTOUSE,
                     (DatabaseObject) environmentContext, id);
         } catch (final ClassCastException e) {

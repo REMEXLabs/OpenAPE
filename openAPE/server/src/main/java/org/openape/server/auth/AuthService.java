@@ -309,7 +309,7 @@ public class AuthService {
      * @throws NotFoundException
      */
     private User getUserByUsername(final String username) throws IOException, NotFoundException {
-        final DatabaseObject result = this.databaseConnection.getByUniqueAttribute(
+        final DatabaseObject result = this.databaseConnection.getDatabaseObjectByUniqueAttribute(
                 MongoCollectionTypes.USERS, "username", username);
         if (result == null) {
             throw new NotFoundException("No user found with username: " + username);
