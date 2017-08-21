@@ -69,6 +69,7 @@ $(document).ready(function(){
 		if(outputType == "JSON"){
 			$('#inputViewUserContext').val("");
 			var json = JSON.parse(openape.getUserContext(id, "JSON").responseText); 
+			delete json.public;
 			$('#inputViewUserContext').val(JSON.stringify(json, undefined, 2));
 		} else {
 			var responseXML = openape.getUserContext(id, "XML").responseText;
@@ -382,7 +383,13 @@ $(document).ready(function(){
 	      		if(isXML(userContext)){
 	      			var x2js = new X2JS();
 		      		objUserContext = x2js.xml_str2json(userContext);
-		      		parsedUserContext = userContext;
+		      		
+		      		if(isPublic){
+        				var setPublicAttribute = userContext.replace("<user-context>", "<user-context public='true'>");
+        				parsedUserContext = setPublicAttribute;
+		      		} else {
+		      			parsedUserContext = userContext;
+		      		}
 		      		isFormatCorrect = true;
 	      		} else {
 	      			isFormatCorrect = false;
@@ -430,9 +437,12 @@ $(document).ready(function(){
         		
           	} else {
           		if(isXML(environmentContext)){
-          			var x2js = new X2JS();
-              		objEnvironmentContext = x2js.xml_str2json(environmentContext);
-              		parsedEnvironmentContext = environmentContext;
+          			if(isPublic){
+        				var setPublicAttribute = environmentContext.replace("<environment-context>", "<environment-context public='true'>");
+        				parsedEnvironmentContext = setPublicAttribute;
+          			} else {
+          				parsedEnvironmentContext  = environmentContext ;
+          			}
               		isFormatCorrect = true;
           		} else {
           			isFormatCorrect = false;		
@@ -473,7 +483,12 @@ $(document).ready(function(){
         		}
           	} else {
           		if(isXML(equipmentContext)){
-          			parsedEquipmentContext = equipmentContext;
+          			if(isPublic){
+        				var setPublicAttribute = equipmentContext.replace("<equipment-context>", "<equipment-context public='true'>");
+        				parsedEquipmentContext = setPublicAttribute;
+          			} else {
+          				parsedEquipmentContext  = equipmentContext ;
+          			}
           			isFormatCorrect = true;
           		} else {
           			isFormatCorrect = false;
@@ -515,7 +530,14 @@ $(document).ready(function(){
           	} else {
           		if(isXML(taskContext)){
           			isFormatCorrect = true;
-          			parsedTaskContext = taskContext;
+          			
+          			if(isPublic){
+        				var setPublicAttribute = taskContext.replace("<task-context>", "<task-context public='true'>");
+        				parsedTaskContext = setPublicAttribute;
+          			} else {
+          				parsedTaskContext  = taskContext ;
+          			}
+          			
           		} else {
           			isFormatCorrect = false;
            			$('#addTaskContextMainErrSection').empty();
@@ -557,7 +579,13 @@ $(document).ready(function(){
         		}
           	} else {
           		if(isXML(userContext)){
-          			parsedUserContext = userContext;
+        			if(isPublic){
+        				var setPublicAttribute = userContext.replace("<user-context>", "<user-context public='true'>");
+        				parsedUserContext = setPublicAttribute;
+	    			} else {
+	    				parsedUserContext = userContext;
+	    			}
+        			        			
           			isFormatCorrect = true;
           		} else {
           			$('#editUserContextMainErrSection').empty();
@@ -598,7 +626,15 @@ $(document).ready(function(){
         		}
           	} else {
           		if(isXML(equipmentContext)){
-          			parsedEquipmentContext  = equipmentContext ;
+    				
+          			if(isPublic){
+        				var setPublicAttribute = equipmentContext.replace("<equipment-context>", "<equipment-context public='true'>");
+        				parsedEquipmentContext = setPublicAttribute;
+          			} else {
+          				parsedEquipmentContext = equipmentContext;
+          			}
+          			
+          			
           			isFormatCorrect = true;
           		} else {
           			$('#editEquipmentContextMainErrSection').empty();
@@ -638,8 +674,14 @@ $(document).ready(function(){
           			isFormatCorrect = false;
         		}
           	} else {
-          		if(isXML(taskContext)){
-          			parsedTaskContext  = taskContext ;
+          		if(isXML(taskContext)){       			
+          			if(isPublic){
+        				var setPublicAttribute = taskContext.replace("<task-context>", "<task-context public='true'>");
+        				parsedTaskContext = setPublicAttribute;
+          			} else {
+          				parsedTaskContext  = taskContext ;
+          			}
+          			
           			isFormatCorrect = true;
           		} else {
           			$('#editTaskContextMainErrSection').empty();
@@ -680,8 +722,14 @@ $(document).ready(function(){
         		}
           	} else {
           		if(isXML(environmentContext)){
-          			var withoutId = environmentContext;
-          			parsedEnvironmentContext = environmentContext;
+          			
+          			if(isPublic){
+        				var setPublicAttribute = environmentContext.replace("<environment-context>", "<environment-context public='true'>");
+        				parsedEnvironmentContext = setPublicAttribute;
+          			} else {
+          				parsedEnvironmentContext  = environmentContext ;
+          			}
+          			
           			isFormatCorrect = true;
           		} else {
           			$('#editEnvironmentContextMainErrSection').empty();
@@ -772,6 +820,7 @@ function viewContext(event){
 	} else {
 		objContext.propertys = getContext(event.id, contextNameLowerCase).propertys;
 	}
+	delete objContext.public;
 	
 	var context = JSON.stringify(objContext, undefined, 2);
 	$('#inputView'+contextName+'').val(context);
@@ -798,8 +847,10 @@ function editContext(event){
 		$("#cbEdit"+contextName).prop('checked', false);
 	}
 	
+	delete objContext.public;
 	var context = JSON.stringify(objContext, undefined, 2);
 	localStorage.setItem("id", event.id);
+	
 	$('#inputAdministrationEdit'+contextName).val(context);
 }
 

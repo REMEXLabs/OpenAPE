@@ -43,7 +43,7 @@ public class UserContextRESTInterface extends SuperRestInterface {
             throws IOException, IllegalArgumentException {
         final String contentType = req.contentType();
         
-        if(!contentType.equals(null)){
+        if(contentType != null){
         	 if (contentType.equals(MediaType.APPLICATION_JSON)) {
                  return userContext.getForntEndJson();	
              } else if (contentType.equals(MediaType.APPLICATION_XML)) {

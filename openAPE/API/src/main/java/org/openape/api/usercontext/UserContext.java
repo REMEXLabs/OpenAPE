@@ -393,7 +393,7 @@ public class UserContext extends Resource {
 
         if (frontEnd) {
             // remove owner attributes
-            rootObject.remove("public");
+            //rootObject.remove("public");
             rootObject.remove("owner");
         }
 
