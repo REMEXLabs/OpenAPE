@@ -4,8 +4,10 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.openape.api.DatabaseObject;
 import org.openape.api.Messages;
 import org.openape.api.groups.GroupMembershipStatus;
+import org.openape.api.taskcontext.TaskContext;
 import org.openape.server.api.group.Group;
 import org.openape.server.api.group.GroupMember;
 import org.openape.server.database.mongoDB.DatabaseConnection;
@@ -61,5 +63,53 @@ public class GroupManagementHandler {
 		    throw new IllegalArgumentException("No Group with that id"); //$NON-NLS-1$
 		}
 		return true;
+	}
+    
+    
+    public boolean updateGroupById(final String id, final Group group)
+            throws IOException, IllegalArgumentException {
+        // get database connection.
+        final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
+
+        // Update data. If a class cast exception occurs or the return value is
+        // false the parameters is not valid and an illegal argument exception
+        // is thrown. IO exceptions are thrown through.
+        boolean success;
+        try {
+            success = databaseConnection.updateDatabaseObject(MongoCollectionTypes.GROUPS,
+                    (DatabaseObject) group, id);
+        } catch (final ClassCastException e) {
+            throw new IllegalArgumentException(e.getMessage());
+        }
+        if (!success) {
+            throw new IllegalArgumentException("No Group with that Id"); //$NON-NLS-1$
+        }
+        return true;
+    }
+    
+    
+    public Group getGroupById(final String id) throws IOException,
+	    IllegalArgumentException {
+    	// get database connection.
+		final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
+		
+		// Get the requested data.
+		final DatabaseObject result = databaseConnection.getDatabaseObjectById(
+				MongoCollectionTypes.GROUPS, id);
+		
+		// If the result is null the id is not found.
+		if (result == null) {
+		    throw new IllegalArgumentException(" No Group with that id found"); //$NON-NLS-1$
+		}
+		
+		// convert into correct type.
+		Group returnObject;
+		try {
+		    returnObject = (Group) result;
+		} catch (final ClassCastException e) {
+		    e.printStackTrace();
+		    throw new IOException(e.getMessage());
+		}
+		return returnObject;
 	}
 }

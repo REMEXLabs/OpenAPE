@@ -54,6 +54,9 @@ public class Administration extends SuperRestInterface {
                     model.put("addGroupModal",
                             new Organism_4_Modals().generateAddGroupModal());
                     
+                    model.put("editGroupModal",
+                            new Organism_4_Modals().generateEditGroupModal());
+                    
                     
 
                     for (final String destination : destinations) {

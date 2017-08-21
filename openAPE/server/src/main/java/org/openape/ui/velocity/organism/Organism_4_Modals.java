@@ -349,4 +349,32 @@ public class Organism_4_Modals {
         return modalContruct;
     }
     
+    
+    public String generateEditGroupModal() {
+
+        final String modalContruct = "<div class='modal fade' id='editGroupModal' tabindex='-1' role='dialog' aria-labelledby='exampleModalLongTitle' aria-hidden='true'>"
+        +"  <div class='modal-dialog' role='document'>"
+        +"    <div class='modal-content'>"
+        +"      <div class='modal-header' style='background-color:#e31134; color:white;text-align:center;border-bottom: 2px solid #AB112A;'>"
+        +"        <h3 class='modal-title' id='exampleModalLongTitle'>Add Group</h3>"
+        +"      </div>"
+        +"      <div class='modal-body'>"
+        +"		<label style='margin-top:1em'>Group name:</label>"
+        +"		<input id='addGroupNameInput' class='form-control'>"
+        +"		<label style='margin-top:1em'>Group description:</label>"
+        +"		<input id='addGroupDescriptionInput' class='form-control'>"
+        +"		<label style='margin-top:1em'>Open Access?</label>"
+        +"		<input id='addOpenAccessCb' type='checkbox' style='transform: scale(1.5); margin-left:1em'>"
+        +"		</div>"
+        +"      <div class='modal-footer' style='clear:both; background-color:#ececec; border-top: 2px solid #ccc;'>"
+        +"        <button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button>"
+        +"        <button type='button' class='btn btn-danger' id='btnConfirmEditGroup' class='btn btn-primary'>Add group</button>"
+        +"      </div>"
+        +"    </div>"
+        +"  </div>"
+        +"</div>";
+
+        
+        return modalContruct;
+    }
 }

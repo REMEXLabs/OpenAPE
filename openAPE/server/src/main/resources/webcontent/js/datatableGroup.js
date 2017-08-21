@@ -48,6 +48,12 @@ function deleteGroup(event){
 	window.eventId = id;
 }
 
+function editGroup(event){
+	$('#editGroupModal').modal('show');
+	var id = event.id;
+	window.eventId = id;
+}
+
 function removeGroupFromDB(groupId) {
 	$.ajax({
         type: 'DELETE',
