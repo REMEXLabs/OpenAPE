@@ -3,11 +3,13 @@ package org.openape.server.rest;
 import java.io.IOException;
 import java.util.List;
 
+import org.openape.api.Messages;
 import org.openape.api.OpenAPEEndPoints;
 import org.openape.api.groups.GroupListElement;
 import org.openape.api.groups.GroupMembershipRequest;
 import org.openape.api.groups.GroupMembershipStatus;
 import org.openape.api.groups.GroupRequest;
+import org.openape.api.taskcontext.TaskContext;
 import org.openape.api.user.User;
 import org.openape.server.api.group.Group;
 import org.openape.server.auth.AuthService;
@@ -33,7 +35,13 @@ public class GroupManagementRestInterface extends SuperRestInterface {
             final ObjectMapper mapper = new ObjectMapper();
             final String jsonData = mapper.writeValueAsString(result);
             return jsonData;
+   
         });
+        
+        Spark.before(OpenAPEEndPoints.GROUPS,
+        	authService.authorize("user"));
+
+        
         /*
          * receive requests for new resource groupsstart the creation process of
          * the group
@@ -64,11 +72,23 @@ public class GroupManagementRestInterface extends SuperRestInterface {
                     }
 
                 });
+        
+        
+        Spark.delete( Messages.getString("GroupManagementRestInterface.GroupURLWithID"), (req, res) -> { //$NON-NLS-1$
+        	 final String resourceDescriptionId = req.params(Messages
+                     .getString("GroupManagementRestInterface.IDParam")); //$NON-NLS-1$
+        	 
+        	 
+
+        	return resourceDescriptionId;
+        });
+        
         /*
          * Receive requests to add users to an existing group start adding
          * process
          */
 
+        
         Spark.put(
                 OpenAPEEndPoints.GROUP_MEMBER,
                 (req, res) -> {
@@ -111,5 +131,9 @@ public class GroupManagementRestInterface extends SuperRestInterface {
                     }
 
                 });
+    
+
     }
+    
+    
 }
