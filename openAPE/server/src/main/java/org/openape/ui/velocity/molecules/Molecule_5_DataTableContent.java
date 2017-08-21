@@ -268,8 +268,6 @@ public class Molecule_5_DataTableContent {
 				 } else if(property.getName().contains("resource-uri")){
 					 resourceId = property.getValue().substring(property.getValue().indexOf("resources/")+10);
 				 }
-				 
-				 System.out.println(resourceId);
 			 }
 			 
 			 String buttons = "<button id='"+resourseDescription.getId()+"' class='btn btn-md btn-default' onClick='editResource(this)' ><div class='glyphicon glyphicon-edit' ></div> Edit </button>"
