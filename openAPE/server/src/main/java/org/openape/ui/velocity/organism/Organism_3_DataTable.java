@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import org.openape.api.user.User;
 import org.openape.ui.velocity.molecules.Molecule_5_DataTableContent;
 import org.openape.ui.velocity.requestHandler.AdminSectionRequestHandler;
+import org.openape.ui.velocity.requestHandler.MyResourcesRequestHandler;
 
 public class Organism_3_DataTable {
     public String generateAdministrationContextTable(
@@ -37,7 +38,7 @@ public class Organism_3_DataTable {
         final String administrationContextTable = ""
                 + "<table id='"
                 + idName
-                + "DataTable' class='table table-striped table-bordered' cellspacing='0' width='100%'>"
+                + "DataTable' style='border: 4px solid #ddd !important;' class='table table-striped table-bordered dt-responsive nowrap' cellspacing='0' width='100%'>"
                 + "<thead>" + "<tr>" + "<th>ID</th>" + "<th>Owner</th>" + "<th>Created</th>"
                 + "<th>Public</th>" + "<th>Options</th>" + "</tr>" + "</thead>"
                 + "<tbody id='tableContent'>" + administrationDatableContextContent + "</tbody>"
@@ -73,7 +74,7 @@ public class Organism_3_DataTable {
                 .generateAdministrationUserContent(adminsectionRequestHandler.getAllUsers());
         adminsectionRequestHandler.getAllUsercontexts();
         final String administrationUserTable = ""
-                + "<table id='user' class='table table-striped table-bordered' cellspacing='0' width='100%'>"
+                + "<table id='user' style='border: 4px solid #ddd !important;' class='table table-striped table-bordered dt-responsive nowrap' cellspacing='0' width='100%'>"
                 + "<thead>" + "<tr>" + "<th>Username</th>" + "<th>User ID</th>" + "<th>Email</th>"
                 + "<th>Role</th>" + "<th>Options</th>" + "</tr>" + "</thead>"
                 + "<tbody id='tableContent'>" + administrationDatableContent + "</tbody>"
@@ -139,4 +140,24 @@ public class Organism_3_DataTable {
 
         return tableContent;
     }
+
+    public String generateMyResourceTable(
+    		final MyResourcesRequestHandler myResourceRequestHandler) throws IllegalArgumentException, IOException {
+
+    		final String tableContent = new Molecule_5_DataTableContent()
+                    .generateResourceContent(myResourceRequestHandler.getAllResourceDescriptions());
+
+        	final String resourceDataTable = ""
+                + "<table id='ResourceDataTable' style='border: 4px solid #ddd !important;' class='table table-striped table-bordered dt-responsive nowrap' cellspacing='0' width='100%'>"
+                + "<thead>" + "<tr>" + "<th>Description</th>" + "<th>Resource Id</th>" + "<th>Created</th>"
+                + "<th>Last update</th>" + "<th>Type</th>" + "<th>Owner</th>"+ "<th>Options</th>"+"</tr>" + "</thead>"
+                + "<tbody id='tableContent'>" + tableContent + "</tbody>"
+                + "</table>";
+        return resourceDataTable;
+
+    }
+
 }
+
+
+
