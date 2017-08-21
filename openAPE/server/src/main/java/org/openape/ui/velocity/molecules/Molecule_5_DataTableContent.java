@@ -1,8 +1,17 @@
 package org.openape.ui.velocity.molecules;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
+import javax.rmi.PortableRemoteObject;
+
+import org.openape.api.Property;
+import org.openape.api.Resource;
+import org.openape.api.resourceDescription.ResourceDescription;
 import org.openape.api.user.User;
+import org.openape.server.database.mongoDB.DatabaseConnection;
+import org.openape.ui.velocity.requestHandler.AdminSectionRequestHandler;
 
 public class Molecule_5_DataTableContent {
 
@@ -229,4 +238,53 @@ public class Molecule_5_DataTableContent {
 
         return tableContent;
     }
+    
+    
+    public String generateResourceContent(List<ResourceDescription> listResourceDescriptions) throws IOException {
+		// TODO Auto-generated method stub
+    	 final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
+		
+		 String tableContent = "";
+		 for(ResourceDescription resourseDescription : listResourceDescriptions){
+			 String format = "";
+			 String title = "";		
+			 String modified = "";
+			 String userId = resourseDescription.getOwner();
+			 String resourceId = "";
+			 
+	         User user  = (User) databaseConnection
+	        		 .getDatabaseObjectById(new AdminSectionRequestHandler()
+	        		 .COLLECTIONTOUSE_USERS, userId);
+	            
+	         String userName = user.getUsername();
+			 
+			 for(Property property : resourseDescription.getPropertys()){
+				 if(property.getName().contains("format")){
+					 format= property.getValue();
+				 } else if(property.getName().contains("title")){
+					 title = property.getValue();
+				 } else if(property.getName().contains("modified")){
+					 modified = property.getValue();
+				 } else if(property.getName().contains("resource-uri")){
+					 resourceId = property.getValue().substring(property.getValue().indexOf("resources/")+10);
+				 }
+			 }
+			 
+			 String buttons = "<button id='"+resourseDescription.getId()+"' class='btn btn-md btn-default' onClick='editResource(this)' ><div class='glyphicon glyphicon-edit' ></div> Edit </button>"
+	                 + "<button id='delete_"+resourseDescription.getId()+"' class='btn btn-md btn-default' data-resourceDescriptionId='"+resourseDescription.getId()+"' data-resourceId='"+resourceId+"' onClick='deleteResource(this)'><div class='glyphicon glyphicon-trash'></div> Delete </button> ";
+
+			  tableContent += ""
+				 		+ "<tr>"
+				 		+ "<td>"+title+"</td>"
+				 		+ "<td>"+resourseDescription.getId()+"</td>"
+				 		+ "<td></td>"
+				 		+ "<td>"+modified+"</td>"
+				 		+ "<td>"+format+"</td>"
+				 		+ "<td>"+userName+"</td>"
+				 		+ "<td>"+buttons+"</td>"
+				 		+ "</tr>";
+		 }
+		 
+	     return tableContent;
+	}
 }

@@ -28,6 +28,7 @@ import org.openape.ui.velocity.controller.MyProfile;
 import org.openape.ui.velocity.controller.MyResources;
 import org.openape.ui.velocity.controller.Tutorials;
 import org.openape.ui.velocity.requestHandler.AdminSectionRequestHandler;
+import org.openape.ui.velocity.requestHandler.MyResourcesRequestHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -250,7 +251,7 @@ public class SuperRestInterface {
         }
 
         try {
-            MyResources.setupMyResourcesVELOCITYInterface();
+            MyResources.setupMyResourcesVELOCITYInterface(new MyResourcesRequestHandler());
         } catch (final IllegalArgumentException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

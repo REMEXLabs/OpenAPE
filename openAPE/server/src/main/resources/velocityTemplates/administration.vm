@@ -9,6 +9,8 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.6/semantic.min.css">
 <link rel="stylesheet" href="https://cdn.datatables.net/1.10.15/css/dataTables.semanticui.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.1.1/css/responsive.bootstrap.min.css">
+
 
 <!-- Custom Stylesheets -->
 <link rel="stylesheet" href="css/style.css">
@@ -21,6 +23,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.6/semantic.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
+<!--responsive datatable-->
+<script src="https://cdn.datatables.net/responsive/2.1.1/js/dataTables.responsive.min.js"></script>
 
 <script src="js/openape.js" type="text/javascript"></script>
 <script src="js/navigation.js" type="text/javascript"></script>
@@ -28,10 +32,8 @@
 <script src="js/usersection.js" type="text/javascript"></script>
 <script src="js/datatableGroup.js" type="text/javascript"></script>
 <script src="js/xml2json.js" type="text/javascript"></script>
-
-
 <script src="js/datatableContexts.js" type="text/javascript"></script>
-
+<script src="js/datatableResources.js" type="text/javascript"></script>
 
 
 </head>
@@ -326,11 +328,18 @@
 		
 		<div id="resources" class="tabcontent">
 		  <h1>Resources</h1>
-		  Under Construction...
-
+		  	<div style="padding:1.2em">
+				$dataTableResource	
+				</div>
+				$deleteResourceModal
+				
+				<div style="font-size:18px; line-height:2em">
+				$addResourceModal
+				$editResourceModal
+					<button class='btn btn-md btn-default'" id="btnAddResource"><div class="glyphicon glyphicon-plus"></div> Add </button>	
+		
+				</div>
 		</div>	
-		
-		
 		
 	</div>
 </div>

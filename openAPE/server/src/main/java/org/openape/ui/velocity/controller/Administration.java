@@ -8,6 +8,7 @@ import org.openape.ui.velocity.controllerComponents.MainComponents;
 import org.openape.ui.velocity.organism.Organism_3_DataTable;
 import org.openape.ui.velocity.organism.Organism_4_Modals;
 import org.openape.ui.velocity.requestHandler.AdminSectionRequestHandler;
+import org.openape.ui.velocity.requestHandler.MyResourcesRequestHandler;
 
 import spark.ModelAndView;
 import spark.Spark;
@@ -27,6 +28,17 @@ public class Administration extends SuperRestInterface {
                     final String[] destinations = { "User", "User-Context", "Task-Context",
                             "Equipment-Context", "Environment-Context" };
 
+                    model.put("dataTableResource", new Organism_3_DataTable().generateMyResourceTable(new MyResourcesRequestHandler()));
+                    
+                    // modals
+                    model.put("deleteResourceModal",
+                            new Organism_4_Modals().generateDeleteModal("Resource"));
+                    model.put("addResourceModal",
+                            new Organism_4_Modals().generateResourceModal("Add"));
+                    
+                    model.put("editResourceModal",
+                            new Organism_4_Modals().generateResourceModal("Edit"));
+                    
                     // modals
                    
                     model.put("dataTableGroup", new Organism_3_DataTable()
