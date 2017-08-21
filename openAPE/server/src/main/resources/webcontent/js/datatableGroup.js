@@ -22,7 +22,6 @@ $(document).ready(function() {
 	}
 	
 	$('#btnConfirmAddGroup').click(function () {
-		
 		var groupName = $('#addGroupNameInput').val();
 		var groupDescription = $('#addGroupDescriptionInput').val();
 		var objGroup = {};
@@ -34,10 +33,17 @@ $(document).ready(function() {
 	
 	$('#btnConfirmDeleteGroup').click(function () {
 		removeGroupFromDB(window.eventId);
-		
 	})
-
-	  
+	
+	$('#btnConfirmEditGroup').click(function () {
+		var groupName = $('#editGroupNameInput').val();
+		var groupDescription = $('#editGroupDescriptionInput').val();
+		var objGroup = {};
+		
+		objGroup.description = groupDescription;
+		objGroup.name = groupName;
+		updateGroupDB(window.groupId, JSON.stringify(objGroup));		
+	})  
 })
 
 
@@ -51,7 +57,7 @@ function deleteGroup(event){
 function editGroup(event){
 	$('#editGroupModal').modal('show');
 	var id = event.id;
-	window.eventId = id;
+	window.groupId = id;
 }
 
 function removeGroupFromDB(groupId) {
@@ -71,6 +77,32 @@ function removeGroupFromDB(groupId) {
         },
         error: function(jqXHR, textStatus, errorThrown){
         	console.log(jqXHR);
+        }
+    });
+}
+
+
+function updateGroupDB(groupId, group) {
+	$.ajax({
+        type: 'PUT',
+        contentType: 'application/json',
+        url: url+'/openape/groups/'+groupId,
+        dataType: "json",
+        data: group,
+        headers: {
+        	"Authorization": localStorage.getItem("token"),
+        },
+        success: function(data, textStatus, jqXHR){
+   		 $('#addGroupModal').modal('hide');
+         setTimeout(function(){ 
+     		location.reload();
+    		}, 1000);
+        },
+        error: function(jqXHR, textStatus, errorThrown){
+      		 $('#addGroupModal').modal('hide');
+             setTimeout(function(){ 
+         		location.reload();
+        		}, 1000);
         }
     });
 }
