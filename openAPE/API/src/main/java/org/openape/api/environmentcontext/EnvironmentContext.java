@@ -57,10 +57,10 @@ public class EnvironmentContext extends Resource {
      * @return environment context object.
      */
     @JsonIgnore
-    public static EnvironmentContext getObjectFromXml(final String xml)
-            throws IllegalArgumentException {
+    public static EnvironmentContext getObjectFromXml(String xml) throws IllegalArgumentException {
         EnvironmentContext environmentContext = null;
         try {
+            xml = Resource.addPublicAttributeIfMissing(xml);
             final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             factory.setValidating(false); // we will use schema instead of DTD
             factory.setNamespaceAware(true);

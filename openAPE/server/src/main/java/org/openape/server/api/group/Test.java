@@ -121,7 +121,7 @@ public class Test {
          * group.getName()); }
          */
 
-        databaseConnection.storeData(MongoCollectionTypes.USERS, user1);
+        databaseConnection.storeDatabaseObject(MongoCollectionTypes.USERS, user1);
 
         /*
          * final List groups =

@@ -39,7 +39,7 @@ public class TaskContextRequestHandler {
         // argument exceptions. IO exceptions will just be thrown through.
         String id = null;
         try {
-            id = databaseconnection.storeData(TaskContextRequestHandler.COLLECTIONTOUSE,
+            id = databaseconnection.storeDatabaseObject(TaskContextRequestHandler.COLLECTIONTOUSE,
                     (DatabaseObject) taskContext);
         } catch (final ClassCastException e) {
             throw new IllegalArgumentException(e.getMessage());
@@ -65,7 +65,7 @@ public class TaskContextRequestHandler {
         // get database connection.
         final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
 
-        final boolean success = databaseConnection.deleteData(
+        final boolean success = databaseConnection.deleteDatabaseObject(
                 TaskContextRequestHandler.COLLECTIONTOUSE, id);
         if (!success) {
             throw new IllegalArgumentException(
@@ -93,7 +93,7 @@ public class TaskContextRequestHandler {
         final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
 
         // Get the requested data.
-        final DatabaseObject result = databaseConnection.getData(
+        final DatabaseObject result = databaseConnection.getDatabaseObjectById(
                 TaskContextRequestHandler.COLLECTIONTOUSE, id);
 
         // If the result is null the id is not found.
@@ -139,7 +139,7 @@ public class TaskContextRequestHandler {
         // is thrown. IO exceptions are thrown through.
         boolean success;
         try {
-            success = databaseConnection.updateData(TaskContextRequestHandler.COLLECTIONTOUSE,
+            success = databaseConnection.updateDatabaseObject(TaskContextRequestHandler.COLLECTIONTOUSE,
                     (DatabaseObject) taskContext, id);
         } catch (final ClassCastException e) {
             throw new IllegalArgumentException(e.getMessage());

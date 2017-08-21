@@ -37,7 +37,7 @@ public class AdminSectionRequestHandler {
         for (final Document entry : listDocuments) {
             final String id = entry.getObjectId("_id").toString();
             final String userId = entry.getString("owner").toString();
-            final User user = (User) databaseConnection.getData(
+            final User user = (User) databaseConnection.getDatabaseObjectById(
                     AdminSectionRequestHandler.COLLECTIONTOUSE_USERS, userId);
 
             final String owner = user.getUsername();
@@ -91,7 +91,7 @@ public class AdminSectionRequestHandler {
             final String userId = entry.getString("owner").toString();
 
             final boolean isPublic = entry.getBoolean("public");
-            final User user = (User) databaseConnection.getData(
+            final User user = (User) databaseConnection.getDatabaseObjectById(
                     AdminSectionRequestHandler.COLLECTIONTOUSE_USERS, userId);
 
             final String owner = user.getUsername();
@@ -142,7 +142,7 @@ public class AdminSectionRequestHandler {
             final String id = entry.getObjectId("_id").toString();
             final String userId = entry.getString("owner").toString();
 
-            final User user = (User) databaseConnection.getData(
+            final User user = (User) databaseConnection.getDatabaseObjectById(
                     AdminSectionRequestHandler.COLLECTIONTOUSE_USERS, userId);
 
             final String owner = user.getUsername();
@@ -194,7 +194,7 @@ public class AdminSectionRequestHandler {
 
             final String userid = entry.getString("owner").toString();
 
-            final User user = (User) databaseConnection.getData(
+            final User user = (User) databaseConnection.getDatabaseObjectById(
                     AdminSectionRequestHandler.COLLECTIONTOUSE_USERS, userid);
 
             final String owner = user.getUsername();
@@ -266,7 +266,7 @@ public class AdminSectionRequestHandler {
         final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
 
         // Get the requested data.
-        databaseConnection.removeData(AdminSectionRequestHandler.COLLECTIONTOUSE_USERS, id);
+        databaseConnection.deleteDatabaseObject(AdminSectionRequestHandler.COLLECTIONTOUSE_USERS, id);
     }
 
     public UpdateResult updateUser(final String id, final String indexName, final Object indexValue)

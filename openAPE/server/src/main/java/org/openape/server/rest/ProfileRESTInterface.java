@@ -113,7 +113,7 @@ public class ProfileRESTInterface extends SuperRestInterface {
                         return "Invalide Password chagne  request";
                     }
                     final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
-                    final DatabaseObject result = databaseConnection.getByUniqueAttribute(
+                    final DatabaseObject result = databaseConnection.getDatabaseObjectByUniqueAttribute(
                             MongoCollectionTypes.USERS, "username", authUser.getUsername());
                     if (result == null) {
                         throw new NotFoundException("No user found with username: "
