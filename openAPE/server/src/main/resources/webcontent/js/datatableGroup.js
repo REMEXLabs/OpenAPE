@@ -119,13 +119,16 @@ function removeGroupFromDB(groupId) {
         	"Authorization": localStorage.getItem("token"),
         },
         success: function(data, textStatus, jqXHR){
-   		 $('#addGroupModal').modal('hide');
+   		 $('#deleteGroupModal').modal('hide');
          setTimeout(function(){ 
      		location.reload();
     		}, 1000);
         },
         error: function(jqXHR, textStatus, errorThrown){
-        	console.log(jqXHR);
+        	$('#deleteGroupModal').modal('hide');
+            setTimeout(function(){ 
+        		location.reload();
+       		}, 1000);
         }
     });
 }

@@ -11,6 +11,7 @@ import org.openape.api.groups.GroupMembershipStatus;
 import org.openape.api.groups.GroupRequest;
 import org.openape.api.taskcontext.TaskContext;
 import org.openape.api.user.User;
+import org.openape.api.usercontext.UserContext;
 import org.openape.server.api.group.Group;
 import org.openape.server.auth.AuthService;
 import org.openape.server.auth.GroupAuthService;
@@ -30,17 +31,10 @@ public class GroupManagementRestInterface extends SuperRestInterface {
     public static void setupGroupManagementRestInterface(
             final GroupManagementHandler groupManagementHandler, final AuthService authService) {
 
-        Spark.get(OpenAPEEndPoints.GROUPS, (req, res) -> {
-            final List<GroupListElement> result = null;
-            final ObjectMapper mapper = new ObjectMapper();
-            final String jsonData = mapper.writeValueAsString(result);
-            return jsonData;
-   
-        });
-        
+        //Enable authentication only for users
         Spark.before(OpenAPEEndPoints.GROUPS,
-        	authService.authorize("user"));
-
+            	authService.authorize("user"));
+       
         
         /*
          * receive requests for new resource groupsstart the creation process of
@@ -74,37 +68,101 @@ public class GroupManagementRestInterface extends SuperRestInterface {
         
         
         Spark.put( OpenAPEEndPoints.GROUP_ID, (req, res) -> { //$NON-NLS-1$
-	       	final String groupId = req.params(":groupId");
-	        
-	       	Group group = (Group) SuperRestInterface
-	                .extractObjectFromRequest(req, Group.class);
-	       	
-	       	GroupManagementHandler groupManagement = new GroupManagementHandler();
-	       	group.setMembers(groupManagement.getGroupById(groupId).getMembers());
-	        
-	       	boolean status = new GroupManagementHandler().updateGroupById(groupId, group);
-
-	       	return 	group.getDescription();
+		   try{ 
+		    	final String groupId = req.params(":groupId");
+		        
+		       	Group group = (Group) SuperRestInterface
+		                .extractObjectFromRequest(req, Group.class);
+		       	
+		       	GroupManagementHandler groupManagement = new GroupManagementHandler();
+		       	group.setMembers(groupManagement.getGroupById(groupId).getMembers());
+		        
+		       	boolean status = new GroupManagementHandler().updateGroupById(groupId, group);
+		       	
+		       	if(status == true){
+		       		res.status(SuperRestInterface.HTTP_STATUS_OK);
+		       		return 	group.getDescription();	
+		       	} else {
+		       		res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
+		       		return "coult not update group";
+		       	}
+	
+	        } catch (final IllegalArgumentException e) {
+	            res.status(SuperRestInterface.HTTP_STATUS_NOT_FOUND);
+	            return e.getMessage();
+	        } catch (final IOException e) {
+	            res.status(SuperRestInterface.HTTP_STATUS_INTERNAL_SERVER_ERROR);
+	            return e.getMessage();
+	        }
         });
         
         
+        /**
+         * 
+         * Returns a group by a given group id
+         *
+         */
         Spark.get( OpenAPEEndPoints.GROUP_ID, (req, res) -> { //$NON-NLS-1$
-	       	final String groupId = req.params(":groupId");     	    
+	       	try {	
+        		final String groupId = req.params(":groupId");     	    
 	       	
-	       	GroupManagementHandler groupManagement = new GroupManagementHandler();
-	        Group group = groupManagement.getGroupById(groupId);
-	        final ObjectMapper mapper = new ObjectMapper();
+		       	GroupManagementHandler groupManagement = new GroupManagementHandler();
+		        Group group = groupManagement.getGroupById(groupId);
+		        final ObjectMapper mapper = new ObjectMapper();
+		        
+		        res.status(SuperRestInterface.HTTP_STATUS_OK);
+		        return mapper.writeValueAsString(group);
+	        } catch (final IllegalArgumentException e) {
+	            res.status(SuperRestInterface.HTTP_STATUS_NOT_FOUND);
+	            return e.getMessage();
+	        } catch (final IOException e) {
+	            res.status(SuperRestInterface.HTTP_STATUS_INTERNAL_SERVER_ERROR);
+	            return e.getMessage();
+	        }
+        });
 
-	        return mapper.writeValueAsString(group);
-	       
+        /**
+         * 
+         * Delets a group by a given group id
+         *
+         */
+        Spark.delete( OpenAPEEndPoints.GROUP_ID, (req, res) -> { //$NON-NLS-1$
+        	 try {
+             	final String groupId = req.params(":groupId");
+            	boolean isDeleted =  new GroupManagementHandler().deleteGroupById(groupId);
+            	 
+            	if(isDeleted == true){
+            		
+            		return  "deleted";
+            	} else {
+            		res.status(SuperRestInterface.HTTP_STATUS_NOT_FOUND);
+            		return "could not delete group";
+            	}
+            	
+             } catch (final IllegalArgumentException e) {
+                 res.status(SuperRestInterface.HTTP_STATUS_NOT_FOUND);
+                 return e.getMessage();
+             } catch (final IOException e) {
+                 res.status(SuperRestInterface.HTTP_STATUS_INTERNAL_SERVER_ERROR);
+                 return e.getMessage();
+             }
         });
         
-        Spark.delete( OpenAPEEndPoints.GROUP_ID, (req, res) -> { //$NON-NLS-1$
-        	final String groupId = req.params(":groupId");
-        	boolean isDeleted =  new GroupManagementHandler().deleteGroupById(groupId);
-        	 
-        	return isDeleted;
+        
+        
+        
+    	Spark.get(OpenAPEEndPoints.GROUPS, (req, res) -> {
+            final List<GroupListElement> result = null;
+            final ObjectMapper mapper = new ObjectMapper();
+            final String jsonData = mapper.writeValueAsString(result);
+            return jsonData;
+   
         });
+        
+
+
+        
+       
         
         /*
          * Receive requests to add users to an existing group start adding
