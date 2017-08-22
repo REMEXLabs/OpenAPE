@@ -5,6 +5,19 @@ $(document).ready(function() {
 		"responsive": true
     } ); 
 	
+	
+	$('#addGroupModal').on('hidden.bs.modal', function () {	
+		$('#addFormGoupName').removeClass("has-error has-feedback");
+		$('#addFormGoupDescription').removeClass("has-error has-feedback");
+		$('#addGroupMainErrSection').empty();
+	});
+	
+	$('#editGroupModal').on('hidden.bs.modal', function () {	
+		$('#editFormGoupName').removeClass("has-error has-feedback");
+		$('#editFormGoupDescription').removeClass("has-error has-feedback");
+		$('#editGroupMainErrSection').empty();
+	});
+	
 	var resourceTable = $('#userGroupDataTable').DataTable( {
 		"lengthMenu": [[3], [3]],
 		 "bLengthChange": false,
@@ -28,7 +41,9 @@ $(document).ready(function() {
 		
 		objGroup.description = groupDescription;
 		objGroup.groupname = groupName;
-		addGroupToDB(JSON.stringify(objGroup));		
+		
+		validateFields("add", groupName, groupDescription) == true ? addGroupToDB(JSON.stringify(objGroup)) : void 0;
+
 	})
 	
 	$('#btnConfirmDeleteGroup').click(function () {
@@ -42,7 +57,10 @@ $(document).ready(function() {
 		
 		objGroup.description = groupDescription;
 		objGroup.name = groupName;
-		updateGroupDB(window.groupId, JSON.stringify(objGroup));		
+		
+		validateFields("edit", groupName, groupDescription) == true ? 
+				updateGroupDB(window.groupId, JSON.stringify(objGroup)) : void 0;
+	
 	})  
 })
 
@@ -58,8 +76,37 @@ function editGroup(event){
 	$('#editGroupModal').modal('show');
 	var id = event.id;
 	getGroupFromDB(id);
-	
 	window.groupId = id;
+}
+
+function validateFields(action, name, description){
+	var isNameCorrect = true;
+	var isDescriptionCorrect = true;
+	
+	if(name == ""){
+		$("#"+action+"FormGoupName").addClass("has-error has-feedback");
+		isNameCorrect = false
+	} else {
+		$("#"+action+"FormGoupName").removeClass("has-error has-feedback");
+		isNameCorrect = true;
+	}
+	
+	if(description == ""){
+		$("#"+action+"FormGoupDescription").addClass("has-error has-feedback");
+		isDescriptionCorrect = false;
+	} else {
+		$("#"+action+"FormGoupDescription").removeClass("has-error has-feedback");
+		isDescriptionCorrect = true;
+	}
+	
+	if(isNameCorrect && isDescriptionCorrect){
+		$('#'+action+'GroupMainErrSection').empty();
+		return true;
+	} else {
+		$('#'+action+'GroupMainErrSection').empty();
+		$('#'+action+'GroupMainErrSection').append("<img width='20px' height='20px' src='img/attention_icon.png'>  Invalid inputs!");	
+		return false;
+	}
 }
 
 function removeGroupFromDB(groupId) {
