@@ -322,7 +322,17 @@
 
 		<div id="groups" class="tabcontent">
 		  <h1>Groups</h1>
-		  Under Construction...
+		   	<div style="padding:1.2em">
+			 $dataTableGroup	
+			</div>
+			 $deleteGroupModal
+			 
+			 <div style="font-size:18px; line-height:2em">
+			 $addGroupModal
+			 $editGroupModal
+			 </div>
+			<button class='btn btn-md btn-default'" id="btnAddGroup"><div class="glyphicon glyphicon-plus"></div> Add </button>	
+		
 
 		</div>	
 		

@@ -320,4 +320,37 @@ public class Organism_4_Modals {
    	 return modalContruct;
    }
     
+    //-------------------GROUPS------------------
+    public String generateGroupModal(String action) {
+    	String actionLowerCase = action.substring(0,1).toLowerCase() + action.substring(1);
+
+        final String modalContruct = "<div class='modal fade' id='"+actionLowerCase+"GroupModal' tabindex='-1' role='dialog' aria-labelledby='exampleModalLongTitle' aria-hidden='true'>"
+        +"  <div class='modal-dialog' role='document'>"
+        +"    <div class='modal-content'>"
+        +"      <div class='modal-header' style='background-color:#e31134; color:white;text-align:center;border-bottom: 2px solid #AB112A;'>"
+        +"        <h3 class='modal-title' id='exampleModalLongTitle'>"+action+" Group</h3>"
+        +"      </div>"
+        +"      <div class='modal-body'>"
+		+ "		<div class='form-group' id='"+actionLowerCase+"FormGoupName'>"
+        +"			<label style='margin-top:1em'>Group name:</label>"
+        +"			<input id='"+actionLowerCase+"GroupNameInput' class='form-control'>"
+        +" 		</div>"
+        + "		<div class='form-group' id='"+actionLowerCase+"FormGoupDescription'>"
+        +"			<label style='margin-top:1em'>Group description:</label>"
+        +"			<input id='"+actionLowerCase+"GroupDescriptionInput' class='form-control'>"
+        +"		</div>"		
+        +"		</div>"
+        +"      <div class='modal-footer' style='clear:both; background-color:#ececec; border-top: 2px solid #ccc;'>"
+        + "	<span style='float:left;color:red;font-weight:bold;font-size:12pt' id='"+actionLowerCase+"GroupMainErrSection'> </span>"
+        +"        <button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button>"
+        +"        <button type='button' class='btn btn-danger' id='btnConfirm"+action+"Group' class='btn btn-primary'>"+action+" group</button>"
+        +"      </div>"
+        +"    </div>"
+        +"  </div>"
+        +"</div>";
+
+        
+        return modalContruct;
+    }
+    
 }

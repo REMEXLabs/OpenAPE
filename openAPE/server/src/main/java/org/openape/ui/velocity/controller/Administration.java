@@ -8,6 +8,7 @@ import org.openape.ui.velocity.controllerComponents.MainComponents;
 import org.openape.ui.velocity.organism.Organism_3_DataTable;
 import org.openape.ui.velocity.organism.Organism_4_Modals;
 import org.openape.ui.velocity.requestHandler.AdminSectionRequestHandler;
+import org.openape.ui.velocity.requestHandler.GroupsRequestHandler;
 import org.openape.ui.velocity.requestHandler.MyResourcesRequestHandler;
 
 import spark.ModelAndView;
@@ -30,9 +31,14 @@ public class Administration extends SuperRestInterface {
 
                     model.put("dataTableResource", new Organism_3_DataTable().generateMyResourceTable(new MyResourcesRequestHandler()));
                     
+                    model.put("dataTableGroup", new Organism_3_DataTable().generateGroupTable(new GroupsRequestHandler()));
+                    
+                    
+                    
                     // modals
                     model.put("deleteResourceModal",
                             new Organism_4_Modals().generateDeleteModal("Resource"));
+                    
                     model.put("addResourceModal",
                             new Organism_4_Modals().generateResourceModal("Add"));
                     
@@ -41,10 +47,17 @@ public class Administration extends SuperRestInterface {
                     
                     // modals
                    
-                    model.put("dataTableGroup", new Organism_3_DataTable()
-                            .generateAdministrationGroupTable(adminsectionRequestHandler));
+                 
                     model.put("deleteGroupModal",
                             new Organism_4_Modals().generateDeleteModal("Group"));
+                    
+                    model.put("addGroupModal",
+                            new Organism_4_Modals().generateGroupModal("Add"));
+                    
+                    model.put("editGroupModal",
+                            new Organism_4_Modals().generateGroupModal("Edit"));
+                    
+                    
 
                     for (final String destination : destinations) {
                         final String idName = destination.replace("-", "");

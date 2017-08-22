@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import org.openape.api.user.User;
 import org.openape.ui.velocity.molecules.Molecule_5_DataTableContent;
 import org.openape.ui.velocity.requestHandler.AdminSectionRequestHandler;
+import org.openape.ui.velocity.requestHandler.GroupsRequestHandler;
 import org.openape.ui.velocity.requestHandler.MyResourcesRequestHandler;
 
 public class Organism_3_DataTable {
@@ -47,25 +48,7 @@ public class Organism_3_DataTable {
 
     }
 
-    public String generateAdministrationGroupTable(
-            final AdminSectionRequestHandler adminsectionRequestHandler)
-            throws IllegalArgumentException, IOException {
-
-        final String administrationDatableGroupContent = new Molecule_5_DataTableContent()
-                .generateGroupContent(/*
-                                       * adminsectionRequestHandler.
-                                       * getAllEnvironmentContexts()
-                                       */);
-
-        final String administrationContextTable = ""
-                + "<table id='groupDataTable' class='table table-striped table-bordered' cellspacing='0' width='100%'>"
-                + "<thead>" + "<tr>" + "<th >ID</th>" + "<th >Group name</th>"
-                + "<th >Options</th>" + "</tr>" + "</thead>" + "<tbody id='tableContent'>"
-                + administrationDatableGroupContent + "</tbody>" + "</table>";
-        return administrationContextTable;
-
-    }
-
+  
     public String generateAdministrationUserTable(
             final AdminSectionRequestHandler adminsectionRequestHandler)
             throws IllegalArgumentException, IOException {
@@ -156,7 +139,22 @@ public class Organism_3_DataTable {
         return resourceDataTable;
 
     }
+    
+    public String generateGroupTable(
+    		final GroupsRequestHandler groupsRequestHandler) throws IllegalArgumentException, IOException {
 
+    		final String tableContent = new Molecule_5_DataTableContent()
+                    .generateGroupContent(groupsRequestHandler.getAllGroups());
+
+        	final String resourceDataTable = ""
+                + "<table id='groupDataTable' style='border: 4px solid #ddd !important;' class='table table-striped table-bordered dt-responsive nowrap' cellspacing='0' width='100%'>"
+                + "<thead>" + "<tr>" + "<th>Group Id</th>" + "<th>Name</th>" + "<th>Description</th>"
+                +  "<th>Members</th>"+  "<th>Options</th>"+"</tr>" + "</thead>"
+                + "<tbody id='tableContent'>" + tableContent + "</tbody>"
+                + "</table>";
+        return resourceDataTable;
+
+    } 
 }
 
 

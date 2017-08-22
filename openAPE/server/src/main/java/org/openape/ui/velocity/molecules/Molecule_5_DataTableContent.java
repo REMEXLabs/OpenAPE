@@ -10,6 +10,7 @@ import org.openape.api.Property;
 import org.openape.api.Resource;
 import org.openape.api.resourceDescription.ResourceDescription;
 import org.openape.api.user.User;
+import org.openape.server.api.group.Group;
 import org.openape.server.database.mongoDB.DatabaseConnection;
 import org.openape.ui.velocity.requestHandler.AdminSectionRequestHandler;
 
@@ -150,20 +151,6 @@ public class Molecule_5_DataTableContent {
         return tableContent;
     }
 
-    public String generateGroupContent() {
-        // TODO Auto-generated method stub
-        String tableContent = "";
-
-        tableContent += "<tr>"
-                + "<td>4</td>"
-                + "<td>G1</td>"
-                + "<td>"
-                + "<button class='btn btn-md btn-default' onClick='editGroup(this)' ><div class='glyphicon glyphicon-edit' ></div> Edit </button>"
-                + "<button class='btn btn-md btn-default' onClick='deleteGroup(this)'><div class='glyphicon glyphicon-trash'></div> Delete </button></tr>";
-
-        return tableContent;
-    }
-
     public String generateTaskContextContent(final ArrayList<String[]> listTaskContexts,
             final String destination) {
 
@@ -281,6 +268,28 @@ public class Molecule_5_DataTableContent {
 				 		+ "<td>"+modified+"</td>"
 				 		+ "<td>"+format+"</td>"
 				 		+ "<td>"+userName+"</td>"
+				 		+ "<td>"+buttons+"</td>"
+				 		+ "</tr>";
+		 }
+		 
+	     return tableContent;
+	}
+    
+    public String generateGroupContent(List<Group> listGroup) throws IOException {
+		// TODO Auto-generated method stub
+    	 final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
+		
+		 String tableContent = "";
+		 for(Group group : listGroup){
+			 String buttons = "<button id='"+group.getId()+"' class='btn btn-md btn-default' onClick='editGroup(this)' ><div class='glyphicon glyphicon-edit' ></div> Edit </button>"
+	                 + "<button id='"+group.getId()+"' class='btn btn-md btn-default' onClick='deleteGroup(this)'><div class='glyphicon glyphicon-trash'></div> Delete </button> ";
+
+			  tableContent += ""
+				 		+ "<tr>"
+				 		+ "<td>"+group.getId()+"</td>"
+				 		+ "<td>"+group.getName()+"</td>"
+				 		+ "<td>"+group.getDescription()+"</td>"
+				 		+ "<td>"+group.getMembers().size()+"</td>"
 				 		+ "<td>"+buttons+"</td>"
 				 		+ "</tr>";
 		 }
