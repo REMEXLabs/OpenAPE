@@ -291,8 +291,13 @@ public class SuperRestInterface {
         }
 
         // Resource endpoints
-        GroupManagementRestInterface.setupGroupManagementRestInterface(
-                new GroupManagementHandler(), authService);
+        try {
+			GroupManagementRestInterface.setupGroupManagementRestInterface(
+			        new GroupManagementHandler(), authService);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         // REST-Interfaces defined in ISO/IEC 24752-8
         EnvironmentContextRESTInterface.setupEnvironmentContextRESTInterface(
                 new EnvironmentContextRequestHandler(), authService);

@@ -283,6 +283,9 @@ public class Molecule_5_DataTableContent {
 		 for(Group group : listGroup){
 			 String buttons = "<button id='"+group.getId()+"' class='btn btn-md btn-default' onClick='editGroup(this)' ><div class='glyphicon glyphicon-edit' ></div> Edit </button>"
 	                 + "<button id='"+group.getId()+"' class='btn btn-md btn-default' onClick='deleteGroup(this)'><div class='glyphicon glyphicon-trash'></div> Delete </button> ";
+			 
+			 String memberButtons = "<button id='"+group.getId()+"' class='btn btn-md btn-default' onClick='addGroupMember(this)' ><div class='glyphicon glyphicon-save' ></div> Add </button>"
+	                 + "<button id='"+group.getId()+"' class='btn btn-md btn-default' onClick='deleteGroupMember(this)'><div class='glyphicon glyphicon-trash'></div> Delete </button> ";
 
 			  tableContent += ""
 				 		+ "<tr>"
@@ -291,6 +294,7 @@ public class Molecule_5_DataTableContent {
 				 		+ "<td>"+group.getDescription()+"</td>"
 				 		+ "<td>"+group.getMembers().size()+"</td>"
 				 		+ "<td>"+buttons+"</td>"
+				 		+ "<td>"+memberButtons+"</td>"
 				 		+ "</tr>";
 		 }
 		 

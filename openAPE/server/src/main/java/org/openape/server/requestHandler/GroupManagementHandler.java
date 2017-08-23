@@ -18,9 +18,9 @@ public class GroupManagementHandler {
     public static void addMember(final String userId, final GroupMembershipStatus status,
             final Group group) throws IOException {
         // TODO Auto-generated method stub
-        final List<GroupMember> members = new LinkedList<GroupMember>();
-        members.add(new GroupMember(userId, status));
-        group.setMembers(members);
+        //final List<GroupMember> members = new LinkedList<GroupMember>();
+        //members.add(new GroupMember(userId, status));
+        //group.setMembers(members);
         final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
         try {
             databaseConnection.updateDatabaseObject(MongoCollectionTypes.GROUPS, group, group.getId());
@@ -66,7 +66,7 @@ public class GroupManagementHandler {
 	}
     
     
-    public boolean updateGroupById(final String id, final Group group)
+    public static boolean updateGroupById(final String id, final Group group)
             throws IOException, IllegalArgumentException {
         // get database connection.
         final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();

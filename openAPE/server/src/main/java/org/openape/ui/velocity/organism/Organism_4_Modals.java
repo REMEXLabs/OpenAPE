@@ -349,8 +349,34 @@ public class Organism_4_Modals {
         +"  </div>"
         +"</div>";
 
-        
         return modalContruct;
     }
     
+    
+    public String generateGroupUserModal(String action) {
+    	String actionLowerCase = action.substring(0,1).toLowerCase() + action.substring(1);
+
+        final String modalContruct = "<div class='modal fade' id='"+actionLowerCase+"GroupUserModal' tabindex='-1' role='dialog' aria-labelledby='exampleModalLongTitle' aria-hidden='true'>"
+        +"  <div class='modal-dialog' role='document'>"
+        +"    <div class='modal-content'>"
+        +"      <div class='modal-header' style='background-color:#e31134; color:white;text-align:center;border-bottom: 2px solid #AB112A;'>"
+        +"        <h3 class='modal-title' id='exampleModalLongTitle'>"+action+" Member</h3>"
+        +"      </div>"
+        +"      <div class='modal-body'>"
+		+ "		<div class='form-group' id='"+actionLowerCase+"FormUserId'>"
+        +"			<label style='margin-top:1em'>User id:</label>"
+        +"			<input id='"+actionLowerCase+"GroupMemberNameInput' class='form-control'>"
+        +" 		</div>"
+        +"		</div>"
+        +"      <div class='modal-footer' style='clear:both; background-color:#ececec; border-top: 2px solid #ccc;'>"
+        + "	<span style='float:left;color:red;font-weight:bold;font-size:12pt' id='"+actionLowerCase+"GroupMemberMainErrSection'> </span>"
+        +"        <button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button>"
+        +"        <button type='button' class='btn btn-danger' id='btnConfirm"+action+"GroupMember' class='btn btn-primary'>"+action+" Member</button>"
+        +"      </div>"
+        +"    </div>"
+        +"  </div>"
+        +"</div>";
+
+        return modalContruct;
+    }
 }

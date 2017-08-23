@@ -1,6 +1,7 @@
 package org.openape.server.rest;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.openape.api.Messages;
@@ -13,6 +14,7 @@ import org.openape.api.taskcontext.TaskContext;
 import org.openape.api.user.User;
 import org.openape.api.usercontext.UserContext;
 import org.openape.server.api.group.Group;
+import org.openape.server.api.group.GroupMember;
 import org.openape.server.auth.AuthService;
 import org.openape.server.auth.GroupAuthService;
 import org.openape.server.database.mongoDB.DatabaseConnection;
@@ -29,7 +31,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class GroupManagementRestInterface extends SuperRestInterface {
 
     public static void setupGroupManagementRestInterface(
-            final GroupManagementHandler groupManagementHandler, final AuthService authService) {
+            final GroupManagementHandler groupManagementHandler, final AuthService authService) throws IOException {
 
         //Enable authentication only for users
         Spark.before(OpenAPEEndPoints.GROUPS,
@@ -160,8 +162,84 @@ public class GroupManagementRestInterface extends SuperRestInterface {
         });
         
 
+//Group member management
+     Spark.put(
+        OpenAPEEndPoints.GROUP_MEMBER,
+        (req, res) -> {
+            try {
+            	final DatabaseConnection databaseConnection = DatabaseConnection
+                        .getInstance();
+            	final String groupId = req.params(":groupId");
+            	final String userId = req.params(":userId");
+            	final Group group = (Group) databaseConnection.getDatabaseObjectById(
+                          MongoCollectionTypes.GROUPS, req.params(":groupId"));
+            	
+            	
+            	boolean isUserInGroup = true;
+            	
+            	List<GroupMember> listGroupMember = group.getMembers();
+            	
+            	//Check if member is already in group
+            	for(GroupMember groupMember : listGroupMember){
+            		if(groupMember.getUserId().equals(userId)){
+                        res.status(409);
+                        return "User already in group";
+            		} else {
+            			isUserInGroup = false;
+            		}
+            	}
+            	
+            	//Assign new members to a List 
+            	GroupMember groupMember = new GroupMember();
+            	GroupMembershipStatus state = GroupMembershipStatus.ADMIN;
+            	
+            	groupMember.setUserId(userId);
+            	groupMember.setState(state);
+            	listGroupMember.add(groupMember);
+            	
+            	group.setMembers(listGroupMember);
+            	GroupManagementHandler.addMember(userId, state, group);
+            	 
+            	
+            	return "success";
+            } catch (final IllegalArgumentException e) {
+                res.status(404);
+                return OpenAPEEndPoints.GROUP_DOES_NOT_EXIST;
+            }
 
-        
+        });
+     
+     
+     Spark.delete(
+    	        OpenAPEEndPoints.GROUP_MEMBER,
+    	        (req, res) -> {
+    	            try {
+    	            	final DatabaseConnection databaseConnection = DatabaseConnection
+    	                        .getInstance();
+    	            	final String groupId = req.params(":groupId");
+    	            	final String userId = req.params(":userId");
+    	            	final Group group = (Group) databaseConnection.getDatabaseObjectById(
+    	                          MongoCollectionTypes.GROUPS, req.params(":groupId"));
+    	            	final boolean isGroupMemberInGroup = true;
+    	            	
+    	            	List<GroupMember> listGroupMember = group.getMembers();
+    	            	
+    	            	
+    	            	//removes member from list
+    	            	for(GroupMember groupMemberEntry : listGroupMember){
+    	            		if(groupMemberEntry.getUserId().equals(userId)){
+    	            			listGroupMember.remove(groupMemberEntry);
+    	            		} 
+    	            	}
+    	            	
+    	            	GroupManagementHandler.updateGroupById(groupId, group);
+	
+    	            	return "success";
+    	            } catch (final IllegalArgumentException e) {
+    	                res.status(404);
+    	                return OpenAPEEndPoints.GROUP_DOES_NOT_EXIST;
+    	            }
+    	        });
        
         
         /*
@@ -169,7 +247,7 @@ public class GroupManagementRestInterface extends SuperRestInterface {
          * process
          */
         
-        Spark.put(
+      /*  Spark.put(
                 OpenAPEEndPoints.GROUP_MEMBER,
                 (req, res) -> {
                     try {
@@ -211,7 +289,7 @@ public class GroupManagementRestInterface extends SuperRestInterface {
                     }
 
                 });
-
+*/
     }   
     
 }

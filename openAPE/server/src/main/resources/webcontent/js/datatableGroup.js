@@ -50,6 +50,25 @@ $(document).ready(function() {
 		removeGroupFromDB(window.eventId);
 	})
 	
+	$('#btnConfirmAddGroupMember').click(function () {
+		var groupId = window.groupId;
+		var userId = $('#addGroupMemberNameInput').val();
+		
+		addGroupMemberToDB(groupId, userId);
+	})
+	
+	
+	$('#btnConfirmDeleteGroupMember').click(function () {
+		var groupId = window.groupId;
+		var userId = $('#deleteGroupMemberNameInput').val();
+		
+		deleteGroupMemberFromDB(groupId, userId);
+	})
+	
+	
+	
+	
+	
 	$('#btnConfirmEditGroup').click(function () {
 		var groupName = $('#editGroupNameInput').val();
 		var groupDescription = $('#editGroupDescriptionInput').val();
@@ -65,6 +84,19 @@ $(document).ready(function() {
 })
 
 
+function addGroupMember (event){
+	var id = event.id;
+	window.groupId = id;
+	
+	$('#addGroupUserModal').modal('show');
+}
+
+function deleteGroupMember(event){
+	var id = event.id;
+	window.groupId = id;
+	
+	$('#deleteGroupUserModal').modal('show');
+}
 
 function deleteGroup(event){
 	$('#deleteGroupModal').modal('show');
@@ -178,6 +210,58 @@ function getGroupFromDB(groupId) {
         }
     });
 }
+
+function addGroupMemberToDB(groupId, userId) {
+	$.ajax({
+        type: 'PUT',
+        contentType: 'application/json',
+        url: url+'/openape/'+groupId+"/members/"+userId,
+        dataType: "json",
+        headers: {
+        	"Authorization": localStorage.getItem("token"),
+        },
+        success: function(data, textStatus, jqXHR){
+   		  console.log(jqXHR);
+        },
+        error: function(jqXHR, textStatus, errorThrown){
+        	
+	        if(jqXHR.status != 200){
+	        	$('#addGroupMemberMainErrSection').empty();
+	        	$('#addGroupMemberMainErrSection').append(jqXHR.responseText);
+	        } else {
+	        	$('#addGroupUserModal').modal('hide');
+	        	setTimeout(function(){ 
+	         		location.reload();
+	        		}, 1000);
+	        }
+        }
+    });
+}
+
+function deleteGroupMemberFromDB (groupId, userId){
+	$.ajax({
+        type: 'DELETE',
+        contentType: 'application/json',
+        url: url+'/openape/'+groupId+"/members/"+userId,
+        dataType: "json",
+        headers: {
+        	"Authorization": localStorage.getItem("token"),
+        },
+        success: function(data, textStatus, jqXHR){
+        	$('#deleteGroupUserModal').modal('hide');
+        	 setTimeout(function(){ 
+          		location.reload();
+         		}, 1000);
+        },
+        error: function(jqXHR, textStatus, errorThrown){
+        	$('#deleteGroupUserModal').modal('hide');
+        	 setTimeout(function(){ 
+          		location.reload();
+         		}, 1000);
+        }
+    });
+}
+
 
 function addGroupToDB(group) {
 	$.ajax({
