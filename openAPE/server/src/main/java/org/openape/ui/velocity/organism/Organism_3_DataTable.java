@@ -155,6 +155,37 @@ public class Organism_3_DataTable {
         return resourceDataTable;
 
     } 
+    
+    public String generateDeleteGroupUserTable(
+            final AdminSectionRequestHandler adminsectionRequestHandler)
+            throws IllegalArgumentException, IOException {
+
+        final String administrationDatableContent = new Molecule_5_DataTableContent()
+                .generateRemoveGroupUserContent(adminsectionRequestHandler.getAllUsers());
+        adminsectionRequestHandler.getAllUsercontexts();
+        final String administrationUserTable = ""
+                + "<table style='margin-top:1em; border: 3px solid #ddd !important;' id='deleteGroupMemberDataTable' class='table table-striped table-bordered' cellspacing='0' width='100%'>"
+                + "<thead>" + "<tr>" + "<th>Name</th>" 
+                + "<th style='width:10% !important'>Options</th>" + "</tr>" + "</thead>"
+                + "</table>";
+        return administrationUserTable;
+    }
+    
+    
+    public String generateGroupUserTable(
+            final AdminSectionRequestHandler adminsectionRequestHandler)
+            throws IllegalArgumentException, IOException {
+
+        final String administrationDatableContent = new Molecule_5_DataTableContent()
+                .generateGroupUserContent(adminsectionRequestHandler.getAllUsers());
+        adminsectionRequestHandler.getAllUsercontexts();
+        final String administrationUserTable = ""
+                + "<table style='margin-top:1em; border: 3px solid #ddd !important;' id='userGroupDataTable' class='table table-striped table-bordered' cellspacing='0' width='100%'>"
+                + "<thead>" + "<tr>" + "<th>Name</th>" 
+                + "<th style='width:10% !important'>Options</th>" + "</tr>" + "</thead>"
+                + "</table>";
+        return administrationUserTable;
+    }
 }
 
 

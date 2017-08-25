@@ -223,15 +223,19 @@ public class GroupManagementRestInterface extends SuperRestInterface {
     	            	final boolean isGroupMemberInGroup = true;
     	            	
     	            	List<GroupMember> listGroupMember = group.getMembers();
-    	            	
+    	            	List<GroupMember> newListGroupMember = new ArrayList<GroupMember>();
     	            	
     	            	//removes member from list
     	            	for(GroupMember groupMemberEntry : listGroupMember){
-    	            		if(groupMemberEntry.getUserId().equals(userId)){
-    	            			listGroupMember.remove(groupMemberEntry);
+    	            		if(!groupMemberEntry.getUserId().equals(userId)){
+    	            			GroupMember groupMember = new GroupMember();
+    	            			groupMember.setState(groupMemberEntry.getState());
+    	            			groupMember.setUserId(groupMemberEntry.getUserId());
+    	            			newListGroupMember.add(groupMember);
     	            		} 
     	            	}
     	            	
+    	            	group.setMembers(newListGroupMember);
     	            	GroupManagementHandler.updateGroupById(groupId, group);
 	
     	            	return "success";

@@ -16,6 +16,62 @@ import org.openape.ui.velocity.requestHandler.AdminSectionRequestHandler;
 
 public class Molecule_5_DataTableContent {
 
+    public String generateGroupUserContent(final ArrayList<User> listUsers) {
+
+        String tableContent = "";
+
+        for (final User users : listUsers) {
+           
+            String username = "";
+           
+            if (users.getUsername().contains("#046")) {
+                username = users.getUsername().replace("#046", ".");
+            } else {
+                username = users.getUsername();
+            }
+
+            tableContent += "<tr>" + "<td id='tdUserName_"
+                    + users.getId()
+                    + "'>"
+                    + username
+                    + "</td>"
+                    + "<td>"
+                    + "<button id='addUserToGroup_"
+                    + users.getId()
+                    + "' class='btn btn-md btn-default' onClick='addUserToGroup(this)' ><div class='glyphicon glyphicon-edit' ></div> Add </button></tr>";
+        }
+
+        return tableContent;
+    }
+    
+    public String generateRemoveGroupUserContent(final ArrayList<User> listUsers) {
+
+        String tableContent = "";
+
+        for (final User users : listUsers) {
+           
+            String username = "";
+           
+            if (users.getUsername().contains("#046")) {
+                username = users.getUsername().replace("#046", ".");
+            } else {
+                username = users.getUsername();
+            }
+
+            tableContent += "<tr>" + "<td id='tdUserName_"
+                    + users.getId()
+                    + "'>"
+                    + username
+                    + "</td>"
+                    + "<td>"
+                    + "<button id='addUserToGroup_"
+                    + users.getId()
+                    + "' class='btn btn-md btn-default' onClick='addUserToGroup(this)' ><div class='glyphicon glyphicon-trash' ></div> Remove </button></tr>";
+        }
+
+        return tableContent;
+    }
+    
     public String generateAdministrationUserContent(final ArrayList<User> listUsers) {
 
         String tableContent = "";
@@ -284,7 +340,7 @@ public class Molecule_5_DataTableContent {
 			 String buttons = "<button id='"+group.getId()+"' class='btn btn-md btn-default' onClick='editGroup(this)' ><div class='glyphicon glyphicon-edit' ></div> Edit </button>"
 	                 + "<button id='"+group.getId()+"' class='btn btn-md btn-default' onClick='deleteGroup(this)'><div class='glyphicon glyphicon-trash'></div> Delete </button> ";
 			 
-			 String memberButtons = "<button id='"+group.getId()+"' class='btn btn-md btn-default' onClick='addGroupMember(this)' ><div class='glyphicon glyphicon-save' ></div> Add </button>"
+			 String memberButtons = "<button id='"+group.getId()+"' onClick='addGroupMember(this)' type='button' class='btn btn-default' data-toggle='modal' ><div class='glyphicon glyphicon-plus'></div> Add </button>"
 	                 + "<button id='"+group.getId()+"' class='btn btn-md btn-default' onClick='deleteGroupMember(this)'><div class='glyphicon glyphicon-trash'></div> Delete </button> ";
 
 			  tableContent += ""

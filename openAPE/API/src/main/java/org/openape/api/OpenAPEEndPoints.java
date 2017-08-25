@@ -7,6 +7,8 @@ public class OpenAPEEndPoints {
     public static final String USER_PASSWORD = "openape/users/:userId/password";
     public static final String USER_ID = ":userid";
     public static final String MY_ID = "/users/openape/myId";
+    public static final String USER_DETAILS = "/users/openape/:userId";
+    public static final String USERS_DETAILS = "/openape/users";
 
     // messages
     public static final String USER_ROLES_CHANGED = "User roles successfully changed";

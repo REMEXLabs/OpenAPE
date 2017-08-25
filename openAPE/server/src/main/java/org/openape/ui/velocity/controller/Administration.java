@@ -33,6 +33,11 @@ public class Administration extends SuperRestInterface {
                     
                     model.put("dataTableGroup", new Organism_3_DataTable().generateGroupTable(new GroupsRequestHandler()));
                     
+                    model.put("dataTableUserGroup", new Organism_3_DataTable().generateGroupUserTable(new AdminSectionRequestHandler()));
+                    
+                    model.put("dataTableDeleteGroupMember", new Organism_3_DataTable().generateDeleteGroupUserTable(new AdminSectionRequestHandler()));
+                    
+                    
                     
                     
                     // modals

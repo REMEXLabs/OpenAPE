@@ -210,6 +210,41 @@
 	    	
 	    	return objUserProfile;
 	    }
+	    
+	    
+	    /** getUserById
+		    * 
+		    * This function is used to get user informations by the given token
+		    *
+		    * @param  token
+		    * 	 The authentification token to authorized the user
+		    * 
+		    * @return      
+		    * 	 A javascript object with all found user information like username, email and roles
+		    */
+		    objOpenape.getUserById = function (userId) {
+		    	var objUserProfile = {};
+		    	var objAjaxParameters = {};
+		    	
+		    	var isTokenCorrect = true;
+		    	
+		    	if(localStorage.getItem("token") === undefined){
+		    		objUserProfile.statusText = "Please initialize the library";
+		    		isTokenCorrect = false;
+		    	} 
+		    	
+		    	if(isTokenCorrect) {
+		    		objAjaxParameters.type = "GET";
+		    		objAjaxParameters.url = localStorage.getItem("host")+"/users/openape/"+userId;
+		    		objAjaxParameters.token = localStorage.getItem("token");
+		    		objUserProfile = databaseCommunication(objAjaxParameters);
+		    		
+		    	} else {
+		    		objUserProfile.status = 400;
+		    	}
+		    	
+		    	return objUserProfile;
+		    }
 	   
 	    
 	    /*

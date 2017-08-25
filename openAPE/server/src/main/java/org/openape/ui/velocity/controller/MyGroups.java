@@ -5,6 +5,8 @@ import java.util.Map;
 
 import org.openape.server.rest.SuperRestInterface;
 import org.openape.ui.velocity.controllerComponents.MainComponents;
+import org.openape.ui.velocity.organism.Organism_3_DataTable;
+import org.openape.ui.velocity.requestHandler.GroupsRequestHandler;
 
 import spark.ModelAndView;
 import spark.Spark;
@@ -20,6 +22,9 @@ public class MyGroups extends SuperRestInterface {
             final MainComponents mainController = new MainComponents();
             final Map<String, Object> model = mainController.getTemplateComponents();
 
+            model.put("dataTableGroup", new Organism_3_DataTable().generateGroupTable(new GroupsRequestHandler()));
+            
+            
             return new ModelAndView(model, "velocityTemplates/myGroups.vm"); // located
                                                                              // in
                                                                              // the

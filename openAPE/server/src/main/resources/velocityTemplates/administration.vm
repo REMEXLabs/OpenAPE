@@ -25,6 +25,9 @@
 
 <!--responsive datatable-->
 <script src="https://cdn.datatables.net/responsive/2.1.1/js/dataTables.responsive.min.js"></script>
+<script src="https://cdn.datatables.net/fixedcolumns/3.2.2/js/dataTables.fixedColumns.min.js"></script>
+
+
 
 <script src="js/openape.js" type="text/javascript"></script>
 <script src="js/navigation.js" type="text/javascript"></script>
@@ -335,6 +338,51 @@
 			<button class='btn btn-md btn-default'" id="btnAddGroup"><div class="glyphicon glyphicon-plus"></div> Add </button>	
 		
 
+
+
+<!-- Modal -->
+<div class="modal fade" id="addGroupMemberModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header" style='background-color:#e31134; color:white;text-align:center;border-bottom: 2px solid #AB112A;'>
+        <h3 class="modal-title" id="exampleModalLongTitle">Add Member</h3>
+      </div>
+      <div class="modal-body">
+    	<div style="margin:1em 1em 1em 1em;width:100%" class="">
+    	
+    	      $dataTableUserGroup	
+    	      </div>
+    	
+      </div>
+      <div class="modal-footer" style='clear:both; background-color:#ececec; border-top: 2px solid #ccc;'>
+        <button type="button" id='btnConfirmCloseAddGroupMemberModal' class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="deleteGroupMemberModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header" style='background-color:#e31134; color:white;text-align:center;border-bottom: 2px solid #AB112A;'>
+        <h3 class="modal-title" id="exampleModalLongTitle">Remove Member</h3>
+      </div>
+      <div class="modal-body">
+    	<div style="margin:1em 1em 1em 1em;width:100%" class="">
+    	
+    	      $dataTableDeleteGroupMember	
+    	      </div>
+    	
+      </div>
+      <div class="modal-footer" style='clear:both; background-color:#ececec; border-top: 2px solid #ccc;'>
+        <button type="button" id='btnConfirmCloseRemoveGroupMemberModal' class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
 		</div>	
 		
 		<div id="resources" class="tabcontent">

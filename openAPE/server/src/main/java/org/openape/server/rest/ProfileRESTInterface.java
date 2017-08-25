@@ -96,6 +96,49 @@ public class ProfileRESTInterface extends SuperRestInterface {
             SuperRestInterface.logger.info("id: " + id);
             return id;
         });
+        
+        
+        //get user by id
+        Spark.get(OpenAPEEndPoints.USER_DETAILS, (req, res) -> {
+        	final String userId = req.params(":userId");
+        	
+        	User user = ProfileHandler.getUserById(userId);
+        	User userWithoutPW = new User();
+        	userWithoutPW.setEmail(user.getEmail());
+        	userWithoutPW.setId(user.getId());
+        	userWithoutPW.setUsername(user.getUsername());
+        	userWithoutPW.setRoles(user.getRoles());
+        	
+        	final ObjectMapper mapper = new ObjectMapper();
+        
+            return mapper.writeValueAsString(userWithoutPW);
+        	
+           
+        });
+        
+        Spark.get(OpenAPEEndPoints.USERS_DETAILS, (req, res) -> {
+        	final String userId = req.params(":userId");
+        	
+        	List<User> listUser = ProfileHandler.getAllUsers();
+        	List<User> listUserWithoutPW = new ArrayList<>();
+        	
+        	for(User entryUser : listUser){
+        		User userWithoutPW = new User();
+            	userWithoutPW.setEmail(entryUser.getEmail());
+            	userWithoutPW.setId(entryUser.getId());
+            	userWithoutPW.setUsername(entryUser.getUsername());
+            	userWithoutPW.setRoles(entryUser.getRoles());
+            	listUserWithoutPW.add(userWithoutPW);
+        	}
+        	
+        	
+        	final ObjectMapper mapper = new ObjectMapper();
+        
+            return mapper.writeValueAsString(listUserWithoutPW);
+        	
+           
+        });
+        
 
         Spark.before(OpenAPEEndPoints.USER_PASSWORD, authService.authorize("user"));
         Spark.put(
