@@ -8,7 +8,7 @@ import java.util.List;
 
 import javax.xml.crypto.Data;
 
-import org.openape.api.DatabaseObject;
+import org.openape.api.databaseObjectBase.DatabaseObject;
 import org.openape.api.user.User;
 import org.openape.server.auth.PasswordEncoder;
 import org.openape.server.database.mongoDB.DatabaseConnection;

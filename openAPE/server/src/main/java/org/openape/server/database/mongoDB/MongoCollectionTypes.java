@@ -1,7 +1,7 @@
 package org.openape.server.database.mongoDB;
 
-import org.openape.api.DatabaseObject;
 import org.openape.api.Messages;
+import org.openape.api.databaseObjectBase.DatabaseObject;
 import org.openape.api.environmentcontext.EnvironmentContext;
 import org.openape.api.equipmentcontext.EquipmentContext;
 import org.openape.api.listing.Listing;

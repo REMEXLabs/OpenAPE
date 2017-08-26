@@ -8,10 +8,10 @@ import java.util.Optional;
 import javax.ws.rs.NotFoundException;
 
 import org.json.JSONObject;
-import org.openape.api.DatabaseObject;
 import org.openape.api.Messages;
 import org.openape.api.OpenAPEEndPoints;
 import org.openape.api.PasswordChangeRequest;
+import org.openape.api.databaseObjectBase.DatabaseObject;
 import org.openape.api.user.User;
 import org.openape.server.auth.AuthService;
 import org.openape.server.auth.PasswordEncoder;

@@ -3,7 +3,7 @@ package org.openape.api.user;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.openape.api.DatabaseObject;
+import org.openape.api.databaseObjectBase.DatabaseObject;
 import org.pac4j.core.profile.CommonProfile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

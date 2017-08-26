@@ -14,7 +14,7 @@
  limitations under the License.
  */
 
-package org.openape.api;
+package org.openape.api.databaseObjectBase;
 
 import java.io.IOException;
 import java.io.StringReader;

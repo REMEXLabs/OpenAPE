@@ -6,8 +6,8 @@ import java.util.List;
 
 import javax.rmi.PortableRemoteObject;
 
-import org.openape.api.Property;
-import org.openape.api.Resource;
+import org.openape.api.databaseObjectBase.Property;
+import org.openape.api.databaseObjectBase.Resource;
 import org.openape.api.resourceDescription.ResourceDescription;
 import org.openape.api.user.User;
 import org.openape.server.api.group.Group;

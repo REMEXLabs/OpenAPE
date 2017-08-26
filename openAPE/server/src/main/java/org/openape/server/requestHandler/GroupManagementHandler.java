@@ -4,8 +4,8 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.openape.api.DatabaseObject;
 import org.openape.api.Messages;
+import org.openape.api.databaseObjectBase.DatabaseObject;
 import org.openape.api.groups.GroupMembershipStatus;
 import org.openape.api.taskcontext.TaskContext;
 import org.openape.server.api.group.Group;

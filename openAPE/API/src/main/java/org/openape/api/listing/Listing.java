@@ -22,7 +22,7 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.openape.api.DatabaseObject;
+import org.openape.api.databaseObjectBase.DatabaseObject;
 import org.openape.api.resourceDescription.ResourceDescription;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;

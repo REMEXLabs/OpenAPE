@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.bson.Document;
-import org.openape.api.Resource;
+import org.openape.api.databaseObjectBase.Resource;
 import org.openape.api.user.User;
 import org.openape.server.api.group.Group;
 import org.openape.server.database.mongoDB.DatabaseConnection;

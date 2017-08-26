@@ -6,9 +6,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
 
-import org.openape.api.DatabaseObject;
 import org.openape.api.Messages;
-import org.openape.api.Property;
+import org.openape.api.databaseObjectBase.DatabaseObject;
+import org.openape.api.databaseObjectBase.Property;
 import org.openape.api.listing.Listing;
 import org.openape.api.resourceDescription.ResourceDescription;
 import org.openape.server.database.mongoDB.DatabaseConnection;

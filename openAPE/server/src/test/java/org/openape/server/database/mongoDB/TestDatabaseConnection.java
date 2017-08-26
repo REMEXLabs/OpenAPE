@@ -7,7 +7,7 @@ import java.util.List;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.openape.api.Property;
+import org.openape.api.databaseObjectBase.Property;
 import org.openape.api.resourceDescription.ResourceDescription;
 import org.openape.api.usercontext.Condition;
 import org.openape.api.usercontext.Context;

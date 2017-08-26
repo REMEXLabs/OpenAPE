@@ -8,7 +8,7 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 
 import org.openape.api.Messages;
-import org.openape.api.Resource;
+import org.openape.api.databaseObjectBase.Resource;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 

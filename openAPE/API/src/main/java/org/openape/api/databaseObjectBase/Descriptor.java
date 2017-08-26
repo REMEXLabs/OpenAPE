@@ -1,4 +1,4 @@
-package org.openape.api;
+package org.openape.api.databaseObjectBase;
 
 import javax.xml.bind.annotation.XmlAttribute;
 

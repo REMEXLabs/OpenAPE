@@ -4,8 +4,8 @@ import java.io.IOException;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.openape.api.Descriptor;
-import org.openape.api.Property;
+import org.openape.api.databaseObjectBase.Descriptor;
+import org.openape.api.databaseObjectBase.Property;
 
 public class TestEquipmentContext {
     public static EquipmentContext sampleEquipmentContext() {

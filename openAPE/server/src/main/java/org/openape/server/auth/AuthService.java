@@ -7,8 +7,8 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 import org.jboss.resteasy.spi.NotFoundException;
-import org.openape.api.DatabaseObject;
 import org.openape.api.auth.TokenResponse;
+import org.openape.api.databaseObjectBase.DatabaseObject;
 import org.openape.api.user.User;
 import org.openape.server.database.mongoDB.DatabaseConnection;
 import org.openape.server.database.mongoDB.MongoCollectionTypes;
