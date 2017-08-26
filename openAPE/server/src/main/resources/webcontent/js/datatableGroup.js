@@ -17,10 +17,56 @@ $(document).ready(function() {
 		 "bInfo": false,
    } ); 
 	
+	$('#addGroupMemberModal').on('hidden.bs.modal', function () {
+        setTimeout(function(){ 
+     		location.reload();
+    		}, 500);
+	});
+	
+	
+	$('#deleteGroupMemberModal').on('hidden.bs.modal', function () {
+        setTimeout(function(){ 
+     		location.reload();
+    		}, 500);
+	});
+	
 	
 	$('#deleteGroupMemberDataTable').css("width", "10% !important");
 	
 	if(window.location.pathname == "/myGroups"){
+		var listGroupIds = [];
+		var listGroupIdsWithUser = [];
+		var i = 1;
+		
+		$('#groupDataTable tr').each(function(){
+			if($('#groupDataTable tr:eq('+i+') td:eq(0)').text() != ""){
+				var groupId = $('#groupDataTable tr:eq('+i+') td:eq(0)').text();
+				listGroupIds.push(groupId);
+				var objGroup = getGroupFromDB(groupId);
+				var members = objGroup.members;
+				for(var k = 0; k<members.length;k++){
+					
+					if(members[k].userId == localStorage.getItem("userid")){
+						listGroupIdsWithUser.push(groupId);
+					}
+				}
+				
+			}
+			i++;
+		})
+		
+		 //compares two lists and returns the user not in group
+		 var listForeignGroups = listGroupIds.filter(function(v) {
+		     return listGroupIdsWithUser.indexOf(v) == -1;
+		 })
+		 
+		 
+		 for(var i = 0; i<listForeignGroups.length; i++){
+			 $('#groupDataTable').DataTable().row( $('#'+listForeignGroups[i]).closest("tr"))
+		        .remove()
+		        .draw(); 
+		 }
+
 		groupTable.column( 5 ).visible( false );
 		groupTable.column( 4 ).visible( false );
 	}

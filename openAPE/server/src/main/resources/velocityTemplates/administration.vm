@@ -330,10 +330,11 @@
 			</div>
 			 $deleteGroupModal
 			 $addGroupUserModal
+			 $deleteGroupUserModal
 			 <div style="font-size:18px; line-height:2em">
 			 $addGroupModal
 			 $editGroupModal
-			 $deleteGroupUserModal
+			
 			 </div>
 			<button class='btn btn-md btn-default'" id="btnAddGroup"><div class="glyphicon glyphicon-plus"></div> Add </button>	
 		
