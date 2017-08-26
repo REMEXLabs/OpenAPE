@@ -349,6 +349,7 @@ public class Molecule_5_DataTableContent {
 				 		+ "<td>"+group.getName()+"</td>"
 				 		+ "<td>"+group.getDescription()+"</td>"
 				 		+ "<td>"+group.getMembers().size()+"</td>"
+				 		+ "<td>"+group.isOpenAccess()+"</td>"
 				 		+ "<td>"+buttons+"</td>"
 				 		+ "<td>"+memberButtons+"</td>"
 				 		+ "</tr>";

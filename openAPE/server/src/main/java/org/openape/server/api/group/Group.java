@@ -77,8 +77,8 @@ public class Group extends DatabaseObject {
      *            list with the members of this the group. If the group has no
      *            member(s) it can be empty but not null.
      */
-    public Group(final String name, final String description, final List<GroupMember> members) {
-        this(null, name, description, members);
+    public Group(final String name, final String description, final List<GroupMember> members, final boolean openAccess) {
+        this(null, name, description, members, openAccess);
     }
 
     /**
@@ -97,12 +97,12 @@ public class Group extends DatabaseObject {
      *            member(s) it can be empty but not null.
      */
     public Group(final String id, final String name, final String description,
-            final List<GroupMember> members) {
+            final List<GroupMember> members, final boolean openAccess) {
         this.setId(id);
         this.setName(name);
         this.setGroupDescription(description);
         this.setMembers(members);
-        this.setOpenAccess(false);
+        this.setOpenAccess(openAccess);
     }
 
     private boolean executeIsUserAssigend(final String userId, final GroupMembershipStatus state) {

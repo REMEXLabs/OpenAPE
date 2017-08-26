@@ -149,7 +149,7 @@ public class Organism_3_DataTable {
         	final String resourceDataTable = ""
                 + "<table id='groupDataTable' style='border: 4px solid #ddd !important;' class='table table-striped table-bordered dt-responsive nowrap' cellspacing='0' width='100%'>"
                 + "<thead>" + "<tr>" + "<th>Group Id</th>" + "<th>Name</th>" + "<th>Description</th>"
-                +  "<th>Members</th>"+  "<th>Options</th>"+"<th>Member Options</th>"+"</tr>" + "</thead>"
+                +  "<th>Members</th>"+  "<th>OpenAccess</th>"+  "<th>Group Options</th>"+"<th>Member Options</th>"+"</tr>" + "</thead>"
                 + "<tbody id='tableContent'>" + tableContent + "</tbody>"
                 + "</table>";
         return resourceDataTable;

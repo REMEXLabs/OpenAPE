@@ -54,7 +54,7 @@ public class GroupManagementRestInterface extends SuperRestInterface {
                         String groupId;
                         groupId = GroupManagementHandler.createGroup(groupRequest.getGroupname(),
                                 groupRequest.getDescription(), groupRequest.getEntryRequirements(),
-                                authUser.getId());
+                                authUser.getId(), groupRequest.isOpenAccess());
                         res.status(SuperRestInterface.HTTP_STATUS_CREATED);
                         return groupId;
                     } catch (JsonParseException | JsonMappingException e) {
@@ -83,10 +83,10 @@ public class GroupManagementRestInterface extends SuperRestInterface {
 		       	
 		       	if(status == true){
 		       		res.status(SuperRestInterface.HTTP_STATUS_OK);
-		       		return 	group.getDescription();	
+		       		return 	"Group added";	
 		       	} else {
 		       		res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
-		       		return "coult not update group";
+		       		return "Failed to update group informations";
 		       	}
 	
 	        } catch (final IllegalArgumentException e) {

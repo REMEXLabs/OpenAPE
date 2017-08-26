@@ -5,6 +5,7 @@ public class GroupRequest {
     private String groupname;
     private String description;
     private String entryRequirements;
+    private boolean openAccess;
 
     public String getDescription() {
         return this.description;
@@ -29,4 +30,12 @@ public class GroupRequest {
     public void setGroupname(final String groupname) {
         this.groupname = groupname;
     }
+
+	public boolean isOpenAccess() {
+		return openAccess;
+	}
+
+	public void setOpenAccess(boolean openAccess) {
+		this.openAccess = openAccess;
+	}
 }

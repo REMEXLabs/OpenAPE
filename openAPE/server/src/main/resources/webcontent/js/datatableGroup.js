@@ -97,10 +97,12 @@ $(document).ready(function() {
 	$('#btnConfirmAddGroup').click(function () {
 		var groupName = $('#addGroupNameInput').val();
 		var groupDescription = $('#addGroupDescriptionInput').val();
+		var openAccess = $('#cbAddOpenAcces').prop( "checked" );
 		var objGroup = {};
 		
 		objGroup.description = groupDescription;
 		objGroup.groupname = groupName;
+		objGroup.openAccess = openAccess;
 		
 		validateFields("add", groupName, groupDescription) == true ? addGroupToDB(JSON.stringify(objGroup)) : void 0;
 
@@ -120,10 +122,13 @@ $(document).ready(function() {
 	$('#btnConfirmEditGroup').click(function () {
 		var groupName = $('#editGroupNameInput').val();
 		var groupDescription = $('#editGroupDescriptionInput').val();
+		var openAccess = $('#cbEditOpenAcces').prop( "checked" );
+		
 		var objGroup = {};
 		
 		objGroup.description = groupDescription;
 		objGroup.name = groupName;
+		objGroup.openAccess = openAccess;
 		
 		validateFields("edit", groupName, groupDescription) == true ? 
 				updateGroupDB(window.groupId, JSON.stringify(objGroup)) : void 0;
@@ -247,6 +252,10 @@ function editGroup(event){
 	var objGroup = getGroupFromDB(id);
 	$('#editGroupNameInput').val(objGroup.name);
 	$('#editGroupDescriptionInput').val(objGroup.description);
+	
+	if(objGroup.openAccess){
+		$('#cbEditOpenAcces').prop("checked", true);
+	}
 	window.groupId = id;
 }
 
