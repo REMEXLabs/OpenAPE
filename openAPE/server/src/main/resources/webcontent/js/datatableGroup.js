@@ -1,5 +1,10 @@
 var url = window.location.origin;
+var objStatus = {};
+var lisErrNoStatus = [];
+var listObjMember = [];
 $(document).ready(function() {
+	
+	
 	var groupTable = $('#groupDataTable').DataTable( {
 		"lengthMenu": [[5, 10, 15, -1], [5, 10, 15, "All"]],
 		"responsive": true
@@ -18,18 +23,23 @@ $(document).ready(function() {
    } ); 
 	
 	$('#addGroupMemberModal').on('hidden.bs.modal', function () {
-        setTimeout(function(){ 
+		$('.loading').css("display", "block");
+		
+		setTimeout(function(){ 
+			$('.loading').css("display", "none");
      		location.reload();
-    		}, 500);
+    	}, 1000);
 	});
 	
 	
 	$('#deleteGroupMemberModal').on('hidden.bs.modal', function () {
-        setTimeout(function(){ 
+		$('.loading').css("display", "block");
+		
+		setTimeout(function(){ 
+			$('.loading').css("display", "none");
      		location.reload();
-    		}, 500);
+    	}, 1000);
 	});
-	
 	
 	$('#deleteGroupMemberDataTable').css("width", "10% !important");
 	
@@ -68,13 +78,14 @@ $(document).ready(function() {
 		 }
 
 		groupTable.column( 5 ).visible( false );
-		groupTable.column( 4 ).visible( false );
+		groupTable.column( 6 ).visible( false );
 	}
 	
 	$('#addGroupModal').on('hidden.bs.modal', function () {	
 		$('#addFormGoupName').removeClass("has-error has-feedback");
 		$('#addFormGoupDescription').removeClass("has-error has-feedback");
 		$('#addGroupMainErrSection').empty();
+		
 	});
 	
 	$('#editGroupModal').on('hidden.bs.modal', function () {	
@@ -104,19 +115,37 @@ $(document).ready(function() {
 		objGroup.groupname = groupName;
 		objGroup.openAccess = openAccess;
 		
-		validateFields("add", groupName, groupDescription) == true ? addGroupToDB(JSON.stringify(objGroup)) : void 0;
+		if(validateFields("add", groupName, groupDescription)){
+			if(addGroupToDB(JSON.stringify(objGroup)) == 201){
+				$('.loading').css("display", "block");
+				$('#addGroupModal').modal('hide');
+	             setTimeout(function(){ 
+	            	 $('.loading').css("display", "none");
+	         		location.reload();
+	        		}, 1000);
+			}
+		} 
 
 	})
 	
 	$('#btnConfirmDeleteGroup').click(function () {
-		removeGroupFromDB(window.eventId);
+		if(removeGroupFromDB(window.eventId) == 200){
+	   		$('#deleteGroupModal').modal('hide');
+	   		$('.loading').css("display", "block");
+			
+			setTimeout(function(){ 
+				$('.loading').css("display", "none");
+	     		location.reload();
+	    	}, 1000);
+		}
 	})
 	
 	$('#btnConfirmAddGroupMember').click(function () {
 		var groupId = window.groupId;
 		var userId = $('#addGroupMemberNameInput').val();
 		
-		addGroupMemberToDB(groupId, userId);
+		console.log(listObjMember);
+		//addGroupMemberToDB(groupId, userId);
 	})
 	
 	$('#btnConfirmEditGroup').click(function () {
@@ -130,23 +159,41 @@ $(document).ready(function() {
 		objGroup.name = groupName;
 		objGroup.openAccess = openAccess;
 		
-		validateFields("edit", groupName, groupDescription) == true ? 
-				updateGroupDB(window.groupId, JSON.stringify(objGroup)) : void 0;
+		if(validateFields("edit", groupName, groupDescription)){
+			if(updateGroupDB(window.groupId, JSON.stringify(objGroup)) == 200){
+				
+				$('#editGroupModal').modal('hide');
+				$('.loading').css("display", "block");
+				setTimeout(function(){ 
+					$('.loading').css("display", "none");
+		     		location.reload();
+		    	}, 1000);
+			}
+		} 
+			
 	
 	})
 	
 	
 	$('#btnConfirmCloseAddGroupMemberModal').click(function () {
-        setTimeout(function(){ 
+		$('.loading').css("display", "block");
+		
+		setTimeout(function(){ 
+			$('.loading').css("display", "none");
      		location.reload();
-    		}, 500);
+    	}, 1000);
+        
+		
 	})
 	
 	$('#btnConfirmCloseRemoveGroupMemberModal').click(function () {
+		$('.loading').css("display", "block");
         setTimeout(function(){ 
+        	$('.loading').css("display", "none");
      		location.reload();
     		}, 500);
 	})
+	groupTable.column( 0 ).visible( false );
 	
 })
 
@@ -154,13 +201,37 @@ $(document).ready(function() {
 function addUserToGroup (event){
 	var userId = event.attributes[0].value.substring(event.attributes[0].value.indexOf("_")+1);
 	var groupId = window.groupId;
-	
 	var objGroup = getGroupFromDB(userId);
+	var objUser = {};
+	var isStatusSet = false;
+	objUser.userId = userId;
 	
-	if(addGroupMemberToDB(groupId, userId) == 200){
-		$('#userGroupDataTable').DataTable().row( $(event).closest('tr') )
-        .remove()
-        .draw();
+	if(listObjMember.length != 0){
+		listObjMember.forEach(function(element){
+			if(element.userId == userId){
+				objUser.status = element.status;
+				isStatusSet = true;
+			} 
+		})
+	} else {
+		isStatusSet = false;
+	}
+	
+	
+	if(isStatusSet) {
+		if(addGroupMemberToDB(groupId, userId, objUser) == 200){
+			$('#userGroupDataTable').DataTable().row( $(event).closest('tr') )
+	        .remove()
+	        .draw();
+		}
+	} else {
+		$('#tdUsername_'+userId).empty();
+		$('#tdUsername_'+userId).append("<img width='20px' src='img/attention_icon.png'>&nbsp;" );
+		
+		lisErrNoStatus.push(userId);
+
+		$('#addGroupMemberModalMainErrSection').empty();
+		$('#addGroupMemberModalMainErrSection').append("<img width='20px' src='img/attention_icon.png'>&nbsp; Please choose a status");
 	}
 }
 
@@ -204,7 +275,8 @@ function addGroupMember (event){
 		 
 		 $('#userGroupDataTable')
 		 .DataTable()
-		 .row.add( [objUser.username, "<button id='addUserToGroup_"+listUserNotInDb[i]+"' class='btn btn-md btn-default' onClick='addUserToGroup(this)' ><div class='glyphicon glyphicon-plus'></div> Add</button>"] )
+		 .row.add( ["<span id='tdUsername_"+listUserNotInDb[i]+"'></span>"+objUser.username, "<button id='memberStatus_"+listUserNotInDb[i]+"' onClick='addStatusMember(this)' class='btn btn-md btn-default'><img src='img/user-filled-person-shape.png'> Member</button><button onClick='addStatusAdmin(this)'  id='adminStatus_"+listUserNotInDb[i]+"' class='btn btn-md btn-default'><img src='img/admin-with-cogwheels.png'> Admin</button>", 
+			 "<button id='addUserToGroup_"+listUserNotInDb[i]+"' class='btn btn-md btn-default' onClick='addUserToGroup(this)' ><div class='glyphicon glyphicon-plus'></div> Add</button>"] )
 		 .draw( false ); 
 	 }
 }
@@ -235,8 +307,88 @@ function deleteGroupMember(event){
 		 .row.add( [objUser.username, "<button id='deleteGroupMember_"+members[i].userId+"' class='btn btn-md btn-default' onClick='removeGroupMember(this)' ><div class='glyphicon glyphicon-trash'></div> Remove</button>"] )
 		 .draw( false ); 
 	 }
-	 
+}
 
+function addStatusAdmin (event){
+	var statusId = event.id;
+	var userId = event.id.substring(event.id.indexOf("_")+1);
+	var isInArray = false;
+	var arrayIndex = 0;
+	
+	$('#'+statusId).removeClass("btn-default");
+	$('#memberStatus_'+userId).addClass("btn-default");
+	
+	objStatus = {};
+	objStatus.status = "ADMIN";
+	objStatus.userId = userId;
+
+	for(var i=0; i<listObjMember.length; i++){
+		if(listObjMember[i].userId == userId){
+			arrayIndex = i;
+			isInArray = true;
+			break;
+		} 
+	}
+	
+	if(isInArray){
+		listObjMember.splice(arrayIndex, 1);
+		listObjMember.push(objStatus);
+	} else {
+		listObjMember.push(objStatus);
+	}
+	
+	$('#tdUsername_'+userId).empty();
+	
+	for(var i = 0; i<lisErrNoStatus.length; i++){
+		if(lisErrNoStatus[i] == userId){
+			lisErrNoStatus.splice(i, 1);
+		}	
+	}
+	
+	if(lisErrNoStatus.length == 0){
+		$('#addGroupMemberModalMainErrSection').empty();
+	}
+}
+
+function addStatusMember(event) {
+	var statusId = event.id;
+	var userId = event.id.substring(event.id.indexOf("_")+1);
+	var isInArray = false;
+	var arrayIndex = 0;
+	
+	$('#adminStatus_'+userId).addClass("btn-default");
+	$('#'+statusId).removeClass("btn-default");
+	
+	objStatus = {};
+	objStatus.status = "MEMBER";
+	objStatus.userId = userId;
+	
+	for(var i=0; i<listObjMember.length; i++){
+		if(listObjMember[i].userId == userId){
+			arrayIndex = i;
+			isInArray = true;
+			break;
+		} 
+	}
+		
+	if(isInArray){
+		listObjMember.splice(arrayIndex, 1);
+		listObjMember.push(objStatus);
+	} else {
+		listObjMember.push(objStatus);
+	}
+	
+	$('#tdUsername_'+userId).empty();
+	
+	for(var i = 0; i<lisErrNoStatus.length; i++){
+		if(lisErrNoStatus[i] == userId){
+			lisErrNoStatus.splice(i, 1);
+		}	
+	}
+	
+	if(lisErrNoStatus.length == 0){
+		$('#addGroupMemberModalMainErrSection').empty();
+	}
 	
 }
 
@@ -290,53 +442,48 @@ function validateFields(action, name, description){
 }
 
 function removeGroupFromDB(groupId) {
+	var status = "";
 	$.ajax({
         type: 'DELETE',
         contentType: 'application/json',
         url: url+'/openape/groups/'+groupId,
         dataType: "json",
+        async: false,
         headers: {
         	"Authorization": localStorage.getItem("token"),
         },
         success: function(data, textStatus, jqXHR){
-   		 $('#deleteGroupModal').modal('hide');
-         setTimeout(function(){ 
-     		location.reload();
-    		}, 1000);
+         status = jqXHR.status;
         },
         error: function(jqXHR, textStatus, errorThrown){
-        	$('#deleteGroupModal').modal('hide');
-            setTimeout(function(){ 
-        		location.reload();
-       		}, 1000);
+        	status = jqXHR.status;
         }
     });
+	return status;
 }
 
 
 function updateGroupDB(groupId, group) {
+	var status = 0;
 	$.ajax({
         type: 'PUT',
         contentType: 'application/json',
         url: url+'/openape/groups/'+groupId,
         dataType: "json",
         data: group,
+        async: false,
         headers: {
         	"Authorization": localStorage.getItem("token"),
         },
         success: function(data, textStatus, jqXHR){
-   		 $('#addGroupModal').modal('hide');
-         setTimeout(function(){ 
-     		location.reload();
-    		}, 1000);
+        	status = jqXHR.status;
         },
         error: function(jqXHR, textStatus, errorThrown){
-      		 $('#addGroupModal').modal('hide');
-             setTimeout(function(){ 
-         		location.reload();
-        		}, 1000);
+        	status = jqXHR.status;
         }
     });
+	
+	return status;
 }
 
 
@@ -382,13 +529,14 @@ function getAllUsersFromDB() {
 	return objUser;
 }
 
-function addGroupMemberToDB(groupId, userId) {
+function addGroupMemberToDB(groupId, userId, objUser) {
 	var status = 0;
 	$.ajax({
         type: 'PUT',
         contentType: 'application/json',
         url: url+'/openape/'+groupId+"/members/"+userId,
         dataType: "json",
+        data: JSON.stringify(objUser),
         async: false,
         headers: {
         	"Authorization": localStorage.getItem("token"),
@@ -434,26 +582,23 @@ function deleteGroupMemberFromDB (groupId, userId){
 
 
 function addGroupToDB(group) {
+	var status = "";
 	$.ajax({
         type: 'POST',
         contentType: 'application/json',
         url: url+'/openape/groups',
         dataType: "json",
         data: group,
+        async: false,
         headers: {
         	"Authorization": localStorage.getItem("token"),
         },
         success: function(data, textStatus, jqXHR){
-   		 $('#addGroupModal').modal('hide');
-         setTimeout(function(){ 
-     		location.reload();
-    		}, 1000);
+        	status = jqXHR.status;
         },
         error: function(jqXHR, textStatus, errorThrown){
-      		 $('#addGroupModal').modal('hide');
-             setTimeout(function(){ 
-         		location.reload();
-        		}, 1000);
+        	status = jqXHR.status;
         }
     });
+	return status;
 }

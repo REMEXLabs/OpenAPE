@@ -181,7 +181,7 @@ public class Organism_3_DataTable {
         adminsectionRequestHandler.getAllUsercontexts();
         final String administrationUserTable = ""
                 + "<table style='margin-top:1em; border: 3px solid #ddd !important;' id='userGroupDataTable' class='table table-striped table-bordered' cellspacing='0' width='100%'>"
-                + "<thead>" + "<tr>" + "<th>Name</th>" 
+                + "<thead>" + "<tr>" + "<th>Name</th>" + "<th>Status</th>" 
                 + "<th style='width:10% !important'>Options</th>" + "</tr>" + "</thead>"
                 + "</table>";
         return administrationUserTable;

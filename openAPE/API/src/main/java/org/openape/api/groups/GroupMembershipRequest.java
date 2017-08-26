@@ -6,21 +6,32 @@ package org.openape.api.groups;
 
 public class GroupMembershipRequest {
     private String userId;
-    private GroupMembershipStatus status;
-
-    public GroupMembershipStatus getStatus() {
-        return this.status;
-    }
-
+    private String status;
+    
     public String getUserId() {
         return this.userId;
     }
 
+    /*
+    public GroupMembershipStatus getStatus() {
+        return this.status;
+    }
+
+
+
     public void setStatus(final GroupMembershipStatus status) {
         this.status = status;
     }
-
+*/
     public void setUserId(final String userId) {
         this.userId = userId;
     }
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
 }

@@ -175,6 +175,9 @@ public class GroupManagementRestInterface extends SuperRestInterface {
                           MongoCollectionTypes.GROUPS, req.params(":groupId"));
             	
             	
+                ObjectMapper mapper = new ObjectMapper();
+                GroupMembershipRequest gmr = mapper.readValue(req.body().toString(), GroupMembershipRequest.class);
+                
             	boolean isUserInGroup = true;
             	
             	List<GroupMember> listGroupMember = group.getMembers();
@@ -191,7 +194,17 @@ public class GroupManagementRestInterface extends SuperRestInterface {
             	
             	//Assign new members to a List 
             	GroupMember groupMember = new GroupMember();
-            	GroupMembershipStatus state = GroupMembershipStatus.ADMIN;
+            	GroupMembershipStatus state = null;
+            	if(gmr.getStatus().equals("ADMIN")){
+            		state = GroupMembershipStatus.ADMIN;
+            	} else if (gmr.getStatus().equals("MEMBER")){ 
+            		state = GroupMembershipStatus.MEMBER;
+            	} else if(gmr.getStatus().equals("IN_PROGRESS")){
+            		state = GroupMembershipStatus.IN_PROGRESS;
+            	} else if(gmr.getStatus().equals("APPLYED")) {
+            		state = GroupMembershipStatus.APPLYED;
+            	}
+            	 
             	
             	groupMember.setUserId(userId);
             	groupMember.setState(state);
