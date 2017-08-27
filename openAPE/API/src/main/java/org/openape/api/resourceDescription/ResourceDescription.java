@@ -134,6 +134,8 @@ public class ResourceDescription extends DatabaseObject {
         return true;
     }
 
+    private ImplementationParameters implementationParameters = new ImplementationParameters();
+
     private List<Property> propertys = new ArrayList<Property>();
 
     public ResourceDescription() {
@@ -157,6 +159,11 @@ public class ResourceDescription extends DatabaseObject {
         return (ResourceDescription.hasResourceDescriptionTheSameProperties(compare, this) && ResourceDescription
                 .hasResourceDescriptionTheSameProperties(this, compare));
 
+    }
+
+    @XmlElement(name = "implementation-parameters")
+    public ImplementationParameters getImplementationParameters() {
+        return this.implementationParameters;
     }
 
     @XmlElement(name = "property")
@@ -188,6 +195,10 @@ public class ResourceDescription extends DatabaseObject {
     @JsonIgnore
     public boolean isValid() {
         return true;
+    }
+
+    public void setImplementationParameters(final ImplementationParameters implementationParameters) {
+        this.implementationParameters = implementationParameters;
     }
 
     public void setPropertys(final List<Property> propertys) {

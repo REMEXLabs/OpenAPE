@@ -9,6 +9,7 @@ import javax.xml.bind.annotation.XmlElement;
 
 import org.openape.api.Messages;
 import org.openape.api.databaseObjectBase.DatabaseObject;
+import org.openape.api.databaseObjectBase.ImplementationParameters;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -19,8 +20,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  */
 public class ResourceObject extends DatabaseObject {
     private static final long serialVersionUID = -5926306380613419041L;
+    private ImplementationParameters implementationParameters = new ImplementationParameters();
 
     private String id = null;
+
     private String fileName = null;
     private String ownerId = null;
     private String mimeType = null;
@@ -63,6 +66,11 @@ public class ResourceObject extends DatabaseObject {
         return this.id;
     }
 
+    @XmlElement(name = "implementation-parameters")
+    public ImplementationParameters getImplementationParameters() {
+        return this.implementationParameters;
+    }
+
     @XmlAttribute(name = "mimeType")
     public String getMimeType() {
         return this.mimeType;
@@ -96,6 +104,10 @@ public class ResourceObject extends DatabaseObject {
     @Override
     public void setId(final String id) {
         this.id = id;
+    }
+
+    public void setImplementationParameters(final ImplementationParameters implementationParameters) {
+        this.implementationParameters = implementationParameters;
     }
 
     public void setMimeType(final String mimeType) {

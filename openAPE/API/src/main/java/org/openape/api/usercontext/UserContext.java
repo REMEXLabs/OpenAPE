@@ -84,11 +84,11 @@ public class UserContext extends DatabaseObject {
             // get owner and public if available.
             final JsonNode owner = rootObject.get("owner");
             if ((owner != null) && !(owner instanceof NullNode)) {
-                userContext.setOwner(owner.textValue());
+                userContext.getImplementationParameters().setOwner(owner.textValue());
             }
             final JsonNode publicField = rootObject.get("public");
             if ((publicField != null) && !(publicField instanceof NullNode)) {
-                userContext.setPublic(publicField.booleanValue());
+                userContext.getImplementationParameters().setPublic(publicField.booleanValue());
             }
 
             // Iterate over contexts and create corresponding context objects.
@@ -298,6 +298,8 @@ public class UserContext extends DatabaseObject {
         }
     }
 
+    private ImplementationParameters implementationParameters = new ImplementationParameters();
+
     private List<Context> contexts;
 
     public UserContext() {
@@ -373,6 +375,11 @@ public class UserContext extends DatabaseObject {
             throw new IOException(e.getMessage());
         }
         return jsonString;
+    }
+
+    @XmlElement(name = "implementation-parameters")
+    public ImplementationParameters getImplementationParameters() {
+        return this.implementationParameters;
     }
 
     /**
@@ -519,6 +526,10 @@ public class UserContext extends DatabaseObject {
 
     public void setContexts(final List<Context> contexts) {
         this.contexts = contexts;
+    }
+
+    public void setImplementationParameters(final ImplementationParameters implementationParameters) {
+        this.implementationParameters = implementationParameters;
     }
 
     /**

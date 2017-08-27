@@ -132,6 +132,7 @@ public class TaskContext extends DatabaseObject {
         return true;
     }
 
+    private ImplementationParameters implementationParameters = new ImplementationParameters();
     private List<Property> propertys = new ArrayList<Property>();
 
     public TaskContext() {
@@ -155,6 +156,11 @@ public class TaskContext extends DatabaseObject {
         return (TaskContext.hasTaskContextTheSameProperties(compare, this) && TaskContext
                 .hasTaskContextTheSameProperties(this, compare));
 
+    }
+
+    @XmlElement(name = "implementation-parameters")
+    public ImplementationParameters getImplementationParameters() {
+        return this.implementationParameters;
     }
 
     @XmlElement(name = "property")
@@ -186,6 +192,10 @@ public class TaskContext extends DatabaseObject {
     @JsonIgnore
     public boolean isValid() {
         return true;
+    }
+
+    public void setImplementationParameters(final ImplementationParameters implementationParameters) {
+        this.implementationParameters = implementationParameters;
     }
 
     public void setPropertys(final List<Property> propertys) {
