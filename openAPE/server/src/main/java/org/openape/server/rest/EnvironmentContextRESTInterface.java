@@ -77,7 +77,7 @@ public class EnvironmentContextRESTInterface extends SuperRestInterface {
                             .createRequestObejct(req);
                     // Make sure to set the id of the authenticated user as
                     // the ownerId
-                    receivedEnvironmentContext
+                    receivedEnvironmentContext.getImplementationParameters()
                             .setOwner(auth.getAuthenticatedUser(req, res).getId());
                     // Test the object for validity.
                     if (!receivedEnvironmentContext.isValid()) {
@@ -116,8 +116,8 @@ public class EnvironmentContextRESTInterface extends SuperRestInterface {
                                 .getEnvironmentContextById(environmentContextId);
                         // Make sure only admins or the owner can view the
                         // context, except if it is public
-                        auth.allowAdminOwnerAndPublic(req, res, environmentContext.getOwner(),
-                                environmentContext.isPublic());
+                        auth.allowAdminOwnerAndPublic(req, res, environmentContext.getImplementationParameters().getOwner(),
+                                environmentContext.getImplementationParameters().isPublic());
                         res.status(SuperRestInterface.HTTP_STATUS_OK);
                         res.type(Messages.getString("EnvironmentContextRESTInterface.JsonMimeType")); //$NON-NLS-1$
                         final String jsonData = EnvironmentContextRESTInterface.createReturnString(
@@ -156,8 +156,8 @@ public class EnvironmentContextRESTInterface extends SuperRestInterface {
                             .getEnvironmentContextById(environmentContextId);
                     // Make sure only admins and the owner can update a
                     // context
-                    auth.allowAdminAndOwner(req, res, environmentContext.getOwner());
-                    receivedEnvironmentContext.setOwner(environmentContext.getOwner()); // Make
+                    auth.allowAdminAndOwner(req, res, environmentContext.getImplementationParameters().getOwner());
+                    receivedEnvironmentContext.getImplementationParameters().setOwner(environmentContext.getImplementationParameters().getOwner()); // Make
                                                                                         // sure
                                                                                         // the
                                                                                         // owner
@@ -200,7 +200,7 @@ public class EnvironmentContextRESTInterface extends SuperRestInterface {
                                 .getEnvironmentContextById(environmentContextId);
                         // Make sure only admins and the owner can delete a
                         // context
-                        auth.allowAdminAndOwner(req, res, environmentContext.getOwner());
+                        auth.allowAdminAndOwner(req, res, environmentContext.getImplementationParameters().getOwner());
                         // Perform delete and return empty string.
                         requestHandler.deleteEnvironmentContextById(environmentContextId);
                         res.status(SuperRestInterface.HTTP_STATUS_NO_CONTENT);

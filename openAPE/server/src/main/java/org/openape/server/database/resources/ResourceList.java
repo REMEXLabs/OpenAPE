@@ -116,7 +116,7 @@ public class ResourceList {
         // Create resource reference object for the database.
         final ResourceObject resourceObject = new ResourceObject(fileName, user.getId(), mimeType);
         // set owner.
-        resourceObject.setOwner(user.getId());
+        resourceObject.getImplementationParameters().setOwner(user.getId());
         // store database resource object
         final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
         String id = null;

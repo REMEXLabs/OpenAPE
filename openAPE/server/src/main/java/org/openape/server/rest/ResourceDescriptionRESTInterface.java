@@ -74,7 +74,7 @@ public class ResourceDescriptionRESTInterface extends SuperRestInterface {
                         .createRequestObejct(req);
                 // Make sure to set the id of the authenticated user as
                 // the ownerId
-                receivedResourceDescription.setOwner(auth.getAuthenticatedUser(req, res).getId());
+                receivedResourceDescription.getImplementationParameters().setOwner(auth.getAuthenticatedUser(req, res).getId());
                 // Test the object for validity.
                 if (!receivedResourceDescription.isValid()) {
                     res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
@@ -116,8 +116,8 @@ public class ResourceDescriptionRESTInterface extends SuperRestInterface {
                     // Make sure only admins or the owner can view the
                     // resource
                     // description, except if it is public
-                    auth.allowAdminOwnerAndPublic(req, res, resourceDescription.getOwner(),
-                            resourceDescription.isPublic());
+                    auth.allowAdminOwnerAndPublic(req, res, resourceDescription.getImplementationParameters().getOwner(),
+                            resourceDescription.getImplementationParameters().isPublic());
                     res.status(SuperRestInterface.HTTP_STATUS_OK);
                     res.type(Messages.getString("ResourceDescriptionRESTInterface.jsonMimeType")); //$NON-NLS-1$
                     final String jsonData = ResourceDescriptionRESTInterface.createReturnString(
@@ -195,8 +195,8 @@ public class ResourceDescriptionRESTInterface extends SuperRestInterface {
                             .getResourceDescriptionById(resourceDescriptionId);
                     // Make sure only admins and the owner can update a
                     // context
-                    auth.allowAdminAndOwner(req, res, resourceDescription.getOwner());
-                    receivedResourceDescription.setOwner(resourceDescription.getOwner()); // Make
+                    auth.allowAdminAndOwner(req, res, resourceDescription.getImplementationParameters().getOwner());
+                    receivedResourceDescription.getImplementationParameters().setOwner(resourceDescription.getImplementationParameters().getOwner()); // Make
                                                                                           // sure
                                                                                           // the
                                                                                           // owner
@@ -241,7 +241,7 @@ public class ResourceDescriptionRESTInterface extends SuperRestInterface {
                                 .getResourceDescriptionById(resourceDescriptionId);
                         // Make sure only admins and the owner can delete a
                         // context
-                        auth.allowAdminAndOwner(req, res, resourceDescription.getOwner());
+                        auth.allowAdminAndOwner(req, res, resourceDescription.getImplementationParameters().getOwner());
                         // Perform delete and return empty string.
                         requestHandler.deleteResourceDescriptionById(resourceDescriptionId);
                         res.status(SuperRestInterface.HTTP_STATUS_NO_CONTENT);

@@ -13,7 +13,6 @@ import org.bson.Document;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.openape.api.databaseObjectBase.DatabaseObject;
-import org.openape.api.databaseObjectBase.Resource;
 import org.openape.api.resourceDescription.ResourceDescription;
 import org.openape.api.user.User;
 import org.openape.server.database.mongoDB.DatabaseConnection;

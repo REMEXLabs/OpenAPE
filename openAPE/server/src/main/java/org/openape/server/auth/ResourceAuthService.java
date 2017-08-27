@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.bson.Document;
-import org.openape.api.databaseObjectBase.Resource;
+import org.openape.api.databaseObjectBase.ImplementationParameters;
 import org.openape.api.user.User;
 import org.openape.server.api.group.Group;
 import org.openape.server.database.mongoDB.DatabaseConnection;
@@ -65,7 +65,7 @@ public class ResourceAuthService extends AuthService {
     // *********************************************************************************************************************************************
     // *********************************************************************************************************************************************
 
-    private void allow(final Request request, final Response response, final Resource resource,
+    private void allow(final Request request, final Response response, final ImplementationParameters resource,
             final String right) throws UnauthorizedException {
         final User user = this.getAuthenticatedUser(request, response);
         if (user.getRoles().contains(ResourceAuthService.ADMIN_ROLE)) {
@@ -78,17 +78,17 @@ public class ResourceAuthService extends AuthService {
     }
 
     public void allowDeleting(final Request request, final Response response,
-            final Resource resource) throws UnauthorizedException {
+            final ImplementationParameters resource) throws UnauthorizedException {
         this.allow(request, response, resource, "delete");
     }
 
-    public void allowReading(final Request request, final Response response, final Resource resource)
+    public void allowReading(final Request request, final Response response, final ImplementationParameters resource)
             throws UnauthorizedException {
         this.allow(request, response, resource, "read");
     }
 
     public void allowRightsChanging(final Request request, final Response response,
-            final Resource resource) throws UnauthorizedException {
+            final ImplementationParameters resource) throws UnauthorizedException {
         this.allow(request, response, resource, "chnageRights");
     }
 
@@ -105,7 +105,7 @@ public class ResourceAuthService extends AuthService {
     // *********************************************************************************************************************************************
 
     public void allowUpdating(final Request request, final Response response,
-            final Resource resource) throws UnauthorizedException {
+            final ImplementationParameters resource) throws UnauthorizedException {
         this.allow(request, response, resource, "update");
     }
 

@@ -132,7 +132,7 @@ public class UserContextRESTInterface extends SuperRestInterface {
                         SuperRestInterface.logger.debug("lusm: requesting user");
                         final String id = auth.getAuthenticatedUser(req, res).getId();
                         SuperRestInterface.logger.info("id: " + id);
-                        receivedUserContext.setOwner(auth.getAuthenticatedUser(req, res).getId());
+                        receivedUserContext.getImplementationParameters().setOwner(auth.getAuthenticatedUser(req, res).getId());
                         SuperRestInterface.logger.debug("Lusm: success");
                         // Test the object for validity.
                         if (!receivedUserContext.isValid()) {
@@ -171,8 +171,8 @@ public class UserContextRESTInterface extends SuperRestInterface {
                                 .getUserContextById(userContextId);
                         // Make sure only admins or the owner can view the
                         // context, except if it is public
-                        auth.allowAdminOwnerAndPublic(req, res, userContext.getOwner(),
-                                userContext.isPublic());
+                        auth.allowAdminOwnerAndPublic(req, res, userContext.getImplementationParameters().getOwner(),
+                                userContext.getImplementationParameters().isPublic());
                         res.status(SuperRestInterface.HTTP_STATUS_OK);
                         res.type(Messages.getString("UserContextRESTInterface.JsonMimeType")); //$NON-NLS-1$
                         final String jsonData = UserContextRESTInterface.createReturnString(req,
@@ -209,8 +209,8 @@ public class UserContextRESTInterface extends SuperRestInterface {
                             .getUserContextById(userContextId);
                     // Make sure only admins and the owner can update a
                     // context
-                    auth.allowAdminAndOwner(req, res, userContext.getOwner());
-                    receivedUserContext.setOwner(userContext.getOwner()); // Make
+                    auth.allowAdminAndOwner(req, res, userContext.getImplementationParameters().getOwner());
+                    receivedUserContext.getImplementationParameters().setOwner(userContext.getImplementationParameters().getOwner()); // Make
                                                                           // sure
                                                                           // the
                                                                           // owner
@@ -252,7 +252,7 @@ public class UserContextRESTInterface extends SuperRestInterface {
                                 .getUserContextById(userContextId);
                         // Make sure only admins and the owner can delete a
                         // context
-                        auth.allowAdminAndOwner(req, res, userContext.getOwner());
+                        auth.allowAdminAndOwner(req, res, userContext.getImplementationParameters().getOwner());
                         // Perform delete and return empty string
                         requestHandler.deleteUserContextById(userContextId);
                         res.status(SuperRestInterface.HTTP_STATUS_NO_CONTENT);

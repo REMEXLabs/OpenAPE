@@ -74,7 +74,7 @@ public class EquipmentContextRESTInterface extends SuperRestInterface {
                                 .createRequestObejct(req);
                         // Make sure to set the id of the authenticated user as
                         // the ownerId
-                        receivedEquipmentContext.setOwner(auth.getAuthenticatedUser(req, res)
+                        receivedEquipmentContext.getImplementationParameters().setOwner(auth.getAuthenticatedUser(req, res)
                                 .getId());
                         // Test the object for validity.
                         if (!receivedEquipmentContext.isValid()) {
@@ -113,8 +113,8 @@ public class EquipmentContextRESTInterface extends SuperRestInterface {
                                 .getEquipmentContextById(equipmentContextId);
                         // Make sure only admins or the owner can view the
                         // context, except if it is public
-                        auth.allowAdminOwnerAndPublic(req, res, equipmentContext.getOwner(),
-                                equipmentContext.isPublic());
+                        auth.allowAdminOwnerAndPublic(req, res, equipmentContext.getImplementationParameters().getOwner(),
+                                equipmentContext.getImplementationParameters().isPublic());
                         res.status(SuperRestInterface.HTTP_STATUS_OK);
                         res.type(Messages.getString("EquipmentContextRESTInterface.JsonMimeType")); //$NON-NLS-1$
                         final String jsonData = EquipmentContextRESTInterface.createReturnString(
@@ -152,8 +152,8 @@ public class EquipmentContextRESTInterface extends SuperRestInterface {
                             .getEquipmentContextById(equipmentContextId);
                     // Make sure only admins and the owner can update a
                     // context
-                    auth.allowAdminAndOwner(req, res, equipmentContext.getOwner());
-                    receivedEquipmentContext.setOwner(equipmentContext.getOwner()); // Make
+                    auth.allowAdminAndOwner(req, res, equipmentContext.getImplementationParameters().getOwner());
+                    receivedEquipmentContext.getImplementationParameters().setOwner(equipmentContext.getImplementationParameters().getOwner()); // Make
                                                                                     // sure
                                                                                     // the
                                                                                     // owner
@@ -196,7 +196,7 @@ public class EquipmentContextRESTInterface extends SuperRestInterface {
                                 .getEquipmentContextById(equipmentContextId);
                         // Make sure only admins and the owner can delete a
                         // context
-                        auth.allowAdminAndOwner(req, res, equipmentContext.getOwner());
+                        auth.allowAdminAndOwner(req, res, equipmentContext.getImplementationParameters().getOwner());
                         // if it is successful return empty string.
                         requestHandler.deleteEquipmentContextById(equipmentContextId);
                         res.status(SuperRestInterface.HTTP_STATUS_NO_CONTENT);

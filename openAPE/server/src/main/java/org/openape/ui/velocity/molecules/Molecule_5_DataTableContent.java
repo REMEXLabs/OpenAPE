@@ -7,7 +7,6 @@ import java.util.List;
 import javax.rmi.PortableRemoteObject;
 
 import org.openape.api.databaseObjectBase.Property;
-import org.openape.api.databaseObjectBase.Resource;
 import org.openape.api.resourceDescription.ResourceDescription;
 import org.openape.api.user.User;
 import org.openape.server.api.group.Group;
@@ -292,7 +291,7 @@ public class Molecule_5_DataTableContent {
 			 String format = "";
 			 String title = "";		
 			 String modified = "";
-			 String userId = resourseDescription.getOwner();
+			 String userId = resourseDescription.getImplementationParameters().getOwner();
 			 String resourceId = "";
 			 
 	         User user  = (User) databaseConnection

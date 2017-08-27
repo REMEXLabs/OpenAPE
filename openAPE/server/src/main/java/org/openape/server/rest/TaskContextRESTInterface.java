@@ -73,7 +73,7 @@ public class TaskContextRESTInterface extends SuperRestInterface {
                                 .createRequestObejct(req);
                         // Make sure to set the id of the authenticated user as
                         // the ownerId
-                        receivedTaskContext.setOwner(auth.getAuthenticatedUser(req, res).getId());
+                        receivedTaskContext.getImplementationParameters().setOwner(auth.getAuthenticatedUser(req, res).getId());
                         // Test the object for validity.
                         if (!receivedTaskContext.isValid()) {
                             res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
@@ -110,8 +110,8 @@ public class TaskContextRESTInterface extends SuperRestInterface {
                                 .getTaskContextById(taskContextId);
                         // Make sure only admins or the owner can view the
                         // context, except if it is public
-                        auth.allowAdminOwnerAndPublic(req, res, taskContext.getOwner(),
-                                taskContext.isPublic());
+                        auth.allowAdminOwnerAndPublic(req, res, taskContext.getImplementationParameters().getOwner(),
+                                taskContext.getImplementationParameters().isPublic());
                         res.status(SuperRestInterface.HTTP_STATUS_OK);
                         res.type(Messages.getString("TaskContextRESTInterface.JsonMimeType")); //$NON-NLS-1$
                         final String jsonData = TaskContextRESTInterface.createReturnString(req,
@@ -149,8 +149,8 @@ public class TaskContextRESTInterface extends SuperRestInterface {
                             .getTaskContextById(taskContextId);
                     // Make sure only admins and the owner can update a
                     // context
-                    auth.allowAdminAndOwner(req, res, taskContext.getOwner());
-                    receivedTaskContext.setOwner(taskContext.getOwner()); // Make
+                    auth.allowAdminAndOwner(req, res, taskContext.getImplementationParameters().getOwner());
+                    receivedTaskContext.getImplementationParameters().setOwner(taskContext.getImplementationParameters().getOwner()); // Make
                                                                           // sure
                                                                           // the
                                                                           // owner
@@ -192,7 +192,7 @@ public class TaskContextRESTInterface extends SuperRestInterface {
                                 .getTaskContextById(taskContextId);
                         // Make sure only admins and the owner can delete a
                         // context
-                        auth.allowAdminAndOwner(req, res, taskContext.getOwner());
+                        auth.allowAdminAndOwner(req, res, taskContext.getImplementationParameters().getOwner());
                         // if it is successful return empty string.
                         requestHandler.deleteTaskContextById(taskContextId);
                         res.status(SuperRestInterface.HTTP_STATUS_NO_CONTENT);
