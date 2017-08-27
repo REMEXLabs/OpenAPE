@@ -188,8 +188,8 @@ public class UserContextRequestHandler {
         // is thrown. IO exceptions are thrown through.
         boolean success;
         try {
-            success = databaseConnection.updateDatabaseObject(UserContextRequestHandler.COLLECTIONTOUSE,
-                    (DatabaseObject) userContext, id);
+            success = databaseConnection.updateDatabaseObject(
+                    UserContextRequestHandler.COLLECTIONTOUSE, (DatabaseObject) userContext, id);
         } catch (final ClassCastException e) {
             throw new IllegalArgumentException(e.getMessage());
         }

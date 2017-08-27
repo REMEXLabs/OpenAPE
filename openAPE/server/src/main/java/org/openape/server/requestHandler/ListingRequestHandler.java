@@ -73,7 +73,8 @@ public class ListingRequestHandler {
         // get database connection.
         final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
 
-        final boolean success = databaseConnection.deleteDatabaseObject(ListingRequestHandler.COLLECTIONTOUSE, id);
+        final boolean success = databaseConnection.deleteDatabaseObject(
+                ListingRequestHandler.COLLECTIONTOUSE, id);
         if (!success) {
             throw new IllegalArgumentException(
                     Messages.getString("ListingRequestHandler.NoObjectWithThatIDErrorMsg")); //$NON-NLS-1$

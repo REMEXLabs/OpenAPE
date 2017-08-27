@@ -39,7 +39,8 @@ public class EnvironmentContextRequestHandler {
         // argument exceptions. IO exceptions will just be thrown through.
         String id = null;
         try {
-            id = databaseConnection.storeDatabaseObject(EnvironmentContextRequestHandler.COLLECTIONTOUSE,
+            id = databaseConnection.storeDatabaseObject(
+                    EnvironmentContextRequestHandler.COLLECTIONTOUSE,
                     (DatabaseObject) environmentContext);
         } catch (final ClassCastException e) {
             throw new IllegalArgumentException(e.getMessage());

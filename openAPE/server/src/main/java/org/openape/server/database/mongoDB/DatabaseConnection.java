@@ -275,8 +275,6 @@ public class DatabaseConnection implements ServerMonitorListener {
         return databaseObject;
     }
 
-
-
     /**
      * Delete a database object, either a context or a resource, from the
      * database. Choose the object via id and the collection via the collection
@@ -385,7 +383,7 @@ public class DatabaseConnection implements ServerMonitorListener {
             return null; // Should never occur.
         }
     }
-    
+
     /**
      * Request a database object, either a context or a resource, from the
      * database. Choose the object via id and the collection via the collection
@@ -519,7 +517,7 @@ public class DatabaseConnection implements ServerMonitorListener {
         }
 
     }
-    
+
     /**
      * Replaces special chars '.' and '$' with '#046' and '#036".
      *

@@ -37,11 +37,11 @@ public class TestUserContext {
 
     @Test
     public void testXmlTypeAdding() {
-        Scanner scanner = new Scanner(getClass().getResourceAsStream("sample.xml"));
+        final Scanner scanner = new Scanner(this.getClass().getResourceAsStream("sample.xml"));
         String s = new String();
-        while(scanner.hasNextLine()){
-                s = s + scanner.nextLine();
-         }
+        while (scanner.hasNextLine()) {
+            s = s + scanner.nextLine();
+        }
         scanner.close();
         UserContext.getObjectFromXml(s);
     }

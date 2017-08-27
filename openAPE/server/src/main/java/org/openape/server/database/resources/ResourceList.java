@@ -121,14 +121,16 @@ public class ResourceList {
         final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
         String id = null;
         try {
-            id = databaseConnection.storeDatabaseObject(MongoCollectionTypes.RESOURCEOBJECTS, resourceObject);
+            id = databaseConnection.storeDatabaseObject(MongoCollectionTypes.RESOURCEOBJECTS,
+                    resourceObject);
         } catch (final ClassCastException e) {
             throw new IOException(e.getMessage());
         }
         // Add id to resource object and store again.
         resourceObject.setId(id);
         try {
-            databaseConnection.updateDatabaseObject(MongoCollectionTypes.RESOURCEOBJECTS, resourceObject, id);
+            databaseConnection.updateDatabaseObject(MongoCollectionTypes.RESOURCEOBJECTS,
+                    resourceObject, id);
         } catch (final ClassCastException e) {
             throw new IOException(e.getMessage());
         }

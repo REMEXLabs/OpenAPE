@@ -266,7 +266,8 @@ public class AdminSectionRequestHandler {
         final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
 
         // Get the requested data.
-        databaseConnection.deleteDatabaseObject(AdminSectionRequestHandler.COLLECTIONTOUSE_USERS, id);
+        databaseConnection.deleteDatabaseObject(AdminSectionRequestHandler.COLLECTIONTOUSE_USERS,
+                id);
     }
 
     public UpdateResult updateUser(final String id, final String indexName, final Object indexValue)

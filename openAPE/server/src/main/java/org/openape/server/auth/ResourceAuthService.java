@@ -65,8 +65,9 @@ public class ResourceAuthService extends AuthService {
     // *********************************************************************************************************************************************
     // *********************************************************************************************************************************************
 
-    private void allow(final Request request, final Response response, final ImplementationParameters resource,
-            final String right) throws UnauthorizedException {
+    private void allow(final Request request, final Response response,
+            final ImplementationParameters resource, final String right)
+            throws UnauthorizedException {
         final User user = this.getAuthenticatedUser(request, response);
         if (user.getRoles().contains(ResourceAuthService.ADMIN_ROLE)) {
             return;
@@ -82,8 +83,8 @@ public class ResourceAuthService extends AuthService {
         this.allow(request, response, resource, "delete");
     }
 
-    public void allowReading(final Request request, final Response response, final ImplementationParameters resource)
-            throws UnauthorizedException {
+    public void allowReading(final Request request, final Response response,
+            final ImplementationParameters resource) throws UnauthorizedException {
         this.allow(request, response, resource, "read");
     }
 

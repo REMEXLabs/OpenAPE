@@ -135,7 +135,7 @@ public class SuperRestInterface {
          * response.header("Access-Control-Allow-Headers", "*");
          * response.header("Access-Control-Max-Age", "1728000");
          * response.header("Cache-Control", "no-cache");
-         *
+         * 
          * });
          */
         Spark.get("api", (request, response) -> new API());
@@ -292,12 +292,12 @@ public class SuperRestInterface {
 
         // Resource endpoints
         try {
-			GroupManagementRestInterface.setupGroupManagementRestInterface(
-			        new GroupManagementHandler(), authService);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+            GroupManagementRestInterface.setupGroupManagementRestInterface(
+                    new GroupManagementHandler(), authService);
+        } catch (final IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
         // REST-Interfaces defined in ISO/IEC 24752-8
         EnvironmentContextRESTInterface.setupEnvironmentContextRESTInterface(
                 new EnvironmentContextRequestHandler(), authService);

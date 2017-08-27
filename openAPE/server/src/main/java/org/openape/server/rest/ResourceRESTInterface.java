@@ -71,13 +71,13 @@ public class ResourceRESTInterface extends SuperRestInterface {
 
     public static void setupResourceRESTInterface(final ResourceRequestHandler requestHandler,
             final AuthService auth) {
-    	
-    	Spark.before(Messages.getString("ResourceRESTInterface.ResourcesURLWithID"),
+
+        Spark.before(Messages.getString("ResourceRESTInterface.ResourcesURLWithID"),
                 auth.authorize("user"));
-    	
-    	Spark.before(Messages.getString("ResourceRESTInterface.ResourcesURLWithoutID"),
+
+        Spark.before(Messages.getString("ResourceRESTInterface.ResourcesURLWithoutID"),
                 auth.authorize("user"));
-    	
+
         /**
          * Request 7.6.2 create resource.
          */

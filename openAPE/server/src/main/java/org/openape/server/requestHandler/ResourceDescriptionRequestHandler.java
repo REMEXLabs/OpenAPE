@@ -58,8 +58,8 @@ public class ResourceDescriptionRequestHandler {
         // argument exceptions. IO exceptions will just be thrown through.
         String id = null;
         try {
-            id = databaseConnection.storeDatabaseObject(ResourceDescriptionRequestHandler.COLLECTIONTOUSE,
-                    resourceDescription);
+            id = databaseConnection.storeDatabaseObject(
+                    ResourceDescriptionRequestHandler.COLLECTIONTOUSE, resourceDescription);
         } catch (final ClassCastException e) {
             throw new IllegalArgumentException(e.getMessage());
         }
@@ -233,7 +233,8 @@ public class ResourceDescriptionRequestHandler {
             throws IllegalArgumentException, IOException {
         final String resourceID = this.getResourceID(resourceDescription);
         final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
-        if (null == databaseConnection.getDatabaseObjectById(MongoCollectionTypes.RESOURCEOBJECTS, resourceID)) {
+        if (null == databaseConnection.getDatabaseObjectById(MongoCollectionTypes.RESOURCEOBJECTS,
+                resourceID)) {
             throw new IllegalArgumentException(
                     ResourceDescriptionRequestHandler.NoResoruceWithThatID + resourceID);
         }

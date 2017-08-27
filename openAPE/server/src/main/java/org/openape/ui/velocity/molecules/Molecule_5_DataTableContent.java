@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.rmi.PortableRemoteObject;
-
 import org.openape.api.databaseObjectBase.Property;
 import org.openape.api.resourceDescription.ResourceDescription;
 import org.openape.api.user.User;
@@ -15,62 +13,6 @@ import org.openape.ui.velocity.requestHandler.AdminSectionRequestHandler;
 
 public class Molecule_5_DataTableContent {
 
-    public String generateGroupUserContent(final ArrayList<User> listUsers) {
-
-        String tableContent = "";
-
-        for (final User users : listUsers) {
-           
-            String username = "";
-           
-            if (users.getUsername().contains("#046")) {
-                username = users.getUsername().replace("#046", ".");
-            } else {
-                username = users.getUsername();
-            }
-
-            tableContent += "<tr>" + "<td id='tdUserName_"
-                    + users.getId()
-                    + "'>"
-                    + username
-                    + "</td>"
-                    + "<td>"
-                    + "<button id='addUserToGroup_"
-                    + users.getId()
-                    + "' class='btn btn-md btn-default' onClick='addUserToGroup(this)' ><div class='glyphicon glyphicon-edit' ></div> Add </button></tr>";
-        }
-
-        return tableContent;
-    }
-    
-    public String generateRemoveGroupUserContent(final ArrayList<User> listUsers) {
-
-        String tableContent = "";
-
-        for (final User users : listUsers) {
-           
-            String username = "";
-           
-            if (users.getUsername().contains("#046")) {
-                username = users.getUsername().replace("#046", ".");
-            } else {
-                username = users.getUsername();
-            }
-
-            tableContent += "<tr>" + "<td id='tdUserName_"
-                    + users.getId()
-                    + "'>"
-                    + username
-                    + "</td>"
-                    + "<td>"
-                    + "<button id='addUserToGroup_"
-                    + users.getId()
-                    + "' class='btn btn-md btn-default' onClick='addUserToGroup(this)' ><div class='glyphicon glyphicon-trash' ></div> Remove </button></tr>";
-        }
-
-        return tableContent;
-    }
-    
     public String generateAdministrationUserContent(final ArrayList<User> listUsers) {
 
         String tableContent = "";
@@ -133,7 +75,8 @@ public class Molecule_5_DataTableContent {
         String buttons = "";
 
         for (final String[] environmentContext : listEnvironmentContexts) {
-        	//if the user is on the public context site than the view and copy to clipboard buttons will be enabled
+            // if the user is on the public context site than the view and copy
+            // to clipboard buttons will be enabled
             if (destination == "context") {
                 buttons = "<button id='"
                         + environmentContext[0]
@@ -143,8 +86,9 @@ public class Molecule_5_DataTableContent {
                         + "' class='btn btn-md btn-default' data-clipboard-text='http://gpi.eu/"
                         + environmentContext[0]
                         + "' onClick='copyEnvironmentContextLink(this)'><div class='glyphicon glyphicon-trash'></div> Copy link to Clipboard</button> ";
-            } 
-          //if the user is on the MyContext site oder in the Administration section than the edit, delete and copy buttons will be enabled
+            }
+            // if the user is on the MyContext site oder in the Administration
+            // section than the edit, delete and copy buttons will be enabled
             else {
                 buttons = "<button id='"
                         + environmentContext[0]
@@ -201,6 +145,146 @@ public class Molecule_5_DataTableContent {
                     + "'>" + equipmentkContext[1] + "</td>" + "<td>" + equipmentkContext[3]
                     + "</td>" + "<td>" + equipmentkContext[2] + "</td>" + "<td>" + buttons
                     + "</td></tr>";
+        }
+
+        return tableContent;
+    }
+
+    public String generateGroupContent(final List<Group> listGroup) throws IOException {
+        // TODO Auto-generated method stub
+        final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
+
+        String tableContent = "";
+        for (final Group group : listGroup) {
+            final String buttons = "<button id='"
+                    + group.getId()
+                    + "' class='btn btn-md btn-default' onClick='editGroup(this)' ><div class='glyphicon glyphicon-edit' ></div> Edit </button>"
+                    + "<button id='"
+                    + group.getId()
+                    + "' class='btn btn-md btn-default' onClick='deleteGroup(this)'><div class='glyphicon glyphicon-trash'></div> Delete </button> ";
+
+            final String memberButtons = "<button id='"
+                    + group.getId()
+                    + "' onClick='addGroupMember(this)' type='button' class='btn btn-default' data-toggle='modal' ><div class='glyphicon glyphicon-plus'></div> Add </button>"
+                    + "<button id='"
+                    + group.getId()
+                    + "' class='btn btn-md btn-default' onClick='deleteGroupMember(this)'><div class='glyphicon glyphicon-trash'></div> Delete </button> ";
+
+            tableContent += "" + "<tr>" + "<td>" + group.getId() + "</td>" + "<td>"
+                    + group.getName() + "</td>" + "<td>" + group.getDescription() + "</td>"
+                    + "<td>" + group.getMembers().size() + "</td>" + "<td>" + group.isOpenAccess()
+                    + "</td>" + "<td>" + buttons + "</td>" + "<td>" + memberButtons + "</td>"
+                    + "</tr>";
+        }
+
+        return tableContent;
+    }
+
+    public String generateGroupUserContent(final ArrayList<User> listUsers) {
+
+        String tableContent = "";
+
+        for (final User users : listUsers) {
+
+            String username = "";
+
+            if (users.getUsername().contains("#046")) {
+                username = users.getUsername().replace("#046", ".");
+            } else {
+                username = users.getUsername();
+            }
+
+            tableContent += "<tr>"
+                    + "<td id='tdUserName_"
+                    + users.getId()
+                    + "'>"
+                    + username
+                    + "</td>"
+                    + "<td>"
+                    + "<button id='addUserToGroup_"
+                    + users.getId()
+                    + "' class='btn btn-md btn-default' onClick='addUserToGroup(this)' ><div class='glyphicon glyphicon-edit' ></div> Add </button></tr>";
+        }
+
+        return tableContent;
+    }
+
+    public String generateRemoveGroupUserContent(final ArrayList<User> listUsers) {
+
+        String tableContent = "";
+
+        for (final User users : listUsers) {
+
+            String username = "";
+
+            if (users.getUsername().contains("#046")) {
+                username = users.getUsername().replace("#046", ".");
+            } else {
+                username = users.getUsername();
+            }
+
+            tableContent += "<tr>"
+                    + "<td id='tdUserName_"
+                    + users.getId()
+                    + "'>"
+                    + username
+                    + "</td>"
+                    + "<td>"
+                    + "<button id='addUserToGroup_"
+                    + users.getId()
+                    + "' class='btn btn-md btn-default' onClick='addUserToGroup(this)' ><div class='glyphicon glyphicon-trash' ></div> Remove </button></tr>";
+        }
+
+        return tableContent;
+    }
+
+    public String generateResourceContent(final List<ResourceDescription> listResourceDescriptions)
+            throws IOException {
+        // TODO Auto-generated method stub
+        final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
+
+        String tableContent = "";
+        for (final ResourceDescription resourseDescription : listResourceDescriptions) {
+            String format = "";
+            String title = "";
+            String modified = "";
+            final String userId = resourseDescription.getImplementationParameters().getOwner();
+            String resourceId = "";
+
+            new AdminSectionRequestHandler();
+            final User user = (User) databaseConnection.getDatabaseObjectById(
+                    AdminSectionRequestHandler.COLLECTIONTOUSE_USERS, userId);
+
+            final String userName = user.getUsername();
+
+            for (final Property property : resourseDescription.getPropertys()) {
+                if (property.getName().contains("format")) {
+                    format = property.getValue();
+                } else if (property.getName().contains("title")) {
+                    title = property.getValue();
+                } else if (property.getName().contains("modified")) {
+                    modified = property.getValue();
+                } else if (property.getName().contains("resource-uri")) {
+                    resourceId = property.getValue().substring(
+                            property.getValue().indexOf("resources/") + 10);
+                }
+            }
+
+            final String buttons = "<button id='"
+                    + resourseDescription.getId()
+                    + "' class='btn btn-md btn-default' onClick='editResource(this)' ><div class='glyphicon glyphicon-edit' ></div> Edit </button>"
+                    + "<button id='delete_"
+                    + resourseDescription.getId()
+                    + "' class='btn btn-md btn-default' data-resourceDescriptionId='"
+                    + resourseDescription.getId()
+                    + "' data-resourceId='"
+                    + resourceId
+                    + "' onClick='deleteResource(this)'><div class='glyphicon glyphicon-trash'></div> Delete </button> ";
+
+            tableContent += "" + "<tr>" + "<td>" + title + "</td>" + "<td>"
+                    + resourseDescription.getId() + "</td>" + "<td></td>" + "<td>" + modified
+                    + "</td>" + "<td>" + format + "</td>" + "<td>" + userName + "</td>" + "<td>"
+                    + buttons + "</td>" + "</tr>";
         }
 
         return tableContent;
@@ -280,80 +364,4 @@ public class Molecule_5_DataTableContent {
 
         return tableContent;
     }
-    
-    
-    public String generateResourceContent(List<ResourceDescription> listResourceDescriptions) throws IOException {
-		// TODO Auto-generated method stub
-    	 final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
-		
-		 String tableContent = "";
-		 for(ResourceDescription resourseDescription : listResourceDescriptions){
-			 String format = "";
-			 String title = "";		
-			 String modified = "";
-			 String userId = resourseDescription.getImplementationParameters().getOwner();
-			 String resourceId = "";
-			 
-	         User user  = (User) databaseConnection
-	        		 .getDatabaseObjectById(new AdminSectionRequestHandler()
-	        		 .COLLECTIONTOUSE_USERS, userId);
-	            
-	         String userName = user.getUsername();
-			 
-			 for(Property property : resourseDescription.getPropertys()){
-				 if(property.getName().contains("format")){
-					 format= property.getValue();
-				 } else if(property.getName().contains("title")){
-					 title = property.getValue();
-				 } else if(property.getName().contains("modified")){
-					 modified = property.getValue();
-				 } else if(property.getName().contains("resource-uri")){
-					 resourceId = property.getValue().substring(property.getValue().indexOf("resources/")+10);
-				 }
-			 }
-			 
-			 String buttons = "<button id='"+resourseDescription.getId()+"' class='btn btn-md btn-default' onClick='editResource(this)' ><div class='glyphicon glyphicon-edit' ></div> Edit </button>"
-	                 + "<button id='delete_"+resourseDescription.getId()+"' class='btn btn-md btn-default' data-resourceDescriptionId='"+resourseDescription.getId()+"' data-resourceId='"+resourceId+"' onClick='deleteResource(this)'><div class='glyphicon glyphicon-trash'></div> Delete </button> ";
-
-			  tableContent += ""
-				 		+ "<tr>"
-				 		+ "<td>"+title+"</td>"
-				 		+ "<td>"+resourseDescription.getId()+"</td>"
-				 		+ "<td></td>"
-				 		+ "<td>"+modified+"</td>"
-				 		+ "<td>"+format+"</td>"
-				 		+ "<td>"+userName+"</td>"
-				 		+ "<td>"+buttons+"</td>"
-				 		+ "</tr>";
-		 }
-		 
-	     return tableContent;
-	}
-    
-    public String generateGroupContent(List<Group> listGroup) throws IOException {
-		// TODO Auto-generated method stub
-    	 final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
-		
-		 String tableContent = "";
-		 for(Group group : listGroup){
-			 String buttons = "<button id='"+group.getId()+"' class='btn btn-md btn-default' onClick='editGroup(this)' ><div class='glyphicon glyphicon-edit' ></div> Edit </button>"
-	                 + "<button id='"+group.getId()+"' class='btn btn-md btn-default' onClick='deleteGroup(this)'><div class='glyphicon glyphicon-trash'></div> Delete </button> ";
-			 
-			 String memberButtons = "<button id='"+group.getId()+"' onClick='addGroupMember(this)' type='button' class='btn btn-default' data-toggle='modal' ><div class='glyphicon glyphicon-plus'></div> Add </button>"
-	                 + "<button id='"+group.getId()+"' class='btn btn-md btn-default' onClick='deleteGroupMember(this)'><div class='glyphicon glyphicon-trash'></div> Delete </button> ";
-
-			  tableContent += ""
-				 		+ "<tr>"
-				 		+ "<td>"+group.getId()+"</td>"
-				 		+ "<td>"+group.getName()+"</td>"
-				 		+ "<td>"+group.getDescription()+"</td>"
-				 		+ "<td>"+group.getMembers().size()+"</td>"
-				 		+ "<td>"+group.isOpenAccess()+"</td>"
-				 		+ "<td>"+buttons+"</td>"
-				 		+ "<td>"+memberButtons+"</td>"
-				 		+ "</tr>";
-		 }
-		 
-	     return tableContent;
-	}
 }

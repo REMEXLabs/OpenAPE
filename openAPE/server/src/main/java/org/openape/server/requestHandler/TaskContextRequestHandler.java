@@ -139,8 +139,8 @@ public class TaskContextRequestHandler {
         // is thrown. IO exceptions are thrown through.
         boolean success;
         try {
-            success = databaseConnection.updateDatabaseObject(TaskContextRequestHandler.COLLECTIONTOUSE,
-                    (DatabaseObject) taskContext, id);
+            success = databaseConnection.updateDatabaseObject(
+                    TaskContextRequestHandler.COLLECTIONTOUSE, (DatabaseObject) taskContext, id);
         } catch (final ClassCastException e) {
             throw new IllegalArgumentException(e.getMessage());
         }

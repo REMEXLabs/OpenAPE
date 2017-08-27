@@ -77,7 +77,8 @@ public class Group extends DatabaseObject {
      *            list with the members of this the group. If the group has no
      *            member(s) it can be empty but not null.
      */
-    public Group(final String name, final String description, final List<GroupMember> members, final boolean openAccess) {
+    public Group(final String name, final String description, final List<GroupMember> members,
+            final boolean openAccess) {
         this(null, name, description, members, openAccess);
     }
 
