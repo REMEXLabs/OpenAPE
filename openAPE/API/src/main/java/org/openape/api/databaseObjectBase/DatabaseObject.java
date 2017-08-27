@@ -18,6 +18,8 @@ package org.openape.api.databaseObjectBase;
 
 import java.io.Serializable;
 
+import javax.xml.bind.annotation.XmlTransient;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
@@ -31,7 +33,6 @@ public abstract class DatabaseObject implements Serializable {
      * The id (field "_id" in MongoDB) of the object, which the database
      * assigned to it.
      */
-    @JsonIgnore
     private String id;
 
     /**
@@ -40,6 +41,8 @@ public abstract class DatabaseObject implements Serializable {
      * @return id of the object or null if it is not already stored in the
      *         database.
      */
+    @XmlTransient
+    @JsonIgnore
     public String getId() {
         return this.id;
     }
@@ -50,6 +53,7 @@ public abstract class DatabaseObject implements Serializable {
      *
      * @return true if valid.
      */
+    @XmlTransient
     @JsonIgnore
     public boolean isValid() {
         return false;
