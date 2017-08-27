@@ -19,6 +19,10 @@ public class GroupRequest {
         return this.groupname;
     }
 
+    public boolean isOpenAccess() {
+        return this.openAccess;
+    }
+
     public void setDescription(final String description) {
         this.description = description;
     }
@@ -31,11 +35,7 @@ public class GroupRequest {
         this.groupname = groupname;
     }
 
-	public boolean isOpenAccess() {
-		return openAccess;
-	}
-
-	public void setOpenAccess(boolean openAccess) {
-		this.openAccess = openAccess;
-	}
+    public void setOpenAccess(final boolean openAccess) {
+        this.openAccess = openAccess;
+    }
 }

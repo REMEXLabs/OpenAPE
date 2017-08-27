@@ -8,7 +8,7 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 
 import org.openape.api.Messages;
-import org.openape.api.databaseObjectBase.Resource;
+import org.openape.api.databaseObjectBase.DatabaseObject;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -17,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  * owner id. It is stored into the database, when the corresponding resource is
  * stored onto the file system.
  */
-public class ResourceObject extends Resource {
+public class ResourceObject extends DatabaseObject {
     private static final long serialVersionUID = -5926306380613419041L;
 
     private String id = null;

@@ -35,6 +35,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 
+import org.openape.api.databaseObjectBase.ImplementationParameters;
 import org.openape.api.databaseObjectBase.Property;
 import org.openape.api.databaseObjectBase.Resource;
 import org.w3c.dom.Document;
@@ -60,7 +61,7 @@ public class ResourceDescription extends Resource {
     public static ResourceDescription getObjectFromXml(String xml) throws IllegalArgumentException {
         ResourceDescription resourceDescription = null;
         try {
-            xml = Resource.addPublicAttributeIfMissing(xml);
+            xml = ImplementationParameters.addPublicAttributeIfMissing(xml);
             final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             factory.setValidating(false); // we will use schema instead of DTD
             factory.setNamespaceAware(true);

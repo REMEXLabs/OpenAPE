@@ -35,8 +35,9 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 
+import org.openape.api.databaseObjectBase.DatabaseObject;
+import org.openape.api.databaseObjectBase.ImplementationParameters;
 import org.openape.api.databaseObjectBase.Property;
-import org.openape.api.databaseObjectBase.Resource;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
@@ -47,7 +48,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  * Environment context object defined in 7.5.1
  */
 @XmlRootElement(name = "environment-context")
-public class EnvironmentContext extends Resource {
+public class EnvironmentContext extends DatabaseObject {
     private static final long serialVersionUID = -1706959529432920842L;
 
     /**
@@ -60,7 +61,7 @@ public class EnvironmentContext extends Resource {
     public static EnvironmentContext getObjectFromXml(String xml) throws IllegalArgumentException {
         EnvironmentContext environmentContext = null;
         try {
-            xml = Resource.addPublicAttributeIfMissing(xml);
+            xml = ImplementationParameters.addPublicAttributeIfMissing(xml);
             final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             factory.setValidating(false); // we will use schema instead of DTD
             factory.setNamespaceAware(true);

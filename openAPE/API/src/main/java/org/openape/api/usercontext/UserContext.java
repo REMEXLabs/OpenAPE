@@ -40,7 +40,8 @@ import javax.xml.transform.stream.StreamResult;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 
-import org.openape.api.databaseObjectBase.Resource;
+import org.openape.api.databaseObjectBase.DatabaseObject;
+import org.openape.api.databaseObjectBase.ImplementationParameters;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -61,7 +62,7 @@ import com.fasterxml.jackson.databind.node.TextNode;
  * User context object defined in 7.2.1
  */
 @XmlRootElement(name = "user-context")
-public class UserContext extends Resource {
+public class UserContext extends DatabaseObject {
     private static final long serialVersionUID = 5891055316807633786L;
 
     /**
@@ -186,7 +187,7 @@ public class UserContext extends Resource {
             // Update xml string.
             xml = writer.toString();
 
-            xml = Resource.addPublicAttributeIfMissing(xml);
+            xml = ImplementationParameters.addPublicAttributeIfMissing(xml);
 
             /*
              * Create user context from xml.
@@ -393,7 +394,7 @@ public class UserContext extends Resource {
 
         if (frontEnd) {
             // remove owner attributes
-            //rootObject.remove("public");
+            // rootObject.remove("public");
             rootObject.remove("owner");
         }
 

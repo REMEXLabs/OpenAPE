@@ -35,8 +35,9 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 
+import org.openape.api.databaseObjectBase.DatabaseObject;
+import org.openape.api.databaseObjectBase.ImplementationParameters;
 import org.openape.api.databaseObjectBase.Property;
-import org.openape.api.databaseObjectBase.Resource;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
@@ -47,7 +48,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  * Task context object defined in 7.3.1
  */
 @XmlRootElement(name = "task-context")
-public class TaskContext extends Resource {
+public class TaskContext extends DatabaseObject {
     private static final long serialVersionUID = 3325722856059287182L;
 
     /**
@@ -59,7 +60,7 @@ public class TaskContext extends Resource {
     public static TaskContext getObjectFromXml(String xml) throws IllegalArgumentException {
         TaskContext taskContext = null;
         try {
-            xml = Resource.addPublicAttributeIfMissing(xml);
+            xml = ImplementationParameters.addPublicAttributeIfMissing(xml);
             final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             factory.setValidating(false); // we will use schema instead of DTD
             factory.setNamespaceAware(true);
