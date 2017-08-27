@@ -35,9 +35,9 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 
+import org.openape.api.databaseObjectBase.DatabaseObject;
 import org.openape.api.databaseObjectBase.ImplementationParameters;
 import org.openape.api.databaseObjectBase.Property;
-import org.openape.api.databaseObjectBase.Resource;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
@@ -48,7 +48,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  * Resource description object defined in 7.7.1
  */
 @XmlRootElement(name = "resource-description")
-public class ResourceDescription extends Resource {
+public class ResourceDescription extends DatabaseObject {
     private static final long serialVersionUID = -3341210067495347309L;
 
     /**
