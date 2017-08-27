@@ -18,6 +18,7 @@ import javax.xml.transform.stream.StreamResult;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
@@ -46,10 +47,19 @@ public class ImplementationParameters {
         final DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
         final DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
         final Document document = documentBuilder.parse(new InputSource(new StringReader(xml)));
-        // set public to false if not set
+        // set implementation-parameters element and public to false if not set
         final Element root = document.getDocumentElement();
-        if (!root.hasAttribute("public")) {
-            root.setAttribute("public", "false");
+        NodeList children = root.getChildNodes();
+        boolean found = false;
+        for (int i = 0; i < children.getLength(); i++) {
+            if(children.item(i).getNodeName().equals("implementation-parameters")){
+                found = true;
+            }
+        }
+        if (!found) {
+            Element implemParams = document.createElement("implementation-parameters");
+            root.appendChild(implemParams);
+            implemParams.setAttribute("public", "false");
         }
         // Create String from document
         final DOMSource domSource = new DOMSource(document);
