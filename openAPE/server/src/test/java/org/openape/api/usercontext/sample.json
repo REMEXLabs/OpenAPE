@@ -1,6 +1,8 @@
 {
-   "owner":"dude",
-   "public":true,
+   "implementation-parameters":{
+      "owner":null,
+      "public":true
+   },
    "default":{
       "name":"Default preferences",
       "preferences":{

@@ -18,7 +18,9 @@ public class TestUserContext {
     @Test
     public void testGetJson() throws IOException {
         final UserContext sample = TestDatabaseConnection.sampleUserContext();
-        Assert.assertTrue(sample.equals(UserContext.getObjectFromJson(sample.getBackEndJson())));
+        String json = sample.getBackEndJson();
+        System.out.println(json);
+        Assert.assertTrue(sample.equals(UserContext.getObjectFromJson(json)));
 
     }
 

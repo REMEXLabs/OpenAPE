@@ -43,6 +43,7 @@ import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Environment context object defined in 7.5.1
@@ -160,6 +161,7 @@ public class EnvironmentContext extends DatabaseObject {
 
     }
 
+    @JsonProperty(value = "implementation-parameters")
     @XmlElement(name = "implementation-parameters")
     public ImplementationParameters getImplementationParameters() {
         return this.implementationParameters;

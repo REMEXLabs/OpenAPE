@@ -12,6 +12,7 @@ import org.openape.api.databaseObjectBase.DatabaseObject;
 import org.openape.api.databaseObjectBase.ImplementationParameters;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Resource object describing resource files. Including the storage path and the
@@ -66,6 +67,7 @@ public class ResourceObject extends DatabaseObject {
         return this.id;
     }
 
+    @JsonProperty(value = "implementation-parameters")
     @XmlElement(name = "implementation-parameters")
     public ImplementationParameters getImplementationParameters() {
         return this.implementationParameters;

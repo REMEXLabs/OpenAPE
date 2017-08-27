@@ -43,6 +43,7 @@ import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Resource description object defined in 7.7.1
@@ -161,6 +162,7 @@ public class ResourceDescription extends DatabaseObject {
 
     }
 
+    @JsonProperty(value = "implementation-parameters")
     @XmlElement(name = "implementation-parameters")
     public ImplementationParameters getImplementationParameters() {
         return this.implementationParameters;

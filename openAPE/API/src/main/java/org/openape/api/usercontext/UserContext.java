@@ -49,6 +49,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -82,20 +83,20 @@ public class UserContext extends DatabaseObject {
             final ObjectNode rootObject = (ObjectNode) rootNode;
 
             // get owner and public if available.
-            final JsonNode owner = rootObject.get("owner");
-            if ((owner != null) && !(owner instanceof NullNode)) {
-                userContext.getImplementationParameters().setOwner(owner.textValue());
-            }
-            final JsonNode publicField = rootObject.get("public");
-            if ((publicField != null) && !(publicField instanceof NullNode)) {
-                userContext.getImplementationParameters().setPublic(publicField.booleanValue());
+            final JsonNode implemParams = rootObject.get("implementation-parameters");
+            if ((implemParams != null) && !(implemParams instanceof NullNode)) {
+                final ObjectNode implemParamsNode = (ObjectNode) implemParams;
+                userContext.getImplementationParameters().setOwner(
+                        implemParamsNode.get("owner").textValue());
+                userContext.getImplementationParameters().setPublic(
+                        implemParamsNode.get("public").booleanValue());
             }
 
             // Iterate over contexts and create corresponding context objects.
             final Iterator<String> contextIterator = rootObject.fieldNames();
             while (contextIterator.hasNext()) {
                 final String contextID = contextIterator.next();
-                if (!contextID.equals("owner") && !contextID.equals("public")) {
+                if (!contextID.equals("implementation-parameters")) {
                     final Context context = new Context();
                     userContext.addContext(context);
                     context.setId(contextID);
@@ -135,6 +136,7 @@ public class UserContext extends DatabaseObject {
                 }
             }
         } catch (final Exception e) {
+            e.printStackTrace();
             throw new IllegalArgumentException(e.getMessage());
         }
         userContext.validate();
@@ -378,6 +380,7 @@ public class UserContext extends DatabaseObject {
     }
 
     @XmlElement(name = "implementation-parameters")
+    @JsonProperty(value = "implementation-parameters")
     public ImplementationParameters getImplementationParameters() {
         return this.implementationParameters;
     }
@@ -401,8 +404,7 @@ public class UserContext extends DatabaseObject {
 
         if (frontEnd) {
             // remove owner attributes
-            // rootObject.remove("public");
-            rootObject.remove("owner");
+            rootObject.remove("implementation-parameters");
         }
 
         // get context list.
