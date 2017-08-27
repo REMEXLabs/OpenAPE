@@ -27,7 +27,7 @@ public class TestUserContext {
         final UserContext sample = TestDatabaseConnection.sampleUserContext();
         try {
             final String xml = sample.getXML();
-            // System.out.println(xml);
+            System.out.println(xml);
             final UserContext userContext = UserContext.getObjectFromXml(xml);
             Assert.assertTrue(userContext.equals(sample));
         } catch (final IOException e) {

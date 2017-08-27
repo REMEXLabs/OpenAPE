@@ -15,7 +15,7 @@
 		<preference key="http://registry.gpii.net/common/magnification"
 			value="2" />
 		<condition type="and">
-			<operand type="ge"
+			<operand xsi:type="condition" type="ge"
 				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 				<operand value="http://registry.gpii.net/common/env/visual.luminance" />
 				<operand value="0" />

@@ -35,7 +35,7 @@ public class TestEquipmentContext {
     public void testGetXML() throws IOException {
         final EquipmentContext equipmentContext = TestEquipmentContext.sampleEquipmentContext();
         final String xml = equipmentContext.getXML();
-        // System.out.println(xml);
+        System.out.println(xml);
         Assert.assertTrue(equipmentContext.equals(EquipmentContext.getObjectFromXml(xml)));
     }
 

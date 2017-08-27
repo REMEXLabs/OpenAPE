@@ -5,6 +5,8 @@
 
   <xs:element name="equipment-context" type="equipmentContext"/>
 
+  <xs:element name="listing" type="listing"/>
+
   <xs:element name="resource-description" type="resourceDescription"/>
 
   <xs:element name="task-context" type="taskContext"/>
@@ -13,19 +15,11 @@
 
   <xs:complexType name="equipmentContext">
     <xs:complexContent>
-      <xs:extension base="resource">
+      <xs:extension base="databaseObject">
         <xs:sequence>
+          <xs:element name="implementation-parameters" type="implementationParameters" minOccurs="0"/>
           <xs:element name="property" type="property" minOccurs="0" maxOccurs="unbounded"/>
         </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-
-  <xs:complexType name="resource">
-    <xs:complexContent>
-      <xs:extension base="databaseObject">
-        <xs:sequence/>
-        <xs:attribute name="public" type="xs:boolean" use="required"/>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
@@ -34,6 +28,11 @@
     <xs:sequence>
       <xs:element name="id" type="xs:string" minOccurs="0"/>
     </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="implementationParameters">
+    <xs:sequence/>
+    <xs:attribute name="public" type="xs:boolean" use="required"/>
   </xs:complexType>
 
   <xs:complexType name="property">
@@ -52,9 +51,10 @@
 
   <xs:complexType name="userContext">
     <xs:complexContent>
-      <xs:extension base="resource">
+      <xs:extension base="databaseObject">
         <xs:sequence>
           <xs:element name="option" type="context" minOccurs="0" maxOccurs="unbounded"/>
+          <xs:element name="implementation-parameters" type="implementationParameters" minOccurs="0"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
@@ -93,8 +93,9 @@
 
   <xs:complexType name="resourceDescription">
     <xs:complexContent>
-      <xs:extension base="resource">
+      <xs:extension base="databaseObject">
         <xs:sequence>
+          <xs:element name="implementation-parameters" type="implementationParameters" minOccurs="0"/>
           <xs:element name="property" type="property" minOccurs="0" maxOccurs="unbounded"/>
         </xs:sequence>
       </xs:extension>
@@ -103,9 +104,24 @@
 
   <xs:complexType name="taskContext">
     <xs:complexContent>
-      <xs:extension base="resource">
+      <xs:extension base="databaseObject">
         <xs:sequence>
+          <xs:element name="implementation-parameters" type="implementationParameters" minOccurs="0"/>
           <xs:element name="property" type="property" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="listing">
+    <xs:complexContent>
+      <xs:extension base="databaseObject">
+        <xs:sequence>
+          <xs:element name="environment-context-uri" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+          <xs:element name="equipment-context-uri" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+          <xs:element ref="resource-description" minOccurs="0"/>
+          <xs:element name="task-context-uri" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+          <xs:element name="user-context-uri" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
@@ -113,8 +129,9 @@
 
   <xs:complexType name="environmentContext">
     <xs:complexContent>
-      <xs:extension base="resource">
+      <xs:extension base="databaseObject">
         <xs:sequence>
+          <xs:element name="implementation-parameters" type="implementationParameters" minOccurs="0"/>
           <xs:element name="property" type="property" minOccurs="0" maxOccurs="unbounded"/>
         </xs:sequence>
       </xs:extension>
