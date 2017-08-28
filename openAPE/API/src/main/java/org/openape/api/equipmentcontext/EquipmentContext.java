@@ -40,11 +40,6 @@ import org.openape.api.databaseObjectBase.DatabaseObject;
 import org.openape.api.databaseObjectBase.Descriptor;
 import org.openape.api.databaseObjectBase.ImplementationParameters;
 import org.openape.api.databaseObjectBase.Property;
-import org.openape.api.usercontext.Condition;
-import org.openape.api.usercontext.Context;
-import org.openape.api.usercontext.Operand;
-import org.openape.api.usercontext.Preference;
-import org.openape.api.usercontext.UserContext;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
@@ -64,6 +59,67 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 @XmlRootElement(name = "equipment-context")
 public class EquipmentContext extends DatabaseObject {
     private static final long serialVersionUID = 4810176872836108065L;
+
+    /**
+     * Generate the user context from the json string used in the front or back
+     * end. Sets public: false and owner: null.
+     *
+     * @return context object.
+     */
+    @JsonIgnore
+    public static EquipmentContext getObjectFromJson(final String json)
+            throws IllegalArgumentException {
+        // Context to build from tree
+        final EquipmentContext context = new EquipmentContext();
+        try {
+            // Get tree from json.
+            final ObjectMapper mapper = new ObjectMapper();
+            final JsonNode rootNode = mapper.readTree(json);
+            final ObjectNode rootObject = (ObjectNode) rootNode;
+
+            // get owner and public if available.
+            final JsonNode implemParams = rootObject.get("implementation-parameters");
+            if ((implemParams != null) && !(implemParams instanceof NullNode)) {
+                final ObjectNode implemParamsNode = (ObjectNode) implemParams;
+                context.getImplementationParameters().setOwner(
+                        implemParamsNode.get("owner").textValue());
+                context.getImplementationParameters().setPublic(
+                        implemParamsNode.get("public").booleanValue());
+            }
+
+            // get root node
+            final JsonNode contextNode = rootObject.get("equipment-context");
+            final ArrayNode contextArray = (ArrayNode) contextNode;
+            final Iterator<JsonNode> propertyIterator = contextArray.iterator();
+
+            // get property arrays from context array.
+            while (propertyIterator.hasNext()) {
+                final JsonNode propertyNode = propertyIterator.next();
+                final ArrayNode propertyArray = (ArrayNode) propertyNode;
+
+                // set property name and value,
+                final Property property = new Property();
+                context.addProperty(property);
+                property.setName(propertyArray.get(0).textValue());
+                property.setValue(propertyArray.get(1).textValue());
+
+                // for each descriptor of available, add them to property.
+                for (int i = 2; i < propertyArray.size(); i++) {
+                    final JsonNode descriptorNode = propertyArray.get(i);
+                    final ArrayNode descriptorArray = (ArrayNode) descriptorNode;
+                    final Descriptor descriptor = new Descriptor();
+                    property.addDescriptor(descriptor);
+                    descriptor.setName(descriptorArray.get(0).textValue());
+                    descriptor.setValue(descriptorArray.get(1).textValue());
+                }
+
+            }
+        } catch (final Exception e) {
+            e.printStackTrace();
+            throw new IllegalArgumentException(e.getMessage());
+        }
+        return context;
+    }
 
     /**
      * Generate the equipment context from the xml string used in the the front

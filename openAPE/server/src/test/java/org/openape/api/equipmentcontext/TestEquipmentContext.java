@@ -41,8 +41,10 @@ public class TestEquipmentContext {
     
     @Test
     public void testGetJson() throws IOException {
-        String json =sampleEquipmentContext().getForntEndJson();
+        EquipmentContext sample = sampleEquipmentContext();
+        String json =sample.getForntEndJson();
         System.out.println(json);
+        Assert.assertTrue(sample.equals(EquipmentContext.getObjectFromJson(json)));
     }
 
 }
