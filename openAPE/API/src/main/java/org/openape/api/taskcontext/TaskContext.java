@@ -58,6 +58,16 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
  */
 @XmlRootElement(name = "task-context")
 public class TaskContext extends DatabaseObject {
+    private static final String CONTEXTS_SCHEMA_XSD = "ContextsSchema.xsd";
+
+    private static final String TASK_CONTEXT = "task-context";
+
+    private static final String PUBLIC = "public";
+
+    private static final String OWNER = "owner";
+
+    private static final String IMPLEMENTATION_PARAMETERS = "implementation-parameters";
+
     private static final long serialVersionUID = 3325722856059287182L;
 
     /**
@@ -77,17 +87,17 @@ public class TaskContext extends DatabaseObject {
             final ObjectNode rootObject = (ObjectNode) rootNode;
 
             // get owner and public if available.
-            final JsonNode implemParams = rootObject.get("implementation-parameters");
+            final JsonNode implemParams = rootObject.get(TaskContext.IMPLEMENTATION_PARAMETERS);
             if ((implemParams != null) && !(implemParams instanceof NullNode)) {
                 final ObjectNode implemParamsNode = (ObjectNode) implemParams;
                 context.getImplementationParameters().setOwner(
-                        implemParamsNode.get("owner").textValue());
+                        implemParamsNode.get(TaskContext.OWNER).textValue());
                 context.getImplementationParameters().setPublic(
-                        implemParamsNode.get("public").booleanValue());
+                        implemParamsNode.get(TaskContext.PUBLIC).booleanValue());
             }
 
             // get root node
-            final JsonNode contextNode = rootObject.get("task-context");
+            final JsonNode contextNode = rootObject.get(TaskContext.TASK_CONTEXT);
             final ArrayNode contextArray = (ArrayNode) contextNode;
             final Iterator<JsonNode> propertyIterator = contextArray.iterator();
 
@@ -137,7 +147,8 @@ public class TaskContext extends DatabaseObject {
                     .newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
 
             // get schema file from resource folder
-            final URL url = TaskContext.class.getClassLoader().getResource("ContextsSchema.xsd");
+            final URL url = TaskContext.class.getClassLoader().getResource(
+                    TaskContext.CONTEXTS_SCHEMA_XSD);
             final File file = new File(url.toURI());
             final Schema schema = schemaFactory.newSchema(file);
             factory.setSchema(schema);
@@ -242,7 +253,7 @@ public class TaskContext extends DatabaseObject {
             final JsonNodeFactory jsonNodeFactory = new JsonNodeFactory(false);
             final ObjectNode root = new ObjectNode(jsonNodeFactory);
             final ArrayNode contextArray = new ArrayNode(jsonNodeFactory);
-            root.set("task-context", contextArray);
+            root.set(TaskContext.TASK_CONTEXT, contextArray);
 
             // Add all properties to context array.
             final List<Property> properties = this.getPropertys();
@@ -273,8 +284,8 @@ public class TaskContext extends DatabaseObject {
         return jsonString;
     }
 
-    @JsonProperty(value = "implementation-parameters")
-    @XmlElement(name = "implementation-parameters")
+    @JsonProperty(value = TaskContext.IMPLEMENTATION_PARAMETERS)
+    @XmlElement(name = TaskContext.IMPLEMENTATION_PARAMETERS)
     public ImplementationParameters getImplementationParameters() {
         return this.implementationParameters;
     }

@@ -58,6 +58,16 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
  */
 @XmlRootElement(name = "equipment-context")
 public class EquipmentContext extends DatabaseObject {
+    private static final String CONTEXTS_SCHEMA_XSD = "ContextsSchema.xsd";
+
+    private static final String PUBLIC = "public";
+
+    private static final String OWNER = "owner";
+
+    private static final String EQUIPMENT_CONTEXT = "equipment-context";
+
+    private static final String IMPLEMENTATION_PARAMETERS = "implementation-parameters";
+
     private static final long serialVersionUID = 4810176872836108065L;
 
     /**
@@ -78,17 +88,18 @@ public class EquipmentContext extends DatabaseObject {
             final ObjectNode rootObject = (ObjectNode) rootNode;
 
             // get owner and public if available.
-            final JsonNode implemParams = rootObject.get("implementation-parameters");
+            final JsonNode implemParams = rootObject
+                    .get(EquipmentContext.IMPLEMENTATION_PARAMETERS);
             if ((implemParams != null) && !(implemParams instanceof NullNode)) {
                 final ObjectNode implemParamsNode = (ObjectNode) implemParams;
                 context.getImplementationParameters().setOwner(
-                        implemParamsNode.get("owner").textValue());
+                        implemParamsNode.get(EquipmentContext.OWNER).textValue());
                 context.getImplementationParameters().setPublic(
-                        implemParamsNode.get("public").booleanValue());
+                        implemParamsNode.get(EquipmentContext.PUBLIC).booleanValue());
             }
 
             // get root node
-            final JsonNode contextNode = rootObject.get("equipment-context");
+            final JsonNode contextNode = rootObject.get(EquipmentContext.EQUIPMENT_CONTEXT);
             final ArrayNode contextArray = (ArrayNode) contextNode;
             final Iterator<JsonNode> propertyIterator = contextArray.iterator();
 
@@ -140,7 +151,7 @@ public class EquipmentContext extends DatabaseObject {
 
             // get schema file from resource folder
             final URL url = EquipmentContext.class.getClassLoader().getResource(
-                    "ContextsSchema.xsd");
+                    EquipmentContext.CONTEXTS_SCHEMA_XSD);
             final File file = new File(url.toURI());
             final Schema schema = schemaFactory.newSchema(file);
             factory.setSchema(schema);
@@ -244,7 +255,7 @@ public class EquipmentContext extends DatabaseObject {
             final JsonNodeFactory jsonNodeFactory = new JsonNodeFactory(false);
             final ObjectNode root = new ObjectNode(jsonNodeFactory);
             final ArrayNode contextArray = new ArrayNode(jsonNodeFactory);
-            root.set("equipment-context", contextArray);
+            root.set(EquipmentContext.EQUIPMENT_CONTEXT, contextArray);
 
             // Add all properties to context array.
             final List<Property> properties = this.getPropertys();
@@ -275,8 +286,8 @@ public class EquipmentContext extends DatabaseObject {
         return jsonString;
     }
 
-    @JsonProperty(value = "implementation-parameters")
-    @XmlElement(name = "implementation-parameters")
+    @JsonProperty(value = EquipmentContext.IMPLEMENTATION_PARAMETERS)
+    @XmlElement(name = EquipmentContext.IMPLEMENTATION_PARAMETERS)
     public ImplementationParameters getImplementationParameters() {
         return this.implementationParameters;
     }

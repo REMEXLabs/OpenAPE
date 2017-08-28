@@ -58,6 +58,16 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
  */
 @XmlRootElement(name = "resource-description")
 public class ResourceDescription extends DatabaseObject {
+    private static final String CONTEXTS_SCHEMA_XSD = "ContextsSchema.xsd";
+
+    private static final String RESOURCE_DESCRIPTION = "resource-description";
+
+    private static final String PUBLIC = "public";
+
+    private static final String OWNER = "owner";
+
+    private static final String IMPLEMENTATION_PARAMETERS = "implementation-parameters";
+
     private static final long serialVersionUID = -3341210067495347309L;
 
     /**
@@ -78,17 +88,18 @@ public class ResourceDescription extends DatabaseObject {
             final ObjectNode rootObject = (ObjectNode) rootNode;
 
             // get owner and public if available.
-            final JsonNode implemParams = rootObject.get("implementation-parameters");
+            final JsonNode implemParams = rootObject
+                    .get(ResourceDescription.IMPLEMENTATION_PARAMETERS);
             if ((implemParams != null) && !(implemParams instanceof NullNode)) {
                 final ObjectNode implemParamsNode = (ObjectNode) implemParams;
                 description.getImplementationParameters().setOwner(
-                        implemParamsNode.get("owner").textValue());
+                        implemParamsNode.get(ResourceDescription.OWNER).textValue());
                 description.getImplementationParameters().setPublic(
-                        implemParamsNode.get("public").booleanValue());
+                        implemParamsNode.get(ResourceDescription.PUBLIC).booleanValue());
             }
 
             // get root node
-            final JsonNode contextNode = rootObject.get("resource-description");
+            final JsonNode contextNode = rootObject.get(ResourceDescription.RESOURCE_DESCRIPTION);
             final ArrayNode contextArray = (ArrayNode) contextNode;
             final Iterator<JsonNode> propertyIterator = contextArray.iterator();
 
@@ -140,7 +151,7 @@ public class ResourceDescription extends DatabaseObject {
 
             // get schema file from resource folder
             final URL url = ResourceDescription.class.getClassLoader().getResource(
-                    "ContextsSchema.xsd");
+                    ResourceDescription.CONTEXTS_SCHEMA_XSD);
             final File file = new File(url.toURI());
             final Schema schema = schemaFactory.newSchema(file);
             factory.setSchema(schema);
@@ -245,7 +256,7 @@ public class ResourceDescription extends DatabaseObject {
             final JsonNodeFactory jsonNodeFactory = new JsonNodeFactory(false);
             final ObjectNode root = new ObjectNode(jsonNodeFactory);
             final ArrayNode contextArray = new ArrayNode(jsonNodeFactory);
-            root.set("resource-description", contextArray);
+            root.set(ResourceDescription.RESOURCE_DESCRIPTION, contextArray);
 
             // Add all properties to context array.
             final List<Property> properties = this.getPropertys();
@@ -276,8 +287,8 @@ public class ResourceDescription extends DatabaseObject {
         return jsonString;
     }
 
-    @JsonProperty(value = "implementation-parameters")
-    @XmlElement(name = "implementation-parameters")
+    @JsonProperty(value = ResourceDescription.IMPLEMENTATION_PARAMETERS)
+    @XmlElement(name = ResourceDescription.IMPLEMENTATION_PARAMETERS)
     public ImplementationParameters getImplementationParameters() {
         return this.implementationParameters;
     }

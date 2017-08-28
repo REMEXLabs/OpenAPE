@@ -58,6 +58,16 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
  */
 @XmlRootElement(name = "environment-context")
 public class EnvironmentContext extends DatabaseObject {
+    private static final String CONTEXTS_SCHEMA_XSD = "ContextsSchema.xsd";
+
+    private static final String ENVIRONMENT_CONTEXT = "environment-context";
+
+    private static final String PUBLIC = "public";
+
+    private static final String OWNER = "owner";
+
+    private static final String IMPLEMENTATION_PARAMETERS = "implementation-parameters";
+
     private static final long serialVersionUID = -1706959529432920842L;
 
     /**
@@ -78,17 +88,18 @@ public class EnvironmentContext extends DatabaseObject {
             final ObjectNode rootObject = (ObjectNode) rootNode;
 
             // get owner and public if available.
-            final JsonNode implemParams = rootObject.get("implementation-parameters");
+            final JsonNode implemParams = rootObject
+                    .get(EnvironmentContext.IMPLEMENTATION_PARAMETERS);
             if ((implemParams != null) && !(implemParams instanceof NullNode)) {
                 final ObjectNode implemParamsNode = (ObjectNode) implemParams;
                 context.getImplementationParameters().setOwner(
-                        implemParamsNode.get("owner").textValue());
+                        implemParamsNode.get(EnvironmentContext.OWNER).textValue());
                 context.getImplementationParameters().setPublic(
-                        implemParamsNode.get("public").booleanValue());
+                        implemParamsNode.get(EnvironmentContext.PUBLIC).booleanValue());
             }
 
             // get root node
-            final JsonNode contextNode = rootObject.get("environment-context");
+            final JsonNode contextNode = rootObject.get(EnvironmentContext.ENVIRONMENT_CONTEXT);
             final ArrayNode contextArray = (ArrayNode) contextNode;
             final Iterator<JsonNode> propertyIterator = contextArray.iterator();
 
@@ -140,7 +151,7 @@ public class EnvironmentContext extends DatabaseObject {
 
             // get schema file from resource folder
             final URL url = EnvironmentContext.class.getClassLoader().getResource(
-                    "ContextsSchema.xsd");
+                    EnvironmentContext.CONTEXTS_SCHEMA_XSD);
             final File file = new File(url.toURI());
             final Schema schema = schemaFactory.newSchema(file);
             factory.setSchema(schema);
@@ -244,7 +255,7 @@ public class EnvironmentContext extends DatabaseObject {
             final JsonNodeFactory jsonNodeFactory = new JsonNodeFactory(false);
             final ObjectNode root = new ObjectNode(jsonNodeFactory);
             final ArrayNode contextArray = new ArrayNode(jsonNodeFactory);
-            root.set("environment-context", contextArray);
+            root.set(EnvironmentContext.ENVIRONMENT_CONTEXT, contextArray);
 
             // Add all properties to context array.
             final List<Property> properties = this.getPropertys();
@@ -275,8 +286,8 @@ public class EnvironmentContext extends DatabaseObject {
         return jsonString;
     }
 
-    @JsonProperty(value = "implementation-parameters")
-    @XmlElement(name = "implementation-parameters")
+    @JsonProperty(value = EnvironmentContext.IMPLEMENTATION_PARAMETERS)
+    @XmlElement(name = EnvironmentContext.IMPLEMENTATION_PARAMETERS)
     public ImplementationParameters getImplementationParameters() {
         return this.implementationParameters;
     }
