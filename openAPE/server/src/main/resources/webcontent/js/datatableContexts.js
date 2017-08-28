@@ -257,10 +257,10 @@ $(document).ready(function(){
 					})
 				}
 			})
-			table.column( 1 ).visible( false );
+			//table.column( 1 ).visible( false );
 		} else if(window.location.href.indexOf("administration") == -1){
 			$('#'+contexts[i]+'DataTable').find("td").each(function() {
-				if($(this).index() == 3){
+				if($(this).index() == 2){
 					if($(this).text() == "false"){
 						if($(this).text().indexOf(localStorage.getItem("userid")) == -1){
 							$('#'+contexts[i]+'DataTable').DataTable().row( $(this).parents('tr') )
@@ -271,7 +271,7 @@ $(document).ready(function(){
 				}
 			})
 			
-			//table.column( 3 ).visible( false );
+			table.column(2 ).visible( false );
 		}	
 		
 	}
@@ -381,10 +381,10 @@ $(document).ready(function(){
 		      		objUserContext = x2js.xml_str2json(userContext);
 		      		
           			if(isPublic){
-          				var setPublicAttribute = userContext.replace("</user-context>", "<implementation-parameters public='true'/> </user-context>");
+          				var setPublicAttribute = userContext.replace("<user-context>", "<user-context><implementation-parameters public='true'/> ");
         				parsedUserContext = setPublicAttribute;
           			} else {
-        				var setPublicAttribute = userContext.replace("</user-context>", "<implementation-parameters public='false'/> </user-context>");
+        				var setPublicAttribute = userContext.replace("<user-context>", "<user-context><implementation-parameters public='false'/>");
         				parsedUserContext = setPublicAttribute;
           			}
           			
@@ -593,10 +593,10 @@ $(document).ready(function(){
           	} else {
           		if(isXML(userContext)){
           			if(isPublic){
-          				var setPublicAttribute = userContext.replace("</user-context>", "<implementation-parameters public='true'/> </user-context>");
+          				var setPublicAttribute = userContext.replace("<user-context>", "<user-context><implementation-parameters public='true'/> ");
         				parsedUserContext = setPublicAttribute;
           			} else {
-        				var setPublicAttribute = userContext.replace("</user-context>", "<implementation-parameters public='false'/> </user-context>");
+        				var setPublicAttribute = userContext.replace("<user-context>", "<user-context><implementation-parameters public='false'/>");
         				parsedUserContext = setPublicAttribute;
           			}
         			        			
