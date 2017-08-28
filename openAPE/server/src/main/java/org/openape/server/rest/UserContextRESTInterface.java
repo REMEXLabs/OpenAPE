@@ -105,14 +105,7 @@ public class UserContextRESTInterface extends SuperRestInterface {
         Spark.before(Messages.getString("UserContextRESTInterface.UserContextURLWithID"),
                 auth.authorize("anonymous"));
 
-        Spark.get(Messages.getString("UserContextRESTInterface.UserContextURLWithoutID"),
-                (req, res) -> {
-
-                    // UserContextList ucl =
-                    // requestHandler.getUserContextsForUser(auth.getAuthenticatedUser(req,
-                    // res));
-                return null; // ucl;
-            });
+       
 
         /**
          * Request 7.2.2 create user-context. Can only be accessed by roles

@@ -16,8 +16,7 @@ $(document).ready(function(){
 		} else {
 			$('#inputViewEnvironmentContext').val("");
 			var responseXML = openape.getEnvironmentContext(id, "XML").responseText;
-			var formatedXML = "<environment-context>"+responseXML.substring(responseXML.indexOf("</id>")+5);
-			var prettyXML = formatXml(formatedXML);
+			var prettyXML = formatXml(responseXML);
 			$('#inputViewEnvironmentContext').val(prettyXML);
 		}
 	})
@@ -33,8 +32,7 @@ $(document).ready(function(){
 			$('#inputViewTaskContext').val(JSON.stringify(objTaskContext, undefined, 2));
 		} else {
 			var responseXML = openape.getTaskContext(id, "XML").responseText;
-			var formatedXML = "<task-context>"+responseXML.substring(responseXML.indexOf("</id>")+5);
-			var prettyXML = formatXml(formatedXML);
+			var prettyXML = formatXml(responseXML);
 			
 			$('#inputViewTaskContext').val("");
 			$('#inputViewTaskContext').val(prettyXML);
@@ -53,8 +51,7 @@ $(document).ready(function(){
 			$('#inputViewEquipmentContext').val(JSON.stringify(objEquipmentContext, undefined, 2));
 		} else {
 			var responseXML = openape.getEquipmentContext(id, "XML").responseText;
-			var formatedXML = "<equipment-context>"+responseXML.substring(responseXML.indexOf("</id>")+5);
-			var prettyXML = formatXml(formatedXML);
+			var prettyXML = formatXml(responseXML);
 			
 			$('#inputViewEquipmentContext').val("");
 			$('#inputViewEquipmentContext').val(prettyXML);
@@ -73,8 +70,7 @@ $(document).ready(function(){
 			$('#inputViewUserContext').val(JSON.stringify(json, undefined, 2));
 		} else {
 			var responseXML = openape.getUserContext(id, "XML").responseText;
-			var formatedXML = "<user-context>"+responseXML.substring(responseXML.indexOf("</id>")+5);
-			var prettyXML = formatXml(formatedXML);
+			var prettyXML = formatXml(responseXML);
 			
 			$('#inputViewUserContext').val("");
 			$('#inputViewUserContext').val(prettyXML);
@@ -92,8 +88,7 @@ $(document).ready(function(){
 			$('#inputAdministrationEditUserContext').val(JSON.stringify(json, undefined, 2));
 		} else {
 			var responseXML = openape.getUserContext(id, "XML").responseText;
-			var formatedXML = "<user-context>"+responseXML.substring(responseXML.indexOf("</id>")+5);
-			var prettyXML = formatXml(formatedXML);
+			var prettyXML = formatXml(responseXML);
 			
 			$('#inputAdministrationEditUserContext').val("");
 			$('#inputAdministrationEditUserContext').val(prettyXML);
@@ -112,8 +107,7 @@ $(document).ready(function(){
 			$('#inputAdministrationEditEnvironmentContext').val(JSON.stringify(json, undefined, 2));
 		} else {
 			var responseXML = openape.getEnvironmentContext(id, "XML").responseText;
-			var formatedXML = "<environment-context>"+responseXML.substring(responseXML.indexOf("</id>")+5);
-			var prettyXML = formatXml(formatedXML);
+			var prettyXML = formatXml(responseXML);
 			
 			$('#inputAdministrationEditEnvironmentContext').val("");
 			$('#inputAdministrationEditEnvironmentContext').val(prettyXML);
@@ -131,8 +125,7 @@ $(document).ready(function(){
 			$('#inputAdministrationEditTaskContext').val(JSON.stringify(json, undefined, 2));
 		} else {
 			var responseXML = openape.getTaskContext(id, "XML").responseText;
-			var formatedXML = "<task-context>"+responseXML.substring(responseXML.indexOf("</id>")+5);
-			var prettyXML = formatXml(formatedXML);
+			var prettyXML = formatXml(responseXML);
 			
 			$('#inputAdministrationEditTaskContext').val("");
 			$('#inputAdministrationEditTaskContext').val(prettyXML);
@@ -149,8 +142,7 @@ $(document).ready(function(){
 			$('#inputAdministrationEditEquipmentContext').val(JSON.stringify(json, undefined, 2));
 		} else {
 			var responseXML = openape.getEquipmentContext(id, "XML").responseText;
-			var formatedXML = "<equipment-context>"+responseXML.substring(responseXML.indexOf("</id>")+5);
-			var prettyXML = formatXml(formatedXML);
+			var prettyXML = formatXml(responseXML);
 			
 			$('#inputAdministrationEditEquipmentContext').val("");
 			$('#inputAdministrationEditEquipmentContext').val(prettyXML);
@@ -265,7 +257,7 @@ $(document).ready(function(){
 					})
 				}
 			})
-			//table.column( 1 ).visible( false );
+			table.column( 1 ).visible( false );
 		} else if(window.location.href.indexOf("administration") == -1){
 			$('#'+contexts[i]+'DataTable').find("td").each(function() {
 				if($(this).index() == 3){
