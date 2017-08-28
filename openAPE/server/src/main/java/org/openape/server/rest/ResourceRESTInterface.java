@@ -187,6 +187,10 @@ public class ResourceRESTInterface extends SuperRestInterface {
                     // file by this name is not found.
                     res.status(SuperRestInterface.HTTP_STATUS_NOT_FOUND);
                     return e.getMessage();
+                } catch (final UnauthorizedException e) {
+                    // Only authorized users may read the resource.
+                    res.status(SuperRestInterface.HTTP_STATUS_UNAUTHORIZED);
+                    return e.getMessage();
                 } catch (final Exception e) {
                     res.status(SuperRestInterface.HTTP_STATUS_INTERNAL_SERVER_ERROR);
                     return e.getMessage();
@@ -228,6 +232,10 @@ public class ResourceRESTInterface extends SuperRestInterface {
                         return e.getMessage();
                     } catch (final IOException e) {
                         res.status(SuperRestInterface.HTTP_STATUS_INTERNAL_SERVER_ERROR);
+                        return e.getMessage();
+                    } catch (final UnauthorizedException e) {
+                        // Only authorized users may read the resource.
+                        res.status(SuperRestInterface.HTTP_STATUS_UNAUTHORIZED);
                         return e.getMessage();
                     }
                     try {
