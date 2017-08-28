@@ -31,6 +31,7 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.Transformer;
@@ -62,6 +63,7 @@ import com.fasterxml.jackson.databind.node.TextNode;
 /**
  * User context object defined in 7.2.1
  */
+@XmlType(propOrder = {"implementationParameters", "contexts"})
 @XmlRootElement(name = "user-context")
 public class UserContext extends DatabaseObject {
     private static final String VALUE = "value";
@@ -515,6 +517,7 @@ public class UserContext extends DatabaseObject {
             final StringWriter stringWriter = new StringWriter();
             marshaller.marshal(this, stringWriter);
             xmlString = stringWriter.toString();
+            xmlString = this.getImplementationParameters().removeImplemParams(xmlString);
         } catch (final Exception e) {
             throw new IOException(e.getMessage());
         }

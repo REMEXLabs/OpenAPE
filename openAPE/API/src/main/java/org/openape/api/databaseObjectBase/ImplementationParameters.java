@@ -66,7 +66,7 @@ public class ImplementationParameters {
         if (!found) {
             final Element implemParams = document
                     .createElement(ImplementationParameters.IMPLEMENTATION_PARAMETERS);
-            root.appendChild(implemParams);
+            root.insertBefore(implemParams, root.getFirstChild());
             implemParams.setAttribute(ImplementationParameters.PUBLIC,
                     ImplementationParameters.FALSE);
         }
@@ -81,6 +81,44 @@ public class ImplementationParameters {
         return writer.toString();
     }
 
+    
+    /**
+     * Remove implementation Parameters from generated xml string to make it standard conform.
+     *
+     * @param xml
+     * @return corrected xml
+     * @throws ParserConfigurationException
+     * @throws SAXException
+     * @throws IOException
+     * @throws TransformerException
+     */
+    @JsonIgnore
+    public String removeImplemParams(final String xml)
+            throws ParserConfigurationException, SAXException, IOException, TransformerException {
+        // Create document to work on.
+        final DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+        final DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+        final Document document = documentBuilder.parse(new InputSource(new StringReader(xml)));
+        // remove implementation-parameters element
+        final Element root = document.getDocumentElement();
+        final NodeList children = root.getChildNodes();
+        for (int i = 0; i < children.getLength(); i++) {
+            if (children.item(i).getNodeName()
+                    .equals(ImplementationParameters.IMPLEMENTATION_PARAMETERS)) {
+                root.removeChild(children.item(i));
+            }
+        }
+        // Create String from document
+        final DOMSource domSource = new DOMSource(document);
+        final StringWriter writer = new StringWriter();
+        final StreamResult result = new StreamResult(writer);
+        final TransformerFactory tf = TransformerFactory.newInstance();
+        final Transformer transformer = tf.newTransformer();
+        transformer.transform(domSource, result);
+        // Update xml string.
+        return writer.toString();
+    }
+    
     private String owner;
 
     @DefaultValue(ImplementationParameters.FALSE)

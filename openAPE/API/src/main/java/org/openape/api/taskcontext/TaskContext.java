@@ -309,6 +309,7 @@ public class TaskContext extends DatabaseObject {
             final StringWriter stringWriter = new StringWriter();
             marshaller.marshal(this, stringWriter);
             xmlString = stringWriter.toString();
+            xmlString = this.getImplementationParameters().removeImplemParams(xmlString);
         } catch (final Exception e) {
             throw new IOException(e.getMessage());
         }
