@@ -3,9 +3,7 @@ package org.openape.server.database.mongoDB;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.bson.Document;
 import org.bson.codecs.configuration.CodecConfigurationException;
@@ -330,28 +328,6 @@ public class DatabaseConnection implements ServerMonitorListener {
             listDocuments.add(cursor.next());
         }
         return listDocuments;
-    }
-
-    /**
-     * @param type
-     *            of data. Needed to choose the right mongo collection.
-     * @return all objects in the collection of the given type and their
-     *         corresponding ids.
-     * @throws IOException
-     *             if database or parse error occurs.
-     * @deprecated use
-     *             {@link #getDatabaseObjectsByQuery(MongoCollectionTypes, BasicDBObject)}
-     *             instead.
-     */
-    @Deprecated
-    public Map<String, DatabaseObject> getAllObjectsOfType(final MongoCollectionTypes type)
-            throws IOException {
-        final Map<String, DatabaseObject> resultMap = new HashMap<String, DatabaseObject>();
-        final List<DatabaseObject> databaseObjects = this.getDatabaseObjectsByQuery(type, null);
-        for (final DatabaseObject databaseObject : databaseObjects) {
-            resultMap.put(databaseObject.getId(), databaseObject);
-        }
-        return resultMap;
     }
 
     /**
