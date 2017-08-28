@@ -34,14 +34,20 @@ public class User extends DatabaseObject {
     private List<String> roles;
 
     public User() {
-        
+
     }
-    
+
     public String getEmail() {
         return this.email;
     }
 
-    @JsonProperty(value="id")
+    /**
+     * Equivalent to {@link DatabaseObject#getId()}, new name so json recognizes
+     * the filed.
+     * 
+     * @return
+     */
+    @JsonProperty(value = "id")
     public String getUserId() {
         return super.getId();
     }
@@ -62,6 +68,12 @@ public class User extends DatabaseObject {
         this.email = email;
     }
 
+    /**
+     * Equivalent to {@link DatabaseObject#setId(String)}, new name so json
+     * recognizes the filed.
+     * 
+     * @param id
+     */
     public void setUserId(final String id) {
         super.setId(id);
     }
