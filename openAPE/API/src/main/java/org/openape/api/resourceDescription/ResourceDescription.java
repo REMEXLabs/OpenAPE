@@ -36,6 +36,7 @@ import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 
 import org.openape.api.databaseObjectBase.DatabaseObject;
+import org.openape.api.databaseObjectBase.Descriptor;
 import org.openape.api.databaseObjectBase.ImplementationParameters;
 import org.openape.api.databaseObjectBase.Property;
 import org.w3c.dom.Document;
@@ -44,6 +45,10 @@ import org.xml.sax.InputSource;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 /**
  * Resource description object defined in 7.7.1
@@ -104,6 +109,51 @@ public class ResourceDescription extends DatabaseObject {
         }
         return resourceDescription;
     }
+    /**
+     * Generate the json representation from the object used for the front end.
+     * Deletes owner and public field.
+     *
+     * @return json string.
+     */
+    @JsonIgnore
+    public String getForntEndJson() throws IOException {
+        String jsonString = null;
+        try {
+            // Setup document root
+            final JsonNodeFactory jsonNodeFactory = new JsonNodeFactory(false);
+            ObjectNode root = new ObjectNode(jsonNodeFactory);
+            ArrayNode contextArray = new ArrayNode(jsonNodeFactory);
+            root.set("resource-description", contextArray);
+
+            // Add all properties to context array.
+            List<Property> properties = this.getPropertys();
+            for (Property property : properties) {
+                ArrayNode propertyArray = new ArrayNode(jsonNodeFactory);
+                contextArray.add(propertyArray);
+                // Add name and value to property array.
+                propertyArray.add(property.getName());
+                propertyArray.add(property.getValue());
+                // Add descriptors to property array, if available.
+                List<Descriptor> descriptors = property.getDescriptors();
+                for (Descriptor descriptor : descriptors) {
+                    ArrayNode descriptorArray = new ArrayNode(jsonNodeFactory);
+                    propertyArray.add(descriptorArray);
+                    //Add name and value to descriptor array
+                    descriptorArray.add(descriptor.getName());
+                    descriptorArray.add(descriptor.getValue());
+                }
+            }
+            //write out string.
+            final StringWriter stringWriter = new StringWriter();
+            final ObjectMapper mapper = new ObjectMapper();
+            mapper.writeValue(stringWriter, root);
+            jsonString = stringWriter.toString();
+        } catch (final Exception e) {
+            throw new IOException(e.getMessage());
+        }
+        return jsonString;
+    }
+
 
     /**
      * Checks if a compare resource description has the same properties as a

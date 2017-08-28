@@ -38,5 +38,11 @@ public class TestEquipmentContext {
         System.out.println(xml);
         Assert.assertTrue(equipmentContext.equals(EquipmentContext.getObjectFromXml(xml)));
     }
+    
+    @Test
+    public void testGetJson() throws IOException {
+        String json =sampleEquipmentContext().getForntEndJson();
+        System.out.println(json);
+    }
 
 }
