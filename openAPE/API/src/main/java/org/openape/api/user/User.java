@@ -41,17 +41,6 @@ public class User extends DatabaseObject {
         return this.email;
     }
 
-    /**
-     * Equivalent to {@link DatabaseObject#getId()}, new name so json recognizes
-     * the filed.
-     * 
-     * @return
-     */
-    @JsonProperty(value = "id")
-    public String getUserId() {
-        return super.getId();
-    }
-
     public String getPassword() {
         return this.password;
     }
@@ -60,22 +49,23 @@ public class User extends DatabaseObject {
         return this.roles;
     }
 
+    /**
+     * Equivalent to {@link DatabaseObject#getId()}, new name so json recognizes
+     * the filed.
+     *
+     * @return
+     */
+    @JsonProperty(value = "id")
+    public String getUserId() {
+        return super.getId();
+    }
+
     public String getUsername() {
         return this.username;
     }
 
     public void setEmail(final String email) {
         this.email = email;
-    }
-
-    /**
-     * Equivalent to {@link DatabaseObject#setId(String)}, new name so json
-     * recognizes the filed.
-     * 
-     * @param id
-     */
-    public void setUserId(final String id) {
-        super.setId(id);
     }
 
     /**
@@ -88,6 +78,16 @@ public class User extends DatabaseObject {
 
     public void setRoles(final List<String> roles) {
         this.roles = roles;
+    }
+
+    /**
+     * Equivalent to {@link DatabaseObject#setId(String)}, new name so json
+     * recognizes the filed.
+     *
+     * @param id
+     */
+    public void setUserId(final String id) {
+        super.setId(id);
     }
 
     public void setUsername(final String username) {

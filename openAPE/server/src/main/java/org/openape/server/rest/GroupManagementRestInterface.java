@@ -256,17 +256,17 @@ public class GroupManagementRestInterface extends SuperRestInterface {
          * Spark.put( OpenAPEEndPoints.GROUP_MEMBER, (req, res) -> { try { final
          * GroupMembershipRequest gmsr = SuperRestInterface.extractFromRequest(
          * GroupMembershipRequest.class, req);
-         * 
+         *
          * final DatabaseConnection databaseConnection = DatabaseConnection
          * .getInstance(); final Group group = (Group)
          * databaseConnection.getDatabaseObjectById(
          * MongoCollectionTypes.GROUPS, req.params(":groupId"));
-         * 
+         *
          * final String requestedUser = gmsr.getUserId(); if
          * (!requestedUser.equals(req.params(":userId")) &&
          * ProfileHandler.userExists(requestedUser)) { res.status(400); return
          * "Bad request"; }
-         * 
+         *
          * if (!group.isUserAssigend(requestedUser)) { if
          * (authService.getAuthenticatedUser(req, res).getId()
          * .equals(requestedUser) && ((gmsr.getStatus() ==
@@ -279,7 +279,7 @@ public class GroupManagementRestInterface extends SuperRestInterface {
          * IllegalArgumentException e) { res.status(404); return
          * OpenAPEEndPoints.GROUP_DOES_NOT_EXIST; } catch (final IOException e)
          * { res.status(500); return "internal server error"; }
-         * 
+         *
          * });
          */
     }

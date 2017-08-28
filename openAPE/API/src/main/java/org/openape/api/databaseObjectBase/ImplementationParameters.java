@@ -49,15 +49,15 @@ public class ImplementationParameters {
         final Document document = documentBuilder.parse(new InputSource(new StringReader(xml)));
         // set implementation-parameters element and public to false if not set
         final Element root = document.getDocumentElement();
-        NodeList children = root.getChildNodes();
+        final NodeList children = root.getChildNodes();
         boolean found = false;
         for (int i = 0; i < children.getLength(); i++) {
-            if(children.item(i).getNodeName().equals("implementation-parameters")){
+            if (children.item(i).getNodeName().equals("implementation-parameters")) {
                 found = true;
             }
         }
         if (!found) {
-            Element implemParams = document.createElement("implementation-parameters");
+            final Element implemParams = document.createElement("implementation-parameters");
             root.appendChild(implemParams);
             implemParams.setAttribute("public", "false");
         }

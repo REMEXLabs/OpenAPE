@@ -130,13 +130,14 @@ public class Group extends DatabaseObject {
     }
 
     /**
-     * Equivalent to {@link DatabaseObject#setId(String)}, new name so json
-     * recognizes the filed.
-     * 
-     * @param id
+     * Equivalent to {@link DatabaseObject#getId()}, new name so json recognizes
+     * the filed.
+     *
+     * @return
      */
-    public void setGroupId(final String id) {
-        super.setId(id);
+    @JsonProperty(value = "id")
+    public String getGroupId() {
+        return super.getId();
     }
 
     /**
@@ -211,14 +212,13 @@ public class Group extends DatabaseObject {
     }
 
     /**
-     * Equivalent to {@link DatabaseObject#getId()}, new name so json recognizes
-     * the filed.
-     * 
-     * @return
+     * Equivalent to {@link DatabaseObject#setId(String)}, new name so json
+     * recognizes the filed.
+     *
+     * @param id
      */
-    @JsonProperty(value = "id")
-    public String getGroupId() {
-        return super.getId();
+    public void setGroupId(final String id) {
+        super.setId(id);
     }
 
     /**

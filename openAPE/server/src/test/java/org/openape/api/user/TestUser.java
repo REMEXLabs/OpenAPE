@@ -7,15 +7,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class TestUser {
     @Test
-    public void jsonTest() throws JsonProcessingException{
-        User user = new User();
+    public void jsonTest() throws JsonProcessingException {
+        final User user = new User();
         user.setEmail("email");
         user.setId("id");
         user.setPassword("password");
         user.setUsername("username");
-        
-        ObjectMapper mapper = new ObjectMapper();
-        String json = mapper.writeValueAsString(user);
+
+        final ObjectMapper mapper = new ObjectMapper();
+        final String json = mapper.writeValueAsString(user);
         System.out.println(json);
     }
 }
