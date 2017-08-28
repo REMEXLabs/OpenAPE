@@ -159,7 +159,10 @@ public class ResourceRESTInterface extends SuperRestInterface {
                 final String mimeType = serverReturn.getResourceObject().getMimeType();
 
                 // check access right
-                ResourceRESTInterface.RESOURCE_AUTH_SERVICE.allowReading(req, res, serverReturn.getResourceObject());
+                if ((serverReturn != null) && (serverReturn.getResourceObject() != null)) {
+                    ResourceRESTInterface.RESOURCE_AUTH_SERVICE.allowReading(req, res,
+                            serverReturn.getResourceObject());
+                }
 
                 // create response from file.
                 final ResponseBuilder response = ResourceRESTInterface.createFileResponse(file);
@@ -207,7 +210,9 @@ public class ResourceRESTInterface extends SuperRestInterface {
                 mimeType = returnType.getResourceObject().getMimeType();
 
                 // check access right
-                ResourceRESTInterface.RESOURCE_AUTH_SERVICE.allowReading(req, res, returnType.getResourceObject());
+                if ((returnType != null) && (returnType.getResourceObject() != null)) {
+                    ResourceRESTInterface.RESOURCE_AUTH_SERVICE.allowReading(req, res, returnType.getResourceObject());
+                }
 
             } catch (NotFoundException | IllegalArgumentException | IndexOutOfBoundsException e) {
                 res.status(SuperRestInterface.HTTP_STATUS_NOT_FOUND);
