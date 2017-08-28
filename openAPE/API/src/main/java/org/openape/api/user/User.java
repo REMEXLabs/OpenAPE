@@ -33,6 +33,10 @@ public class User extends DatabaseObject {
 
     private List<String> roles;
 
+    public User() {
+        
+    }
+    
     public String getEmail() {
         return this.email;
     }
