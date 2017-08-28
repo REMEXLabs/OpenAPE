@@ -109,51 +109,6 @@ public class EnvironmentContext extends DatabaseObject {
         }
         return environmentContext;
     }
-    
-    /**
-     * Generate the json representation from the object used for the front end.
-     * Deletes owner and public field.
-     *
-     * @return json string.
-     */
-    @JsonIgnore
-    public String getForntEndJson() throws IOException {
-        String jsonString = null;
-        try {
-            // Setup document root
-            final JsonNodeFactory jsonNodeFactory = new JsonNodeFactory(false);
-            ObjectNode root = new ObjectNode(jsonNodeFactory);
-            ArrayNode contextArray = new ArrayNode(jsonNodeFactory);
-            root.set("environment-context", contextArray);
-
-            // Add all properties to context array.
-            List<Property> properties = this.getPropertys();
-            for (Property property : properties) {
-                ArrayNode propertyArray = new ArrayNode(jsonNodeFactory);
-                contextArray.add(propertyArray);
-                // Add name and value to property array.
-                propertyArray.add(property.getName());
-                propertyArray.add(property.getValue());
-                // Add descriptors to property array, if available.
-                List<Descriptor> descriptors = property.getDescriptors();
-                for (Descriptor descriptor : descriptors) {
-                    ArrayNode descriptorArray = new ArrayNode(jsonNodeFactory);
-                    propertyArray.add(descriptorArray);
-                    //Add name and value to descriptor array
-                    descriptorArray.add(descriptor.getName());
-                    descriptorArray.add(descriptor.getValue());
-                }
-            }
-            //write out string.
-            final StringWriter stringWriter = new StringWriter();
-            final ObjectMapper mapper = new ObjectMapper();
-            mapper.writeValue(stringWriter, root);
-            jsonString = stringWriter.toString();
-        } catch (final Exception e) {
-            throw new IOException(e.getMessage());
-        }
-        return jsonString;
-    }
 
     /**
      * Checks if a compare environment context has the same properties as a base
@@ -209,6 +164,51 @@ public class EnvironmentContext extends DatabaseObject {
         return (EnvironmentContext.hasEnvironmentContextTheSameProperties(compare, this) && EnvironmentContext
                 .hasEnvironmentContextTheSameProperties(this, compare));
 
+    }
+
+    /**
+     * Generate the json representation from the object used for the front end.
+     * Deletes owner and public field.
+     *
+     * @return json string.
+     */
+    @JsonIgnore
+    public String getForntEndJson() throws IOException {
+        String jsonString = null;
+        try {
+            // Setup document root
+            final JsonNodeFactory jsonNodeFactory = new JsonNodeFactory(false);
+            final ObjectNode root = new ObjectNode(jsonNodeFactory);
+            final ArrayNode contextArray = new ArrayNode(jsonNodeFactory);
+            root.set("environment-context", contextArray);
+
+            // Add all properties to context array.
+            final List<Property> properties = this.getPropertys();
+            for (final Property property : properties) {
+                final ArrayNode propertyArray = new ArrayNode(jsonNodeFactory);
+                contextArray.add(propertyArray);
+                // Add name and value to property array.
+                propertyArray.add(property.getName());
+                propertyArray.add(property.getValue());
+                // Add descriptors to property array, if available.
+                final List<Descriptor> descriptors = property.getDescriptors();
+                for (final Descriptor descriptor : descriptors) {
+                    final ArrayNode descriptorArray = new ArrayNode(jsonNodeFactory);
+                    propertyArray.add(descriptorArray);
+                    // Add name and value to descriptor array
+                    descriptorArray.add(descriptor.getName());
+                    descriptorArray.add(descriptor.getValue());
+                }
+            }
+            // write out string.
+            final StringWriter stringWriter = new StringWriter();
+            final ObjectMapper mapper = new ObjectMapper();
+            mapper.writeValue(stringWriter, root);
+            jsonString = stringWriter.toString();
+        } catch (final Exception e) {
+            throw new IOException(e.getMessage());
+        }
+        return jsonString;
     }
 
     @JsonProperty(value = "implementation-parameters")

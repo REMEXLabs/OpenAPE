@@ -22,9 +22,9 @@ public class GroupMembershipRequest {
 
     /*
      * public GroupMembershipStatus getStatus() { return this.status; }
-     *
-     *
-     *
+     * 
+     * 
+     * 
      * public void setStatus(final GroupMembershipStatus status) { this.status =
      * status; }
      */
