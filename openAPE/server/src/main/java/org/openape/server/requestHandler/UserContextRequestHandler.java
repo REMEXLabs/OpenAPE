@@ -1,9 +1,8 @@
 package org.openape.server.requestHandler;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.openape.api.Messages;
 import org.openape.api.UserContextList;
@@ -87,14 +86,13 @@ public class UserContextRequestHandler {
 
     public UserContextList getAllUserContexts(final String url) throws IOException {
         final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
-        final Map<String, UserContext> contexts = new HashMap<String, UserContext>();
-        final Map<String, DatabaseObject> resultMap = databaseConnection
-                .getAllObjectsOfType(MongoCollectionTypes.USERCONTEXT);
+        final List<UserContext> contexts = new ArrayList<UserContext>();
+        final List<DatabaseObject> result = databaseConnection.getDatabaseObjectsByQuery(
+                MongoCollectionTypes.USERCONTEXT, null);
         // parse result from DatabaseObject to UserContext.
-        final Set<String> userContextIDs = resultMap.keySet();
         try {
-            for (final String userContextID : userContextIDs) {
-                contexts.put(userContextID, (UserContext) resultMap.get(userContextID));
+            for (final DatabaseObject databaseObject : result) {
+                contexts.add((UserContext) databaseObject);
             }
         } catch (final ClassCastException e) {
             throw new IOException(e.getMessage());
@@ -102,7 +100,7 @@ public class UserContextRequestHandler {
         return new UserContextList(contexts, url);
     }
 
-    public UserContextList getMyContexts(final String userId, final String url) {
+    public UserContextList getMyContexts(final String userId, final String url) throws IOException {
         final BasicDBObject query = new BasicDBObject();
         query.put("owner", userId);
         return this.getUserContexts(query, url);
@@ -148,16 +146,17 @@ public class UserContextRequestHandler {
 
     }
 
-    public UserContextList getUserContexts(final BasicDBObject query, final String url) {
+    public UserContextList getUserContexts(final BasicDBObject query, final String url)
+            throws IOException {
         final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
 
-        final Map<String, UserContext> contexts = null;
-        // TODO used Method not implemented yet.Implement later
-        // contexts =
-        // databaseConnection.getDocumentsByQuery(MongoCollectionTypes.USERCONTEXT,
-        // query,
-        // true);
+        final List<DatabaseObject> result = databaseConnection.getDatabaseObjectsByQuery(
+                MongoCollectionTypes.USERCONTEXT, query);
+        final List<UserContext> contexts = new ArrayList<UserContext>();
 
+        for (final DatabaseObject databaseObject : result) {
+            contexts.add((UserContext) databaseObject);
+        }
         return new UserContextList(contexts, url);
 
     }

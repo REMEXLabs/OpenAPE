@@ -25,9 +25,7 @@
   </xs:complexType>
 
   <xs:complexType name="databaseObject" abstract="true">
-    <xs:sequence>
-      <xs:element name="id" type="xs:string" minOccurs="0"/>
-    </xs:sequence>
+    <xs:sequence/>
   </xs:complexType>
 
   <xs:complexType name="implementationParameters">
@@ -53,8 +51,8 @@
     <xs:complexContent>
       <xs:extension base="databaseObject">
         <xs:sequence>
-          <xs:element name="option" type="context" minOccurs="0" maxOccurs="unbounded"/>
           <xs:element name="implementation-parameters" type="implementationParameters" minOccurs="0"/>
+          <xs:element name="option" type="context" minOccurs="0" maxOccurs="unbounded"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>

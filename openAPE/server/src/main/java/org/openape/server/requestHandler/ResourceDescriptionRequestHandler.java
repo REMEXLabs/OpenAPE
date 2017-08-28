@@ -1,9 +1,8 @@
 package org.openape.server.requestHandler;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Pattern;
 
 import org.openape.api.Messages;
@@ -77,26 +76,24 @@ public class ResourceDescriptionRequestHandler {
     public void deleteAllDescriptionsOfAResource(final String resourceID) throws IOException {
         final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
         // Get all descriptions.
-        final Map<String, DatabaseObject> resultMap = databaseConnection
-                .getAllObjectsOfType(MongoCollectionTypes.RESOURCEDESCRIPTION);
-        final Set<String> descriptionIDs = resultMap.keySet();
+        final List<DatabaseObject> result = databaseConnection.getDatabaseObjectsByQuery(
+                MongoCollectionTypes.RESOURCEDESCRIPTION, null);
         // Cast.
-        final Map<String, ResourceDescription> descriptions = new HashMap<String, ResourceDescription>();
+        final List<ResourceDescription> descriptions = new ArrayList<ResourceDescription>();
         try {
-            for (final String descriptionID : descriptionIDs) {
-                descriptions.put(descriptionID, (ResourceDescription) resultMap.get(descriptionID));
+            for (final DatabaseObject databaseObject : result) {
+                descriptions.add((ResourceDescription) databaseObject);
             }
         } catch (final ClassCastException e) {
             throw new IOException(e.getMessage());
         }
         // Get all descriptions belonging to the resource.
-        for (final String descriptionID : descriptionIDs) {
-            final ResourceDescription description = descriptions.get(descriptionID);
-            final String resourceCompare = this.getResourceID(description);
+        for (final ResourceDescription resourceDescription : descriptions) {
+            final String resourceCompare = this.getResourceID(resourceDescription);
             if (resourceCompare.equals(resourceID)) {
                 // If resource id fitts, delete the description
                 databaseConnection.deleteDatabaseObject(MongoCollectionTypes.RESOURCEDESCRIPTION,
-                        descriptionID);
+                        resourceDescription.getId());
             }
         }
     }

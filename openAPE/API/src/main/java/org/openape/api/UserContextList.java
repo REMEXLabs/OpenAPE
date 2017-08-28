@@ -4,7 +4,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 import javax.xml.bind.annotation.XmlElement;
 
@@ -17,11 +16,11 @@ public class UserContextList {
     @XmlElement(name = "user-context-uris")
     private List<URI> userContextUris;
 
-    public UserContextList(final Map<String, UserContext> contexts, final String url) {
+    public UserContextList(final List<UserContext> contexts, final String url) {
         this.userContextUris = new LinkedList<URI>();
-        for (final String id : contexts.keySet()) {
+        for (UserContext userContext : contexts) {
             try {
-                this.userContextUris.add(new URI(url + id));
+                this.userContextUris.add(new URI(url + userContext.getId()));
             } catch (final URISyntaxException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();

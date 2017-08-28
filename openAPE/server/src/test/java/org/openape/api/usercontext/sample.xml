@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <user-context>
+	<implementation-parameters public="true" />
 	<option id="default">
 		<name>Default preferences</name>
 		<preference key="http://registry.gpii.net/common/magnifierEnabled"
@@ -28,3 +29,4 @@
 		</condition>
 	</option>
 </user-context>
+
