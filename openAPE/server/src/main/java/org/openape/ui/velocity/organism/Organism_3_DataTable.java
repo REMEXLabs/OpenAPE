@@ -40,7 +40,7 @@ public class Organism_3_DataTable {
                 + "<table id='"
                 + idName
                 + "DataTable' style='border: 4px solid #ddd !important;' class='table table-striped table-bordered dt-responsive nowrap' cellspacing='0' width='100%'>"
-                + "<thead>" + "<tr>" + "<th>ID</th>" + "<th>Owner</th>" + "<th>Created</th>"
+                + "<thead>" + "<tr>" + "<th>ID</th>" + "<th>Owner</th>"
                 + "<th>Public</th>" + "<th>Options</th>" + "</tr>" + "</thead>"
                 + "<tbody id='tableContent'>" + administrationDatableContextContent + "</tbody>"
                 + "</table>";

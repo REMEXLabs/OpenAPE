@@ -11,7 +11,7 @@ $(document).ready(function(){
 		
 		if(outputType == "JSON"){
 			$('#inputViewEnvironmentContext').val("");
-			objEnvironmentContext.propertys = JSON.parse(openape.getEnvironmentContext(id, "JSON").responseText).propertys; 
+			objEnvironmentContext.propertys = JSON.parse(openape.getEnvironmentContext(id, "JSON").responseText); 
 			$('#inputViewEnvironmentContext').val(JSON.stringify(objEnvironmentContext, undefined, 2));
 		} else {
 			$('#inputViewEnvironmentContext').val("");
@@ -29,7 +29,7 @@ $(document).ready(function(){
 		
 		if(outputType == "JSON"){
 			$('#inputViewTaskContext').val("");
-			objTaskContext.propertys = JSON.parse(openape.getTaskContext(id, "JSON").responseText).propertys; 
+			objTaskContext.propertys = JSON.parse(openape.getTaskContext(id, "JSON").responseText); 
 			$('#inputViewTaskContext').val(JSON.stringify(objTaskContext, undefined, 2));
 		} else {
 			var responseXML = openape.getTaskContext(id, "XML").responseText;
@@ -49,7 +49,7 @@ $(document).ready(function(){
 		
 		if(outputType == "JSON"){
 			$('#inputViewEquipmentContext').val("");
-			objEquipmentContext.propertys = JSON.parse(openape.getEquipmentContext(id, "JSON").responseText).propertys; 
+			objEquipmentContext.propertys = JSON.parse(openape.getEquipmentContext(id, "JSON").responseText); 
 			$('#inputViewEquipmentContext').val(JSON.stringify(objEquipmentContext, undefined, 2));
 		} else {
 			var responseXML = openape.getEquipmentContext(id, "XML").responseText;
@@ -174,6 +174,7 @@ $(document).ready(function(){
 		$('#addEquipmentContextMainErrSection').empty();
 	});
 	
+	
 	if(window.location.href.indexOf("myContexts") != -1){
 		if(window.location.href.indexOf("#") == -1){
 			window.location.hash = "#user-contexts"
@@ -264,7 +265,7 @@ $(document).ready(function(){
 					})
 				}
 			})
-			table.column( 1 ).visible( false );
+			//table.column( 1 ).visible( false );
 		} else if(window.location.href.indexOf("administration") == -1){
 			$('#'+contexts[i]+'DataTable').find("td").each(function() {
 				if($(this).index() == 3){
@@ -278,7 +279,7 @@ $(document).ready(function(){
 				}
 			})
 			
-			table.column( 3 ).visible( false );
+			//table.column( 3 ).visible( false );
 		}	
 		
 	}
@@ -361,6 +362,7 @@ $(document).ready(function(){
     	var parsedUserContext = "";   	
     	var objUserContext = {};
     	var isFormatCorrect = true;
+    	var objImplementationParameters = {};
     	
     	if(validateInput(userContext, "add", "UserContext") == true){
 	    	if(contentType == "JSON") {
@@ -368,10 +370,12 @@ $(document).ready(function(){
 		    		objUserContext = JSON.parse(userContext);
 	    			
 		    		if(isPublic){
-	    				objUserContext.public = true;
+		    			objImplementationParameters.owner = "null";
+		    			objImplementationParameters.public = true;
+		    			objUserContext.implementationparameters = objImplementationParameters;
 	    			}
 		    		
-		    		parsedUserContext = JSON.stringify(objUserContext);
+		    		parsedUserContext = JSON.stringify(objUserContext).replace("implementationparameters", "implementation-parameters");
 		    		isFormatCorrect = true;
 	    		} else {
 	    			isFormatCorrect = false;
@@ -384,12 +388,14 @@ $(document).ready(function(){
 	      			var x2js = new X2JS();
 		      		objUserContext = x2js.xml_str2json(userContext);
 		      		
-		      		if(isPublic){
-        				var setPublicAttribute = userContext.replace("<user-context>", "<user-context public='true'>");
+          			if(isPublic){
+          				var setPublicAttribute = userContext.replace("</user-context>", "<implementation-parameters public='true'/> </user-context>");
         				parsedUserContext = setPublicAttribute;
-		      		} else {
-		      			parsedUserContext = userContext;
-		      		}
+          			} else {
+        				var setPublicAttribute = userContext.replace("</user-context>", "<implementation-parameters public='false'/> </user-context>");
+        				parsedUserContext = setPublicAttribute;
+          			}
+          			
 		      		isFormatCorrect = true;
 	      		} else {
 	      			isFormatCorrect = false;
@@ -417,6 +423,7 @@ $(document).ready(function(){
     	var objEnvironmentContext = {};
     	var parsedEnvironmentContext = "";
     	var isFormatCorrect = true;
+    	var objImplementationParameters = {};
     	
     	if(validateInput(environmentContext, "add", "EnvironmentContext") == true){
         	if(contentType == "JSON") {
@@ -424,10 +431,12 @@ $(document).ready(function(){
         			objEnvironmentContext = JSON.parse(environmentContext);
 		    		
         			if(isPublic){
-        				objEnvironmentContext.public = true;
+        				objImplementationParameters.owner = "null";
+		    			objImplementationParameters.public = true;
+		    			objEnvironmentContext.implementationparameters = objImplementationParameters;
 	    			}
-        			
-            		parsedEnvironmentContext = JSON.stringify(objEnvironmentContext);
+
+            		parsedEnvironmentContext = JSON.stringify(objEnvironmentContext).replace("implementationparameters", "implementation-parameters");
             		isFormatCorrect = true;
         		} else {
         			isFormatCorrect = false;
@@ -438,10 +447,11 @@ $(document).ready(function(){
           	} else {
           		if(isXML(environmentContext)){
           			if(isPublic){
-        				var setPublicAttribute = environmentContext.replace("<environment-context>", "<environment-context public='true'>");
+        				var setPublicAttribute = environmentContext.replace("<environment-context>", "<environment-context> <implementation-parameters public='true'/>");
         				parsedEnvironmentContext = setPublicAttribute;
           			} else {
-          				parsedEnvironmentContext  = environmentContext ;
+        				var setPublicAttribute = environmentContext.replace("<environment-context>", "<environment-context> <implementation-parameters public='false'/>");
+        				parsedEnvironmentContext = setPublicAttribute;
           			}
               		isFormatCorrect = true;
           		} else {
@@ -464,6 +474,7 @@ $(document).ready(function(){
     	var objEquipmentContext = {};
     	var parsedEquipmentContext = "";
     	var isFormatCorrect = true;
+    	var objImplementationParameters = {};
     	
     	if(validateInput(equipmentContext, "add", "EquipmentContext") == true){
         	if(contentType == "JSON") {
@@ -471,10 +482,12 @@ $(document).ready(function(){
 	        		objEquipmentContext = JSON.parse(equipmentContext);
         			
 	        		if(isPublic){
-	        			objEquipmentContext.public = true;
+	        			objImplementationParameters.owner = "null";
+		    			objImplementationParameters.public = true;
+		    			objEquipmentContext.implementationparameters = objImplementationParameters;
 	    			}
         			
-	        		parsedEquipmentContext = JSON.stringify(objEquipmentContext);
+	        		parsedEquipmentContext = JSON.stringify(objEquipmentContext).replace("implementationparameters", "implementation-parameters");
 	        		isFormatCorrect = true;
         		} else {
         			isFormatCorrect = false;
@@ -484,10 +497,11 @@ $(document).ready(function(){
           	} else {
           		if(isXML(equipmentContext)){
           			if(isPublic){
-        				var setPublicAttribute = equipmentContext.replace("<equipment-context>", "<equipment-context public='true'>");
+        				var setPublicAttribute = equipmentContext.replace("<equipment-context>", "<equipment-context> <implementation-parameters public='true'/>");
         				parsedEquipmentContext = setPublicAttribute;
           			} else {
-          				parsedEquipmentContext  = equipmentContext ;
+        				var setPublicAttribute = equipmentContext.replace("<equipment-context>", "<equipment-context> <implementation-parameters public='false'/>");
+        				parsedEquipmentContext = setPublicAttribute;
           			}
           			isFormatCorrect = true;
           		} else {
@@ -510,6 +524,7 @@ $(document).ready(function(){
     	var objTaskContext = {};
     	var parsedTaskContext = "";
     	var isFormatCorrect = true;
+    	var objImplementationParameters = {};
     	
     	if(validateInput(taskContext, "add", "TaskContext") == true){
         	if(contentType == "JSON") {
@@ -517,10 +532,12 @@ $(document).ready(function(){
 	        		objTaskContext = JSON.parse(taskContext);
 	        		
 	        		if(isPublic){
-	        			objTaskContext.public = true;
+		    			objImplementationParameters.public = true;
+		    			objImplementationParameters.owner = "null";
+		    			objTaskContext.implementationparameters = objImplementationParameters;
 	    			}
         			
-	        		parsedTaskContext = JSON.stringify(objTaskContext);
+	        		parsedTaskContext = JSON.stringify(objTaskContext).replace("implementationparameters", "implementation-parameters");;
 	        		isFormatCorrect = true;
         		} else {
         			isFormatCorrect = false;
@@ -532,10 +549,11 @@ $(document).ready(function(){
           			isFormatCorrect = true;
           			
           			if(isPublic){
-        				var setPublicAttribute = taskContext.replace("<task-context>", "<task-context public='true'>");
+        				var setPublicAttribute = taskContext.replace("<task-context>", "<task-context> <implementation-parameters public='true'/>");
         				parsedTaskContext = setPublicAttribute;
           			} else {
-          				parsedTaskContext  = taskContext ;
+        				var setPublicAttribute = taskContext.replace("<task-context>", "<task-context> <implementation-parameters public='false'/>");
+        				parsedTaskContext = setPublicAttribute;
           			}
           			
           		} else {
@@ -560,6 +578,7 @@ $(document).ready(function(){
     	var objUserContext = {};
     	var parsedUserContext = "";
     	var isFormatCorrect = true;
+    	var objImplementationParameters = {};
     	
     	if(validateInput(userContext, "edit", "UserContext") == true){
         	if(contentType == "JSON") {
@@ -567,10 +586,12 @@ $(document).ready(function(){
 	        		objUserContext = JSON.parse(userContext);
 	        		       			
         			if(isPublic){
-        				objUserContext.public = true;
+        				objImplementationParameters.public = true;
+		    			objImplementationParameters.owner = "null";
+		    			objUserContext.implementationparameters = objImplementationParameters;
 	    			}		
 	        		
-	        		parsedUserContext = JSON.stringify(objUserContext);
+	        		parsedUserContext = JSON.stringify(objUserContext).replace("implementationparameters", "implementation-parameters");
 	        		isFormatCorrect = true;
         		} else {
         			$('#editUserContextMainErrSection').empty();
@@ -579,12 +600,13 @@ $(document).ready(function(){
         		}
           	} else {
           		if(isXML(userContext)){
-        			if(isPublic){
-        				var setPublicAttribute = userContext.replace("<user-context>", "<user-context public='true'>");
+          			if(isPublic){
+          				var setPublicAttribute = userContext.replace("</user-context>", "<implementation-parameters public='true'/> </user-context>");
         				parsedUserContext = setPublicAttribute;
-	    			} else {
-	    				parsedUserContext = userContext;
-	    			}
+          			} else {
+        				var setPublicAttribute = userContext.replace("</user-context>", "<implementation-parameters public='false'/> </user-context>");
+        				parsedUserContext = setPublicAttribute;
+          			}
         			        			
           			isFormatCorrect = true;
           		} else {
@@ -607,6 +629,7 @@ $(document).ready(function(){
     	var parsedEquipmentContext = "";
     	var contentType = $('#editEquipmentContextSelContentType option:selected').text();
     	var objEquipmentContext = {};
+    	var objImplementationParameters = {};
     	
     	if(validateInput(equipmentContext, "edit", "EquipmentContext") == true){
         	if(contentType == "JSON") {
@@ -614,10 +637,12 @@ $(document).ready(function(){
         			objEquipmentContext = JSON.parse(equipmentContext);
         			
         			if(isPublic){
-        				objEquipmentContext.public = true;
+        				objImplementationParameters.public = true;
+		    			objImplementationParameters.owner = "null";
+		    			objEquipmentContext.implementationparameters = objImplementationParameters;
 	    			}
         			
-        			parsedEquipmentContext = JSON.stringify(objEquipmentContext);
+        			parsedEquipmentContext = JSON.stringify(objEquipmentContext).replace("implementationparameters", "implementation-parameters");
 	        		isFormatCorrect = true;
         		} else {
         			$('#editEquipmentContextMainErrSection').empty();
@@ -628,10 +653,11 @@ $(document).ready(function(){
           		if(isXML(equipmentContext)){
     				
           			if(isPublic){
-        				var setPublicAttribute = equipmentContext.replace("<equipment-context>", "<equipment-context public='true'>");
+        				var setPublicAttribute = equipmentContext.replace("<equipment-context>", "<equipment-context> <implementation-parameters public='true'/>");
         				parsedEquipmentContext = setPublicAttribute;
           			} else {
-          				parsedEquipmentContext = equipmentContext;
+        				var setPublicAttribute = equipmentContext.replace("<equipment-context>", "<equipment-context> <implementation-parameters public='false'/>");
+        				parsedEquipmentContext = setPublicAttribute;
           			}
           			
           			
@@ -656,6 +682,7 @@ $(document).ready(function(){
     	var parsedTaskContext = "";
     	var contentType = $('#editTaskContextSelContentType option:selected').text();
     	var objTaskContext = {};
+    	var objImplementationParameters = {};
     	
 	    if(validateInput(taskContext, "edit", "TaskContext") == true){
         	if(contentType == "JSON") {
@@ -663,10 +690,12 @@ $(document).ready(function(){
         			objTaskContext = JSON.parse(taskContext);
 	        		
         			if(isPublic){
-	        			objTaskContext.public = true;
+		    			objImplementationParameters.public = true;
+		    			objImplementationParameters.owner = "null";
+		    			objTaskContext.implementationparameters = objImplementationParameters;
 	    			}
         			
-        			parsedTaskContext = JSON.stringify(objTaskContext);
+        			parsedTaskContext = JSON.stringify(objTaskContext).replace("implementationparameters", "implementation-parameters");
 	        		isFormatCorrect = true;
         		} else {
         			$('#editTaskContextMainErrSection').empty();
@@ -676,10 +705,11 @@ $(document).ready(function(){
           	} else {
           		if(isXML(taskContext)){       			
           			if(isPublic){
-        				var setPublicAttribute = taskContext.replace("<task-context>", "<task-context public='true'>");
+        				var setPublicAttribute = taskContext.replace("<task-context>", "<task-context> <implementation-parameters public='true'/>");
         				parsedTaskContext = setPublicAttribute;
           			} else {
-          				parsedTaskContext  = taskContext ;
+        				var setPublicAttribute = taskContext.replace("<task-context>", "<task-context> <implementation-parameters public='false'/>");
+        				parsedTaskContext = setPublicAttribute;
           			}
           			
           			isFormatCorrect = true;
@@ -702,7 +732,8 @@ $(document).ready(function(){
     	var isPublic = $("#cbEditEnvironmentContext").is(':checked');
     	var parsedEnvironmentContext = "";
     	var objEnvironmentContext = {};
-    	var contentType = $('#editEnvironmentContextSelContentType option:selected').text();	
+    	var contentType = $('#editEnvironmentContextSelContentType option:selected').text();
+    	var objImplementationParameters = {};
     	
     	if(validateInput(environmentContext, "edit", "EnvironmentContext") == true){
     		if(contentType == "JSON") {
@@ -710,10 +741,12 @@ $(document).ready(function(){
         			objEnvironmentContext = JSON.parse(environmentContext);
         			
         			if(isPublic){
-        				objEnvironmentContext.public = true;
+        				objImplementationParameters.public = true;
+		    			objImplementationParameters.owner = "null";
+		    			objEnvironmentContext.implementationparameters = objImplementationParameters;
 	    			}
         			
-	        		parsedEnvironmentContext = JSON.stringify(objEnvironmentContext);
+	        		parsedEnvironmentContext = JSON.stringify(objEnvironmentContext).replace("implementationparameters", "implementation-parameters");
 	        		isFormatCorrect = true;
         		} else {
         			$('#editEnvironmentContextMainErrSection').empty();
@@ -724,10 +757,11 @@ $(document).ready(function(){
           		if(isXML(environmentContext)){
           			
           			if(isPublic){
-        				var setPublicAttribute = environmentContext.replace("<environment-context>", "<environment-context public='true'>");
+        				var setPublicAttribute = environmentContext.replace("<environment-context>", "<environment-context> <implementation-parameters public='true'/>");
         				parsedEnvironmentContext = setPublicAttribute;
           			} else {
-          				parsedEnvironmentContext  = environmentContext ;
+        				var setPublicAttribute = environmentContext.replace("<environment-context>", "<environment-context> <implementation-parameters public='false'/>");
+        				parsedEnvironmentContext = setPublicAttribute;
           			}
           			
           			isFormatCorrect = true;
@@ -798,10 +832,10 @@ function validateInput (contextInput, contextActionName, contextName){
 
 function getContext(id, contextName){
 	switch(contextName){
-		case "taskContext" : return JSON.parse(openape.getTaskContext(id, "JSON").responseText); break;
-		case "equipmentContext" : return JSON.parse(openape.getEquipmentContext(id, "JSON").responseText); break;
-		case "environmentContext" : return JSON.parse(openape.getEnvironmentContext(id, "JSON").responseText); break;
-		case "userContext" : return JSON.parse(openape.getUserContext(id, "JSON").responseText); break;
+		case "taskContext" : return openape.getTaskContext(id, "JSON").responseJSON; break;
+		case "equipmentContext" : return openape.getEquipmentContext(id, "JSON").responseJSON; break;
+		case "environmentContext" : return openape.getEnvironmentContext(id, "JSON").responseJSON; break;
+		case "userContext" : return openape.getUserContext(id, "JSON").responseJSON; break;
 	}	
 }
 
@@ -818,7 +852,7 @@ function viewContext(event){
 	if(contextName == "UserContext"){
 		objContext = getContext(event.id, contextNameLowerCase);
 	} else {
-		objContext.propertys = getContext(event.id, contextNameLowerCase).propertys;
+		objContext = getContext(event.id, contextNameLowerCase);
 	}
 	delete objContext.public;
 	
@@ -830,24 +864,24 @@ function viewContext(event){
 function editContext(event){
 	var contextName = event.attributes[2].value;
 	var contextNameLowerCase = contextName.substring(0, 1).toLowerCase()+contextName.substring(1);
-	var isPublic = getContext(event.id, contextNameLowerCase).public;
+	var isPublic = $('#public_'+event.id).text();
 	var objContext = new Object();
 	
 	$('#edit'+contextName+'Modal').modal('show');
 	
 	if(contextName != "UserContext"){
-		objContext.propertys = getContext(event.id, contextNameLowerCase).propertys;
+		objContext = getContext(event.id, contextNameLowerCase);
 	} else {
 		objContext = getContext(event.id, "userContext");
 	}
 		
-	if(isPublic == true){
+	if(isPublic == "true"){
 		$("#cbEdit"+contextName).prop('checked', true);
 	} else {
 		$("#cbEdit"+contextName).prop('checked', false);
 	}
 	
-	delete objContext.public;
+	//delete objContext.public;
 	var context = JSON.stringify(objContext, undefined, 2);
 	localStorage.setItem("id", event.id);
 	
@@ -866,33 +900,40 @@ function deleteContext(event){
 function copyContext(event){
 	var contextName = event.attributes[2].value;
 	var contextNameLowerCase = contextName.substring(0, 1).toLowerCase()+contextName.substring(1);
-	
+	var implementationParameters = {};
 	var objContext = new Object();
-	var isPublic = getContext(event.id, contextNameLowerCase).public;
+	var isPublic = $('#public_'+event.id).text();
 	var copyResponse = "";
 	 
-	if(isPublic == true){
-		objContext.public = true;
+	if(isPublic == "true"){
+		implementationParameters.owner = "null";
+		implementationParameters.public = true;
 	} else {
-		objContext.public = false;
+		implementationParameters.owner = "null";
+		implementationParameters.public = false;
 	}
+	
 
 	if(contextName == "UserContext"){
 		objContext = getContext(event.id, "userContext");
-		var context = JSON.stringify(objContext);
+		objContext.implementationParameters = implementationParameters;
+		context = JSON.stringify(objContext).replace("implementationParameters", "implementation-parameters");
 		copyResponse = openape.createUserContext(context, "JSON").status;
 	} else {
 		if(contextName == "TaskContext"){
 			objContext = getContext(event.id, "taskContext");
-			var context = JSON.stringify(objContext);
+			objContext.implementationParameters = implementationParameters;
+			context = JSON.stringify(objContext).replace("implementationParameters", "implementation-parameters");
 			copyResponse = openape.createTaskContext(context, "JSON").status;
 		} else if(contextName == "EnvironmentContext"){
 			objContext = getContext(event.id, "environmentContext");
-			var context = JSON.stringify(objContext);
+			objContext.implementationParameters = implementationParameters;
+			context = JSON.stringify(objContext).replace("implementationParameters", "implementation-parameters");
 			copyResponse = openape.createEnvironmentContext(context, "JSON").status;
 		} else if(contextName == "EquipmentContext"){
 			objContext = getContext(event.id, "equipmentContext");
-			var context = JSON.stringify(objContext);
+			objContext.implementationParameters = implementationParameters;
+			context = JSON.stringify(objContext).replace("implementationParameters", "implementation-parameters");
 			copyResponse = openape.createEquipmentContext(context, "JSON").status;
 		}
 	}
