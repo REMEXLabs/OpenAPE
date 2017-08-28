@@ -30,6 +30,12 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  */
 public class ImplementationParameters {
 
+    private static final String FALSE = "false";
+
+    private static final String PUBLIC = "public";
+
+    private static final String IMPLEMENTATION_PARAMETERS = "implementation-parameters";
+
     /**
      * If input xml is missing the public attribute, it is set with value false.
      *
@@ -52,14 +58,17 @@ public class ImplementationParameters {
         final NodeList children = root.getChildNodes();
         boolean found = false;
         for (int i = 0; i < children.getLength(); i++) {
-            if (children.item(i).getNodeName().equals("implementation-parameters")) {
+            if (children.item(i).getNodeName()
+                    .equals(ImplementationParameters.IMPLEMENTATION_PARAMETERS)) {
                 found = true;
             }
         }
         if (!found) {
-            final Element implemParams = document.createElement("implementation-parameters");
+            final Element implemParams = document
+                    .createElement(ImplementationParameters.IMPLEMENTATION_PARAMETERS);
             root.appendChild(implemParams);
-            implemParams.setAttribute("public", "false");
+            implemParams.setAttribute(ImplementationParameters.PUBLIC,
+                    ImplementationParameters.FALSE);
         }
         // Create String from document
         final DOMSource domSource = new DOMSource(document);
@@ -74,7 +83,7 @@ public class ImplementationParameters {
 
     private String owner;
 
-    @DefaultValue("false")
+    @DefaultValue(ImplementationParameters.FALSE)
     private boolean isPublic;
 
     @XmlTransient
@@ -82,7 +91,7 @@ public class ImplementationParameters {
         return this.owner;
     }
 
-    @XmlAttribute(name = "public")
+    @XmlAttribute(name = ImplementationParameters.PUBLIC)
     public boolean isPublic() {
         return this.isPublic;
     }

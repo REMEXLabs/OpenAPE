@@ -22,6 +22,7 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.xml.XMLConstants;
@@ -36,6 +37,7 @@ import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 
 import org.openape.api.databaseObjectBase.DatabaseObject;
+import org.openape.api.databaseObjectBase.Descriptor;
 import org.openape.api.databaseObjectBase.ImplementationParameters;
 import org.openape.api.databaseObjectBase.Property;
 import org.w3c.dom.Document;
@@ -44,13 +46,89 @@ import org.xml.sax.InputSource;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+import com.fasterxml.jackson.databind.node.NullNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 /**
  * Task context object defined in 7.3.1
  */
 @XmlRootElement(name = "task-context")
 public class TaskContext extends DatabaseObject {
+    private static final String CONTEXTS_SCHEMA_XSD = "ContextsSchema.xsd";
+
+    private static final String TASK_CONTEXT = "task-context";
+
+    private static final String PUBLIC = "public";
+
+    private static final String OWNER = "owner";
+
+    private static final String IMPLEMENTATION_PARAMETERS = "implementation-parameters";
+
     private static final long serialVersionUID = 3325722856059287182L;
+
+    /**
+     * Generate the user context from the json string used in the front or back
+     * end. Sets public: false and owner: null.
+     *
+     * @return context object.
+     */
+    @JsonIgnore
+    public static TaskContext getObjectFromJson(final String json) throws IllegalArgumentException {
+        // Context to build from tree
+        final TaskContext context = new TaskContext();
+        try {
+            // Get tree from json.
+            final ObjectMapper mapper = new ObjectMapper();
+            final JsonNode rootNode = mapper.readTree(json);
+            final ObjectNode rootObject = (ObjectNode) rootNode;
+
+            // get owner and public if available.
+            final JsonNode implemParams = rootObject.get(TaskContext.IMPLEMENTATION_PARAMETERS);
+            if ((implemParams != null) && !(implemParams instanceof NullNode)) {
+                final ObjectNode implemParamsNode = (ObjectNode) implemParams;
+                context.getImplementationParameters().setOwner(
+                        implemParamsNode.get(TaskContext.OWNER).textValue());
+                context.getImplementationParameters().setPublic(
+                        implemParamsNode.get(TaskContext.PUBLIC).booleanValue());
+            }
+
+            // get root node
+            final JsonNode contextNode = rootObject.get(TaskContext.TASK_CONTEXT);
+            final ArrayNode contextArray = (ArrayNode) contextNode;
+            final Iterator<JsonNode> propertyIterator = contextArray.iterator();
+
+            // get property arrays from context array.
+            while (propertyIterator.hasNext()) {
+                final JsonNode propertyNode = propertyIterator.next();
+                final ArrayNode propertyArray = (ArrayNode) propertyNode;
+
+                // set property name and value,
+                final Property property = new Property();
+                context.addProperty(property);
+                property.setName(propertyArray.get(0).textValue());
+                property.setValue(propertyArray.get(1).textValue());
+
+                // for each descriptor of available, add them to property.
+                for (int i = 2; i < propertyArray.size(); i++) {
+                    final JsonNode descriptorNode = propertyArray.get(i);
+                    final ArrayNode descriptorArray = (ArrayNode) descriptorNode;
+                    final Descriptor descriptor = new Descriptor();
+                    property.addDescriptor(descriptor);
+                    descriptor.setName(descriptorArray.get(0).textValue());
+                    descriptor.setValue(descriptorArray.get(1).textValue());
+                }
+
+            }
+        } catch (final Exception e) {
+            e.printStackTrace();
+            throw new IllegalArgumentException(e.getMessage());
+        }
+        return context;
+    }
 
     /**
      * Generate the task context from the xml string used in the the front end.
@@ -69,7 +147,8 @@ public class TaskContext extends DatabaseObject {
                     .newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
 
             // get schema file from resource folder
-            final URL url = TaskContext.class.getClassLoader().getResource("ContextsSchema.xsd");
+            final URL url = TaskContext.class.getClassLoader().getResource(
+                    TaskContext.CONTEXTS_SCHEMA_XSD);
             final File file = new File(url.toURI());
             final Schema schema = schemaFactory.newSchema(file);
             factory.setSchema(schema);
@@ -134,6 +213,7 @@ public class TaskContext extends DatabaseObject {
     }
 
     private ImplementationParameters implementationParameters = new ImplementationParameters();
+
     private List<Property> propertys = new ArrayList<Property>();
 
     public TaskContext() {
@@ -159,8 +239,53 @@ public class TaskContext extends DatabaseObject {
 
     }
 
-    @JsonProperty(value = "implementation-parameters")
-    @XmlElement(name = "implementation-parameters")
+    /**
+     * Generate the json representation from the object used for the front end.
+     * Deletes owner and public field.
+     *
+     * @return json string.
+     */
+    @JsonIgnore
+    public String getForntEndJson() throws IOException {
+        String jsonString = null;
+        try {
+            // Setup document root
+            final JsonNodeFactory jsonNodeFactory = new JsonNodeFactory(false);
+            final ObjectNode root = new ObjectNode(jsonNodeFactory);
+            final ArrayNode contextArray = new ArrayNode(jsonNodeFactory);
+            root.set(TaskContext.TASK_CONTEXT, contextArray);
+
+            // Add all properties to context array.
+            final List<Property> properties = this.getPropertys();
+            for (final Property property : properties) {
+                final ArrayNode propertyArray = new ArrayNode(jsonNodeFactory);
+                contextArray.add(propertyArray);
+                // Add name and value to property array.
+                propertyArray.add(property.getName());
+                propertyArray.add(property.getValue());
+                // Add descriptors to property array, if available.
+                final List<Descriptor> descriptors = property.getDescriptors();
+                for (final Descriptor descriptor : descriptors) {
+                    final ArrayNode descriptorArray = new ArrayNode(jsonNodeFactory);
+                    propertyArray.add(descriptorArray);
+                    // Add name and value to descriptor array
+                    descriptorArray.add(descriptor.getName());
+                    descriptorArray.add(descriptor.getValue());
+                }
+            }
+            // write out string.
+            final StringWriter stringWriter = new StringWriter();
+            final ObjectMapper mapper = new ObjectMapper();
+            mapper.writeValue(stringWriter, root);
+            jsonString = stringWriter.toString();
+        } catch (final Exception e) {
+            throw new IOException(e.getMessage());
+        }
+        return jsonString;
+    }
+
+    @JsonProperty(value = TaskContext.IMPLEMENTATION_PARAMETERS)
+    @XmlElement(name = TaskContext.IMPLEMENTATION_PARAMETERS)
     public ImplementationParameters getImplementationParameters() {
         return this.implementationParameters;
     }

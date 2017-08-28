@@ -14,15 +14,13 @@ import spark.Spark;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class EnvironmentContextRESTInterface extends SuperRestInterface {
     private static EnvironmentContext createRequestObejct(final Request req)
             throws IllegalArgumentException, IOException {
         final String contentType = req.contentType();
         if (contentType.equals(MediaType.APPLICATION_JSON)) {
-            return (EnvironmentContext) SuperRestInterface.extractObjectFromRequest(req,
-                    EnvironmentContext.class);
+            return EnvironmentContext.getObjectFromJson(req.body());
         } else if (contentType.equals(MediaType.APPLICATION_XML)) {
             return EnvironmentContext.getObjectFromXml(req.body());
         } else {
@@ -37,9 +35,7 @@ public class EnvironmentContextRESTInterface extends SuperRestInterface {
 
         if (contentType != null) {
             if (contentType.equals(MediaType.APPLICATION_JSON)) {
-                final ObjectMapper mapper = new ObjectMapper();
-                final String jsonData = mapper.writeValueAsString(environmentContext);
-                return jsonData;
+                return environmentContext.getForntEndJson();
             } else if (contentType.equals(MediaType.APPLICATION_XML)) {
                 return environmentContext.getXML();
             } else {
