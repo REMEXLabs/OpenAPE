@@ -2,9 +2,11 @@ package org.openape.server.api.group;
 
 import java.util.List;
 
-import org.openape.api.DatabaseObject;
+import org.openape.api.databaseObjectBase.DatabaseObject;
 import org.openape.api.groups.GroupMembershipStatus;
 import org.openape.server.database.mongoDB.DatabaseConnection;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * This class defines a group. A group has members. Some of those members can
@@ -29,11 +31,6 @@ public class Group extends DatabaseObject {
      *
      */
     private static final long serialVersionUID = -4045513910309710151L;
-
-    /**
-     * Group's id.
-     */
-    private String id;
 
     /**
      * Group's name.
@@ -77,7 +74,8 @@ public class Group extends DatabaseObject {
      *            list with the members of this the group. If the group has no
      *            member(s) it can be empty but not null.
      */
-    public Group(final String name, final String description, final List<GroupMember> members, final boolean openAccess) {
+    public Group(final String name, final String description, final List<GroupMember> members,
+            final boolean openAccess) {
         this(null, name, description, members, openAccess);
     }
 
@@ -132,14 +130,14 @@ public class Group extends DatabaseObject {
     }
 
     /**
-     * Getter for the group's id.
+     * Equivalent to {@link DatabaseObject#getId()}, new name so json recognizes
+     * the filed.
      *
-     * @return the group's id, which is a string. If the group is not already
-     *         stored in the database, null can be returned.
+     * @return
      */
-    @Override
-    public String getId() {
-        return this.id;
+    @JsonProperty(value = "id")
+    public String getGroupId() {
+        return super.getId();
     }
 
     /**
@@ -214,15 +212,13 @@ public class Group extends DatabaseObject {
     }
 
     /**
-     * Setter for the group's id. It must not be empty and should not be null.
-     * Null is only allowed, if the group is not already stored in the database.
+     * Equivalent to {@link DatabaseObject#setId(String)}, new name so json
+     * recognizes the filed.
      *
      * @param id
-     *            the group's id
      */
-    @Override
-    public void setId(final String id) {
-        this.id = id;
+    public void setGroupId(final String id) {
+        super.setId(id);
     }
 
     /**

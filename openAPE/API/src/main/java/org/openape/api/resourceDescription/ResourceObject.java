@@ -8,19 +8,21 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 
 import org.openape.api.Messages;
-import org.openape.api.Resource;
+import org.openape.api.databaseObjectBase.DatabaseObject;
+import org.openape.api.databaseObjectBase.ImplementationParameters;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Resource object describing resource files. Including the storage path and the
  * owner id. It is stored into the database, when the corresponding resource is
  * stored onto the file system.
  */
-public class ResourceObject extends Resource {
+public class ResourceObject extends DatabaseObject {
     private static final long serialVersionUID = -5926306380613419041L;
+    private ImplementationParameters implementationParameters = new ImplementationParameters();
 
-    private String id = null;
     private String fileName = null;
     private String ownerId = null;
     private String mimeType = null;
@@ -60,7 +62,13 @@ public class ResourceObject extends Resource {
     @Override
     @XmlAttribute(name = "id")
     public String getId() {
-        return this.id;
+        return super.getId();
+    }
+
+    @JsonProperty(value = "implementation-parameters")
+    @XmlElement(name = "implementation-parameters")
+    public ImplementationParameters getImplementationParameters() {
+        return this.implementationParameters;
     }
 
     @XmlAttribute(name = "mimeType")
@@ -95,7 +103,11 @@ public class ResourceObject extends Resource {
 
     @Override
     public void setId(final String id) {
-        this.id = id;
+        super.setId(id);
+    }
+
+    public void setImplementationParameters(final ImplementationParameters implementationParameters) {
+        this.implementationParameters = implementationParameters;
     }
 
     public void setMimeType(final String mimeType) {

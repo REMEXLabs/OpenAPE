@@ -2,8 +2,8 @@ package org.openape.server.requestHandler;
 
 import java.io.IOException;
 
-import org.openape.api.DatabaseObject;
 import org.openape.api.Messages;
+import org.openape.api.databaseObjectBase.DatabaseObject;
 import org.openape.api.listing.Listing;
 import org.openape.server.database.mongoDB.DatabaseConnection;
 import org.openape.server.database.mongoDB.MongoCollectionTypes;
@@ -73,7 +73,8 @@ public class ListingRequestHandler {
         // get database connection.
         final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
 
-        final boolean success = databaseConnection.deleteDatabaseObject(ListingRequestHandler.COLLECTIONTOUSE, id);
+        final boolean success = databaseConnection.deleteDatabaseObject(
+                ListingRequestHandler.COLLECTIONTOUSE, id);
         if (!success) {
             throw new IllegalArgumentException(
                     Messages.getString("ListingRequestHandler.NoObjectWithThatIDErrorMsg")); //$NON-NLS-1$

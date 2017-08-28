@@ -3,12 +3,13 @@ package org.openape.api.user;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.openape.api.DatabaseObject;
+import org.openape.api.databaseObjectBase.DatabaseObject;
 import org.pac4j.core.profile.CommonProfile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class User extends DatabaseObject {
     private static final long serialVersionUID = -5694679880590931589L;
@@ -25,7 +26,6 @@ public class User extends DatabaseObject {
         return user;
     }
 
-    private String id;
     private String username;
     private String email;
     @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -33,13 +33,12 @@ public class User extends DatabaseObject {
 
     private List<String> roles;
 
-    public String getEmail() {
-        return this.email;
+    public User() {
+
     }
 
-    @Override
-    public String getId() {
-        return this.id;
+    public String getEmail() {
+        return this.email;
     }
 
     public String getPassword() {
@@ -50,17 +49,23 @@ public class User extends DatabaseObject {
         return this.roles;
     }
 
+    /**
+     * Equivalent to {@link DatabaseObject#getId()}, new name so json recognizes
+     * the filed.
+     *
+     * @return
+     */
+    @JsonProperty(value = "id")
+    public String getUserId() {
+        return super.getId();
+    }
+
     public String getUsername() {
         return this.username;
     }
 
     public void setEmail(final String email) {
         this.email = email;
-    }
-
-    @Override
-    public void setId(final String id) {
-        this.id = id;
     }
 
     /**
@@ -73,6 +78,16 @@ public class User extends DatabaseObject {
 
     public void setRoles(final List<String> roles) {
         this.roles = roles;
+    }
+
+    /**
+     * Equivalent to {@link DatabaseObject#setId(String)}, new name so json
+     * recognizes the filed.
+     *
+     * @param id
+     */
+    public void setUserId(final String id) {
+        super.setId(id);
     }
 
     public void setUsername(final String username) {

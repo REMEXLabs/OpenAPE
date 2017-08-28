@@ -18,7 +18,9 @@ public class TestUserContext {
     @Test
     public void testGetJson() throws IOException {
         final UserContext sample = TestDatabaseConnection.sampleUserContext();
-        Assert.assertTrue(sample.equals(UserContext.getObjectFromJson(sample.getBackEndJson())));
+        final String json = sample.getBackEndJson();
+        System.out.println(json);
+        Assert.assertTrue(sample.equals(UserContext.getObjectFromJson(json)));
 
     }
 
@@ -27,7 +29,7 @@ public class TestUserContext {
         final UserContext sample = TestDatabaseConnection.sampleUserContext();
         try {
             final String xml = sample.getXML();
-            // System.out.println(xml);
+            System.out.println(xml);
             final UserContext userContext = UserContext.getObjectFromXml(xml);
             Assert.assertTrue(userContext.equals(sample));
         } catch (final IOException e) {
@@ -37,11 +39,11 @@ public class TestUserContext {
 
     @Test
     public void testXmlTypeAdding() {
-        Scanner scanner = new Scanner(getClass().getResourceAsStream("sample.xml"));
+        final Scanner scanner = new Scanner(this.getClass().getResourceAsStream("sample.xml"));
         String s = new String();
-        while(scanner.hasNextLine()){
-                s = s + scanner.nextLine();
-         }
+        while (scanner.hasNextLine()) {
+            s = s + scanner.nextLine();
+        }
         scanner.close();
         UserContext.getObjectFromXml(s);
     }

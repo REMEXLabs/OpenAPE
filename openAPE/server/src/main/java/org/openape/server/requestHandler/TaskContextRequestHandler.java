@@ -2,8 +2,8 @@ package org.openape.server.requestHandler;
 
 import java.io.IOException;
 
-import org.openape.api.DatabaseObject;
 import org.openape.api.Messages;
+import org.openape.api.databaseObjectBase.DatabaseObject;
 import org.openape.api.taskcontext.TaskContext;
 import org.openape.server.database.mongoDB.DatabaseConnection;
 import org.openape.server.database.mongoDB.MongoCollectionTypes;
@@ -139,8 +139,8 @@ public class TaskContextRequestHandler {
         // is thrown. IO exceptions are thrown through.
         boolean success;
         try {
-            success = databaseConnection.updateDatabaseObject(TaskContextRequestHandler.COLLECTIONTOUSE,
-                    (DatabaseObject) taskContext, id);
+            success = databaseConnection.updateDatabaseObject(
+                    TaskContextRequestHandler.COLLECTIONTOUSE, (DatabaseObject) taskContext, id);
         } catch (final ClassCastException e) {
             throw new IllegalArgumentException(e.getMessage());
         }

@@ -2,8 +2,8 @@ package org.openape.server.requestHandler;
 
 import java.io.IOException;
 
-import org.openape.api.DatabaseObject;
 import org.openape.api.Messages;
+import org.openape.api.databaseObjectBase.DatabaseObject;
 import org.openape.api.environmentcontext.EnvironmentContext;
 import org.openape.server.database.mongoDB.DatabaseConnection;
 import org.openape.server.database.mongoDB.MongoCollectionTypes;
@@ -39,7 +39,8 @@ public class EnvironmentContextRequestHandler {
         // argument exceptions. IO exceptions will just be thrown through.
         String id = null;
         try {
-            id = databaseConnection.storeDatabaseObject(EnvironmentContextRequestHandler.COLLECTIONTOUSE,
+            id = databaseConnection.storeDatabaseObject(
+                    EnvironmentContextRequestHandler.COLLECTIONTOUSE,
                     (DatabaseObject) environmentContext);
         } catch (final ClassCastException e) {
             throw new IllegalArgumentException(e.getMessage());

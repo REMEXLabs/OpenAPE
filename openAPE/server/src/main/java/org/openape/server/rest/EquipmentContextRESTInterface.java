@@ -14,15 +14,13 @@ import spark.Spark;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class EquipmentContextRESTInterface extends SuperRestInterface {
     private static EquipmentContext createRequestObejct(final Request req)
             throws IllegalArgumentException, IOException {
         final String contentType = req.contentType();
         if (contentType.equals(MediaType.APPLICATION_JSON)) {
-            return (EquipmentContext) SuperRestInterface.extractObjectFromRequest(req,
-                    EquipmentContext.class);
+            return EquipmentContext.getObjectFromJson(req.body());
         } else if (contentType.equals(MediaType.APPLICATION_XML)) {
             return EquipmentContext.getObjectFromXml(req.body());
         } else {
@@ -33,21 +31,19 @@ public class EquipmentContextRESTInterface extends SuperRestInterface {
     private static String createReturnString(final Request req,
             final EquipmentContext equipmentContext) throws IOException, IllegalArgumentException {
         final String contentType = req.contentType();
-        
-        if(contentType != null ){
-        	 if (contentType.equals(MediaType.APPLICATION_JSON)) {
-                 final ObjectMapper mapper = new ObjectMapper();
-                 final String jsonData = mapper.writeValueAsString(equipmentContext);
-                 return jsonData;
-             } else if (contentType.equals(MediaType.APPLICATION_XML)) {
-                 return equipmentContext.getXML();
-             } else {
-                 throw new IllegalArgumentException("wrong content-type");
-             }
+
+        if (contentType != null) {
+            if (contentType.equals(MediaType.APPLICATION_JSON)) {
+                return equipmentContext.getForntEndJson();
+            } else if (contentType.equals(MediaType.APPLICATION_XML)) {
+                return equipmentContext.getXML();
+            } else {
+                throw new IllegalArgumentException("wrong content-type");
+            }
         } else {
-        	return equipmentContext.getXML();
+            return equipmentContext.getXML();
         }
-       
+
     }
 
     public static void setupEquipmentContextRESTInterface(
@@ -74,8 +70,8 @@ public class EquipmentContextRESTInterface extends SuperRestInterface {
                                 .createRequestObejct(req);
                         // Make sure to set the id of the authenticated user as
                         // the ownerId
-                        receivedEquipmentContext.setOwner(auth.getAuthenticatedUser(req, res)
-                                .getId());
+                        receivedEquipmentContext.getImplementationParameters().setOwner(
+                                auth.getAuthenticatedUser(req, res).getId());
                         // Test the object for validity.
                         if (!receivedEquipmentContext.isValid()) {
                             res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
@@ -113,8 +109,9 @@ public class EquipmentContextRESTInterface extends SuperRestInterface {
                                 .getEquipmentContextById(equipmentContextId);
                         // Make sure only admins or the owner can view the
                         // context, except if it is public
-                        auth.allowAdminOwnerAndPublic(req, res, equipmentContext.getOwner(),
-                                equipmentContext.isPublic());
+                        auth.allowAdminOwnerAndPublic(req, res, equipmentContext
+                                .getImplementationParameters().getOwner(), equipmentContext
+                                .getImplementationParameters().isPublic());
                         res.status(SuperRestInterface.HTTP_STATUS_OK);
                         res.type(Messages.getString("EquipmentContextRESTInterface.JsonMimeType")); //$NON-NLS-1$
                         final String jsonData = EquipmentContextRESTInterface.createReturnString(
@@ -134,54 +131,57 @@ public class EquipmentContextRESTInterface extends SuperRestInterface {
         /**
          * Request 7.4.4 update equipment-context.
          */
-        Spark.put(Messages.getString("EquipmentContextRESTInterface.EquipmentContextURLWithID"), //$NON-NLS-1$
+        Spark.put(
+                Messages.getString("EquipmentContextRESTInterface.EquipmentContextURLWithID"), //$NON-NLS-1$
                 (req, res) -> {
-                final String equipmentContextId = req.params(Messages
-                        .getString("EquipmentContextRESTInterface.IDParam")); //$NON-NLS-1$
-                try {
-                    final EquipmentContext receivedEquipmentContext = EquipmentContextRESTInterface
-                            .createRequestObejct(req);
-                    // Test the object for validity.
-                    if (!receivedEquipmentContext.isValid()) {
+                    final String equipmentContextId = req.params(Messages
+                            .getString("EquipmentContextRESTInterface.IDParam")); //$NON-NLS-1$
+                    try {
+                        final EquipmentContext receivedEquipmentContext = EquipmentContextRESTInterface
+                                .createRequestObejct(req);
+                        // Test the object for validity.
+                        if (!receivedEquipmentContext.isValid()) {
+                            res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
+                            return Messages
+                                    .getString("EquipmentContextRESTInterface.NoValidObjectErrorMassage"); //$NON-NLS-1$
+                        }
+                        // Check if the user context does exist
+                        final EquipmentContext equipmentContext = requestHandler
+                                .getEquipmentContextById(equipmentContextId);
+                        // Make sure only admins and the owner can update a
+                        // context
+                        auth.allowAdminAndOwner(req, res, equipmentContext
+                                .getImplementationParameters().getOwner());
+                        receivedEquipmentContext.getImplementationParameters().setOwner(
+                                equipmentContext.getImplementationParameters().getOwner()); // Make
+                        // sure
+                        // the
+                        // owner
+                        // can't
+                        // be
+                        // changed
+                        // Perform update
+                        requestHandler.updateEquipmentContextById(equipmentContextId,
+                                receivedEquipmentContext);
+                        res.status(SuperRestInterface.HTTP_STATUS_OK);
+                        return Messages.getString("EquipmentContextRESTInterface.EmptyString"); //$NON-NLS-1$ //TODO
+                                                                                                // $NON-NLS-1$
+                                                                                                //$NON-NLS-1$ return
+                                                                                                // $NON-NLS-1$
+                                                                                                //$NON-NLS-1$ right
+                                                                                                // $NON-NLS-1$
+                                                                                                //$NON-NLS-1$ statuscode
+                    } catch (JsonParseException | JsonMappingException | IllegalArgumentException e) {
+                        // If the parse or update is not successful return bad
+                        // request
+                        // error code.
                         res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
-                        return Messages
-                                .getString("EquipmentContextRESTInterface.NoValidObjectErrorMassage"); //$NON-NLS-1$
+                        return e.getMessage();
+                    } catch (final IOException e) {
+                        res.status(SuperRestInterface.HTTP_STATUS_INTERNAL_SERVER_ERROR);
+                        return e.getMessage();
                     }
-                    // Check if the user context does exist
-                    final EquipmentContext equipmentContext = requestHandler
-                            .getEquipmentContextById(equipmentContextId);
-                    // Make sure only admins and the owner can update a
-                    // context
-                    auth.allowAdminAndOwner(req, res, equipmentContext.getOwner());
-                    receivedEquipmentContext.setOwner(equipmentContext.getOwner()); // Make
-                                                                                    // sure
-                                                                                    // the
-                                                                                    // owner
-                                                                                    // can't
-                                                                                    // be
-                                                                                    // changed
-                    // Perform update
-                    requestHandler.updateEquipmentContextById(equipmentContextId,
-                            receivedEquipmentContext);
-                    res.status(SuperRestInterface.HTTP_STATUS_OK);
-                    return Messages.getString("EquipmentContextRESTInterface.EmptyString"); //$NON-NLS-1$ //TODO
-                                                                                            // $NON-NLS-1$
-                                                                                            //$NON-NLS-1$ return
-                                                                                            // $NON-NLS-1$
-                                                                                            //$NON-NLS-1$ right
-                                                                                            // $NON-NLS-1$
-                                                                                            //$NON-NLS-1$ statuscode
-                } catch (JsonParseException | JsonMappingException | IllegalArgumentException e) {
-                    // If the parse or update is not successful return bad
-                    // request
-                    // error code.
-                    res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
-                    return e.getMessage();
-                } catch (final IOException e) {
-                    res.status(SuperRestInterface.HTTP_STATUS_INTERNAL_SERVER_ERROR);
-                    return e.getMessage();
-                }
-            });
+                });
 
         /**
          * Request 7.4.5 delete equipment-context.
@@ -196,7 +196,8 @@ public class EquipmentContextRESTInterface extends SuperRestInterface {
                                 .getEquipmentContextById(equipmentContextId);
                         // Make sure only admins and the owner can delete a
                         // context
-                        auth.allowAdminAndOwner(req, res, equipmentContext.getOwner());
+                        auth.allowAdminAndOwner(req, res, equipmentContext
+                                .getImplementationParameters().getOwner());
                         // if it is successful return empty string.
                         requestHandler.deleteEquipmentContextById(equipmentContextId);
                         res.status(SuperRestInterface.HTTP_STATUS_NO_CONTENT);

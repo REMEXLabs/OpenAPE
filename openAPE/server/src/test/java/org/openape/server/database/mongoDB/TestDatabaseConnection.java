@@ -7,7 +7,7 @@ import java.util.List;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.openape.api.Property;
+import org.openape.api.databaseObjectBase.Property;
 import org.openape.api.resourceDescription.ResourceDescription;
 import org.openape.api.usercontext.Condition;
 import org.openape.api.usercontext.Context;
@@ -34,7 +34,7 @@ public class TestDatabaseConnection {
      */
     public static UserContext sampleUserContext() {
         final UserContext userContext = new UserContext();
-        userContext.setPublic(true);
+        userContext.getImplementationParameters().setPublic(true);
         final Context defaultPreference = new Context("default", "Default preferences");
         final Context darkPreference = new Context("dark", "little environmental light");
         userContext.addContext(defaultPreference);
@@ -85,26 +85,27 @@ public class TestDatabaseConnection {
             String id;
             Assert.assertNotEquals(
                     "",
-                    id = this.dataBaseConnection.storeDatabaseObject(MongoCollectionTypes.USERCONTEXT,
-                            sampleContext));
+                    id = this.dataBaseConnection.storeDatabaseObject(
+                            MongoCollectionTypes.USERCONTEXT, sampleContext));
             System.out.println(id);
             // test get.
-            final UserContext recievedContext = (UserContext) this.dataBaseConnection.getDatabaseObjectById(
-                    MongoCollectionTypes.USERCONTEXT, id);
+            final UserContext recievedContext = (UserContext) this.dataBaseConnection
+                    .getDatabaseObjectById(MongoCollectionTypes.USERCONTEXT, id);
             Assert.assertTrue(sampleContext.equals(recievedContext));
             // remove second context.
             final List<Context> newContexts = new ArrayList<Context>();
             newContexts.add(sampleContext.getContext("default"));
             sampleContext.setContexts(newContexts);
             // test update
-            this.dataBaseConnection.updateDatabaseObject(MongoCollectionTypes.USERCONTEXT, sampleContext, id);
-            final UserContext updatetContext = (UserContext) this.dataBaseConnection.getDatabaseObjectById(
-                    MongoCollectionTypes.USERCONTEXT, id);
+            this.dataBaseConnection.updateDatabaseObject(MongoCollectionTypes.USERCONTEXT,
+                    sampleContext, id);
+            final UserContext updatetContext = (UserContext) this.dataBaseConnection
+                    .getDatabaseObjectById(MongoCollectionTypes.USERCONTEXT, id);
             Assert.assertTrue(sampleContext.equals(updatetContext));
             Assert.assertFalse(TestDatabaseConnection.sampleUserContext().equals(updatetContext));
             // test delete
-            Assert.assertTrue(this.dataBaseConnection.deleteDatabaseObject(MongoCollectionTypes.USERCONTEXT,
-                    id));
+            Assert.assertTrue(this.dataBaseConnection.deleteDatabaseObject(
+                    MongoCollectionTypes.USERCONTEXT, id));
         } catch (ClassCastException | IOException e) {
             e.printStackTrace();
         }

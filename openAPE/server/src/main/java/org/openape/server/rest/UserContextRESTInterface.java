@@ -42,20 +42,19 @@ public class UserContextRESTInterface extends SuperRestInterface {
     private static String createReturnString(final Request req, final UserContext userContext)
             throws IOException, IllegalArgumentException {
         final String contentType = req.contentType();
-        
-        if(contentType != null){
-        	 if (contentType.equals(MediaType.APPLICATION_JSON)) {
-                 return userContext.getForntEndJson();	
-             } else if (contentType.equals(MediaType.APPLICATION_XML)) {
-                 return userContext.getXML();
-             }
-             else {
-                 throw new IllegalArgumentException("wrong content-type");
-             }
+
+        if (contentType != null) {
+            if (contentType.equals(MediaType.APPLICATION_JSON)) {
+                return userContext.getForntEndJson();
+            } else if (contentType.equals(MediaType.APPLICATION_XML)) {
+                return userContext.getXML();
+            } else {
+                throw new IllegalArgumentException("wrong content-type");
+            }
         } else {
-        	return userContext.getXML();
+            return userContext.getXML();
         }
-       
+
     }
 
     private static String createReturnStringListRequest(final Request req, final Response res,
@@ -106,14 +105,7 @@ public class UserContextRESTInterface extends SuperRestInterface {
         Spark.before(Messages.getString("UserContextRESTInterface.UserContextURLWithID"),
                 auth.authorize("anonymous"));
 
-        Spark.get(Messages.getString("UserContextRESTInterface.UserContextURLWithoutID"),
-                (req, res) -> {
-
-                    // UserContextList ucl =
-                    // requestHandler.getUserContextsForUser(auth.getAuthenticatedUser(req,
-                    // res));
-                return null; // ucl;
-            });
+       
 
         /**
          * Request 7.2.2 create user-context. Can only be accessed by roles
@@ -132,7 +124,8 @@ public class UserContextRESTInterface extends SuperRestInterface {
                         SuperRestInterface.logger.debug("lusm: requesting user");
                         final String id = auth.getAuthenticatedUser(req, res).getId();
                         SuperRestInterface.logger.info("id: " + id);
-                        receivedUserContext.setOwner(auth.getAuthenticatedUser(req, res).getId());
+                        receivedUserContext.getImplementationParameters().setOwner(
+                                auth.getAuthenticatedUser(req, res).getId());
                         SuperRestInterface.logger.debug("Lusm: success");
                         // Test the object for validity.
                         if (!receivedUserContext.isValid()) {
@@ -171,8 +164,9 @@ public class UserContextRESTInterface extends SuperRestInterface {
                                 .getUserContextById(userContextId);
                         // Make sure only admins or the owner can view the
                         // context, except if it is public
-                        auth.allowAdminOwnerAndPublic(req, res, userContext.getOwner(),
-                                userContext.isPublic());
+                        auth.allowAdminOwnerAndPublic(req, res, userContext
+                                .getImplementationParameters().getOwner(), userContext
+                                .getImplementationParameters().isPublic());
                         res.status(SuperRestInterface.HTTP_STATUS_OK);
                         res.type(Messages.getString("UserContextRESTInterface.JsonMimeType")); //$NON-NLS-1$
                         final String jsonData = UserContextRESTInterface.createReturnString(req,
@@ -191,53 +185,56 @@ public class UserContextRESTInterface extends SuperRestInterface {
         /**
          * Request 7.2.4 update user-context.
          */
-        Spark.put(Messages.getString("UserContextRESTInterface.UserContextURLWithID"), //$NON-NLS-1$
+        Spark.put(
+                Messages.getString("UserContextRESTInterface.UserContextURLWithID"), //$NON-NLS-1$
                 (req, res) -> {
-                final String userContextId = req.params(Messages
-                        .getString("UserContextRESTInterface.IDParam")); //$NON-NLS-1$
-                try {
-                    final UserContext receivedUserContext = UserContextRESTInterface
-                            .createRequestObejct(req);
-                    // Test the object for validity.
-                    if (!receivedUserContext.isValid()) {
+                    final String userContextId = req.params(Messages
+                            .getString("UserContextRESTInterface.IDParam")); //$NON-NLS-1$
+                    try {
+                        final UserContext receivedUserContext = UserContextRESTInterface
+                                .createRequestObejct(req);
+                        // Test the object for validity.
+                        if (!receivedUserContext.isValid()) {
+                            res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
+                            return Messages
+                                    .getString("UserContextRESTInterface.NoValidObjectErrorMassage"); //$NON-NLS-1$
+                        }
+                        // Check if the user context does exist
+                        final UserContext userContext = requestHandler
+                                .getUserContextById(userContextId);
+                        // Make sure only admins and the owner can update a
+                        // context
+                        auth.allowAdminAndOwner(req, res, userContext.getImplementationParameters()
+                                .getOwner());
+                        receivedUserContext.getImplementationParameters().setOwner(
+                                userContext.getImplementationParameters().getOwner()); // Make
+                        // sure
+                        // the
+                        // owner
+                        // can't
+                        // be
+                        // changed
+                        // Perform the update
+                        requestHandler.updateUserContextById(userContextId, receivedUserContext);
+                        res.status(SuperRestInterface.HTTP_STATUS_OK);
+                        return Messages.getString("UserContextRESTInterface.EmptyString"); //$NON-NLS-1$ //TODO
+                                                                                           // $NON-NLS-1$
+                                                                                           //$NON-NLS-1$ return
+                                                                                           // $NON-NLS-1$
+                                                                                           //$NON-NLS-1$ right
+                                                                                           // $NON-NLS-1$
+                                                                                           //$NON-NLS-1$ statuscode
+                    } catch (JsonParseException | JsonMappingException | IllegalArgumentException e) {
+                        // If the parse or update is not successful return bad
+                        // request
+                        // error code.
                         res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
-                        return Messages
-                                .getString("UserContextRESTInterface.NoValidObjectErrorMassage"); //$NON-NLS-1$
+                        return e.getMessage();
+                    } catch (final IOException e) {
+                        res.status(SuperRestInterface.HTTP_STATUS_INTERNAL_SERVER_ERROR);
+                        return e.getMessage();
                     }
-                    // Check if the user context does exist
-                    final UserContext userContext = requestHandler
-                            .getUserContextById(userContextId);
-                    // Make sure only admins and the owner can update a
-                    // context
-                    auth.allowAdminAndOwner(req, res, userContext.getOwner());
-                    receivedUserContext.setOwner(userContext.getOwner()); // Make
-                                                                          // sure
-                                                                          // the
-                                                                          // owner
-                                                                          // can't
-                                                                          // be
-                                                                          // changed
-                    // Perform the update
-                    requestHandler.updateUserContextById(userContextId, receivedUserContext);
-                    res.status(SuperRestInterface.HTTP_STATUS_OK);
-                    return Messages.getString("UserContextRESTInterface.EmptyString"); //$NON-NLS-1$ //TODO
-                                                                                       // $NON-NLS-1$
-                                                                                       //$NON-NLS-1$ return
-                                                                                       // $NON-NLS-1$
-                                                                                       //$NON-NLS-1$ right
-                                                                                       // $NON-NLS-1$
-                                                                                       //$NON-NLS-1$ statuscode
-                } catch (JsonParseException | JsonMappingException | IllegalArgumentException e) {
-                    // If the parse or update is not successful return bad
-                    // request
-                    // error code.
-                    res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
-                    return e.getMessage();
-                } catch (final IOException e) {
-                    res.status(SuperRestInterface.HTTP_STATUS_INTERNAL_SERVER_ERROR);
-                    return e.getMessage();
-                }
-            });
+                });
 
         /**
          * Request 7.2.5 delete user-context.
@@ -252,7 +249,8 @@ public class UserContextRESTInterface extends SuperRestInterface {
                                 .getUserContextById(userContextId);
                         // Make sure only admins and the owner can delete a
                         // context
-                        auth.allowAdminAndOwner(req, res, userContext.getOwner());
+                        auth.allowAdminAndOwner(req, res, userContext.getImplementationParameters()
+                                .getOwner());
                         // Perform delete and return empty string
                         requestHandler.deleteUserContextById(userContextId);
                         res.status(SuperRestInterface.HTTP_STATUS_NO_CONTENT);

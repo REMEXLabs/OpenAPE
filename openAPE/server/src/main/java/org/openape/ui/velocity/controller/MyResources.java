@@ -14,31 +14,34 @@ import spark.Spark;
 import spark.template.velocity.VelocityTemplateEngine;
 
 public class MyResources extends SuperRestInterface {
-    public static void setupMyResourcesVELOCITYInterface(MyResourcesRequestHandler myResourcesRequestHandler) throws IllegalArgumentException,
-            IOException {
+    public static void setupMyResourcesVELOCITYInterface(
+            final MyResourcesRequestHandler myResourcesRequestHandler)
+            throws IllegalArgumentException, IOException {
 
-        Spark.get("/myResources", (request, response) -> {
-            final MainComponents mainController = new MainComponents();
-            final Map<String, Object> model = mainController.getTemplateComponents();
-            
-            model.put("dataTableResource", new Organism_3_DataTable().generateMyResourceTable(myResourcesRequestHandler));
-            
-            // modals
-            model.put("deleteResourceModal",
-                    new Organism_4_Modals().generateDeleteModal("Resource"));
-            model.put("addResourceModal",
-                    new Organism_4_Modals().generateResourceModal("Add"));
-            
-            model.put("editResourceModal",
-                    new Organism_4_Modals().generateResourceModal("Edit"));
-            
+        Spark.get(
+                "/myResources",
+                (request, response) -> {
+                    final MainComponents mainController = new MainComponents();
+                    final Map<String, Object> model = mainController.getTemplateComponents();
 
-            return new ModelAndView(model, "velocityTemplates/myResources.vm"); // located
-                                                                                // in
-                                                                                // the
-                                                                                // resources
-                                                                                // directory
-            }, new VelocityTemplateEngine());
+                    model.put("dataTableResource", new Organism_3_DataTable()
+                            .generateMyResourceTable(myResourcesRequestHandler));
+
+                    // modals
+                    model.put("deleteResourceModal",
+                            new Organism_4_Modals().generateDeleteModal("Resource"));
+                    model.put("addResourceModal",
+                            new Organism_4_Modals().generateResourceModal("Add"));
+
+                    model.put("editResourceModal",
+                            new Organism_4_Modals().generateResourceModal("Edit"));
+
+                    return new ModelAndView(model, "velocityTemplates/myResources.vm"); // located
+                                                                                        // in
+                                                                                        // the
+                                                                                        // resources
+                                                                                        // directory
+                }, new VelocityTemplateEngine());
     }
 
     public MyResources() throws IllegalArgumentException, IOException {

@@ -9,7 +9,12 @@ import java.util.List;
 import java.util.TimeZone;
 
 import org.bson.Document;
+import org.openape.api.databaseObjectBase.DatabaseObject;
+import org.openape.api.environmentcontext.EnvironmentContext;
+import org.openape.api.equipmentcontext.EquipmentContext;
+import org.openape.api.taskcontext.TaskContext;
 import org.openape.api.user.User;
+import org.openape.api.usercontext.UserContext;
 import org.openape.server.database.mongoDB.DatabaseConnection;
 import org.openape.server.database.mongoDB.MongoCollectionTypes;
 
@@ -22,216 +27,76 @@ public class AdminSectionRequestHandler {
     public static final MongoCollectionTypes COLLECTIONTOUSE_EQUIPMENTCONTEXTS = MongoCollectionTypes.EQUIPMENTCONTEXT;
     public static final MongoCollectionTypes COLLECTIONTOUSE_ENVIRONMENTCONTEXTS = MongoCollectionTypes.ENVIRONMENTCONTEXT;
 
-    public ArrayList<String[]> getAllEnvironmentContexts() throws IOException,
+    public List<EnvironmentContext> getAllEnvironmentContexts() throws IOException,
             IllegalArgumentException {
 
         // get database connection.
         final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
 
         // Get the requested data.
-        final ArrayList<Document> listDocuments = databaseConnection
-                .getAllDocuments(AdminSectionRequestHandler.COLLECTIONTOUSE_ENVIRONMENTCONTEXTS);
-
-        final ArrayList<String[]> listEnvironmentContexts = new ArrayList<String[]>();
-
-        for (final Document entry : listDocuments) {
-            final String id = entry.getObjectId("_id").toString();
-            final String userId = entry.getString("owner").toString();
-            final User user = (User) databaseConnection.getDatabaseObjectById(
-                    AdminSectionRequestHandler.COLLECTIONTOUSE_USERS, userId);
-
-            final String owner = user.getUsername();
-
-            final boolean isPublic = entry.getBoolean("public");
-            final long unixSeconds = entry.getObjectId("_id").getTimestamp();
-            final Date date = new Date(unixSeconds * 1000L); // *1000 is to
-                                                             // convert seconds
-                                                             // to milliseconds
-            final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); // the
-                                                                             // format
-                                                                             // of
-                                                                             // your
-                                                                             // date
-            sdf.setTimeZone(TimeZone.getTimeZone("GMT-4")); // give a timezone
-                                                            // reference for
-                                                            // formating (see
-                                                            // comment at the
-                                                            // bottom
-            final String formattedDate = sdf.format(date);
-
-            String stringIsPublic = "";
-
-            if (isPublic == false) {
-                stringIsPublic = "false";
-            } else {
-                stringIsPublic = "true";
-            }
-
-            final String[] myStringArray = { id, owner, stringIsPublic, formattedDate, userId };
-            listEnvironmentContexts.add(myStringArray);
-
+        final List<DatabaseObject> lilstEnvironmentContextDBObject = databaseConnection
+                .getDatabaseObjectsByQuery(AdminSectionRequestHandler.COLLECTIONTOUSE_ENVIRONMENTCONTEXTS, null);
+        
+        final List<EnvironmentContext> listEnvironmentContexts = new ArrayList<EnvironmentContext>();
+        
+        for(DatabaseObject environmentContextDBObject : lilstEnvironmentContextDBObject){
+        	listEnvironmentContexts.add((EnvironmentContext) environmentContextDBObject);
         }
+
         return listEnvironmentContexts;
     }
 
-    public ArrayList<String[]> getAllEquipmentContexts() throws IOException,
+    public List<EquipmentContext> getAllEquipmentContexts() throws IOException,
             IllegalArgumentException {
 
         // get database connection.
         final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
 
         // Get the requested data.
-        final ArrayList<Document> listDocuments = databaseConnection
-                .getAllDocuments(AdminSectionRequestHandler.COLLECTIONTOUSE_EQUIPMENTCONTEXTS);
-
-        final ArrayList<String[]> listEquipmentContexts = new ArrayList<String[]>();
-
-        for (final Document entry : listDocuments) {
-            final String id = entry.getObjectId("_id").toString();
-            final String userId = entry.getString("owner").toString();
-
-            final boolean isPublic = entry.getBoolean("public");
-            final User user = (User) databaseConnection.getDatabaseObjectById(
-                    AdminSectionRequestHandler.COLLECTIONTOUSE_USERS, userId);
-
-            final String owner = user.getUsername();
-
-            String stringIsPublic = "";
-
-            final long unixSeconds = entry.getObjectId("_id").getTimestamp();
-            final Date date = new Date(unixSeconds * 1000L); // *1000 is to
-                                                             // convert seconds
-                                                             // to milliseconds
-            final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); // the
-                                                                             // format
-                                                                             // of
-                                                                             // your
-                                                                             // date
-            sdf.setTimeZone(TimeZone.getTimeZone("GMT-4")); // give a timezone
-                                                            // reference for
-                                                            // formating (see
-                                                            // comment at the
-                                                            // bottom
-            final String formattedDate = sdf.format(date);
-
-            if (isPublic == false) {
-                stringIsPublic = "false";
-            } else {
-                stringIsPublic = "true";
-            }
-
-            final String[] myStringArray = { id, owner, stringIsPublic, formattedDate, userId };
-            listEquipmentContexts.add(myStringArray);
-
+        final List<DatabaseObject> lilstEquipmentContextDBObject = databaseConnection
+                .getDatabaseObjectsByQuery(AdminSectionRequestHandler.COLLECTIONTOUSE_EQUIPMENTCONTEXTS, null);
+        
+        final List<EquipmentContext> listEquipmentContexts = new ArrayList<EquipmentContext>();
+        
+        for(DatabaseObject equipmentContextDBObject : lilstEquipmentContextDBObject){
+        	listEquipmentContexts.add((EquipmentContext) equipmentContextDBObject);
         }
+
         return listEquipmentContexts;
     }
 
-    public ArrayList<String[]> getAllTaskContexts() throws IOException, IllegalArgumentException {
+    public List<TaskContext> getAllTaskContexts() throws IOException, IllegalArgumentException {
 
         // get database connection.
         final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
 
         // Get the requested data.
-        final ArrayList<Document> listDocuments = databaseConnection
-                .getAllDocuments(AdminSectionRequestHandler.COLLECTIONTOUSE_TASKCONTEXTS);
-
-        final ArrayList<String[]> listTaskContexts = new ArrayList<String[]>();
-
-        for (final Document entry : listDocuments) {
-            final String id = entry.getObjectId("_id").toString();
-            final String userId = entry.getString("owner").toString();
-
-            final User user = (User) databaseConnection.getDatabaseObjectById(
-                    AdminSectionRequestHandler.COLLECTIONTOUSE_USERS, userId);
-
-            final String owner = user.getUsername();
-
-            final boolean isPublic = entry.getBoolean("public");
-
-            final long unixSeconds = entry.getObjectId("_id").getTimestamp();
-            final Date date = new Date(unixSeconds * 1000L); // *1000 is to
-                                                             // convert seconds
-                                                             // to milliseconds
-            final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); // the
-                                                                             // format
-                                                                             // of
-                                                                             // your
-                                                                             // date
-            sdf.setTimeZone(TimeZone.getTimeZone("GMT-4")); // give a timezone
-                                                            // reference for
-                                                            // formating (see
-                                                            // comment at the
-                                                            // bottom
-            final String formattedDate = sdf.format(date);
-
-            String stringIsPublic = "";
-
-            if (isPublic == false) {
-                stringIsPublic = "false";
-            } else {
-                stringIsPublic = "true";
-            }
-
-            final String[] myStringArray = { id, owner, stringIsPublic, formattedDate, userId };
-            listTaskContexts.add(myStringArray);
+        final List<DatabaseObject> lilstTaskContextDBObject = databaseConnection
+                .getDatabaseObjectsByQuery(AdminSectionRequestHandler.COLLECTIONTOUSE_TASKCONTEXTS, null);
+        
+        final List<TaskContext> listTaskContexts = new ArrayList<TaskContext>();
+        
+        for(DatabaseObject taskContextDBObject : lilstTaskContextDBObject){
+        	listTaskContexts.add((TaskContext) taskContextDBObject);
         }
+
         return listTaskContexts;
     }
 
-    public ArrayList<String[]> getAllUsercontexts() throws IOException, IllegalArgumentException {
-
-        // get database connection.
+    public List<UserContext> getAllUsercontexts() throws IOException, IllegalArgumentException {
         final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
 
         // Get the requested data.
-        final ArrayList<Document> listDocuments = databaseConnection
-                .getAllDocuments(AdminSectionRequestHandler.COLLECTIONTOUSE_USERCONTEXTS);
-
-        final ArrayList<String[]> listContext = new ArrayList<String[]>();
-
-        for (final Document entry : listDocuments) {
-
-            final String userid = entry.getString("owner").toString();
-
-            final User user = (User) databaseConnection.getDatabaseObjectById(
-                    AdminSectionRequestHandler.COLLECTIONTOUSE_USERS, userid);
-
-            final String owner = user.getUsername();
-
-            final String id = entry.getObjectId("_id").toString();
-
-            final long unixSeconds = entry.getObjectId("_id").getTimestamp();
-            final Date date = new Date(unixSeconds * 1000L); // *1000 is to
-                                                             // convert seconds
-                                                             // to milliseconds
-            final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); // the
-                                                                             // format
-                                                                             // of
-                                                                             // your
-                                                                             // date
-            sdf.setTimeZone(TimeZone.getTimeZone("GMT-4")); // give a timezone
-                                                            // reference for
-                                                            // formating (see
-                                                            // comment at the
-                                                            // bottom
-            final String formattedDate = sdf.format(date);
-
-            final boolean isPublic = entry.getBoolean("public");
-            String stringIsPublic = "";
-
-            if (isPublic == false) {
-                stringIsPublic = "false";
-            } else {
-                stringIsPublic = "true";
-            }
-
-            final String[] myStringArray = { owner, id, stringIsPublic, formattedDate, userid };
-
-            listContext.add(myStringArray);
+        final List<DatabaseObject> lilstUserContextDBObject = databaseConnection
+                .getDatabaseObjectsByQuery(AdminSectionRequestHandler.COLLECTIONTOUSE_USERCONTEXTS, null);
+        
+        final List<UserContext> listUserContexts = new ArrayList<UserContext>();
+        
+        for(DatabaseObject userContextDBObject : lilstUserContextDBObject){
+        	listUserContexts.add((UserContext) userContextDBObject);
         }
 
-        return listContext;
+        return listUserContexts;
     }
 
     public ArrayList<User> getAllUsers() throws IOException, IllegalArgumentException {
@@ -266,7 +131,8 @@ public class AdminSectionRequestHandler {
         final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
 
         // Get the requested data.
-        databaseConnection.deleteDatabaseObject(AdminSectionRequestHandler.COLLECTIONTOUSE_USERS, id);
+        databaseConnection.deleteDatabaseObject(AdminSectionRequestHandler.COLLECTIONTOUSE_USERS,
+                id);
     }
 
     public UpdateResult updateUser(final String id, final String indexName, final Object indexValue)

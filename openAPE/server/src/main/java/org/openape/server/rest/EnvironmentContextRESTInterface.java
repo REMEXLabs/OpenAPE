@@ -14,15 +14,13 @@ import spark.Spark;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class EnvironmentContextRESTInterface extends SuperRestInterface {
     private static EnvironmentContext createRequestObejct(final Request req)
             throws IllegalArgumentException, IOException {
         final String contentType = req.contentType();
         if (contentType.equals(MediaType.APPLICATION_JSON)) {
-            return (EnvironmentContext) SuperRestInterface.extractObjectFromRequest(req,
-                    EnvironmentContext.class);
+            return EnvironmentContext.getObjectFromJson(req.body());
         } else if (contentType.equals(MediaType.APPLICATION_XML)) {
             return EnvironmentContext.getObjectFromXml(req.body());
         } else {
@@ -34,21 +32,19 @@ public class EnvironmentContextRESTInterface extends SuperRestInterface {
             final EnvironmentContext environmentContext) throws IOException,
             IllegalArgumentException {
         final String contentType = req.contentType();
-        
-        if(contentType != null){
-        	 if (contentType.equals(MediaType.APPLICATION_JSON)) {
-                 final ObjectMapper mapper = new ObjectMapper();
-                 final String jsonData = mapper.writeValueAsString(environmentContext);
-                 return jsonData;
-             } else if (contentType.equals(MediaType.APPLICATION_XML)) {
-                 return environmentContext.getXML();
-             } else {
-                 throw new IllegalArgumentException("wrong content-type");
-             }
+
+        if (contentType != null) {
+            if (contentType.equals(MediaType.APPLICATION_JSON)) {
+                return environmentContext.getForntEndJson();
+            } else if (contentType.equals(MediaType.APPLICATION_XML)) {
+                return environmentContext.getXML();
+            } else {
+                throw new IllegalArgumentException("wrong content-type");
+            }
         } else {
-        	  return environmentContext.getXML();
+            return environmentContext.getXML();
         }
-       
+
     }
 
     public static void setupEnvironmentContextRESTInterface(
@@ -70,36 +66,36 @@ public class EnvironmentContextRESTInterface extends SuperRestInterface {
         Spark.post(Messages
                 .getString("EnvironmentContextRESTInterface.EnvironmentContextsURLWithoutID"), //$NON-NLS-1$
                 (req, res) -> {
-                try {
-                    // Try to map the received json object to an
-                    // EnvironmentContext object.
-                    final EnvironmentContext receivedEnvironmentContext = EnvironmentContextRESTInterface
-                            .createRequestObejct(req);
-                    // Make sure to set the id of the authenticated user as
-                    // the ownerId
-                    receivedEnvironmentContext
-                            .setOwner(auth.getAuthenticatedUser(req, res).getId());
-                    // Test the object for validity.
-                    if (!receivedEnvironmentContext.isValid()) {
-                        res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
-                        return Messages
-                                .getString("EnvironmentContextRESTInterface.NoValidObjectErrorMassage"); //$NON-NLS-1$
-                    }
-                    // If the object is okay, save it and return the id.
-                    final String environmentContextId = requestHandler
-                            .createEnvironmentContext(receivedEnvironmentContext);
-                    res.status(SuperRestInterface.HTTP_STATUS_CREATED);
-                    return environmentContextId;
-                } catch (JsonParseException | JsonMappingException | IllegalArgumentException e) {
-                    // If the parse is not successful return bad request
-                    // error code.
+                    try {
+                        // Try to map the received json object to an
+                        // EnvironmentContext object.
+                final EnvironmentContext receivedEnvironmentContext = EnvironmentContextRESTInterface
+                        .createRequestObejct(req);
+                // Make sure to set the id of the authenticated user as
+                // the ownerId
+                receivedEnvironmentContext.getImplementationParameters().setOwner(
+                        auth.getAuthenticatedUser(req, res).getId());
+                // Test the object for validity.
+                if (!receivedEnvironmentContext.isValid()) {
                     res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
-                    return e.getMessage();
-                } catch (final IOException e) {
-                    res.status(SuperRestInterface.HTTP_STATUS_INTERNAL_SERVER_ERROR);
-                    return e.getMessage();
+                    return Messages
+                            .getString("EnvironmentContextRESTInterface.NoValidObjectErrorMassage"); //$NON-NLS-1$
                 }
-            });
+                // If the object is okay, save it and return the id.
+                final String environmentContextId = requestHandler
+                        .createEnvironmentContext(receivedEnvironmentContext);
+                res.status(SuperRestInterface.HTTP_STATUS_CREATED);
+                return environmentContextId;
+            } catch (JsonParseException | JsonMappingException | IllegalArgumentException e) {
+                // If the parse is not successful return bad request
+                // error code.
+                res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
+                return e.getMessage();
+            } catch (final IOException e) {
+                res.status(SuperRestInterface.HTTP_STATUS_INTERNAL_SERVER_ERROR);
+                return e.getMessage();
+            }
+        });
 
         /**
          * Request 7.5.3 get environment-context. Used to get a specific
@@ -116,8 +112,9 @@ public class EnvironmentContextRESTInterface extends SuperRestInterface {
                                 .getEnvironmentContextById(environmentContextId);
                         // Make sure only admins or the owner can view the
                         // context, except if it is public
-                        auth.allowAdminOwnerAndPublic(req, res, environmentContext.getOwner(),
-                                environmentContext.isPublic());
+                        auth.allowAdminOwnerAndPublic(req, res, environmentContext
+                                .getImplementationParameters().getOwner(), environmentContext
+                                .getImplementationParameters().isPublic());
                         res.status(SuperRestInterface.HTTP_STATUS_OK);
                         res.type(Messages.getString("EnvironmentContextRESTInterface.JsonMimeType")); //$NON-NLS-1$
                         final String jsonData = EnvironmentContextRESTInterface.createReturnString(
@@ -137,55 +134,57 @@ public class EnvironmentContextRESTInterface extends SuperRestInterface {
         /**
          * Request 7.5.4 update environment-context.
          */
-        Spark.put(Messages
-                .getString("EnvironmentContextRESTInterface.EnvironmentContextsURLWithID"), //$NON-NLS-1$
+        Spark.put(
+                Messages.getString("EnvironmentContextRESTInterface.EnvironmentContextsURLWithID"), //$NON-NLS-1$
                 (req, res) -> {
-                final String environmentContextId = req.params(Messages
-                        .getString("EnvironmentContextRESTInterface.IDParam")); //$NON-NLS-1$
-                try {
-                    final EnvironmentContext receivedEnvironmentContext = EnvironmentContextRESTInterface
-                            .createRequestObejct(req);
-                    // Test the object for validity.
-                    if (!receivedEnvironmentContext.isValid()) {
+                    final String environmentContextId = req.params(Messages
+                            .getString("EnvironmentContextRESTInterface.IDParam")); //$NON-NLS-1$
+                    try {
+                        final EnvironmentContext receivedEnvironmentContext = EnvironmentContextRESTInterface
+                                .createRequestObejct(req);
+                        // Test the object for validity.
+                        if (!receivedEnvironmentContext.isValid()) {
+                            res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
+                            return Messages
+                                    .getString("EnvironmentContextRESTInterface.NoValidObjectErrorMassage"); //$NON-NLS-1$
+                        }
+                        // Check if the user context does exist
+                        final EnvironmentContext environmentContext = requestHandler
+                                .getEnvironmentContextById(environmentContextId);
+                        // Make sure only admins and the owner can update a
+                        // context
+                        auth.allowAdminAndOwner(req, res, environmentContext
+                                .getImplementationParameters().getOwner());
+                        receivedEnvironmentContext.getImplementationParameters().setOwner(
+                                environmentContext.getImplementationParameters().getOwner()); // Make
+                        // sure
+                        // the
+                        // owner
+                        // can't
+                        // be
+                        // changed
+                        // Perform update
+                        requestHandler.updateEnvironmentContextById(environmentContextId,
+                                receivedEnvironmentContext);
+                        res.status(SuperRestInterface.HTTP_STATUS_OK);
+                        return Messages.getString("EnvironmentContextRESTInterface.EmptyString"); //$NON-NLS-1$ //TODO
+                                                                                                  // $NON-NLS-1$
+                                                                                                  //$NON-NLS-1$ return
+                                                                                                  // $NON-NLS-1$
+                                                                                                  //$NON-NLS-1$ right
+                                                                                                  // $NON-NLS-1$
+                                                                                                  //$NON-NLS-1$ statuscode
+                    } catch (JsonParseException | JsonMappingException | IllegalArgumentException e) {
+                        // If the parse or update is not successful return bad
+                        // request
+                        // error code.
                         res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
-                        return Messages
-                                .getString("EnvironmentContextRESTInterface.NoValidObjectErrorMassage"); //$NON-NLS-1$
+                        return e.getMessage();
+                    } catch (final IOException e) {
+                        res.status(SuperRestInterface.HTTP_STATUS_INTERNAL_SERVER_ERROR);
+                        return e.getMessage();
                     }
-                    // Check if the user context does exist
-                    final EnvironmentContext environmentContext = requestHandler
-                            .getEnvironmentContextById(environmentContextId);
-                    // Make sure only admins and the owner can update a
-                    // context
-                    auth.allowAdminAndOwner(req, res, environmentContext.getOwner());
-                    receivedEnvironmentContext.setOwner(environmentContext.getOwner()); // Make
-                                                                                        // sure
-                                                                                        // the
-                                                                                        // owner
-                                                                                        // can't
-                                                                                        // be
-                                                                                        // changed
-                    // Perform update
-                    requestHandler.updateEnvironmentContextById(environmentContextId,
-                            receivedEnvironmentContext);
-                    res.status(SuperRestInterface.HTTP_STATUS_OK);
-                    return Messages.getString("EnvironmentContextRESTInterface.EmptyString"); //$NON-NLS-1$ //TODO
-                                                                                              // $NON-NLS-1$
-                                                                                              //$NON-NLS-1$ return
-                                                                                              // $NON-NLS-1$
-                                                                                              //$NON-NLS-1$ right
-                                                                                              // $NON-NLS-1$
-                                                                                              //$NON-NLS-1$ statuscode
-                } catch (JsonParseException | JsonMappingException | IllegalArgumentException e) {
-                    // If the parse or update is not successful return bad
-                    // request
-                    // error code.
-                    res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
-                    return e.getMessage();
-                } catch (final IOException e) {
-                    res.status(SuperRestInterface.HTTP_STATUS_INTERNAL_SERVER_ERROR);
-                    return e.getMessage();
-                }
-            });
+                });
 
         /**
          * Request 7.5.5 delete environment-context.
@@ -200,7 +199,8 @@ public class EnvironmentContextRESTInterface extends SuperRestInterface {
                                 .getEnvironmentContextById(environmentContextId);
                         // Make sure only admins and the owner can delete a
                         // context
-                        auth.allowAdminAndOwner(req, res, environmentContext.getOwner());
+                        auth.allowAdminAndOwner(req, res, environmentContext
+                                .getImplementationParameters().getOwner());
                         // Perform delete and return empty string.
                         requestHandler.deleteEnvironmentContextById(environmentContextId);
                         res.status(SuperRestInterface.HTTP_STATUS_NO_CONTENT);

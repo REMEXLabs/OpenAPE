@@ -6,9 +6,7 @@ import java.security.spec.InvalidKeySpecException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.crypto.Data;
-
-import org.openape.api.DatabaseObject;
+import org.openape.api.databaseObjectBase.DatabaseObject;
 import org.openape.api.user.User;
 import org.openape.server.auth.PasswordEncoder;
 import org.openape.server.database.mongoDB.DatabaseConnection;
@@ -38,6 +36,20 @@ public class ProfileHandler {
         return id;
     }
 
+    public static List<User> getAllUsers() throws IOException {
+        final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
+
+        final List<DatabaseObject> result = databaseConnection.getDatabaseObjectsByQuery(
+                MongoCollectionTypes.USERS, null);
+        final List<User> listUsers = new ArrayList<User>();
+        User user = null;
+        for (final DatabaseObject dboEntry : result) {
+            user = (User) dboEntry;
+            listUsers.add(user);
+        }
+        return listUsers;
+    }
+
     public static User getUser(final String userName) throws IOException {
         final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
 
@@ -53,7 +65,7 @@ public class ProfileHandler {
         final User user = (User) result;
         return user;
     }
-    
+
     public static User getUserById(final String userId) throws IOException {
         final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
 
@@ -68,19 +80,6 @@ public class ProfileHandler {
 
         final User user = (User) result;
         return user;
-    }
-    
-    public static List<User> getAllUsers() throws IOException {
-        final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
-
-        List<DatabaseObject> result = databaseConnection.getDatabaseObjectsByQuery(MongoCollectionTypes.USERS, null);
-        List<User> listUsers = new ArrayList<User>();
-        User user = null;
-        for(DatabaseObject dboEntry : result){
-        	user = (User) dboEntry;
-        	listUsers.add(user);
-        }
-        return listUsers;
     }
 
     public static void updateUser(final User user) {

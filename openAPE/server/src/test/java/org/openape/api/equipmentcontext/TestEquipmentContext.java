@@ -4,8 +4,8 @@ import java.io.IOException;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.openape.api.Descriptor;
-import org.openape.api.Property;
+import org.openape.api.databaseObjectBase.Descriptor;
+import org.openape.api.databaseObjectBase.Property;
 
 public class TestEquipmentContext {
     public static EquipmentContext sampleEquipmentContext() {
@@ -35,8 +35,16 @@ public class TestEquipmentContext {
     public void testGetXML() throws IOException {
         final EquipmentContext equipmentContext = TestEquipmentContext.sampleEquipmentContext();
         final String xml = equipmentContext.getXML();
-        // System.out.println(xml);
+        System.out.println(xml);
         Assert.assertTrue(equipmentContext.equals(EquipmentContext.getObjectFromXml(xml)));
+    }
+    
+    @Test
+    public void testGetJson() throws IOException {
+        EquipmentContext sample = sampleEquipmentContext();
+        String json =sample.getForntEndJson();
+        System.out.println(json);
+        Assert.assertTrue(sample.equals(EquipmentContext.getObjectFromJson(json)));
     }
 
 }

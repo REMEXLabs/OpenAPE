@@ -31,6 +31,7 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.Transformer;
@@ -40,7 +41,8 @@ import javax.xml.transform.stream.StreamResult;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 
-import org.openape.api.Resource;
+import org.openape.api.databaseObjectBase.DatabaseObject;
+import org.openape.api.databaseObjectBase.ImplementationParameters;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -48,6 +50,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -60,8 +63,45 @@ import com.fasterxml.jackson.databind.node.TextNode;
 /**
  * User context object defined in 7.2.1
  */
+@XmlType(propOrder = {"implementationParameters", "contexts"})
 @XmlRootElement(name = "user-context")
-public class UserContext extends Resource {
+public class UserContext extends DatabaseObject {
+    private static final String VALUE = "value";
+
+    private static final String KEY = "key";
+
+    private static final String ID = "id";
+
+    private static final String CONTEXTS = "contexts";
+
+    private static final String CONTEXTS_SCHEMA_XSD = "ContextsSchema.xsd";
+
+    private static final String HTTP_WWW_W3_ORG_2001_XML_SCHEMA_INSTANCE = "http://www.w3.org/2001/XMLSchema-instance";
+
+    private static final String XMLNS_XSI = "xmlns:xsi";
+
+    private static final String CONDITION = "condition";
+
+    private static final String XSI_TYPE = "xsi:type";
+
+    private static final String OPERAND = "operand";
+
+    private static final String OPERANDS = "operands";
+
+    private static final String TYPE = "type";
+
+    private static final String CONDITIONS = "conditions";
+
+    private static final String PREFERENCES = "preferences";
+
+    private static final String NAME = "name";
+
+    private static final String PUBLIC = "public";
+
+    private static final String OWNER = "owner";
+
+    private static final String IMPLEMENTATION_PARAMETERS = "implementation-parameters";
+
     private static final long serialVersionUID = 5891055316807633786L;
 
     /**
@@ -81,28 +121,29 @@ public class UserContext extends Resource {
             final ObjectNode rootObject = (ObjectNode) rootNode;
 
             // get owner and public if available.
-            final JsonNode owner = rootObject.get("owner");
-            if ((owner != null) && !(owner instanceof NullNode)) {
-                userContext.setOwner(owner.textValue());
-            }
-            final JsonNode publicField = rootObject.get("public");
-            if ((publicField != null) && !(publicField instanceof NullNode)) {
-                userContext.setPublic(publicField.booleanValue());
+            final JsonNode implemParams = rootObject.get(UserContext.IMPLEMENTATION_PARAMETERS);
+            if ((implemParams != null) && !(implemParams instanceof NullNode)) {
+                final ObjectNode implemParamsNode = (ObjectNode) implemParams;
+                userContext.getImplementationParameters().setOwner(
+                        implemParamsNode.get(UserContext.OWNER).textValue());
+                userContext.getImplementationParameters().setPublic(
+                        implemParamsNode.get(UserContext.PUBLIC).booleanValue());
             }
 
             // Iterate over contexts and create corresponding context objects.
             final Iterator<String> contextIterator = rootObject.fieldNames();
             while (contextIterator.hasNext()) {
                 final String contextID = contextIterator.next();
-                if (!contextID.equals("owner") && !contextID.equals("public")) {
+                if (!contextID.equals(UserContext.IMPLEMENTATION_PARAMETERS)) {
                     final Context context = new Context();
                     userContext.addContext(context);
                     context.setId(contextID);
                     final ObjectNode contextNode = (ObjectNode) rootObject.get(contextID);
-                    context.setName(contextNode.get("name").textValue());
+                    context.setName(contextNode.get(UserContext.NAME).textValue());
 
                     // add preference objects
-                    final ObjectNode preferences = (ObjectNode) contextNode.get("preferences");
+                    final ObjectNode preferences = (ObjectNode) contextNode
+                            .get(UserContext.PREFERENCES);
                     final Iterator<String> preferenceIterator = preferences.fieldNames();
                     while (preferenceIterator.hasNext()) {
                         final String preferenceKey = preferenceIterator.next();
@@ -113,7 +154,7 @@ public class UserContext extends Resource {
                     }
 
                     // add condition objects
-                    final JsonNode conditions = contextNode.get("conditions");
+                    final JsonNode conditions = contextNode.get(UserContext.CONDITIONS);
                     if ((conditions != null) && !(conditions instanceof NullNode)) {
                         final ArrayNode conditionsArray = (ArrayNode) conditions;
                         final Iterator<JsonNode> conditionsIterator = conditionsArray.iterator();
@@ -121,11 +162,12 @@ public class UserContext extends Resource {
                             final ObjectNode conditionNode = (ObjectNode) conditionsIterator.next();
                             final Condition condition = new Condition();
                             context.addCondition(condition);
-                            condition.setType(conditionNode.get("type").textValue());
+                            condition.setType(conditionNode.get(UserContext.TYPE).textValue());
                             final List<Operand> operandList = new ArrayList<>();
 
                             // add operands.
-                            final ArrayNode operands = (ArrayNode) conditionNode.get("operands");
+                            final ArrayNode operands = (ArrayNode) conditionNode
+                                    .get(UserContext.OPERANDS);
                             UserContext.recursiveOperandCreation(operandList, operands);
                             condition.setOperands(operandList);
                         }
@@ -134,6 +176,7 @@ public class UserContext extends Resource {
                 }
             }
         } catch (final Exception e) {
+            e.printStackTrace();
             throw new IllegalArgumentException(e.getMessage());
         }
         userContext.validate();
@@ -160,18 +203,18 @@ public class UserContext extends Resource {
             final DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             final Document document = documentBuilder.parse(new InputSource(new StringReader(xml)));
             // find all operands that are conditions.
-            final NodeList nodeList = document.getElementsByTagName("operand");
+            final NodeList nodeList = document.getElementsByTagName(UserContext.OPERAND);
             for (int i = 0; i < nodeList.getLength(); i++) {
                 final Node operandNode = nodeList.item(i);
                 final Element operandElement = (Element) operandNode;
 
                 // operand that is a condition.
-                if (operandElement.hasAttribute("type")) {
+                if (operandElement.hasAttribute(UserContext.TYPE)) {
                     // If type information is missing add it.
-                    if (!operandElement.hasAttribute("xsi:type")) {
-                        operandElement.setAttribute("xsi:type", "condition");
-                        operandElement.setAttribute("xmlns:xsi",
-                                "http://www.w3.org/2001/XMLSchema-instance");
+                    if (!operandElement.hasAttribute(UserContext.XSI_TYPE)) {
+                        operandElement.setAttribute(UserContext.XSI_TYPE, UserContext.CONDITION);
+                        operandElement.setAttribute(UserContext.XMLNS_XSI,
+                                UserContext.HTTP_WWW_W3_ORG_2001_XML_SCHEMA_INSTANCE);
                         // System.out.println("bla");
                     }
                 }
@@ -186,7 +229,7 @@ public class UserContext extends Resource {
             // Update xml string.
             xml = writer.toString();
 
-            xml = Resource.addPublicAttributeIfMissing(xml);
+            xml = ImplementationParameters.addPublicAttributeIfMissing(xml);
 
             /*
              * Create user context from xml.
@@ -198,7 +241,8 @@ public class UserContext extends Resource {
                     .newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
 
             // get schema file from resource folder
-            final URL url = UserContext.class.getClassLoader().getResource("ContextsSchema.xsd");
+            final URL url = UserContext.class.getClassLoader().getResource(
+                    UserContext.CONTEXTS_SCHEMA_XSD);
             final File file = new File(url.toURI());
             final Schema schema = schemaFactory.newSchema(file);
             factory.setSchema(schema);
@@ -284,18 +328,20 @@ public class UserContext extends Resource {
 
                 // condition level
                 final Condition subCondition = new Condition();
-                subCondition.setType(operand.get("type").textValue());
+                subCondition.setType(operand.get(UserContext.TYPE).textValue());
                 operandList.add(subCondition);
 
                 // recursion to add operands to sub condition.
                 final List<Operand> subConditionOperandList = new ArrayList<Operand>();
-                final ArrayNode subOperands = (ArrayNode) operand.get("operands");
+                final ArrayNode subOperands = (ArrayNode) operand.get(UserContext.OPERANDS);
                 UserContext.recursiveOperandCreation(subConditionOperandList, subOperands);
                 subCondition.setOperands(subConditionOperandList);
 
             }
         }
     }
+
+    private ImplementationParameters implementationParameters = new ImplementationParameters();
 
     private List<Context> contexts;
 
@@ -374,6 +420,12 @@ public class UserContext extends Resource {
         return jsonString;
     }
 
+    @XmlElement(name = UserContext.IMPLEMENTATION_PARAMETERS)
+    @JsonProperty(value = UserContext.IMPLEMENTATION_PARAMETERS)
+    public ImplementationParameters getImplementationParameters() {
+        return this.implementationParameters;
+    }
+
     /**
      * Generates json string from Object.
      *
@@ -393,26 +445,25 @@ public class UserContext extends Resource {
 
         if (frontEnd) {
             // remove owner attributes
-            //rootObject.remove("public");
-            rootObject.remove("owner");
+            rootObject.remove(UserContext.IMPLEMENTATION_PARAMETERS);
         }
 
         // get context list.
-        final JsonNode contextNode = rootNode.get("contexts");
+        final JsonNode contextNode = rootNode.get(UserContext.CONTEXTS);
         final ArrayNode contextArray = (ArrayNode) contextNode;
         final Iterator<JsonNode> contestIterator = contextArray.iterator();
 
         // Replace context list by context fields with id as key.
-        rootObject.remove("contexts");
+        rootObject.remove(UserContext.CONTEXTS);
         while (contestIterator.hasNext()) {
             final JsonNode context = contestIterator.next();
             final ObjectNode contextObject = (ObjectNode) context;
-            final String id = contextObject.get("id").textValue();
-            contextObject.remove("id");
+            final String id = contextObject.get(UserContext.ID).textValue();
+            contextObject.remove(UserContext.ID);
             rootObject.set(id, contextObject);
 
             // get preferences
-            final JsonNode preferences = contextObject.get("preferences");
+            final JsonNode preferences = contextObject.get(UserContext.PREFERENCES);
             final ArrayNode preferencesArray = (ArrayNode) preferences;
             final Iterator<JsonNode> pereferenceIterator = preferencesArray.iterator();
 
@@ -420,15 +471,15 @@ public class UserContext extends Resource {
             final ObjectNode newPreferences = new ObjectNode(jsonNodeFactory);
             while (pereferenceIterator.hasNext()) {
                 final JsonNode preference = pereferenceIterator.next();
-                final String key = preference.get("key").textValue();
-                final String value = preference.get("value").textValue();
+                final String key = preference.get(UserContext.KEY).textValue();
+                final String value = preference.get(UserContext.VALUE).textValue();
                 newPreferences.put(key, value);
             }
-            contextObject.remove("preferences");
-            contextObject.set("preferences", newPreferences);
+            contextObject.remove(UserContext.PREFERENCES);
+            contextObject.set(UserContext.PREFERENCES, newPreferences);
 
             // get conditions
-            final JsonNode conditions = contextObject.get("conditions");
+            final JsonNode conditions = contextObject.get(UserContext.CONDITIONS);
             if ((conditions != null) && !(conditions instanceof NullNode)) {
                 final ArrayNode conditionsArray = (ArrayNode) conditions;
                 final Iterator<JsonNode> conditionsIterator = conditionsArray.iterator();
@@ -437,10 +488,11 @@ public class UserContext extends Resource {
                 while (conditionsIterator.hasNext()) {
                     final JsonNode condition = conditionsIterator.next();
                     final ObjectNode conditionObject = (ObjectNode) condition;
-                    conditionObject.remove("value");
+                    conditionObject.remove(UserContext.VALUE);
 
                     // Format operands
-                    final ArrayNode operands = (ArrayNode) conditionObject.get("operands");
+                    final ArrayNode operands = (ArrayNode) conditionObject
+                            .get(UserContext.OPERANDS);
                     this.recursiveOperandFormatting(operands);
                 }
             }
@@ -465,6 +517,7 @@ public class UserContext extends Resource {
             final StringWriter stringWriter = new StringWriter();
             marshaller.marshal(this, stringWriter);
             xmlString = stringWriter.toString();
+            xmlString = this.getImplementationParameters().removeImplemParams(xmlString);
         } catch (final Exception e) {
             throw new IOException(e.getMessage());
         }
@@ -492,16 +545,16 @@ public class UserContext extends Resource {
         while (operandsIterator.hasNext()) {
             final JsonNode opernad = operandsIterator.next();
             final ObjectNode operandObject = (ObjectNode) opernad;
-            if (operandObject.get("value") instanceof NullNode) {
+            if (operandObject.get(UserContext.VALUE) instanceof NullNode) {
                 // operands on this level are conditions.
-                operandObject.remove("value");
-                final ArrayNode operandsOfOperand = (ArrayNode) opernad.get("operands");
+                operandObject.remove(UserContext.VALUE);
+                final ArrayNode operandsOfOperand = (ArrayNode) opernad.get(UserContext.OPERANDS);
                 // recursion
                 this.recursiveOperandFormatting(operandsOfOperand);
             } else {
                 // operands on this level are values.
                 valueLevel = true;
-                final String value = operandObject.get("value").textValue();
+                final String value = operandObject.get(UserContext.VALUE).textValue();
                 operandValues.add(value);
             }
 
@@ -518,6 +571,10 @@ public class UserContext extends Resource {
 
     public void setContexts(final List<Context> contexts) {
         this.contexts = contexts;
+    }
+
+    public void setImplementationParameters(final ImplementationParameters implementationParameters) {
+        this.implementationParameters = implementationParameters;
     }
 
     /**

@@ -40,7 +40,7 @@ public class Organism_3_DataTable {
                 + "<table id='"
                 + idName
                 + "DataTable' style='border: 4px solid #ddd !important;' class='table table-striped table-bordered dt-responsive nowrap' cellspacing='0' width='100%'>"
-                + "<thead>" + "<tr>" + "<th>ID</th>" + "<th>Owner</th>" + "<th>Created</th>"
+                + "<thead>" + "<tr>" + "<th>ID</th>" + "<th>Owner</th>"
                 + "<th>Public</th>" + "<th>Options</th>" + "</tr>" + "</thead>"
                 + "<tbody id='tableContent'>" + administrationDatableContextContent + "</tbody>"
                 + "</table>";
@@ -48,7 +48,6 @@ public class Organism_3_DataTable {
 
     }
 
-  
     public String generateAdministrationUserTable(
             final AdminSectionRequestHandler adminsectionRequestHandler)
             throws IllegalArgumentException, IOException {
@@ -124,38 +123,6 @@ public class Organism_3_DataTable {
         return tableContent;
     }
 
-    public String generateMyResourceTable(
-    		final MyResourcesRequestHandler myResourceRequestHandler) throws IllegalArgumentException, IOException {
-
-    		final String tableContent = new Molecule_5_DataTableContent()
-                    .generateResourceContent(myResourceRequestHandler.getAllResourceDescriptions());
-
-        	final String resourceDataTable = ""
-                + "<table id='ResourceDataTable' style='border: 4px solid #ddd !important;' class='table table-striped table-bordered dt-responsive nowrap' cellspacing='0' width='100%'>"
-                + "<thead>" + "<tr>" + "<th>Description</th>" + "<th>Resource Id</th>" + "<th>Created</th>"
-                + "<th>Last update</th>" + "<th>Type</th>" + "<th>Owner</th>"+ "<th>Options</th>"+"</tr>" + "</thead>"
-                + "<tbody id='tableContent'>" + tableContent + "</tbody>"
-                + "</table>";
-        return resourceDataTable;
-
-    }
-    
-    public String generateGroupTable(
-    		final GroupsRequestHandler groupsRequestHandler) throws IllegalArgumentException, IOException {
-
-    		final String tableContent = new Molecule_5_DataTableContent()
-                    .generateGroupContent(groupsRequestHandler.getAllGroups());
-
-        	final String resourceDataTable = ""
-                + "<table id='groupDataTable' style='border: 4px solid #ddd !important;' class='table table-striped table-bordered dt-responsive nowrap' cellspacing='0' width='100%'>"
-                + "<thead>" + "<tr>" + "<th>Group Id</th>" + "<th>Name</th>" + "<th>Description</th>"
-                +  "<th>Members</th>"+  "<th>OpenAccess</th>"+  "<th>Group Options</th>"+"<th>Member Options</th>"+"</tr>" + "</thead>"
-                + "<tbody id='tableContent'>" + tableContent + "</tbody>"
-                + "</table>";
-        return resourceDataTable;
-
-    } 
-    
     public String generateDeleteGroupUserTable(
             final AdminSectionRequestHandler adminsectionRequestHandler)
             throws IllegalArgumentException, IOException {
@@ -165,15 +132,29 @@ public class Organism_3_DataTable {
         adminsectionRequestHandler.getAllUsercontexts();
         final String administrationUserTable = ""
                 + "<table style='margin-top:1em; border: 3px solid #ddd !important;' id='deleteGroupMemberDataTable' class='table table-striped table-bordered' cellspacing='0' width='100%'>"
-                + "<thead>" + "<tr>" + "<th>Name</th>" 
+                + "<thead>" + "<tr>" + "<th>Name</th>"
                 + "<th style='width:10% !important'>Options</th>" + "</tr>" + "</thead>"
                 + "</table>";
         return administrationUserTable;
     }
-    
-    
-    public String generateGroupUserTable(
-            final AdminSectionRequestHandler adminsectionRequestHandler)
+
+    public String generateGroupTable(final GroupsRequestHandler groupsRequestHandler)
+            throws IllegalArgumentException, IOException {
+
+        final String tableContent = new Molecule_5_DataTableContent()
+                .generateGroupContent(groupsRequestHandler.getAllGroups());
+
+        final String resourceDataTable = ""
+                + "<table id='groupDataTable' style='border: 4px solid #ddd !important;' class='table table-striped table-bordered dt-responsive nowrap' cellspacing='0' width='100%'>"
+                + "<thead>" + "<tr>" + "<th>Group Id</th>" + "<th>Name</th>"
+                + "<th>Description</th>" + "<th>Members</th>" + "<th>OpenAccess</th>"
+                + "<th>Group Options</th>" + "<th>Member Options</th>" + "</tr>" + "</thead>"
+                + "<tbody id='tableContent'>" + tableContent + "</tbody>" + "</table>";
+        return resourceDataTable;
+
+    }
+
+    public String generateGroupUserTable(final AdminSectionRequestHandler adminsectionRequestHandler)
             throws IllegalArgumentException, IOException {
 
         final String administrationDatableContent = new Molecule_5_DataTableContent()
@@ -181,12 +162,25 @@ public class Organism_3_DataTable {
         adminsectionRequestHandler.getAllUsercontexts();
         final String administrationUserTable = ""
                 + "<table style='margin-top:1em; border: 3px solid #ddd !important;' id='userGroupDataTable' class='table table-striped table-bordered' cellspacing='0' width='100%'>"
-                + "<thead>" + "<tr>" + "<th>Name</th>" + "<th>Status</th>" 
+                + "<thead>" + "<tr>" + "<th>Name</th>" + "<th>Status</th>"
                 + "<th style='width:10% !important'>Options</th>" + "</tr>" + "</thead>"
                 + "</table>";
         return administrationUserTable;
     }
+
+    public String generateMyResourceTable(final MyResourcesRequestHandler myResourceRequestHandler)
+            throws IllegalArgumentException, IOException {
+
+        final String tableContent = new Molecule_5_DataTableContent()
+                .generateResourceContent(myResourceRequestHandler.getAllResourceDescriptions());
+
+        final String resourceDataTable = ""
+                + "<table id='ResourceDataTable' style='border: 4px solid #ddd !important;' class='table table-striped table-bordered dt-responsive nowrap' cellspacing='0' width='100%'>"
+                + "<thead>" + "<tr>" + "<th>Description</th>" + "<th>Resource Id</th>"
+                + "<th>Created</th>" + "<th>Last update</th>" + "<th>Type</th>" + "<th>Owner</th>"
+                + "<th>Options</th>" + "</tr>" + "</thead>" + "<tbody id='tableContent'>"
+                + tableContent + "</tbody>" + "</table>";
+        return resourceDataTable;
+
+    }
 }
-
-
-
