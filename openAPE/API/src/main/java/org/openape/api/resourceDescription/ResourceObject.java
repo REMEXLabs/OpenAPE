@@ -23,8 +23,6 @@ public class ResourceObject extends DatabaseObject {
     private static final long serialVersionUID = -5926306380613419041L;
     private ImplementationParameters implementationParameters = new ImplementationParameters();
 
-    private String id = null;
-
     private String fileName = null;
     private String ownerId = null;
     private String mimeType = null;
@@ -64,7 +62,7 @@ public class ResourceObject extends DatabaseObject {
     @Override
     @XmlAttribute(name = "id")
     public String getId() {
-        return this.id;
+        return super.getId();
     }
 
     @JsonProperty(value = "implementation-parameters")
@@ -105,7 +103,7 @@ public class ResourceObject extends DatabaseObject {
 
     @Override
     public void setId(final String id) {
-        this.id = id;
+        super.setId(id);
     }
 
     public void setImplementationParameters(final ImplementationParameters implementationParameters) {

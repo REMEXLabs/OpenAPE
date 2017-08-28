@@ -25,7 +25,6 @@ public class User extends DatabaseObject {
         return user;
     }
 
-    private String id;
     private String username;
     private String email;
     @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -39,7 +38,7 @@ public class User extends DatabaseObject {
 
     @Override
     public String getId() {
-        return this.id;
+        return super.getId();
     }
 
     public String getPassword() {
@@ -60,7 +59,7 @@ public class User extends DatabaseObject {
 
     @Override
     public void setId(final String id) {
-        this.id = id;
+        super.setId(id);
     }
 
     /**
