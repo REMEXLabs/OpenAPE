@@ -21,6 +21,7 @@ import org.openape.api.group.GroupAccessRights;
 import org.openape.api.listing.Listing;
 import org.openape.api.user.User;
 import org.openape.server.auth.AuthService;
+import org.openape.server.auth.ResourceAuthService;
 import org.openape.server.auth.UnauthorizedException;
 import org.openape.server.database.resources.GetResourceReturnType;
 import org.openape.server.requestHandler.ResourceRequestHandler;
@@ -33,7 +34,8 @@ import spark.Spark;
 public class ResourceRESTInterface extends SuperRestInterface {
     private static final String GROUP_ACCESS_RIGHT_HEADER_NAME = "groupAccessRights";
     private static final String HEADER_MUST_CONTAIN_GROUP_ACCESS_RIGHT_MSG = "Header must contain a field named 'groupAccessRights' with a valid GroupAccessRights object as value.";
-
+    private static final ResourceAuthService RESOURCE_AUTH_SERVICE = new ResourceAuthService();
+    
     /**
      * Create a send able response from file.
      *
@@ -166,7 +168,10 @@ public class ResourceRESTInterface extends SuperRestInterface {
                             .getResourceById(resourceId);
                     final File file = serverReturn.getFile();
                     final String mimeType = serverReturn.getResourceObject().getMimeType();
-
+                    
+                    // check access right
+                    RESOURCE_AUTH_SERVICE.allowReading(req, res, serverReturn.getResourceObject());
+                    
                     // create response from file.
                     final ResponseBuilder response = ResourceRESTInterface.createFileResponse(file);
                     // Set meta information.
@@ -213,6 +218,10 @@ public class ResourceRESTInterface extends SuperRestInterface {
                         final GetResourceReturnType returnType = serverResponse.get(index);
                         file = returnType.getFile();
                         mimeType = returnType.getResourceObject().getMimeType();
+                        
+                        // check access right
+                        RESOURCE_AUTH_SERVICE.allowReading(req, res, returnType.getResourceObject());
+                        
                     } catch (NotFoundException | IllegalArgumentException
                             | IndexOutOfBoundsException e) {
                         res.status(SuperRestInterface.HTTP_STATUS_NOT_FOUND);
@@ -255,6 +264,16 @@ public class ResourceRESTInterface extends SuperRestInterface {
                     try {
                         // get user from request response pair.
                         final CommonProfile profile = auth.getAuthenticatedProfile(req, res);
+                        
+                        // get resource object
+                        final GetResourceReturnType serverReturn = requestHandler
+                                .getResourceById(resourceId);
+                        
+                        // check access right
+                        if(serverReturn != null && serverReturn.getResourceObject() != null){
+                            RESOURCE_AUTH_SERVICE.allowDeleting(req, res, serverReturn.getResourceObject());
+                        }
+                        
                         requestHandler.deleteResourceById(resourceId, profile);
                     } catch (final IllegalArgumentException e) {
                         res.status(SuperRestInterface.HTTP_STATUS_NOT_FOUND);
