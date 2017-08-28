@@ -97,7 +97,23 @@ function deleteResource(event){
 function editResource(event){
 	$('#editFormUploadResource').css("display", "none");
 	$('#editResourceModal').modal('show');
-	getResourceDescription(event.id);
+	if(getResourceDescription(event.id).status == 200){
+		var response = getResourceDescription(event.id).responseJSON;
+		var resourceDescription = JSON.stringify(response).replace("resource-description", "resourceDescription");
+		var resourceDescriptionObj = JSON.parse(resourceDescription);
+		
+		var resourceId = resourceDescriptionObj.resourceDescription[0][1]
+		.substring(resourceDescriptionObj.resourceDescription[0][1]
+		.indexOf("resources")+10);
+		
+		var title = resourceDescriptionObj.resourceDescription[1][1];
+		var format = resourceDescriptionObj.resourceDescription[2][1];
+		
+		$('#editInputResourceId').val(resourceId);
+		$('#editInputTitle').val(title);
+		$('#editSelType option[value="'+format+'"]').prop('selected', true);
+		
+	}
 	window.resourceDescriptionId = event.id;
 }
 
@@ -163,11 +179,28 @@ function generateResourceDescriptionObject(resourceId, action){
 		var objResourceProperty =  new Object();
 		var arrResourceProperty = new Array();
 		
-		objResourceProperty.name = "resource-uri";
-		objResourceProperty.value = "https://res.openurc.org/api/resources/"+resourceId;
-		arrResourceProperty.push(objResourceProperty);
+		var arrResourceDescription = [];
+		var arrResourceUri = [];
+		arrResourceUri.push("resource-uri");
+		arrResourceUri.push("https://res.openurc.org/api/resources/"+resourceId);
 		
-		var objResourceProperty =  new Object();
+		var arrResourceTitle = [];
+		arrResourceTitle.push("http://purl.org/dc/elements/1.1/title");
+		arrResourceTitle.push($('#'+action+'InputTitle').val());
+		
+		var arrResourceFormat = [];
+		arrResourceFormat.push("http://purl.org/dc/elements/1.1/format");
+		arrResourceFormat.push($('#'+action+'SelType option:selected' ).text());
+		arrResourceDescription.push(arrResourceUri);
+		arrResourceDescription.push(arrResourceTitle);
+		arrResourceDescription.push(arrResourceFormat);
+		objResourceProperties.resourceDescription = arrResourceDescription;
+		
+		//objResourceProperty.name = "resource-uri";
+		//objResourceProperty.value = "https://res.openurc.org/api/resources/"+resourceId;
+		//arrResourceProperty.push(objResourceProperty);
+		
+		/*var objResourceProperty =  new Object();
 		objResourceProperty.name = "http://purl.org/dc/elements/1.1/title";
 		objResourceProperty.value = $('#'+action+'InputTitle').val();
 		arrResourceProperty.push(objResourceProperty);
@@ -177,21 +210,32 @@ function generateResourceDescriptionObject(resourceId, action){
 		objResourceProperty.value = $('#'+action+'SelType option:selected' ).text();
 		arrResourceProperty.push(objResourceProperty)
 
-		objResourceProperties.propertys = arrResourceProperty;
+		objResourceProperties.resourceDescription = arrResourceProperty;
+		*/
 		
-		if(action == "add"){
-			addResourceToMongoDB(JSON.stringify(objResourceProperties));
+		
+		var formated = JSON.stringify(objResourceProperties).replace("resourceDescription", "resource-description");
+		
+		console.log(formated);
+		if(action == "add"){	
+			addResourceToMongoDB(formated);
 		} else {
-			var objResourceProperty =  new Object();
-			objResourceProperty.name = "http://purl.org/dc/terms/modified";
+			var arrResourceModified = [];
+			arrResourceModified.push("http://purl.org/dc/terms/modified");
+
 			var currentdate = new Date();
 			var month = currentdate.getUTCMonth() < 10 ? 0+""+(parseInt(currentdate.getUTCMonth())+1) : parseInt(currentdate.getUTCMonth())+1;
 			var day = currentdate.getUTCDate() < 10 ? 0+""+currentdate.getUTCDate() : currentdate.getUTCDate();
 			
 			var updatedDate = currentdate.getFullYear()+"-"+month+"-"+currentdate.getUTCDate();
-			objResourceProperty.value = updatedDate;
-			arrResourceProperty.push(objResourceProperty)
-			updateResourceDescription(window.resourceDescriptionId, JSON.stringify(objResourceProperties));
+
+			arrResourceModified.push(updatedDate);
+			
+			arrResourceDescription.push(arrResourceModified);
+			objResourceProperties.resourceDescription = arrResourceDescription;
+			console.log(JSON.stringify(objResourceProperties));
+			var formated = JSON.stringify(objResourceProperties).replace("resourceDescription", "resource-description");
+			updateResourceDescription(window.resourceDescriptionId, formated);
 		}
 		
 }
@@ -262,25 +306,24 @@ function loadPreview (event){
 
 
 function getResourceDescription(resourceDescriptionId) {
+	var status = "";
 	$.ajax({
         type: 'GET',
         contentType: 'application/json',
         url: url+'/api/resource-descriptions/'+resourceDescriptionId,
         dataType: "json",
+        async: false,
         headers: {
         	"Authorization": localStorage.getItem("token"),
         },
         success: function(data, textStatus, jqXHR){
-        	$('#editInputTitle').val(jqXHR.responseJSON.propertys[1].value) ;
-        	$('#editSelType option[value="'+jqXHR.responseJSON.propertys[2].value+'"]').prop('selected', true);
-        	var resourceUri = jqXHR.responseJSON.propertys[0].value;
-        	var resourceId = resourceUri.substring(resourceUri.indexOf("resources/")+10);
-        	$('#editInputResourceId').val(resourceId) ;
+        	status =  jqXHR;
         },
         error: function(jqXHR, textStatus, errorThrown){
-        	 console.log(jqXHR);
+        	status = jqXHR;
         }
     });
+	return status;
 }
 
 
