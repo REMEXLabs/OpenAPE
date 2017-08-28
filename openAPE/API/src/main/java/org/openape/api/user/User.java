@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class User extends DatabaseObject {
     private static final long serialVersionUID = -5694679880590931589L;
@@ -36,8 +37,8 @@ public class User extends DatabaseObject {
         return this.email;
     }
 
-    @Override
-    public String getId() {
+    @JsonProperty(value="id")
+    public String getUserId() {
         return super.getId();
     }
 
@@ -57,8 +58,7 @@ public class User extends DatabaseObject {
         this.email = email;
     }
 
-    @Override
-    public void setId(final String id) {
+    public void setUserId(final String id) {
         super.setId(id);
     }
 
