@@ -84,7 +84,7 @@ public class ImplementationParameters {
     private String owner;
 
     @DefaultValue(ImplementationParameters.FALSE)
-    private boolean isPublic;
+    private boolean isPublic = false;
 
     @XmlTransient
     public String getOwner() {
