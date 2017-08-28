@@ -16,15 +16,13 @@ import spark.Spark;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class ResourceDescriptionRESTInterface extends SuperRestInterface {
     private static ResourceDescription createRequestObejct(final Request req)
             throws IllegalArgumentException, IOException {
         final String contentType = req.contentType();
         if (contentType.equals(MediaType.APPLICATION_JSON)) {
-            return (ResourceDescription) SuperRestInterface.extractObjectFromRequest(req,
-                    ResourceDescription.class);
+            return ResourceDescription.getObjectFromJson(req.body());
         } else if (contentType.equals(MediaType.APPLICATION_XML)) {
             return ResourceDescription.getObjectFromXml(req.body());
         } else {
