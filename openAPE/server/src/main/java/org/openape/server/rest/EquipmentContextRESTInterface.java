@@ -36,9 +36,7 @@ public class EquipmentContextRESTInterface extends SuperRestInterface {
 
         if (contentType != null) {
             if (contentType.equals(MediaType.APPLICATION_JSON)) {
-                final ObjectMapper mapper = new ObjectMapper();
-                final String jsonData = mapper.writeValueAsString(equipmentContext);
-                return jsonData;
+                return equipmentContext.getForntEndJson();
             } else if (contentType.equals(MediaType.APPLICATION_XML)) {
                 return equipmentContext.getXML();
             } else {

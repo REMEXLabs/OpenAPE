@@ -37,9 +37,7 @@ public class EnvironmentContextRESTInterface extends SuperRestInterface {
 
         if (contentType != null) {
             if (contentType.equals(MediaType.APPLICATION_JSON)) {
-                final ObjectMapper mapper = new ObjectMapper();
-                final String jsonData = mapper.writeValueAsString(environmentContext);
-                return jsonData;
+                return environmentContext.getForntEndJson();
             } else if (contentType.equals(MediaType.APPLICATION_XML)) {
                 return environmentContext.getXML();
             } else {

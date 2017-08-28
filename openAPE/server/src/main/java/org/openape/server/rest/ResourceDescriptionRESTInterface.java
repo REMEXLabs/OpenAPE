@@ -37,9 +37,7 @@ public class ResourceDescriptionRESTInterface extends SuperRestInterface {
             IllegalArgumentException {
         final String contentType = req.contentType();
         if (contentType.equals(MediaType.APPLICATION_JSON)) {
-            final ObjectMapper mapper = new ObjectMapper();
-            final String jsonData = mapper.writeValueAsString(resourceDescription);
-            return jsonData;
+            return resourceDescription.getForntEndJson();
         } else if (contentType.equals(MediaType.APPLICATION_XML)) {
             return resourceDescription.getXML();
         } else {
