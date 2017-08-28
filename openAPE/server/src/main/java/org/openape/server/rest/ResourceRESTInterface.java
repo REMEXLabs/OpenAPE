@@ -7,8 +7,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
 
-import javassist.NotFoundException;
-
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
 import javax.ws.rs.core.StreamingOutput;
@@ -29,13 +27,14 @@ import org.pac4j.core.profile.CommonProfile;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import javassist.NotFoundException;
 import spark.Spark;
 
 public class ResourceRESTInterface extends SuperRestInterface {
     private static final String GROUP_ACCESS_RIGHT_HEADER_NAME = "groupAccessRights";
     private static final String HEADER_MUST_CONTAIN_GROUP_ACCESS_RIGHT_MSG = "Header must contain a field named 'groupAccessRights' with a valid GroupAccessRights object as value.";
     private static final ResourceAuthService RESOURCE_AUTH_SERVICE = new ResourceAuthService();
-    
+
     /**
      * Create a send able response from file.
      *
@@ -47,8 +46,7 @@ public class ResourceRESTInterface extends SuperRestInterface {
      * @throws FileNotFoundException
      *             if file is not found
      */
-    private static ResponseBuilder createFileResponse(final File file) throws IOException,
-            FileNotFoundException {
+    private static ResponseBuilder createFileResponse(final File file) throws IOException, FileNotFoundException {
         // Create file response
         final FileInputStream fileInputStream = new FileInputStream(file);
         final StreamingOutput streamingOutput = new StreamingOutput() {
@@ -70,40 +68,35 @@ public class ResourceRESTInterface extends SuperRestInterface {
         try {
             fileInputStream.close();
         } catch (final IOException e) {
-            System.err.println(Messages
-                    .getString("ResourceRESTInterface.StreamsCouldNotBeClosedErrorMassage")); //$NON-NLS-1$
+            System.err.println(Messages.getString("ResourceRESTInterface.StreamsCouldNotBeClosedErrorMassage")); //$NON-NLS-1$
         }
         final ResponseBuilder response = Response.ok(streamingOutput);
         return response;
     }
 
-    public static void setupResourceRESTInterface(final ResourceRequestHandler requestHandler,
-            final AuthService auth) {
+    public static void setupResourceRESTInterface(final ResourceRequestHandler requestHandler, final AuthService auth) {
         /**
          * Request 7.6.2 create resource.
          */
-        Spark.post(
-                Messages.getString("ResourceRESTInterface.ResourcesURLWithoutID"), //$NON-NLS-1$
+        Spark.post(Messages.getString("ResourceRESTInterface.ResourcesURLWithoutID"), //$NON-NLS-1$
                 (req, res) -> {
 
-                    final String mimeType = req.headers(Messages
-                            .getString("ResourceRESTInterface.contentTypeString"));//$NON-NLS-1$
+                    final String mimeType = req.headers(Messages.getString("ResourceRESTInterface.contentTypeString"));//$NON-NLS-1$
                     // req.contentType();
                     // get group access rights.
                     final String groupAccessRightsString = req
-                            .headers(GROUP_ACCESS_RIGHT_HEADER_NAME);
+                            .headers(ResourceRESTInterface.GROUP_ACCESS_RIGHT_HEADER_NAME);
                     if (groupAccessRightsString == null) {
                         res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
-                        return HEADER_MUST_CONTAIN_GROUP_ACCESS_RIGHT_MSG;
+                        return ResourceRESTInterface.HEADER_MUST_CONTAIN_GROUP_ACCESS_RIGHT_MSG;
                     }
                     GroupAccessRights groupAccessRights = null;
                     try {
                         final ObjectMapper mapper = new ObjectMapper();
-                        groupAccessRights = mapper.readValue(groupAccessRightsString,
-                                GroupAccessRights.class);
-                    } catch (Exception e) {
+                        groupAccessRights = mapper.readValue(groupAccessRightsString, GroupAccessRights.class);
+                    } catch (final Exception e) {
                         res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
-                        return HEADER_MUST_CONTAIN_GROUP_ACCESS_RIGHT_MSG;
+                        return ResourceRESTInterface.HEADER_MUST_CONTAIN_GROUP_ACCESS_RIGHT_MSG;
                     }
 
                     if ((mimeType == null) || mimeType.equals(Messages.getString("EmptyString"))) { //$NON-NLS-1$
@@ -115,16 +108,15 @@ public class ResourceRESTInterface extends SuperRestInterface {
                     String fileName = Messages.getString("EmptyString"); //$NON-NLS-1$
 
                     // Needed to process input file.
-                    final File tmpFile = new File(Messages
-                            .getString("ResourceRESTInterface.tmpFileName")); //$NON-NLS-1$
+                    final File tmpFile = new File(Messages.getString("ResourceRESTInterface.tmpFileName")); //$NON-NLS-1$
                     try {
                         // get user from request response pair.
                         final User user = auth.getAuthenticatedUser(req, res);
 
                         if (!tmpFile.exists() && !tmpFile.mkdirs()) {
-                            throw new RuntimeException(Messages
-                                    .getString("ResourceRESTInterface.FailedToCreateDirError") //$NON-NLS-1$
-                                    + tmpFile.getAbsolutePath());
+                            throw new RuntimeException(
+                                    Messages.getString("ResourceRESTInterface.FailedToCreateDirError") //$NON-NLS-1$
+                                            + tmpFile.getAbsolutePath());
                         }
                         // apache commons-fileupload to handle file upload
                         final DiskFileItemFactory factory = new DiskFileItemFactory();
@@ -135,8 +127,7 @@ public class ResourceRESTInterface extends SuperRestInterface {
                         final List<FileItem> items = fileUpload.parseRequest(req.raw());
                         final FileItem item = items.get(0);
                         // hand off file to handler.
-                        fileName = requestHandler.createResource(item, mimeType, user,
-                                groupAccessRights);
+                        fileName = requestHandler.createResource(item, mimeType, user, groupAccessRights);
                     } catch (final IllegalArgumentException e) {
                         // occurs if the filename is taken or its not a file.
                         res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
@@ -158,146 +149,132 @@ public class ResourceRESTInterface extends SuperRestInterface {
          * identified by ID.
          */
         Spark.get(Messages.getString("ResourceRESTInterface.ResourcesURLWithID"), (req, res) -> { //$NON-NLS-1$
-                    // get the id;
-                final String resourceId = req.params(Messages
-                        .getString("ResourceRESTInterface.IDParam")); //$NON-NLS-1$
+            // get the id;
+            final String resourceId = req.params(Messages.getString("ResourceRESTInterface.IDParam")); //$NON-NLS-1$
 
-                try {
-                    // get the file from server.
-                    final GetResourceReturnType serverReturn = requestHandler
-                            .getResourceById(resourceId);
-                    final File file = serverReturn.getFile();
-                    final String mimeType = serverReturn.getResourceObject().getMimeType();
-                    
-                    // check access right
-                    RESOURCE_AUTH_SERVICE.allowReading(req, res, serverReturn.getResourceObject());
-                    
-                    // create response from file.
-                    final ResponseBuilder response = ResourceRESTInterface.createFileResponse(file);
-                    // Set meta information.
-                    response.header(
-                            Messages.getString("ResourceRESTInterface.ceontentTypeString"), mimeType); //$NON-NLS-1$
-                    response.header(
-                            Messages.getString("ResourceRESTInterface.contentDistributionString"), //$NON-NLS-1$
-                            Messages.getString("ResourceRESTInterface.inlineFilename") + file.getName()); //$NON-NLS-1$
-                    res.status(SuperRestInterface.HTTP_STATUS_OK);
-                    // return file.
-                    return response.build();
-                } catch (final IllegalArgumentException e) {
-                    // file by this name is not found.
-                    res.status(SuperRestInterface.HTTP_STATUS_NOT_FOUND);
-                    return e.getMessage();
-                } catch (final UnauthorizedException e) {
-                    // Only authorized users may read the resource.
-                    res.status(SuperRestInterface.HTTP_STATUS_UNAUTHORIZED);
-                    return e.getMessage();
-                } catch (final Exception e) {
-                    res.status(SuperRestInterface.HTTP_STATUS_INTERNAL_SERVER_ERROR);
-                    return e.getMessage();
-                }
-            });
+            try {
+                // get the file from server.
+                final GetResourceReturnType serverReturn = requestHandler.getResourceById(resourceId);
+                final File file = serverReturn.getFile();
+                final String mimeType = serverReturn.getResourceObject().getMimeType();
+
+                // check access right
+                ResourceRESTInterface.RESOURCE_AUTH_SERVICE.allowReading(req, res, serverReturn.getResourceObject());
+
+                // create response from file.
+                final ResponseBuilder response = ResourceRESTInterface.createFileResponse(file);
+                // Set meta information.
+                response.header(Messages.getString("ResourceRESTInterface.ceontentTypeString"), mimeType); //$NON-NLS-1$
+                response.header(Messages.getString("ResourceRESTInterface.contentDistributionString"), //$NON-NLS-1$
+                        Messages.getString("ResourceRESTInterface.inlineFilename") + file.getName()); //$NON-NLS-1$
+                res.status(SuperRestInterface.HTTP_STATUS_OK);
+                // return file.
+                return response.build();
+            } catch (final IllegalArgumentException e) {
+                // file by this name is not found.
+                res.status(SuperRestInterface.HTTP_STATUS_NOT_FOUND);
+                return e.getMessage();
+            } catch (final UnauthorizedException e) {
+                // Only authorized users may read the resource.
+                res.status(SuperRestInterface.HTTP_STATUS_UNAUTHORIZED);
+                return e.getMessage();
+            } catch (final Exception e) {
+                res.status(SuperRestInterface.HTTP_STATUS_INTERNAL_SERVER_ERROR);
+                return e.getMessage();
+            }
+        });
 
         /**
          * Request 7.6.4 get resource from listing.
          */
-        Spark.get(
-                Messages.getString("ResourceRESTInterface.ResourcesFromListingURL"), (req, res) -> { //$NON-NLS-1$
+        Spark.get(Messages.getString("ResourceRESTInterface.ResourcesFromListingURL"), (req, res) -> { //$NON-NLS-1$
 
-                    // get the parameters;
-                    final String listingId = req.params(Messages
-                            .getString("ResourceRESTInterface.ListingIDParam")); //$NON-NLS-1$
-                    final String listingIndex = req.params(Messages
-                            .getString("ResourceRESTInterface.IndexParam")); //$NON-NLS-1$
+            // get the parameters;
+            final String listingId = req.params(Messages.getString("ResourceRESTInterface.ListingIDParam")); //$NON-NLS-1$
+            final String listingIndex = req.params(Messages.getString("ResourceRESTInterface.IndexParam")); //$NON-NLS-1$
 
-                    File file = null;
-                    String mimeType = null;
-                    try {
-                        // get listing
-                        final Listing listing = requestHandler.getListingById(listingId);
-                        // get the files from server.
-                        final List<GetResourceReturnType> serverResponse = requestHandler
-                                .getResourceByListing(listing);
-                        // get the requested resource.
-                        final int index = Integer.parseInt(listingIndex);
-                        final GetResourceReturnType returnType = serverResponse.get(index);
-                        file = returnType.getFile();
-                        mimeType = returnType.getResourceObject().getMimeType();
-                        
-                        // check access right
-                        RESOURCE_AUTH_SERVICE.allowReading(req, res, returnType.getResourceObject());
-                        
-                    } catch (NotFoundException | IllegalArgumentException
-                            | IndexOutOfBoundsException e) {
-                        res.status(SuperRestInterface.HTTP_STATUS_NOT_FOUND);
-                        return e.getMessage();
-                    } catch (final IOException e) {
-                        res.status(SuperRestInterface.HTTP_STATUS_INTERNAL_SERVER_ERROR);
-                        return e.getMessage();
-                    } catch (final UnauthorizedException e) {
-                        // Only authorized users may read the resource.
-                        res.status(SuperRestInterface.HTTP_STATUS_UNAUTHORIZED);
-                        return e.getMessage();
-                    }
-                    try {
-                        // create response from file.
-                        final ResponseBuilder response = ResourceRESTInterface
-                                .createFileResponse(file);
-                        // Set meta information.
-                        response.header(
-                                Messages.getString("ResourceRESTInterface.ceontentTypeString"), mimeType); //$NON-NLS-1$
-                        response.header(
-                                Messages.getString("ResourceRESTInterface.contentDistributionString"), //$NON-NLS-1$
-                                Messages.getString("ResourceRESTInterface.inlineFilename") + file.getName()); //$NON-NLS-1$
-                        res.status(SuperRestInterface.HTTP_STATUS_OK);
-                        // return file.
-                        return response.build();
+            File file = null;
+            String mimeType = null;
+            try {
+                // get listing
+                final Listing listing = requestHandler.getListingById(listingId);
+                // get the files from server.
+                final List<GetResourceReturnType> serverResponse = requestHandler.getResourceByListing(listing);
+                // get the requested resource.
+                final int index = Integer.parseInt(listingIndex);
+                final GetResourceReturnType returnType = serverResponse.get(index);
+                file = returnType.getFile();
+                mimeType = returnType.getResourceObject().getMimeType();
 
-                    } catch (final IllegalArgumentException e) {
-                        // file by this name is not found.
-                        res.status(SuperRestInterface.HTTP_STATUS_NOT_FOUND);
-                        return e.getMessage();
-                    } catch (final IOException e) {
-                        res.status(SuperRestInterface.HTTP_STATUS_INTERNAL_SERVER_ERROR);
-                        return e.getMessage();
-                    }
-                });
+                // check access right
+                ResourceRESTInterface.RESOURCE_AUTH_SERVICE.allowReading(req, res, returnType.getResourceObject());
+
+            } catch (NotFoundException | IllegalArgumentException | IndexOutOfBoundsException e) {
+                res.status(SuperRestInterface.HTTP_STATUS_NOT_FOUND);
+                return e.getMessage();
+            } catch (final IOException e) {
+                res.status(SuperRestInterface.HTTP_STATUS_INTERNAL_SERVER_ERROR);
+                return e.getMessage();
+            } catch (final UnauthorizedException e) {
+                // Only authorized users may read the resource.
+                res.status(SuperRestInterface.HTTP_STATUS_UNAUTHORIZED);
+                return e.getMessage();
+            }
+            try {
+                // create response from file.
+                final ResponseBuilder response = ResourceRESTInterface.createFileResponse(file);
+                // Set meta information.
+                response.header(Messages.getString("ResourceRESTInterface.ceontentTypeString"), mimeType); //$NON-NLS-1$
+                response.header(Messages.getString("ResourceRESTInterface.contentDistributionString"), //$NON-NLS-1$
+                        Messages.getString("ResourceRESTInterface.inlineFilename") + file.getName()); //$NON-NLS-1$
+                res.status(SuperRestInterface.HTTP_STATUS_OK);
+                // return file.
+                return response.build();
+
+            } catch (final IllegalArgumentException e) {
+                // file by this name is not found.
+                res.status(SuperRestInterface.HTTP_STATUS_NOT_FOUND);
+                return e.getMessage();
+            } catch (final IOException e) {
+                res.status(SuperRestInterface.HTTP_STATUS_INTERNAL_SERVER_ERROR);
+                return e.getMessage();
+            }
+        });
 
         /**
          * Request 7.6.5 delete resource.
          */
-        Spark.delete(
-                Messages.getString("ResourceRESTInterface.ResourcesURLWithID"), (req, res) -> { //$NON-NLS-1$
-                    final String resourceId = req.params(Messages
-                            .getString("ResourceRESTInterface.IDParam")); //$NON-NLS-1$
-                    try {
-                        // get user from request response pair.
-                        final CommonProfile profile = auth.getAuthenticatedProfile(req, res);
-                        
-                        // get resource object
-                        final GetResourceReturnType serverReturn = requestHandler
-                                .getResourceById(resourceId);
-                        
-                        // check access right
-                        if(serverReturn != null && serverReturn.getResourceObject() != null){
-                            RESOURCE_AUTH_SERVICE.allowDeleting(req, res, serverReturn.getResourceObject());
-                        }
-                        
-                        requestHandler.deleteResourceById(resourceId, profile);
-                    } catch (final IllegalArgumentException e) {
-                        res.status(SuperRestInterface.HTTP_STATUS_NOT_FOUND);
-                        return e.getMessage();
-                    } catch (final IOException e) {
-                        res.status(SuperRestInterface.HTTP_STATUS_INTERNAL_SERVER_ERROR);
-                        return e.getMessage();
-                    } catch (final UnauthorizedException e) {
-                        // Only authorized users may delete their resources.
-                        res.status(SuperRestInterface.HTTP_STATUS_UNAUTHORIZED);
-                        return e.getMessage();
-                    }
-                    res.status(SuperRestInterface.HTTP_STATUS_NO_CONTENT);
-                    return Messages.getString("ResourceRESTInterface.EmptyString"); //$NON-NLS-1$
+        Spark.delete(Messages.getString("ResourceRESTInterface.ResourcesURLWithID"), (req, res) -> { //$NON-NLS-1$
+            final String resourceId = req.params(Messages.getString("ResourceRESTInterface.IDParam")); //$NON-NLS-1$
+            try {
+                // get user from request response pair.
+                final CommonProfile profile = auth.getAuthenticatedProfile(req, res);
 
-                });
+                // get resource object
+                final GetResourceReturnType serverReturn = requestHandler.getResourceById(resourceId);
+
+                // check access right
+                if ((serverReturn != null) && (serverReturn.getResourceObject() != null)) {
+                    ResourceRESTInterface.RESOURCE_AUTH_SERVICE.allowDeleting(req, res,
+                            serverReturn.getResourceObject());
+                }
+
+                requestHandler.deleteResourceById(resourceId, profile);
+            } catch (final IllegalArgumentException e) {
+                res.status(SuperRestInterface.HTTP_STATUS_NOT_FOUND);
+                return e.getMessage();
+            } catch (final IOException e) {
+                res.status(SuperRestInterface.HTTP_STATUS_INTERNAL_SERVER_ERROR);
+                return e.getMessage();
+            } catch (final UnauthorizedException e) {
+                // Only authorized users may delete their resources.
+                res.status(SuperRestInterface.HTTP_STATUS_UNAUTHORIZED);
+                return e.getMessage();
+            }
+            res.status(SuperRestInterface.HTTP_STATUS_NO_CONTENT);
+            return Messages.getString("ResourceRESTInterface.EmptyString"); //$NON-NLS-1$
+
+        });
 
     }
 }
