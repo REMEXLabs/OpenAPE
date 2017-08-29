@@ -229,7 +229,7 @@ public class ResourceRESTInterface extends SuperRestInterface {
                 });
 
         /**
-         * Request 7.6.5 delete resource.
+         * Request 7.6.6 delete resource.
          */
         Spark.delete(
                 Messages.getString("ResourceRESTInterface.ResourcesURLWithID"), (req, res) -> { //$NON-NLS-1$
