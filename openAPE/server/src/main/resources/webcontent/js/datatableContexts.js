@@ -3,6 +3,7 @@
  */
 $(document).ready(function(){
 	var currentUrl = window.location.protocol + "//"+window.location.host;
+	var event = event;
 	
 	$('#viewEnvironmentContextOutputSelContentType').on('change', function() {
 		var outputType = $("#viewEnvironmentContextOutputSelContentType option:selected").text();

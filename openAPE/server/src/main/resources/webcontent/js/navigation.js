@@ -196,7 +196,7 @@ function openCity(evt, tabName) {
 
     // Show the current tab, and add an "active" class to the button that opened the tab
     document.getElementById(tabName).style.display = "block";
-    evt.currentTarget.className += " active";
+    $(this).addClass('active');
     
 
 	if(window.location.href.indexOf("administration") == -1 && window.location.href.indexOf("myContexts") == -1){
