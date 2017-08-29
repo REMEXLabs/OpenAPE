@@ -56,6 +56,18 @@ public class ResourceAuthService extends AuthService {
      * Constant for the parameter value change rights right.
      */
     private static final String CHANGE_RIGHTS_RIGHT = "changeRightsRight";
+    
+    /**
+     * True if the test mode is enabeld and false if not. If the test mode is enabled the user {@link #testUser} will be
+     * used instead of the user, which would be returned by {@link #getAuthenticatedUser(Request, Response)}.
+     */
+    private boolean testModeEnabled = false;
+
+    /**
+     * The user, which will be used if the {@link #testMode} is enabled instead of the user, which would be returned by
+     * {@link #getAuthenticatedUser(Request, Response)}.
+     */
+    private User testUser;
 
     /**
      *
@@ -75,7 +87,7 @@ public class ResourceAuthService extends AuthService {
      */
     private void allow(final Request request, final Response response, final ResourceObject resourceObject,
             final String right) throws UnauthorizedException, IOException {
-        final User user = this.getAuthenticatedUser(request, response);
+        final User user = this.getUser(request, response);
         if (user.getRoles().contains(ResourceAuthService.ADMIN_ROLE)) {
             return;
         }
@@ -185,11 +197,15 @@ public class ResourceAuthService extends AuthService {
     }
 
     private void disbaleTestMode() {
-
+        this.testModeEnabled = false;
     }
 
     private void enableTestMode() {
-
+        this.testModeEnabled = true;
+    }
+    
+    private void setTestUser(User testUser){
+        this.testUser = testUser;
     }
 
     /**
@@ -224,11 +240,15 @@ public class ResourceAuthService extends AuthService {
 
         return groups;
     }
-
-    /*
-     * private User getUser(Request request, Response respone){
-     *
-     * }
-     */
+    
+    private User getUser(Request request, Response response) throws UnauthorizedException{
+        User user;
+        if(this.testModeEnabled){
+            user = this.testUser;
+        }else{
+            user = this.getAuthenticatedUser(request, response);
+        }
+        return user;
+    }
 
 }
