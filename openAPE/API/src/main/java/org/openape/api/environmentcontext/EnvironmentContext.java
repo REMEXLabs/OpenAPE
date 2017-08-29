@@ -64,8 +64,6 @@ public class EnvironmentContext extends DatabaseObject {
 
     private static final String PUBLIC = "public";
 
-    private static final String OWNER = "owner";
-
     private static final String IMPLEMENTATION_PARAMETERS = "implementation-parameters";
 
     private static final long serialVersionUID = -1706959529432920842L;
@@ -92,8 +90,6 @@ public class EnvironmentContext extends DatabaseObject {
                     .get(EnvironmentContext.IMPLEMENTATION_PARAMETERS);
             if ((implemParams != null) && !(implemParams instanceof NullNode)) {
                 final ObjectNode implemParamsNode = (ObjectNode) implemParams;
-                context.getImplementationParameters().setOwner(
-                        implemParamsNode.get(EnvironmentContext.OWNER).textValue());
                 context.getImplementationParameters().setPublic(
                         implemParamsNode.get(EnvironmentContext.PUBLIC).booleanValue());
             }

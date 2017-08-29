@@ -62,8 +62,6 @@ public class EquipmentContext extends DatabaseObject {
 
     private static final String PUBLIC = "public";
 
-    private static final String OWNER = "owner";
-
     private static final String EQUIPMENT_CONTEXT = "equipment-context";
 
     private static final String IMPLEMENTATION_PARAMETERS = "implementation-parameters";
@@ -92,8 +90,6 @@ public class EquipmentContext extends DatabaseObject {
                     .get(EquipmentContext.IMPLEMENTATION_PARAMETERS);
             if ((implemParams != null) && !(implemParams instanceof NullNode)) {
                 final ObjectNode implemParamsNode = (ObjectNode) implemParams;
-                context.getImplementationParameters().setOwner(
-                        implemParamsNode.get(EquipmentContext.OWNER).textValue());
                 context.getImplementationParameters().setPublic(
                         implemParamsNode.get(EquipmentContext.PUBLIC).booleanValue());
             }

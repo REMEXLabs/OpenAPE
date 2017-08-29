@@ -98,8 +98,6 @@ public class UserContext extends DatabaseObject {
 
     private static final String PUBLIC = "public";
 
-    private static final String OWNER = "owner";
-
     private static final String IMPLEMENTATION_PARAMETERS = "implementation-parameters";
 
     private static final long serialVersionUID = 5891055316807633786L;
@@ -124,8 +122,6 @@ public class UserContext extends DatabaseObject {
             final JsonNode implemParams = rootObject.get(UserContext.IMPLEMENTATION_PARAMETERS);
             if ((implemParams != null) && !(implemParams instanceof NullNode)) {
                 final ObjectNode implemParamsNode = (ObjectNode) implemParams;
-                userContext.getImplementationParameters().setOwner(
-                        implemParamsNode.get(UserContext.OWNER).textValue());
                 userContext.getImplementationParameters().setPublic(
                         implemParamsNode.get(UserContext.PUBLIC).booleanValue());
             }

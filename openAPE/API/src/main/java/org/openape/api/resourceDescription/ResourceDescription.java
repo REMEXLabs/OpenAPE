@@ -64,8 +64,6 @@ public class ResourceDescription extends DatabaseObject {
 
     private static final String PUBLIC = "public";
 
-    private static final String OWNER = "owner";
-
     private static final String IMPLEMENTATION_PARAMETERS = "implementation-parameters";
 
     private static final long serialVersionUID = -3341210067495347309L;
@@ -92,8 +90,6 @@ public class ResourceDescription extends DatabaseObject {
                     .get(ResourceDescription.IMPLEMENTATION_PARAMETERS);
             if ((implemParams != null) && !(implemParams instanceof NullNode)) {
                 final ObjectNode implemParamsNode = (ObjectNode) implemParams;
-                description.getImplementationParameters().setOwner(
-                        implemParamsNode.get(ResourceDescription.OWNER).textValue());
                 description.getImplementationParameters().setPublic(
                         implemParamsNode.get(ResourceDescription.PUBLIC).booleanValue());
             }
