@@ -1,4 +1,5 @@
 var selectedRoles = [];
+var origin = window.origin;
 $(document).ready(function() {
 	if(window.location.hash == "#users"){
 		$('#collapseTwo').removeClass("in");
@@ -175,7 +176,7 @@ function removeUser(userId) {
 	$.ajax({
 	    type: 'DELETE',
 	    contentType: 'application/json',
-	    url: 'http://localhost:4567/users?id='+userId,
+	    url: origin+'/users?id='+userId,
 	    dataType: "json",
 	    success: function(data, textStatus, jqXHR){
 	    	
@@ -191,7 +192,7 @@ function updateUser(newObjUser) {
 	$.ajax({
 	    type: 'PUT',
 	    contentType: 'application/json',
-	    url: 'http://localhost:4567/users',
+	    url: origin+'/users',
 	    data: JSON.stringify(newObjUser),		
 	    dataType: "json",
 	    success: function(data, textStatus, jqXHR){
@@ -236,7 +237,7 @@ function createUserDB(userObj) {
 	$.ajax({
 	    type: 'POST',
 	    contentType: 'application/json',
-	    url: 'http://localhost:4567/users',
+	    url: origin+'/users',
 	    data: JSON.stringify(userObj),		
 	    dataType: "json",
 	    
