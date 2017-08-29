@@ -2,6 +2,7 @@ $(document).ready(function() {
 	
 	var token = localStorage.getItem("token");
 	var currentUrl = window.location.protocol + "//"+window.location.host;
+	var origin = window.origin;
 	
 	if(token === null || token === "undefined"){
 		$('.subSection').hide();
@@ -97,8 +98,6 @@ $(document).ready(function() {
     	$('#divMyResources').removeClass("active");
 	}
 	
-	
-
     //$('#nav_adminsectionUsers').click();
     $('#div_nav_adminsectionUsers').addClass("adminsectionNavActive");
     $('#users').show();
@@ -133,48 +132,48 @@ $(document).ready(function() {
     })
     
      $('#linkGettingStarted').click(function(){ 	
-    	window.location = "http://localhost:4567/gettingStarted";
+    	window.location = origin+"/gettingStarted";
     })
     
     $('#linkTutorials').click(function(){ 
-    	window.location = "http://localhost:4567/tutorials";
+    	window.location = origin+"/tutorials";
     })
     
     $('#linkHome').click(function(){ 
-    	window.location = "http://localhost:4567/index";
+    	window.location = origin+"/index";
     })
     
      $('#linkDownloads').click(function(){ 	
-    	 window.location = "http://localhost:4567/downloads";
+    	 window.location = origin+"/downloads";
     })
 
     $('#linkContext').click(function(){ 
-    	 window.location = "http://localhost:4567/context";
+    	 window.location = origin+"/context";
     })
     
     $('#linkContact').click(function(){ 
-    	 window.location = "http://localhost:4567/contact";
+    	 window.location = origin+"/contact";
     })
     
     
     $('#linkMyContexts').click(function(){ 	
-    	 window.location = "http://localhost:4567/myContexts";
+    	 window.location = origin+"/myContexts";
     })
     
     $('#linkMyProfile').click(function(){ 	
-    	window.location = "http://localhost:4567/myProfile";
+    	window.location = origin+"/myProfile";
     })
     
      $('#linkMyResources').click(function(){ 	
-    	 window.location = "http://localhost:4567/myResources";
+    	 window.location = origin+"/myResources";
     })
     
      $('#linkMyGroups').click(function(){ 	
-    	 window.location = "http://localhost:4567/myGroups";
+    	 window.location = origin+"/myGroups";
     })
     
     $('#linkAdministration').click(function(){ 	
-    	window.location = "http://localhost:4567/administration";
+    	window.location = origin+"/administration";
     })
 } );
 
@@ -197,7 +196,7 @@ function openCity(evt, tabName) {
 
     // Show the current tab, and add an "active" class to the button that opened the tab
     document.getElementById(tabName).style.display = "block";
-    evt.currentTarget.className += " active";
+    $(this).addClass('active');
     
 
 	if(window.location.href.indexOf("administration") == -1 && window.location.href.indexOf("myContexts") == -1){
