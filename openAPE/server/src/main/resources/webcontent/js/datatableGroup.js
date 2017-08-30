@@ -77,8 +77,6 @@ $(document).ready(function() {
 		        .draw(); 
 		 }
 
-		groupTable.column( 5 ).visible( false );
-		groupTable.column( 6 ).visible( false );
 	}
 	
 	$('#addGroupModal').on('hidden.bs.modal', function () {	
