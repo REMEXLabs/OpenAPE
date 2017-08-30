@@ -27,6 +27,7 @@ import org.openape.ui.velocity.controller.MyGroups;
 import org.openape.ui.velocity.controller.MyProfile;
 import org.openape.ui.velocity.controller.MyResources;
 import org.openape.ui.velocity.controller.Tutorials;
+import org.openape.ui.velocity.controller.Tutorials_Workflow;
 import org.openape.ui.velocity.requestHandler.AdminSectionRequestHandler;
 import org.openape.ui.velocity.requestHandler.MyResourcesRequestHandler;
 import org.slf4j.Logger;
@@ -282,6 +283,16 @@ public class SuperRestInterface {
 
         try {
             Index.setupIndexVELOCITYInterface();
+        } catch (final IllegalArgumentException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (final IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        
+        try {
+        	Tutorials_Workflow.setupTutorialsWorkflowVELOCITYInterface();
         } catch (final IllegalArgumentException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
