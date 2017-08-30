@@ -168,6 +168,7 @@
 	$editGroupModal
 	$addGroupUserModal
 	$deleteGroupUserModal
+	 $deleteGroupModal
 	
    </div>
    <div class="body">

@@ -161,7 +161,7 @@ public class Organism_4_Modals {
                 + "GroupMainErrSection'> </span>"
                 + "        <button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button>"
                 + "        <button type='button' class='btn btn-danger' id='btnConfirm" + action
-                + "Group' class='btn btn-primary'>" + action + " group</button>" + "      </div>"
+                + "Group' class='btn btn-primary'>" + action + " Group</button>" + "      </div>"
                 + "    </div>" + "  </div>" + "</div>";
 
         return modalContruct;
