@@ -91,7 +91,7 @@ public class Molecule_5_DataTableContent {
                         + environmentContext.getId()
                         + "' class='btn btn-md btn-default' data-clipboard-text='http://gpi.eu/"
                         + environmentContext.getId()
-                        + "' onClick='copyEnvironmentContextLink(this)'><div class='glyphicon glyphicon-trash'></div> Copy link to Clipboard</button> ";
+                        + "' onClick='copyEnvironmentContextLink(this)'><div class='glyphicon glyphicon-copy'></div> Copy link to Clipboard</button> ";
             }
             // if the user is on the MyContext site oder in the Administration
             // section than the edit, delete and copy buttons will be enabled
@@ -133,7 +133,7 @@ public class Molecule_5_DataTableContent {
                         + equipmentkContext.getId()
                         + "' class='btn btn-md btn-default' data-clipboard-text='http://gpi.eu/"
                         + equipmentkContext.getId()
-                        + "' onClick='copyEquipmentContextLink(this)'><div class='glyphicon glyphicon-trash'></div> Copy link to Clipboard</button> ";
+                        + "' onClick='copyEquipmentContextLink(this)'><div class='glyphicon glyphicon-copy'></div> Copy link to Clipboard</button> ";
             } else {
                 buttons = "<button id='"
                         + equipmentkContext.getId()
@@ -311,7 +311,7 @@ public class Molecule_5_DataTableContent {
                         + taskContext.getId()
                         + "' class='btn btn-md btn-default' data-clipboard-text='http://gpi.eu/"
                         + taskContext.getId()
-                        + "' onClick='copyTaskContextLink(this)'><div class='glyphicon glyphicon-trash'></div> Copy link to Clipboard</button> ";
+                        + "' onClick='copyTaskContextLink(this)'><div class='glyphicon glyphicon-copy'></div> Copy link to Clipboard</button> ";
             } else {
                 buttons = "<button id='"
                         + taskContext.getId()
@@ -348,7 +348,7 @@ public class Molecule_5_DataTableContent {
                         + userContext.getId()
                         + "' class='btn btn-md btn-default' data-clipboard-text='"
                         + userContext.getId()
-                        + "' onClick='copyUserContextLink(this)'><div class='glyphicon glyphicon-trash'></div>Copy link to Clipboard</button> ";
+                        + "' onClick='copyUserContextLink(this)'><div class='glyphicon glyphicon-copy'></div>Copy link to Clipboard</button> ";
             } else {
                 buttons = "<button id='"
                         + userContext.getId()
