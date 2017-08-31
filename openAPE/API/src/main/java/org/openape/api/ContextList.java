@@ -7,9 +7,10 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlElement;
 
+import org.openape.api.databaseObjectBase.DatabaseObject;
 import org.openape.api.usercontext.UserContext;
 
-public abstract class ContextList<T > {
+public abstract class ContextList<T extends DatabaseObject > {
 
     protected int totalContexts;
     
