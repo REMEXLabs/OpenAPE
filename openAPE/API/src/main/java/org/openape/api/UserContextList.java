@@ -10,7 +10,7 @@ import org.openape.api.usercontext.UserContext;
 public class UserContextList extends ContextList<UserContext> {
 
     public UserContextList(List<UserContext> contexts, String url) {
-        super(contexts, url, "user-context-type");
+        super(contexts, url, "user-context-uri");
     }
     
     public List<URI> getUserContextUris() {
