@@ -1,12 +1,8 @@
 package org.openape.server.rest;
 
 import java.io.IOException;
-import java.io.StringWriter;
 
 import javax.ws.rs.core.MediaType;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
 
 import org.openape.api.Messages;
 import org.openape.api.UserContextList;
@@ -16,15 +12,12 @@ import org.openape.server.auth.UnauthorizedException;
 import org.openape.server.requestHandler.UserContextRequestHandler;
 
 import spark.Request;
-import spark.Response;
 import spark.Spark;
 
 import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
-public class UserContextRESTInterface extends SuperRestInterface {
+public class UserContextRESTInterface extends ContextRestInterface {
 
     private static UserContext createRequestObejct(final Request req)
             throws IllegalArgumentException {
@@ -55,43 +48,6 @@ public class UserContextRESTInterface extends SuperRestInterface {
             return userContext.getXML();
         }
 
-    }
-
-    private static String createReturnStringListRequest(final Request req, final Response res,
-            final Class type, final Object data) {
-        final String contentType = req.contentType();
-        if (contentType.equals(MediaType.APPLICATION_JSON)) {
-            try {
-                final ObjectMapper mapper = new ObjectMapper();
-
-                final String jsonData = mapper.writeValueAsString(data);
-                return jsonData;
-            } catch (final JsonProcessingException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        } else if (contentType.equals(MediaType.APPLICATION_XML)) {
-            try {
-                final JAXBContext context = JAXBContext.newInstance(type);
-                Marshaller m;
-
-                m = context.createMarshaller();
-                final StringWriter sw = new StringWriter();
-
-                m.marshal(data, sw);
-                return sw.toString();
-
-            } catch (final JAXBException e) {
-                SuperRestInterface.logger.warn(e.toString());
-                res.status(500);
-                return "Internal server error";
-            }
-
-        } else {
-            res.status(400);
-            return "wrong content-type";
-        }
-        return null;
     }
 
     public static void setupUserContextRESTInterface(
@@ -267,19 +223,6 @@ public class UserContextRESTInterface extends SuperRestInterface {
         /*
          * Request 7.2.6 for user-context-lists
          */
-
-        Spark.get(
-                Messages.getString("UserContextRESTInterface.UserContextURLWithoutID"), (req, res) -> { //$NON-NLS-1$
-                    final String url = req.uri().toString();
-                    try {
-                        auth.allowAdmin(req, res);
-                        return UserContextRESTInterface.createReturnStringListRequest(req, res,
-                                UserContextList.class, requestHandler.getAllUserContexts(url));
-                    } catch (final UnauthorizedException e) {
-                        return UserContextRESTInterface.createReturnStringListRequest(req, res,
-                                UserContextList.class, requestHandler.getMyContexts(auth
-                                        .getAuthenticatedUser(req, res).getId(), url));
-                    }
-                });
-    }
+createContextListRestEndpoint(Messages.getString("UserContextRESTInterface.UserContextURLWithoutID"), requestHandler, auth,UserContextList.class);
+            }
 }
