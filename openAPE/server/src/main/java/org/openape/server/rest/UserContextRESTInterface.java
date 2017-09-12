@@ -267,7 +267,7 @@ public class UserContextRESTInterface extends SuperRestInterface {
         /*
          * Request 7.2.6 for user-context-lists
          */
-
+        
         Spark.get(
                 Messages.getString("UserContextRESTInterface.UserContextURLWithoutID"), (req, res) -> { //$NON-NLS-1$
                     final String url = req.uri().toString();
