@@ -273,6 +273,7 @@ public class Organism_4_Modals {
                 + idName
                 + "UploadResourceErrSection'> </span>"
                 + "	</label>"
+                + generateGroupRelations()
                 + "</div>"
                 + "</div>"
                 + "<div class='modal-footer' style='clear:both; background-color:#ececec; border-top: 2px solid #ccc;'>"
@@ -282,9 +283,24 @@ public class Organism_4_Modals {
                 + "<button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button>"
                 + "<button type='button' class='btn btn-danger' id='btnConfirm" + action
                 + "Resource'>" + name + " Resource</button>" + "</div>" + "</div>" + "</div>"
-                + "</div>";
+                + "</div>"
+                                ;
 
         return modalContruct;
+    }
+
+    private String generateGroupRelations() {
+        String tableContent = "";
+        String table = ""
+                + "<table id='ResourceDataTable' style='border: 4px solid #ddd !important;' class='table table-striped table-bordered dt-responsive nowrap' cellspacing='0' width='100%'>"
+                + "<thead>" + "<tr>" + "<th>Description</th>" + "<th>Group Id</th>"
+                + "<th>Group name</th>" + "<th>Read</th>" + "<th>Write</th>"
+                + "<th>Delete</th>" + "<th>Change rights</th>" + "</tr>" + "</thead>" + "<tbody id='tableContent'>"
+                + tableContent + "</tbody>" + "</table>"
++ "<label for='iinputGroupId'>Group Id</label> <input id='inputResourceId' value='' type='text'>"
++ "<button class='btn btn-md btn-default'' id='btnAddResourceToGroup'><div class='glyphicon glyphicon-plus'></div> Add </button>";   
+
+        return table;
     }
 
     public String generateSigninModal() {
