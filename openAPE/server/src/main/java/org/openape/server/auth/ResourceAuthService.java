@@ -88,10 +88,10 @@ public class ResourceAuthService extends AuthService {
     private void allow(final Request request, final Response response, final ResourceObject resourceObject,
             final String right) throws UnauthorizedException, IOException {
         final User user = this.getUser(request, response);
-        if (user.getRoles().contains(ResourceAuthService.ADMIN_ROLE)) {
+        if (user.getRoles() != null && user.getRoles().contains(ResourceAuthService.ADMIN_ROLE)) {
             return;
         }
-        if (resourceObject.getOwner().equals(user.getId())) {
+        if (resourceObject.getOwnerId().equals(user.getId())) {
             return;
         }
         if (resourceObject.getGroupAccessRights() != null) {
@@ -106,8 +106,7 @@ public class ResourceAuthService extends AuthService {
                         return;
                     } else if (right.equals(ResourceAuthService.DELETE_RIGHT) && groupAccessRight.hasDeleteRight()) {
                         return;
-                    } else if (right.equals(ResourceAuthService.CHANGE_RIGHTS_RIGHT)
-                            && groupAccessRight.hasChangeRightsRight()) {
+                    } else if (right.equals(ResourceAuthService.CHANGE_RIGHTS_RIGHT) && groupAccessRight.hasChangeRightsRight()) {
                         return;
                     }
                 }
@@ -196,7 +195,7 @@ public class ResourceAuthService extends AuthService {
         this.allow(request, response, resourceObject, ResourceAuthService.UPDATE_RIGHT);
     }
 
-    private void disbaleTestMode() {
+    private void disableTestMode() {
         this.testModeEnabled = false;
     }
 
@@ -223,7 +222,7 @@ public class ResourceAuthService extends AuthService {
         final BasicDBObject elemMatch = new BasicDBObject();
         elemMatch.put("userId", user.getId());
         elemMatch.put("state",
-                new Document("$in", Arrays.asList(GroupMembershipStatus.MEMBER, GroupMembershipStatus.ADMIN)));
+                new Document("$in", Arrays.asList(GroupMembershipStatus.MEMBER.toString(), GroupMembershipStatus.ADMIN.toString())));
         final BasicDBObject members = new BasicDBObject();
         members.put("$elemMatch", elemMatch);
         final BasicDBObject query = new BasicDBObject();
