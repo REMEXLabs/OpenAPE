@@ -75,8 +75,7 @@ public class EnvironmentContext extends DatabaseObject {
      * @return context object.
      */
     @JsonIgnore
-    public static EnvironmentContext getObjectFromJson(final String json)
-            throws IllegalArgumentException {
+    public static EnvironmentContext getObjectFromJson(final String json) throws IllegalArgumentException {
         // Context to build from tree
         final EnvironmentContext context = new EnvironmentContext();
         try {
@@ -86,12 +85,11 @@ public class EnvironmentContext extends DatabaseObject {
             final ObjectNode rootObject = (ObjectNode) rootNode;
 
             // get owner and public if available.
-            final JsonNode implemParams = rootObject
-                    .get(EnvironmentContext.IMPLEMENTATION_PARAMETERS);
+            final JsonNode implemParams = rootObject.get(EnvironmentContext.IMPLEMENTATION_PARAMETERS);
             if ((implemParams != null) && !(implemParams instanceof NullNode)) {
                 final ObjectNode implemParamsNode = (ObjectNode) implemParams;
-                context.getImplementationParameters().setPublic(
-                        implemParamsNode.get(EnvironmentContext.PUBLIC).booleanValue());
+                context.getImplementationParameters()
+                        .setPublic(implemParamsNode.get(EnvironmentContext.PUBLIC).booleanValue());
             }
 
             // get root node
@@ -142,12 +140,11 @@ public class EnvironmentContext extends DatabaseObject {
             final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             factory.setValidating(false); // we will use schema instead of DTD
             factory.setNamespaceAware(true);
-            final SchemaFactory schemaFactory = SchemaFactory
-                    .newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+            final SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
 
             // get schema file from resource folder
-            final URL url = EnvironmentContext.class.getClassLoader().getResource(
-                    EnvironmentContext.CONTEXTS_SCHEMA_XSD);
+            final URL url = EnvironmentContext.class.getClassLoader()
+                    .getResource(EnvironmentContext.CONTEXTS_SCHEMA_XSD);
             final File file = new File(url.toURI());
             final Schema schema = schemaFactory.newSchema(file);
             factory.setSchema(schema);
@@ -232,8 +229,8 @@ public class EnvironmentContext extends DatabaseObject {
      */
     @JsonIgnore
     public boolean equals(final EnvironmentContext compare) {
-        return (EnvironmentContext.hasEnvironmentContextTheSameProperties(compare, this) && EnvironmentContext
-                .hasEnvironmentContextTheSameProperties(this, compare));
+        return (EnvironmentContext.hasEnvironmentContextTheSameProperties(compare, this)
+                && EnvironmentContext.hasEnvironmentContextTheSameProperties(this, compare));
 
     }
 

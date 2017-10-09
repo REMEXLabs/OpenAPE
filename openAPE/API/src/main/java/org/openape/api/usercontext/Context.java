@@ -103,8 +103,8 @@ public class Context implements Serializable {
     @JsonIgnore
     public boolean equals(final Context compare) {
         // check if preferences are equal
-        return (Context.hasContextTheSamePreferences(compare, this) && Context
-                .hasContextTheSamePreferences(this, compare));
+        return (Context.hasContextTheSamePreferences(compare, this)
+                && Context.hasContextTheSamePreferences(this, compare));
     }
 
     @XmlElement(name = "condition")
