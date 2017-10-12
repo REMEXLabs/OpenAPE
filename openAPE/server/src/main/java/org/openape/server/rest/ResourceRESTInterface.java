@@ -89,21 +89,23 @@ public class ResourceRESTInterface extends SuperRestInterface {
                 (req, res) -> {
 
                     final String mimeType = req.headers(Messages.getString("ResourceRESTInterface.contentTypeString"));//$NON-NLS-1$
-                    // req.contentType();
+                    
                     // get group access rights.
-                    final String groupAccessRightsString = req
-                            .headers(ResourceRESTInterface.GROUP_ACCESS_RIGHT_HEADER_NAME);
-                    if (groupAccessRightsString == null) {
-                        res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
-                        return ResourceRESTInterface.HEADER_MUST_CONTAIN_GROUP_ACCESS_RIGHT_MSG;
-                    }
                     GroupAccessRights groupAccessRights = null;
-                    try {
-                        final ObjectMapper mapper = new ObjectMapper();
-                        groupAccessRights = mapper.readValue(groupAccessRightsString, GroupAccessRights.class);
-                    } catch (final Exception e) {
-                        res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
-                        return ResourceRESTInterface.HEADER_MUST_CONTAIN_GROUP_ACCESS_RIGHT_MSG;
+                    final String groupAccessRightsString = req.headers(ResourceRESTInterface.GROUP_ACCESS_RIGHT_HEADER_NAME);
+                    // if else can be removed, if the client supports group access rights
+                    if (groupAccessRightsString == null || !groupAccessRightsString.isEmpty()) {
+                        //res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
+                        //return ResourceRESTInterface.HEADER_MUST_CONTAIN_GROUP_ACCESS_RIGHT_MSG;
+                        groupAccessRights = new GroupAccessRights();
+                    }else{
+                        try {
+                            final ObjectMapper mapper = new ObjectMapper();
+                            groupAccessRights = mapper.readValue(groupAccessRightsString, GroupAccessRights.class);
+                        } catch (final Exception e) {
+                            res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
+                            return ResourceRESTInterface.HEADER_MUST_CONTAIN_GROUP_ACCESS_RIGHT_MSG;
+                        }
                     }
 
                     if ((mimeType == null) || mimeType.equals(Messages.getString("EmptyString"))) { //$NON-NLS-1$
