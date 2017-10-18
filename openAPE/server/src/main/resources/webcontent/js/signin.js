@@ -4,7 +4,8 @@ $(document).ready(function() {
 	$('#signPasswordErrIcon').hide();
 	$('#signinUsernameErrIcon').hide();
 	$('#signin').click(function(){
-		$('#signinModal').modal('show');
+				$('#signinModal').modal('show');
+		$('inputSigninUsername').focus;
 		//login();
 	})
 	

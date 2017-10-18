@@ -16,6 +16,7 @@ public class OpenAPEEndPoints {
     public static final String GROUP_MEMBER = "openape/:groupId/members/:userId";
     public static final String GROUP_DOES_NOT_EXIST = "The requested group does not exist";
     public static final String GROUP_ID = "openape/groups/:groupId";
+    public static final String UserContext = "api/user-contexts";
 
     public static String userDoesNotExist(final String userId) {
         return "User with Id \"" + userId + "\" does not exist.";
