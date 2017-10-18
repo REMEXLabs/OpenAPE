@@ -10,6 +10,7 @@ import java.util.List;
 
 import org.apache.commons.fileupload.FileItem;
 import org.openape.api.Messages;
+import org.openape.api.group.GroupAccessRights;
 import org.openape.api.resourceDescription.ResourceObject;
 import org.openape.api.user.User;
 import org.openape.server.auth.AuthService;
@@ -31,7 +32,6 @@ import org.pac4j.core.profile.CommonProfile;
  */
 public class ResourceList {
     private static final String RESOURCE_DOES_NOT_EXIST_MSG = "Resource does not exist.";
-
     private static final String RESOURCEFOLDERPATH = Messages.getString("ResourceList.rootFolder") + File.separator //$NON-NLS-1$
             + Messages.getString("ResourceList.ResourceFolder"); //$NON-NLS-1$
     /**
@@ -67,7 +67,7 @@ public class ResourceList {
         // Add all filenames of resources in the resource folder to resource
         // list.
         final File folder = new File(ResourceList.RESOURCEFOLDERPATH);
-        this.createFolderIfNotExistend(folder);
+        createFolderIfNotExistend(folder);
         final File[] listOfFiles = folder.listFiles();
         for (int i = 0; i < listOfFiles.length; i++) {
             // There can be directories that would be listed, too. Therefore
@@ -90,6 +90,24 @@ public class ResourceList {
     }
 
     /**
+     * @param folder
+     * @throws IOException
+     *             if access denied
+     */
+    private void createFolderIfNotExistend(final File folder) throws IOException {
+        final File[] listOfFiles = folder.listFiles();
+        if (listOfFiles == null) {
+            // If directory does not exist, create
+            final boolean success = folder.mkdirs();
+            if (!success) {
+                throw new IOException(
+                        Messages.getString("ResourceList.CouldNotCreateResourceFolderErrorMassage")); //$NON-NLS-1$
+            }
+            return;
+        }
+    }
+
+    /**
      * Adds resource to file system and resource list.
      *
      * @param resource
@@ -98,14 +116,15 @@ public class ResourceList {
      *            mime type of the data to store
      * @param user
      *            owner of the resource
+     * @param groupAccessRight
      * @return id.
      * @throws IllegalArgumentException
      *             if the file name is taken or no file is sent.
      * @throws IOException
      *             if a storing error occurs.
      */
-    public String addResource(final FileItem resource, final String mimeType, final User user)
-            throws IllegalArgumentException, IOException {
+    public String addResource(final FileItem resource, final String mimeType, final User user,
+            GroupAccessRights groupAccessRights) throws IllegalArgumentException, IOException {
         final String fileName = resource.getName();
 
         // Check if filename exists.
@@ -114,23 +133,22 @@ public class ResourceList {
                     Messages.getString("ResourceList.NoFileNameErrorMassage")); //$NON-NLS-1$
         }
         // Create resource reference object for the database.
-        final ResourceObject resourceObject = new ResourceObject(fileName, user.getId(), mimeType);
+        final ResourceObject resourceObject = new ResourceObject(fileName, user.getId(), mimeType,
+                groupAccessRights);
         // set owner.
-        resourceObject.getImplementationParameters().setOwner(user.getId());
+        resourceObject.setOwnerId(user.getId());
         // store database resource object
         final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
         String id = null;
         try {
-            id = databaseConnection.storeDatabaseObject(MongoCollectionTypes.RESOURCEOBJECTS,
-                    resourceObject);
+            id = databaseConnection.storeDatabaseObject(MongoCollectionTypes.RESOURCEOBJECTS, resourceObject);
         } catch (final ClassCastException e) {
             throw new IOException(e.getMessage());
         }
         // Add id to resource object and store again.
         resourceObject.setId(id);
         try {
-            databaseConnection.updateDatabaseObject(MongoCollectionTypes.RESOURCEOBJECTS,
-                    resourceObject, id);
+            databaseConnection.updateDatabaseObject(MongoCollectionTypes.RESOURCEOBJECTS, resourceObject, id);
         } catch (final ClassCastException e) {
             throw new IOException(e.getMessage());
         }
@@ -179,24 +197,6 @@ public class ResourceList {
     }
 
     /**
-     * @param folder
-     * @throws IOException
-     *             if access denied
-     */
-    private void createFolderIfNotExistend(final File folder) throws IOException {
-        final File[] listOfFiles = folder.listFiles();
-        if (listOfFiles == null) {
-            // If directory does not exist, create
-            final boolean success = folder.mkdirs();
-            if (!success) {
-                throw new IOException(
-                        Messages.getString("ResourceList.CouldNotCreateResourceFolderErrorMassage")); //$NON-NLS-1$
-            }
-            return;
-        }
-    }
-
-    /**
      * If found the method deletes the resource with the given name.
      *
      * @param id
@@ -220,7 +220,7 @@ public class ResourceList {
             throw new IOException(e.getMessage());
         }
         if (resourceObject == null) {
-            throw new IllegalArgumentException(ResourceList.RESOURCE_DOES_NOT_EXIST_MSG);
+            throw new IllegalArgumentException(RESOURCE_DOES_NOT_EXIST_MSG);
         }
 
         // Check if user is allowed to delete the resource
@@ -238,7 +238,6 @@ public class ResourceList {
                     Messages.getString("ResourceList.FileNotFoundErrorMassage")); //$NON-NLS-1$
         }
         return true;
-
     }
 
     /**

@@ -88,8 +88,8 @@ public class TaskContext extends DatabaseObject {
             final JsonNode implemParams = rootObject.get(TaskContext.IMPLEMENTATION_PARAMETERS);
             if ((implemParams != null) && !(implemParams instanceof NullNode)) {
                 final ObjectNode implemParamsNode = (ObjectNode) implemParams;
-                context.getImplementationParameters().setPublic(
-                        implemParamsNode.get(TaskContext.PUBLIC).booleanValue());
+                context.getImplementationParameters()
+                        .setPublic(implemParamsNode.get(TaskContext.PUBLIC).booleanValue());
             }
 
             // get root node
@@ -139,12 +139,10 @@ public class TaskContext extends DatabaseObject {
             final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             factory.setValidating(false); // we will use schema instead of DTD
             factory.setNamespaceAware(true);
-            final SchemaFactory schemaFactory = SchemaFactory
-                    .newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+            final SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
 
             // get schema file from resource folder
-            final URL url = TaskContext.class.getClassLoader().getResource(
-                    TaskContext.CONTEXTS_SCHEMA_XSD);
+            final URL url = TaskContext.class.getClassLoader().getResource(TaskContext.CONTEXTS_SCHEMA_XSD);
             final File file = new File(url.toURI());
             final Schema schema = schemaFactory.newSchema(file);
             factory.setSchema(schema);
@@ -186,8 +184,7 @@ public class TaskContext extends DatabaseObject {
      * @param compare
      * @return true, if compare has the same properties as base, false if not.
      */
-    private static boolean hasTaskContextTheSameProperties(final TaskContext base,
-            final TaskContext compare) {
+    private static boolean hasTaskContextTheSameProperties(final TaskContext base, final TaskContext compare) {
         for (final Property baseProperty : base.getPropertys()) {
             // Match checks if for each property in this there is one in
             // compare.
@@ -230,8 +227,8 @@ public class TaskContext extends DatabaseObject {
      */
     @JsonIgnore
     public boolean equals(final TaskContext compare) {
-        return (TaskContext.hasTaskContextTheSameProperties(compare, this) && TaskContext
-                .hasTaskContextTheSameProperties(this, compare));
+        return (TaskContext.hasTaskContextTheSameProperties(compare, this)
+                && TaskContext.hasTaskContextTheSameProperties(this, compare));
 
     }
 

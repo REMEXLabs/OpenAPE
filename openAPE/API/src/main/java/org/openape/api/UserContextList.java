@@ -18,7 +18,7 @@ public class UserContextList {
 
     public UserContextList(final List<UserContext> contexts, final String url) {
         this.userContextUris = new LinkedList<URI>();
-        for (UserContext userContext : contexts) {
+        for (final UserContext userContext : contexts) {
             try {
                 this.userContextUris.add(new URI(url + userContext.getId()));
             } catch (final URISyntaxException e) {

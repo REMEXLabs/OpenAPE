@@ -75,8 +75,7 @@ public class EquipmentContext extends DatabaseObject {
      * @return context object.
      */
     @JsonIgnore
-    public static EquipmentContext getObjectFromJson(final String json)
-            throws IllegalArgumentException {
+    public static EquipmentContext getObjectFromJson(final String json) throws IllegalArgumentException {
         // Context to build from tree
         final EquipmentContext context = new EquipmentContext();
         try {
@@ -86,12 +85,11 @@ public class EquipmentContext extends DatabaseObject {
             final ObjectNode rootObject = (ObjectNode) rootNode;
 
             // get owner and public if available.
-            final JsonNode implemParams = rootObject
-                    .get(EquipmentContext.IMPLEMENTATION_PARAMETERS);
+            final JsonNode implemParams = rootObject.get(EquipmentContext.IMPLEMENTATION_PARAMETERS);
             if ((implemParams != null) && !(implemParams instanceof NullNode)) {
                 final ObjectNode implemParamsNode = (ObjectNode) implemParams;
-                context.getImplementationParameters().setPublic(
-                        implemParamsNode.get(EquipmentContext.PUBLIC).booleanValue());
+                context.getImplementationParameters()
+                        .setPublic(implemParamsNode.get(EquipmentContext.PUBLIC).booleanValue());
             }
 
             // get root node
@@ -142,12 +140,10 @@ public class EquipmentContext extends DatabaseObject {
             final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             factory.setValidating(false); // we will use schema instead of DTD
             factory.setNamespaceAware(true);
-            final SchemaFactory schemaFactory = SchemaFactory
-                    .newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+            final SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
 
             // get schema file from resource folder
-            final URL url = EquipmentContext.class.getClassLoader().getResource(
-                    EquipmentContext.CONTEXTS_SCHEMA_XSD);
+            final URL url = EquipmentContext.class.getClassLoader().getResource(EquipmentContext.CONTEXTS_SCHEMA_XSD);
             final File file = new File(url.toURI());
             final Schema schema = schemaFactory.newSchema(file);
             factory.setSchema(schema);
@@ -232,8 +228,8 @@ public class EquipmentContext extends DatabaseObject {
      */
     @JsonIgnore
     public boolean equals(final EquipmentContext compare) {
-        return (EquipmentContext.hasEquipmentContextTheSameProperties(compare, this) && EquipmentContext
-                .hasEquipmentContextTheSameProperties(this, compare));
+        return (EquipmentContext.hasEquipmentContextTheSameProperties(compare, this)
+                && EquipmentContext.hasEquipmentContextTheSameProperties(this, compare));
 
     }
 

@@ -58,17 +58,14 @@ public class ImplementationParameters {
         final NodeList children = root.getChildNodes();
         boolean found = false;
         for (int i = 0; i < children.getLength(); i++) {
-            if (children.item(i).getNodeName()
-                    .equals(ImplementationParameters.IMPLEMENTATION_PARAMETERS)) {
+            if (children.item(i).getNodeName().equals(ImplementationParameters.IMPLEMENTATION_PARAMETERS)) {
                 found = true;
             }
         }
         if (!found) {
-            final Element implemParams = document
-                    .createElement(ImplementationParameters.IMPLEMENTATION_PARAMETERS);
+            final Element implemParams = document.createElement(ImplementationParameters.IMPLEMENTATION_PARAMETERS);
             root.insertBefore(implemParams, root.getFirstChild());
-            implemParams.setAttribute(ImplementationParameters.PUBLIC,
-                    ImplementationParameters.FALSE);
+            implemParams.setAttribute(ImplementationParameters.PUBLIC, ImplementationParameters.FALSE);
         }
         // Create String from document
         final DOMSource domSource = new DOMSource(document);
@@ -81,7 +78,22 @@ public class ImplementationParameters {
         return writer.toString();
     }
 
-    
+
+    private String owner;
+
+    @DefaultValue(ImplementationParameters.FALSE)
+    private boolean isPublic = false;
+
+    @XmlTransient
+    public String getOwner() {
+        return this.owner;
+    }
+
+    @XmlAttribute(name = ImplementationParameters.PUBLIC)
+    public boolean isPublic() {
+        return this.isPublic;
+    }
+
     /**
      * Remove implementation Parameters from generated xml string to make it standard conform.
      *
@@ -103,8 +115,7 @@ public class ImplementationParameters {
         final Element root = document.getDocumentElement();
         final NodeList children = root.getChildNodes();
         for (int i = 0; i < children.getLength(); i++) {
-            if (children.item(i).getNodeName()
-                    .equals(ImplementationParameters.IMPLEMENTATION_PARAMETERS)) {
+            if (children.item(i).getNodeName().equals(ImplementationParameters.IMPLEMENTATION_PARAMETERS)) {
                 root.removeChild(children.item(i));
             }
         }
@@ -117,21 +128,6 @@ public class ImplementationParameters {
         transformer.transform(domSource, result);
         // Update xml string.
         return writer.toString();
-    }
-    
-    private String owner;
-
-    @DefaultValue(ImplementationParameters.FALSE)
-    private boolean isPublic = false;
-
-    @XmlTransient
-    public String getOwner() {
-        return this.owner;
-    }
-
-    @XmlAttribute(name = ImplementationParameters.PUBLIC)
-    public boolean isPublic() {
-        return this.isPublic;
     }
 
     public void setOwner(final String owner) {
