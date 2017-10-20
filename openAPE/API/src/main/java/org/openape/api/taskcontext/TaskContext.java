@@ -143,8 +143,7 @@ public class TaskContext extends DatabaseObject {
 
             // get schema file from resource folder
             final URL url = TaskContext.class.getClassLoader().getResource(TaskContext.CONTEXTS_SCHEMA_XSD);
-            final File file = new File(url.toURI());
-            final Schema schema = schemaFactory.newSchema(file);
+            final Schema schema = schemaFactory.newSchema(url);
             factory.setSchema(schema);
 
             final DocumentBuilder builder = factory.newDocumentBuilder();
