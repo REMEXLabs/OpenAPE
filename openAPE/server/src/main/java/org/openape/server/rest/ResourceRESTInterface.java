@@ -17,6 +17,7 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.openape.api.Messages;
 import org.openape.api.group.GroupAccessRights;
 import org.openape.api.listing.Listing;
+import org.openape.api.resourceDescription.ResourceObject;
 import org.openape.api.user.User;
 import org.openape.server.auth.AuthService;
 import org.openape.server.auth.ResourceAuthService;
@@ -288,6 +289,69 @@ public class ResourceRESTInterface extends SuperRestInterface {
             res.status(SuperRestInterface.HTTP_STATUS_NO_CONTENT);
             return Messages.getString("ResourceRESTInterface.EmptyString"); //$NON-NLS-1$
 
+        });
+        
+        // TODO not tested!
+        Spark.head(Messages.getString("ResourceRESTInterface.ResourcesURLWithID"), (request, response) -> { //$NON-NLS-1$
+            System.out.println("head was called");
+            final String resourceId = request.params(Messages.getString("ResourceRESTInterface.IDParam")); //$NON-NLS-1$
+            
+            try{
+                final GetResourceReturnType serverReturn = requestHandler.getResourceById(resourceId);
+                final ResourceObject resourceObject = serverReturn.getResourceObject();
+                GroupAccessRights groupAccessRights = resourceObject.getGroupAccessRights();
+                if(groupAccessRights != null && groupAccessRights.getGroupAccessRights() != null){
+                    groupAccessRights = new GroupAccessRights();
+                }
+                final ObjectMapper mapper = new ObjectMapper();
+                response.header(ResourceRESTInterface.GROUP_ACCESS_RIGHT_HEADER_NAME, mapper.writeValueAsString(groupAccessRights));
+                response.status(SuperRestInterface.HTTP_STATUS_OK);
+            } catch (final IllegalArgumentException e) {
+                response.status(SuperRestInterface.HTTP_STATUS_NOT_FOUND);
+                return e.getMessage();
+            } catch (final Exception e) {
+                response.status(SuperRestInterface.HTTP_STATUS_INTERNAL_SERVER_ERROR);
+                return e.getMessage();
+            }
+            
+            return Messages.getString("ResourceRESTInterface.EmptyString"); //$NON-NLS-1$
+        });
+        
+        // TODO not tested!
+        Spark.patch(Messages.getString("ResourceRESTInterface.ResourcesURLWithID"), (request, response) -> { //$NON-NLS-1$
+            System.out.println("patch was called");
+            final String resourceId = request.params(Messages.getString("ResourceRESTInterface.IDParam")); //$NON-NLS-1$
+            
+            // get group access rights.
+            final String groupAccessRightsString = request.headers(ResourceRESTInterface.GROUP_ACCESS_RIGHT_HEADER_NAME);
+            
+            try {
+                // get user from request response pair.
+                final CommonProfile profile = auth.getAuthenticatedProfile(request, response);
+                
+                if (groupAccessRightsString == null || !groupAccessRightsString.isEmpty()) {
+                    throw new IllegalArgumentException(ResourceRESTInterface.HEADER_MUST_CONTAIN_GROUP_ACCESS_RIGHT_MSG);
+                }
+                final ObjectMapper mapper = new ObjectMapper();
+                final GroupAccessRights groupAccessRights = mapper.readValue(groupAccessRightsString, GroupAccessRights.class);
+                final GetResourceReturnType serverReturn = requestHandler.getResourceById(resourceId);
+                final ResourceObject resourceObject = serverReturn.getResourceObject();
+                resourceObject.setGroupAccessRights(groupAccessRights);
+                requestHandler.updateResourceById(resourceObject, profile);    
+            }  catch (final UnauthorizedException e) {
+                // Only authorized users may update their resources.
+                response.status(SuperRestInterface.HTTP_STATUS_UNAUTHORIZED);
+                return e.getMessage();    
+            } catch (final IllegalArgumentException e) {
+                response.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
+                return e.getMessage();
+            }  catch (final IOException e) {
+                response.status(SuperRestInterface.HTTP_STATUS_INTERNAL_SERVER_ERROR);
+                return e.getMessage();
+            }
+            
+            response.status(SuperRestInterface.HTTP_STATUS_OK);
+            return Messages.getString("ResourceRESTInterface.EmptyString"); //$NON-NLS-1$
         });
 
     }

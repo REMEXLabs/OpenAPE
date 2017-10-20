@@ -14,6 +14,7 @@ import org.openape.api.group.GroupAccessRights;
 import org.openape.api.resourceDescription.ResourceObject;
 import org.openape.api.user.User;
 import org.openape.server.auth.AuthService;
+import org.openape.server.auth.ResourceAuthService;
 import org.openape.server.auth.UnauthorizedException;
 import org.openape.server.database.mongoDB.DatabaseConnection;
 import org.openape.server.database.mongoDB.MongoCollectionTypes;
@@ -34,6 +35,8 @@ public class ResourceList {
     private static final String RESOURCE_DOES_NOT_EXIST_MSG = "Resource does not exist.";
     private static final String RESOURCEFOLDERPATH = Messages.getString("ResourceList.rootFolder") + File.separator //$NON-NLS-1$
             + Messages.getString("ResourceList.ResourceFolder"); //$NON-NLS-1$
+    private static final String FILE_NAME_AND_OWNER_ID_CANNOT_BE_UPDATED = "The file name and / or the owner id of a resource cannot be updated!";
+    
     /**
      * Singleton instance of this class.
      */
@@ -237,6 +240,57 @@ public class ResourceList {
             throw new IllegalArgumentException(
                     Messages.getString("ResourceList.FileNotFoundErrorMassage")); //$NON-NLS-1$
         }
+        return true;
+    }
+
+    /**
+     * Updates an existing resource on the server. Note that the resource's id cannot be changed and that the file,
+     * which is associated with the resource will not be updated. Thus you should not try to update the file
+     * itself, its name or owner id with this method!
+     * 
+     * @param resourceObjectUpdate
+     *            the resource which contains the updates.
+     * @param profile
+     *            of the user who requests to update the resource.
+     * @return true if the resource was updated successfully.
+     * @throws IllegalArgumentException
+     *             if there exists no resource with the given id.
+     * @throws IOException
+     *             if a problem with the database occurs.
+     * @throws UnauthorizedException
+     *             if the user has no right to update the resource.
+     */
+    public boolean updateResource(final ResourceObject resourceObjectUpdate, final CommonProfile profile)
+            throws IllegalArgumentException, IOException, UnauthorizedException {
+        // get corresponding resource
+        final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
+        ResourceObject resourceObjectOld = null;
+        try {
+            resourceObjectOld = (ResourceObject) databaseConnection
+                    .getDatabaseObjectById(MongoCollectionTypes.RESOURCEOBJECTS, resourceObjectUpdate.getId());
+        } catch (final ClassCastException e) {
+            throw new IOException(e.getMessage());
+        }
+
+        // check if resource exist
+        if (resourceObjectOld == null) {
+            throw new IllegalArgumentException(RESOURCE_DOES_NOT_EXIST_MSG);
+        }
+
+        // this can be removed, when also the file and its path are updated by this method
+        if (resourceObjectOld.getId() != resourceObjectUpdate.getId()
+                || !resourceObjectOld.getFileName().equals(resourceObjectUpdate.getFileName())) {
+            throw new IllegalArgumentException(FILE_NAME_AND_OWNER_ID_CANNOT_BE_UPDATED);
+        }
+
+        // Check if user is allowed to update the resource
+        final ResourceAuthService resourceAuthService = new ResourceAuthService();
+        resourceAuthService.allowAdminAndOwner(profile, resourceObjectUpdate.getOwnerId());
+
+        // update resource
+        databaseConnection.updateDatabaseObject(MongoCollectionTypes.RESOURCEOBJECTS, resourceObjectUpdate,
+                resourceObjectUpdate.getId());
+
         return true;
     }
 

@@ -8,6 +8,7 @@ import javassist.NotFoundException;
 import org.apache.commons.fileupload.FileItem;
 import org.openape.api.group.GroupAccessRights;
 import org.openape.api.listing.Listing;
+import org.openape.api.resourceDescription.ResourceObject;
 import org.openape.api.user.User;
 import org.openape.server.auth.UnauthorizedException;
 import org.openape.server.database.mongoDB.DatabaseConnection;
@@ -120,11 +121,32 @@ public class ResourceRequestHandler {
      * @throws IllegalArgumentException
      *             if the listing is no valid listing.
      * @throws NotFoundException
-     *             if no fitting resource is found.
+      *             if no fitting resource is found.
      */
     public List<GetResourceReturnType> getResourceByListing(final Listing listing)
             throws IOException, IllegalArgumentException, NotFoundException {
         return ListingManager.getResourcesFromListing(listing);
+    }
+    
+    /**
+     * Method to update an existing resource on the server. Note that the resource's id cannot be changed and that the
+     * file, which is associated with the resource will not be updated. Thus you should not try to update the file
+     * itself, its name or owner id with this method!
+     * 
+     * @param resourceObject
+     *            the resource which contains the updates.
+     * @param profile
+     *            of the user who requests to update the resource.
+     * @throws IllegalArgumentException
+     *             if there exists no resource with the given id.
+     * @throws IOException
+     *             if a problem with the database occurs.
+     * @throws UnauthorizedException
+     *             if the user has no right to update the resource.
+     */
+    public void updateResourceById(final ResourceObject resourceObject, final CommonProfile profile)
+            throws IllegalArgumentException, IOException, UnauthorizedException {
+        ResourceList.getInstance().updateResource(resourceObject, profile);
     }
 
 }
