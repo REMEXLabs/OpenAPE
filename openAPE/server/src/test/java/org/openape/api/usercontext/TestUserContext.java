@@ -38,7 +38,6 @@ public class TestUserContext {
         }
     }
 
-    @Test
     public void testXmlTypeAdding() {
         Class<? extends TestUserContext> class1 = this.getClass();
         InputStream ioStream = class1.getResourceAsStream("sample.xml");
