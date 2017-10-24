@@ -290,11 +290,11 @@ public class Organism_4_Modals {
     public String generateSigninModal() {
 
         final String modalSignin = ""
-                + "<div class='modal fade' id='signinModal' tabindex='-1' role='dialog' aria-labelledby='exampleModalLongTitle'>"  // aria-hidden='true'>"
+                + "<div class='modal fade' id='signinModal' tabindex='-1' role='dialog' aria-labelledby='exampleModalLongTitle' hidden='true'>"
                 + "  <div class='modal-dialog' role='document'>"
                 + "    <div class='modal-content'>"
                 + "      <div class='modal-header' style='background-color:#e31134; color:white;text-align:center;border-bottom: 2px solid #AB112A;'>"
-                + "        <h3 id='exampleModalLongTitle'>Sign in</h3>"
+                + "        <h3 id='exampleModalLongTitle'>Sign in hidden=true,</h3>"
                 + "      </div>"
                 + "      <div class='modal-body' align='center' style='min-height:10em'>"
                 + "<form>"
@@ -355,11 +355,11 @@ public class Organism_4_Modals {
 
     public String generateSignupModal() {
         final String modalSignup = ""
-                + "<div class='modal fade' id='signupModal' tabindex='-1' role='dialog' aria-labelledby='exampleModalLongTitle'>"// aria-hidden='true'>"
+                + "<div class='modal fade' id='signupModal' tabindex='-1' role='dialog' aria-labelledby='exampleModalLongTitle' hidden='true'>"
                 + "  <div class='modal-dialog' role='document'>"
                 + "    <div class='modal-content'>"
                 + "      <div class='modal-header' style='background-color:#e31134; color:white;text-align:center;border-bottom: 2px solid #AB112A;'>"
-                + "        <h3 id='exampleModalLongTitle'>Sign up</h3>"
+                + "        <h3 id='exampleModalLongTitle'>Sign up hidden true,n ohne js</h3>"
                 + "      </div>"
                 + "      <div class='modal-body' align='center' style='min-height:10em'>"
                 + " <table width='100%' style='border-collapse:separate; border-spacing:1em;'>"
