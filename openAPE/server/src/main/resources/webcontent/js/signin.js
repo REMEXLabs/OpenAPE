@@ -5,6 +5,7 @@ $(document).ready(function() {
 	$('#signinUsernameErrIcon').hide();
 	$('#signin').click(function(){
 				$('#signinModal').modal('show');
+				$('#signinModal').attr('aria-hidden','false');
 		$('inputSigninUsername').focus;
 		//login();
 	})
