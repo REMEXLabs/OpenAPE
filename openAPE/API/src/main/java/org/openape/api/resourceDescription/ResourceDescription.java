@@ -16,7 +16,6 @@
 
 package org.openape.api.resourceDescription;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
@@ -75,7 +74,8 @@ public class ResourceDescription extends DatabaseObject {
      * @return resource description object.
      */
     @JsonIgnore
-    public static ResourceDescription getObjectFromJson(final String json) throws IllegalArgumentException {
+    public static ResourceDescription getObjectFromJson(final String json)
+            throws IllegalArgumentException {
         // Context to build from tree
         final ResourceDescription description = new ResourceDescription();
         try {
@@ -85,11 +85,12 @@ public class ResourceDescription extends DatabaseObject {
             final ObjectNode rootObject = (ObjectNode) rootNode;
 
             // get owner and public if available.
-            final JsonNode implemParams = rootObject.get(ResourceDescription.IMPLEMENTATION_PARAMETERS);
+            final JsonNode implemParams = rootObject
+                    .get(ResourceDescription.IMPLEMENTATION_PARAMETERS);
             if ((implemParams != null) && !(implemParams instanceof NullNode)) {
                 final ObjectNode implemParamsNode = (ObjectNode) implemParams;
-                description.getImplementationParameters()
-                        .setPublic(implemParamsNode.get(ResourceDescription.PUBLIC).booleanValue());
+                description.getImplementationParameters().setPublic(
+                        implemParamsNode.get(ResourceDescription.PUBLIC).booleanValue());
             }
 
             // get root node
@@ -140,11 +141,12 @@ public class ResourceDescription extends DatabaseObject {
             final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             factory.setValidating(false); // we will use schema instead of DTD
             factory.setNamespaceAware(true);
-            final SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+            final SchemaFactory schemaFactory = SchemaFactory
+                    .newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
 
             // get schema file from resource folder
-            final URL url = ResourceDescription.class.getClassLoader()
-                    .getResource(ResourceDescription.CONTEXTS_SCHEMA_XSD);
+            final URL url = ResourceDescription.class.getClassLoader().getResource(
+                    ResourceDescription.CONTEXTS_SCHEMA_XSD);
             final Schema schema = schemaFactory.newSchema(url);
             factory.setSchema(schema);
 
@@ -229,8 +231,8 @@ public class ResourceDescription extends DatabaseObject {
      */
     @JsonIgnore
     public boolean equals(final ResourceDescription compare) {
-        return (ResourceDescription.hasResourceDescriptionTheSameProperties(compare, this)
-                && ResourceDescription.hasResourceDescriptionTheSameProperties(this, compare));
+        return (ResourceDescription.hasResourceDescriptionTheSameProperties(compare, this) && ResourceDescription
+                .hasResourceDescriptionTheSameProperties(this, compare));
 
     }
 

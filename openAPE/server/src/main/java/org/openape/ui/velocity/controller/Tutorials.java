@@ -27,6 +27,5 @@ public class Tutorials extends SuperRestInterface {
 
     public Tutorials() throws IllegalArgumentException, IOException {
         super();
-        // TODO Auto-generated constructor stub
     }
 }

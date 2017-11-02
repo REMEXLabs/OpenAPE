@@ -163,14 +163,8 @@ public class EquipmentContextRESTInterface extends SuperRestInterface {
                         // Perform update
                         requestHandler.updateEquipmentContextById(equipmentContextId,
                                 receivedEquipmentContext);
-                        res.status(SuperRestInterface.HTTP_STATUS_OK);
-                        return Messages.getString("EquipmentContextRESTInterface.EmptyString"); //$NON-NLS-1$ //TODO
-                                                                                                // $NON-NLS-1$
-                                                                                                //$NON-NLS-1$ return
-                                                                                                // $NON-NLS-1$
-                                                                                                //$NON-NLS-1$ right
-                                                                                                // $NON-NLS-1$
-                                                                                                //$NON-NLS-1$ statuscode
+                        res.status(SuperRestInterface.HTTP_STATUS_NO_CONTENT);
+                        return Messages.getString("EquipmentContextRESTInterface.EmptyString"); //$NON-NLS-1$
                     } catch (JsonParseException | JsonMappingException | IllegalArgumentException e) {
                         // If the parse or update is not successful return bad
                         // request

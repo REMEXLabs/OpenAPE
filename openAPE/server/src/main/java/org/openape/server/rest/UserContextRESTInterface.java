@@ -66,8 +66,8 @@ public class UserContextRESTInterface extends SuperRestInterface {
 
                 final String jsonData = mapper.writeValueAsString(data);
                 return jsonData;
+                // TODO exception handling
             } catch (final JsonProcessingException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         } else if (contentType.equals(MediaType.APPLICATION_XML)) {
@@ -104,8 +104,6 @@ public class UserContextRESTInterface extends SuperRestInterface {
         // Authentication: Everyone can access the route for a specific ID
         Spark.before(Messages.getString("UserContextRESTInterface.UserContextURLWithID"),
                 auth.authorize("anonymous"));
-
-       
 
         /**
          * Request 7.2.2 create user-context. Can only be accessed by roles
@@ -217,13 +215,7 @@ public class UserContextRESTInterface extends SuperRestInterface {
                         // Perform the update
                         requestHandler.updateUserContextById(userContextId, receivedUserContext);
                         res.status(SuperRestInterface.HTTP_STATUS_OK);
-                        return Messages.getString("UserContextRESTInterface.EmptyString"); //$NON-NLS-1$ //TODO
-                                                                                           // $NON-NLS-1$
-                                                                                           //$NON-NLS-1$ return
-                                                                                           // $NON-NLS-1$
-                                                                                           //$NON-NLS-1$ right
-                                                                                           // $NON-NLS-1$
-                                                                                           //$NON-NLS-1$ statuscode
+                        return Messages.getString("UserContextRESTInterface.EmptyString"); //$NON-NLS-1$
                     } catch (JsonParseException | JsonMappingException | IllegalArgumentException e) {
                         // If the parse or update is not successful return bad
                         // request

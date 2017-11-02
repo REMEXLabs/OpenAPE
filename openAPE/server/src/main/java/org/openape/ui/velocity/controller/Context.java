@@ -48,6 +48,5 @@ public class Context extends SuperRestInterface {
 
     public Context() throws IllegalArgumentException, IOException {
         super();
-        // TODO Auto-generated constructor stub
     }
 }
