@@ -364,7 +364,7 @@ public class Organism_4_Modals {
                 + "      <div class='modal-body' align='center' style='min-height:10em'>"
                 + " <table width='100%' style='border-collapse:separate; border-spacing:1em;'>"
                 + " <tr>"
-                + "	<td><label for='inputSignupUsername' Username: </label></td>"
+                + "	<td><label for='inputSignupUsername'> Username: </label></td>"
                 + "	<td> "
                 + " 		<div id='formGroupSignupUsername' class='form-group' role='form'>"
                 + "			    <div class='col-sm-15'>"
