@@ -317,6 +317,7 @@ $(document).ready(function(){
     	$('#addEquipmentContextdivPublicCb').css("margin-right", "19em"); 
     	
     	$('#addEquipmentContextModal').modal('show');
+    	$('#addEquipmentContextModal').attr('aria-hidden', 'false');
     })
     
     //show modal by clicking the add button
@@ -326,6 +327,7 @@ $(document).ready(function(){
     	$('#addEnvironmentContextdivPublicCb').css("margin-right", "19em"); 
     	
     	$('#addEnvironmentContextModal').modal('show');
+    	$('#addEnvironmentContextModal').attr('aria-hidden', 'false');
     })
     
     	
@@ -336,6 +338,7 @@ $(document).ready(function(){
     	$('#addUserContextdivPublicCb').css("margin-right", "19em"); 
     	
     	$('#addUserContextModal').modal('show');
+    	$('#addUserContextModal').attr('aria-hidden', 'false');
     })
     
     $('#btnAddTaskContext').click(function(){ 
@@ -344,6 +347,7 @@ $(document).ready(function(){
     	$('#addTaskContextdivPublicCb').css("margin-right", "19em"); 
     	
     	$('#addTaskContextModal').modal('show');
+    	$('#addTaskContextModal').attr('aria-hidden', 'false');
     })
     
     
@@ -838,6 +842,7 @@ function viewContext(event){
 	var contextName = event.attributes[2].value;
 	var contextNameLowerCase = contextName.substring(0, 1).toLowerCase()+contextName.substring(1);
 	$('#view'+contextName+'Modal').modal('show');
+	$('#view'+contextName+'Modal').attr('aria-hidden', 'false');
 	var objContext = new Object();
 	
 	localStorage.setItem("contextId", event.id);
@@ -861,6 +866,7 @@ function editContext(event){
 	var objContext = new Object();
 	
 	$('#edit'+contextName+'Modal').modal('show');
+	$('#edit'+contextName+'Modal').attr('aria-hidden', 'false');
 	
 	if(contextName != "UserContext"){
 		objContext = getContext(event.id, contextNameLowerCase);
@@ -886,6 +892,7 @@ function editContext(event){
 function deleteContext(event){
 	var contextName = event.attributes[2].value;
 	$('#delete'+contextName+'Modal').modal('show');
+	$('#delete'+contextName+'Modal').attr('aria-hidden', 'false');
 	localStorage.setItem("id", event.id);	
 }
 
