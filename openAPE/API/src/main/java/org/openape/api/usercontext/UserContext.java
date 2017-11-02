@@ -16,7 +16,6 @@
 
 package org.openape.api.usercontext;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
@@ -123,9 +122,10 @@ public class UserContext extends DatabaseObject {
             final JsonNode implemParams = rootObject.get(UserContext.IMPLEMENTATION_PARAMETERS);
             if ((implemParams != null) && !(implemParams instanceof NullNode)) {
                 final ObjectNode implemParamsNode = (ObjectNode) implemParams;
-                userContext.getImplementationParameters().setOwner(implemParamsNode.get(UserContext.OWNER).textValue());
-                userContext.getImplementationParameters()
-                        .setPublic(implemParamsNode.get(UserContext.PUBLIC).booleanValue());
+                userContext.getImplementationParameters().setOwner(
+                        implemParamsNode.get(UserContext.OWNER).textValue());
+                userContext.getImplementationParameters().setPublic(
+                        implemParamsNode.get(UserContext.PUBLIC).booleanValue());
             }
 
             // Iterate over contexts and create corresponding context objects.
@@ -140,7 +140,8 @@ public class UserContext extends DatabaseObject {
                     context.setName(contextNode.get(UserContext.NAME).textValue());
 
                     // add preference objects
-                    final ObjectNode preferences = (ObjectNode) contextNode.get(UserContext.PREFERENCES);
+                    final ObjectNode preferences = (ObjectNode) contextNode
+                            .get(UserContext.PREFERENCES);
                     final Iterator<String> preferenceIterator = preferences.fieldNames();
                     while (preferenceIterator.hasNext()) {
                         final String preferenceKey = preferenceIterator.next();
@@ -163,7 +164,8 @@ public class UserContext extends DatabaseObject {
                             final List<Operand> operandList = new ArrayList<>();
 
                             // add operands.
-                            final ArrayNode operands = (ArrayNode) conditionNode.get(UserContext.OPERANDS);
+                            final ArrayNode operands = (ArrayNode) conditionNode
+                                    .get(UserContext.OPERANDS);
                             UserContext.recursiveOperandCreation(operandList, operands);
                             condition.setOperands(operandList);
                         }
@@ -194,7 +196,8 @@ public class UserContext extends DatabaseObject {
              * operands that are conditions, if missing.
              */
             // Create document to work on.
-            final DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            final DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory
+                    .newInstance();
             final DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             final Document document = documentBuilder.parse(new InputSource(new StringReader(xml)));
             // find all operands that are conditions.
@@ -232,10 +235,12 @@ public class UserContext extends DatabaseObject {
             final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             factory.setValidating(false); // we will use schema instead of DTD
             factory.setNamespaceAware(true);
-            final SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+            final SchemaFactory schemaFactory = SchemaFactory
+                    .newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
 
             // get schema file from resource folder
-            final URL url = UserContext.class.getClassLoader().getResource(UserContext.CONTEXTS_SCHEMA_XSD);
+            final URL url = UserContext.class.getClassLoader().getResource(
+                    UserContext.CONTEXTS_SCHEMA_XSD);
             final Schema schema = schemaFactory.newSchema(url);
             factory.setSchema(schema);
 
@@ -277,7 +282,8 @@ public class UserContext extends DatabaseObject {
      * @param compare
      * @return true, if compare has the same contexts as base, false if not.
      */
-    private static boolean hasUserContextTheSameContexts(final UserContext base, final UserContext compare) {
+    private static boolean hasUserContextTheSameContexts(final UserContext base,
+            final UserContext compare) {
         for (final Context baseContext : base.getContexts()) {
             // Match checks if for each context in this there is one in
             // compare.
@@ -305,8 +311,8 @@ public class UserContext extends DatabaseObject {
      * @param operandList
      * @param operands
      */
-    private static void recursiveOperandCreation(final List<Operand> operandList, final ArrayNode operands)
-            throws IOException, JsonParseException, ClassCastException {
+    private static void recursiveOperandCreation(final List<Operand> operandList,
+            final ArrayNode operands) throws IOException, JsonParseException, ClassCastException {
         final Iterator<JsonNode> operandsIterator = operands.iterator();
         while (operandsIterator.hasNext()) {
             final JsonNode operand = operandsIterator.next();
@@ -355,8 +361,8 @@ public class UserContext extends DatabaseObject {
      */
     @JsonIgnore
     public boolean equals(final UserContext compare) {
-        return (UserContext.hasUserContextTheSameContexts(compare, this)
-                && UserContext.hasUserContextTheSameContexts(this, compare));
+        return (UserContext.hasUserContextTheSameContexts(compare, this) && UserContext
+                .hasUserContextTheSameContexts(this, compare));
     }
 
     /**
@@ -482,7 +488,8 @@ public class UserContext extends DatabaseObject {
                     conditionObject.remove(UserContext.VALUE);
 
                     // Format operands
-                    final ArrayNode operands = (ArrayNode) conditionObject.get(UserContext.OPERANDS);
+                    final ArrayNode operands = (ArrayNode) conditionObject
+                            .get(UserContext.OPERANDS);
                     this.recursiveOperandFormatting(operands);
                 }
             }
