@@ -46,6 +46,5 @@ public class MyResources extends SuperRestInterface {
 
     public MyResources() throws IllegalArgumentException, IOException {
         super();
-        // TODO Auto-generated constructor stub
     }
 }

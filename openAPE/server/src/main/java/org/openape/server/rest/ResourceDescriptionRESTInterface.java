@@ -206,11 +206,8 @@ public class ResourceDescriptionRESTInterface extends SuperRestInterface {
                         // Perform the update
                         requestHandler.updateResourceDescriptionById(resourceDescriptionId,
                                 receivedResourceDescription);
-                        res.status(SuperRestInterface.HTTP_STATUS_OK);
-                        return Messages.getString("ResourceDescriptionRESTInterface.EmptyString"); // TODO //$NON-NLS-1$
-                                                                                                   // return
-                                                                                                   // right
-                                                                                                   // statuscode
+                        res.status(SuperRestInterface.HTTP_STATUS_NO_CONTENT);
+                        return Messages.getString("ResourceDescriptionRESTInterface.EmptyString");  //$NON-NLS-1$
                     } catch (JsonParseException | JsonMappingException | IllegalArgumentException e) {
                         // If the parse or update is not successful return bad
                         // request

@@ -56,6 +56,5 @@ public class MyGroups extends SuperRestInterface {
 
     public MyGroups() throws IllegalArgumentException, IOException {
         super();
-        // TODO Auto-generated constructor stub
     }
 }
