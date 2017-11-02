@@ -1,38 +1,26 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-<properties>
- <jersey2.version>2.19</jersey2.version>
-  <jaxrs.version>2.0.1</jaxrs.version>
-</properties>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<properties>
+		<jersey2.version>2.25.1</jersey2.version>
+		
+	</properties>
 
-  <parent>
-    <groupId>re-gpii</groupId>
-    <artifactId>preference-server</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-  </parent>
-  <artifactId>client</artifactId>
-  
-  <dependencies>
-<dependency>
-    <groupId>re-gpii</groupId>
-  <artifactId>API</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
-</dependency>       
-             <dependency>
-            <groupId>javax.ws.rs</groupId>
-            <artifactId>javax.ws.rs-api</artifactId>
-            <version>${jaxrs.version}</version>
-        </dependency>
-       
+	<parent>
+		<groupId>openape</groupId>
+		<version>${ProjectVersion}</version>
+		<artifactId>framework</artifactId>
+	</parent>
+	<artifactId>client</artifactId>
+	<name>client</name>
 
-  <!-- https://mvnrepository.com/artifact/org.glassfish.jersey.core/jersey-client -->
-<dependency>
-    <groupId>org.glassfish.jersey.core</groupId>
-    <artifactId>jersey-client</artifactId>
-    <version>${jersey2.version}</version>
-</dependency>
-
- <dependency>
+	<dependencies>
+		<dependency>
+			<groupId>openape</groupId>
+			<artifactId>API</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+ 	<dependency>
             <groupId>org.glassfish.jersey.containers</groupId>
             <artifactId>jersey-container-servlet</artifactId>
             <version>${jersey2.version}</version>
@@ -42,7 +30,7 @@
             <artifactId>jersey-server</artifactId>
             <version>${jersey2.version}</version>
         </dependency>
- <dependency>
+ 	<dependency>
             <groupId>org.glassfish.jersey.media</groupId>
             <artifactId>jersey-media-multipart</artifactId>
             <version>${jersey2.version}</version>
@@ -56,3 +44,4 @@
        
 </dependencies>
 </project>
+

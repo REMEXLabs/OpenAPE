@@ -1,0 +1,65 @@
+@startuml
+abstract class org.openape.api.DatabaseObject <<Serializable>> {
++isValid(): Boolean
+}
+class org.openape.api.Descriptor {
+-name: String
+-value: String
++equals(compare: Descriptor): Boolean
+}
+class org.openape.api.Messages {
++<u>getString(key: String): String
+}
+note left: Holds references to external file\ncontaining all strings in\nthe projekt
+class org.openape.api.Property {
+-name: String
+-value: String
++equals(compare: Property): Boolean
+}
+class org.openape.api.environmentcontext.EnvironmentContext {
++equals(compare: EnvironmentContext): Boolean
+}
+class org.openape.api.equipmentcontext.EquipmentContext {
++equals(compare: EquipmentContext): Boolean
+}
+class org.openape.api.listing.Listing {
+-userContextUris: List<String>
+-taskContextUris: List<String>
+-equipmentContextUris: List<String>
+-environmantContextUris: List<String>
+}
+class org.openape.api.resourceDescription.ResourceDescription {
++equals(compare: ResourceDescription): Boolean
+}
+class org.openape.api.rest.RESTPaths
+class org.openape.api.taskcontext.TaskContext {
++equals(compare: TaskContext): Boolean
+}
+class org.openape.api.usercontext.Context {
+-id: String
+-name: String
++equals(compare: Context): Boolean
+}
+class org.openape.api.usercontext.Preference {
+-key: String
+-value: String
++equals(compare: Preference): Boolean
+}
+class org.openape.api.usercontext.UserContext {
++equals(compare: UserContext): Boolean
+}
+org.openape.api.usercontext.Preference "*" --* "1" org.openape.api.usercontext.Context
+org.openape.api.usercontext.Context "*" --* "1" org.openape.api.usercontext.UserContext
+org.openape.api.Descriptor "*" --* "1" org.openape.api.Property
+org.openape.api.Property "*" --* "1" org.openape.api.environmentcontext.EnvironmentContext
+org.openape.api.Property "*" --* "1" org.openape.api.equipmentcontext.EquipmentContext
+org.openape.api.Property "*" --* "1" org.openape.api.resourceDescription.ResourceDescription
+org.openape.api.Property "*" --* "1" org.openape.api.taskcontext.TaskContext
+org.openape.api.environmentcontext.EnvironmentContext --|> org.openape.api.DatabaseObject
+org.openape.api.equipmentcontext.EquipmentContext --|> org.openape.api.DatabaseObject
+org.openape.api.listing.Listing --|> org.openape.api.DatabaseObject
+org.openape.api.resourceDescription.ResourceDescription "1" --o "1" org.openape.api.listing.Listing 
+org.openape.api.resourceDescription.ResourceDescription --|> org.openape.api.DatabaseObject
+org.openape.api.taskcontext.TaskContext --|> org.openape.api.DatabaseObject
+org.openape.api.usercontext.UserContext --|> org.openape.api.DatabaseObject
+@enduml
