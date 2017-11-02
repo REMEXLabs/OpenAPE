@@ -14,7 +14,7 @@ public class GroupAccessRights {
     List<GroupAccessRight> groupAccessRights = new ArrayList<GroupAccessRight>();
 
     public GroupAccessRights() {
-        super();
+        this.groupAccessRights = new ArrayList<GroupAccessRight>();
     }
 
     public GroupAccessRights(final List<GroupAccessRight> groupAccessRights) {
