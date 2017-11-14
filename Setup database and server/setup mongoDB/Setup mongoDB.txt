@@ -1,5 +1,5 @@
 To use the setup.js:
-1. Change <userPassword> to valide strings.
+1. Change <userPassword> to a valide value.
 2. If not installed, install mongoDB as stated here: https://docs.mongodb.com/v3.4/installation/ 
 to the server the database should run on.
 3. If you are on Windows you may have to create the folder "C:\data\db".
