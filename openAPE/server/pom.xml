@@ -38,13 +38,6 @@
 		</dependency>
 	</dependencies>
 
-<distributionManagement>
-    <repository>
-        <id>myopenape</id>
-        <name>openape-repo</name>
-        <url>scp://openape.gpii.eu</url>
-    </repository>
-</distributionManagement>
 
 	<build>
 		<resources>
@@ -69,6 +62,7 @@
 				<artifactId>maven-war-plugin</artifactId>
 				<version>2.6</version>
 				<configuration>
+     <finalName>openape</finalName>
 					<webXml>src\main\webapp\WEB-INF\web.xml</webXml>
 					
 					<archive>
@@ -93,18 +87,86 @@
       <version>1.0</version>
       <executions>
         <execution>
-          <id>upload-to-openape</id>
-          <phase>deploy</phase>
+          <id>upload-openape-prepare</id>
+          <phase>install</phase>
+          <goals>
+            <goal>upload</goal>
+          </goals>
+          <configuration>
+<serverId>myopenape</serverId>
+            <fromDir>src/installation</fromDir>
+<includes></includes>
+<excludes/>
+
+            <url>scp://${openape.host}</url>
+<toDir>${openape.installdir}</toDir>
+          </configuration>
+        </execution>
+
+        <execution>
+          <id>exec-prepare-openape</id>
+          <phase>install</phase>
+          <goals>
+            <goal>sshexec</goal>
+          </goals>
+          <configuration>
+            <serverId>myopenape</serverId>
+            <url>scp:${openape.host}</url>
+            <commands>
+<command>cd ${openape.installdir};
+sh ${openape.installdir}/prepare.sh
+</command>
+            </commands>
+          </configuration>
+        </execution>
+
+        <execution>
+          <id>upload-openape-install</id>
+          <phase>install</phase>
           <goals>
             <goal>upload-single</goal>
           </goals>
           <configuration>
 <serverId>myopenape</serverId>
 <!--            <fromFile>${project.build.directory}/${project.build.finalName}.war</fromFile>-->
-<fromFile>test.sh</fromFile>
-            <url>scp://openape.gpii.eu:/var/lib/apache-tomcat-8.5.11</url>
+<fromFile>target/server-1.1-SNAPSHOT.war</fromFile>
+            <url>scp://${openape.host}:${openape.installdir}</url>
           </configuration>
         </execution>
+
+        <execution>
+          <id>upload-openape-installationfiles</id>
+          <phase>install</phase>
+          <goals>
+            <goal>upload-single</goal>
+          </goals>
+          <configuration>
+<serverId>myopenape</serverId>
+<fromFile>src/installation/installationfiles/log4j.xml</fromFile>
+<fromFile>src/installation/installationfiles/mongo.properties</fromFile>
+            <url>scp://${openape.host}:${openape.installdir}/installationfiles</url>
+
+          </configuration>
+        </execution>
+
+        <execution>
+          <id>install-openape</id>
+          <phase>install</phase>
+          <goals>
+            <goal>sshexec</goal>
+          </goals>
+          <configuration>
+            <serverId>myopenape</serverId>
+            <url>scp://${openape.host}:/${openape.installdir}</url>
+            <commands>
+<command>cd ${openape.installdir};
+mv server-1.1-SNAPSHOT.war openape.war;
+sh install.sh</command>
+
+            </commands>
+          </configuration>
+        </execution>
+
       </executions>
     </plugin>
 
