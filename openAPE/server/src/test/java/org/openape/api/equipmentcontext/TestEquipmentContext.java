@@ -27,8 +27,16 @@ public class TestEquipmentContext {
 
     @Test
     public void testEquals() {
-        Assert.assertTrue(TestEquipmentContext.sampleEquipmentContext().equals(
-                TestEquipmentContext.sampleEquipmentContext()));
+        Assert.assertTrue(
+                TestEquipmentContext.sampleEquipmentContext().equals(TestEquipmentContext.sampleEquipmentContext()));
+    }
+
+    @Test
+    public void testGetJson() throws IOException {
+        final EquipmentContext sample = TestEquipmentContext.sampleEquipmentContext();
+        final String json = sample.getForntEndJson();
+        System.out.println(json);
+        Assert.assertTrue(sample.equals(EquipmentContext.getObjectFromJson(json)));
     }
 
     @Test
@@ -37,14 +45,6 @@ public class TestEquipmentContext {
         final String xml = equipmentContext.getXML();
         System.out.println(xml);
         Assert.assertTrue(equipmentContext.equals(EquipmentContext.getObjectFromXml(xml)));
-    }
-    
-    @Test
-    public void testGetJson() throws IOException {
-        EquipmentContext sample = sampleEquipmentContext();
-        String json =sample.getForntEndJson();
-        System.out.println(json);
-        Assert.assertTrue(sample.equals(EquipmentContext.getObjectFromJson(json)));
     }
 
 }

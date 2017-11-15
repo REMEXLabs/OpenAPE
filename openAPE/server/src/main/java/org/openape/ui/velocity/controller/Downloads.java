@@ -30,6 +30,5 @@ public class Downloads extends SuperRestInterface {
 
     public Downloads() throws IllegalArgumentException, IOException {
         super();
-        // TODO Auto-generated constructor stub
     }
 }

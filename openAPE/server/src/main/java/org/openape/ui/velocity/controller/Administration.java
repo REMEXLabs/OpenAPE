@@ -94,7 +94,6 @@ public class Administration extends SuperRestInterface {
 
     public Administration() throws IllegalArgumentException, IOException {
         super();
-        // TODO Auto-generated constructor stub
 
     }
 }

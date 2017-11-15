@@ -28,6 +28,5 @@ public class GettingStarted extends SuperRestInterface {
 
     public GettingStarted() throws IllegalArgumentException, IOException {
         super();
-        // TODO Auto-generated constructor stub
     }
 }

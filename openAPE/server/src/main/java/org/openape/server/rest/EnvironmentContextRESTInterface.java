@@ -166,14 +166,8 @@ public class EnvironmentContextRESTInterface extends SuperRestInterface {
                         // Perform update
                         requestHandler.updateEnvironmentContextById(environmentContextId,
                                 receivedEnvironmentContext);
-                        res.status(SuperRestInterface.HTTP_STATUS_OK);
-                        return Messages.getString("EnvironmentContextRESTInterface.EmptyString"); //$NON-NLS-1$ //TODO
-                                                                                                  // $NON-NLS-1$
-                                                                                                  //$NON-NLS-1$ return
-                                                                                                  // $NON-NLS-1$
-                                                                                                  //$NON-NLS-1$ right
-                                                                                                  // $NON-NLS-1$
-                                                                                                  //$NON-NLS-1$ statuscode
+                        res.status(SuperRestInterface.HTTP_STATUS_NO_CONTENT);
+                        return Messages.getString("EnvironmentContextRESTInterface.EmptyString"); //$NON-NLS-1$
                     } catch (JsonParseException | JsonMappingException | IllegalArgumentException e) {
                         // If the parse or update is not successful return bad
                         // request
