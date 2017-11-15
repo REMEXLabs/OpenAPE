@@ -1,0 +1,200 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+   "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head> 
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Scanning Interface</title>
+
+    <style type="text/css">
+        tr{
+            outline: solid;
+            outline-width: 5px;
+        }
+        td{
+            width: 200px;
+            height: 150px;
+            text-align: center;
+
+            outline: solid;
+            outline-width: 3px;
+        }
+    </style>
+    <script src="jquery-3.1.1.min.js"></script>
+</head>
+<body>
+<div id="hueDiv" style="display: block">
+    <h1 align="center">Wähle eine Farbe</h1>
+    <table id="hueTable" align="center">
+        <tbody>
+        <tr>
+            <td style="background: #ffffff" title="360">Weiß</td>
+            <td style="background: #ff0000" title="0">Rot</td>
+            <td style="background: #ff5d00" title="24">Orange</td>
+            <td style="background: #ffa000" title="48">Hellorange</td>
+        </tr>
+        <tr>
+            <td style="background: #edff00" title="72">Gelb</td>
+            <td style="background: #80ff00" title="96">Hellgrün</td>
+            <td style="background: #12ff00" title="120">Grün</td>
+            <td style="background: #00ff78" title="144">Türkis</td>
+        </tr>
+        <tr>
+            <td style="background: #00ffaa" title="168">Türkisgrün</td>
+            <td style="background: #00f6ff" title="192">Türkisblau</td>
+            <td style="background: #0061ff" title="216">Blau</td>
+            <td style="background: #1100ff" title="240">Dunkelblau</td>
+
+        </tr>
+        <tr>
+            <td style="background: #7700ff" title="264">Lila</td>
+            <td style="background: #ff00f8" title="288">Magenta</td>
+            <td style="background: #ff00a1" title="312">Pink</td>
+            <td style="background: #ff0053" title="336">Pinkrot</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<div id="satDiv" style="display: none">
+    <h1 align="center">Wähle eine Sättigung</h1>
+    <table id="satTable" align="center"  >
+        <tbody>
+        <tr>
+            <td style="background: #fff" title="0"></td>
+            <td style="background: #eee" title="6.25"></td>
+            <td style="background: #ddd" title="12.5"></td>
+            <td style="background: #ccc" title="18.75"></td>
+        </tr>
+        <tr>
+            <td style="background: #bbb" title="25"></td>
+            <td style="background: #aaa" title="31.25"></td>
+            <td style="background: #999" title="37.5"></td>
+            <td style="background: #888" title="43.75"></td>
+        </tr>
+        <tr>
+            <td style="background: #777" title="50"></td>
+            <td style="background: #666" title="59.5"></td>
+            <td style="background: #555" title="68.75"></td>
+            <td style="background: #444" title="75"></td>
+
+        </tr>
+        <tr>
+            <td style="background: #333" title="81.25"></td>
+            <td style="background: #222" title="87.5"></td>
+            <td style="background: #111" title="93.75"></td>
+            <td style="background: #000" title="100"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+
+<script type="text/javascript">
+    var url = "http://100.70.56.182:8080/rest/items/hue1";
+    var table = document.getElementById("hueTable"),
+        hueDiv = document.getElementById("hueDiv"),
+        satDiv = document.getElementById("satDiv");
+
+
+    var chooseHue = true;
+    var goRows = true;
+    var selectedRow = -1,
+        selectedField = -1;
+
+    var hue = 360, sat = 0, bri = 100;
+
+    document.body.addEventListener("keydown", pressedSpace, false);
+    function pressedSpace(e){
+        if(e.keyCode == 32) {
+            if (chooseHue) {
+                if (goRows) {
+                    goRows = false;
+                    highlightFields()
+                }
+                else {
+                    hue = table.rows[selectedRow].cells[selectedField].title;
+//                    alert("hue:" + hue);
+                    chooseHue = false;
+                    goRows = true;
+                    cleanup();
+                    table = document.getElementById("satTable");
+                    hueDiv.style.display = "none";
+                    satDiv.style.display = "block";
+                    highlightRows()
+                }
+            } else {
+                if (goRows) {
+                    goRows = false;
+                    highlightFields()
+                }
+                else {
+                    sat = table.rows[selectedRow].cells[selectedField].title;
+//                    alert("sat:" + sat);
+                    httpReq();
+                    chooseHue = true;
+                    goRows = true;
+                    cleanup();
+                    table = document.getElementById("hueTable");
+                    hueDiv.style.display = "block";
+                    satDiv.style.display = "none";
+                    highlightRows()
+                }
+            }
+        }
+    }
+
+    function highlightRows() {
+        if (goRows){
+            selectedRow++;
+            if (selectedRow == 4) {
+                selectedRow = 0;
+            }
+            if (selectedRow == 0) {
+                table.rows[selectedRow].style.outlineColor = "red";
+                table.rows[3].style.outlineColor = "black";
+            } else {
+                table.rows[selectedRow].style.outlineColor = "red";
+                table.rows[selectedRow -1].style.outlineColor = "black";
+            }
+            setTimeout(highlightRows, 1000);
+        }
+    }
+
+    function highlightFields() {
+        if(!goRows){
+            selectedField++;
+            if (selectedField == 4) {
+                selectedField = 0;
+            }
+            if (selectedField == 0) {
+                table.rows[selectedRow].cells[selectedField].style.outlineColor = "blue";
+                table.rows[selectedRow].cells[3].style.outlineColor = "black";
+            } else {
+                table.rows[selectedRow].cells[selectedField].style.outlineColor = "blue";
+                table.rows[selectedRow].cells[selectedField -1].style.outlineColor = "black";
+            }
+            setTimeout(highlightFields, 1000);
+        }
+    }
+
+    function httpReq() {
+        var req = new XMLHttpRequest();
+        req.open('POST', url, true);
+        req.send(hue + "," + sat + "," + bri);
+    }
+
+    function cleanup() {
+        selectedRow = -1;
+        selectedField = -1;
+        for(var i=0; i<=3; i++){
+            for(var j=0; j<=3; j++){
+                table.rows[i].style.outlineColor = "black";
+                table.rows[i].cells[j].style.outlineColor = "black";
+            }
+        }
+    }
+
+    document.onload = highlightRows()
+</script>
+</html>
+

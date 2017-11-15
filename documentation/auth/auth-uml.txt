@@ -1,0 +1,48 @@
+@startuml
+class org.openape.server.auth.AuthService {
++getToken(username: String, password:String): String
++getJSONToken(username: String, password:String): String
++authorize(role: String): SecurityFilter
++getAuthenticatedProfile(request: Request, response: Response): CommonProfile
++getAuthenticatedUser(req: Request, res: Response): User
++allowAdminAndOwner(request: Request, response: Response, owner: String)
++allowAdminOwnerAndPublic(request: Request, response: Response, owner: String, isPublic: boolean)
++<u>buildAuthErrorJSON(error: String, description: String): String
+}
+
+class org.openape.server.auth.PasswordEncoder {
++<u>encode(password: String): String
++<u>matches(plainPassword: String, encodedPassword: String): boolean
+}
+
+class org.openape.server.auth.AuthConfigFactory {
++build(): Config
+}
+
+class org.openape.server.rest.TokenRESTInterface {
++<u>setupTokenRESTInterface(authService: AuthService)
+}
+
+class org.openape.api.user.User {
+-id: String
+-username: String
+-email: String
+-password: String
+-roles: List<String>
++getId(): String
++setId(id: String)
++getUsername(): String
++setUsername(username: String)
++getEmail(): String
++setEmail(email: String)
++getPassword(): String
++setPassword(password: String)
++getRoles(): List<String>
++setRoles(roles: List<String>)
+}
+
+org.openape.server.rest.TokenRESTInterface --> org.openape.server.auth.AuthService :uses
+org.openape.server.auth.AuthService --> org.openape.api.user.User :uses
+org.openape.server.auth.AuthService --> org.openape.server.auth.PasswordEncoder :uses
+
+@enduml

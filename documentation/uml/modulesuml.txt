@@ -1,0 +1,21 @@
+@startuml
+[API]
+[server]
+[client]
+note left of [API]
+	Contains all classes defined
+	in the standard and strings
+	used in the program.
+end note
+note left of [server]
+	Contains rest interfaces and
+	database connection. Main 
+	module of the program.
+end note
+note top of [client]
+	Stand alone client. Uses the
+	rest interfaces.
+end note
+[server] --> [API]
+[client] --> [API]
+@enduml

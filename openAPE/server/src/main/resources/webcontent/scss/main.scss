@@ -1,0 +1,69 @@
+@import 'navigation';
+@import 'footer';
+@import 'content';
+@import 'modal';
+@import 'button';
+@import 'resourceModal';
+
+
+.wrapper {
+   min-height:100%;
+   position:relative;
+   
+   h1 {
+	color:#740a1b;
+	font-weight:bold;
+   }
+  
+  	.body {
+  		line-height: 2em;
+  		font-size: 18px;
+  		
+  		a {
+  			color: #e31134;
+  			
+  		}
+  	
+  		a:hover { 
+  			text-decoration: underline; 
+  		}
+  	
+  		h3 {
+  			color: #9e1616;
+  			margin-bottom: 1em;
+  			margin-top: 1em;
+  		}
+  	
+  		p {
+  			line-height: 2em;	
+  		}
+  	
+   		.landingPage {
+   			
+   		}
+   	
+   		.oneContentBlock {
+   			padding:3em;
+   			padding-bottom:10em;   /* Height of the footer */
+   		}
+   	
+   		.twoContentBlocks {
+   			
+   		}
+	}
+}
+
+html,
+body {
+	margin:0;
+   	padding:0;
+   	height:100%;
+	a {
+		color:black;
+	}
+	background: #eee;
+}
+
+
+
+

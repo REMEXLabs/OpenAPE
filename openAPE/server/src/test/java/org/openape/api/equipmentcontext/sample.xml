@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<equipment-context>
+	<implementation-parameters public="false" />
+	<property name="http://openurc.org/ns/res#friendlyName" value="My iPad">
+		<descriptor name="http://www.w3.org/XML/1998/namespace/lang"
+			value="en" />
+	</property>
+	<property name="http://openurc.org/ns/res#friendlyName" value="Mein iPad">
+		<descriptor name="http://www.w3.org/XML/1998/namespace/lang"
+			value="de" />
+	</property>
+	<property name="http://openurc.org/ns/res#devicePlatform"
+		value="iOS" />
+	<property name="http://openurc.org/ns/res#deviceType" value="iPad-3gen" />
+	<property name="http://openurc.org/ns/res#resolution" value="1536x2048" />
+</equipment-context>
