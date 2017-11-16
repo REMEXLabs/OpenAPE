@@ -3,11 +3,13 @@
  */
 $(document).ready(function() {
 
-	$('#btnAddResourceToGroup').click( function()){
+	$('#btnAddResourceToGroup').click( function(){
+		
 	var groupId = $('#inputGroupId').val;
-	var accesssRights = openape.AccessRights(groupId, false, false, false, false, false);
-	$('#resourceGroupTable').appent( addTablerowWithAccessRights(accessRights);)
-});
+	var resourceId = 
+	var accesssRights = new openape_api.AccessRight(groupId, resourceId , false, false, false, false, false);
+	$('#resourceGroupTable').appent( addTableRowWithAccessRights(accessRights);)
+})
 
 addTableRowWithAccessRights = function (accessRights){
 	return '<tr>'
@@ -19,4 +21,4 @@ addTableRowWithAccessRights = function (accessRights){
 		+ "<td id='accessRight_" + accessRights.groupId + "_change'>" +      >' + accessRights.changeRight  + '</td>'
 		+ "<td id='accessRight_" + accessRights.groupId + "_delete'>" +      >' + accessRights.deleteRight  + '</td>';
 }
-}
+})

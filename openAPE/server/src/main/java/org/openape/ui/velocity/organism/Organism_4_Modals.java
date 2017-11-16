@@ -297,8 +297,9 @@ public class Organism_4_Modals {
                 + "<th>Group name</th>" + "<th>Read</th>" + "<th>Write</th>"
                 + "<th>Delete</th>" + "<th>Change rights</th>" + "</tr>" + "</thead>" + "<tbody id='tableContent'>"
                 + tableContent + "</tbody>" + "</table>"
-+ "<label for='iinputGroupId'>Group Id</label> <input id='inputResourceId' value='' type='text'>"
-+ "<button class='btn btn-md btn-default'' id='btnAddResourceToGroup'><div class='glyphicon glyphicon-plus'></div> Add </button>";   
++ "<label for='inputGroupId'>Group </label> <input id='inputGroup"  // TODO replace Id='inputGroup' by id='inputGroupId'
++ "Id' value='' type='text'>"
++ "<button class='btn btn-md btn-default'' id='btnAddResourceToGroup'><div class='glyphicon glyphicon-plus'></div> Add resource to Group</button>";   
 
         return table;
     }

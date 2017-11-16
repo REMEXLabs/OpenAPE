@@ -32,6 +32,7 @@ public class GroupAccessRight {
     /**
      * Id of the group, for which the access rights count.
      */
+	// TODO test if it can be annotated with @JSONIgnore
     private String groupId;
 
     /**
