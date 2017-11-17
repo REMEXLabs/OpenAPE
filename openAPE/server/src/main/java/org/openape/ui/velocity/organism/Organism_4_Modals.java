@@ -290,13 +290,19 @@ public class Organism_4_Modals {
     }
 
     private String generateGroupRelations() {
-        String tableContent = "";
+    	String tableContent = ""; // TODO Replace with a function that collects all relevant group-resource relations from the datatable,  maybe as JS variable        
         String table = ""
-                + "<table id='ResourceDataTable' style='border: 4px solid #ddd !important;' class='table table-striped table-bordered dt-responsive nowrap' cellspacing='0' width='100%'>"
-                + "<thead>" + "<tr>" + "<th>Description</th>" + "<th>Group Id</th>"
-                + "<th>Group name</th>" + "<th>Read</th>" + "<th>Write</th>"
-                + "<th>Delete</th>" + "<th>Change rights</th>" + "</tr>" + "</thead>" + "<tbody id='tableContent'>"
-                + tableContent + "</tbody>" + "</table>"
+                + "<table id='resourceGroupDataTable' style='border: 4px solid #ddd !important;' class='table table-striped table-bordered dt-responsive nowrap' cellspacing='0' width='100%'>"
+                + "<thead> <tr>" 
+                + "<th>Group Id</th>"
+                + "<th>Group name</th>" 
+                + "<th>Read</th> <th>Update</th>"
+                + "<th>Delete</th> <th>Change rights</th>" 
+                + "</tr> </thead>" 
+                + "<tbody id='resourceGroupDataTableContent'>"
+                + tableContent 
+                + "</tbody>" 
+                + "</table>"
 + "<label for='inputGroupId'>Group </label> <input id='inputGroup"  // TODO replace Id='inputGroup' by id='inputGroupId'
 + "Id' value='' type='text'>"
 + "<button class='btn btn-md btn-default'' id='btnAddResourceToGroup'><div class='glyphicon glyphicon-plus'></div> Add resource to Group</button>";   
