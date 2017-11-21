@@ -1,0 +1,102 @@
+<html>
+<head>
+ <title>OpenAPE</title>
+ 
+ <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+ 
+<!-- Vendor Stylesheets -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.6/semantic.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.15/css/dataTables.semanticui.min.css">
+<!--responsive datatable-->
+<link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.1.1/css/responsive.bootstrap.min.css">
+
+<!-- Custom Stylesheets -->
+<link rel="stylesheet" href="css/style.css">
+
+<!-- Vendor Javascript -->
+<script src="https://code.jquery.com/jquery-3.2.1.js"></script>
+<script src=" https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src=" https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.15/js/dataTables.semanticui.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.6/semantic.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<!--responsive datatable-->
+<script src="https://cdn.datatables.net/responsive/2.1.1/js/dataTables.responsive.min.js"></script>
+ 
+<!--Custom Javascript -->
+<script src="js/openape.js" type="text/javascript"></script>
+<script src="js/usersection.js" type="text/javascript"></script>
+<script src="js/navigation.js" type="text/javascript"></script>
+<script src="js/signin.js" type="text/javascript"></script>
+<script src="js/signup.js" type="text/javascript"></script>
+<script src="js/datatableResources.js" type="text/javascript"></script>
+
+    <script>
+       
+
+        function uploadDescription(resourceName) {
+
+            var json = '{"propertys":[{"name": "resource_name","value": "'+resourceName+'}';
+            var properties = "";
+            var data = {};
+            var tableBody = document.getElementById("keyValues");
+            var tablerows = Array.prototype.slice.call(tableBody.getElementsByTagName("tr"));
+            console.log("tablerows: ", tablerows);
+            for (var i=0; i< tablerows.length; i++){
+                var tabled = Array.prototype.slice.call(tablerows[i].getElementsByTagName("td"));
+                console.log(tabled);
+                var name = tabled[0].getElementsByTagName("input")[0].value;
+                var value = tabled[1].getElementsByTagName("input")[0].value;
+                console.log(name, value);
+                json += ',{"name": "'+name+'","value": "'+value+'"}';
+            }
+            json += ']}';
+            alert(json);
+
+            var req = new XMLHttpRequest();
+            req.open("POST", serveraddress + "/api/resource-descriptions", true);
+            req.setRequestHeader("Authorization", "eyJhbGciOiJIUzI1NiJ9.eyIkaW50X3Blcm1zIjpbXSwic3ViIjoib3JnLnBhYzRqLmNvcmUucHJvZmlsZS5Db21tb25Qcm9maWxlIzU5ODBiZDI0ZDI2Mjk4NDQwNDJjOGYyZSIsIiRpbnRfcm9sZXMiOlsiYWRtaW4iXSwiZXhwIjoxNTAyNjM2ODc4LCJpYXQiOjE1MDI1NTA0NzgsImVtYWlsIjoid2phdWZtYW5uQGdteC5kZSIsInVzZXJuYW1lIjoid2FsZGVtYXIifQ.Cz4wgeB3wKNZsaDZ1jRTS0k-JNrx7UToLU_9o3PPWmM");
+            
+            req.send(json);
+            console.log("description sent: ", json);
+        }
+
+    </script>
+</head>
+
+<body>
+
+
+<div class="wrapper">
+   <div class="header">
+   	$signinModal
+	$signupModal
+	$topNavigation
+	$subSection
+   </div>
+   <div class="body">
+
+   
+	   <div class="oneContentBlock">
+	   	 <h1>My Resources</h1> <br>
+	   	<div style="padding:1.2em">
+		$dataTableResource	
+		</div>
+		$deleteResourceModal
+		
+		<div style="font-size:18px">
+		$addResourceModal
+		$editResourceModal
+		</div>
+		<button class='btn btn-md btn-default'" id="btnAddResource"><div class="glyphicon glyphicon-plus"></div> Add </button>	
+			
+		</div> 
+   	
+   </div>
+   <div id="footer">$footer</div>
+   
+   
+</div>
+</body>
+</html>
