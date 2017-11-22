@@ -1,5 +1,5 @@
-if [ ! -d "installationfiles" ]; then
+if [ ! -d installationfiles ]; then
 mkdir installationfiles
-else
-echo "folder installationfiles already exists"
+else 
+echo "Folder already exists"
 fi
