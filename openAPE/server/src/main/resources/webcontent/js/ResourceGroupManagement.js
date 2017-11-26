@@ -5,6 +5,11 @@
  */
 $(document).ready(
 		function() {
+			var groups = getGroupsFromDB();
+			console.log(JSON.stringify(groups));
+			
+			for(var i = 0; i<groups.length; i++){}
+			//$('#resourceGroupDataTable').
 
 			/*
 			 * Called when a resource is added to a group. Important, only
@@ -71,5 +76,31 @@ $(document).ready(
 					return 'checked'
 				}
 				return '';
+			}
+			
+			/**
+			 * get all Groups from server
+			 * @param groupId
+			 * @returns
+			 */
+			function getGroupsFromDB() {
+				var objGroups = {};
+				$.ajax({
+			        type: 'GET',
+			        contentType: 'application/json',
+			        url: url+'/openape/groups',
+			        async: true,
+			        headers: {
+			        	"Authorization": localStorage.getItem("token"),
+			        },
+			        success: function(data, textStatus, jqXHR){
+			        	objGroups =  JSON.parse(jqXHR.responseText);
+			        },
+			        error: function(jqXHR, textStatus, errorThrown){
+			        	console.log(jqXHR);
+			        }
+			    });
+				
+				return objGroups;
 			}
 		})
