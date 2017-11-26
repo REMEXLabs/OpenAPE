@@ -487,7 +487,11 @@ function updateGroupDB(groupId, group) {
 	return status;
 }
 
-
+/**
+ * get Group from server
+ * @param groupId
+ * @returns
+ */
 function getGroupFromDB(groupId) {
 	var objGroup = {};
 	$.ajax({

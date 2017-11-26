@@ -1,12 +1,15 @@
 package org.openape.server.requestHandler;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
 import org.openape.api.databaseObjectBase.DatabaseObject;
+import org.openape.api.databaseObjectBase.ImplementationParameters;
 import org.openape.api.groups.GroupMembershipStatus;
 import org.openape.server.api.group.Group;
+import org.openape.server.api.group.GroupMember;
 import org.openape.server.database.mongoDB.DatabaseConnection;
 import org.openape.server.database.mongoDB.MongoCollectionTypes;
 
@@ -30,13 +33,15 @@ public class GroupManagementHandler {
     public static String createGroup(final String groupName, final String description,
             final String entryRequirements, final String ownerId, final boolean openAcces)
             throws IllegalArgumentException, IOException {
-        final org.openape.server.api.group.GroupMember admin = new org.openape.server.api.group.GroupMember(
-                ownerId, GroupMembershipStatus.ADMIN);
-        final List<org.openape.server.api.group.GroupMember> groupMembers = new LinkedList<org.openape.server.api.group.GroupMember>();
+        final GroupMember admin = new GroupMember(ownerId,
+                GroupMembershipStatus.ADMIN);
+        final List<GroupMember> groupMembers = new LinkedList<GroupMember>();
         groupMembers.add(admin);
-        final org.openape.server.api.group.Group group = new org.openape.server.api.group.Group(
-                groupName, description, groupMembers, openAcces);
-
+        ImplementationParameters implementationParameters = new ImplementationParameters();
+        implementationParameters.setOwner(ownerId);
+        implementationParameters.setPublic(openAcces);
+        final Group group = new Group(
+                groupName, description, groupMembers, openAcces, implementationParameters);
         final DatabaseConnection databaseconnection = DatabaseConnection.getInstance();
         String id;
         try {
@@ -79,6 +84,23 @@ public class GroupManagementHandler {
             throw new IllegalArgumentException("No Group with that id"); //$NON-NLS-1$
         }
         return true;
+    }
+
+    public List<Group> getAllGroups() throws IOException {
+        // get database connection.
+        final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
+        final List<DatabaseObject> result = databaseConnection.getDatabaseObjectsByQuery(
+                MongoCollectionTypes.GROUPS, null);
+        final List<Group> returnValue = new ArrayList<Group>();
+        for (final DatabaseObject databaseObject : result) {
+            try {
+                returnValue.add((Group) databaseObject);
+            } catch (final ClassCastException e) {
+                throw new IOException(e.getMessage());
+            }
+        }
+        return returnValue;
+
     }
 
     public Group getGroupById(final String id) throws IOException, IllegalArgumentException {

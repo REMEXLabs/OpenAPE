@@ -147,10 +147,23 @@ public class GroupManagementRestInterface extends SuperRestInterface {
         });
 
         Spark.get(OpenAPEEndPoints.GROUPS, (req, res) -> {
-            final List<GroupListElement> result = null;
+            try{
+            List<Group> allGroups = new GroupManagementHandler().getAllGroups();
+            final List<GroupListElement> result = new ArrayList<GroupListElement>();
+            for (Group group : allGroups) {
+                GroupListElement groupListElement = new GroupListElement();
+                groupListElement.setGroupname(group.getName());
+                groupListElement.setId(group.getId());
+                groupListElement.setOwner(group.getImplementationParameters().getOwner());
+                result.add(groupListElement);
+            }
             final ObjectMapper mapper = new ObjectMapper();
             final String jsonData = mapper.writeValueAsString(result);
             return jsonData;
+            }catch (IOException e) {
+                res.status(HTTP_STATUS_INTERNAL_SERVER_ERROR);
+                return e.getMessage();
+            }
 
         });
 
