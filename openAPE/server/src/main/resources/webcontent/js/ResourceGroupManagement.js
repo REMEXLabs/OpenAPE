@@ -5,27 +5,34 @@
  */
 $(document).ready(
 		function() {
-			var groups = getGroupsFromDB();
-			console.log(JSON.stringify(groups));
-			
-			for(var i = 0; i<groups.length; i++){}
-			//$('#resourceGroupDataTable').
 
+			/*
+			 * Called when the add ressource dialog is opened.
+			 */
+			$('#btnAddResource').click(
+					function() {
+						var groups = getGroupsFromDB();
+						for(var i = 0; i<groups.length; i++){
+							console.log(JSON.stringify(groups[i]));
+							var groupId = groups[i].id;
+							var resourceId = null;
+							var accessRight = new openape_api.AccessRight(groupId,
+									resourceId, false, false, false, false);
+							var groupName = groups[i].groupname;
+							$('#resourceGroupDataTable').append(
+									addTableRowWithAccessRight(accessRight, groupName));
+							//console.log(addTableRowWithAccessRight(accessRight));
+						}
+					})
+					
 			/*
 			 * Called when a resource is added to a group. Important, only
 			 * resource and group are only connected in the GUI, separate
 			 * confirmation and upload to server required
 			 */
 			$('#btnAddResourceToGroup').click(
-					function() {
-
+					function() {					
 						var groupId = $('#inputGroupId').val();
-						var resourceId = null;
-						var accessRight = new openape_api.AccessRight(groupId,
-								resourceId, false, false, false, false);
-						$('#resourceGroupDataTable').append(
-								addTableRowWithAccessRight(accessRight));
-						console.log(addTableRowWithAccessRight(accessRight));
 					})
 
 			/**
@@ -36,15 +43,14 @@ $(document).ready(
 			 *            Object of type openape_api.AccessRight
 			 * @return String with HTML representation of a table row
 			 */
-			function addTableRowWithAccessRight(accessRight) {
-				;
-				return '</tr>'
+			function addTableRowWithAccessRight(accessRight, groupName) {
+				return '<tr>'
 						+ '<td id=\'accessRight_'
 						+ accessRight.groupId
 						+ '_groupId\' >'
 						+ accessRight.groupId
 						+ '</td>'
-						+ '<td>Not known</td>'
+						+ '<td>'+groupName+'</td>'
 						+ createTd('readRight', accessRight.readRight,
 								accessRight.groupId)
 						+ createTd('updateRight', accessRight.updateRight,
@@ -89,7 +95,7 @@ $(document).ready(
 			        type: 'GET',
 			        contentType: 'application/json',
 			        url: url+'/openape/groups',
-			        async: true,
+			        async: false,
 			        headers: {
 			        	"Authorization": localStorage.getItem("token"),
 			        },
