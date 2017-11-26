@@ -91,37 +91,37 @@ public class TestResourceAuthService {
         final List<GroupMember> groupMembersOfGroupWithUser1AsApplyed = new ArrayList<GroupMember>();
         groupMembersOfGroupWithUser1AsApplyed.add(new GroupMember("1", GroupMembershipStatus.APPLYED));
         TestResourceAuthService.GROUP_WITH_USER_1_AS_APPLYED = new Group("groupWithUser1AsApplyed", "desciption",
-                groupMembersOfGroupWithUser1AsApplyed, false);
+                groupMembersOfGroupWithUser1AsApplyed, false, null);
 
         final List<GroupMember> groupMembersOfGroupWithUser1AsInProgress = new ArrayList<GroupMember>();
         groupMembersOfGroupWithUser1AsInProgress.add(new GroupMember("1", GroupMembershipStatus.IN_PROGRESS));
         TestResourceAuthService.GROUP_WITH_USER_1_AS_IN_PROGRESS = new Group("groupWithUser1AsInProgress", "desciption",
-                groupMembersOfGroupWithUser1AsInProgress, false);
+                groupMembersOfGroupWithUser1AsInProgress, false, null);
 
         final List<GroupMember> groupMembersOfGroupWithUser1AsMember = new ArrayList<GroupMember>();
         groupMembersOfGroupWithUser1AsMember.add(new GroupMember("1", GroupMembershipStatus.MEMBER));
         TestResourceAuthService.GROUP_WITH_USER_1_AS_MEMBER = new Group("groupWithUser1AsMember", "desciption",
-                groupMembersOfGroupWithUser1AsMember, false);
+                groupMembersOfGroupWithUser1AsMember, false, null);
 
         final List<GroupMember> groupMembersOfGroupWithUser1AsAdmin = new ArrayList<GroupMember>();
         groupMembersOfGroupWithUser1AsAdmin.add(new GroupMember("1", GroupMembershipStatus.ADMIN));
         TestResourceAuthService.GROUP_WITH_USER_1_AS_ADMIN = new Group("groupWithUser1AsAdmin", "desciption",
-                groupMembersOfGroupWithUser1AsAdmin, false);
+                groupMembersOfGroupWithUser1AsAdmin, false, null);
 
         final List<GroupMember> groupMembersOfGroupWithUser1AndOthers = new ArrayList<GroupMember>();
         groupMembersOfGroupWithUser1AndOthers.add(new GroupMember("1", GroupMembershipStatus.MEMBER));
         groupMembersOfGroupWithUser1AndOthers.add(new GroupMember("2", GroupMembershipStatus.MEMBER));
         groupMembersOfGroupWithUser1AndOthers.add(new GroupMember("3", GroupMembershipStatus.MEMBER));
         TestResourceAuthService.GROUP_WITH_USER_1_AND_OTHERS = new Group("groupWithUser1AndOthers", "desciption",
-                groupMembersOfGroupWithUser1AndOthers, false);
+                groupMembersOfGroupWithUser1AndOthers, false, null);
 
         final List<GroupMember> groupMembersOfGroupWithoutUser1 = new ArrayList<GroupMember>();
         groupMembersOfGroupWithoutUser1.add(new GroupMember("2", GroupMembershipStatus.MEMBER));
         groupMembersOfGroupWithoutUser1.add(new GroupMember("3", GroupMembershipStatus.MEMBER));
         TestResourceAuthService.GROUP_WITHOUT_USER_1 = new Group("groupWithoutUser1", "desciption",
-                groupMembersOfGroupWithoutUser1, false);
+                groupMembersOfGroupWithoutUser1, false, null);
 
-        TestResourceAuthService.GROUP_WITHOUT_USERS = new Group("groupWithoutUsers", "desciption", null, false);
+        TestResourceAuthService.GROUP_WITHOUT_USERS = new Group("groupWithoutUsers", "desciption", null, false, null);
 
         // store groups in database
         TestResourceAuthService.GROUP_WITH_USER_1_AS_APPLYED
