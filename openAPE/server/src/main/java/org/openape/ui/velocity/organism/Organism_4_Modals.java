@@ -283,29 +283,39 @@ public class Organism_4_Modals {
                 + "<button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button>"
                 + "<button type='button' class='btn btn-danger' id='btnConfirm" + action
                 + "Resource'>" + name + " Resource</button>" + "</div>" + "</div>" + "</div>"
-                + "</div>"
-                                ;
+                + "</div>";
 
         return modalContruct;
     }
 
+    /**
+     * Dialog to add resource to group. TODO
+     * 
+     * @return
+     */
     private String generateGroupRelations() {
-    	String tableContent = ""; // TODO Replace with a function that collects all relevant group-resource relations from the datatable,  maybe as JS variable        
+        String tableContent = ""; // TODO Replace with a function that collects
+                                  // all relevant group-resource relations from
+                                  // the datatable, maybe as JS variable
         String table = ""
                 + "<table id='resourceGroupDataTable' style='border: 4px solid #ddd !important;' class='table table-striped table-bordered dt-responsive nowrap' cellspacing='0' width='100%'>"
-                + "<thead> <tr>" 
+                + "<thead> <tr>"
                 + "<th>Group Id</th>"
-                + "<th>Group name</th>" 
+                + "<th>Group name</th>"
                 + "<th>Read</th> <th>Update</th>"
-                + "<th>Delete</th> <th>Change rights</th>" 
-                + "</tr> </thead>" 
+                + "<th>Delete</th> <th>Change rights</th>"
+                + "</tr> </thead>"
                 + "<tbody id='resourceGroupDataTableContent'>"
-                + tableContent 
-                + "</tbody>" 
+                + tableContent
+                + "</tbody>"
                 + "</table>"
-+ "<label for='inputGroupId'>Group </label> <input id='inputGroup"  // TODO replace Id='inputGroup' by id='inputGroupId'
-+ "Id' value='' type='text'>"
-+ "<button class='btn btn-md btn-default'' id='btnAddResourceToGroup'><div class='glyphicon glyphicon-plus'></div> Add resource to Group</button>";   
+                + "<label for='inputGroupId'>Group </label> <input id='inputGroup" // TODO
+                                                                                   // replace
+                                                                                   // Id='inputGroup'
+                                                                                   // by
+                                                                                   // id='inputGroupId'
+                + "Id' value='' type='text'>"
+                + "<button class='btn btn-md btn-default'' id='btnAddResourceToGroup'><div class='glyphicon glyphicon-plus'></div> Add resource to Group</button>";
 
         return table;
     }
@@ -331,7 +341,7 @@ public class Organism_4_Modals {
                 + "					<input type='text' class='form-control' id='inputSigninUsername' placeholder='Username'>"
                 + "			      	<span class='glyphicon glyphicon-remove form-control-feedback' id='signinUsernameErrIcon'></span>"
                 + "			     	<small id='signinUsernameErrMessage' class='form-text text-muted' style='color:red'></small>"
-                
+
                 + "			    </div>"
                 + "		 </div>"
                 + "	</td>"
@@ -341,11 +351,11 @@ public class Organism_4_Modals {
                 + "	<td> "
                 + "		<div id='formGroupSigninPassword' class='form-group' role='form'>"
                 + "			 <div class='col-sm-15'>"
-                
+
                 + "			      <input type='password' class='form-control' id='inputSigninPassword' placeholder='Password'>"
                 + "			       <small id='signinPasswordErrMessage' class='form-text text-muted' style='color:red'></small>"
                 + "			      <span class='glyphicon glyphicon-remove form-control-feedback' id='signPasswordErrIcon'></span>"
-                
+
                 + "			    </div>"
                 + "		 	 </div>"
                 + "	</td>"
@@ -391,11 +401,11 @@ public class Organism_4_Modals {
                 + "	<td> "
                 + " 		<div id='formGroupSignupUsername' class='form-group' role='form'>"
                 + "			    <div class='col-sm-15'>"
-                +" 				<form>"			
+                + " 				<form>"
                 + "			      <input type='text' class='form-control' id='inputSignupUsername' placeholder='Username'>"
                 + "			      <span class='glyphicon glyphicon-remove form-control-feedback' id='signupUsernameErrIcon'></span>"
                 + "			     <small id='signupUsernameErrMessage' class='form-text text-muted' style='color:red'></small>"
-                +"				</form>"	
+                + "				</form>"
                 + "			    </div>"
                 + "		 </div>"
                 + "	</td>"
@@ -405,11 +415,11 @@ public class Organism_4_Modals {
                 + "	<td> "
                 + "		<div id='formGroupSignupEmail' class='form-group' role='form'>"
                 + "			 <div class='col-sm-15'>"
-                +" 				<form>"		
+                + " 				<form>"
                 + "			      <input type='text' class='form-control' id='inputSignupEmail' placeholder='Email'>"
                 + "			       <small id='signupEmailErrMessage' class='form-text text-muted' style='color:red'></small>"
                 + "			      <span class='glyphicon glyphicon-remove form-control-feedback' id='signupEmailErrIcon'></span>"
-                +"				</form>"	
+                + "				</form>"
                 + "			    </div>"
                 + "		 	 </div>"
                 + "	</td>"
@@ -419,11 +429,11 @@ public class Organism_4_Modals {
                 + "	<td> "
                 + "		<div id='formGroupSignupPassword' class='form-group' role='form'>"
                 + "			 <div class='col-sm-15'>"
-                +" 				<form>"	
+                + " 				<form>"
                 + "			      <input type='password' class='form-control' id='inputSignupPassword' placeholder='Password'>"
                 + "			       <small id='signupPasswordErrMessage' class='form-text text-muted' style='color:red'></small>"
                 + "			      <span class='glyphicon glyphicon-remove form-control-feedback' id='signupPasswordErrIcon'></span>"
-                +"				</form>"	
+                + "				</form>"
                 + "			    </div>"
                 + "		 	 </div>"
                 + "	</td>"
@@ -433,11 +443,11 @@ public class Organism_4_Modals {
                 + "	<td> "
                 + "		<div id='formGroupSignupSecQuestion' class='form-group ' role='form'>"
                 + "			    <div class='col-sm-15'>"
-                +" 				<form>"	
+                + " 				<form>"
                 + "			      <input type='text' class='form-control' id='inputSignupSecQuestion' placeholder='Security question'>"
                 + "			       <small id='signupSecQuestionErrMessage' class='form-text text-muted' style='color:red'></small>"
                 + "			      <span class='glyphicon glyphicon-remove form-control-feedback' id='signupSecQuestionErrIcon'></span>"
-                +"				</form>"	
+                + "				</form>"
                 + "			    </div>"
                 + "		 	 </div>"
                 + "	</td>"
