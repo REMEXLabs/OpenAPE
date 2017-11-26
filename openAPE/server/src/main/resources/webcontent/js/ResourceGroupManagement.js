@@ -13,7 +13,6 @@ $(document).ready(
 					function() {
 						var groups = getGroupsFromDB();
 						for(var i = 0; i<groups.length; i++){
-							console.log(JSON.stringify(groups[i]));
 							var groupId = groups[i].id;
 							var resourceId = null;
 							var accessRight = new openape_api.AccessRight(groupId,
@@ -23,6 +22,7 @@ $(document).ready(
 									addTableRowWithAccessRight(accessRight, groupName));
 							//console.log(addTableRowWithAccessRight(accessRight));
 						}
+						$('#addResourceModal').style('width: '+('#resourceGroupDataTable').width()+'+10px');
 					})
 					
 			/*
