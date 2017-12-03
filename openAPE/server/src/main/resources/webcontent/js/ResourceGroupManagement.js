@@ -7,32 +7,49 @@ $(document).ready(
 		function() {
 
 			/*
-			 * Called when the add ressource dialog is opened.
-			 */
-			$('#btnAddResource').click(
-					function() {
-						var groups = getGroupsFromDB();
-						for(var i = 0; i<groups.length; i++){
-							var groupId = groups[i].id;
-							var resourceId = null;
-							var accessRight = new openape_api.AccessRight(groupId,
-									resourceId, false, false, false, false);
-							var groupName = groups[i].groupname;
-							$('#resourceGroupDataTable').append(
-									addTableRowWithAccessRight(accessRight, groupName));
-							//console.log(addTableRowWithAccessRight(accessRight));
-						}
-					})
-					
-			/*
 			 * Called when a resource is added to a group. Important, only
 			 * resource and group are only connected in the GUI, separate
 			 * confirmation and upload to server required
 			 */
 			$('#btnAddResourceToGroup').click(
-					function() {					
+					function() {
 						var groupId = $('#inputGroupId').val();
+						var group = getGroupByIdFromDB(groupId);
+						var resourceId = null;
+						var accessRight = new openape_api.AccessRight(groupId,
+								resourceId, false, false, false, false);
+						$('#resourceGroupDataTable').append(
+								addTableRowWithAccessRight(accessRight, group.name));
 					})
+
+//			/*
+//			 * Called when the add resource dialog is opened. Preload all groups
+//			 */
+//			$('#btnAddResource').click(
+//					function() {
+//						var groups = getGroupsFromDB();
+//						for (var i = 0; i < groups.length; i++) {
+//							var groupId = groups[i].id;
+//							var resourceId = null;
+//							var accessRight = new openape_api.AccessRight(
+//									groupId, resourceId, false, false, false,
+//									false);
+//							var groupName = groups[i].groupname;
+//							$('#resourceGroupDataTable').append(
+//									addTableRowWithAccessRight(accessRight,
+//											groupName));
+//							// console.log(addTableRowWithAccessRight(accessRight));
+//						}
+//					})
+
+			/*
+			 * Called when a resource is added to a group. Important, only
+			 * resource and group are only connected in the GUI, separate
+			 * confirmation and upload to server required
+			 */
+			$('#btnAddResourceToGroup').click(function() {
+				var groupId = $('#inputGroupId').val();
+			})
 
 			/**
 			 * creates an HTML string that represents a new row in the table
@@ -49,7 +66,9 @@ $(document).ready(
 						+ '_groupId\' >'
 						+ accessRight.groupId
 						+ '</td>'
-						+ '<td>'+groupName+'</td>'
+						+ '<td>'
+						+ groupName
+						+ '</td>'
 						+ createTd('readRight', accessRight.readRight,
 								accessRight.groupId)
 						+ createTd('updateRight', accessRight.updateRight,
@@ -83,29 +102,50 @@ $(document).ready(
 				return '';
 			}
 			
+			function getGroupByIdFromDB(id){
+				var objGroup = {};
+				$.ajax({
+					type : 'GET',
+					contentType : 'application/json',
+					url : url + '/openape/groups/'+id,
+					async : false,
+					headers : {
+						"Authorization" : localStorage.getItem("token"),
+					},
+					success : function(data, textStatus, jqXHR) {
+						objGroup = JSON.parse(jqXHR.responseText);
+					},
+					error : function(jqXHR, textStatus, errorThrown) {
+						console.log(jqXHR);
+					}
+				});
+				return objGroup;
+			}
+
 			/**
 			 * get all Groups from server
+			 * 
 			 * @param groupId
 			 * @returns
 			 */
 			function getGroupsFromDB() {
 				var objGroups = {};
 				$.ajax({
-			        type: 'GET',
-			        contentType: 'application/json',
-			        url: url+'/openape/groups',
-			        async: false,
-			        headers: {
-			        	"Authorization": localStorage.getItem("token"),
-			        },
-			        success: function(data, textStatus, jqXHR){
-			        	objGroups =  JSON.parse(jqXHR.responseText);
-			        },
-			        error: function(jqXHR, textStatus, errorThrown){
-			        	console.log(jqXHR);
-			        }
-			    });
-				
+					type : 'GET',
+					contentType : 'application/json',
+					url : url + '/openape/groups',
+					async : false,
+					headers : {
+						"Authorization" : localStorage.getItem("token"),
+					},
+					success : function(data, textStatus, jqXHR) {
+						objGroups = JSON.parse(jqXHR.responseText);
+					},
+					error : function(jqXHR, textStatus, errorThrown) {
+						console.log(jqXHR);
+					}
+				});
+
 				return objGroups;
 			}
 		})

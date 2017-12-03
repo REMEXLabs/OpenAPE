@@ -264,7 +264,7 @@ public class Organism_4_Modals {
                 + "<div id='"
                 + idName
                 + "FormUploadResource' style='clear:both; background-color:#ececec; border:2px solid #ccc;padding-left:1em;padding-top:1em;padding-right: 1em;min-height: 7em; width: auto;'>"
-                + "	 <label for='usr'>File:</label><br>"
+                + "	 <label for='usr'>File:</label>"
                 + "	<label class='custom-file'>"
                 + "		  <input type='file' id='"
                 + idName
@@ -298,6 +298,10 @@ public class Organism_4_Modals {
                                   // all relevant group-resource relations from
                                   // the datatable, maybe as JS variable
         String table = ""
+                +"<br><br>"
+                + "<label for='inputGroupId'>Group ID </label> <input id='inputGroupId'"
+                + " type='text'>"
+                + "<button class='btn btn-md btn-default'' id='btnAddResourceToGroup'><div class='glyphicon glyphicon-plus'></div> Add resource to Group</button>"
                 +"<div style='overflow-x: scroll;'>"
                 + "<table id='resourceGroupDataTable' style='border: 4px solid #ddd !important;' class='table table-striped table-bordered dt-responsive nowrap' cellspacing='0' width='100%'>"
                 + "<thead> <tr>"
@@ -310,14 +314,7 @@ public class Organism_4_Modals {
                 + tableContent
                 + "</tbody>"
                 + "</table>"
-                +"</div>"
-                + "<label for='inputGroupId'>Group </label> <input id='inputGroup" // TODO
-                                                                                   // replace
-                                                                                   // Id='inputGroup'
-                                                                                   // by
-                                                                                   // id='inputGroupId'
-                + "Id' value='' type='text'>"
-                + "<button class='btn btn-md btn-default'' id='btnAddResourceToGroup'><div class='glyphicon glyphicon-plus'></div> Add resource to Group</button>";
+                +"</div>";
 
         return table;
     }
