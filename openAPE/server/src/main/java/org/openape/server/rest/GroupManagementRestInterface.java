@@ -31,6 +31,8 @@ public class GroupManagementRestInterface extends SuperRestInterface {
 
         // Enable authentication only for users
         Spark.before(OpenAPEEndPoints.GROUPS, authService.authorize("user"));
+        Spark.before(OpenAPEEndPoints.GROUP_ID, authService.authorize("user"));
+        Spark.before(OpenAPEEndPoints.GROUP_MEMBER, authService.authorize("user"));
 
         /*
          * receive requests for new resource groupsstart the creation process of
