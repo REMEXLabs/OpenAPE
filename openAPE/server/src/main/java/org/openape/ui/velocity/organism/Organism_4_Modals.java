@@ -208,10 +208,10 @@ public class Organism_4_Modals {
         final String idName = action.substring(0, 1).toLowerCase() + action.substring(1);
         final String modalContruct = "" + "<div class='modal fade bd-example-modal-lg' id='"
                 + idName
-                + "ResourceModal' tabindex='-1' role='dialog' aria-labelledby='exampleModalLabel' aria-hidden='true'>"
-                + "<div class='modal-dialog' role='document'>"
+                + "ResourceModal' tabindex='-1' role='dialog' aria-labelledby='exampleModalLabel' aria-hidden='true' style='width: auto;'>"
+                + "<div class='modal-dialog' role='document' style='min-width: 800px'>"
                 + "<div class='modal-content'>"
-                + "<div class='modal-header' Style='background-color:#e31134; color:white;text-align:center;border-bottom: 2px solid #AB112A;'>"
+                + "<div class='modal-header' Style='background-color:#e31134; width: auto; color:white;text-align:center;border-bottom: 2px solid #AB112A;'>"
                 + "<h3 style='color:white; margin: 0' id='exampleModalLongTitle'>"
                 + name
                 + " Resource</h3>"
@@ -263,7 +263,7 @@ public class Organism_4_Modals {
                 + "</div> "
                 + "<div id='"
                 + idName
-                + "FormUploadResource' style='clear:both; background-color:#ececec; border:2px solid #ccc;padding-left:1em;padding-top:1em;min-height: 7em;'>"
+                + "FormUploadResource' style='clear:both; background-color:#ececec; border:2px solid #ccc;padding-left:1em;padding-top:1em;padding-right: 1em;min-height: 7em; width: auto;'>"
                 + "	 <label for='usr'>File:</label><br>"
                 + "	<label class='custom-file'>"
                 + "		  <input type='file' id='"
@@ -289,7 +289,7 @@ public class Organism_4_Modals {
     }
 
     /**
-     * Dialog to add resource to group. TODO
+     * Dialog to add resource to group.
      * 
      * @return
      */
@@ -298,6 +298,7 @@ public class Organism_4_Modals {
                                   // all relevant group-resource relations from
                                   // the datatable, maybe as JS variable
         String table = ""
+                +"<div style='overflow-x: scroll;'>"
                 + "<table id='resourceGroupDataTable' style='border: 4px solid #ddd !important;' class='table table-striped table-bordered dt-responsive nowrap' cellspacing='0' width='100%'>"
                 + "<thead> <tr>"
                 + "<th>Group Id</th>"
@@ -309,6 +310,7 @@ public class Organism_4_Modals {
                 + tableContent
                 + "</tbody>"
                 + "</table>"
+                +"</div>"
                 + "<label for='inputGroupId'>Group </label> <input id='inputGroup" // TODO
                                                                                    // replace
                                                                                    // Id='inputGroup'

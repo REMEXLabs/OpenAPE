@@ -22,7 +22,6 @@ $(document).ready(
 									addTableRowWithAccessRight(accessRight, groupName));
 							//console.log(addTableRowWithAccessRight(accessRight));
 						}
-						$('#addResourceModal').style('width: '+('#resourceGroupDataTable').width()+'+10px');
 					})
 					
 			/*
