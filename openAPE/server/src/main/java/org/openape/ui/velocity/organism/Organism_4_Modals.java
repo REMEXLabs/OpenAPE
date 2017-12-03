@@ -264,7 +264,7 @@ public class Organism_4_Modals {
                 + "<div id='"
                 + idName
                 + "FormUploadResource' style='clear:both; background-color:#ececec; border:2px solid #ccc;padding-left:1em;padding-top:1em;padding-right: 1em;min-height: 7em; width: auto;'>"
-                + "	 <label for='usr'>File:</label>"
+                + "	 <label for='usr'>File:</label><br>"
                 + "	<label class='custom-file'>"
                 + "		  <input type='file' id='"
                 + idName
@@ -273,8 +273,8 @@ public class Organism_4_Modals {
                 + idName
                 + "UploadResourceErrSection'> </span>"
                 + "	</label>"
-                + generateGroupRelations()
                 + "</div>"
+                + generateGroupRelations()
                 + "</div>"
                 + "<div class='modal-footer' style='clear:both; background-color:#ececec; border-top: 2px solid #ccc;'>"
                 + "	<span style='float:left;color:red;font-weight:bold;font-size:12pt' id='"
@@ -298,12 +298,15 @@ public class Organism_4_Modals {
                                   // all relevant group-resource relations from
                                   // the datatable, maybe as JS variable
         String table = ""
-                +"<br><br>"
-                + "<label for='inputGroupId'>Group ID </label> <input id='inputGroupId'"
-                + " type='text'>"
-                + "<button class='btn btn-md btn-default'' id='btnAddResourceToGroup'><div class='glyphicon glyphicon-plus'></div> Add resource to Group</button>"
-                +"<div style='overflow-x: scroll;'>"
-                + "<table id='resourceGroupDataTable' style='border: 4px solid #ddd !important;' class='table table-striped table-bordered dt-responsive nowrap' cellspacing='0' width='100%'>"
+                +"<div id='GroupAccessRightTableBackground' style='clear:both; margin-top: 0.5em; padding-top: 1em; padding-left: 1em; padding-right: 1em; padding-bottom: 2em;"
+                + "background-color:#ececec; border:2px solid #ccc; height: auto; width: auto;'>"
+                +"<div style='float: none;'>"
+                + "<label style='margin-right: 1em; float: left;' for='inputGroupId'>Group ID: "
+                + "<input id='inputGroupId' type='text'></label>"
+                + "<button class='btn btn-md btn-default' id='btnAddResourceToGroup'><div class='glyphicon glyphicon-plus'></div> Add resource to Group</button>"
+                +"</div><br>"
+                +"<div style='overflow-x: scroll; float: none;'>"
+                + "<table id='resourceGroupDataTable' style='margin-bottom: 0; border: 4px solid #ddd !important;' class='table table-striped table-bordered dt-responsive nowrap' cellspacing='0' width='100%'>"
                 + "<thead> <tr>"
                 + "<th>Group Id</th>"
                 + "<th>Group name</th>"
@@ -314,6 +317,7 @@ public class Organism_4_Modals {
                 + tableContent
                 + "</tbody>"
                 + "</table>"
+                +"</div>"
                 +"</div>";
 
         return table;
