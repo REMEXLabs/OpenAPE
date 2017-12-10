@@ -179,12 +179,12 @@ $(document).ready(
 			/**
 			 * get Head of resource.
 			 */
-			function getAccesRightsOfResourceFromDB() {
+			function getAccesRightsOfResourceFromDB(resourceId) {
 				var objAccessRights = {};
 				$.ajax({
 					type : 'HEAD',
 					contentType : 'application/json',
-					url : url + '/api/resources',
+					url : url + '/api/resources/'+resourceId,
 					async : false,
 					headers : {
 						"Authorization" : localStorage.getItem("token"),
