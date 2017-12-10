@@ -5,22 +5,40 @@
  */
 $(document).ready(
 		function() {
+			
 
 			/*
 			 * Called when a resource is added to a group. Important, only
 			 * resource and group are only connected in the GUI, separate
 			 * confirmation and upload to server required
 			 */
-			$('#btnAddResourceToGroup').click(
+			$('#addResource_btnAddResourceToGroup').click(
 					function() {
-						var groupId = $('#inputGroupId').val();
+						var groupId = $('#addResource_inputGroupId').val();
 						var group = getGroupByIdFromDB(groupId);
 						var resourceId = null;
 						var accessRight = new openape_api.AccessRight(groupId,
 								resourceId, false, false, false, false);
-						$('#resourceGroupDataTable').append(
+						$('#addResource_resourceGroupDataTable').append(
 								addTableRowWithAccessRight(accessRight, group.name));
 					})
+					
+			/*
+			 * Called when a resource is added to a group. Important, only
+			 * resource and group are only connected in the GUI, separate
+			 * confirmation and upload to server required
+			 */
+			$('#editResource_btnAddResourceToGroup').click(
+					function() {
+						var groupId = $('#editResource_inputGroupId').val();
+						var group = getGroupByIdFromDB(groupId);
+						var resourceId = null;
+						var accessRight = new openape_api.AccessRight(groupId,
+								resourceId, false, false, false, false);
+						$('#editResource_resourceGroupDataTable').append(
+								addTableRowWithAccessRight(accessRight, group.name));
+					})
+
 
 //			/*
 //			 * Called when the add resource dialog is opened. Preload all groups
@@ -47,8 +65,17 @@ $(document).ready(
 			 * resource and group are only connected in the GUI, separate
 			 * confirmation and upload to server required
 			 */
-			$('#btnAddResourceToGroup').click(function() {
-				var groupId = $('#inputGroupId').val();
+			$('#addResource_btnAddResourceToGroup').click(function() {
+				var groupId = $('#addResource_inputGroupId').val();
+			})
+			
+			/*
+			 * Called when a resource is added to a group. Important, only
+			 * resource and group are only connected in the GUI, separate
+			 * confirmation and upload to server required
+			 */
+			$('#editResource_btnAddResourceToGroup').click(function() {
+				var groupId = $('#editResource_inputGroupId').val();
 			})
 
 			/**

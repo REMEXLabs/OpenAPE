@@ -274,7 +274,7 @@ public class Organism_4_Modals {
                 + "UploadResourceErrSection'> </span>"
                 + "	</label>"
                 + "</div>"
-                + generateGroupRelations()
+                + generateGroupRelations(idName)
                 + "</div>"
                 + "<div class='modal-footer' style='clear:both; background-color:#ececec; border-top: 2px solid #ccc;'>"
                 + "	<span style='float:left;color:red;font-weight:bold;font-size:12pt' id='"
@@ -293,27 +293,27 @@ public class Organism_4_Modals {
      * 
      * @return
      */
-    private String generateGroupRelations() {
+    private String generateGroupRelations(String idName) {
         String tableContent = ""; // TODO Replace with a function that collects
                                   // all relevant group-resource relations from
                                   // the datatable, maybe as JS variable
         String table = ""
-                +"<div id='GroupAccessRightTableBackground' style='clear:both; margin-top: 0.5em; padding-top: 1em; padding-left: 1em; padding-right: 1em; padding-bottom: 2em;"
+                +"<div id='"+idName+"Resource_AccessRightTableContainer' style='clear:both; margin-top: 0.5em; padding-top: 1em; padding-left: 1em; padding-right: 1em; padding-bottom: 2em;"
                 + "background-color:#ececec; border:2px solid #ccc; height: auto; width: auto;'>"
                 +"<div style='float: none;'>"
                 + "<label style='margin-right: 1em; float: left;' for='inputGroupId'>Group ID: "
-                + "<input id='inputGroupId' type='text'></label>"
-                + "<button class='btn btn-md btn-default' id='btnAddResourceToGroup'><div class='glyphicon glyphicon-plus'></div> Add resource to Group</button>"
+                + "<input id='"+idName+"Resource_inputGroupId' type='text'></label>"
+                + "<button class='btn btn-md btn-default' id='"+idName+"Resource_btnAddResourceToGroup'><div class='glyphicon glyphicon-plus'></div> Add resource to Group</button>"
                 +"</div><br>"
                 +"<div style='overflow-x: scroll; float: none;'>"
-                + "<table id='resourceGroupDataTable' style='margin-bottom: 0; border: 4px solid #ddd !important;' class='table table-striped table-bordered dt-responsive nowrap' cellspacing='0' width='100%'>"
+                + "<table id='"+idName+"Resource_resourceGroupDataTable' style='margin-bottom: 0; border: 4px solid #ddd !important;' class='table table-striped table-bordered dt-responsive nowrap' cellspacing='0' width='100%'>"
                 + "<thead> <tr>"
                 + "<th>Group Id</th>"
                 + "<th>Group name</th>"
                 + "<th>Read</th> <th>Update</th>"
                 + "<th>Delete</th> <th>Change rights</th>"
                 + "</tr> </thead>"
-                + "<tbody id='resourceGroupDataTableContent'>"
+                + "<tbody id='"+idName+"Resource_resourceGroupDataTableContent'>"
                 + tableContent
                 + "</tbody>"
                 + "</table>"
