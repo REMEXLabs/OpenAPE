@@ -175,4 +175,28 @@ $(document).ready(
 
 				return objGroups;
 			}
+			
+			/**
+			 * get Head of resource.
+			 */
+			function getAccesRightsOfResourceFromDB() {
+				var objAccessRights = {};
+				$.ajax({
+					type : 'HEAD',
+					contentType : 'application/json',
+					url : url + '/api/resources',
+					async : false,
+					headers : {
+						"Authorization" : localStorage.getItem("token"),
+					},
+					success : function(data, textStatus, jqXHR) {
+						objAccessRights = JSON.parse(jqXHR.responseText);
+					},
+					error : function(jqXHR, textStatus, errorThrown) {
+						console.log(jqXHR);
+					}
+				});
+				return objAccessRights;
+			}
 		})
+		
