@@ -12,15 +12,16 @@
 		  
 		    /** initializeLibrary
 			* 
-			* This function is used get the authorization token for the given grantTypem, username and password 
+			* This function is used to get the authorization token for the given grantTypem, username and password 
 			*
 			* 	 
 		    * @param  userName
-		    * 	 The username of the user from the mongodb
+		    * 	 The openAPE username of the user 
 			* 			 
 		    * @param  password
-		    * 	 The password of the user from the mongodb
-		    * 
+		    * 	 The OpenAPE password of the user from the mongodb
+		    *@param serverURL
+		    *the URL of the OpenAPE server to which the client shall connect. Is optional, if not set it is set to http://openape.gpii.eu
 			* @return      
 			* 	 A javascript object with all token information
 			*/
@@ -78,17 +79,18 @@
 	    
 	    /** createUser
 	     * 
-	     * This function is used to create the user in the mongodb database with the given username, email and password
+	     * This function is used to create a new OpenAPE account with the given username, email and password
 	     *
 	     * @param  userName
-	     * 	 The username of the user from the mongodb
+	     * 	 The username of the user 
 	     * 
 	     * @param  email
-	     * 	 The email address of the user from the mongodb
+	     * 	 The email address of the user 
 	     * 
 	     * @param  password
-	     * 	 The password of the user from the mongodb
-	     * 
+	     * 	 The password of the user 
+	     *@param serverURL
+	     *URL of the server to which the client connects. Is optional, if not set, it is set to http://openape.gpii.eu 
 	     * @return      The function will send the user credentials to the function
 	     * 				sendUserData and return a status as a boolean 
 	     */
@@ -179,10 +181,7 @@
 
 	    /** getUser
 	    * 
-	    * This function is used to get user informations by the given token
-	    *
-	    * @param  token
-	    * 	 The authentification token to authorized the user
+	    * This function is used to get account information of the user who initialized the client 
 	    * 
 	    * @return      
 	    * 	 A javascript object with all found user information like username, email and roles
@@ -214,10 +213,8 @@
 	    
 	    /** getUserById
 		    * 
-		    * This function is used to get user informations by the given token
-		    *
-		    * @param  token
-		    * 	 The authentification token to authorized the user
+		    * This function is used to get user account information about a user.
+		    *Can only be used if the user who initialized the client has Admin right
 		    * 
 		    * @return      
 		    * 	 A javascript object with all found user information like username, email and roles
@@ -253,14 +250,15 @@
 	   
 	    /** getUserContext
 		* 
-		* This function is used get the authorization token for the given grantTypem, username and password 
+		* This function is used to get the authorization token for the given grantTypem, username and password 
 		*
 		* @param  token
 		* 	 The authentification token to authorized the user
 		* 	 
 	    * @param  userContextId
-	    * 	 The stored UserContextId from mongodb
-	    * 
+	    * 	 The stored UserContextId 
+	    *@param outputType
+	    *defines the dataformat of the received user context object. Can either be JSON or XML  
 		* @return      
 		* 	 A javascript object with all user contexts information
 		*/
