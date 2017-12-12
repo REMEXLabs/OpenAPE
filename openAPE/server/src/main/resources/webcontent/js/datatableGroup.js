@@ -191,7 +191,7 @@ $(document).ready(function() {
      		location.reload();
     		}, 500);
 	})
-	groupTable.column( 0 ).visible( false );
+	//groupTable.column( 0 ).visible( false );
 	
 })
 
