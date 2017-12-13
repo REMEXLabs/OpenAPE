@@ -16,7 +16,6 @@
 
 package org.openape.api.equipmentcontext;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
@@ -148,8 +147,7 @@ public class EquipmentContext extends DatabaseObject {
             // get schema file from resource folder
             final URL url = EquipmentContext.class.getClassLoader().getResource(
                     EquipmentContext.CONTEXTS_SCHEMA_XSD);
-            final File file = new File(url.toURI());
-            final Schema schema = schemaFactory.newSchema(file);
+            final Schema schema = schemaFactory.newSchema(url);
             factory.setSchema(schema);
 
             final DocumentBuilder builder = factory.newDocumentBuilder();

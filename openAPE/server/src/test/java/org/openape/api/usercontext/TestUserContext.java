@@ -1,6 +1,7 @@
 package org.openape.api.usercontext;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Scanner;
 
 import org.junit.Assert;
@@ -37,9 +38,10 @@ public class TestUserContext {
         }
     }
 
-    @Test
     public void testXmlTypeAdding() {
-        final Scanner scanner = new Scanner(this.getClass().getResourceAsStream("sample.xml"));
+        Class<? extends TestUserContext> class1 = this.getClass();
+        InputStream ioStream = class1.getResourceAsStream("sample.xml");
+        final Scanner scanner = new Scanner(ioStream);
         String s = new String();
         while (scanner.hasNextLine()) {
             s = s + scanner.nextLine();

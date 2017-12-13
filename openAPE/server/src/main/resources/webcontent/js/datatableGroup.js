@@ -296,6 +296,7 @@ function deleteGroupMember(event){
 	var members = objGroup.members;
 	window.groupId = groupId;
 	$('#deleteGroupMemberModal').modal('show');
+	$('#deleteGroupMemberModal').attr('aria-hidden', 'false');
 	
 	 for(var i = 0; i<members.length; i++){
 		 objUser = JSON.parse(openape.getUserById(members[i].userId).responseText);
@@ -392,12 +393,14 @@ function addStatusMember(event) {
 
 function deleteGroup(event){
 	$('#deleteGroupModal').modal('show');
+	$('#deleteGroupModal').attr('aria-hidden', 'false');
 	var id = event.id;
 	window.eventId = id;
 }
 
 function editGroup(event){
 	$('#editGroupModal').modal('show');
+	$('#editGroupModal').attr('aria-hidden', 'false');
 	var id = event.id;
 	var objGroup = getGroupFromDB(id);
 	$('#editGroupNameInput').val(objGroup.name);

@@ -29,8 +29,7 @@ public class Main {
         try {
             AdminInterface.createAdmin();
         } catch (final Exception e) {
-            Main.logger
-                    .error("Admin could not be created or no Admin found. System could not start.");
+            Main.logger.error("Admin could not be created or no Admin found. System could not start.");
             return;
         }
 

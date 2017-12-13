@@ -7,6 +7,7 @@ $(document).ready(function() {
 	
 	$('#signup').click(function(){
 		$('#signupModal').modal('show');
+		$('#signupModal').attr('aria-hidden','false');
 	})
 	
 	$('#btnConfirmSignup').click(function(){

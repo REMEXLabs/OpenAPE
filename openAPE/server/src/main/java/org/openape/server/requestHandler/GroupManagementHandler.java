@@ -14,7 +14,6 @@ public class GroupManagementHandler {
 
     public static void addMember(final String userId, final GroupMembershipStatus status,
             final Group group) throws IOException {
-        // TODO Auto-generated method stub
         // final List<GroupMember> members = new LinkedList<GroupMember>();
         // members.add(new GroupMember(userId, status));
         // group.setMembers(members);

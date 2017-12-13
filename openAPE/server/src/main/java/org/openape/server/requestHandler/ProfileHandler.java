@@ -86,11 +86,10 @@ public class ProfileHandler {
         final DatabaseConnection databaseconnection = DatabaseConnection.getInstance();
         try {
             databaseconnection.updateDatabaseObject(MongoCollectionTypes.USERS, user, user.getId());
+            //TODO exception handling
         } catch (final ClassCastException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (final IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
 

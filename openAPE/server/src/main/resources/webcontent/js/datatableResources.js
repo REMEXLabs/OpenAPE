@@ -43,7 +43,8 @@ $(document).ready(function() {
     })
     
     $('#btnAddResource').click(function(){ 
-    	$('#addResourceModal').modal('show');
+    	$('#addResourceModal').modal('show');	
+    	$('#addResourceModal').attr('aria-hidden', 'false');
     })
     
     $('#btnConfirmAddResource').click(function(){ 
@@ -84,7 +85,7 @@ $(document).ready(function() {
 
 function deleteResource(event){
 	$('#deleteResourceModal').modal('show');
-
+	$('#deleteResourceModal').attr('aria-hidden', 'false');
 	
 	var id = event.id;
 	var resourceId = $('#'+id).attr("data-resourceid");
@@ -97,6 +98,7 @@ function deleteResource(event){
 function editResource(event){
 	$('#editFormUploadResource').css("display", "none");
 	$('#editResourceModal').modal('show');
+	$('#editResourceModal').attr('aria-hidden', 'false');
 	if(getResourceDescription(event.id).status == 200){
 		var response = getResourceDescription(event.id).responseJSON;
 		var resourceDescription = JSON.stringify(response).replace("resource-description", "resourceDescription");

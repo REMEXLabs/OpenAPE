@@ -28,6 +28,5 @@ public class MyProfile extends SuperRestInterface {
 
     public MyProfile() throws IllegalArgumentException, IOException {
         super();
-        // TODO Auto-generated constructor stub
     }
 }

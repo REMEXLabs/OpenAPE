@@ -14,7 +14,7 @@ public class Organism_1_Topsection {
         final String topNavigation = "<div class='topNavigation'>" + "<div class='logo'>" + logo
                 + "</div>" + "<div class='topNavigationLinks' id='topNavigationLinks'>"
                 + topNavigationLinks + "</div>"
-                + "<div align='right' class='userSection' id='userSection' hidden='true'>"
+                + "<div align='right' class='userSection' id='userSection'>" //TODO a11y hidden='true'>"
                 + userSection + "</div>" + "</div>";
         return topNavigation;
     }

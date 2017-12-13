@@ -156,7 +156,6 @@ public class Molecule_5_DataTableContent {
     }
 
     public String generateGroupContent(final List<Group> listGroup) throws IOException {
-        // TODO Auto-generated method stub
         final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
 
         String tableContent = "";
@@ -245,7 +244,6 @@ public class Molecule_5_DataTableContent {
 
     public String generateResourceContent(final List<ResourceDescription> listResourceDescriptions)
             throws IOException {
-        // TODO Auto-generated method stub
         final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
 
         String tableContent = "";

@@ -28,6 +28,5 @@ public class Index extends SuperRestInterface {
 
     public Index() throws IllegalArgumentException, IOException {
         super();
-        // TODO Auto-generated constructor stub
     }
 }

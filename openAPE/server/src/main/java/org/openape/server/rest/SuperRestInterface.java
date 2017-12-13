@@ -53,7 +53,6 @@ public class SuperRestInterface {
 
     public static GroupMembershipRequest extractFromRequest(
             final Class<GroupMembershipRequest> class1, final Request req) {
-        // TODO Auto-generated method stub
         return null;
     }
 
@@ -172,132 +171,22 @@ public class SuperRestInterface {
 
         try {
             Administration.setupAdministrationVELOCITYInterface(new AdminSectionRequestHandler());
-        } catch (final IllegalArgumentException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (final IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-
-        try {
             GettingStarted.setupGettingStartedVELOCITYInterface();
-        } catch (final IllegalArgumentException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (final IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-
-        try {
             Tutorials.setupTutorialsVELOCITYInterface();
-        } catch (final IllegalArgumentException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (final IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-
-        try {
             Downloads.setupDownloadsVELOCITYInterface();
-        } catch (final IllegalArgumentException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (final IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-
-        try {
             Context.setupContextVELOCITYInterface(new AdminSectionRequestHandler());
-        } catch (final IllegalArgumentException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (final IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-
-        try {
             Contact.setupContactVELOCITYInterface();
-        } catch (final IllegalArgumentException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (final IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-
-        try {
             MyProfile.setupMyProfileVELOCITYInterface();
-        } catch (final IllegalArgumentException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (final IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-
-        try {
             MyContexts.setupMyContextsVELOCITYInterface(new AdminSectionRequestHandler());
-
-        } catch (final IllegalArgumentException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (final IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-
-        try {
             MyResources.setupMyResourcesVELOCITYInterface(new MyResourcesRequestHandler());
-        } catch (final IllegalArgumentException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (final IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-
-        try {
             MyGroups.setupMyGroupsVELOCITYInterface();
-        } catch (final IllegalArgumentException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (final IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-
-        try {
             LegalNotice.setupLegalNoticeVELOCITYInterface();
-        } catch (final IllegalArgumentException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (final IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-
-        try {
             Index.setupIndexVELOCITYInterface();
+            Tutorials_Workflow.setupTutorialsWorkflowVELOCITYInterface();
+            // TODO exception handling
         } catch (final IllegalArgumentException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (final IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        
-        try {
-        	Tutorials_Workflow.setupTutorialsWorkflowVELOCITYInterface();
-        } catch (final IllegalArgumentException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (final IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
 
@@ -305,8 +194,8 @@ public class SuperRestInterface {
         try {
             GroupManagementRestInterface.setupGroupManagementRestInterface(
                     new GroupManagementHandler(), authService);
+          //TODO exception handling
         } catch (final IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         // REST-Interfaces defined in ISO/IEC 24752-8

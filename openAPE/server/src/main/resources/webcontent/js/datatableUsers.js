@@ -141,6 +141,7 @@ $(document).ready(function() {
 
 function deleteUser(event){
 	$('#deleteUserModal').modal('show');
+	$('#deleteUserModal').attr('aria-hidden', 'false');
 	var id = event.id.substring(event.id.indexOf("_")+1, event.id.length);
 	localStorage.setItem("userId", id);
 }
@@ -148,11 +149,13 @@ function deleteUser(event){
 
 function createUser(event){
 	$('#createUserModal').modal('show');
+	$('#createUserModal').attr('aria-hidden', 'false');
 }
 
 function editUser(event){
 	var id = event.id.substring(event.id.indexOf("_")+1, event.id.length);
 	$('#editModal').modal('show');
+	$('#editModal').attr('aria-hidden', 'false');
 	$('#editUsernameInput').val($("#tdUserName_"+id).html());
 	$('#editEmailInput').val($("#tdEmail_"+id).html());
 	

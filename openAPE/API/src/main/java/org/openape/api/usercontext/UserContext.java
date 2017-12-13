@@ -16,7 +16,6 @@
 
 package org.openape.api.usercontext;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
@@ -63,7 +62,7 @@ import com.fasterxml.jackson.databind.node.TextNode;
 /**
  * User context object defined in 7.2.1
  */
-@XmlType(propOrder = {"implementationParameters", "contexts"})
+@XmlType(propOrder = { "implementationParameters", "contexts" })
 @XmlRootElement(name = "user-context")
 public class UserContext extends DatabaseObject {
     private static final String VALUE = "value";
@@ -124,7 +123,7 @@ public class UserContext extends DatabaseObject {
             if ((implemParams != null) && !(implemParams instanceof NullNode)) {
                 final ObjectNode implemParamsNode = (ObjectNode) implemParams;
                 userContext.getImplementationParameters().setOwner(
-                		                         implemParamsNode.get(UserContext.OWNER).textValue());
+                        implemParamsNode.get(UserContext.OWNER).textValue());
                 userContext.getImplementationParameters().setPublic(
                         implemParamsNode.get(UserContext.PUBLIC).booleanValue());
             }
@@ -242,8 +241,7 @@ public class UserContext extends DatabaseObject {
             // get schema file from resource folder
             final URL url = UserContext.class.getClassLoader().getResource(
                     UserContext.CONTEXTS_SCHEMA_XSD);
-            final File file = new File(url.toURI());
-            final Schema schema = schemaFactory.newSchema(file);
+            final Schema schema = schemaFactory.newSchema(url);
             factory.setSchema(schema);
 
             final DocumentBuilder builder = factory.newDocumentBuilder();

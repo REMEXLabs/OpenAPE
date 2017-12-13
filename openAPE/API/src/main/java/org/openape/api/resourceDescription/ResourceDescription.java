@@ -16,7 +16,6 @@
 
 package org.openape.api.resourceDescription;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
@@ -148,8 +147,7 @@ public class ResourceDescription extends DatabaseObject {
             // get schema file from resource folder
             final URL url = ResourceDescription.class.getClassLoader().getResource(
                     ResourceDescription.CONTEXTS_SCHEMA_XSD);
-            final File file = new File(url.toURI());
-            final Schema schema = schemaFactory.newSchema(file);
+            final Schema schema = schemaFactory.newSchema(url);
             factory.setSchema(schema);
 
             final DocumentBuilder builder = factory.newDocumentBuilder();

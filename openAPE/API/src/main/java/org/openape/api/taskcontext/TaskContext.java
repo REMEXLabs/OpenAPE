@@ -16,7 +16,6 @@
 
 package org.openape.api.taskcontext;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
@@ -145,8 +144,7 @@ public class TaskContext extends DatabaseObject {
             // get schema file from resource folder
             final URL url = TaskContext.class.getClassLoader().getResource(
                     TaskContext.CONTEXTS_SCHEMA_XSD);
-            final File file = new File(url.toURI());
-            final Schema schema = schemaFactory.newSchema(file);
+            final Schema schema = schemaFactory.newSchema(url);
             factory.setSchema(schema);
 
             final DocumentBuilder builder = factory.newDocumentBuilder();
