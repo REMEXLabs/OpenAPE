@@ -1,43 +1,9 @@
-package org.openape.client;
-
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.nio.file.Files;
-import java.util.List;
-
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.client.Invocation;
-import javax.ws.rs.client.Invocation.Builder;
-import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.Form;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-
-import org.openape.api.OpenAPEEndPoints;
-import org.openape.api.PasswordChangeRequest;
-import org.openape.api.auth.TokenResponse;
-import org.openape.api.environmentcontext.EnvironmentContext;
-import org.openape.api.equipmentcontext.EquipmentContext;
-import org.openape.api.listing.Listing;
-import org.openape.api.taskcontext.TaskContext;
-import org.openape.api.usercontext.UserContext;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+package org.openape.client;import java.io.File;import java.io.IOException;import java.io.InputStream;import java.net.MalformedURLException;import java.net.URI;import java.net.URISyntaxException;import java.net.URL;import java.nio.file.Files;import java.util.List;import javax.ws.rs.client.Client;import javax.ws.rs.client.ClientBuilder;import javax.ws.rs.client.Entity;import javax.ws.rs.client.Invocation;import javax.ws.rs.client.Invocation.Builder;import javax.ws.rs.client.WebTarget;import javax.ws.rs.core.Form;import javax.ws.rs.core.MediaType;import javax.ws.rs.core.Response;import org.openape.api.OpenAPEEndPoints;import org.openape.api.PasswordChangeRequest;import org.openape.api.auth.TokenResponse;import org.openape.api.environmentcontext.EnvironmentContext;import org.openape.api.equipmentcontext.EquipmentContext;import org.openape.api.listing.Listing;import org.openape.api.taskcontext.TaskContext;import org.openape.api.usercontext.UserContext;import org.slf4j.Logger;import org.slf4j.LoggerFactory;
 /**
  * @author Lukas Smirek
  */
-
 public class OpenAPEClient {
-
-    private static Logger logger = LoggerFactory.getLogger(OpenAPEClient.class);
+	private static Logger logger = LoggerFactory.getLogger(OpenAPEClient.class);
     static final String ENVIRONMENT_CONTEXT_PATH = "api/environment-contexts";
     static final String EQUIPMENT_CONTEXT_PATH = "api/equipment-contexts";
     static final String TASK_CONTEXT_PATH = "api/task-contexts";
@@ -57,7 +23,7 @@ public class OpenAPEClient {
         this(userName, password, "http://openape.gpii.eu");
     }
 
-    public OpenAPEClient(final String userName, final String password, final String uri) {
+    public OpenAPEClient(final String userName, final String password, final String uri) throws MalformedURLException {
         // create HTTP client that connects to the server
         OpenAPEClient.logger.info("Initialising OpenAPE client");
         // ClientConfig config = new ClientConfig();
@@ -228,17 +194,5 @@ logger.debug("userId: "  + this.userId);
 
     }
 
-    public UserContext getUserContext(final String userContextId) {
-        final Invocation.Builder invocationBuilder = this.webResource.path(
-                OpenAPEClient.USER_CONTEXT_PATH + userContextId).request();
-        invocationBuilder.header("Authorization", this.token);
-
-        final Response response = invocationBuilder.get();
-
-        if (response.getStatus() != 200) {
-            final UserContext userContext = response.readEntity(UserContext.class);
-            return userContext;
-        }
-        return null;
-    }
-}
+    public UserContext getUserContext(final String userContextId){final Invocation.Builder invocationBuilder = this.webResource.path(OpenAPEClient.USER_CONTEXT_PATH + userContextId).request();
+        invocationBuilder.header("Authorization", this.token);final Response response = invocationBuilder.get();if (response.getStatus() != 200){final UserContext userContext = response.readEntity(UserContext.class);return userContext;}return null;}}
