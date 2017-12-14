@@ -1,6 +1,7 @@
 package org.openape.client;
 
 import java.io.File;
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -25,6 +26,7 @@ public class ClientTest {
 
     @BeforeClass
     public static void beforeClass() {
+
 
         Spark.staticFileLocation("/webcontent"); // Static files
 

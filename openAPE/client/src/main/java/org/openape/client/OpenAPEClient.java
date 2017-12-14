@@ -3,8 +3,10 @@ package org.openape.client;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.nio.file.Files;
 import java.util.List;
 
@@ -34,6 +36,7 @@ import org.slf4j.LoggerFactory;
  */
 
 public class OpenAPEClient {
+
     private static Logger logger = LoggerFactory.getLogger(OpenAPEClient.class);
     static final String ENVIRONMENT_CONTEXT_PATH = "api/environment-contexts";
     static final String EQUIPMENT_CONTEXT_PATH = "api/equipment-contexts";
@@ -59,6 +62,13 @@ public class OpenAPEClient {
         OpenAPEClient.logger.info("Initialising OpenAPE client");
         // ClientConfig config = new ClientConfig();
         this.client = ClientBuilder.newClient();// config);
+try {
+URL url = new URL(uri);
+} catch (MalformedURLException e)	{
+logger.error("Malformed URL: " + uri + "OpeAPE clint can not beinitialized") ;
+	throw e;
+}
+
         this.webResource = this.client.target(uri);
 
         // get token for accessing server
@@ -67,6 +77,7 @@ public class OpenAPEClient {
         OpenAPEClient.logger.info("Token: " + this.token);
 
         this.userId = this.getMyId();
+logger.debug("userId: "  + this.userId);
     }
 
     public boolean changeUserPassword(final String oldPassword, final String newPassword) {
@@ -153,6 +164,7 @@ public class OpenAPEClient {
 
     }
 
+
     private String getMyId() {
 
         final Response response = this.getRequest(OpenAPEEndPoints.MY_ID).get();
@@ -209,13 +221,7 @@ public class OpenAPEClient {
         final Response response = this.webResource.path("token").request().post(Entity.form(form));
 
         final int status = response.getStatus();
-        OpenAPEClient.logger.debug("Response code: " + status);
-        if (status != 200) {
-            OpenAPEClient.logger.error("Failed : HTTP error code : " + status
-                    + ".\n Server message: " + response.readEntity(String.class));
-            throw new RuntimeException("Failed : HTTP error code : " + status);
-        }
-
+        checkResponse(response);
         final String output = response.readEntity(TokenResponse.class).getAccessToken();
 
         return output;

@@ -1,10 +1,17 @@
 package org.openape.client;
 
+<<<<<<< HEAD
+=======
+import static spark.Spark.post;
+
+import java.net.MalformedURLException;
+>>>>>>> ManageUserAccountClient
 import java.net.URISyntaxException;
 
 import spark.Response;
 
 public class TestServer {
+
     public static Object createUserContext(final String body, final Response res) {
         // TODO Auto-generated method stub
 

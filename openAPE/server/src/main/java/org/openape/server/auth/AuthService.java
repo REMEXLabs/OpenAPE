@@ -1,5 +1,6 @@
 package org.openape.server.auth;
 
+
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
@@ -9,6 +10,9 @@ import java.util.ResourceBundle;
 import org.jboss.resteasy.spi.NotFoundException;
 import org.openape.api.auth.TokenResponse;
 import org.openape.api.databaseObjectBase.DatabaseObject;
+
+import com.google.gson.Gson;
+
 import org.openape.api.user.User;
 import org.openape.server.database.mongoDB.DatabaseConnection;
 import org.openape.server.database.mongoDB.MongoCollectionTypes;
