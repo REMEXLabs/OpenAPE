@@ -19,7 +19,7 @@ public class OpenAPEClient {
      * Standard constructor, sets server adress automatically to
      * http://openape.gpii.eu/
      */
-    public OpenAPEClient(final String userName, final String password) {
+    public OpenAPEClient(final String userName, final String password) throws MalformedURLException {
         this(userName, password, "http://openape.gpii.eu");
     }
 

@@ -37,12 +37,12 @@ public class ClientTest {
 
     }
 
-    private static OpenAPEClient getOpenApeClient() {
+    private static OpenAPEClient getOpenApeClient() throws MalformedURLException {
         return new OpenAPEClient(ClientTest.testUser, ClientTest.testPw, "http://localhost:4567/");
     }
 
     @Test
-    public void testCreateContent() throws URISyntaxException {
+    public void testCreateContent() throws URISyntaxException, MalformedURLException {
 
         final OpenAPEClient client = ClientTest.getOpenApeClient();
         final UserContext userContext = new UserContext();
@@ -53,7 +53,7 @@ public class ClientTest {
     }
 
     @Test
-    public void testFileDownload() throws URISyntaxException, InterruptedException {
+    public void testFileDownload() throws URISyntaxException, InterruptedException, MalformedURLException {
         // Thread.sleep(60000);;
         final OpenAPEClient client = ClientTest.getOpenApeClient();
         final File downloadedFile = client.getResource("http://localhost:4567/test.html",

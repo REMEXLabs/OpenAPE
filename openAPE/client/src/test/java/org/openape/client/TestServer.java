@@ -19,7 +19,7 @@ public class TestServer {
         return "successful";
     }
 
-    public static void main(final String[] args) throws URISyntaxException, InterruptedException {
+    public static void main(final String[] args) throws URISyntaxException, InterruptedException, MalformedURLException {
         // post (RESTPaths.USER_CONTEXTS,"application/json",(req, res) ->
         // TestServer.createUserContext(req.body(),res));
         ClientTest.beforeClass();
