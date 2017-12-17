@@ -6,14 +6,24 @@
 $(document).ready(
 		function() {
 
+			/**
+			 * when the edit resource button is pressed the system preloads the
+			 * group access table with all groups the resource belongs to
+			 */
+			$('.editResourceBtn').click(function() {
+				var resourceId = $('#editInputResourceId').val();
+				var accessRights = getAccesRightsOfResourceFromDB(resourceId);				
+				var accessRightList = accessRights.groupAccessRights;
+				for(var i = 0; i < accessRightList.length; i++) {
+					var accessRight = accessRightList[i];
+					var groupName = getGroupByIdFromDB(accessRight.groupId);
+					 $('#editResource_resourceGroupDataTable').append(
+							 addTableRowWithAccessRight(accessRight,
+							 groupName));
+				}
 
-			$('#editInputResourceId').on('change',
-					function() {
-						var resourceId = $('#editInputResourceId').val();
-						console.log('resourceId:'+resourceId);
-						
-					})
-					
+			})
+
 			/*
 			 * Called when a resource is added to a group. Important, only
 			 * resource and group are only connected in the GUI, separate
@@ -199,7 +209,7 @@ $(document).ready(
 						"Authorization" : localStorage.getItem("token"),
 					},
 					success : function(data, textStatus, jqXHR) {
-						objAccessRights = JSON.parse(jqXHR.responseText);
+						objAccessRights = JSON.parse(jqXHR.getResponseHeader("groupAccessRights"));
 					},
 					error : function(jqXHR, textStatus, errorThrown) {
 						console.log(jqXHR);
