@@ -22,7 +22,7 @@ $(document).ready(
 							 groupName));
 				}
 
-			})
+			});
 
 			/*
 			 * Called when a resource is added to a group. Important, only
@@ -39,7 +39,7 @@ $(document).ready(
 						$('#addResource_resourceGroupDataTable').append(
 								addTableRowWithAccessRight(accessRight,
 										group.name));
-					})
+					});
 
 			/*
 			 * Called when a resource is added to a group. Important, only
@@ -56,46 +56,20 @@ $(document).ready(
 						$('#editResource_resourceGroupDataTable').append(
 								addTableRowWithAccessRight(accessRight,
 										group.name));
-					})
+					});
+					
+			/**
+			 * adding resource to server here also stores it's access rights.
+			 */		
+			$('#btnConfirmAddResource').click(
+				function() {
+					$('#addResource_resourceGroupDataTableContent > tr').each(function(i, element) {
+						console.log(i);
+					});
+				}
+			);
 
-			// /*
-			// * Called when the add resource dialog is opened. Preload all
-			// groups
-			// */
-			// $('#btnAddResource').click(
-			// function() {
-			// var groups = getGroupsFromDB();
-			// for (var i = 0; i < groups.length; i++) {
-			// var groupId = groups[i].id;
-			// var resourceId = null;
-			// var accessRight = new openape_api.AccessRight(
-			// groupId, resourceId, false, false, false,
-			// false);
-			// var groupName = groups[i].groupname;
-			// $('#resourceGroupDataTable').append(
-			// addTableRowWithAccessRight(accessRight,
-			// groupName));
-			// // console.log(addTableRowWithAccessRight(accessRight));
-			// }
-			// })
 
-			/*
-			 * Called when a resource is added to a group. Important, only
-			 * resource and group are only connected in the GUI, separate
-			 * confirmation and upload to server required
-			 */
-			$('#addResource_btnAddResourceToGroup').click(function() {
-				var groupId = $('#addResource_inputGroupId').val();
-			})
-
-			/*
-			 * Called when a resource is added to a group. Important, only
-			 * resource and group are only connected in the GUI, separate
-			 * confirmation and upload to server required
-			 */
-			$('#editResource_btnAddResourceToGroup').click(function() {
-				var groupId = $('#editResource_inputGroupId').val();
-			})
 
 			/**
 			 * creates an HTML string that represents a new row in the table
@@ -216,5 +190,27 @@ $(document).ready(
 					}
 				});
 				return objAccessRights;
+			}
+			
+			/**
+			 * Update the access rights of a resource on server.
+			 */
+			function storeAccessRightsOnServer(accessRights, resourceId) {
+				$.ajax({
+					type : 'PATCH',
+					contentType : 'application/json',
+					url : url + '/api/resources/' + resourceId,
+					async : false,
+					headers : {
+						"Authorization" : localStorage.getItem("token"),
+						"groupAccessRights" : JSON.stringify(accessRights),
+					},
+					success : function(data, textStatus, jqXHR) {
+						return true;
+					},
+					error : function(jqXHR, textStatus, errorThrown) {
+						console.log(jqXHR);
+					}
+				});
 			}
 		})
