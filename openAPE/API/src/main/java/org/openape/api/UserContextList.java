@@ -1,47 +1,28 @@
 package org.openape.api;
 
 import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.LinkedList;
 import java.util.List;
-
-import javax.xml.bind.annotation.XmlElement;
-
+import javax.xml.bind.annotation.XmlRootElement;
 import org.openape.api.usercontext.UserContext;
+import com.fasterxml.jackson.annotation.JsonSetter;
 
-public class UserContextList {
+@XmlRootElement(name = "response")
+public class UserContextList extends ContextList<UserContext> {
+	public UserContextList() {
+		super();
+	}
 
-    private int totalContexts;
+	public UserContextList(List<UserContext> contexts, String url) {
+		super(contexts, url, "user-context-uri");
+	}
 
-    @XmlElement(name = "user-context-uris")
-    private List<URI> userContextUris;
+	public List<URI> getUserContextUris() 
+	{ return getContextUris();}
 
-    public UserContextList(final List<UserContext> contexts, final String url) {
-        this.userContextUris = new LinkedList<URI>();
-        for (final UserContext userContext : contexts) {
-            try {
-                this.userContextUris.add(new URI(url + userContext.getId()));
-            } catch (final URISyntaxException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        }
-        this.totalContexts = this.userContextUris.size();
-    }
+	@JsonSetter("user-context-uris")
+	public void setUserContextUris(final List<URI> userContextUris) {
+		setContextUris(userContextUris);}
 
-    public int getTotalContexts() {
-        return this.totalContexts;
-    }
 
-    public List<URI> getUserContextUris() {
-        return this.userContextUris;
-    }
 
-    public void setTotalContexts(final int totalContexts) {
-        this.totalContexts = totalContexts;
-    }
-
-    public void setUserContextUris(final List<URI> userContextUris) {
-        this.userContextUris = userContextUris;
-    }
 }

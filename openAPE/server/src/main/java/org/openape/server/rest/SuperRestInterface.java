@@ -41,7 +41,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class SuperRestInterface {
-    static Logger logger = LoggerFactory.getLogger(SuperRestInterface.class);
+    protected static Logger logger = LoggerFactory.getLogger(SuperRestInterface.class);
     public static final int HTTP_STATUS_OK = 200;
     public static final int HTTP_STATUS_CREATED = 201;
     public static final int HTTP_STATUS_NO_CONTENT = 204;

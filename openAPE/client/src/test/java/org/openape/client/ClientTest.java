@@ -1,6 +1,7 @@
 package org.openape.client;
 
 import java.io.File;
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -26,6 +27,7 @@ public class ClientTest {
     @BeforeClass
     public static void beforeClass() {
 
+
         Spark.staticFileLocation("/webcontent"); // Static files
 
         Spark.get("/hello", (req, res) -> "Hello World");
@@ -35,12 +37,12 @@ public class ClientTest {
 
     }
 
-    private static OpenAPEClient getOpenApeClient() {
+    private static OpenAPEClient getOpenApeClient() throws MalformedURLException {
         return new OpenAPEClient(ClientTest.testUser, ClientTest.testPw, "http://localhost:4567/");
     }
 
     @Test
-    public void testCreateContent() throws URISyntaxException {
+    public void testCreateContent() throws URISyntaxException, MalformedURLException {
 
         final OpenAPEClient client = ClientTest.getOpenApeClient();
         final UserContext userContext = new UserContext();
@@ -51,7 +53,7 @@ public class ClientTest {
     }
 
     @Test
-    public void testFileDownload() throws URISyntaxException, InterruptedException {
+    public void testFileDownload() throws URISyntaxException, InterruptedException, MalformedURLException {
         // Thread.sleep(60000);;
         final OpenAPEClient client = ClientTest.getOpenApeClient();
         final File downloadedFile = client.getResource("http://localhost:4567/test.html",

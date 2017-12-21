@@ -1,6 +1,7 @@
 import org.openape.client.OpenAPEClient;
 
 public class UserAccountManagementTest {
+
     public static void main(final String[] args) {
         try {
             final OpenAPEClient client = new OpenAPEClient("daniel", "du",
