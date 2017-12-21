@@ -12,7 +12,8 @@ $(document).ready(
 			 */
 			$('.editResourceBtn').click(function() {
 				var resourceId = $('#editInputResourceId').val();
-				var accessRights = getAccesRightsOfResourceFromDB(resourceId);				
+				var accessRights = getAccesRightsOfResourceFromDB(resourceId);	
+				console.log(JSON.stringify(accessRights))
 				var accessRightList = accessRights.groupAccessRights;
 				for(var i = 0; i < accessRightList.length; i++) {
 					var accessRight = accessRightList[i];
@@ -219,7 +220,7 @@ $(document).ready(
 			 * Update the access rights of a resource on server.
 			 */
 			function storeAccessRightsOnServer(accessRights, resourceId) {
-				console.log(JSON.stringify(accessRights));
+				var success = false;
 				$.ajax({
 					type : 'PATCH',
 					contentType : 'application/json',
@@ -230,11 +231,12 @@ $(document).ready(
 						"groupAccessRights" : JSON.stringify(accessRights),
 					},
 					success : function(data, textStatus, jqXHR) {
-						return true;
+						success = true;
 					},
 					error : function(jqXHR, textStatus, errorThrown) {
 						console.log(jqXHR);
 					}
 				});
+				return success;
 			}
 		})

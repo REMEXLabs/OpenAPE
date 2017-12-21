@@ -36,7 +36,7 @@ public class ResourceList {
     private static final String RESOURCEFOLDERPATH = Messages.getString("ResourceList.rootFolder") + File.separator //$NON-NLS-1$
             + Messages.getString("ResourceList.ResourceFolder"); //$NON-NLS-1$
     private static final String FILE_NAME_AND_OWNER_ID_CANNOT_BE_UPDATED = "The file name and / or the owner id of a resource cannot be updated!";
-    
+
     /**
      * Singleton instance of this class.
      */
@@ -144,14 +144,16 @@ public class ResourceList {
         final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
         String id = null;
         try {
-            id = databaseConnection.storeDatabaseObject(MongoCollectionTypes.RESOURCEOBJECTS, resourceObject);
+            id = databaseConnection.storeDatabaseObject(MongoCollectionTypes.RESOURCEOBJECTS,
+                    resourceObject);
         } catch (final ClassCastException e) {
             throw new IOException(e.getMessage());
         }
         // Add id to resource object and store again.
         resourceObject.setId(id);
         try {
-            databaseConnection.updateDatabaseObject(MongoCollectionTypes.RESOURCEOBJECTS, resourceObject, id);
+            databaseConnection.updateDatabaseObject(MongoCollectionTypes.RESOURCEOBJECTS,
+                    resourceObject, id);
         } catch (final ClassCastException e) {
             throw new IOException(e.getMessage());
         }
@@ -244,8 +246,9 @@ public class ResourceList {
     }
 
     /**
-     * Updates an existing resource on the server. Note that the resource's id cannot be changed and that the file,
-     * which is associated with the resource will not be updated. Thus you should not try to update the file
+     * Updates an existing resource on the server. Note that the resource's id
+     * cannot be changed and that the file, which is associated with the
+     * resource will not be updated. Thus you should not try to update the file
      * itself, its name or owner id with this method!
      * 
      * @param resourceObjectUpdate
@@ -260,14 +263,15 @@ public class ResourceList {
      * @throws UnauthorizedException
      *             if the user has no right to update the resource.
      */
-    public boolean updateResource(final ResourceObject resourceObjectUpdate, final CommonProfile profile)
-            throws IllegalArgumentException, IOException, UnauthorizedException {
+    public boolean updateResource(final ResourceObject resourceObjectUpdate,
+            final CommonProfile profile) throws IllegalArgumentException, IOException,
+            UnauthorizedException {
         // get corresponding resource
         final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
         ResourceObject resourceObjectOld = null;
         try {
-            resourceObjectOld = (ResourceObject) databaseConnection
-                    .getDatabaseObjectById(MongoCollectionTypes.RESOURCEOBJECTS, resourceObjectUpdate.getId());
+            resourceObjectOld = (ResourceObject) databaseConnection.getDatabaseObjectById(
+                    MongoCollectionTypes.RESOURCEOBJECTS, resourceObjectUpdate.getId());
         } catch (final ClassCastException e) {
             throw new IOException(e.getMessage());
         }
@@ -277,8 +281,9 @@ public class ResourceList {
             throw new IllegalArgumentException(RESOURCE_DOES_NOT_EXIST_MSG);
         }
 
-        // this can be removed, when also the file and its path are updated by this method
-        if (resourceObjectOld.getId() != resourceObjectUpdate.getId()
+        // this can be removed, when also the file and its path are updated by
+        // this method
+        if (!resourceObjectOld.getId().equals(resourceObjectUpdate.getId())
                 || !resourceObjectOld.getFileName().equals(resourceObjectUpdate.getFileName())) {
             throw new IllegalArgumentException(FILE_NAME_AND_OWNER_ID_CANNOT_BE_UPDATED);
         }
@@ -288,8 +293,8 @@ public class ResourceList {
         resourceAuthService.allowAdminAndOwner(profile, resourceObjectUpdate.getOwnerId());
 
         // update resource
-        databaseConnection.updateDatabaseObject(MongoCollectionTypes.RESOURCEOBJECTS, resourceObjectUpdate,
-                resourceObjectUpdate.getId());
+        databaseConnection.updateDatabaseObject(MongoCollectionTypes.RESOURCEOBJECTS,
+                resourceObjectUpdate, resourceObjectUpdate.getId());
 
         return true;
     }
