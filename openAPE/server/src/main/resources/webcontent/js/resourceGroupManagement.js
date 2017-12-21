@@ -118,7 +118,7 @@ $(document).ready(
 								accessRight.groupId)
 						+ createTd('deleteRight', accessRight.deleteRight,
 								accessRight.groupId)
-						+ createTd('changeRight', accessRight.changeRight,
+						+ createTd('changeRight', accessRight.changeRightsRight,
 								accessRight.groupId) + '</tr>';
 			}
 			/*

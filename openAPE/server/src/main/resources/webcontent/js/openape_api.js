@@ -4,12 +4,12 @@
 
 
 var openape_api = {
-	AccessRight: function (groupId, resourceId, readRight, updateRight, deleteRight, changeRight) {
+	AccessRight: function (groupId, resourceId, readRight, updateRight, deleteRight, changeRightsRight) {
 		this.groupId = groupId;
 		this.resourceId = resourceId;
 		this.readRight = readRight;
 		this.updateRight = updateRight;
-				this.deleteRight = deleteRight;
-				this.changeRight = changeRight;
+		this.deleteRight = deleteRight;
+		this.changeRightsRight = changeRightsRight;
 	}
 };
