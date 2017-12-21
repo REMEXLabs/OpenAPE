@@ -68,6 +68,29 @@ $(document).ready(
 					});
 				}
 			);
+			
+			/**
+			 * editing resource also stores it's access rights to server.
+			 */		
+			$('#btnConfirmEditResource').click(
+				function() {
+					var accessRightList = [];
+					var resourceId = $('#editInputResourceId').val();
+					$('#editResource_resourceGroupDataTableContent > tr').each(function(i, element) {
+						var groupId = element.cells[0].textContent;
+						var accessRight = new openape_api.AccessRight(groupId,
+							resourceId, element.cells[2].firstChild.checked, 
+								element.cells[3].firstChild.checked, 
+								element.cells[4].firstChild.checked, 
+								element.cells[5].firstChild.checked);
+						accessRightList.push(accessRight);
+					});
+					var accessRights = {groupAccessRights: accessRightList};
+					var success = storeAccessRightsOnServer(accessRights, resourceId);
+					if(success) console.log("access rights updated.");
+					$('#editResource_resourceGroupDataTableContent').empty();
+				}
+			);
 
 
 
@@ -196,6 +219,7 @@ $(document).ready(
 			 * Update the access rights of a resource on server.
 			 */
 			function storeAccessRightsOnServer(accessRights, resourceId) {
+				console.log(JSON.stringify(accessRights));
 				$.ajax({
 					type : 'PATCH',
 					contentType : 'application/json',
