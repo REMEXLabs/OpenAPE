@@ -329,7 +329,7 @@ public class ResourceRESTInterface extends SuperRestInterface {
                 // get user from request response pair.
                 final CommonProfile profile = auth.getAuthenticatedProfile(request, response);
                 
-                if (groupAccessRightsString == null || !groupAccessRightsString.isEmpty()) {
+                if (groupAccessRightsString == null || groupAccessRightsString.isEmpty()) {
                     throw new IllegalArgumentException(ResourceRESTInterface.HEADER_MUST_CONTAIN_GROUP_ACCESS_RIGHT_MSG);
                 }
                 final ObjectMapper mapper = new ObjectMapper();
