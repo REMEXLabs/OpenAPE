@@ -291,21 +291,17 @@ public class ResourceRESTInterface extends SuperRestInterface {
 
         });
         
-        // TODO not tested!
+        
         Spark.head(Messages.getString("ResourceRESTInterface.ResourcesURLWithID"), (request, response) -> { //$NON-NLS-1$
-            System.out.println("head was called");
             final String resourceId = request.params(Messages.getString("ResourceRESTInterface.IDParam")); //$NON-NLS-1$
-            System.out.println("resourceId "+resourceId);
-            
             try{
                 final GetResourceReturnType serverReturn = requestHandler.getResourceById(resourceId);
                 final ResourceObject resourceObject = serverReturn.getResourceObject();
-                final ObjectMapper mapper = new ObjectMapper();
-                System.out.println(mapper.writeValueAsString(resourceObject));
                 GroupAccessRights groupAccessRights = resourceObject.getGroupAccessRights();
                 if(groupAccessRights == null || groupAccessRights.getGroupAccessRights() == null){
                     groupAccessRights = new GroupAccessRights();
                 }
+                final ObjectMapper mapper = new ObjectMapper();
                 response.header(ResourceRESTInterface.GROUP_ACCESS_RIGHT_HEADER_NAME, mapper.writeValueAsString(groupAccessRights));
                 response.status(SuperRestInterface.HTTP_STATUS_OK);
             } catch (final IllegalArgumentException e) {
@@ -319,9 +315,8 @@ public class ResourceRESTInterface extends SuperRestInterface {
             return Messages.getString("ResourceRESTInterface.EmptyString"); //$NON-NLS-1$
         });
         
-        // TODO not tested!
+
         Spark.patch(Messages.getString("ResourceRESTInterface.ResourcesURLWithID"), (request, response) -> { //$NON-NLS-1$
-            System.out.println("patch was called");
             final String resourceId = request.params(Messages.getString("ResourceRESTInterface.IDParam")); //$NON-NLS-1$
             
             // get group access rights.

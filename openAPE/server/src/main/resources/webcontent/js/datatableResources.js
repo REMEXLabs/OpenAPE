@@ -283,6 +283,7 @@ function uploadFile(){
                 var resourceName = req.responseText;
                 generateResourceDescriptionObject(resourceName, "add");
                 $('#addResourceModal').modal('hide');
+                undateAccessRights(resourceName);
                 setTimeout(function(){ 
 	        		location.reload();
 	       		}, 1000);
