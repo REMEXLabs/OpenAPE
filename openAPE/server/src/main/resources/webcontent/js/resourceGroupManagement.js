@@ -17,7 +17,7 @@ $(document).ready(
 				var accessRightList = accessRights.groupAccessRights;
 				for(var i = 0; i < accessRightList.length; i++) {
 					var accessRight = accessRightList[i];
-					var groupName = getGroupByIdFromDB(accessRight.groupId);
+					var groupName = getGroupByIdFromDB(accessRight.groupId).name;
 					 $('#editResource_resourceGroupDataTable').append(
 							 addTableRowWithAccessRight(accessRight,
 							 groupName));
@@ -89,7 +89,6 @@ $(document).ready(
 					var accessRights = {groupAccessRights: accessRightList};
 					var success = storeAccessRightsOnServer(accessRights, resourceId);
 					if(success) console.log("access rights updated.");
-					$('#editResource_resourceGroupDataTableContent').empty();
 				}
 			);
 

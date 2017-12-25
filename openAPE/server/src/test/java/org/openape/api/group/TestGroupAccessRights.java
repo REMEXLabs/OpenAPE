@@ -1,5 +1,7 @@
 package org.openape.api.group;
 
+import java.io.IOException;
+
 import org.junit.Test;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -18,9 +20,13 @@ public class TestGroupAccessRights {
         String json = null;
         try {
             json = mapper.writeValueAsString(sampleGroupAccessRights);
+            System.out.println(json);
+            GroupAccessRights sample = mapper.readValue(json, GroupAccessRights.class);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        System.out.println(json);
+
     }
 }

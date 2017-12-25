@@ -1,5 +1,7 @@
 package org.openape.api.group;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  * This class defines the access rights of one group for one resource. There
  * exists four access rights. The read right means, that users, which are member
@@ -137,6 +139,7 @@ public class GroupAccessRight {
      * @return true if the group members are allowed to change the access rights
      *         for the resource and false if not.
      */
+    @JsonProperty(value="changeRightsRight")
     public boolean hasChangeRightsRight() {
         return this.changeRightsRight;
     }
@@ -147,6 +150,7 @@ public class GroupAccessRight {
      * @return true if the group members are allowed to delete the resource and
      *         false if not.
      */
+    @JsonProperty(value="deleteRight")
     public boolean hasDeleteRight() {
         return this.deleteRight;
     }
@@ -157,6 +161,7 @@ public class GroupAccessRight {
      * @return true if the group members are allowed to read the resource and
      *         false if not.
      */
+    @JsonProperty(value="readRight")
     public boolean hasReadRight() {
         return this.readRight;
     }
@@ -167,6 +172,7 @@ public class GroupAccessRight {
      * @return true if the group members are allowed to update the resource and
      *         false if not.
      */
+    @JsonProperty(value="updateRight")
     public boolean hasUpdateRight() {
         return this.updateRight;
     }
