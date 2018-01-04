@@ -38,11 +38,6 @@ public class GroupAccessRight {
     private String groupId;
 
     /**
-     * Id of the resource, for which the access rights are defined.
-     */
-    private String resourceId;
-
-    /**
      * Read right. True means, that the group members are allowed to read the
      * concept and false that not.
      */
@@ -99,10 +94,9 @@ public class GroupAccessRight {
      *            true if the group is allowed to change the access rights for
      *            the concept and false if not
      */
-    public GroupAccessRight(final String groupId, final String resourceId, final boolean readRight,
+    public GroupAccessRight(final String groupId, final boolean readRight,
             final boolean updateRight, final boolean deleteRight, final boolean changeRightsRight) {
         this.setGroupId(groupId);
-        this.setResourceId(resourceId);
         this.setReadRight(readRight);
         this.setUpdateRight(updateRight);
         this.setDeleteRight(deleteRight);
@@ -122,15 +116,6 @@ public class GroupAccessRight {
      */
     public String getGroupId() {
         return this.groupId;
-    }
-
-    /**
-     * The id of the resource, for which the group access rights are defined.
-     *
-     * @return id of the resource
-     */
-    public String getResourceId() {
-        return this.resourceId;
     }
 
     /**
@@ -218,17 +203,6 @@ public class GroupAccessRight {
      */
     public void setReadRight(final boolean readRight) {
         this.readRight = readRight;
-    }
-
-    /**
-     * Setter for the resource id. The resource id must not be null or empty.
-     *
-     * @param conceptId
-     *            id of the resource, for which the group access rights are
-     *            defined
-     */
-    public void setResourceId(final String resourceId) {
-        this.resourceId = resourceId;
     }
 
     /**

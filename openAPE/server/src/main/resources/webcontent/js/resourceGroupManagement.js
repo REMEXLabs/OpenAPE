@@ -50,7 +50,7 @@ $(document)
 										var group = getGroupByIdFromDB(groupId);
 										var resourceId = null;
 										var accessRight = new openape_api.AccessRight(
-												groupId, resourceId, false,
+												groupId, false,
 												false, false, false);
 										$('#addResource_resourceGroupDataTable')
 												.append(
@@ -73,7 +73,7 @@ $(document)
 										var group = getGroupByIdFromDB(groupId);
 										var resourceId = null;
 										var accessRight = new openape_api.AccessRight(
-												groupId, resourceId, false,
+												groupId, false,
 												false, false, false);
 										$(
 												'#editResource_resourceGroupDataTable')
@@ -119,7 +119,6 @@ $(document)
 															var groupId = element.cells[0].textContent;
 															var accessRight = new openape_api.AccessRight(
 																	groupId,
-																	resourceId,
 																	element.cells[2].firstChild.checked,
 																	element.cells[3].firstChild.checked,
 																	element.cells[4].firstChild.checked,
@@ -295,7 +294,7 @@ function undateAccessRights(resourceId) {
 			function(i, element) {
 				var groupId = element.cells[0].textContent;
 				var accessRight = new openape_api.AccessRight(groupId,
-						resourceId, element.cells[2].firstChild.checked,
+						element.cells[2].firstChild.checked,
 						element.cells[3].firstChild.checked,
 						element.cells[4].firstChild.checked,
 						element.cells[5].firstChild.checked);

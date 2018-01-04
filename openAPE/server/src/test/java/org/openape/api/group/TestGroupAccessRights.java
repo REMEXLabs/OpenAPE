@@ -9,9 +9,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class TestGroupAccessRights {
     private GroupAccessRights sampleGroupAccessRights = new GroupAccessRights();
-    private GroupAccessRight sampleAccessRight1 = new GroupAccessRight("groupId", "resourceId", false, false, false, false);
-    private GroupAccessRight sampleAccessRight2 = new GroupAccessRight("groupId", "resourceId", true, false, false, false);
-    
+    private GroupAccessRight sampleAccessRight1 = new GroupAccessRight("groupId", false, false,
+            false, false);
+    private GroupAccessRight sampleAccessRight2 = new GroupAccessRight("groupId", true, false,
+            false, false);
+
     @Test
     public void groupAccessRightstest() {
         sampleGroupAccessRights.addGroupAccessRight(sampleAccessRight1);

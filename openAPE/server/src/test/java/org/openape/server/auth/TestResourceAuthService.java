@@ -57,11 +57,11 @@ public class TestResourceAuthService {
 
     private static Map<String, Group> GROUPS_WITH_USER_4;
 
-
-    public static void setTestUser(final User testUser) throws IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
-        final Method method = TestResourceAuthService.RESOURCE_AUTH_SERVICE.getClass().getDeclaredMethod("setTestUser",
-                User.class);
+    public static void setTestUser(final User testUser) throws IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
+        final Method method = TestResourceAuthService.RESOURCE_AUTH_SERVICE.getClass()
+                .getDeclaredMethod("setTestUser", User.class);
         method.setAccessible(true);
         method.invoke(TestResourceAuthService.RESOURCE_AUTH_SERVICE, testUser);
     }
@@ -69,8 +69,8 @@ public class TestResourceAuthService {
     @SuppressWarnings("unchecked")
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
-        final Method methodEnableTestMode = TestResourceAuthService.RESOURCE_AUTH_SERVICE.getClass()
-                .getDeclaredMethod("enableTestMode");
+        final Method methodEnableTestMode = TestResourceAuthService.RESOURCE_AUTH_SERVICE
+                .getClass().getDeclaredMethod("enableTestMode");
         methodEnableTestMode.setAccessible(true);
         methodEnableTestMode.invoke(TestResourceAuthService.RESOURCE_AUTH_SERVICE);
 
@@ -86,34 +86,40 @@ public class TestResourceAuthService {
         TestResourceAuthService.USER_ADMIN.setRoles(userAdminRoles);
         TestResourceAuthService.USER_WITHOUT_RIGHTS.setId("userWithoutRights");
 
-
         // create groups
         final List<GroupMember> groupMembersOfGroupWithUser1AsApplyed = new ArrayList<GroupMember>();
-        groupMembersOfGroupWithUser1AsApplyed.add(new GroupMember("1", GroupMembershipStatus.APPLYED));
-        TestResourceAuthService.GROUP_WITH_USER_1_AS_APPLYED = new Group("groupWithUser1AsApplyed", "desciption",
-                groupMembersOfGroupWithUser1AsApplyed, false, null);
+        groupMembersOfGroupWithUser1AsApplyed.add(new GroupMember("1",
+                GroupMembershipStatus.APPLYED));
+        TestResourceAuthService.GROUP_WITH_USER_1_AS_APPLYED = new Group("groupWithUser1AsApplyed",
+                "desciption", groupMembersOfGroupWithUser1AsApplyed, false, null);
 
         final List<GroupMember> groupMembersOfGroupWithUser1AsInProgress = new ArrayList<GroupMember>();
-        groupMembersOfGroupWithUser1AsInProgress.add(new GroupMember("1", GroupMembershipStatus.IN_PROGRESS));
-        TestResourceAuthService.GROUP_WITH_USER_1_AS_IN_PROGRESS = new Group("groupWithUser1AsInProgress", "desciption",
+        groupMembersOfGroupWithUser1AsInProgress.add(new GroupMember("1",
+                GroupMembershipStatus.IN_PROGRESS));
+        TestResourceAuthService.GROUP_WITH_USER_1_AS_IN_PROGRESS = new Group(
+                "groupWithUser1AsInProgress", "desciption",
                 groupMembersOfGroupWithUser1AsInProgress, false, null);
 
         final List<GroupMember> groupMembersOfGroupWithUser1AsMember = new ArrayList<GroupMember>();
-        groupMembersOfGroupWithUser1AsMember.add(new GroupMember("1", GroupMembershipStatus.MEMBER));
-        TestResourceAuthService.GROUP_WITH_USER_1_AS_MEMBER = new Group("groupWithUser1AsMember", "desciption",
-                groupMembersOfGroupWithUser1AsMember, false, null);
+        groupMembersOfGroupWithUser1AsMember
+                .add(new GroupMember("1", GroupMembershipStatus.MEMBER));
+        TestResourceAuthService.GROUP_WITH_USER_1_AS_MEMBER = new Group("groupWithUser1AsMember",
+                "desciption", groupMembersOfGroupWithUser1AsMember, false, null);
 
         final List<GroupMember> groupMembersOfGroupWithUser1AsAdmin = new ArrayList<GroupMember>();
         groupMembersOfGroupWithUser1AsAdmin.add(new GroupMember("1", GroupMembershipStatus.ADMIN));
-        TestResourceAuthService.GROUP_WITH_USER_1_AS_ADMIN = new Group("groupWithUser1AsAdmin", "desciption",
-                groupMembersOfGroupWithUser1AsAdmin, false, null);
+        TestResourceAuthService.GROUP_WITH_USER_1_AS_ADMIN = new Group("groupWithUser1AsAdmin",
+                "desciption", groupMembersOfGroupWithUser1AsAdmin, false, null);
 
         final List<GroupMember> groupMembersOfGroupWithUser1AndOthers = new ArrayList<GroupMember>();
-        groupMembersOfGroupWithUser1AndOthers.add(new GroupMember("1", GroupMembershipStatus.MEMBER));
-        groupMembersOfGroupWithUser1AndOthers.add(new GroupMember("2", GroupMembershipStatus.MEMBER));
-        groupMembersOfGroupWithUser1AndOthers.add(new GroupMember("3", GroupMembershipStatus.MEMBER));
-        TestResourceAuthService.GROUP_WITH_USER_1_AND_OTHERS = new Group("groupWithUser1AndOthers", "desciption",
-                groupMembersOfGroupWithUser1AndOthers, false, null);
+        groupMembersOfGroupWithUser1AndOthers
+                .add(new GroupMember("1", GroupMembershipStatus.MEMBER));
+        groupMembersOfGroupWithUser1AndOthers
+                .add(new GroupMember("2", GroupMembershipStatus.MEMBER));
+        groupMembersOfGroupWithUser1AndOthers
+                .add(new GroupMember("3", GroupMembershipStatus.MEMBER));
+        TestResourceAuthService.GROUP_WITH_USER_1_AND_OTHERS = new Group("groupWithUser1AndOthers",
+                "desciption", groupMembersOfGroupWithUser1AndOthers, false, null);
 
         final List<GroupMember> groupMembersOfGroupWithoutUser1 = new ArrayList<GroupMember>();
         groupMembersOfGroupWithoutUser1.add(new GroupMember("2", GroupMembershipStatus.MEMBER));
@@ -121,41 +127,55 @@ public class TestResourceAuthService {
         TestResourceAuthService.GROUP_WITHOUT_USER_1 = new Group("groupWithoutUser1", "desciption",
                 groupMembersOfGroupWithoutUser1, false, null);
 
-        TestResourceAuthService.GROUP_WITHOUT_USERS = new Group("groupWithoutUsers", "desciption", null, false, null);
+        TestResourceAuthService.GROUP_WITHOUT_USERS = new Group("groupWithoutUsers", "desciption",
+                null, false, null);
 
         // store groups in database
         TestResourceAuthService.GROUP_WITH_USER_1_AS_APPLYED
-                .setId(TestResourceAuthService.DATABASE_CONNECTION.storeDatabaseObject(MongoCollectionTypes.GROUPS,
+                .setId(TestResourceAuthService.DATABASE_CONNECTION.storeDatabaseObject(
+                        MongoCollectionTypes.GROUPS,
                         TestResourceAuthService.GROUP_WITH_USER_1_AS_APPLYED));
         TestResourceAuthService.GROUP_WITH_USER_1_AS_IN_PROGRESS
-                .setId(TestResourceAuthService.DATABASE_CONNECTION.storeDatabaseObject(MongoCollectionTypes.GROUPS,
+                .setId(TestResourceAuthService.DATABASE_CONNECTION.storeDatabaseObject(
+                        MongoCollectionTypes.GROUPS,
                         TestResourceAuthService.GROUP_WITH_USER_1_AS_IN_PROGRESS));
-        TestResourceAuthService.GROUP_WITH_USER_1_AS_MEMBER.setId(TestResourceAuthService.DATABASE_CONNECTION
-                .storeDatabaseObject(MongoCollectionTypes.GROUPS, TestResourceAuthService.GROUP_WITH_USER_1_AS_MEMBER));
-        TestResourceAuthService.GROUP_WITH_USER_1_AS_ADMIN.setId(TestResourceAuthService.DATABASE_CONNECTION
-                .storeDatabaseObject(MongoCollectionTypes.GROUPS, TestResourceAuthService.GROUP_WITH_USER_1_AS_ADMIN));
+        TestResourceAuthService.GROUP_WITH_USER_1_AS_MEMBER
+                .setId(TestResourceAuthService.DATABASE_CONNECTION.storeDatabaseObject(
+                        MongoCollectionTypes.GROUPS,
+                        TestResourceAuthService.GROUP_WITH_USER_1_AS_MEMBER));
+        TestResourceAuthService.GROUP_WITH_USER_1_AS_ADMIN
+                .setId(TestResourceAuthService.DATABASE_CONNECTION.storeDatabaseObject(
+                        MongoCollectionTypes.GROUPS,
+                        TestResourceAuthService.GROUP_WITH_USER_1_AS_ADMIN));
         TestResourceAuthService.GROUP_WITH_USER_1_AND_OTHERS
-                .setId(TestResourceAuthService.DATABASE_CONNECTION.storeDatabaseObject(MongoCollectionTypes.GROUPS,
+                .setId(TestResourceAuthService.DATABASE_CONNECTION.storeDatabaseObject(
+                        MongoCollectionTypes.GROUPS,
                         TestResourceAuthService.GROUP_WITH_USER_1_AND_OTHERS));
-        TestResourceAuthService.GROUP_WITHOUT_USER_1.setId(TestResourceAuthService.DATABASE_CONNECTION
-                .storeDatabaseObject(MongoCollectionTypes.GROUPS, TestResourceAuthService.GROUP_WITHOUT_USER_1));
-        TestResourceAuthService.GROUP_WITHOUT_USERS.setId(TestResourceAuthService.DATABASE_CONNECTION
-                .storeDatabaseObject(MongoCollectionTypes.GROUPS, TestResourceAuthService.GROUP_WITHOUT_USERS));
+        TestResourceAuthService.GROUP_WITHOUT_USER_1
+                .setId(TestResourceAuthService.DATABASE_CONNECTION.storeDatabaseObject(
+                        MongoCollectionTypes.GROUPS, TestResourceAuthService.GROUP_WITHOUT_USER_1));
+        TestResourceAuthService.GROUP_WITHOUT_USERS
+                .setId(TestResourceAuthService.DATABASE_CONNECTION.storeDatabaseObject(
+                        MongoCollectionTypes.GROUPS, TestResourceAuthService.GROUP_WITHOUT_USERS));
 
         // load groups of user 1 for testing
-        final Method method = ResourceAuthService.class.getDeclaredMethod("getGroupsWithUserAsMember", User.class);
+        final Method method = ResourceAuthService.class.getDeclaredMethod(
+                "getGroupsWithUserAsMember", User.class);
         method.setAccessible(true);
-        TestResourceAuthService.GROUPS_WITH_USER_1 = (Map<String, Group>) method
-                .invoke(TestResourceAuthService.RESOURCE_AUTH_SERVICE, TestResourceAuthService.USER_1);
+        TestResourceAuthService.GROUPS_WITH_USER_1 = (Map<String, Group>) method.invoke(
+                TestResourceAuthService.RESOURCE_AUTH_SERVICE, TestResourceAuthService.USER_1);
 
         // load groups of user 4 for testing
-        TestResourceAuthService.GROUPS_WITH_USER_4 = (Map<String, Group>) method
-                .invoke(TestResourceAuthService.RESOURCE_AUTH_SERVICE, TestResourceAuthService.USER_4);
+        TestResourceAuthService.GROUPS_WITH_USER_4 = (Map<String, Group>) method.invoke(
+                TestResourceAuthService.RESOURCE_AUTH_SERVICE, TestResourceAuthService.USER_4);
 
         // prepare resource objects for testing
-        TestResourceAuthService.RESOURCE_OBJECT_READ_RIGHT.setOwnerId(TestResourceAuthService.USER_OWNER.getId());
-        TestResourceAuthService.RESOURCE_OBJECT_UPDATE_RIGHT.setOwnerId(TestResourceAuthService.USER_OWNER.getId());
-        TestResourceAuthService.RESOURCE_OBJECT_DELETE_RIGHT.setOwnerId(TestResourceAuthService.USER_OWNER.getId());
+        TestResourceAuthService.RESOURCE_OBJECT_READ_RIGHT
+                .setOwnerId(TestResourceAuthService.USER_OWNER.getId());
+        TestResourceAuthService.RESOURCE_OBJECT_UPDATE_RIGHT
+                .setOwnerId(TestResourceAuthService.USER_OWNER.getId());
+        TestResourceAuthService.RESOURCE_OBJECT_DELETE_RIGHT
+                .setOwnerId(TestResourceAuthService.USER_OWNER.getId());
         TestResourceAuthService.RESOURCE_OBJECT_CHANGE_RIGHTS_RIGHT
                 .setOwnerId(TestResourceAuthService.USER_OWNER.getId());
         TestResourceAuthService.RESOURCE_OBJECT_WITH_ALL_GROUP_ACCESS_RIGHTS_TRUE
@@ -171,86 +191,98 @@ public class TestResourceAuthService {
         TestResourceAuthService.RESOURCE_OBJECT_READ_RIGHT
                 .setGroupAccessRights(new GroupAccessRights(new ArrayList<GroupAccessRight>() {
                     {
-                        this.add(new GroupAccessRight(TestResourceAuthService.GROUP_WITH_USER_1_AS_MEMBER.getId(),
-                                "resourceObjectReadRight", true, false, false, false));
+                        this.add(new GroupAccessRight(
+                                TestResourceAuthService.GROUP_WITH_USER_1_AS_MEMBER.getId(), true,
+                                false, false, false));
                     }
                 }));
         TestResourceAuthService.RESOURCE_OBJECT_UPDATE_RIGHT
                 .setGroupAccessRights(new GroupAccessRights(new ArrayList<GroupAccessRight>() {
                     {
-                        this.add(new GroupAccessRight(TestResourceAuthService.GROUP_WITH_USER_1_AS_MEMBER.getId(),
-                                "resourceObjectUpdateRight", false, true, false, false));
+                        this.add(new GroupAccessRight(
+                                TestResourceAuthService.GROUP_WITH_USER_1_AS_MEMBER.getId(), false,
+                                true, false, false));
                     }
                 }));
         TestResourceAuthService.RESOURCE_OBJECT_DELETE_RIGHT
                 .setGroupAccessRights(new GroupAccessRights(new ArrayList<GroupAccessRight>() {
                     {
-                        this.add(new GroupAccessRight(TestResourceAuthService.GROUP_WITH_USER_1_AS_MEMBER.getId(),
-                                "resourceObjectDeleteRight", false, false, true, false));
+                        this.add(new GroupAccessRight(
+                                TestResourceAuthService.GROUP_WITH_USER_1_AS_MEMBER.getId(), false,
+                                false, true, false));
                     }
                 }));
         TestResourceAuthService.RESOURCE_OBJECT_CHANGE_RIGHTS_RIGHT
                 .setGroupAccessRights(new GroupAccessRights(new ArrayList<GroupAccessRight>() {
                     {
-                        this.add(new GroupAccessRight(TestResourceAuthService.GROUP_WITH_USER_1_AS_MEMBER.getId(),
-                                "resourceObjectChangeRightsRight", false, false, false, true));
+                        this.add(new GroupAccessRight(
+                                TestResourceAuthService.GROUP_WITH_USER_1_AS_MEMBER.getId(), false,
+                                false, false, true));
                     }
                 }));
         TestResourceAuthService.RESOURCE_OBJECT_WITH_ALL_GROUP_ACCESS_RIGHTS_TRUE
                 .setGroupAccessRights(new GroupAccessRights(new ArrayList<GroupAccessRight>() {
                     {
-                        this.add(new GroupAccessRight(TestResourceAuthService.GROUP_WITH_USER_1_AS_MEMBER.getId(),
-                                "resourceObjectWithAllGroupAccessRightsTrue", true, true, true, true));
+                        this.add(new GroupAccessRight(
+                                TestResourceAuthService.GROUP_WITH_USER_1_AS_MEMBER.getId(), true,
+                                true, true, true));
                     }
                 }));
         TestResourceAuthService.RESOURCE_OBJECT_WITH_ALL_GROUP_ACCES_RIGHTS_FALSE
                 .setGroupAccessRights(new GroupAccessRights(new ArrayList<GroupAccessRight>() {
                     {
-                        this.add(new GroupAccessRight(TestResourceAuthService.GROUP_WITH_USER_1_AS_MEMBER.getId(),
-                                "resourceObjectWithAllGroupAccessRightsFalse", false, false, false, false));
+                        this.add(new GroupAccessRight(
+                                TestResourceAuthService.GROUP_WITH_USER_1_AS_MEMBER.getId(), false,
+                                false, false, false));
                     }
                 }));
         TestResourceAuthService.RESOURCE_OBJECT_WITH_GROUP_ACCESS_RIGHTS_EMPTY
                 .setGroupAccessRights(new GroupAccessRights(new ArrayList<GroupAccessRight>()));
-        TestResourceAuthService.RESOURCE_OBJECT_WITH_GROUP_ACCESS_RIGHTS_NULL.setGroupAccessRights(null);
+        TestResourceAuthService.RESOURCE_OBJECT_WITH_GROUP_ACCESS_RIGHTS_NULL
+                .setGroupAccessRights(null);
         TestResourceAuthService.RESOURCE_OBJECT_WITH_ALL_GROUP_ACCESS_RIGHTS_TRUE_BUT_FOR_THE_WRONG_GROUP
                 .setGroupAccessRights(new GroupAccessRights(new ArrayList<GroupAccessRight>() {
                     {
-                        this.add(new GroupAccessRight(TestResourceAuthService.GROUP_WITHOUT_USER_1.getId(),
-                                "resourceObjectWithAllGroupAccessRightsTrueButForTheWrongGroup", true, true, true,
-                                true));
+                        this.add(new GroupAccessRight(TestResourceAuthService.GROUP_WITHOUT_USER_1
+                                .getId(), true, true, true, true));
                     }
                 }));
     }
 
     @AfterClass
     public static void tearDownAfterClass() throws Exception {
-        final Method methodDisableTestMode = TestResourceAuthService.RESOURCE_AUTH_SERVICE.getClass()
-                .getDeclaredMethod("disableTestMode");
+        final Method methodDisableTestMode = TestResourceAuthService.RESOURCE_AUTH_SERVICE
+                .getClass().getDeclaredMethod("disableTestMode");
         methodDisableTestMode.setAccessible(true);
         methodDisableTestMode.invoke(TestResourceAuthService.RESOURCE_AUTH_SERVICE);
 
         // delete groups from database
-        TestResourceAuthService.DATABASE_CONNECTION.deleteDatabaseObject(MongoCollectionTypes.GROUPS,
+        TestResourceAuthService.DATABASE_CONNECTION.deleteDatabaseObject(
+                MongoCollectionTypes.GROUPS,
                 TestResourceAuthService.GROUP_WITH_USER_1_AS_APPLYED.getId());
-        TestResourceAuthService.DATABASE_CONNECTION.deleteDatabaseObject(MongoCollectionTypes.GROUPS,
+        TestResourceAuthService.DATABASE_CONNECTION.deleteDatabaseObject(
+                MongoCollectionTypes.GROUPS,
                 TestResourceAuthService.GROUP_WITH_USER_1_AS_IN_PROGRESS.getId());
-        TestResourceAuthService.DATABASE_CONNECTION.deleteDatabaseObject(MongoCollectionTypes.GROUPS,
+        TestResourceAuthService.DATABASE_CONNECTION.deleteDatabaseObject(
+                MongoCollectionTypes.GROUPS,
                 TestResourceAuthService.GROUP_WITH_USER_1_AS_MEMBER.getId());
-        TestResourceAuthService.DATABASE_CONNECTION.deleteDatabaseObject(MongoCollectionTypes.GROUPS,
+        TestResourceAuthService.DATABASE_CONNECTION.deleteDatabaseObject(
+                MongoCollectionTypes.GROUPS,
                 TestResourceAuthService.GROUP_WITH_USER_1_AS_ADMIN.getId());
-        TestResourceAuthService.DATABASE_CONNECTION.deleteDatabaseObject(MongoCollectionTypes.GROUPS,
+        TestResourceAuthService.DATABASE_CONNECTION.deleteDatabaseObject(
+                MongoCollectionTypes.GROUPS,
                 TestResourceAuthService.GROUP_WITH_USER_1_AND_OTHERS.getId());
-        TestResourceAuthService.DATABASE_CONNECTION.deleteDatabaseObject(MongoCollectionTypes.GROUPS,
-                TestResourceAuthService.GROUP_WITHOUT_USER_1.getId());
-        TestResourceAuthService.DATABASE_CONNECTION.deleteDatabaseObject(MongoCollectionTypes.GROUPS,
-                TestResourceAuthService.GROUP_WITHOUT_USERS.getId());
+        TestResourceAuthService.DATABASE_CONNECTION.deleteDatabaseObject(
+                MongoCollectionTypes.GROUPS, TestResourceAuthService.GROUP_WITHOUT_USER_1.getId());
+        TestResourceAuthService.DATABASE_CONNECTION.deleteDatabaseObject(
+                MongoCollectionTypes.GROUPS, TestResourceAuthService.GROUP_WITHOUT_USERS.getId());
     }
 
     @Test
     public void testAllowDeleteWithAdminAndResourceObjectChangeRightsRight()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_ADMIN);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowDeleting(null, null,
                 TestResourceAuthService.RESOURCE_OBJECT_CHANGE_RIGHTS_RIGHT);
@@ -258,8 +290,9 @@ public class TestResourceAuthService {
 
     @Test
     public void testAllowDeleteWithAdminAndResourceObjectDeleteRight()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_ADMIN);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowDeleting(null, null,
                 TestResourceAuthService.RESOURCE_OBJECT_DELETE_RIGHT);
@@ -267,8 +300,8 @@ public class TestResourceAuthService {
 
     // test allowDeleting
     @Test
-    public void testAllowDeleteWithAdminAndResourceObjectReadRight()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
+    public void testAllowDeleteWithAdminAndResourceObjectReadRight() throws UnauthorizedException,
+            IOException, IllegalAccessException, IllegalArgumentException,
             InvocationTargetException, NoSuchMethodException, SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_ADMIN);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowDeleting(null, null,
@@ -277,8 +310,9 @@ public class TestResourceAuthService {
 
     @Test
     public void testAllowDeleteWithAdminAndResourceObjectUpdateRight()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_ADMIN);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowDeleting(null, null,
                 TestResourceAuthService.RESOURCE_OBJECT_UPDATE_RIGHT);
@@ -286,17 +320,22 @@ public class TestResourceAuthService {
 
     @Test
     public void testAllowDeleteWithAdminAndResourceObjectWithAllGroupAccessRightsButForTheWrongGroup()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_ADMIN);
-        TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowDeleting(null, null,
-                TestResourceAuthService.RESOURCE_OBJECT_WITH_ALL_GROUP_ACCESS_RIGHTS_TRUE_BUT_FOR_THE_WRONG_GROUP);
+        TestResourceAuthService.RESOURCE_AUTH_SERVICE
+                .allowDeleting(
+                        null,
+                        null,
+                        TestResourceAuthService.RESOURCE_OBJECT_WITH_ALL_GROUP_ACCESS_RIGHTS_TRUE_BUT_FOR_THE_WRONG_GROUP);
     }
 
     @Test
     public void testAllowDeleteWithAdminAndResourceObjectWithAllGroupAccessRightsFalse()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_ADMIN);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowDeleting(null, null,
                 TestResourceAuthService.RESOURCE_OBJECT_WITH_ALL_GROUP_ACCES_RIGHTS_FALSE);
@@ -304,8 +343,9 @@ public class TestResourceAuthService {
 
     @Test
     public void testAllowDeleteWithAdminAndResourceObjectWithAllGroupAccessRightsTrue()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_ADMIN);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowDeleting(null, null,
                 TestResourceAuthService.RESOURCE_OBJECT_WITH_ALL_GROUP_ACCESS_RIGHTS_TRUE);
@@ -313,18 +353,19 @@ public class TestResourceAuthService {
 
     @Test
     public void testAllowDeleteWithAdminAndResourceObjectWithGroupAccessRightsEmpty()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_ADMIN);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowDeleting(null, null,
                 TestResourceAuthService.RESOURCE_OBJECT_WITH_GROUP_ACCESS_RIGHTS_EMPTY);
     }
 
-
     @Test
     public void testAllowDeleteWithAdminAndResourceObjectWithGroupAccessRightsNull()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_ADMIN);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowDeleting(null, null,
                 TestResourceAuthService.RESOURCE_OBJECT_WITH_GROUP_ACCESS_RIGHTS_NULL);
@@ -332,8 +373,9 @@ public class TestResourceAuthService {
 
     @Test
     public void testAllowDeleteWithOwnerAndResourceObjectChangeRightsRight()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_OWNER);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowDeleting(null, null,
                 TestResourceAuthService.RESOURCE_OBJECT_CHANGE_RIGHTS_RIGHT);
@@ -341,16 +383,17 @@ public class TestResourceAuthService {
 
     @Test
     public void testAllowDeleteWithOwnerAndResourceObjectDeleteRight()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_OWNER);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowDeleting(null, null,
                 TestResourceAuthService.RESOURCE_OBJECT_DELETE_RIGHT);
     }
 
     @Test
-    public void testAllowDeleteWithOwnerAndResourceObjectReadRight()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
+    public void testAllowDeleteWithOwnerAndResourceObjectReadRight() throws UnauthorizedException,
+            IOException, IllegalAccessException, IllegalArgumentException,
             InvocationTargetException, NoSuchMethodException, SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_OWNER);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowDeleting(null, null,
@@ -359,8 +402,9 @@ public class TestResourceAuthService {
 
     @Test
     public void testAllowDeleteWithOwnerAndResourceObjectUpdateRight()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_OWNER);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowDeleting(null, null,
                 TestResourceAuthService.RESOURCE_OBJECT_UPDATE_RIGHT);
@@ -368,17 +412,22 @@ public class TestResourceAuthService {
 
     @Test
     public void testAllowDeleteWithOwnerAndResourceObjectWithAllGroupAccessRightsButForTheWrongGroup()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_OWNER);
-        TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowDeleting(null, null,
-                TestResourceAuthService.RESOURCE_OBJECT_WITH_ALL_GROUP_ACCESS_RIGHTS_TRUE_BUT_FOR_THE_WRONG_GROUP);
+        TestResourceAuthService.RESOURCE_AUTH_SERVICE
+                .allowDeleting(
+                        null,
+                        null,
+                        TestResourceAuthService.RESOURCE_OBJECT_WITH_ALL_GROUP_ACCESS_RIGHTS_TRUE_BUT_FOR_THE_WRONG_GROUP);
     }
 
     @Test
     public void testAllowDeleteWithOwnerAndResourceObjectWithAllGroupAccessRightsFalse()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_OWNER);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowDeleting(null, null,
                 TestResourceAuthService.RESOURCE_OBJECT_WITH_ALL_GROUP_ACCES_RIGHTS_FALSE);
@@ -386,8 +435,9 @@ public class TestResourceAuthService {
 
     @Test
     public void testAllowDeleteWithOwnerAndResourceObjectWithAllGroupAccessRightsTrue()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_OWNER);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowDeleting(null, null,
                 TestResourceAuthService.RESOURCE_OBJECT_WITH_ALL_GROUP_ACCESS_RIGHTS_TRUE);
@@ -395,8 +445,9 @@ public class TestResourceAuthService {
 
     @Test
     public void testAllowDeleteWithOwnerAndResourceObjectWithGroupAccessRightsEmpty()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_OWNER);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowDeleting(null, null,
                 TestResourceAuthService.RESOURCE_OBJECT_WITH_GROUP_ACCESS_RIGHTS_EMPTY);
@@ -404,8 +455,9 @@ public class TestResourceAuthService {
 
     @Test
     public void testAllowDeleteWithOwnerAndResourceObjectWithGroupAccessRightsNull()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_OWNER);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowDeleting(null, null,
                 TestResourceAuthService.RESOURCE_OBJECT_WITH_GROUP_ACCESS_RIGHTS_NULL);
@@ -413,8 +465,9 @@ public class TestResourceAuthService {
 
     @Test(expected = UnauthorizedException.class)
     public void testAllowDeleteWithUserWithGroupAccessRightsAndResourceObjectChangeRightsRight()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_1);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowDeleting(null, null,
                 TestResourceAuthService.RESOURCE_OBJECT_CHANGE_RIGHTS_RIGHT);
@@ -422,8 +475,9 @@ public class TestResourceAuthService {
 
     @Test
     public void testAllowDeleteWithUserWithGroupAccessRightsAndResourceObjectDeleteRight()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_1);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowDeleting(null, null,
                 TestResourceAuthService.RESOURCE_OBJECT_DELETE_RIGHT);
@@ -431,8 +485,9 @@ public class TestResourceAuthService {
 
     @Test(expected = UnauthorizedException.class)
     public void testAllowDeleteWithUserWithGroupAccessRightsAndResourceObjectReadRight()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_1);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowDeleting(null, null,
                 TestResourceAuthService.RESOURCE_OBJECT_READ_RIGHT);
@@ -440,8 +495,9 @@ public class TestResourceAuthService {
 
     @Test(expected = UnauthorizedException.class)
     public void testAllowDeleteWithUserWithGroupAccessRightsAndResourceObjectUpdateRight()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_1);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowDeleting(null, null,
                 TestResourceAuthService.RESOURCE_OBJECT_UPDATE_RIGHT);
@@ -449,17 +505,22 @@ public class TestResourceAuthService {
 
     @Test(expected = UnauthorizedException.class)
     public void testAllowDeleteWithUserWithGroupAccessRightsAndResourceObjectWithAllGroupAccessRightsButForTheWrongGroup()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_1);
-        TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowDeleting(null, null,
-                TestResourceAuthService.RESOURCE_OBJECT_WITH_ALL_GROUP_ACCESS_RIGHTS_TRUE_BUT_FOR_THE_WRONG_GROUP);
+        TestResourceAuthService.RESOURCE_AUTH_SERVICE
+                .allowDeleting(
+                        null,
+                        null,
+                        TestResourceAuthService.RESOURCE_OBJECT_WITH_ALL_GROUP_ACCESS_RIGHTS_TRUE_BUT_FOR_THE_WRONG_GROUP);
     }
 
     @Test(expected = UnauthorizedException.class)
     public void testAllowDeleteWithUserWithGroupAccessRightsAndResourceObjectWithAllGroupAccessRightsFalse()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_1);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowDeleting(null, null,
                 TestResourceAuthService.RESOURCE_OBJECT_WITH_ALL_GROUP_ACCES_RIGHTS_FALSE);
@@ -467,8 +528,9 @@ public class TestResourceAuthService {
 
     @Test
     public void testAllowDeleteWithUserWithGroupAccessRightsAndResourceObjectWithAllGroupAccessRightsTrue()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_1);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowDeleting(null, null,
                 TestResourceAuthService.RESOURCE_OBJECT_WITH_ALL_GROUP_ACCESS_RIGHTS_TRUE);
@@ -476,8 +538,9 @@ public class TestResourceAuthService {
 
     @Test(expected = UnauthorizedException.class)
     public void testAllowDeleteWithUserWithGroupAccessRightsAndResourceObjectWithGroupAccessRightsEmpty()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_1);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowDeleting(null, null,
                 TestResourceAuthService.RESOURCE_OBJECT_WITH_GROUP_ACCESS_RIGHTS_EMPTY);
@@ -485,8 +548,9 @@ public class TestResourceAuthService {
 
     @Test(expected = UnauthorizedException.class)
     public void testAllowDeleteWithUserWithGroupAccessRightsAndResourceObjectWithGroupAccessRightsNull()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_1);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowDeleting(null, null,
                 TestResourceAuthService.RESOURCE_OBJECT_WITH_GROUP_ACCESS_RIGHTS_NULL);
@@ -494,8 +558,9 @@ public class TestResourceAuthService {
 
     @Test(expected = UnauthorizedException.class)
     public void testAllowDeleteWithUserWithoutRightsAndResourceObjectChangeRightsRight()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_WITHOUT_RIGHTS);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowDeleting(null, null,
                 TestResourceAuthService.RESOURCE_OBJECT_CHANGE_RIGHTS_RIGHT);
@@ -503,8 +568,9 @@ public class TestResourceAuthService {
 
     @Test(expected = UnauthorizedException.class)
     public void testAllowDeleteWithUserWithoutRightsAndResourceObjectDeleteRight()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_WITHOUT_RIGHTS);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowDeleting(null, null,
                 TestResourceAuthService.RESOURCE_OBJECT_DELETE_RIGHT);
@@ -512,8 +578,9 @@ public class TestResourceAuthService {
 
     @Test(expected = UnauthorizedException.class)
     public void testAllowDeleteWithUserWithoutRightsAndResourceObjectReadRight()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_WITHOUT_RIGHTS);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowDeleting(null, null,
                 TestResourceAuthService.RESOURCE_OBJECT_READ_RIGHT);
@@ -521,8 +588,9 @@ public class TestResourceAuthService {
 
     @Test(expected = UnauthorizedException.class)
     public void testAllowDeleteWithUserWithoutRightsAndResourceObjectUpdateRight()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_WITHOUT_RIGHTS);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowDeleting(null, null,
                 TestResourceAuthService.RESOURCE_OBJECT_UPDATE_RIGHT);
@@ -530,17 +598,22 @@ public class TestResourceAuthService {
 
     @Test(expected = UnauthorizedException.class)
     public void testAllowDeleteWithUserWithoutRightsAndResourceObjectWithAllGroupAccessRightsButForTheWrongGroup()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_WITHOUT_RIGHTS);
-        TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowDeleting(null, null,
-                TestResourceAuthService.RESOURCE_OBJECT_WITH_ALL_GROUP_ACCESS_RIGHTS_TRUE_BUT_FOR_THE_WRONG_GROUP);
+        TestResourceAuthService.RESOURCE_AUTH_SERVICE
+                .allowDeleting(
+                        null,
+                        null,
+                        TestResourceAuthService.RESOURCE_OBJECT_WITH_ALL_GROUP_ACCESS_RIGHTS_TRUE_BUT_FOR_THE_WRONG_GROUP);
     }
 
     @Test(expected = UnauthorizedException.class)
     public void testAllowDeleteWithUserWithoutRightsAndResourceObjectWithAllGroupAccessRightsFalse()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_WITHOUT_RIGHTS);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowDeleting(null, null,
                 TestResourceAuthService.RESOURCE_OBJECT_WITH_ALL_GROUP_ACCES_RIGHTS_FALSE);
@@ -548,8 +621,9 @@ public class TestResourceAuthService {
 
     @Test(expected = UnauthorizedException.class)
     public void testAllowDeleteWithUserWithoutRightsAndResourceObjectWithAllGroupAccessRightsTrue()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_WITHOUT_RIGHTS);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowDeleting(null, null,
                 TestResourceAuthService.RESOURCE_OBJECT_WITH_ALL_GROUP_ACCESS_RIGHTS_TRUE);
@@ -557,8 +631,9 @@ public class TestResourceAuthService {
 
     @Test(expected = UnauthorizedException.class)
     public void testAllowDeleteWithUserWithoutRightsAndResourceObjectWithGroupAccessRightsEmpty()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_WITHOUT_RIGHTS);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowDeleting(null, null,
                 TestResourceAuthService.RESOURCE_OBJECT_WITH_GROUP_ACCESS_RIGHTS_EMPTY);
@@ -566,8 +641,9 @@ public class TestResourceAuthService {
 
     @Test(expected = UnauthorizedException.class)
     public void testAllowDeleteWithUserWithoutRightsAndResourceObjectWithGroupAccessRightsNull()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_WITHOUT_RIGHTS);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowDeleting(null, null,
                 TestResourceAuthService.RESOURCE_OBJECT_WITH_GROUP_ACCESS_RIGHTS_NULL);
@@ -575,16 +651,17 @@ public class TestResourceAuthService {
 
     @Test
     public void testAllowReadWithAdminAndResourceObjectChangeRightsRight()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_ADMIN);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowReading(null, null,
                 TestResourceAuthService.RESOURCE_OBJECT_CHANGE_RIGHTS_RIGHT);
     }
 
     @Test
-    public void testAllowReadWithAdminAndResourceObjectDeleteRight()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
+    public void testAllowReadWithAdminAndResourceObjectDeleteRight() throws UnauthorizedException,
+            IOException, IllegalAccessException, IllegalArgumentException,
             InvocationTargetException, NoSuchMethodException, SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_ADMIN);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowReading(null, null,
@@ -593,8 +670,8 @@ public class TestResourceAuthService {
 
     // test allowReading
     @Test
-    public void testAllowReadWithAdminAndResourceObjectReadRight()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
+    public void testAllowReadWithAdminAndResourceObjectReadRight() throws UnauthorizedException,
+            IOException, IllegalAccessException, IllegalArgumentException,
             InvocationTargetException, NoSuchMethodException, SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_ADMIN);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowReading(null, null,
@@ -602,8 +679,8 @@ public class TestResourceAuthService {
     }
 
     @Test
-    public void testAllowReadWithAdminAndResourceObjectUpdateRight()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
+    public void testAllowReadWithAdminAndResourceObjectUpdateRight() throws UnauthorizedException,
+            IOException, IllegalAccessException, IllegalArgumentException,
             InvocationTargetException, NoSuchMethodException, SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_ADMIN);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowReading(null, null,
@@ -612,17 +689,22 @@ public class TestResourceAuthService {
 
     @Test
     public void testAllowReadWithAdminAndResourceObjectWithAllGroupAccessRightsButForTheWrongGroup()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_ADMIN);
-        TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowReading(null, null,
-                TestResourceAuthService.RESOURCE_OBJECT_WITH_ALL_GROUP_ACCESS_RIGHTS_TRUE_BUT_FOR_THE_WRONG_GROUP);
+        TestResourceAuthService.RESOURCE_AUTH_SERVICE
+                .allowReading(
+                        null,
+                        null,
+                        TestResourceAuthService.RESOURCE_OBJECT_WITH_ALL_GROUP_ACCESS_RIGHTS_TRUE_BUT_FOR_THE_WRONG_GROUP);
     }
 
     @Test
     public void testAllowReadWithAdminAndResourceObjectWithAllGroupAccessRightsFalse()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_ADMIN);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowReading(null, null,
                 TestResourceAuthService.RESOURCE_OBJECT_WITH_ALL_GROUP_ACCES_RIGHTS_FALSE);
@@ -630,8 +712,9 @@ public class TestResourceAuthService {
 
     @Test
     public void testAllowReadWithAdminAndResourceObjectWithAllGroupAccessRightsTrue()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_ADMIN);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowReading(null, null,
                 TestResourceAuthService.RESOURCE_OBJECT_WITH_ALL_GROUP_ACCESS_RIGHTS_TRUE);
@@ -639,8 +722,9 @@ public class TestResourceAuthService {
 
     @Test
     public void testAllowReadWithAdminAndResourceObjectWithGroupAccessRightsEmpty()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_ADMIN);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowReading(null, null,
                 TestResourceAuthService.RESOURCE_OBJECT_WITH_GROUP_ACCESS_RIGHTS_EMPTY);
@@ -648,8 +732,9 @@ public class TestResourceAuthService {
 
     @Test
     public void testAllowReadWithAdminAndResourceObjectWithGroupAccessRightsNull()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_ADMIN);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowReading(null, null,
                 TestResourceAuthService.RESOURCE_OBJECT_WITH_GROUP_ACCESS_RIGHTS_NULL);
@@ -657,16 +742,17 @@ public class TestResourceAuthService {
 
     @Test
     public void testAllowReadWithOwnerAndResourceObjectChangeRightsRight()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_OWNER);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowReading(null, null,
                 TestResourceAuthService.RESOURCE_OBJECT_CHANGE_RIGHTS_RIGHT);
     }
 
     @Test
-    public void testAllowReadWithOwnerAndResourceObjectDeleteRight()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
+    public void testAllowReadWithOwnerAndResourceObjectDeleteRight() throws UnauthorizedException,
+            IOException, IllegalAccessException, IllegalArgumentException,
             InvocationTargetException, NoSuchMethodException, SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_OWNER);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowReading(null, null,
@@ -674,8 +760,8 @@ public class TestResourceAuthService {
     }
 
     @Test
-    public void testAllowReadWithOwnerAndResourceObjectReadRight()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
+    public void testAllowReadWithOwnerAndResourceObjectReadRight() throws UnauthorizedException,
+            IOException, IllegalAccessException, IllegalArgumentException,
             InvocationTargetException, NoSuchMethodException, SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_OWNER);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowReading(null, null,
@@ -683,8 +769,8 @@ public class TestResourceAuthService {
     }
 
     @Test
-    public void testAllowReadWithOwnerAndResourceObjectUpdateRight()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
+    public void testAllowReadWithOwnerAndResourceObjectUpdateRight() throws UnauthorizedException,
+            IOException, IllegalAccessException, IllegalArgumentException,
             InvocationTargetException, NoSuchMethodException, SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_OWNER);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowReading(null, null,
@@ -693,17 +779,22 @@ public class TestResourceAuthService {
 
     @Test
     public void testAllowReadWithOwnerAndResourceObjectWithAllGroupAccessRightsButForTheWrongGroup()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_OWNER);
-        TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowReading(null, null,
-                TestResourceAuthService.RESOURCE_OBJECT_WITH_ALL_GROUP_ACCESS_RIGHTS_TRUE_BUT_FOR_THE_WRONG_GROUP);
+        TestResourceAuthService.RESOURCE_AUTH_SERVICE
+                .allowReading(
+                        null,
+                        null,
+                        TestResourceAuthService.RESOURCE_OBJECT_WITH_ALL_GROUP_ACCESS_RIGHTS_TRUE_BUT_FOR_THE_WRONG_GROUP);
     }
 
     @Test
     public void testAllowReadWithOwnerAndResourceObjectWithAllGroupAccessRightsFalse()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_OWNER);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowReading(null, null,
                 TestResourceAuthService.RESOURCE_OBJECT_WITH_ALL_GROUP_ACCES_RIGHTS_FALSE);
@@ -711,8 +802,9 @@ public class TestResourceAuthService {
 
     @Test
     public void testAllowReadWithOwnerAndResourceObjectWithAllGroupAccessRightsTrue()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_OWNER);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowReading(null, null,
                 TestResourceAuthService.RESOURCE_OBJECT_WITH_ALL_GROUP_ACCESS_RIGHTS_TRUE);
@@ -720,8 +812,9 @@ public class TestResourceAuthService {
 
     @Test
     public void testAllowReadWithOwnerAndResourceObjectWithGroupAccessRightsEmpty()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_OWNER);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowReading(null, null,
                 TestResourceAuthService.RESOURCE_OBJECT_WITH_GROUP_ACCESS_RIGHTS_EMPTY);
@@ -729,8 +822,9 @@ public class TestResourceAuthService {
 
     @Test
     public void testAllowReadWithOwnerAndResourceObjectWithGroupAccessRightsNull()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_OWNER);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowReading(null, null,
                 TestResourceAuthService.RESOURCE_OBJECT_WITH_GROUP_ACCESS_RIGHTS_NULL);
@@ -738,8 +832,9 @@ public class TestResourceAuthService {
 
     @Test(expected = UnauthorizedException.class)
     public void testAllowReadWithUserWithGroupAccessRightsAndResourceObjectChangeRightsRight()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_1);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowReading(null, null,
                 TestResourceAuthService.RESOURCE_OBJECT_CHANGE_RIGHTS_RIGHT);
@@ -747,8 +842,9 @@ public class TestResourceAuthService {
 
     @Test(expected = UnauthorizedException.class)
     public void testAllowReadWithUserWithGroupAccessRightsAndResourceObjectDeleteRight()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_1);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowReading(null, null,
                 TestResourceAuthService.RESOURCE_OBJECT_DELETE_RIGHT);
@@ -756,8 +852,9 @@ public class TestResourceAuthService {
 
     @Test
     public void testAllowReadWithUserWithGroupAccessRightsAndResourceObjectReadRight()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_1);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowReading(null, null,
                 TestResourceAuthService.RESOURCE_OBJECT_READ_RIGHT);
@@ -765,8 +862,9 @@ public class TestResourceAuthService {
 
     @Test(expected = UnauthorizedException.class)
     public void testAllowReadWithUserWithGroupAccessRightsAndResourceObjectUpdateRight()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_1);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowReading(null, null,
                 TestResourceAuthService.RESOURCE_OBJECT_UPDATE_RIGHT);
@@ -774,17 +872,22 @@ public class TestResourceAuthService {
 
     @Test(expected = UnauthorizedException.class)
     public void testAllowReadWithUserWithGroupAccessRightsAndResourceObjectWithAllGroupAccessRightsButForTheWrongGroup()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_1);
-        TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowReading(null, null,
-                TestResourceAuthService.RESOURCE_OBJECT_WITH_ALL_GROUP_ACCESS_RIGHTS_TRUE_BUT_FOR_THE_WRONG_GROUP);
+        TestResourceAuthService.RESOURCE_AUTH_SERVICE
+                .allowReading(
+                        null,
+                        null,
+                        TestResourceAuthService.RESOURCE_OBJECT_WITH_ALL_GROUP_ACCESS_RIGHTS_TRUE_BUT_FOR_THE_WRONG_GROUP);
     }
 
     @Test(expected = UnauthorizedException.class)
     public void testAllowReadWithUserWithGroupAccessRightsAndResourceObjectWithAllGroupAccessRightsFalse()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_1);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowReading(null, null,
                 TestResourceAuthService.RESOURCE_OBJECT_WITH_ALL_GROUP_ACCES_RIGHTS_FALSE);
@@ -792,8 +895,9 @@ public class TestResourceAuthService {
 
     @Test
     public void testAllowReadWithUserWithGroupAccessRightsAndResourceObjectWithAllGroupAccessRightsTrue()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_1);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowReading(null, null,
                 TestResourceAuthService.RESOURCE_OBJECT_WITH_ALL_GROUP_ACCESS_RIGHTS_TRUE);
@@ -801,8 +905,9 @@ public class TestResourceAuthService {
 
     @Test(expected = UnauthorizedException.class)
     public void testAllowReadWithUserWithGroupAccessRightsAndResourceObjectWithGroupAccessRightsEmpty()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_1);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowReading(null, null,
                 TestResourceAuthService.RESOURCE_OBJECT_WITH_GROUP_ACCESS_RIGHTS_EMPTY);
@@ -810,8 +915,9 @@ public class TestResourceAuthService {
 
     @Test(expected = UnauthorizedException.class)
     public void testAllowReadWithUserWithGroupAccessRightsAndResourceObjectWithGroupAccessRightsNull()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_1);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowReading(null, null,
                 TestResourceAuthService.RESOURCE_OBJECT_WITH_GROUP_ACCESS_RIGHTS_NULL);
@@ -819,8 +925,9 @@ public class TestResourceAuthService {
 
     @Test(expected = UnauthorizedException.class)
     public void testAllowReadWithUserWithoutRightsAndResourceObjectChangeRightsRight()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_WITHOUT_RIGHTS);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowReading(null, null,
                 TestResourceAuthService.RESOURCE_OBJECT_CHANGE_RIGHTS_RIGHT);
@@ -828,8 +935,9 @@ public class TestResourceAuthService {
 
     @Test(expected = UnauthorizedException.class)
     public void testAllowReadWithUserWithoutRightsAndResourceObjectDeleteRight()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_WITHOUT_RIGHTS);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowReading(null, null,
                 TestResourceAuthService.RESOURCE_OBJECT_DELETE_RIGHT);
@@ -837,8 +945,9 @@ public class TestResourceAuthService {
 
     @Test(expected = UnauthorizedException.class)
     public void testAllowReadWithUserWithoutRightsAndResourceObjectReadRight()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_WITHOUT_RIGHTS);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowReading(null, null,
                 TestResourceAuthService.RESOURCE_OBJECT_READ_RIGHT);
@@ -846,8 +955,9 @@ public class TestResourceAuthService {
 
     @Test(expected = UnauthorizedException.class)
     public void testAllowReadWithUserWithoutRightsAndResourceObjectUpdateRight()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_WITHOUT_RIGHTS);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowReading(null, null,
                 TestResourceAuthService.RESOURCE_OBJECT_UPDATE_RIGHT);
@@ -855,17 +965,22 @@ public class TestResourceAuthService {
 
     @Test(expected = UnauthorizedException.class)
     public void testAllowReadWithUserWithoutRightsAndResourceObjectWithAllGroupAccessRightsButForTheWrongGroup()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_WITHOUT_RIGHTS);
-        TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowReading(null, null,
-                TestResourceAuthService.RESOURCE_OBJECT_WITH_ALL_GROUP_ACCESS_RIGHTS_TRUE_BUT_FOR_THE_WRONG_GROUP);
+        TestResourceAuthService.RESOURCE_AUTH_SERVICE
+                .allowReading(
+                        null,
+                        null,
+                        TestResourceAuthService.RESOURCE_OBJECT_WITH_ALL_GROUP_ACCESS_RIGHTS_TRUE_BUT_FOR_THE_WRONG_GROUP);
     }
 
     @Test(expected = UnauthorizedException.class)
     public void testAllowReadWithUserWithoutRightsAndResourceObjectWithAllGroupAccessRightsFalse()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_WITHOUT_RIGHTS);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowReading(null, null,
                 TestResourceAuthService.RESOURCE_OBJECT_WITH_ALL_GROUP_ACCES_RIGHTS_FALSE);
@@ -873,8 +988,9 @@ public class TestResourceAuthService {
 
     @Test(expected = UnauthorizedException.class)
     public void testAllowReadWithUserWithoutRightsAndResourceObjectWithAllGroupAccessRightsTrue()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_WITHOUT_RIGHTS);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowReading(null, null,
                 TestResourceAuthService.RESOURCE_OBJECT_WITH_ALL_GROUP_ACCESS_RIGHTS_TRUE);
@@ -882,8 +998,9 @@ public class TestResourceAuthService {
 
     @Test(expected = UnauthorizedException.class)
     public void testAllowReadWithUserWithoutRightsAndResourceObjectWithGroupAccessRightsEmpty()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_WITHOUT_RIGHTS);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowReading(null, null,
                 TestResourceAuthService.RESOURCE_OBJECT_WITH_GROUP_ACCESS_RIGHTS_EMPTY);
@@ -891,8 +1008,9 @@ public class TestResourceAuthService {
 
     @Test(expected = UnauthorizedException.class)
     public void testAllowReadWithUserWithoutRightsAndResourceObjectWithGroupAccessRightsNull()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_WITHOUT_RIGHTS);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowReading(null, null,
                 TestResourceAuthService.RESOURCE_OBJECT_WITH_GROUP_ACCESS_RIGHTS_NULL);
@@ -900,8 +1018,9 @@ public class TestResourceAuthService {
 
     @Test
     public void testAllowRightsChangeWithAdminAndResourceObjectChangeRightsRight()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_ADMIN);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowRightsChanging(null, null,
                 TestResourceAuthService.RESOURCE_OBJECT_CHANGE_RIGHTS_RIGHT);
@@ -909,8 +1028,9 @@ public class TestResourceAuthService {
 
     @Test
     public void testAllowRightsChangeWithAdminAndResourceObjectDeleteRight()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_ADMIN);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowRightsChanging(null, null,
                 TestResourceAuthService.RESOURCE_OBJECT_DELETE_RIGHT);
@@ -919,8 +1039,9 @@ public class TestResourceAuthService {
     // test allowRightsChanging
     @Test
     public void testAllowRightsChangeWithAdminAndResourceObjectReadRight()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_ADMIN);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowRightsChanging(null, null,
                 TestResourceAuthService.RESOURCE_OBJECT_READ_RIGHT);
@@ -928,8 +1049,9 @@ public class TestResourceAuthService {
 
     @Test
     public void testAllowRightsChangeWithAdminAndResourceObjectUpdateRight()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_ADMIN);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowRightsChanging(null, null,
                 TestResourceAuthService.RESOURCE_OBJECT_UPDATE_RIGHT);
@@ -937,17 +1059,22 @@ public class TestResourceAuthService {
 
     @Test
     public void testAllowRightsChangeWithAdminAndResourceObjectWithAllGroupAccessRightsButForTheWrongGroup()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_ADMIN);
-        TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowRightsChanging(null, null,
-                TestResourceAuthService.RESOURCE_OBJECT_WITH_ALL_GROUP_ACCESS_RIGHTS_TRUE_BUT_FOR_THE_WRONG_GROUP);
+        TestResourceAuthService.RESOURCE_AUTH_SERVICE
+                .allowRightsChanging(
+                        null,
+                        null,
+                        TestResourceAuthService.RESOURCE_OBJECT_WITH_ALL_GROUP_ACCESS_RIGHTS_TRUE_BUT_FOR_THE_WRONG_GROUP);
     }
 
     @Test
     public void testAllowRightsChangeWithAdminAndResourceObjectWithAllGroupAccessRightsFalse()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_ADMIN);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowRightsChanging(null, null,
                 TestResourceAuthService.RESOURCE_OBJECT_WITH_ALL_GROUP_ACCES_RIGHTS_FALSE);
@@ -955,8 +1082,9 @@ public class TestResourceAuthService {
 
     @Test
     public void testAllowRightsChangeWithAdminAndResourceObjectWithAllGroupAccessRightsTrue()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_ADMIN);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowRightsChanging(null, null,
                 TestResourceAuthService.RESOURCE_OBJECT_WITH_ALL_GROUP_ACCESS_RIGHTS_TRUE);
@@ -964,8 +1092,9 @@ public class TestResourceAuthService {
 
     @Test
     public void testAllowRightsChangeWithAdminAndResourceObjectWithGroupAccessRightsEmpty()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_ADMIN);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowRightsChanging(null, null,
                 TestResourceAuthService.RESOURCE_OBJECT_WITH_GROUP_ACCESS_RIGHTS_EMPTY);
@@ -973,8 +1102,9 @@ public class TestResourceAuthService {
 
     @Test
     public void testAllowRightsChangeWithAdminAndResourceObjectWithGroupAccessRightsNull()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_ADMIN);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowRightsChanging(null, null,
                 TestResourceAuthService.RESOURCE_OBJECT_WITH_GROUP_ACCESS_RIGHTS_NULL);
@@ -982,8 +1112,9 @@ public class TestResourceAuthService {
 
     @Test
     public void testAllowRightsChangeWithOwnerAndResourceObjectChangeRightsRight()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_OWNER);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowRightsChanging(null, null,
                 TestResourceAuthService.RESOURCE_OBJECT_CHANGE_RIGHTS_RIGHT);
@@ -991,8 +1122,9 @@ public class TestResourceAuthService {
 
     @Test
     public void testAllowRightsChangeWithOwnerAndResourceObjectDeleteRight()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_OWNER);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowRightsChanging(null, null,
                 TestResourceAuthService.RESOURCE_OBJECT_DELETE_RIGHT);
@@ -1000,8 +1132,9 @@ public class TestResourceAuthService {
 
     @Test
     public void testAllowRightsChangeWithOwnerAndResourceObjectReadRight()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_OWNER);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowRightsChanging(null, null,
                 TestResourceAuthService.RESOURCE_OBJECT_READ_RIGHT);
@@ -1009,8 +1142,9 @@ public class TestResourceAuthService {
 
     @Test
     public void testAllowRightsChangeWithOwnerAndResourceObjectUpdateRight()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_OWNER);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowRightsChanging(null, null,
                 TestResourceAuthService.RESOURCE_OBJECT_UPDATE_RIGHT);
@@ -1018,17 +1152,22 @@ public class TestResourceAuthService {
 
     @Test
     public void testAllowRightsChangeWithOwnerAndResourceObjectWithAllGroupAccessRightsButForTheWrongGroup()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_OWNER);
-        TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowRightsChanging(null, null,
-                TestResourceAuthService.RESOURCE_OBJECT_WITH_ALL_GROUP_ACCESS_RIGHTS_TRUE_BUT_FOR_THE_WRONG_GROUP);
+        TestResourceAuthService.RESOURCE_AUTH_SERVICE
+                .allowRightsChanging(
+                        null,
+                        null,
+                        TestResourceAuthService.RESOURCE_OBJECT_WITH_ALL_GROUP_ACCESS_RIGHTS_TRUE_BUT_FOR_THE_WRONG_GROUP);
     }
 
     @Test
     public void testAllowRightsChangeWithOwnerAndResourceObjectWithAllGroupAccessRightsFalse()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_OWNER);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowRightsChanging(null, null,
                 TestResourceAuthService.RESOURCE_OBJECT_WITH_ALL_GROUP_ACCES_RIGHTS_FALSE);
@@ -1036,8 +1175,9 @@ public class TestResourceAuthService {
 
     @Test
     public void testAllowRightsChangeWithOwnerAndResourceObjectWithAllGroupAccessRightsTrue()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_OWNER);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowRightsChanging(null, null,
                 TestResourceAuthService.RESOURCE_OBJECT_WITH_ALL_GROUP_ACCESS_RIGHTS_TRUE);
@@ -1045,8 +1185,9 @@ public class TestResourceAuthService {
 
     @Test
     public void testAllowRightsChangeWithOwnerAndResourceObjectWithGroupAccessRightsEmpty()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_OWNER);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowRightsChanging(null, null,
                 TestResourceAuthService.RESOURCE_OBJECT_WITH_GROUP_ACCESS_RIGHTS_EMPTY);
@@ -1054,8 +1195,9 @@ public class TestResourceAuthService {
 
     @Test
     public void testAllowRightsChangeWithOwnerAndResourceObjectWithGroupAccessRightsNull()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_OWNER);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowRightsChanging(null, null,
                 TestResourceAuthService.RESOURCE_OBJECT_WITH_GROUP_ACCESS_RIGHTS_NULL);
@@ -1063,8 +1205,9 @@ public class TestResourceAuthService {
 
     @Test
     public void testAllowRightsChangeWithUserWithGroupAccessRightsAndResourceObjectChangeRightsRight()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_1);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowRightsChanging(null, null,
                 TestResourceAuthService.RESOURCE_OBJECT_CHANGE_RIGHTS_RIGHT);
@@ -1072,8 +1215,9 @@ public class TestResourceAuthService {
 
     @Test(expected = UnauthorizedException.class)
     public void testAllowRightsChangeWithUserWithGroupAccessRightsAndResourceObjectDeleteRight()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_1);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowRightsChanging(null, null,
                 TestResourceAuthService.RESOURCE_OBJECT_DELETE_RIGHT);
@@ -1081,8 +1225,9 @@ public class TestResourceAuthService {
 
     @Test(expected = UnauthorizedException.class)
     public void testAllowRightsChangeWithUserWithGroupAccessRightsAndResourceObjectReadRight()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_1);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowRightsChanging(null, null,
                 TestResourceAuthService.RESOURCE_OBJECT_READ_RIGHT);
@@ -1090,8 +1235,9 @@ public class TestResourceAuthService {
 
     @Test(expected = UnauthorizedException.class)
     public void testAllowRightsChangeWithUserWithGroupAccessRightsAndResourceObjectUpdateRight()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_1);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowRightsChanging(null, null,
                 TestResourceAuthService.RESOURCE_OBJECT_UPDATE_RIGHT);
@@ -1099,17 +1245,22 @@ public class TestResourceAuthService {
 
     @Test(expected = UnauthorizedException.class)
     public void testAllowRightsChangeWithUserWithGroupAccessRightsAndResourceObjectWithAllGroupAccessRightsButForTheWrongGroup()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_1);
-        TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowRightsChanging(null, null,
-                TestResourceAuthService.RESOURCE_OBJECT_WITH_ALL_GROUP_ACCESS_RIGHTS_TRUE_BUT_FOR_THE_WRONG_GROUP);
+        TestResourceAuthService.RESOURCE_AUTH_SERVICE
+                .allowRightsChanging(
+                        null,
+                        null,
+                        TestResourceAuthService.RESOURCE_OBJECT_WITH_ALL_GROUP_ACCESS_RIGHTS_TRUE_BUT_FOR_THE_WRONG_GROUP);
     }
 
     @Test(expected = UnauthorizedException.class)
     public void testAllowRightsChangeWithUserWithGroupAccessRightsAndResourceObjectWithAllGroupAccessRightsFalse()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_1);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowRightsChanging(null, null,
                 TestResourceAuthService.RESOURCE_OBJECT_WITH_ALL_GROUP_ACCES_RIGHTS_FALSE);
@@ -1117,8 +1268,9 @@ public class TestResourceAuthService {
 
     @Test
     public void testAllowRightsChangeWithUserWithGroupAccessRightsAndResourceObjectWithAllGroupAccessRightsTrue()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_1);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowRightsChanging(null, null,
                 TestResourceAuthService.RESOURCE_OBJECT_WITH_ALL_GROUP_ACCESS_RIGHTS_TRUE);
@@ -1126,8 +1278,9 @@ public class TestResourceAuthService {
 
     @Test(expected = UnauthorizedException.class)
     public void testAllowRightsChangeWithUserWithGroupAccessRightsAndResourceObjectWithGroupAccessRightsEmpty()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_1);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowRightsChanging(null, null,
                 TestResourceAuthService.RESOURCE_OBJECT_WITH_GROUP_ACCESS_RIGHTS_EMPTY);
@@ -1135,8 +1288,9 @@ public class TestResourceAuthService {
 
     @Test(expected = UnauthorizedException.class)
     public void testAllowRightsChangeWithUserWithGroupAccessRightsAndResourceObjectWithGroupAccessRightsNull()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_1);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowRightsChanging(null, null,
                 TestResourceAuthService.RESOURCE_OBJECT_WITH_GROUP_ACCESS_RIGHTS_NULL);
@@ -1144,8 +1298,9 @@ public class TestResourceAuthService {
 
     @Test(expected = UnauthorizedException.class)
     public void testAllowRightsChangeWithUserWithoutRightsAndResourceObjectChangeRightsRight()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_WITHOUT_RIGHTS);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowRightsChanging(null, null,
                 TestResourceAuthService.RESOURCE_OBJECT_CHANGE_RIGHTS_RIGHT);
@@ -1153,8 +1308,9 @@ public class TestResourceAuthService {
 
     @Test(expected = UnauthorizedException.class)
     public void testAllowRightsChangeWithUserWithoutRightsAndResourceObjectDeleteRight()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_WITHOUT_RIGHTS);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowRightsChanging(null, null,
                 TestResourceAuthService.RESOURCE_OBJECT_DELETE_RIGHT);
@@ -1162,8 +1318,9 @@ public class TestResourceAuthService {
 
     @Test(expected = UnauthorizedException.class)
     public void testAllowRightsChangeWithUserWithoutRightsAndResourceObjectReadRight()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_WITHOUT_RIGHTS);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowRightsChanging(null, null,
                 TestResourceAuthService.RESOURCE_OBJECT_READ_RIGHT);
@@ -1171,8 +1328,9 @@ public class TestResourceAuthService {
 
     @Test(expected = UnauthorizedException.class)
     public void testAllowRightsChangeWithUserWithoutRightsAndResourceObjectUpdateRight()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_WITHOUT_RIGHTS);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowRightsChanging(null, null,
                 TestResourceAuthService.RESOURCE_OBJECT_UPDATE_RIGHT);
@@ -1180,17 +1338,22 @@ public class TestResourceAuthService {
 
     @Test(expected = UnauthorizedException.class)
     public void testAllowRightsChangeWithUserWithoutRightsAndResourceObjectWithAllGroupAccessRightsButForTheWrongGroup()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_WITHOUT_RIGHTS);
-        TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowRightsChanging(null, null,
-                TestResourceAuthService.RESOURCE_OBJECT_WITH_ALL_GROUP_ACCESS_RIGHTS_TRUE_BUT_FOR_THE_WRONG_GROUP);
+        TestResourceAuthService.RESOURCE_AUTH_SERVICE
+                .allowRightsChanging(
+                        null,
+                        null,
+                        TestResourceAuthService.RESOURCE_OBJECT_WITH_ALL_GROUP_ACCESS_RIGHTS_TRUE_BUT_FOR_THE_WRONG_GROUP);
     }
 
     @Test(expected = UnauthorizedException.class)
     public void testAllowRightsChangeWithUserWithoutRightsAndResourceObjectWithAllGroupAccessRightsFalse()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_WITHOUT_RIGHTS);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowRightsChanging(null, null,
                 TestResourceAuthService.RESOURCE_OBJECT_WITH_ALL_GROUP_ACCES_RIGHTS_FALSE);
@@ -1198,8 +1361,9 @@ public class TestResourceAuthService {
 
     @Test(expected = UnauthorizedException.class)
     public void testAllowRightsChangeWithUserWithoutRightsAndResourceObjectWithAllGroupAccessRightsTrue()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_WITHOUT_RIGHTS);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowRightsChanging(null, null,
                 TestResourceAuthService.RESOURCE_OBJECT_WITH_ALL_GROUP_ACCESS_RIGHTS_TRUE);
@@ -1207,8 +1371,9 @@ public class TestResourceAuthService {
 
     @Test(expected = UnauthorizedException.class)
     public void testAllowRightsChangeWithUserWithoutRightsAndResourceObjectWithGroupAccessRightsEmpty()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_WITHOUT_RIGHTS);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowRightsChanging(null, null,
                 TestResourceAuthService.RESOURCE_OBJECT_WITH_GROUP_ACCESS_RIGHTS_EMPTY);
@@ -1216,8 +1381,9 @@ public class TestResourceAuthService {
 
     @Test(expected = UnauthorizedException.class)
     public void testAllowRightsChangeWithUserWithoutRightsAndResourceObjectWithGroupAccessRightsNull()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_WITHOUT_RIGHTS);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowRightsChanging(null, null,
                 TestResourceAuthService.RESOURCE_OBJECT_WITH_GROUP_ACCESS_RIGHTS_NULL);
@@ -1225,8 +1391,9 @@ public class TestResourceAuthService {
 
     @Test
     public void testAllowUpdateWithAdminAndResourceObjectChangeRightsRight()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_ADMIN);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowUpdating(null, null,
                 TestResourceAuthService.RESOURCE_OBJECT_CHANGE_RIGHTS_RIGHT);
@@ -1234,8 +1401,9 @@ public class TestResourceAuthService {
 
     @Test
     public void testAllowUpdateWithAdminAndResourceObjectDeleteRight()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_ADMIN);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowUpdating(null, null,
                 TestResourceAuthService.RESOURCE_OBJECT_DELETE_RIGHT);
@@ -1243,8 +1411,8 @@ public class TestResourceAuthService {
 
     // test allowUpdating
     @Test
-    public void testAllowUpdateWithAdminAndResourceObjectReadRight()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
+    public void testAllowUpdateWithAdminAndResourceObjectReadRight() throws UnauthorizedException,
+            IOException, IllegalAccessException, IllegalArgumentException,
             InvocationTargetException, NoSuchMethodException, SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_ADMIN);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowUpdating(null, null,
@@ -1253,8 +1421,9 @@ public class TestResourceAuthService {
 
     @Test
     public void testAllowUpdateWithAdminAndResourceObjectUpdateRight()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_ADMIN);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowUpdating(null, null,
                 TestResourceAuthService.RESOURCE_OBJECT_UPDATE_RIGHT);
@@ -1262,17 +1431,22 @@ public class TestResourceAuthService {
 
     @Test
     public void testAllowUpdateWithAdminAndResourceObjectWithAllGroupAccessRightsButForTheWrongGroup()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_ADMIN);
-        TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowUpdating(null, null,
-                TestResourceAuthService.RESOURCE_OBJECT_WITH_ALL_GROUP_ACCESS_RIGHTS_TRUE_BUT_FOR_THE_WRONG_GROUP);
+        TestResourceAuthService.RESOURCE_AUTH_SERVICE
+                .allowUpdating(
+                        null,
+                        null,
+                        TestResourceAuthService.RESOURCE_OBJECT_WITH_ALL_GROUP_ACCESS_RIGHTS_TRUE_BUT_FOR_THE_WRONG_GROUP);
     }
 
     @Test
     public void testAllowUpdateWithAdminAndResourceObjectWithAllGroupAccessRightsFalse()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_ADMIN);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowUpdating(null, null,
                 TestResourceAuthService.RESOURCE_OBJECT_WITH_ALL_GROUP_ACCES_RIGHTS_FALSE);
@@ -1280,8 +1454,9 @@ public class TestResourceAuthService {
 
     @Test
     public void testAllowUpdateWithAdminAndResourceObjectWithAllGroupAccessRightsTrue()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_ADMIN);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowUpdating(null, null,
                 TestResourceAuthService.RESOURCE_OBJECT_WITH_ALL_GROUP_ACCESS_RIGHTS_TRUE);
@@ -1289,8 +1464,9 @@ public class TestResourceAuthService {
 
     @Test
     public void testAllowUpdateWithAdminAndResourceObjectWithGroupAccessRightsEmpty()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_ADMIN);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowUpdating(null, null,
                 TestResourceAuthService.RESOURCE_OBJECT_WITH_GROUP_ACCESS_RIGHTS_EMPTY);
@@ -1298,8 +1474,9 @@ public class TestResourceAuthService {
 
     @Test
     public void testAllowUpdateWithAdminAndResourceObjectWithGroupAccessRightsNull()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_ADMIN);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowUpdating(null, null,
                 TestResourceAuthService.RESOURCE_OBJECT_WITH_GROUP_ACCESS_RIGHTS_NULL);
@@ -1307,8 +1484,9 @@ public class TestResourceAuthService {
 
     @Test
     public void testAllowUpdateWithOwnerAndResourceObjectChangeRightsRight()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_OWNER);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowUpdating(null, null,
                 TestResourceAuthService.RESOURCE_OBJECT_CHANGE_RIGHTS_RIGHT);
@@ -1316,16 +1494,17 @@ public class TestResourceAuthService {
 
     @Test
     public void testAllowUpdateWithOwnerAndResourceObjectDeleteRight()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_OWNER);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowUpdating(null, null,
                 TestResourceAuthService.RESOURCE_OBJECT_DELETE_RIGHT);
     }
 
     @Test
-    public void testAllowUpdateWithOwnerAndResourceObjectReadRight()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
+    public void testAllowUpdateWithOwnerAndResourceObjectReadRight() throws UnauthorizedException,
+            IOException, IllegalAccessException, IllegalArgumentException,
             InvocationTargetException, NoSuchMethodException, SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_OWNER);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowUpdating(null, null,
@@ -1334,8 +1513,9 @@ public class TestResourceAuthService {
 
     @Test
     public void testAllowUpdateWithOwnerAndResourceObjectUpdateRight()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_OWNER);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowUpdating(null, null,
                 TestResourceAuthService.RESOURCE_OBJECT_UPDATE_RIGHT);
@@ -1343,17 +1523,22 @@ public class TestResourceAuthService {
 
     @Test
     public void testAllowUpdateWithOwnerAndResourceObjectWithAllGroupAccessRightsButForTheWrongGroup()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_OWNER);
-        TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowUpdating(null, null,
-                TestResourceAuthService.RESOURCE_OBJECT_WITH_ALL_GROUP_ACCESS_RIGHTS_TRUE_BUT_FOR_THE_WRONG_GROUP);
+        TestResourceAuthService.RESOURCE_AUTH_SERVICE
+                .allowUpdating(
+                        null,
+                        null,
+                        TestResourceAuthService.RESOURCE_OBJECT_WITH_ALL_GROUP_ACCESS_RIGHTS_TRUE_BUT_FOR_THE_WRONG_GROUP);
     }
 
     @Test
     public void testAllowUpdateWithOwnerAndResourceObjectWithAllGroupAccessRightsFalse()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_OWNER);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowUpdating(null, null,
                 TestResourceAuthService.RESOURCE_OBJECT_WITH_ALL_GROUP_ACCES_RIGHTS_FALSE);
@@ -1361,8 +1546,9 @@ public class TestResourceAuthService {
 
     @Test
     public void testAllowUpdateWithOwnerAndResourceObjectWithAllGroupAccessRightsTrue()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_OWNER);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowUpdating(null, null,
                 TestResourceAuthService.RESOURCE_OBJECT_WITH_ALL_GROUP_ACCESS_RIGHTS_TRUE);
@@ -1370,8 +1556,9 @@ public class TestResourceAuthService {
 
     @Test
     public void testAllowUpdateWithOwnerAndResourceObjectWithGroupAccessRightsEmpty()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_OWNER);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowUpdating(null, null,
                 TestResourceAuthService.RESOURCE_OBJECT_WITH_GROUP_ACCESS_RIGHTS_EMPTY);
@@ -1379,8 +1566,9 @@ public class TestResourceAuthService {
 
     @Test
     public void testAllowUpdateWithOwnerAndResourceObjectWithGroupAccessRightsNull()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_OWNER);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowUpdating(null, null,
                 TestResourceAuthService.RESOURCE_OBJECT_WITH_GROUP_ACCESS_RIGHTS_NULL);
@@ -1388,8 +1576,9 @@ public class TestResourceAuthService {
 
     @Test(expected = UnauthorizedException.class)
     public void testAllowUpdateWithUserWithGroupAccessRightsAndResourceObjectChangeRightsRight()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_1);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowUpdating(null, null,
                 TestResourceAuthService.RESOURCE_OBJECT_CHANGE_RIGHTS_RIGHT);
@@ -1397,8 +1586,9 @@ public class TestResourceAuthService {
 
     @Test(expected = UnauthorizedException.class)
     public void testAllowUpdateWithUserWithGroupAccessRightsAndResourceObjectDeleteRight()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_1);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowUpdating(null, null,
                 TestResourceAuthService.RESOURCE_OBJECT_DELETE_RIGHT);
@@ -1406,8 +1596,9 @@ public class TestResourceAuthService {
 
     @Test(expected = UnauthorizedException.class)
     public void testAllowUpdateWithUserWithGroupAccessRightsAndResourceObjectReadRight()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_1);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowUpdating(null, null,
                 TestResourceAuthService.RESOURCE_OBJECT_READ_RIGHT);
@@ -1415,8 +1606,9 @@ public class TestResourceAuthService {
 
     @Test
     public void testAllowUpdateWithUserWithGroupAccessRightsAndResourceObjectUpdateRight()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_1);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowUpdating(null, null,
                 TestResourceAuthService.RESOURCE_OBJECT_UPDATE_RIGHT);
@@ -1424,17 +1616,22 @@ public class TestResourceAuthService {
 
     @Test(expected = UnauthorizedException.class)
     public void testAllowUpdateWithUserWithGroupAccessRightsAndResourceObjectWithAllGroupAccessRightsButForTheWrongGroup()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_1);
-        TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowUpdating(null, null,
-                TestResourceAuthService.RESOURCE_OBJECT_WITH_ALL_GROUP_ACCESS_RIGHTS_TRUE_BUT_FOR_THE_WRONG_GROUP);
+        TestResourceAuthService.RESOURCE_AUTH_SERVICE
+                .allowUpdating(
+                        null,
+                        null,
+                        TestResourceAuthService.RESOURCE_OBJECT_WITH_ALL_GROUP_ACCESS_RIGHTS_TRUE_BUT_FOR_THE_WRONG_GROUP);
     }
 
     @Test(expected = UnauthorizedException.class)
     public void testAllowUpdateWithUserWithGroupAccessRightsAndResourceObjectWithAllGroupAccessRightsFalse()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_1);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowUpdating(null, null,
                 TestResourceAuthService.RESOURCE_OBJECT_WITH_ALL_GROUP_ACCES_RIGHTS_FALSE);
@@ -1442,8 +1639,9 @@ public class TestResourceAuthService {
 
     @Test
     public void testAllowUpdateWithUserWithGroupAccessRightsAndResourceObjectWithAllGroupAccessRightsTrue()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_1);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowUpdating(null, null,
                 TestResourceAuthService.RESOURCE_OBJECT_WITH_ALL_GROUP_ACCESS_RIGHTS_TRUE);
@@ -1451,8 +1649,9 @@ public class TestResourceAuthService {
 
     @Test(expected = UnauthorizedException.class)
     public void testAllowUpdateWithUserWithGroupAccessRightsAndResourceObjectWithGroupAccessRightsEmpty()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_1);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowUpdating(null, null,
                 TestResourceAuthService.RESOURCE_OBJECT_WITH_GROUP_ACCESS_RIGHTS_EMPTY);
@@ -1460,8 +1659,9 @@ public class TestResourceAuthService {
 
     @Test(expected = UnauthorizedException.class)
     public void testAllowUpdateWithUserWithGroupAccessRightsAndResourceObjectWithGroupAccessRightsNull()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_1);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowUpdating(null, null,
                 TestResourceAuthService.RESOURCE_OBJECT_WITH_GROUP_ACCESS_RIGHTS_NULL);
@@ -1469,8 +1669,9 @@ public class TestResourceAuthService {
 
     @Test(expected = UnauthorizedException.class)
     public void testAllowUpdateWithUserWithoutRightsAndResourceObjectChangeRightsRight()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_WITHOUT_RIGHTS);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowUpdating(null, null,
                 TestResourceAuthService.RESOURCE_OBJECT_CHANGE_RIGHTS_RIGHT);
@@ -1478,8 +1679,9 @@ public class TestResourceAuthService {
 
     @Test(expected = UnauthorizedException.class)
     public void testAllowUpdateWithUserWithoutRightsAndResourceObjectDeleteRight()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_WITHOUT_RIGHTS);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowUpdating(null, null,
                 TestResourceAuthService.RESOURCE_OBJECT_DELETE_RIGHT);
@@ -1487,8 +1689,9 @@ public class TestResourceAuthService {
 
     @Test(expected = UnauthorizedException.class)
     public void testAllowUpdateWithUserWithoutRightsAndResourceObjectReadRight()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_WITHOUT_RIGHTS);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowUpdating(null, null,
                 TestResourceAuthService.RESOURCE_OBJECT_READ_RIGHT);
@@ -1496,8 +1699,9 @@ public class TestResourceAuthService {
 
     @Test(expected = UnauthorizedException.class)
     public void testAllowUpdateWithUserWithoutRightsAndResourceObjectUpdateRight()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_WITHOUT_RIGHTS);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowUpdating(null, null,
                 TestResourceAuthService.RESOURCE_OBJECT_UPDATE_RIGHT);
@@ -1505,17 +1709,22 @@ public class TestResourceAuthService {
 
     @Test(expected = UnauthorizedException.class)
     public void testAllowUpdateWithUserWithoutRightsAndResourceObjectWithAllGroupAccessRightsButForTheWrongGroup()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_WITHOUT_RIGHTS);
-        TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowUpdating(null, null,
-                TestResourceAuthService.RESOURCE_OBJECT_WITH_ALL_GROUP_ACCESS_RIGHTS_TRUE_BUT_FOR_THE_WRONG_GROUP);
+        TestResourceAuthService.RESOURCE_AUTH_SERVICE
+                .allowUpdating(
+                        null,
+                        null,
+                        TestResourceAuthService.RESOURCE_OBJECT_WITH_ALL_GROUP_ACCESS_RIGHTS_TRUE_BUT_FOR_THE_WRONG_GROUP);
     }
 
     @Test(expected = UnauthorizedException.class)
     public void testAllowUpdateWithUserWithoutRightsAndResourceObjectWithAllGroupAccessRightsFalse()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_WITHOUT_RIGHTS);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowUpdating(null, null,
                 TestResourceAuthService.RESOURCE_OBJECT_WITH_ALL_GROUP_ACCES_RIGHTS_FALSE);
@@ -1523,8 +1732,9 @@ public class TestResourceAuthService {
 
     @Test(expected = UnauthorizedException.class)
     public void testAllowUpdateWithUserWithoutRightsAndResourceObjectWithAllGroupAccessRightsTrue()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_WITHOUT_RIGHTS);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowUpdating(null, null,
                 TestResourceAuthService.RESOURCE_OBJECT_WITH_ALL_GROUP_ACCESS_RIGHTS_TRUE);
@@ -1532,8 +1742,9 @@ public class TestResourceAuthService {
 
     @Test(expected = UnauthorizedException.class)
     public void testAllowUpdateWithUserWithoutRightsAndResourceObjectWithGroupAccessRightsEmpty()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_WITHOUT_RIGHTS);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowUpdating(null, null,
                 TestResourceAuthService.RESOURCE_OBJECT_WITH_GROUP_ACCESS_RIGHTS_EMPTY);
@@ -1541,8 +1752,9 @@ public class TestResourceAuthService {
 
     @Test(expected = UnauthorizedException.class)
     public void testAllowUpdateWithUserWithoutRightsAndResourceObjectWithGroupAccessRightsNull()
-            throws UnauthorizedException, IOException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws UnauthorizedException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+            SecurityException {
         TestResourceAuthService.setTestUser(TestResourceAuthService.USER_WITHOUT_RIGHTS);
         TestResourceAuthService.RESOURCE_AUTH_SERVICE.allowUpdating(null, null,
                 TestResourceAuthService.RESOURCE_OBJECT_WITH_GROUP_ACCESS_RIGHTS_NULL);
