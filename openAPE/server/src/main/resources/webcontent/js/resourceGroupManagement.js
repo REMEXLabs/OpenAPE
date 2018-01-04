@@ -71,13 +71,37 @@ $(document)
 										var accessRight = new openape_api.AccessRight(
 												groupId, resourceId, false,
 												false, false, false);
-										$(
-												'#editResource_resourceGroupDataTable')
+										$('#editResource_resourceGroupDataTable')
 												.append(
 														addTableRowWithAccessRight(
 																accessRight,
 																group.name));
 									});
+					
+					/**
+					 * Clear access rights table when requested or not needed anymore.
+					 */
+					$('#addResource_btnClearTable').click(
+							function() {
+								$('#addResource_resourceGroupDataTableContent tr').remove();
+							}
+					);
+					$('#btnCloseAddResource').click(
+							function() {
+								$('#addResource_resourceGroupDataTableContent tr').remove();
+							}
+					);
+					$('#editResource_btnClearTable').click(
+							function() {
+								$('#editResource_resourceGroupDataTableContent tr').remove();
+							}
+					);
+					$('#btnCloseEditResource').click(
+							function() {
+								$('#editResource_resourceGroupDataTableContent tr').remove();
+							}
+					);
+
 
 					/**
 					 * editing resource also stores it's access rights to

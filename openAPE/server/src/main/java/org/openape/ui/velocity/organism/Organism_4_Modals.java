@@ -280,7 +280,7 @@ public class Organism_4_Modals {
                 + "	<span style='float:left;color:red;font-weight:bold;font-size:12pt' id='"
                 + idName
                 + "ResourceMainErrSection'> </span>"
-                + "<button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button>"
+                + "<button type='button' class='btn btn-secondary' id='btnClose"+action+"Resource' data-dismiss='modal'>Close</button>"
                 + "<button type='button' class='btn btn-danger' id='btnConfirm" + action
                 + "Resource'>" + name + " Resource</button>" + "</div>" + "</div>" + "</div>"
                 + "</div>";
@@ -304,6 +304,7 @@ public class Organism_4_Modals {
                 + "<label style='margin-right: 1em; float: left;' for='inputGroupId'>Group ID: "
                 + "<input id='"+idName+"Resource_inputGroupId' type='text'></label>"
                 + "<button class='btn btn-md btn-default' id='"+idName+"Resource_btnAddResourceToGroup'><div class='glyphicon glyphicon-plus'></div> Add resource to Group</button>"
+                + "<button class='btn btn-md btn-default' id='"+idName+"Resource_btnClearTable'>clear table</button>"
                 +"</div><br>"
                 +"<div style='overflow-x: scroll; float: none;'>"
                 + "<table id='"+idName+"Resource_resourceGroupDataTable' style='margin-bottom: 0; border: 4px solid #ddd !important;' class='table table-striped table-bordered dt-responsive nowrap' cellspacing='0' width='100%'>"
