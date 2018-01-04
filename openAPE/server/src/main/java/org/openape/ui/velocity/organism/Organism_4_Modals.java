@@ -312,7 +312,7 @@ public class Organism_4_Modals {
                 + "<th>Group Id</th>"
                 + "<th>Group name</th>"
                 + "<th>Read</th> <th>Update</th>"
-                + "<th>Delete</th> <th>Change rights</th>"
+                + "<th>Delete</th> <th>Change rights</th> <th>Options</th>"
                 + "</tr> </thead>"
                 + "<tbody id='"+idName+"Resource_resourceGroupDataTableContent'>"
                 + tableContent

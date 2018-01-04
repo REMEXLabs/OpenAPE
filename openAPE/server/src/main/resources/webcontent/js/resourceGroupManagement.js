@@ -15,8 +15,10 @@ $(document)
 					$('.editResourceBtn')
 							.click(
 									function() {
-										//clear table before filling it
-										$('#editResource_resourceGroupDataTableContent tr').remove();
+										// clear table before filling it
+										$(
+												'#editResource_resourceGroupDataTableContent tr')
+												.remove();
 										var resourceId = $(
 												'#editInputResourceId').val();
 										var accessRights = getAccesRightsOfResourceFromDB(resourceId);
@@ -100,7 +102,6 @@ $(document)
 												.remove();
 									});
 
-
 					/**
 					 * editing resource also stores it's access rights to
 					 * server.
@@ -164,7 +165,9 @@ $(document)
 										accessRight.groupId)
 								+ createTd('changeRight',
 										accessRight.changeRightsRight,
-										accessRight.groupId) + '</tr>';
+										accessRight.groupId)
+								+ '<td><input type="button" value="Delete" onclick="deleteAccessRightsRow(this)"></td>'
+								+ '</tr>';
 					}
 					/*
 					 * Creates a table data element, element contains a checkbox
@@ -275,6 +278,14 @@ $(document)
 					}
 
 				})
+/**
+ * Remove accessrights row on click. Change is not stored to server until the
+ * resource is stored.
+ */
+function deleteAccessRightsRow(element) {
+	$(element).closest('tr').remove();
+}
+
 /**
  * adding resource to server also stores it's access rights via this function.
  */
