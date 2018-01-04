@@ -15,6 +15,8 @@ $(document)
 					$('.editResourceBtn')
 							.click(
 									function() {
+										//clear table before filling it
+										$('#editResource_resourceGroupDataTableContent tr').remove();
 										var resourceId = $(
 												'#editInputResourceId').val();
 										var accessRights = getAccesRightsOfResourceFromDB(resourceId);
@@ -71,62 +73,68 @@ $(document)
 										var accessRight = new openape_api.AccessRight(
 												groupId, resourceId, false,
 												false, false, false);
-										$('#editResource_resourceGroupDataTable')
+										$(
+												'#editResource_resourceGroupDataTable')
 												.append(
 														addTableRowWithAccessRight(
 																accessRight,
 																group.name));
 									});
-					
+
 					/**
-					 * Clear access rights table when requested or not needed anymore.
+					 * Clear access rights table when requested or not needed
+					 * anymore.
 					 */
-					$('#addResource_btnClearTable').click(
-							function() {
-								$('#addResource_resourceGroupDataTableContent tr').remove();
-							}
-					);
-					$('#btnCloseAddResource').click(
-							function() {
-								$('#addResource_resourceGroupDataTableContent tr').remove();
-							}
-					);
-					$('#editResource_btnClearTable').click(
-							function() {
-								$('#editResource_resourceGroupDataTableContent tr').remove();
-							}
-					);
-					$('#btnCloseEditResource').click(
-							function() {
-								$('#editResource_resourceGroupDataTableContent tr').remove();
-							}
-					);
+					$('#addResource_btnClearTable')
+							.click(
+									function() {
+										$(
+												'#addResource_resourceGroupDataTableContent tr')
+												.remove();
+									});
+					$('#editResource_btnClearTable')
+							.click(
+									function() {
+										$(
+												'#editResource_resourceGroupDataTableContent tr')
+												.remove();
+									});
 
 
 					/**
 					 * editing resource also stores it's access rights to
 					 * server.
 					 */
-					$('#btnConfirmEditResource').click(function() {
-						var resourceId = $('#editInputResourceId').val();
-						var accessRightList = [];
-						$('#editResource_resourceGroupDataTableContent > tr').each(
-								function(i, element) {
-									var groupId = element.cells[0].textContent;
-									var accessRight = new openape_api.AccessRight(groupId,
-											resourceId, element.cells[2].firstChild.checked,
-											element.cells[3].firstChild.checked,
-											element.cells[4].firstChild.checked,
-											element.cells[5].firstChild.checked);
-									accessRightList.push(accessRight);
-								});
-						var accessRights = {
-							groupAccessRights : accessRightList
-						};
-						var success = storeAccessRightsOnServer(accessRights, resourceId);
-						if (success)
-							console.log("access rights updated.");
-					});
+					$('#btnConfirmEditResource')
+							.click(
+									function() {
+										var resourceId = $(
+												'#editInputResourceId').val();
+										var accessRightList = [];
+										$(
+												'#editResource_resourceGroupDataTableContent > tr')
+												.each(
+														function(i, element) {
+															var groupId = element.cells[0].textContent;
+															var accessRight = new openape_api.AccessRight(
+																	groupId,
+																	resourceId,
+																	element.cells[2].firstChild.checked,
+																	element.cells[3].firstChild.checked,
+																	element.cells[4].firstChild.checked,
+																	element.cells[5].firstChild.checked);
+															accessRightList
+																	.push(accessRight);
+														});
+										var accessRights = {
+											groupAccessRights : accessRightList
+										};
+										var success = storeAccessRightsOnServer(
+												accessRights, resourceId);
+										if (success)
+											console
+													.log("access rights updated.");
+									});
 
 					/**
 					 * creates an HTML string that represents a new row in the
@@ -268,8 +276,7 @@ $(document)
 
 				})
 /**
- * adding resource to server also stores it's access rights
- * via this function.
+ * adding resource to server also stores it's access rights via this function.
  */
 function undateAccessRights(resourceId) {
 	var accessRightList = [];
