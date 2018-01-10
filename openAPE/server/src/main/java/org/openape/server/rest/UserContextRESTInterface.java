@@ -115,12 +115,7 @@ public class UserContextRESTInterface extends ContextRestInterface {
 			final String userContextId = req.params(Messages.getString("UserContextRESTInterface.IDParam")); //$NON-NLS-1$
 			try { // if it is successful return user context.
 				final UserContext userContext = requestHandler.getUserContextById(userContextId); // Make sure only
-																									// admins
-																									// or the owner can
-																									// viewthe //
-																									// context,
-																									// except if it
-																									// ispublic
+																									// admins or the owner can access the requested  context, except if it ispublic
 
 				auth.allowAdminOwnerAndPublic(req, res, userContext.getImplementationParameters().getOwner(),
 						userContext.getImplementationParameters().isPublic());
