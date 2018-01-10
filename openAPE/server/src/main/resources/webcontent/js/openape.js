@@ -1,4 +1,4 @@
-(function(window){
+﻿(function(window){
 	 function defineOpenape(){
 	    var objOpenape = {};
 	   
@@ -12,17 +12,19 @@
 		  
 		    /** initializeLibrary
 			* 
-			* This function is used to get the authorization token for the given grantTypem, username and password 
+			* This function is used to get the authorization token for the given username and password. 
+   *It returns a Java Script Object with all information related to a token (access_token, expires_in)
+   * writes the access_token with the key "token" to the localstorage
 			*
 			* 	 
 		    * @param  userName
 		    * 	 The openAPE username of the user 
 			* 			 
 		    * @param  password
-		    * 	 The OpenAPE password of the user from the mongodb
+		    * 	 The OpenAPE password of the user 
 		    *@param serverURL
 		    *the URL of the OpenAPE server to which the client shall connect. Is optional, if not set it is set to http://openape.gpii.eu
-			* @return      
+			* @return       
 			* 	 A javascript object with all token information
 			*/
 		    objOpenape.initializeLibrary = function (username, password, serverurl) {
