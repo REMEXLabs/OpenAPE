@@ -1,4 +1,10 @@
-﻿(function(window){
+﻿/**
+ * @version 1.0.1
+ * @param window
+ * @returns
+ */
+
+(function(window){
 	 function defineOpenape(){
 	    var objOpenape = {};
 	   
@@ -6,10 +12,7 @@
 	    
 	    var token = "";
 	    
-	    /*
-		    * initializeLibrary
-		    */
-		  
+	      
 		    /** initializeLibrary
 			* 
 			* This function is used to get the authorization token for the given username and password. 
@@ -17,17 +20,12 @@
    * writes the access_token with the key "token" to the localstorage
 			*
 			* 	 
-		    * @param  userName
-		    * 	 The openAPE username of the user 
-			* 			 
-		    * @param  password
-		    * 	 The OpenAPE password of the user 
-		    *@param serverURL
-		    *the URL of the OpenAPE server to which the client shall connect. Is optional, if not set it is set to http://openape.gpii.eu
-			* @return       
-			* 	 A javascript object with all token information
-			*/
-		    objOpenape.initializeLibrary = function (username, password, serverurl) {
+		    * @param{String}   userName - The openAPE username of the user 
+					    * @param {String} password - The OpenAPE password of the user 
+		    * @param {string} [serverURL=http://openape.gpii.eu] - the URL of the OpenAPE server to which the client shall connect. 
+			* @returns {AccessToken} - A javascript object with all token information
+			* */
+     objOpenape.initializeLibrary = function (username, password, serverurl) {
 		    	if(serverurl === undefined){
 		    		localStorage.setItem("host", "http://openape.gpii.eu");
 		    	} else if(serverurl === "/"){
@@ -83,17 +81,12 @@
 	     * 
 	     * This function is used to create a new OpenAPE account with the given username, email and password
 	     *
-	     * @param  userName
-	     * 	 The username of the user 
-	     * 
-	     * @param  email
-	     * 	 The email address of the user 
-	     * 
-	     * @param  password
-	     * 	 The password of the user 
-	     *@param serverURL
-	     *URL of the server to which the client connects. Is optional, if not set, it is set to http://openape.gpii.eu 
-	     * @return      The function will send the user credentials to the function
+	     * @param  {String} - userName - The username of the user 
+	     * @param  {string} email - The email address of the user 
+	     * @param  {string} password - The password of the user 
+	     *@param {string} [serverURL=http://openape.gpii.eu]
+- URL of the server to which the client connects.  
+	     * @return      
 	     * 				sendUserData and return a status as a boolean 
 	     */
 	    objOpenape.createUser = function (username, email, password, serverurl) {
@@ -183,10 +176,9 @@
 
 	    /** getUser
 	    * 
-	    * This function is used to get account information of the user who initialized the client 
+	    * This function is used to get the account information of the user who initialized the client 
 	    * 
-	    * @return      
-	    * 	 A javascript object with all found user information like username, email and roles
+	    * @return {object} -A javascript object with all found user information like username, email and roles
 	    */
 	    objOpenape.getUser = function () {
 	    	var objUserProfile = {};
@@ -216,10 +208,9 @@
 	    /** getUserById
 		    * 
 		    * This function is used to get user account information about a user.
-		    *Can only be used if the user who initialized the client has Admin right
+		    *Can only be used if the user who initialized the client has Admin rights
 		    * 
-		    * @return      
-		    * 	 A javascript object with all found user information like username, email and roles
+		    * @return {object} - A javascript object with all found user information like username, email and roles
 		    */
 		    objOpenape.getUserById = function (userId) {
 		    	var objUserProfile = {};
