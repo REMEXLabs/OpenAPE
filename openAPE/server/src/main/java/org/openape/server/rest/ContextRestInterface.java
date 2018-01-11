@@ -26,8 +26,13 @@ public abstract class ContextRestInterface extends SuperRestInterface {
 
 	protected static <contextListType> void createContextListRestEndpoint(String path,
 			UserContextRequestHandler requestHandler, AuthService auth, Class<UserContextList> contextListType) {
+		
+		/*The Rest endpoint for requesting context lists
+		 *Relates to ISO/IEC 24752-8 7.*.6 
+		 */
 		Spark.get(path, (req, res) -> {
 			final String url = req.uri().toString();
+			logger.info("requesting lists");
 			try {
 				auth.allowAdmin(req, res);
 				return UserContextRESTInterface.createReturnStringListRequest(req, res, contextListType,
@@ -42,7 +47,7 @@ public abstract class ContextRestInterface extends SuperRestInterface {
 						requestHandler.getMyContexts(auth.getAuthenticatedUser(req, res).getId(), url));
 				} catch (final UnauthorizedException ex  ) {
 					return UserContextRESTInterface.createReturnStringListRequest(req, res, contextListType,
-							requestHandler.getPublicContexts());
+							requestHandler.getPublicContexts(url));
 
 				}
 			}

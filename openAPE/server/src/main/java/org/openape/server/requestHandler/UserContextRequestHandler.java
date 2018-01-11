@@ -99,7 +99,13 @@ public class UserContextRequestHandler {
         }
         return new UserContextList(contexts, url);
     }
-
+/**
+ * 
+ * @param userId
+ * @param url- the URL of the server on which the contexts are located,, usually the server on which this application is running on
+ * @return
+ * @throws IOException
+ */
     public UserContextList getMyContexts(final String userId, final String url) throws IOException {
         final BasicDBObject query = new BasicDBObject();
         query.put("owner", userId);
@@ -197,5 +203,11 @@ public class UserContextRequestHandler {
                     Messages.getString("UserContextRequestHandler.NoObjectWithThatIDErrorMsg")); //$NON-NLS-1$
         }
         return true;
+    }
+
+	public Object getPublicContexts(String url) throws IOException {
+		 final BasicDBObject query = new BasicDBObject();
+        query.put("PUBLIC", "public");
+        return this.getUserContexts(query, url);
     }
 }
