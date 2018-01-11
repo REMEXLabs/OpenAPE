@@ -283,6 +283,7 @@ function uploadFile(){
                 var resourceName = req.responseText;
                 generateResourceDescriptionObject(resourceName, "add");
                 $('#addResourceModal').modal('hide');
+                undateAccessRights(resourceName);
                 setTimeout(function(){ 
 	        		location.reload();
 	       		}, 1000);
@@ -296,7 +297,7 @@ function loadPreview (event){
 		   var reader = new FileReader();
 		    reader.onload = function(){
 		      var output = "";
-		      if(event.srcElement.attributes[1].nodeValue == "addResourceInput") {
+		      if(getTarget(event).attributes[1].nodeValue == "addResourceInput") {
 		    	  output = document.getElementById('addOutput');
 		      } else {
 		    	  output = document.getElementById('editOutput');
@@ -372,4 +373,13 @@ function updateResourceDescription(resourceId, resourceDescription) {
         	 }
         }
     });
+}
+function getTarget(obj) {
+    var targ;
+    var e=obj;
+    if (e.target) targ = e.target;
+    else if (e.srcElement) targ = e.srcElement;
+    if (targ.nodeType == 3) // defeat Safari bug
+        targ = targ.parentNode;
+    return targ;
 }

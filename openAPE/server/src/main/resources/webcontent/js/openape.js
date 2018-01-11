@@ -1101,6 +1101,8 @@
 	    	return objUpdateEnvironmentContext_Result;
 	    } 
 	    
+		/**  Executes 
+		* @returns JQXHR object */
 	    function databaseCommunication (objAjaxParameters) {
 	    	var objStatus = {};
 	    	var request =  

@@ -1,5 +1,7 @@
 package org.openape.api.group;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  * This class defines the access rights of one group for one resource. There
  * exists four access rights. The read right means, that users, which are member
@@ -32,12 +34,8 @@ public class GroupAccessRight {
     /**
      * Id of the group, for which the access rights count.
      */
+	// TODO test if it can be annotated with @JSONIgnore
     private String groupId;
-
-    /**
-     * Id of the resource, for which the access rights are defined.
-     */
-    private String resourceId;
 
     /**
      * Read right. True means, that the group members are allowed to read the
@@ -96,10 +94,9 @@ public class GroupAccessRight {
      *            true if the group is allowed to change the access rights for
      *            the concept and false if not
      */
-    public GroupAccessRight(final String groupId, final String resourceId, final boolean readRight,
+    public GroupAccessRight(final String groupId, final boolean readRight,
             final boolean updateRight, final boolean deleteRight, final boolean changeRightsRight) {
         this.setGroupId(groupId);
-        this.setResourceId(resourceId);
         this.setReadRight(readRight);
         this.setUpdateRight(updateRight);
         this.setDeleteRight(deleteRight);
@@ -122,20 +119,12 @@ public class GroupAccessRight {
     }
 
     /**
-     * The id of the resource, for which the group access rights are defined.
-     *
-     * @return id of the resource
-     */
-    public String getResourceId() {
-        return this.resourceId;
-    }
-
-    /**
      * Getter for the change rights right.
      *
      * @return true if the group members are allowed to change the access rights
      *         for the resource and false if not.
      */
+    @JsonProperty(value="changeRightsRight")
     public boolean hasChangeRightsRight() {
         return this.changeRightsRight;
     }
@@ -146,6 +135,7 @@ public class GroupAccessRight {
      * @return true if the group members are allowed to delete the resource and
      *         false if not.
      */
+    @JsonProperty(value="deleteRight")
     public boolean hasDeleteRight() {
         return this.deleteRight;
     }
@@ -156,6 +146,7 @@ public class GroupAccessRight {
      * @return true if the group members are allowed to read the resource and
      *         false if not.
      */
+    @JsonProperty(value="readRight")
     public boolean hasReadRight() {
         return this.readRight;
     }
@@ -166,6 +157,7 @@ public class GroupAccessRight {
      * @return true if the group members are allowed to update the resource and
      *         false if not.
      */
+    @JsonProperty(value="updateRight")
     public boolean hasUpdateRight() {
         return this.updateRight;
     }
@@ -211,17 +203,6 @@ public class GroupAccessRight {
      */
     public void setReadRight(final boolean readRight) {
         this.readRight = readRight;
-    }
-
-    /**
-     * Setter for the resource id. The resource id must not be null or empty.
-     *
-     * @param conceptId
-     *            id of the resource, for which the group access rights are
-     *            defined
-     */
-    public void setResourceId(final String resourceId) {
-        this.resourceId = resourceId;
     }
 
     /**

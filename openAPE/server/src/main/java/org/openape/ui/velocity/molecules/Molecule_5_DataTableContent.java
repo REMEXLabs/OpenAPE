@@ -275,7 +275,7 @@ public class Molecule_5_DataTableContent {
 
             final String buttons = "<button id='"
                     + resourseDescription.getId()
-                    + "' class='btn btn-md btn-default' onClick='editResource(this)' ><div class='glyphicon glyphicon-edit' ></div> Edit </button>"
+                    + "' class='btn btn-md btn-default editResourceBtn' onClick='editResource(this)' ><div class='glyphicon glyphicon-edit' ></div> Edit </button>"
                     + "<button id='delete_"
                     + resourseDescription.getId()
                     + "' class='btn btn-md btn-default' data-resourceDescriptionId='"
