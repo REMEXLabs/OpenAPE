@@ -236,24 +236,14 @@
 		    	return objUserProfile;
 		    }
 	   
-	    
-	    /*
-	     * USER-CONTEXTS FUNCTION
-	     */
-	   
-	    /** getUserContext
+	    	    /** getUserContext
 		* 
-		* This function is used to get the authorization token for the given grantTypem, username and password 
+		* This function can be used to retrieve a certain user context from the OpenAPE server with a given Id
+		* It relates to ISO/ICE 24752-8 7.2.3
 		*
-		* @param  token
-		* 	 The authentification token to authorized the user
-		* 	 
-	    * @param  userContextId
-	    * 	 The stored UserContextId 
-	    *@param outputType
-	    *defines the dataformat of the received user context object. Can either be JSON or XML  
-		* @return      
-		* 	 A javascript object with all user contexts information
+		* 	 	     @param  {string} userContextId - The Id of the stored UserContext that shall be retrieved 
+	    *@param {String} outputType - defines the dataformat of the received user context object. Can either be JSON or XML  
+		* @return {Object} - A javascript object with all user contexts information
 		*/
 	    objOpenape.getUserContext = function (userContextId, outputType) {
 	    	var objGetUserContext_Result = {};
@@ -298,16 +288,18 @@
 	    
 	    /** createUserContext
 		* 
-		* This function is used to create the user contexts  
+		* This function is used to upload a user context object to the OpenAPE server and to associate it with an Id.
+		* 
+		*   
+		*   
+		*   
+		*   
+		*   
+		*   This Function relates to ISO/IEC 24752-8 7.2.2 
 		*
-		* @param  UserContext
-	    * 	 The given user contexts
+		* @param  {UserContext} UserContext -	The user context that shall be uploaded 
 		*
-		* @param  token
-		* 	 The authentification token to authorized the user
-	    * 
-		* @return      
-		* 	 A javascript object with all status information of the create process
+		* @return {object} - A javascript object with all status information of the create process
 		*/	    
 	    objOpenape.createUserContext = function (UserContext, contentType) {
 	    	var objcreateUserContext_Result = {};
@@ -351,16 +343,13 @@
 	    
 	    /** deleteUserContext
 		* 
-		* This function is used to delete user contexts  
+		* This function is used to delete a certain user context
+		* This Function relates to ISO/IEC 24752-8 7.2.5
+		
 		*
-		* @param  token
-		* 	 The authentification token to authorized the user
-		* 	 
-	    * @param  userContextId
-	    * 	 The stored UserContextId from mongodb
+		* @param  {string} userContextId - The stored UserContextId from mongodb
 	    * 
-		* @return      
-		* 	 A javascript object with all status information of the delete process
+		* @return {object} - A javascript object with all status information of the delete process
 		*/	    	    
 	    objOpenape.deleteUserContext = function (userContextId) {
 	    	var objDeleteUserContext_Result = {};
@@ -399,19 +388,14 @@
 	    
 	    /** updateUserContext
 		* 
-		* This function is used to update user contexts by the given usercontext id  
-		*
-		* @param  token
-		* 	 The authentification token to authorized the user
+		* This function is used to update a certain user context on the server
+		* This Function relates to ISO/IEC 24752-87.2.4  
 		* 	 
-	    * @param  userContextId
-	    * 	 The stored UserContextId from mongodb
+	    * @param  {string} userContextId - The Id of the user context that shall be replaced
 	    * 
-		* @param  UserContext
-	    * 	 The given user contexts
+		* @param  {UserContext} UserContext - The new user context that shall replace the old one
 	    * 
-		* @return      
-		* 	 A javascript object with all status information of the update process
+		* @return {object} - A javascript object with all status information of the update process
 		*/	
 	    objOpenape.updateUserContext = function (userContextId, UserContext, contentType) {
 	    	var objUpdateUserContext_Result = {};
@@ -468,15 +452,15 @@
 	     */
 	    
 	    /** createTaskContext
-	     * 
-	     * This function is used to create the task-context in the mongodb database with the given task-context
-	     *
-	     * @param  TaskContext
-	     * 	 The given task-context in JSON
-	     * 
-	     * @return      An JavaScript-Object with the create result
-	     */
-	    objOpenape.createTaskContext = function (taskContext, contentType) {
+		* 
+		* This function is used to upload a task context object to the OpenAPE server and to associate it with an Id.
+		*   This Function relates to ISO/IEC 24752-8 7.2.3 
+		*
+		* @param  {TaskContext} taskContext -	The task context that shall be uploaded 
+		*
+		* @return {object} - A javascript object with all status information of the create process
+		*/	    
+	    	    objOpenape.createTaskContext = function (taskContext, contentType) {
 	    	var objcreateTaskContext_Result = {};
 	    	var objAjaxParameters = {};
 	    	
@@ -771,16 +755,15 @@
 	    }
 
 	    /** createEquipmentContext
-	     * 
-	     * This function is used to create the equipment-context in the mongodb database with the given equipment-context
-	     *
-	     * @param  EquipmentContext
-	     * 	 The given equipment-context in JSON
-	     * 
-	     * @return      
-	     * 	 An JavaScript-Object with the create result
-	     */	    
-	    objOpenape.createEquipmentContext = function (equipmentContext, contentType) {
+		* 
+		* This function is used to upload a equipment context object to the OpenAPE server and to associate it with an Id.
+		*    This Function relates to ISO/IEC 24752-8 7.4.2 
+		*
+		* @param  {EquipmentContext} equipmentContext -	The equipment context that shall be uploaded 
+		*
+		* @return {object} - A javascript object with all status information of the create process
+		*/	    
+	    	    objOpenape.createEquipmentContext = function (equipmentContext, contentType) {
 	    	var objcreateEquipmentContext_Result = {};
 	    	var objAjaxParameters = {};
 	    	
@@ -982,16 +965,15 @@
 	    }
 
 	    /** createEnvironmentContext
-	     * 
-	     * This function is used to create the environment-context in the MongoDB database with the given environment-context
-	     *
-	     * @param  EnvironmentContext
-	     * 	 The given environment-context in JSON
-	     * 
-	     * @return      
-	     * 	 An JavaScript-Object with the create result
-	     */	    
-	    objOpenape.createEnvironmentContext = function (environmentContext, contentType) {
+		* 
+		* This function is used to upload a environment context object to the OpenAPE server and to associate it with an Id.
+		*   This Function relates to ISO/IEC 24752-8 7.5.2 
+		*
+		* @param  {EnvironmentContext} environmentContext -	The environment context that shall be uploaded 
+		*
+		* @return {object} - A javascript object with all status information of the create process
+		*/	    
+	    	    objOpenape.createEnvironmentContext = function (environmentContext, contentType) {
 	    	var objcreateEnvironmentContext_Result = {};
 	    	var objAjaxParameters = {};
 	    	
