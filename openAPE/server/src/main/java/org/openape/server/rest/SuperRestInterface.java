@@ -97,7 +97,7 @@ public class SuperRestInterface {
 
         // before filter enables CORS
         Spark.before("/*", (q, response) -> {
-            SuperRestInterface.logger.info("lusm: " + q.headers("Authorization"));
+            SuperRestInterface.logger.info("lusm authorisation: " + q.headers("Authorization"));
             SuperRestInterface.logger.debug("Received api call: " + q.protocol() + "" + q.uri());
             response.header("Access-Control-Allow-Origin", "*");
             // response.header("Access-Control-Request-Method",

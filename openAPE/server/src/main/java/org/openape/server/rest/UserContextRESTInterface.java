@@ -47,18 +47,10 @@ public class UserContextRESTInterface extends ContextRestInterface {
 	public static void setupUserContextRESTInterface(final UserContextRequestHandler requestHandler,
 			final AuthService auth) {
 
-		// Authentication: Make sure only registered principals (users and // admins)
-		// can create a new context
-		Spark.before(Messages.getString("UserContextRESTInterface.UserContextURLWithoutID"), auth.authorize("user")); // Authentication:
-																														// Everyone
-																														// can
-																														// access
-																														// the
-																														// route
-																														// for
-																														// a
-																														// specific
-																														// ID
+		// Authentication: Make sure only registered principals (users and // admins) can create a new context, GET requests are possible for everyone
+//		Spark.before(Messages.getString("UserContextRESTInterface.UserContextURLWithoutID"), (req,res) -> { logger.info("method" + req.requestMethod()); if (!req.requestMethod().equals("GET")){ return auth.authorize("user");} else {return auth.authorize("anonymous");}}); 
+		Spark.before(Messages.getString("UserContextRESTInterface.UserContextURLWithoutID"),auth.authorize("anonymous"));
+		// Authentication:	Everyone can access the route for a specific ID		
 		Spark.before(Messages.getString("UserContextRESTInterface.UserContextURLWithID"), auth.authorize("anonymous"));
 		/**
 		 * * Request 7.2.2 create user-context. Can only be accessed by roles * "user"
@@ -71,15 +63,10 @@ public class UserContextRESTInterface extends ContextRestInterface {
 				// Try to map the received json object to a userContext // object.
 				final UserContext receivedUserContext = UserContextRESTInterface.createRequestObejct(req); // Make sure
 																											// to set
-																											// the id of
-																											// the
-																											// authenticated
-																											// user as
-																											// // the
-																											// ownerId
-				SuperRestInterface.logger.debug("lusm: requesting user");
+																											// the id of the authenticated
+																											// user as																											 the ownerID
 				final String id = auth.getAuthenticatedUser(req, res).getId();
-				SuperRestInterface.logger.info("id: " + id);
+				
 				receivedUserContext.getImplementationParameters().setOwner(auth.getAuthenticatedUser(req, res).getId());
 				SuperRestInterface.logger.debug("Lusm: success"); // Test the object for validity.
 
