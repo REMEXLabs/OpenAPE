@@ -594,18 +594,16 @@
 	    }
 	    
 	    /** updateTaskContext
-	     * 
-	     * This function is used to update the task-context in MongoDB with the given taskContextId and task-context
-	     *
-	     * @param  taskContextId
-	     * 	 The taskContextId
-	     * 
-	     * @param  TaskContext
-	     * 	 The given task-context in JSON
-	     * 
-	     * @return      
-	     * 	An JavaScript-Object with the update result
-	     */
+		* 
+		* This function is used to update a certain task context on the OpenAPE server. It replaces a old one with a new one.
+		* This Function relates to ISO/IEC 24752-8 7.3.4  
+		* 	 
+	    * @param  {string} taskContextId - The Id of the task context that shall be replaced
+	    * 
+		* @param  {TaskContext} taskContext - The new task context that shall replace the old one
+	    * 
+		* @return {object} - A javascript object with all status information of the update process
+		*/	
 	    objOpenape.updateTaskContext = function (taskContextId, taskContext, contentType) {
 	    	var objUpdateUserContext_Result = {};
 	    	var objAjaxParameters = {};
@@ -661,7 +659,7 @@
 
 	    /** getEquipmentContext
 		* 
-		* This function can be used to retrieve a certain equipmentr context from the OpenAPE server with a given Id
+		* This function can be used to retrieve a certain equipment context from the OpenAPE server with a given Id
 		* It relates to ISO/ICE 24752-8 7.4.3
 		*
 		* 	 	     @param  {string} equipmentContextId - The Id of the stored equipmentContext that shall be retrieved 
@@ -803,18 +801,16 @@
 	    }
 	    
 	    /** updateEquipmentContext
-	     * 
-	     * This function is used to update the equipment-context in MongoDB with the given equipmentContextId and equipmentContext
-	     *
-	     * @param  equipmentContextId
-	     * 	 The equipmentContextId
-	     * 
-	     * @param  equipmentContext
-	     * 	 The given equipmentContext in JSON
-	     * 
-	     * @return      
-	     * 	An JavaScript-Object with the update result
-	     */
+		* 
+		* This function is used to update a certain equipment context on the OpenAPE server. It replaces a old one with a new one.
+		* This Function relates to ISO/IEC 24752-8 7.4.4  
+		* 	 
+	    * @param  {string} EquipmentContextId - The Id of the equipment context that shall be replaced
+	    * 
+		* @param  {EquipmentContext} equipmentContext - The new equipment context that shall replace the old one
+	    * 
+		* @return {object} - A javascript object with all status information of the update process
+		*/	
 	    objOpenape.updateEquipmentContext = function (equipmentContextId, equipmentContext, contentType) {
 	    	var objUpdateEquipmentContext_Result = {};
 	    	var objAjaxParameters = {};
@@ -1012,18 +1008,16 @@
 	    }
 	    
 	    /** updateEnvironmentContext
-	     * 
-	     * This function is used to update the environment-context in MongoDB with the given environmentContextId and EnvironmentContext
-	     *
-	     * @param  environmentContextId
-	     * 	 The environmentContextId
-	     * 
-	     * @param  environmentContext
-	     * 	 The given environmentContext in JSON
-	     * 
-	     * @return      
-	     * 	An JavaScript-Object with the update result
-	     */
+		* 
+		* This function is used to update a certain environment context on the OpenAPE server. It replaces a old one with a new one.
+		* This Function relates to ISO/IEC 24752-8 7.5.4  
+		* 	 
+	    * @param  {string} environmentContextId - The Id of the environment context that shall be replaced
+	    * 
+		* @param  {EnvironmentContext} environmentContext - The new environment context that shall replace the old one
+	    * 
+		* @return {object} - A javascript object with all status information of the update process
+		*/	
 	    objOpenape.updateEnvironmentContext = function (environmentContextId, environmentContext, contentType) {
 	    	var objUpdateEnvironmentContext_Result = {};
 	    	var objAjaxParameters = {};
