@@ -551,14 +551,15 @@
 
 	    /** deleteTaskContext
 	     * 
-	     * This function is used to delete the task-context from the Mongodb database with the given taskContextId
-	     *
-	     * @param  taskContextId
-	     * 	 The taskContextId
-	     * 
-	     * @return      
-	     * 	An JavaScript-Object with the delete result
-	     */
+	     * 		 This function is used to delete a certain task context on the server
+		* This Function relates to ISO/IEC 24752-8 7.3.5
+		
+		*
+		* @param  {string} taskContextId - The Id of the task context that shall be deleted on the server 
+	    * 
+		* @return {object} - A javascript object with all status information of the delete process
+		*/	    	    
+
 	    objOpenape.deleteTaskContext = function (taskContextId) {
 	    	var objDeleteTaskContext_Result = {};
 	    	var objAjaxParameters = {};
@@ -709,14 +710,14 @@
 
 	    /** deleteEquipmentContext
 	     * 
-	     * This function is used to delete the equipment-context from the Mongodb database with the given equipmentContextId
-	     *
-	     * @param  equipmentContextId
-	     * 	 The equipmentContextId
-	     * 
-	     * @return      
-	     * 	An JavaScript-Object with the delete result
-	     */
+	     * 		 This function is used to delete a certain equipment context on the server
+		* This Function relates to ISO/IEC 24752-8 7.4.5
+		
+		*
+		* @param  {string} equipmentContextId - The Id of the equipment context that shall be deleted on the server 
+	    * 
+		* @return {object} - A javascript object with all status information of the delete process
+		*/	    	    
 	    objOpenape.deleteEquipmentContext = function (equipmentContextId) {
 	    	var objDeleteEquipmentContext_Result = {};
 	    	var objAjaxParameters = {};
@@ -916,14 +917,13 @@
 
 	    /** deleteEnvironmentContext
 	     * 
-	     * This function is used to delete the environment-context from the Mongodb database with the given environmentContextId
-	     *
-	     * @param  equipmentContextId
-	     * 	 The equipmentContextId
-	     * 
-	     * @return      
-	     * 	An JavaScript-Object with the delete result
-	     */
+	     * 		 This function is used to delete a certain environment context on the server
+		* This Function relates to ISO/IEC 24752-8 7.5.5
+				*
+		* @param  {string} environmentContextId - The Id of the environment context that shall be deleted on the server 
+	    * 
+		* @return {object} - A javascript object with all status information of the delete process
+		*/	    	    
 	    objOpenape.deleteEnvironmentContext = function (environmentContextId) {
 	    	var objDeleteEnvironmentContext_Result = {};
 	    	var objAjaxParameters = {};
