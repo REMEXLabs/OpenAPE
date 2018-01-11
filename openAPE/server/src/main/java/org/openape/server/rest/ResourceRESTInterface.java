@@ -291,16 +291,14 @@ public class ResourceRESTInterface extends SuperRestInterface {
 
         });
         
-        // TODO not tested!
+        
         Spark.head(Messages.getString("ResourceRESTInterface.ResourcesURLWithID"), (request, response) -> { //$NON-NLS-1$
-            System.out.println("head was called");
             final String resourceId = request.params(Messages.getString("ResourceRESTInterface.IDParam")); //$NON-NLS-1$
-            
             try{
                 final GetResourceReturnType serverReturn = requestHandler.getResourceById(resourceId);
                 final ResourceObject resourceObject = serverReturn.getResourceObject();
                 GroupAccessRights groupAccessRights = resourceObject.getGroupAccessRights();
-                if(groupAccessRights != null && groupAccessRights.getGroupAccessRights() != null){
+                if(groupAccessRights == null || groupAccessRights.getGroupAccessRights() == null){
                     groupAccessRights = new GroupAccessRights();
                 }
                 final ObjectMapper mapper = new ObjectMapper();
@@ -317,9 +315,8 @@ public class ResourceRESTInterface extends SuperRestInterface {
             return Messages.getString("ResourceRESTInterface.EmptyString"); //$NON-NLS-1$
         });
         
-        // TODO not tested!
+
         Spark.patch(Messages.getString("ResourceRESTInterface.ResourcesURLWithID"), (request, response) -> { //$NON-NLS-1$
-            System.out.println("patch was called");
             final String resourceId = request.params(Messages.getString("ResourceRESTInterface.IDParam")); //$NON-NLS-1$
             
             // get group access rights.
@@ -329,7 +326,7 @@ public class ResourceRESTInterface extends SuperRestInterface {
                 // get user from request response pair.
                 final CommonProfile profile = auth.getAuthenticatedProfile(request, response);
                 
-                if (groupAccessRightsString == null || !groupAccessRightsString.isEmpty()) {
+                if (groupAccessRightsString == null || groupAccessRightsString.isEmpty()) {
                     throw new IllegalArgumentException(ResourceRESTInterface.HEADER_MUST_CONTAIN_GROUP_ACCESS_RIGHT_MSG);
                 }
                 final ObjectMapper mapper = new ObjectMapper();

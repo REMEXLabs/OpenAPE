@@ -35,3 +35,4 @@ documentation/build/*
 .Trashes
 /openAPE/logs
 openAPE/server/src/main/resources/webcontent/restTests.html
+/openAPE/server/src/installation/installationfiles/mongo.properties
