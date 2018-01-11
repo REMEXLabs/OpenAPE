@@ -388,8 +388,8 @@
 	    
 	    /** updateUserContext
 		* 
-		* This function is used to update a certain user context on the server
-		* This Function relates to ISO/IEC 24752-87.2.4  
+		* This function is used to update a certain user context on the OpenAPE server. It replaces a old one with a new one.
+		* This Function relates to ISO/IEC 24752-8 7.2.4  
 		* 	 
 	    * @param  {string} userContextId - The Id of the user context that shall be replaced
 	    * 
@@ -500,15 +500,15 @@
 	    }
 	    
 	    /** getTaskContext
-	     * 
-	     * This function is used to get the task-context from the Mongodb database with the given taskContextId
-	     *
-	     * @param  taskContextId
-	     * 	 The taskContextId
-	     * 
-	     * @return      
-	     * 	An JavaScript-Object with the get result and the corresponding task-context to the given taskContextId
-	     */
+	     * 		 
+		* This function can be used to retrieve a certain taskr context from the OpenAPE server with a given Id
+		* It relates to ISO/ICE 24752-8 7.3.3
+		*
+		* 	 	     @param  {string} taskContextId - The Id of the stored taskContext that shall be retrieved 
+	    *@param {String} outputType - defines the dataformat of the received task context object. Can either be JSON or XML  
+		* @return {Object} - A javascript object with all task context information
+		*/
+
 	    objOpenape.getTaskContext = function (taskContextId, outputType) {
 	    	var objGetTaskContext_Result = {};
 	    	var objAjaxParameters = {};
@@ -660,15 +660,14 @@
 	     */
 
 	    /** getEquipmentContext
-	     * 
-	     * This function is used to get the equipment-context from the Mongodb database with the given equipmentContextId
-	     *
-	     * @param  equipmentContextId
-	     * 	 The equipmentContextId
-	     * 
-	     * @return      
-	     * 	An JavaScript-Object with the equipment-context result
-	     */
+		* 
+		* This function can be used to retrieve a certain equipmentr context from the OpenAPE server with a given Id
+		* It relates to ISO/ICE 24752-8 7.4.3
+		*
+		* 	 	     @param  {string} equipmentContextId - The Id of the stored equipmentContext that shall be retrieved 
+	    *@param {String} outputType - defines the dataformat of the received equipment context object. Can either be JSON or XML  
+		* @return {Object} - A javascript object with all equipment context information
+		*/
 	    objOpenape.getEquipmentContext = function (equipmentContextId, outputType) {
 	    	var objGetEquipmentContext_Result = {};
 	    	var objAjaxParameters = {};
@@ -870,15 +869,14 @@
 	     */
 
 	    /** getEnvironmentContext
-	     * 
-	     * This function is used to get the environment-context from the MongoDB database with the given environmentContextId
-	     *
-	     * @param  environmentContextId
-	     * 	 The environmentContextId
-	     * 
-	     * @return      
-	     * 	An JavaScript-Object with the environment-context result
-	     */
+		* 
+		* This function can be used to retrieve a certain environment context from the OpenAPE server with a given Id
+		* It relates to ISO/ICE 24752-8 7.5.3
+		*
+		* 	 	     @param  {string} environmentContextId - The Id of the stored environmentContext that shall be retrieved 
+	    *@param {String} outputType - defines the dataformat of the received environment context object. Can either be JSON or XML  
+		* @return {Object} - A javascript object with all environment context information
+		*/
 	    objOpenape.getEnvironmentContext = function (environmentContextId, outputType) {
 	    	var objGetEnvironmentContext_Result = {};
 	    	var objAjaxParameters = {};
