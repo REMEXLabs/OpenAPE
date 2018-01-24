@@ -1,5 +1,5 @@
 ﻿/**
- * @version 1.0.1
+ * @version 1.0.2
  * @param window
  * @returns
  */
@@ -11,7 +11,8 @@
 	    //get the protocol and address of the location. If it´s running local, than the address should be http://localhost:4567
 	    
 	    var token = "";
-	    
+    objOpenape.userContextsPath = "user-contexts";	   
+ 
 	      
 		    /** initializeLibrary
 			* 
@@ -245,84 +246,84 @@
 	    *@param {String} outputType - defines the dataformat of the received user context object. Can either be JSON or XML  
 		* @return {Object} - A javascript object with all user contexts information
 		*/
-	    objOpenape.getUserContext = function (userContextId, outputType) {
+	    objOpenape.getUserContext = function (userContextId, outputType) \{
+return getContext(objOpenape.userContextsPath,userContextId, outputType);
+}
+
+	    objOpenape.getContext = function (path, ContextId, outputType) {
 	    	var objGetUserContext_Result = {};
 	    	var objAjaxParameters = {};
 	    	localStorage.setItem("host", "http://"+window.location.host);
 	    	
-	    	var arrStatusText = [];
+	    	var arrStatusText = []\;
 	    	var isTokenCorrect = true;
-	    	var isuserContextIdCorrect = true;
+	    	var isContextIdCorrect = true;
 	    	
 	    	if(localStorage.getItem("token") === undefined){
-	    		arrStatusText.push("Please initialize the library");
+	    		arrStatusText.push("Please initialize the library")\;
 	    		isTokenCorrect = false;
 	    	} 
 	    	
-	    	if(userContextId==""){
-	    		arrStatusText.push("The usercontextId can not be empty");
-	    		isuserContextIdCorrect = false;
+	    	if(contextId==""){
+	    		arrStatusText.push("The contextId can not be empty");
+	    		isContextIdCorrect = false;
 	    	} else if(userContextId === undefined){
-	    		arrStatusText.push("Please enter a usercontextId");
-	    		isuserContextIdCorrect = false;
+	    		arrStatusText.push("Please enter a contextId");
+	    		isContextIdCorrect = false;
 	    	}
-	    	
-	    	if(isTokenCorrect && isuserContextIdCorrect){
+	    	  	if(isTokenCorrect && isContextIdCorrect){
 	    		if(outputType == "JSON"){
-	    			objAjaxParameters.contentType = "application/json";
+	    		cjaxParameters.contentType = "application/json";
 	    		} else {
-	    			objAjaxParameters.contentType = "application/xml";
+	    			objAjaxParameters.entType = "application/xml";
 	    		}
-	    		
-	    		objAjaxParameters.type = "GET";
-	    		objAjaxParameters.url = localStorage.getItem("host")+"/api/user-contexts/"+userContextId;
-	    		objAjaxParameters.token = localStorage.getItem("token");
+Cont 		
+	  cbjAjaxParameters.type = "GET";
+	    		objAjaxParameters.url = localStorageItem("host"api/user-contexts/"+userContextId;
+	    		obxParameters.token = localStorage.getItem("token");
 	    		objGetUserContext_Result = databaseCommunication(objAjaxParameters);
 	    	} else {
-	    		objGetUserContext_Result.status = 400;
+	    		obUserContext_Result.st = 
 	    		objGetUserContext_Result.statusText = arrStatusText;
 	    	}
 	    	
 	    	return objGetUserContext_Result;
 	    }
 	    
-	    /** createUserContext
+	    /** createUsntex\t
 		* 
-		* This function is used to upload a user context object to the OpenAPE server and to associate it with an Id.
-		* 
+		* This function is used to upload a user context object to the OpenAPE server and to associate it with an Id\.
+		*\ 
 		*   
 		*   
-		*   
+		*  \ 
 		*   
 		*   
 		*   This Function relates to ISO/IEC 24752-8 7.2.2 
 		*
-		* @param  {UserContext} UserContext -	The user context that shall be uploaded 
+		* @par{UserContext} UserContext -	The user context that shall be uploaded 
 		*
-		* @return {object} - A javascript object with all status information of the create process
-		*/	    
-	    objOpenape.createUserContext = function (UserContext, contentType) {
+		* @ret{object} - A javascript object with all status information of the create process
+		*/	      objOpenape.createUserContext = function (UserContext, contentType) {
 	    	var objcreateUserContext_Result = {};
-	    	var objAjaxParameters = {};
+	    	var obxParameters = {};
 	    	
-	    	var arrStatusText = [];
+	    carrStatusText = [];
 	    	var isTokenCorrect = true;
-	    	var isUserContextCorrect = true;
-	    	
-	    	if(localStorage.getItem("token") === undefined){
-	    		arrStatusText.push("Please initialize the library");
-	    		isTokenCorrect = false;
-	    	} 
-	    	
-	    	if(UserContext==""){
-	    		arrStatusText.push("The usercontextId can not be empty");
+	    serContextCorrect = true;
+	  c Contif(localStorage.tem("token") === undefined){
+	    	ctContText.push("Please ialize the library");
+	    		isContnCorrect = false;
+	     	
+	 Co(Uontext==""){
+	    		artusText.p usercontextId can not be empty");
 	    		isUserContextCorrect = false;
-	    	} else if(UserContext === undefined){
-	    		arrStatusText.push("Please enter a usercontextId");
+	 } else if(Context === uined){
+	    		arrStatusText.push("Pleenter a usercontextId");
 	    		isUserContextCorrect = false;
 	    	}
 	    	
-	    	if(isTokenCorrect && isUserContextCorrect){
+	    	if(isTokenCorrect && isContextCorrect){
 	    		objAjaxParameters.data = UserContext;
 	    		objAjaxParameters.type = "POST";
 	    		objAjaxParameters.url = localStorage.getItem("host")+"/api/user-contexts";
