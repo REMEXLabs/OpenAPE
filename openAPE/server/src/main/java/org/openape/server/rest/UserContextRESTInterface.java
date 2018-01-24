@@ -50,6 +50,8 @@ public class UserContextRESTInterface extends ContextRestInterface {
 		// Authentication: Make sure only registered principals (users and // admins) can create a new context, GET requests are possible for everyone
 //		Spark.before(Messages.getString("UserContextRESTInterface.UserContextURLWithoutID"), (req,res) -> { logger.info("method" + req.requestMethod()); if (!req.requestMethod().equals("GET")){ return auth.authorize("user");} else {return auth.authorize("anonymous");}}); 
 		Spark.before(Messages.getString("UserContextRESTInterface.UserContextURLWithoutID"),auth.authorize("anonymous"));
+		
+		
 		// Authentication:	Everyone can access the route for a specific ID		
 		Spark.before(Messages.getString("UserContextRESTInterface.UserContextURLWithID"), auth.authorize("anonymous"));
 		/**
@@ -59,17 +61,17 @@ public class UserContextRESTInterface extends ContextRestInterface {
 		Spark.post(Messages.getString("UserContextRESTInterface.UserContextURLWithoutID"), (req, res) -> { //$NON-NLS-1$
 
 			try {
-
+				// only admins and users are allowed to create new contexts
+auth.allowAdminAndUser(req,res);
 				// Try to map the received json object to a userContext // object.
-				final UserContext receivedUserContext = UserContextRESTInterface.createRequestObejct(req); // Make sure
-																											// to set
-																											// the id of the authenticated
-																											// user as																											 the ownerID
+				final UserContext receivedUserContext = UserContextRESTInterface.createRequestObejct(req); 
+				// Make sure to set 																					the id of the authenticated user as																											 the ownerID
 				final String id = auth.getAuthenticatedUser(req, res).getId();
 				
 				receivedUserContext.getImplementationParameters().setOwner(auth.getAuthenticatedUser(req, res).getId());
-				SuperRestInterface.logger.debug("Lusm: success"); // Test the object for validity.
-
+				SuperRestInterface.logger.debug("Lusm: success"); 
+				
+				// Test the object for validity.
 				if (!receivedUserContext.isValid()) {
 					SuperRestInterface.logger.info("lusm: none valide"); //$NON-NLS-1$
 					res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
@@ -80,7 +82,12 @@ public class UserContextRESTInterface extends ContextRestInterface {
 				final String userContextId = requestHandler.createUserContext(receivedUserContext);
 				res.status(SuperRestInterface.HTTP_STATUS_CREATED);
 				return userContextId;
-			} catch (final IllegalArgumentException e) {
+			} catch (UnauthorizedException e) {
+				res.status( SuperRestInterface.HTTP_STATUS_UNAUTHORIZED			);
+				return "You are not an admin or user"; 
+			} 
+			
+			catch (final IllegalArgumentException e) {
 				// If the parse is not successful return bad request // error code.
 				res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
 				return e.getMessage();

@@ -97,6 +97,15 @@ public class AuthService {
             throw new UnauthorizedException("You are not allowed to perform this operation");
         }
     }
+    
+    public void allowAdminAndUser(final Request request, final Response response)
+            throws UnauthorizedException {
+        final CommonProfile profile = this.getAuthenticatedProfile(request, response);
+        if (!this.isAdmin(profile) && !this.isUser(profile)) {
+            throw new UnauthorizedException("You are not allowed to perform this operation");
+        }
+    }
+
 
     /**
      * Check if the authenticated user has either the role `admin` or equals the
@@ -332,6 +341,18 @@ public class AuthService {
         return profile.getRoles().contains("admin");
     }
 
+    /**
+     * Check if the provided profile has the `user` role.
+     *
+     * @param profile
+     * @return True if user role is present, otherwise false.
+     */
+    private boolean isUser(final CommonProfile profile) {
+        return profile.getRoles().contains("user");
+    }
+
+
+    
     /**
      * Check if the provided profile has either the role `admin` or is equal to
      * the given owner.

@@ -32,7 +32,7 @@ public abstract class ContextList<T extends DatabaseObject > {
 
     private String contextTypeUri;
     
-    
+    @JsonIgnore
     private List<URI> contextUris;
     
 

@@ -26,9 +26,10 @@ public abstract class ContextRestInterface extends SuperRestInterface {
 
 	protected static <contextListType> void createContextListRestEndpoint(String path,
 			UserContextRequestHandler requestHandler, AuthService auth, Class<UserContextList> contextListType) {
-		
-		/*The Rest endpoint for requesting context lists
-		 *Relates to ISO/IEC 24752-8 7.*.6 
+
+		/*
+		 * The Rest endpoint for requesting context lists Relates to ISO/IEC 24752-8
+		 * 7.*.6
 		 */
 		Spark.get(path, (req, res) -> {
 			final String url = req.uri().toString();
@@ -39,13 +40,13 @@ public abstract class ContextRestInterface extends SuperRestInterface {
 						requestHandler.getAllUserContexts(url));
 			} catch (final UnauthorizedException e) {
 				try {
-					
+
 					final CommonProfile profile = auth.getAuthenticatedProfile(req, res);
 					String owner = profile.getUsername();
 					auth.allowAdminAndOwner(profile, owner);
-				return UserContextRESTInterface.createReturnStringListRequest(req, res, contextListType,
-						requestHandler.getMyContexts(auth.getAuthenticatedUser(req, res).getId(), url));
-				} catch (final UnauthorizedException ex  ) {
+					return UserContextRESTInterface.createReturnStringListRequest(req, res, contextListType,
+							requestHandler.getMyContexts(auth.getAuthenticatedUser(req, res).getId(), url));
+				} catch (final UnauthorizedException ex) {
 					return UserContextRESTInterface.createReturnStringListRequest(req, res, contextListType,
 							requestHandler.getPublicContexts(url));
 
@@ -57,7 +58,10 @@ public abstract class ContextRestInterface extends SuperRestInterface {
 
 	public static String createReturnStringListRequest(final Request req, final Response res, final Class type,
 			final Object data) {
-		final String contentType = req.contentType();
+		String contentType = req.contentType();
+		if (contentType == null) {
+			contentType = MediaType.APPLICATION_JSON;
+		} // TODO add openApe Setting
 		if (contentType.equals(MediaType.APPLICATION_JSON)) {
 			try {
 				final ObjectMapper mapper = new ObjectMapper();
