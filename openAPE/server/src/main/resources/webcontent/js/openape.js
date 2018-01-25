@@ -12,7 +12,7 @@
 	    
 	    var token = "";
     
-	    objOpenape.userContextsPath = "/api/user-contexts";	   
+	    objOpenape.userContextPath = "/api/user-contexts";	   
  objOpenape.taskContextPath = "/api/task-contexts";
  objOpenape.equipmentContextPath = "/api/equipment-contexts"
 	    objOpenape.environmentContextPath = "/api/envronment-contexts";
@@ -187,14 +187,8 @@
 	    	var objUserProfile = {};
 	    	var objAjaxParameters = {};
 	    	
-	    	var isTokenCorrect = true;
 	    	
-	    	if(localStorage.getItem("token") === undefined){
-	    		objUserProfile.statusText = "Please initialize the library";
-	    		isTokenCorrect = false;
-	    	} 
-	    	
-	    	if(isTokenCorrect) {
+	    	if(isTokenCorrect()) {
 	    		objAjaxParameters.type = "GET";
 	    		objAjaxParameters.url = localStorage.getItem("host")+"/profile";
 	    		objAjaxParameters.token = localStorage.getItem("token");
@@ -219,14 +213,7 @@
 		    	var objUserProfile = {};
 		    	var objAjaxParameters = {};
 		    	
-		    	var isTokenCorrect = true;
-		    	
-		    	if(localStorage.getItem("token") === undefined){
-		    		objUserProfile.statusText = "Please initialize the library";
-		    		isTokenCorrect = false;
-		    	} 
-		    	
-		    	if(isTokenCorrect) {
+		    	if(isTokenCorrect()) {
 		    		objAjaxParameters.type = "GET";
 		    		objAjaxParameters.url = localStorage.getItem("host")+"/users/openape/"+userId;
 		    		objAjaxParameters.token = localStorage.getItem("token");
@@ -248,8 +235,8 @@
 			*@param{string} contentType - the used content-type   
 		*			 @return {object} - A javascript object with all status information of the create process
 			*/	      
-	     objOpenape.createUserContext = function (UserContext, contentType) {
-		 return getContext(userContextPath, userContext, contentType);
+	     objOpenape.createUserContext = function (userContext, contentType) {
+		 return getContext(objOpenape.userContextPath, userContext, contentType);
 	     }
 
 	     /** getUserContext
@@ -277,7 +264,7 @@
 			* @return {object} - A javascript object with all status information of the update process
 			*/	
 		    objOpenape.updateUserContext = function (userContextId, UserContext, contentType) {
-		    return updateContext(userContextPath, userContextId, contentType);	
+		    return updateContext(objOpenape.userContextPath, userContextId, contentType);	
 		    }
 
 		    /** deleteUserContext
@@ -290,7 +277,7 @@
 			* @return {object} - A javascript object with all status information of the delete process
 			*/	    	    
 		    objOpenape.deleteUserContext = function (userContextId) {
-		    	return deleteContext(userContextPath, userContextId);
+		    	return deleteContext(objOpenape.userContextPath, userContextId);
 		    }
 
 		    /** getUserContextList
@@ -305,7 +292,7 @@
 					*@return {object} - A javascript object with all status information
 					*/
 		    objOpenape.getUserContextList = function (query, contentType) {
-return getContextList(userContextPath, query, contentType);
+return getContextList(objOpenape.userContextPath, query, contentType);
 		    }
 
 		    
@@ -321,7 +308,7 @@ return getContextList(userContextPath, query, contentType);
 			* @return {object} - A javascript object with all status information of the create process
 			*/	    
 		    	    objOpenape.createTaskContext = function (taskContext, contentType) {
-return createTaskContext(taskContextPath, taskContextId, contentType);		    	    	
+return createContext(objOpenape.taskContextPath, taskContext, contentType);		    	    	
 		    	    }
 
 		    	    /** getTaskContext
@@ -384,7 +371,20 @@ return updateContext(taskContextPath, taskContextId, contentType);
 
 
 		    	    /*Equipment-Contexts functions*/
-
+				    /** createEquipmentContext
+					* 
+					* This function is used to upload a equipment context object to the OpenAPE server and to associate it with an Id.
+					*    This Function relates to ISO/IEC 24752-8 7.4.2 
+					*
+					* @param  {EquipmentContext} equipmentContext -	The equipment context that shall be uploaded 
+					*
+					* @return {object} - A javascript object with all status information of the create process
+					*/	    
+				    	    objOpenape.createEquipmentContext = function (equipmentContext, contentType) {
+return createContext(objOpenape.equipmentContextPath, equipmentContext, contentType);
+				    	    }
+				    
+				    
 		    	    /** getEquipmentContext
 		    		* 
 		    		* This function can be used to retrieve a certain equipment context from the OpenAPE server with a given Id
@@ -437,7 +437,7 @@ updateContext(equipmentContextPath, equipmentContextId, equipmentContext, conten
 		return getContextList(equipmentContextPath, query, contentType);
 				    }
 
-				     * EnvironmentContext functions*/
+				     /* EnvironmentContext functions*/
 
 		    /** createEnvironmentContext
 			* 
@@ -515,58 +515,32 @@ return getContextList(environmentContextPath, query, contentType);
 	    	localStorage.setItem("host", "http://"+window.location.host);
 	    	
 	    	let arrStatusText = [];
-	    	let isTokenCorrect = true;
-	    	let isContextIdCorrect = true;
+	    		    	
 	    	
-	    	if(localStorage.getItem("token") === undefined){
-	    		arrStatusText.push("Please initialize the library");
-	    		isTokenCorrect = false;
-	    	} 
-	    	
-	    	if(contextId==""){
-	    		arrStatusText.push("The contextId can not be empty");
-	    		isContextIdCorrect = false;
-	    	} else if(userContextId === undefined){
-	    		arrStatusText.push("Please enter a contextId");
-	    		isContextIdCorrect = false;
-	    	}
-	    	  	if(isTokenCorrect && isContextIdCorrect){
+	    	  	if(isTokenCorrect() && isContextIdCorrect(contextId) ){
 	    		if(outputType == "JSON"){
 	    		objajaxParameters.contentType = "application/json";
 	    		} else {
 	    			objAjaxParameters.contentType = "application/xml";
 	    		}
 objAjaxParameters.type = "GET";
-	    		objAjaxParameters.url = localStorage.getItem("host")+ path+userContextId;
+	    		objAjaxParameters.url = localStorage.getItem("host")+ path+ contextId;
 	    		objAjaxParameters.token = localStorage.getItem("token");
 	    		objGetContext_Result = databaseCommunication(objAjaxParameters);
 	    	} else {
 alert("error");
 	    	};
 	    	   }
-    	    let createContext = function (path, environmentContext, contentType) {
+	    	   
+	    	   
+    	    let createContext = function (path, context, contentType) {
     	    	let context_Result = {};
     	    	let objAjaxParameters = {};
     	    	
     	    	let arrStatusText = [];
-    	    	let isTokenCorrect = true;
-    	    	let  isEnvironmentContextCorrect = true;
     	    	
-    	    	if(localStorage.getItem("token") === undefined){
-    	    		arrStatusText.push("Please initialize the library");
-    	    		isTokenCorrect = false;
-    	    	} 
-    	    	
-    	    	if(environmentContext==""){
-    	    		arrStatusText.push("The environmentContext can not be empty");
-    	    		isEnvironmentContextCorrect = false;
-    	    	} else if(environmentContext === undefined){
-    	    		arrStatusText.push("Please enter a environmentContext");
-    	    		isEnvironmentContextCorrect = false;
-    	    	}
-    	    	
-    	    	if(isTokenCorrect && isEnvironmentContextCorrect){	
-    	    		objAjaxParameters.data = environmentContext;
+    	    	if(isTokenCorrect() && isContextCorrect(context)){	
+    	    		objAjaxParameters.data = context;
     	    		objAjaxParameters.type = "POST";
     	    		
     	    		switch (contentType){
@@ -585,36 +559,13 @@ alert("error");
     	    };;
     	    
 
-var updateContext = function (contextId, Context, contentType) {
-	    	var objUpdateContext_Result = {};
+var updateContext = function (contextId, context, contentType) {
+	/*    	
+	var objUpdateContext_Result = {};
 	    	var objAjaxParameters = {};
 	    	var arrStatusText = [];
-	    	var isTokenCorrect = true;
-	    	var isContextCorrect = true;
-	    	var isContextIdCorrect = true;
 	    	
-	    	if(localStorage.getItem("token") === undefined){
-	    		arrStatusText.push("Please initialize the library");
-	    		isTokenCorrect = false;
-	    	} 
-	    	
-	    	if(context==""){
-	    		arrStatusText.push("The context can not be empty");
-	    		isContextCorrect = false;
-	    	} else if(context === undefined){
-	    		arrStatusText.push("Please enter a context");
-	    		isContextCorrect = false;
-	    	}
-	    	
-	    	if(contextId==""){
-	    		arrStatusText.push("The contextId can not be empty");
-	    		isContextIdCorrect = false;
-	    	} else if(contextId === undefined){
-	    		arrStatusText.push("Please enter a contextId");
-	    		isContextIdCorrect = false;
-	    	}
-	    	
-	    	if(isTokenCorrect && isContextCorrect && isContextIdCorrect ){
+	    	if(isTokenCorrect() && isContextCorrect(context) && isContextIdCorrect(contextId) ){
 	    		objAjaxParameters.data = context;
 	    		objAjaxParameters.type = "PUT";
 	    		
@@ -622,31 +573,30 @@ var updateContext = function (contextId, Context, contentType) {
 					case "JSON" : objAjaxParameters.contentType = 'application/json'; break;
 					case "XML" : objAjaxParameters.contentType = 'application/xml';break;	
 	    		};
+	    		objAjaxParameters.url = localStorage.getItem("host")+path+contextId;
+	    		objAjaxParameters.token = localStorage.getItem("token");
+	    		objUpdatecontext_Result = databaseCommunication(objAjaxParameters);
+	    	} else {
+	    		objUpdatecontext_Result.status = 400;
+	    		objUpdatecontext_Result.statusText = arrStatusText;
 	    	}
-	    		
-	    		let deleteContext = function (contextId) {
-	    	    	let objDeleteContext_Result = {};
+	    	return objUpdatecontext_Result;*/
+	    }; 
+	    
+	    
+
+	    	
+	    	/* Function to delete all kind of contexts 
+	    		 * 
+	    		 */
+	    		let deleteContext = function(path, contextId) {
+	    	    	/*
+	    			let objDeleteContext_Result = {};
 	    	    	let objAjaxParameters = {};
 	    	    	
 	    	    	let arrStatusText = [];
 	    	    	
-	    	    	let isTokenCorrect = true;
-	    	    	let isContextIdCorrect = true;
-	    	    	
-	    	    	if(localStorage.getItem("token") === undefined){
-	    	    		arrStatusText.push("Please initialize the library");
-	    	    		isTokenCorrect = false;
-	    	    	} 
-	    	    	
-	    	    	if(environmentContextId==""){
-	    	    		arrStatusText.push("The contextId can not be empty");
-	    	    		isEnvironmentContextIdCorrect = false;
-	    	    	} else if(contextId === undefined){
-	    	    		arrStatusText.push("Please enter a ContextId");
-	    	    		isContextIdCorrect = false;
-	    	    	}
-	    	    	
-	    	    	if(isTokenCorrect && isContextIdCorrect ){
+	    	    	if(isTokenCorrect() && isContextIdCorrect(contextId) ){
 	    	    		objAjaxParameters.type = "DELETE";
 	    	    		objAjaxParameters.url = localStorage.getItem("host")path;
 	    	    		objAjaxParameters.token = localStorage.getItem("token");
@@ -656,20 +606,11 @@ var updateContext = function (contextId, Context, contentType) {
 	    	    		objDeleteContext_Result.status = 400;
 	    	    	}
 	    	    	return objDeleteContext_Result;
+	    	    	*/
 	    	    }
 
 	    		
-	    		objAjaxParameters.url = localStorage.getItem("host")+path+contextId;
-	    		objAjaxParameters.token = localStorage.getItem("token");
-	    		objUpdatecontext_Result = databaseCommunication(objAjaxParameters);
-	    	} else {
-	    		objUpdatecontext_Result.status = 400;
-	    		objUpdatecontext_Result.statusText = arrStatusText;
-	    	}
-	    	return objUpdatecontext_Result;
-	    }; 
-	    
-	    function getContextList(query, contentType){
+	    		function getContextList(query, contentType){
 	    	
 	    }
 	    
@@ -742,9 +683,47 @@ var updateContext = function (contextId, Context, contentType) {
 	    	return objStatus;
 	    }
 
+	    function isTokenCorrect(){
+	    	let isTokenCorrect = true;
+	    		    	if(localStorage.getItem("token") === undefined){
+	    		    		arrStatusText.push("Please initialize the library");
+	    		    		isTokenCorrect = false;
+	    		    	} 
+	    	return isTokenCorrect;
+	    	}	    	
+
+	    	function isContextIdCorrect(contextId){
+	    	let isContextIdCorrect = true;
+	    	if(contextId==""){
+	    		    		arrStatusText.push("The contextId can not be empty");
+	    		    		isContextIdCorrect = false;
+	    		    	} else if(contextId === undefined){
+	    		    		arrStatusText.push("Please enter a contextId");
+	    		    		isContextIdCorrect = false;
+	    		    	}
+	    		    	
+	    	return isContextIdCorrect;
+	    	}
+	    	
+	    	function isContextCorrect(context){
+		    	var isContextCorrect = true;
+		    	if(context==""){
+		    		arrStatusText.push("The context can not be empty");
+		    		isContextCorrect = false;
+		    	} else if(context === undefined){
+		    		arrStatusText.push("Please enter a context");
+		    		isContextCorrect = false;
+		    	}
+
+
+
+	return isContextCorrect;	    	
+	}
+
+	    
 	    function validateEmail(email) {
-	        var re = /^(([^<>()[]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-	        return re.test(email);
+
+	        
 	    }
 	
 	    
