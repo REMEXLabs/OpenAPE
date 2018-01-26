@@ -11,7 +11,7 @@
 	    //get the protocol and address of the location. If it´s running local, than the address should be http://localhost:4567
 	    
 	    var token = "";
-    
+let defaultContentType = "application/json";    
 	    objOpenape.userContextPath = "/api/user-contexts";	   
  objOpenape.taskContextPath = "/api/task-contexts";
  objOpenape.equipmentContextPath = "/api/equipment-contexts"
@@ -285,14 +285,14 @@
 			* This function is used to retrieve a list of URIs to accessible user contexts
 			* This Function relates to ISO/IEC 24752-8 7.2.6
 						*
-			* @param  {string} userContextId - The stored UserContextId that shall be deleted
+			* 
 		    *
 			* @param  {string} query - the query to filter the relevant contexts
 				    *@param{string} contentType - the used content-type 
 					*@return {object} - A javascript object with all status information
 					*/
 		    objOpenape.getUserContextList = function (query, contentType) {
-return getContextList(objOpenape.userContextPath, query, contentType);
+		    	return getContextList(objOpenape.userContextPath, query, contentType);
 		    }
 
 		    
@@ -437,9 +437,11 @@ updateContext(equipmentContextPath, equipmentContextId, equipmentContext, conten
 		return getContextList(equipmentContextPath, query, contentType);
 				    }
 
-				     /* EnvironmentContext functions*/
-
-		    /** createEnvironmentContext
+				     
+				    
+				    /* EnvironmentContext functions*/
+				    
+				    /** createEnvironmentContext
 			* 
 			* This function is used to upload a environment context object to the OpenAPE server and to associate it with an Id.
 			*   This Function relates to ISO/IEC 24752-8 7.5.2 
@@ -447,11 +449,12 @@ updateContext(equipmentContextPath, equipmentContextId, equipmentContext, conten
 			* @param  {EnvironmentContext} environmentContext -	The environment context that shall be uploaded 
 			*
 			* @return {object} - A javascript object with all status information of the create process
-			*/	    
-		    	    objOpenape.createEnvironmentContext = function (environmentContext, contentType) {
+			*/
+objOpenape.createEnvironmentContext = function (environmentContext, contentType) {
 		    	    	return createContext(objOpenape.environmentContextPath, environmentContext, contentType);
 		    	    }
 
+		    	    
 					    /** getEnvironmentContext
 						* 
 						* This function can be used to retrieve a certain environment context from the OpenAPE server with a given Id
@@ -511,80 +514,50 @@ return getContextList(environmentContextPath, query, contentType);
 	    
 	    	   var  getContext = function (path, contextId, outputType) {
 	    	let objGetContext_Result = {};
-	    	let objAjaxParameters = {};
-	    	localStorage.setItem("host", "http://"+window.location.host);
-	    	
 	    	let arrStatusText = [];
-	    		    	
-	    	
+	    	    	    	
 	    	  	if(isTokenCorrect() && isContextIdCorrect(contextId) ){
-	    		if(outputType == "JSON"){
-	    		objajaxParameters.contentType = "application/json";
-	    		} else {
-	    			objAjaxParameters.contentType = "application/xml";
-	    		}
-objAjaxParameters.type = "GET";
-	    		objAjaxParameters.url = localStorage.getItem("host")+ path+ contextId;
-	    		objAjaxParameters.token = localStorage.getItem("token");
-	    		objGetContext_Result = databaseCommunication(objAjaxParameters);
+	    	  		let objAjaxParameters = createAjaxObject("GET", path + "/" + contextId, outputType);
+	    	  			    		objGetContext_Result = databaseCommunication(objAjaxParameters);
 	    	} else {
 alert("error");
+	    	return  obj
 	    	};
+	    	objGetContext_Result 
 	    	   }
 	    	   
-	    	   
-    	    let createContext = function (path, context, contentType) {
+	    	       	    let createContext = function (path, context, contentType) {
     	    	let context_Result = {};
-    	    	let objAjaxParameters = {};
-    	    	
     	    	let arrStatusText = [];
     	    	
     	    	if(isTokenCorrect() && isContextCorrect(context)){	
+objAjaxParameters = createAjaxObject("POST", path, contentType );
     	    		objAjaxParameters.data = context;
-    	    		objAjaxParameters.type = "POST";
-    	    		
-    	    		switch (contentType){
-        				case "JSON" : objAjaxParameters.contentType = 'application/json'; break;
-        				case "XML" : objAjaxParameters.contentType = 'application/xml';break;	
-    	    		}
-    	    		
-    	    		objAjaxParameters.url = localStorage.getItem("host")+"/api/environment-contexts";
-    	    		objAjaxParameters.token = localStorage.getItem("token");
-    	    		objcreateEnvironmentContext_Result = databaseCommunication(objAjaxParameters);
+    	    		objcreateContext_Result = databaseCommunication(objAjaxParameters);
     	    	} else {
-    	    		objcreateEnvironmentContext_Result.statusText = arrStatusText;
-    	    		objcreateEnvironmentContext_Result.status = 400;
+    	    		objcreateContext_Result.statusText = arrStatusText;
+    	    		objcreateContext_Result.status = 400;
     	    	}
-    	    	return objcreateEnvironmentContext_Result;
+    	    	return objcreateContext_Result;
     	    };;
     	    
-
 var updateContext = function (contextId, context, contentType) {
-	/*    	
+
 	var objUpdateContext_Result = {};
-	    	var objAjaxParameters = {};
+
 	    	var arrStatusText = [];
 	    	
 	    	if(isTokenCorrect() && isContextCorrect(context) && isContextIdCorrect(contextId) ){
+let objAjaxParameters = createAjaxObject("PUT", path+"/" +contextId, contentType); 
 	    		objAjaxParameters.data = context;
-	    		objAjaxParameters.type = "PUT";
-	    		
-	    		switch (contentType){
-					case "JSON" : objAjaxParameters.contentType = 'application/json'; break;
-					case "XML" : objAjaxParameters.contentType = 'application/xml';break;	
-	    		};
-	    		objAjaxParameters.url = localStorage.getItem("host")+path+contextId;
-	    		objAjaxParameters.token = localStorage.getItem("token");
 	    		objUpdatecontext_Result = databaseCommunication(objAjaxParameters);
 	    	} else {
 	    		objUpdatecontext_Result.status = 400;
+console.log("Could not send request");
 	    		objUpdatecontext_Result.statusText = arrStatusText;
 	    	}
-	    	return objUpdatecontext_Result;*/
+	    	return objUpdatecontext_Result;
 	    }; 
-	    
-	    
-
 	    	
 	    	/* Function to delete all kind of contexts 
 	    		 * 
@@ -609,9 +582,17 @@ var updateContext = function (contextId, context, contentType) {
 	    	    	*/
 	    	    }
 
-	    		
-	    		function getContextList(query, contentType){
-	    	
+	  		function getContextList(path, query, contentType){
+	    		    			objAjaxParams = createAjaxObject("GET",path, contentType);
+	    	let response = databaseCommunication(objAjaxParams);
+
+	    	responseText = response.responseText;
+	    	var result;
+	    	if (ajaxParams.contentType == "application/json"){
+	    	result = JSON.parse(responseText);
+	  		} else {
+	  			result = XML.parse(responseText);
+	  		}
 	    }
 	    
 
@@ -656,6 +637,7 @@ var updateContext = function (contextId, context, contentType) {
 	    	} else if(objAjaxParameters.type == "GET"){
 	    		request.type = objAjaxParameters.type;
 	    		request.url = objAjaxParameters.url;
+	    		console.log("" + request.url);
 	    		request.contentType = objAjaxParameters.contentType;
 	    		
 	    		if (objAjaxParameters.token != null) {
@@ -719,6 +701,25 @@ var updateContext = function (contextId, context, contentType) {
 
 	return isContextCorrect;	    	
 	}
+	    	
+	    	function createAjaxObject(verb, path, contentType){
+    		let objAjaxParameters = {};
+
+	    		if(contentType == "JSON"){
+	    			    		objAjaxParameters.contentType = "application/json";
+	    		} else if (contentType = "XML"){
+	    			    			objAjaxParameters.contentType == "application/xml";
+	    			    		} else {
+	    			    			objAjaxParameters.contentType = defaultContentType;	
+	    			    		}
+	    		objAjaxParameters.type = "GET";
+	    			    		objAjaxParameters.url = localStorage.getItem("host") + path;
+    			    		 console.log("ajaxobj: " +     		objAjaxParameters.url );
+	    		if (isTokenCorrect){
+	    			    		objAjaxParameters.token = localStorage.getItem("token");
+	    		}
+	    		return objAjaxParameters
+	    			    		}
 
 	    
 	    function validateEmail(email) {
