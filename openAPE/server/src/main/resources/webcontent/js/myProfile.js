@@ -7,3 +7,9 @@ $(document).ready(function() {
 		localStorage.setItem("role", "admin");
 	}
 })
+
+$.(btnPassword).click(function(){
+	let pw1 = $.("btnPassword1").getValue();
+	let pw2 = $.("btnPassword2").getValue();
+	
+});
