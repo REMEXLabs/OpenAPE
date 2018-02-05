@@ -68,12 +68,12 @@ auth.allowAdminAndUser(req,res);
 				// Make sure to set 																					the id of the authenticated user as																											 the ownerID
 				final String id = auth.getAuthenticatedUser(req, res).getId();
 				
-				receivedUserContext.getImplementationParameters().setOwner(auth.getAuthenticatedUser(req, res).getId());
+				receivedUserContext.getImplementationParameters().setOwner(id);
 				SuperRestInterface.logger.debug("Lusm: success"); 
 				
 				// Test the object for validity.
 				if (!receivedUserContext.isValid()) {
-					SuperRestInterface.logger.info("lusm: none valide"); //$NON-NLS-1$
+					SuperRestInterface.logger.debug("lusm: none valide"); //$NON-NLS-1$
 					res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
 					return Messages.getString("UserContextRESTInterface.NoValidObjectErrorMassage");
 				}

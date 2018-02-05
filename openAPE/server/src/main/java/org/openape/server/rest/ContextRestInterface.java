@@ -33,20 +33,23 @@ public abstract class ContextRestInterface extends SuperRestInterface {
 		 */
 		Spark.get(path, (req, res) -> {
 			final String url = req.uri().toString();
-			logger.info("requesting lists");
+			
 			try {
 				auth.allowAdmin(req, res);
 				return UserContextRESTInterface.createReturnStringListRequest(req, res, contextListType,
 						requestHandler.getAllUserContexts(url));
 			} catch (final UnauthorizedException e) {
-				try {
+				
 
 					final CommonProfile profile = auth.getAuthenticatedProfile(req, res);
 					String owner = profile.getUsername();
-					auth.allowAdminAndOwner(profile, owner);
+					
+if (owner != null) {
+					
 					return UserContextRESTInterface.createReturnStringListRequest(req, res, contextListType,
 							requestHandler.getMyContexts(auth.getAuthenticatedUser(req, res).getId(), url));
-				} catch (final UnauthorizedException ex) {
+				} else{
+					
 					return UserContextRESTInterface.createReturnStringListRequest(req, res, contextListType,
 							requestHandler.getPublicContexts(url));
 
