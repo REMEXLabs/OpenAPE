@@ -705,6 +705,18 @@
 			   result = XML.parse(responseText);
 		   }
 	   }
+	   
+	   openape.changePassword = function(oldPw, newPw) {
+		id = getUser().userId;
+		   var ajaxParams = createAjaxObject("Put", "openape/users/id/password" );
+		   		var passwordChangeRequest = {};
+		   		password.changeRequest.oldPassword = oldPw;
+		   		passwordChangeRequest.newPassword = newPw;
+		   		ajaxParams.data = JSON.stringify(passwordChangeRequest);
+		   		var response = databaseCommunication(ajaxParams);
+		   		   			   }
+	   
+	   
 	   /**
 	    * Executes Ajax requests
 	    * 
@@ -833,6 +845,7 @@
 	   }
 	
 	    
+	   
 	   // We will add functions to our library here !
 
 
