@@ -371,7 +371,7 @@
 	    *         information
 	    */
 	   objOpenape.getTaskContext = function (taskContextId, contentType) {
-		   return getContext(taskContextPath, taskContextId, contentType);
+		   return getContext(objOpenape.taskContextPath, taskContextId, contentType);
 	   }
 	   
 	   /**
@@ -393,7 +393,7 @@
 	    *         information of the update process
 	    */	
 	   objOpenape.updateTaskContext = function (taskContextId, taskContext, contentType) {
-		   return updateContext(taskContextPath, taskContextId, contentType);
+		   return updateContext(objOpenape.taskContextPath, taskContextId, contentType);
 	   }
 	   
 	   /**
@@ -411,7 +411,7 @@
 	    */	    	    
 	   
 	   objOpenape.deleteTaskContext = function (taskContextId) {
-		   return deleteContext(taskContextPath, taskContextId); 
+		   return deleteContext(objOpenape.taskContextPath, taskContextId); 
 	   }
 	   
 	   /**
@@ -429,7 +429,7 @@
 	    *         information
 	    */	    	    
 	   objOpenape.getTaskContextList = function (query, contentType) {
-		   return getContextList(taskContextPath, query, contentType);
+		   return getContextList(objOpenape.taskContextPath, query, contentType);
 	   }
 	   
 	   
@@ -471,7 +471,7 @@
 	    *         context information
 	    */
 	   objOpenape.getEquipmentContext = function (equipmentContextId, outputType) {
-		   return getContext(equipmentContextPath, equipmentContextId, outputType);
+		   return getContext(objOpenape.equipmentContextPath, equipmentContextId, outputType);
 	   }
 	   
 	   /**
@@ -492,7 +492,7 @@
 	    *         information of the update process
 	    */	
 	   objOpenape.updateEquipmentContext = function (equipmentContextId, equipmentContext, contentType) {
-		   return updateContext(equipmentContextPath, equipmentContextId, equipmentContext, contentType);
+		   return updateContext(objOpenape.equipmentContextPath, equipmentContextId, equipmentContext, contentType);
 	   }
 	   
 	   /**
@@ -510,7 +510,7 @@
 	    *         information of the delete process
 	    */	    	    
 	   objOpenape.deleteEquipmentContext = function (equipmentContextId) {
-		   return deleteContext(equipmentContextPath, equipmentContextId );
+		   return deleteContext(objOpenape.equipmentContextPath, equipmentContextId );
 	   }
 		   	
 	   /**
@@ -528,7 +528,7 @@
 	    *         information
 	    */	    	    
 	   objOpenape.getEquipmentContextList = function (query, contentType) {
-		   return getContextList(equipmentContextPath, query, contentType);
+		   return getContextList(objOpenape.equipmentContextPath, query, contentType);
 	   }
 		   
 	   /* EnvironmentContext functions */
@@ -570,7 +570,7 @@
 	    *         environment context information
 	    */
 	   objOpenape.getEnvironmentContext = function (environmentContextId, outputType) {
-		   return getContext(environmentContextPath, environmentContextId, outputType);	
+		   return getContext(objOpenape.environmentContextPath, environmentContextId, outputType);	
 	   }
 	   
 	   /**
@@ -609,7 +609,7 @@
 	    *         the delete process
 	    */	    	    
 	   objOpenape.deleteEnvironmentContext = function (environmentContextId) {
-		   return deleteContext(path, environmentContextId);
+		   return deleteContext(objOpenape.environmentContextPath, environmentContextId);
 	   }
 	   
 	   /**
@@ -624,7 +624,7 @@
 	    * @return {object} - A javascript object with all status information
 	    */	    	    
 	   objOpenape.getEnvironmentContextList = function (query, contentType) {
-		   return getContextList(environmentContextPath, query, contentType);
+		   return getContextList(objOpenape.environmentContextPath, query, contentType);
 	   } 
 	   
 	   var  getContext = function (path, contextId, outputType) {
