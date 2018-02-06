@@ -706,15 +706,15 @@
 		   }
 	   }
 	   
-	   openape.changePassword = function(oldPw, newPw) {
-		id = getUser().userId;
+	   objOpenape.changePassword = function(oldPw, newPw) {
+		   id = getUser().userId;
 		   var ajaxParams = createAjaxObject("Put", "openape/users/id/password" );
-		   		var passwordChangeRequest = {};
-		   		password.changeRequest.oldPassword = oldPw;
-		   		passwordChangeRequest.newPassword = newPw;
-		   		ajaxParams.data = JSON.stringify(passwordChangeRequest);
-		   		var response = databaseCommunication(ajaxParams);
-		   		   			   }
+		   var passwordChangeRequest = {};
+		   passwordChangeRequest.oldPassword = oldPw;
+		   passwordChangeRequest.newPassword = newPw;
+		   ajaxParams.data = JSON.stringify(passwordChangeRequest);
+		   var response = databaseCommunication(ajaxParams);
+	   }
 	   
 	   
 	   /**
