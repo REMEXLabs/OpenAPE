@@ -256,7 +256,7 @@
 		*         information of the create process
 		*/	      
 	   objOpenape.createUserContext = function (userContext, contentType) {
-		   return getContext(objOpenape.userContextPath, userContext, contentType);
+		   return createContext(objOpenape.userContextPath, userContext, contentType);
 	   }
 
 	   /**
@@ -492,7 +492,7 @@
 	    *         information of the update process
 	    */	
 	   objOpenape.updateEquipmentContext = function (equipmentContextId, equipmentContext, contentType) {
-		   updateContext(equipmentContextPath, equipmentContextId, equipmentContext, contentType);
+		   return updateContext(equipmentContextPath, equipmentContextId, equipmentContext, contentType);
 	   }
 	   
 	   /**
@@ -609,7 +609,7 @@
 	    *         the delete process
 	    */	    	    
 	   objOpenape.deleteEnvironmentContext = function (environmentContextId) {
-		   deleteContext(path, environmentContextId);
+		   return deleteContext(path, environmentContextId);
 	   }
 	   
 	   /**
@@ -626,6 +626,7 @@
 	   objOpenape.getEnvironmentContextList = function (query, contentType) {
 		   return getContextList(environmentContextPath, query, contentType);
 	   } 
+	   
 	   var  getContext = function (path, contextId, outputType) {
 		   let objGetContext_Result = {};
 		   let arrStatusText = [];
