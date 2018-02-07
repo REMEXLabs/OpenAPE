@@ -16,7 +16,7 @@
 	    objOpenape.userContextPath = "/api/user-contexts";	   
 	    objOpenape.taskContextPath = "/api/task-contexts";
 	    objOpenape.equipmentContextPath = "/api/equipment-contexts"
-	    objOpenape.environmentContextPath = "/api/envronment-contexts";
+	    objOpenape.environmentContextPath = "/api/environment-contexts";
 	      
 	    /**
 		 * initializeLibrary
