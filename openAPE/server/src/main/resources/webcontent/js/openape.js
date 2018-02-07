@@ -12,7 +12,7 @@
 		// than the address should be http://localhost:4567
 	    
 	    var token = "";
-	    let defaultContentType = "application/json";    
+	    objOpenape.defaultContentType = "application/json";    
 	    objOpenape.userContextPath = "/api/user-contexts";	   
 	    objOpenape.taskContextPath = "/api/task-contexts";
 	    objOpenape.equipmentContextPath = "/api/equipment-contexts"
@@ -649,6 +649,8 @@
 			   objAjaxParameters = createAjaxObject("POST", path, contentType );
 			   objAjaxParameters.data = context;
 			   objcreateContext_Result = databaseCommunication(objAjaxParameters);
+			   console.log("status: " + 			   objcreateContext_Result.status );
+			   console.log("rt: " +  objcreateContext_Result.responseText );
 		   } else {
 			   objcreateContext_Result.statusText = arrStatusText;
 			   objcreateContext_Result.status = 400;
@@ -695,15 +697,19 @@
 	   }
 
 	   function getContextList(path, query, contentType){
-		   objAjaxParams = createAjaxObject("GET",path, contentType);
-		   let response = databaseCommunication(objAjaxParams);
+		   var ajaxParams = createAjaxObject("GET",path, contentType);
+		   let response = databaseCommunication(ajaxParams);
 		   
 		   responseText = response.responseText;
+		   console.log("respnsetext: " + responseText);
 		   var result;
 		   if (ajaxParams.contentType == "application/json"){
 			   result = JSON.parse(responseText);
-		   } else {
+		   } else if (ajaxParams == "application/xml"){
 			   result = XML.parse(responseText);
+		   }
+		   else {
+			   result = JSON.parse(responseText);
 		   }
 	   }
 	   
@@ -735,7 +741,7 @@
 					   objStatus = jqXHR;
 				   }
 		   }
-	    	
+	    	console.log("verb: " + objAjaxParameters.type);
 		   if(objAjaxParameters.type == "PUT") {
 			   request.data = objAjaxParameters.data;
 			   request.type = objAjaxParameters.type;
@@ -759,7 +765,7 @@
 		   } else if(objAjaxParameters.type == "GET"){
 		   		request.type = objAjaxParameters.type;
 		   		request.url = objAjaxParameters.url;
-		   		console.log("" + request.url);
+//		   		console.log("" + request.url);
 		   		request.contentType = objAjaxParameters.contentType;
 	    		
 		   		if (objAjaxParameters.token != null) {
@@ -768,6 +774,7 @@
 		   			}
 		   		}
 		   } else if(objAjaxParameters.type == "POST"){
+			   console.log("executing POST");
 			   request.type = objAjaxParameters.type;
 			   request.url = objAjaxParameters.url;
 			   request.contentType = objAjaxParameters.contentType;
@@ -826,14 +833,16 @@
 		   
 		   if(contentType == "JSON"){
 			   objAjaxParameters.contentType = "application/json";
-		   } else if (contentType = "XML"){
+		   } else if (contentType == "XML"){
 			   objAjaxParameters.contentType == "application/xml";
 		   } else {
-			   objAjaxParameters.contentType = defaultContentType;	
+			   console.log("else");
+			   objAjaxParameters.contentType = objOpenape.defaultContentType;	
 		   }
-		   objAjaxParameters.type = "GET";
+		   console.log("content-type: " + objAjaxParameters.contentType );
+		   objAjaxParameters.type = verb;
 		   objAjaxParameters.url = localStorage.getItem("host") + path;
-		   console.log("ajaxobj: " +     		objAjaxParameters.url );
+//		   console.log("ajaxobj: " +     		objAjaxParameters.url );
 		   if (isTokenCorrect){
 			   objAjaxParameters.token = localStorage.getItem("token");
 		   }
