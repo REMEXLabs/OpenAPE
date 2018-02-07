@@ -379,6 +379,8 @@ public class DatabaseConnection implements ServerMonitorListener {
         // Search for object in database.
         final BasicDBObject query = new BasicDBObject();
         query.put(Messages.getString("DatabaseConnection._id"), new ObjectId(id));
+        logger.info("message: " + Messages.getString("DatabaseConnection._id"));
+        
         final List<DatabaseObject> databaseObjects = this.getDatabaseObjectsByQuery(type, query);
         if (databaseObjects.isEmpty()) {
             return null;

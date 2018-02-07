@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bson.types.ObjectId;
 import org.openape.api.Messages;
 import org.openape.api.UserContextList;
 import org.openape.api.databaseObjectBase.DatabaseObject;
@@ -107,9 +108,10 @@ public class UserContextRequestHandler {
  * @throws IOException
  */
     public UserContextList getMyContexts(final String userId, final String url) throws IOException {
-        final BasicDBObject query = new BasicDBObject();
-        query.put("owner", userId);
-        return this.getUserContexts(query, url);
+        
+        final BasicDBObject query4 = new BasicDBObject();
+        query4.put("implementation-parameters.owner", userId);
+                return this.getUserContexts(query4, url);
     }
 
     /**
@@ -159,6 +161,7 @@ public class UserContextRequestHandler {
         final List<DatabaseObject> result = databaseConnection.getDatabaseObjectsByQuery(
                 MongoCollectionTypes.USERCONTEXT, query);
         final List<UserContext> contexts = new ArrayList<UserContext>();
+logger.info("DB: " + result.size() ); // TODO löschen
 
         for (final DatabaseObject databaseObject : result) {
             contexts.add((UserContext) databaseObject);
