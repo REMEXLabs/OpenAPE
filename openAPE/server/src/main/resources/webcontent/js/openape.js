@@ -649,8 +649,8 @@
 			   objAjaxParameters = createAjaxObject("POST", path, contentType );
 			   objAjaxParameters.data = context;
 			   objcreateContext_Result = databaseCommunication(objAjaxParameters);
-			   console.log("status: " + 			   objcreateContext_Result.status );
-			   console.log("rt: " +  objcreateContext_Result.responseText );
+			   
+			   
 		   } else {
 			   objcreateContext_Result.statusText = arrStatusText;
 			   objcreateContext_Result.status = 400;
@@ -701,7 +701,7 @@
 		   let response = databaseCommunication(ajaxParams);
 		   
 		   responseText = response.responseText;
-		   console.log("respnsetext: " + responseText);
+		   
 		   var result;
 		   if (ajaxParams.contentType == "application/json"){
 			   result = JSON.parse(responseText);
@@ -741,7 +741,7 @@
 					   objStatus = jqXHR;
 				   }
 		   }
-	    	console.log("verb: " + objAjaxParameters.type);
+	    	
 		   if(objAjaxParameters.type == "PUT") {
 			   request.data = objAjaxParameters.data;
 			   request.type = objAjaxParameters.type;
@@ -765,7 +765,7 @@
 		   } else if(objAjaxParameters.type == "GET"){
 		   		request.type = objAjaxParameters.type;
 		   		request.url = objAjaxParameters.url;
-//		   		console.log("" + request.url);
+		   		
 		   		request.contentType = objAjaxParameters.contentType;
 	    		
 		   		if (objAjaxParameters.token != null) {
@@ -774,7 +774,7 @@
 		   			}
 		   		}
 		   } else if(objAjaxParameters.type == "POST"){
-			   console.log("executing POST");
+			   
 			   request.type = objAjaxParameters.type;
 			   request.url = objAjaxParameters.url;
 			   request.contentType = objAjaxParameters.contentType;
@@ -836,13 +836,12 @@
 		   } else if (contentType == "XML"){
 			   objAjaxParameters.contentType == "application/xml";
 		   } else {
-			   console.log("else");
-			   objAjaxParameters.contentType = objOpenape.defaultContentType;	
+			   			   objAjaxParameters.contentType = objOpenape.defaultContentType;	
 		   }
-		   console.log("content-type: " + objAjaxParameters.contentType );
+		   
 		   objAjaxParameters.type = verb;
 		   objAjaxParameters.url = localStorage.getItem("host") + path;
-//		   console.log("ajaxobj: " +     		objAjaxParameters.url );
+		 
 		   if (isTokenCorrect){
 			   objAjaxParameters.token = localStorage.getItem("token");
 		   }
