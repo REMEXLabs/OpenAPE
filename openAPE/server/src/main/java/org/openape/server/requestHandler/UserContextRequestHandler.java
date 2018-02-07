@@ -109,25 +109,9 @@ public class UserContextRequestHandler {
  */
     public UserContextList getMyContexts(final String userId, final String url) throws IOException {
         
-        logger.info("owner" + userId);
-    	
-        final BasicDBObject query1 = new BasicDBObject();
-        query1.put("_owner", new ObjectId(userId));
-        this.getUserContexts(query1, url);
-        
-        final BasicDBObject query2 = new BasicDBObject();
-        query2.put("_owner", userId);
-        this.getUserContexts(query2, url);
-        
-        final BasicDBObject query3 = new BasicDBObject();
-        query3.put("owner", new ObjectId(userId));
-        this.getUserContexts(query3, url);
-        
         final BasicDBObject query4 = new BasicDBObject();
-        query4.put("owner", userId);
-        
-        
-        return this.getUserContexts(query4, url);
+        query4.put("implementation-parameters.owner", userId);
+                return this.getUserContexts(query4, url);
     }
 
     /**
