@@ -9,6 +9,7 @@
 		<version>${ProjectVersion}</version>
 	</parent>
 	<artifactId>API</artifactId>
+
 	<url>http://maven.apache.org</url>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -24,4 +25,7 @@
 		</dependency>
 	
 	</dependencies>
+<build>
+<finalName>openape-api</finalName>
+</build>
 </project>

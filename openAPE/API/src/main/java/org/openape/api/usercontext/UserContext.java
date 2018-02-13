@@ -111,7 +111,8 @@ public class UserContext extends DatabaseObject {
     @JsonIgnore
     public static UserContext getObjectFromJson(final String json) throws IllegalArgumentException {
         // User context to build from tree
-        final UserContext userContext = new UserContext();
+        System.out.println("json: " + json);
+    	final UserContext userContext = new UserContext();
         try {
             // Get tree from json.
             final ObjectMapper mapper = new ObjectMapper();

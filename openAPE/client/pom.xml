@@ -43,5 +43,8 @@
 </dependency>
        
 </dependencies>
+<build>
+<finalName>openape-client</finalName>
+</build>
 </project>
 
