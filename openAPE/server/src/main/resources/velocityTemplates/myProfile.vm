@@ -43,19 +43,19 @@
 <div id=divChangePassword>
 <form>
 	<div class="form-group">
-    <label for="passwordOld">Old password:</label>
-	<input class="form-control" id="passwordOld" type="password">
+    <label for="iptPasswordOld">Old password:</label>
+	<input class="form-control" id="iptPasswordOld" type="password">
   </div>
   <div class="form-group">
-    <label for="password1">New password</label>
-	<input class="form-control" id="password1" type="password">
+    <label for="iptPassword1">New password</label>
+	<input class="form-control" id="iptPassword1" type="password">
   </div>
   <div class="form-check">
-    <label for="password2">Repeat new password</label>
-	<input class="form-control" id="password2" type="password">
+    <label for="iptPassword2">Repeat new password</label>
+	<input class="form-control" id="iptPassword2" type="password">
   </div>
  
-  <button type="submit" class="btn btn-primary" id="btn_changePass">Submit</button>
+  <button type="submit" class="btn btn-primary" id="btnChangePassword">Submit</button>
   
 
 </form>
