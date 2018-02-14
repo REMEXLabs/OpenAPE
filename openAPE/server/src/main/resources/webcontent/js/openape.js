@@ -679,21 +679,16 @@
 	    * 
 	    */
 	   let deleteContext = function(path, contextId) {
-		   /*
-		    * let objDeleteContext_Result = {}; let objAjaxParameters =
-		    * {};
-		    * 
-		    * let arrStatusText = [];
-		    * 
-		    * if(isTokenCorrect() && isContextIdCorrect(contextId) ){
-		    * objAjaxParameters.type = "DELETE"; objAjaxParameters.url =
-		    * localStorage.getItem("host")path; objAjaxParameters.token =
-		    * localStorage.getItem("token"); objDeleteContext_Result =
-		    * databaseCommunication(objAjaxParameters); } else {
-		    * objDeleteContext_Result.statusText = arrStatusText;
-		    * objDeleteContext_Result.status = 400; } return
-		    * objDeleteContext_Result;
-		    */
+		   
+		     let objDeleteContext_Result = {};
+ let objAjaxParameters = createAjaxObject("DELETE", path + "/" + contextId);
+ if(isTokenCorrect() && isContextIdCorrect(contextId) ){
+ databaseCommunication(objAjaxParameters); 
+} else {
+     objDeleteContext_Result.statusText = "incorrect context id or token";
+    objDeleteContext_Result.status = 400; } 
+return 		     objDeleteContext_Result;
+		    
 	   }
 
 	   function getContextList(path, query, contentType){
