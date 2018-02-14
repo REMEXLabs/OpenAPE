@@ -42,9 +42,21 @@
 
 <div id=divChangePassword>
 <form>
-<label for="passwordOld">Old password:</label><input id="passwordOld" type="password">
-<label for="password1">New password</label><input id="password1" type="password">
-<label for="password2">Repeat new password</label> ><input id="password2" type="password">
+	<div class="form-group">
+    <label for="passwordOld">Old password:</label>
+	<input class="form-control" id="passwordOld" type="password">
+  </div>
+  <div class="form-group">
+    <label for="password1">New password</label>
+	<input class="form-control" id="password1" type="password">
+  </div>
+  <div class="form-check">
+    <label for="password2">Repeat new password</label>
+	<input class="form-control" id="password2" type="password">
+  </div>
+ 
+  <button type="submit" class="btn btn-primary" id="btn_changePass">Submit</button>
+  
 
 </form>
 </div>
