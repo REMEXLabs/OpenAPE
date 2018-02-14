@@ -297,8 +297,8 @@
 	    * @return {object} - A javascript object with all status
 	    *         information of the update process
 	    */	
-	   objOpenape.updateUserContext = function (userContextId, UserContext, contentType) {
-		   return updateContext(objOpenape.userContextPath, userContextId, contentType);	
+	   objOpenape.updateUserContext = function (userContextId, userContext, contentType) {
+		   return updateContext(objOpenape.userContextPath, userContextId,  userContext, contentType);	
 	   }
 	   
 	   /**
@@ -393,7 +393,7 @@
 	    *         information of the update process
 	    */	
 	   objOpenape.updateTaskContext = function (taskContextId, taskContext, contentType) {
-		   return updateContext(objOpenape.taskContextPath, taskContextId, contentType);
+		   return updateContext(objOpenape.taskContextPath, taskContextId, taskContext, contentType);
 	   }
 	   
 	   /**
@@ -658,11 +658,10 @@
 		   return objcreateContext_Result;
 	   }
     	    
-	   var updateContext = function (contextId, context, contentType) {
+	   var updateContext = function (path, contextId, context, contentType) {
 		   var objUpdateContext_Result = {};
-		   var arrStatusText = [];
-	    	
-		   if(isTokenCorrect() && isContextCorrect(context) && isContextIdCorrect(contextId) ){
+		   
+	    			   if(isTokenCorrect() && isContextCorrect(context) && isContextIdCorrect(contextId) ){
 			   let objAjaxParameters = createAjaxObject("PUT", path+"/" +contextId, contentType); 
 			   objAjaxParameters.data = context;
 			   objUpdatecontext_Result = databaseCommunication(objAjaxParameters);
@@ -680,10 +679,10 @@
 	    */
 	   let deleteContext = function(path, contextId) {
 		   
-		     let objDeleteContext_Result = {};
+		     var objDeleteContext_Result = {};
  let objAjaxParameters = createAjaxObject("DELETE", path + "/" + contextId);
  if(isTokenCorrect() && isContextIdCorrect(contextId) ){
- databaseCommunication(objAjaxParameters); 
+	 objDeleteContext_Result = databaseCommunication(objAjaxParameters); 
 } else {
      objDeleteContext_Result.statusText = "incorrect context id or token";
     objDeleteContext_Result.status = 400; } 
@@ -825,7 +824,7 @@ return 		     objDeleteContext_Result;
 	    	
 	   function createAjaxObject(verb, path, contentType){
 		   let objAjaxParameters = {};
-		   
+		   console.log("path: " + path);
 		   if(contentType == "JSON"){
 			   objAjaxParameters.contentType = "application/json";
 		   } else if (contentType == "XML"){
@@ -844,8 +843,10 @@ return 		     objDeleteContext_Result;
 	   }
     
 	   function validateEmail(email) {	    
-	        var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+	       /*  
+		   var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 	        return re.test(email);
+	        */
 	   }
 	
 	    

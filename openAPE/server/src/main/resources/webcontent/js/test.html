@@ -12,6 +12,10 @@ var response = window.openape.createUserContext("{}");
 
 
 var id = response.responseText;
+console.log("got Id: " + id);
+updateResponse = window.openape.updateUserContext(id,'{}' );
+console.log("update status: " + updateResponse.status );
+
 var delResponse = window.openape.deleteUserContext(id);
 console.log("status: " + delResponse.status);
 
