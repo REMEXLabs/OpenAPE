@@ -38,7 +38,29 @@
    <div class="body">
 	   <div class="oneContentBlock">
 	   	 <h1>My Profile</h1> <br>
-			  Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+
+
+<div id=divChangePassword>
+<form>
+	<div class="form-group">
+    <label for="iptPasswordOld">Old password:</label>
+	<input class="form-control" id="iptPasswordOld" type="password">
+  </div>
+  <div class="form-group">
+    <label for="iptPassword1">New password</label>
+	<input class="form-control" id="iptPassword1" type="password">
+  </div>
+  <div class="form-check">
+    <label for="iptPassword2">Repeat new password</label>
+	<input class="form-control" id="iptPassword2" type="password">
+  </div>
+ 
+  <button type="submit" class="btn btn-primary" id="btnChangePassword">Submit</button>
+  
+
+</form>
+</div>
+
 			</div> 
 		</div>
    	
