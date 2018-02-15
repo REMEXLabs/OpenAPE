@@ -1,5 +1,5 @@
 ﻿/**
- * @version 1.0.2
+ * @version 1.0.4
  * @param window
  * @returns
  */
@@ -12,11 +12,11 @@
 		// than the address should be http://localhost:4567
 	    
 	    var token = "";
-	    let defaultContentType = "application/json";    
+	    objOpenape.defaultContentType = "application/json";    
 	    objOpenape.userContextPath = "/api/user-contexts";	   
 	    objOpenape.taskContextPath = "/api/task-contexts";
 	    objOpenape.equipmentContextPath = "/api/equipment-contexts"
-	    objOpenape.environmentContextPath = "/api/envronment-contexts";
+	    objOpenape.environmentContextPath = "/api/environment-contexts";
 	      
 	    /**
 		 * initializeLibrary
@@ -256,7 +256,7 @@
 		*         information of the create process
 		*/	      
 	   objOpenape.createUserContext = function (userContext, contentType) {
-		   return getContext(objOpenape.userContextPath, userContext, contentType);
+		   return createContext(objOpenape.userContextPath, userContext, contentType);
 	   }
 
 	   /**
@@ -297,8 +297,8 @@
 	    * @return {object} - A javascript object with all status
 	    *         information of the update process
 	    */	
-	   objOpenape.updateUserContext = function (userContextId, UserContext, contentType) {
-		   return updateContext(objOpenape.userContextPath, userContextId, contentType);	
+	   objOpenape.updateUserContext = function (userContextId, userContext, contentType) {
+		   return updateContext(objOpenape.userContextPath, userContextId,  userContext, contentType);	
 	   }
 	   
 	   /**
@@ -371,7 +371,7 @@
 	    *         information
 	    */
 	   objOpenape.getTaskContext = function (taskContextId, contentType) {
-		   return getContext(taskContextPath, taskContextId, contentType);
+		   return getContext(objOpenape.taskContextPath, taskContextId, contentType);
 	   }
 	   
 	   /**
@@ -393,7 +393,7 @@
 	    *         information of the update process
 	    */	
 	   objOpenape.updateTaskContext = function (taskContextId, taskContext, contentType) {
-		   return updateContext(taskContextPath, taskContextId, contentType);
+		   return updateContext(objOpenape.taskContextPath, taskContextId, taskContext, contentType);
 	   }
 	   
 	   /**
@@ -411,7 +411,7 @@
 	    */	    	    
 	   
 	   objOpenape.deleteTaskContext = function (taskContextId) {
-		   return deleteContext(taskContextPath, taskContextId); 
+		   return deleteContext(objOpenape.taskContextPath, taskContextId); 
 	   }
 	   
 	   /**
@@ -429,7 +429,7 @@
 	    *         information
 	    */	    	    
 	   objOpenape.getTaskContextList = function (query, contentType) {
-		   return getContextList(taskContextPath, query, contentType);
+		   return getContextList(objOpenape.taskContextPath, query, contentType);
 	   }
 	   
 	   
@@ -471,7 +471,7 @@
 	    *         context information
 	    */
 	   objOpenape.getEquipmentContext = function (equipmentContextId, outputType) {
-		   return getContext(equipmentContextPath, equipmentContextId, outputType);
+		   return getContext(objOpenape.equipmentContextPath, equipmentContextId, outputType);
 	   }
 	   
 	   /**
@@ -492,7 +492,7 @@
 	    *         information of the update process
 	    */	
 	   objOpenape.updateEquipmentContext = function (equipmentContextId, equipmentContext, contentType) {
-		   updateContext(equipmentContextPath, equipmentContextId, equipmentContext, contentType);
+		   return updateContext(objOpenape.equipmentContextPath, equipmentContextId, equipmentContext, contentType);
 	   }
 	   
 	   /**
@@ -510,7 +510,7 @@
 	    *         information of the delete process
 	    */	    	    
 	   objOpenape.deleteEquipmentContext = function (equipmentContextId) {
-		   return deleteContext(equipmentContextPath, equipmentContextId );
+		   return deleteContext(objOpenape.equipmentContextPath, equipmentContextId );
 	   }
 		   	
 	   /**
@@ -528,7 +528,7 @@
 	    *         information
 	    */	    	    
 	   objOpenape.getEquipmentContextList = function (query, contentType) {
-		   return getContextList(equipmentContextPath, query, contentType);
+		   return getContextList(objOpenape.equipmentContextPath, query, contentType);
 	   }
 		   
 	   /* EnvironmentContext functions */
@@ -570,7 +570,7 @@
 	    *         environment context information
 	    */
 	   objOpenape.getEnvironmentContext = function (environmentContextId, outputType) {
-		   return getContext(environmentContextPath, environmentContextId, outputType);	
+		   return getContext(objOpenape.environmentContextPath, environmentContextId, outputType);	
 	   }
 	   
 	   /**
@@ -609,7 +609,7 @@
 	    *         the delete process
 	    */	    	    
 	   objOpenape.deleteEnvironmentContext = function (environmentContextId) {
-		   deleteContext(path, environmentContextId);
+		   return deleteContext(objOpenape.environmentContextPath, environmentContextId);
 	   }
 	   
 	   /**
@@ -624,8 +624,9 @@
 	    * @return {object} - A javascript object with all status information
 	    */	    	    
 	   objOpenape.getEnvironmentContextList = function (query, contentType) {
-		   return getContextList(environmentContextPath, query, contentType);
+		   return getContextList(objOpenape.environmentContextPath, query, contentType);
 	   } 
+	   
 	   var  getContext = function (path, contextId, outputType) {
 		   let objGetContext_Result = {};
 		   let arrStatusText = [];
@@ -648,6 +649,8 @@
 			   objAjaxParameters = createAjaxObject("POST", path, contentType );
 			   objAjaxParameters.data = context;
 			   objcreateContext_Result = databaseCommunication(objAjaxParameters);
+			   
+			   
 		   } else {
 			   objcreateContext_Result.statusText = arrStatusText;
 			   objcreateContext_Result.status = 400;
@@ -655,11 +658,10 @@
 		   return objcreateContext_Result;
 	   }
     	    
-	   var updateContext = function (contextId, context, contentType) {
+	   var updateContext = function (path, contextId, context, contentType) {
 		   var objUpdateContext_Result = {};
-		   var arrStatusText = [];
-	    	
-		   if(isTokenCorrect() && isContextCorrect(context) && isContextIdCorrect(contextId) ){
+		   
+	    			   if(isTokenCorrect() && isContextCorrect(context) && isContextIdCorrect(contextId) ){
 			   let objAjaxParameters = createAjaxObject("PUT", path+"/" +contextId, contentType); 
 			   objAjaxParameters.data = context;
 			   objUpdatecontext_Result = databaseCommunication(objAjaxParameters);
@@ -676,35 +678,46 @@
 	    * 
 	    */
 	   let deleteContext = function(path, contextId) {
-		   /*
-		    * let objDeleteContext_Result = {}; let objAjaxParameters =
-		    * {};
-		    * 
-		    * let arrStatusText = [];
-		    * 
-		    * if(isTokenCorrect() && isContextIdCorrect(contextId) ){
-		    * objAjaxParameters.type = "DELETE"; objAjaxParameters.url =
-		    * localStorage.getItem("host")path; objAjaxParameters.token =
-		    * localStorage.getItem("token"); objDeleteContext_Result =
-		    * databaseCommunication(objAjaxParameters); } else {
-		    * objDeleteContext_Result.statusText = arrStatusText;
-		    * objDeleteContext_Result.status = 400; } return
-		    * objDeleteContext_Result;
-		    */
+		   
+		     var objDeleteContext_Result = {};
+ let objAjaxParameters = createAjaxObject("DELETE", path + "/" + contextId);
+ if(isTokenCorrect() && isContextIdCorrect(contextId) ){
+	 objDeleteContext_Result = databaseCommunication(objAjaxParameters); 
+} else {
+     objDeleteContext_Result.statusText = "incorrect context id or token";
+    objDeleteContext_Result.status = 400; } 
+return 		     objDeleteContext_Result;
+		    
 	   }
 
 	   function getContextList(path, query, contentType){
-		   objAjaxParams = createAjaxObject("GET",path, contentType);
-		   let response = databaseCommunication(objAjaxParams);
+		   var ajaxParams = createAjaxObject("GET",path, contentType);
+		   let response = databaseCommunication(ajaxParams);
 		   
 		   responseText = response.responseText;
+		   
 		   var result;
 		   if (ajaxParams.contentType == "application/json"){
 			   result = JSON.parse(responseText);
-		   } else {
+		   } else if (ajaxParams == "application/xml"){
 			   result = XML.parse(responseText);
 		   }
+		   else {
+			   result = JSON.parse(responseText);
+		   }
 	   }
+	   
+	   objOpenape.changePassword = function(oldPw, newPw) {
+		   id = getUser().userId;
+		   var ajaxParams = createAjaxObject("Put", "openape/users/id/password" );
+		   var passwordChangeRequest = {};
+		   passwordChangeRequest.oldPassword = oldPw;
+		   passwordChangeRequest.newPassword = newPw;
+		   ajaxParams.data = JSON.stringify(passwordChangeRequest);
+		   var response = databaseCommunication(ajaxParams);
+	   }
+	   
+	   
 	   /**
 	    * Executes Ajax requests
 	    * 
@@ -746,7 +759,7 @@
 		   } else if(objAjaxParameters.type == "GET"){
 		   		request.type = objAjaxParameters.type;
 		   		request.url = objAjaxParameters.url;
-		   		console.log("" + request.url);
+		   		
 		   		request.contentType = objAjaxParameters.contentType;
 	    		
 		   		if (objAjaxParameters.token != null) {
@@ -755,6 +768,7 @@
 		   			}
 		   		}
 		   } else if(objAjaxParameters.type == "POST"){
+			   
 			   request.type = objAjaxParameters.type;
 			   request.url = objAjaxParameters.url;
 			   request.contentType = objAjaxParameters.contentType;
@@ -810,17 +824,18 @@
 	    	
 	   function createAjaxObject(verb, path, contentType){
 		   let objAjaxParameters = {};
-		   
+		   console.log("path: " + path);
 		   if(contentType == "JSON"){
 			   objAjaxParameters.contentType = "application/json";
-		   } else if (contentType = "XML"){
+		   } else if (contentType == "XML"){
 			   objAjaxParameters.contentType == "application/xml";
 		   } else {
-			   objAjaxParameters.contentType = defaultContentType;	
+			   			   objAjaxParameters.contentType = objOpenape.defaultContentType;	
 		   }
-		   objAjaxParameters.type = "GET";
+		   
+		   objAjaxParameters.type = verb;
 		   objAjaxParameters.url = localStorage.getItem("host") + path;
-		   console.log("ajaxobj: " +     		objAjaxParameters.url );
+		 
 		   if (isTokenCorrect){
 			   objAjaxParameters.token = localStorage.getItem("token");
 		   }
@@ -828,11 +843,14 @@
 	   }
     
 	   function validateEmail(email) {	    
-	        var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+	       /*  
+		   var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 	        return re.test(email);
+	        */
 	   }
 	
 	    
+	   
 	   // We will add functions to our library here !
 
 

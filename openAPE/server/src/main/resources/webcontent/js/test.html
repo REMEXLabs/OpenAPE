@@ -8,10 +8,18 @@
 <script>
 window.openape.initializeLibrary("daniel","ich", "http://localhost:4567");
 console.log("initialized");
-window.openape.createUserContext12:07 26.01.2018("{}");
-console.log("got user context");
-console.log("bla");
-window.openape.getUserContextList();
+var response = window.openape.createUserContext("{}");
+
+
+var id = response.responseText;
+console.log("got Id: " + id);
+updateResponse = window.openape.updateUserContext(id,'{}' );
+console.log("update status: " + updateResponse.status );
+
+var delResponse = window.openape.deleteUserContext(id);
+console.log("status: " + delResponse.status);
+
+//window.openape.getUserContextList();
 
 //window.openape.createTaskContext("{}");
 
