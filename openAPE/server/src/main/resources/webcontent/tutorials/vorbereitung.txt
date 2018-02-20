@@ -1,0 +1,38 @@
+/** getUserContextList
+		* 
+		* This function is used to get a list with all user contexts of the initialized user
+	    * @param  userContextId
+	    * 	 The stored UserContextId 
+	    *@param outputType
+	    *defines the dataformat of the received user context list object. Can either be JSON or XML  
+		* @return      
+		* 	 A javascript object with links to all user contexts 
+		*/
+	    objOpenape.getUserContext = function ( outputType) {
+	    	var objGetUserContext_Result = {};
+	    	var objAjaxParameters = {};
+	    	localStorage.setItem("host", "http://"+window.location.host);
+	    	
+	    	var arrStatusText = [];
+	    	var isTokenCorrect = true;
+
+	    	
+	    	if(localStorage.getItem("token") === undefined){
+	    		arrStatusText.push("Please initialize the library");
+	    		isTokenCorrect = false;
+	    	} 
+
+	    		if(outputType == "JSON"){
+	    			objAjaxParameters.contentType = "application/json";
+	    		} else {
+	    			objAjaxParameters.contentType = "application/xml";
+	    		}
+	    		
+	    		objAjaxParameters.type = "GET";
+	    		objAjaxParameters.url = localStorage.getItem("host")+"/api/user-contexts/";
+	    		objAjaxParameters.token = localStorage.getItem("token");
+	    		objGetUserContext_Result = databaseCommunication(objAjaxParameters);
+	    	
+	    	return objGetUserContext_Result;
+	    }
+	    
