@@ -739,7 +739,7 @@
 		objOpenape.changePassword = function(oldPw, newPw) {
 			id = objOpenape.getUser().userId;
 			var ajaxParams = createAjaxObject("PUT",
-					"/users/id/password", objOpenape.defaultContentType);
+					"/users/"+id+"/password", objOpenape.defaultContentType);
 			var passwordChangeRequest = {};
 			passwordChangeRequest.oldPassword = oldPw;
 			passwordChangeRequest.newPassword = newPw;
@@ -775,7 +775,6 @@
 						"Authorization" : objAjaxParameters.token,
 					}
 				}
-				console.log(request);
 			} else if (objAjaxParameters.type == "DELETE") {
 				request.type = objAjaxParameters.type;
 				request.url = objAjaxParameters.url;
