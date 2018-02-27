@@ -9,6 +9,7 @@ $(document).ready(
 			}
 
 			$("#btnChangePassword").click(function() {
+				$('#changePWMainErrSection').empty();
 				let
 				pwOld = $("#iptPasswordOld").val();
 				let
@@ -16,7 +17,12 @@ $(document).ready(
 				let
 				pw2 = $("#iptPassword2").val();
 				if (pw1 === pw2) {
-					window.openape.changePassword(pwOld, pw1);
+					var response = window.openape.changePassword(pwOld, pw1);
+					if(response.status == 403) {
+						$('#changePWMainErrSection').append("Wrong old password");
+					}
+				} else {
+					$('#changePWMainErrSection').append("Passwords don't match");
 				}
 			});
 		});

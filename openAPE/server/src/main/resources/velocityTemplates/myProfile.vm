@@ -56,8 +56,10 @@
   </div>
  
   <button type="submit" class="btn btn-primary" id="btnChangePassword">Submit</button>
+  <div class='modal-footer' style='background-color:#ececec;'>
+  	<span style='float:left;color:red;font-weight:bold;padding-top:0.5em' id='changePWMainErrSection'> </span>
+  </div>
   
-
 </form>
 </div>
 

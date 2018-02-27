@@ -745,6 +745,7 @@
 			passwordChangeRequest.newPassword = newPw;
 			ajaxParams.data = JSON.stringify(passwordChangeRequest);
 			var response = databaseCommunication(ajaxParams);
+			return response;
 		}
 
 		/**
