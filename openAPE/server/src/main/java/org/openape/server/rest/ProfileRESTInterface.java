@@ -161,9 +161,8 @@ public class ProfileRESTInterface extends SuperRestInterface {
                     }
                     final User user = (User) result;
 
-                    if (PasswordEncoder.matches(pwChangeReq.oldPassword, user.getPassword())) {
-
-                        user.setPassword(PasswordEncoder.encode(pwChangeReq.newPassword));
+                    if (PasswordEncoder.matches(pwChangeReq.getOldPassword(), user.getPassword())) {
+                        user.setPassword(PasswordEncoder.encode(pwChangeReq.getNewPassword()));
                         ProfileHandler.updateUser(user);
 
                         SuperRestInterface.logger.debug("PW successfuly changed");
