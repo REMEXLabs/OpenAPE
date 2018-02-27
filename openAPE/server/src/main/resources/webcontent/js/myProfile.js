@@ -8,14 +8,14 @@ $(document).ready(
 				localStorage.setItem("role", "admin");
 			}
 
-			$(".btnChangePassword").click(function() {
+			$("#btnChangePassword").click(function() {
 				let
-				pwOld = $(".iptPasswordOld").getValue();
+				pwOld = $("#iptPasswordOld").val();
 				let
-				pw1 = $(".iptPassword1").getValue();
+				pw1 = $("#iptPassword1").val();
 				let
-				pw2 = $(".iptPassword2").getValue();
-				if (pw1 == pw2) {
+				pw2 = $("#iptPassword2").val();
+				if (pw1 === pw2) {
 					window.openape.changePassword(pwOld, pw1);
 				}
 			});
