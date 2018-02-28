@@ -3,7 +3,6 @@
  * @param window
  * @returns
  */
-
 (function(window) {
 	function defineOpenape() {
 		var objOpenape = {};

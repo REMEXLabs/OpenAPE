@@ -6,7 +6,7 @@
 
 .topNavigation {
   background-color: #e31134;
-  overflow-x: scroll;
+  overflow-x: auto;
   overflow-y: hidden;
   white-space: nowrap;
   height: 4em;
