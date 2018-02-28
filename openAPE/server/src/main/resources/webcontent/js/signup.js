@@ -87,7 +87,7 @@ function setUserData(){
 		$('#signupPasswordRepeatErrMessage').append("Passwords must match!");
 		$('#formGroupSignupPasswordRepeat').addClass( "has-error has-feedback" );
 	}
-	
+
 	if(securityQuestion!=""){
 		isSecurityQuestionCorrect = true;
 		$('#signupSecQuestionErrIcon').hide();
