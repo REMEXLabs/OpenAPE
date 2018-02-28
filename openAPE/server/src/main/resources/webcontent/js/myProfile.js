@@ -19,10 +19,10 @@ $(document).ready(
 				if (pw1 === pw2) {
 					var response = window.openape.changePassword(pwOld, pw1);
 					if(response.status == 403) {
-						$('#changePWMainErrSection').append("Wrong old password");
+						$('#changePWMainErrSection').append("<img src='img/attention_icon.png' width='20' height='20'> "+"Wrong old password");
 					}
 				} else {
-					$('#changePWMainErrSection').append("Passwords don't match");
+					$('#changePWMainErrSection').append("<img src='img/attention_icon.png' width='20' height='20'> "+"Passwords don't match");
 				}
 			});
 		});
