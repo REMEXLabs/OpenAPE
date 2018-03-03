@@ -1,6 +1,5 @@
 package org.openape.server.auth;
 
-
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
@@ -38,10 +37,16 @@ import com.google.gson.Gson;
 public class AuthService {
     public static String BUNDLE_NAME = "config/auth";
     private static Logger logger = LoggerFactory.getLogger(AuthService.class);
-    private static final ResourceBundle properties = ResourceBundle.getBundle(BUNDLE_NAME);
-    private static final String JWT_SIGNATURE = AuthService.properties.getString("JwtSignature");
-    private static final String EXPIRATION_TIME = AuthService.properties
-            .getString("TokenExpirationTimeInMinutes");
+
+    private static String getJWTSigniture() {
+        ResourceBundle properties = ResourceBundle.getBundle(BUNDLE_NAME);
+        return properties.getString("JwtSignature");
+    }
+
+    private static String getExpirationTime() {
+        ResourceBundle properties = ResourceBundle.getBundle(BUNDLE_NAME);
+        return properties.getString("TokenExpirationTimeInMinutes");
+    }
 
     /**
      * Creates string error containing an RFC 6749 section 5.2 compliant JSON
@@ -72,7 +77,7 @@ public class AuthService {
                                                                       // minutes
         profile.addAttribute("iat", new Date()); // Issued at date (now)
         final JwtGenerator<CommonProfile> jwtGenerator = new JwtGenerator<>(
-                new SecretSignatureConfiguration(AuthService.JWT_SIGNATURE));
+                new SecretSignatureConfiguration(AuthService.getJWTSigniture()));
         return jwtGenerator.generate(profile);
     }
 
@@ -82,12 +87,12 @@ public class AuthService {
      * @return The time the token will expire.
      */
     private static Date getExpirationDate() {
-        final int minutesToExpiration = Integer.parseInt(AuthService.EXPIRATION_TIME.replaceAll(
+        final int minutesToExpiration = Integer.parseInt(AuthService.getExpirationTime().replaceAll(
                 "[\\D]", ""));
         return new Date(Calendar.getInstance().getTimeInMillis() + (minutesToExpiration * 60000));
     }
 
-    private final Config config = new AuthConfigFactory(AuthService.JWT_SIGNATURE).build();
+    private final Config config = new AuthConfigFactory(AuthService.getJWTSigniture()).build();
 
     private final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
 
@@ -98,7 +103,7 @@ public class AuthService {
             throw new UnauthorizedException("You are not allowed to perform this operation");
         }
     }
-    
+
     public void allowAdminAndUser(final Request request, final Response response)
             throws UnauthorizedException {
         final CommonProfile profile = this.getAuthenticatedProfile(request, response);
@@ -106,7 +111,6 @@ public class AuthService {
             throw new UnauthorizedException("You are not allowed to perform this operation");
         }
     }
-
 
     /**
      * Check if the authenticated user has either the role `admin` or equals the
@@ -290,7 +294,7 @@ public class AuthService {
     public String getJSONToken(final String username, final String password)
             throws UnauthorizedException {
         final TokenResponse response = new TokenResponse(this.getToken(username, password),
-                AuthService.EXPIRATION_TIME);
+                AuthService.getExpirationTime());
         return new Gson().toJson(response);
     }
 
@@ -352,8 +356,6 @@ public class AuthService {
         return profile.getRoles().contains("user");
     }
 
-
-    
     /**
      * Check if the provided profile has either the role `admin` or is equal to
      * the given owner.
@@ -404,5 +406,4 @@ public class AuthService {
         }
     }
 
-	
 }
