@@ -1,14 +1,20 @@
 package org.openape.server.requestHandler;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.openape.api.EnvironmentContextList;
 import org.openape.api.Messages;
+import org.openape.api.UserContextList;
 import org.openape.api.databaseObjectBase.DatabaseObject;
 import org.openape.api.environmentcontext.EnvironmentContext;
+import org.openape.api.usercontext.UserContext;
 import org.openape.server.database.mongoDB.DatabaseConnection;
 import org.openape.server.database.mongoDB.MongoCollectionTypes;
 import org.openape.server.rest.EnvironmentContextRESTInterface;
+
+import com.mongodb.BasicDBObject;
 
 /**
  * Class with methods to manage environment context on the server. It is used by
@@ -153,22 +159,38 @@ public class EnvironmentContextRequestHandler implements ContextRequestHandler {
         }
         return true;
     }
+    
+    private EnvironmentContextList getEnvironmentContexts(final BasicDBObject query, final String url)
+            throws IOException {
+        final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
+
+        final List<DatabaseObject> result = databaseConnection.getDatabaseObjectsByQuery(
+                MongoCollectionTypes.ENVIRONMENTCONTEXT, query);
+        final List<EnvironmentContext> contexts = new ArrayList<EnvironmentContext>();
+
+        for (final DatabaseObject databaseObject : result) {
+            contexts.add((EnvironmentContext) databaseObject);
+        }
+        return new EnvironmentContextList(contexts, url);
+
+    }
 
     @Override
     public EnvironmentContextList getAllContexts(String url) throws IOException {
-        // TODO Auto-generated method stub
-        return null;
+        return this.getEnvironmentContexts(null, url);
     }
 
     @Override
     public EnvironmentContextList getMyContexts(String userId, String url) throws IOException {
-        // TODO Auto-generated method stub
-        return null;
+        final BasicDBObject query = new BasicDBObject();
+        query.put("implementation-parameters.owner", userId);
+        return this.getEnvironmentContexts(query, url);
     }
 
     @Override
     public EnvironmentContextList getPublicContexts(String url) throws IOException {
-        // TODO Auto-generated method stub
-        return null;
+        final BasicDBObject query = new BasicDBObject();
+        query.put("PUBLIC", "public");
+        return this.getEnvironmentContexts(query, url);
     }
 }

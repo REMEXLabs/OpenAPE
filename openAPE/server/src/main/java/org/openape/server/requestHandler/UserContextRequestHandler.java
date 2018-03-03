@@ -86,19 +86,7 @@ public class UserContextRequestHandler implements ContextRequestHandler {
 
     @Override
     public UserContextList getAllContexts(final String url) throws IOException {
-        final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
-        final List<UserContext> contexts = new ArrayList<UserContext>();
-        final List<DatabaseObject> result = databaseConnection.getDatabaseObjectsByQuery(
-                MongoCollectionTypes.USERCONTEXT, null);
-        // parse result from DatabaseObject to UserContext.
-        try {
-            for (final DatabaseObject databaseObject : result) {
-                contexts.add((UserContext) databaseObject);
-            }
-        } catch (final ClassCastException e) {
-            throw new IOException(e.getMessage());
-        }
-        return new UserContextList(contexts, url);
+        return this.getUserContexts(null, url);
     }
 
     /**
@@ -112,7 +100,6 @@ public class UserContextRequestHandler implements ContextRequestHandler {
      */
     @Override
     public UserContextList getMyContexts(final String userId, final String url) throws IOException {
-
         final BasicDBObject query4 = new BasicDBObject();
         query4.put("implementation-parameters.owner", userId);
         return this.getUserContexts(query4, url);
@@ -158,7 +145,7 @@ public class UserContextRequestHandler implements ContextRequestHandler {
 
     }
 
-    public UserContextList getUserContexts(final BasicDBObject query, final String url)
+    private UserContextList getUserContexts(final BasicDBObject query, final String url)
             throws IOException {
         final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
 

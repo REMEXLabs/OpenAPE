@@ -1,14 +1,20 @@
 package org.openape.server.requestHandler;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.openape.api.Messages;
 import org.openape.api.TaskContextList;
+import org.openape.api.UserContextList;
 import org.openape.api.databaseObjectBase.DatabaseObject;
 import org.openape.api.taskcontext.TaskContext;
+import org.openape.api.usercontext.UserContext;
 import org.openape.server.database.mongoDB.DatabaseConnection;
 import org.openape.server.database.mongoDB.MongoCollectionTypes;
 import org.openape.server.rest.TaskContextRESTInterface;
+
+import com.mongodb.BasicDBObject;
 
 /**
  * Class with methods to manage task context on the server. It is used by the
@@ -151,22 +157,38 @@ public class TaskContextRequestHandler implements ContextRequestHandler {
         }
         return true;
     }
+    
+    private TaskContextList getTaskContexts(final BasicDBObject query, final String url)
+            throws IOException {
+        final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
+
+        final List<DatabaseObject> result = databaseConnection.getDatabaseObjectsByQuery(
+                MongoCollectionTypes.TASKCONTEXT, query);
+        final List<TaskContext> contexts = new ArrayList<TaskContext>();
+
+        for (final DatabaseObject databaseObject : result) {
+            contexts.add((TaskContext) databaseObject);
+        }
+        return new TaskContextList(contexts, url);
+
+    }
 
     @Override
     public TaskContextList getAllContexts(String url) throws IOException {
-        // TODO Auto-generated method stub
-        return null;
+        return this.getTaskContexts(null, url);
     }
 
     @Override
     public TaskContextList getMyContexts(String userId, String url) throws IOException {
-        // TODO Auto-generated method stub
-        return null;
+        final BasicDBObject query = new BasicDBObject();
+        query.put("implementation-parameters.owner", userId);
+        return this.getTaskContexts(query, url);
     }
 
     @Override
     public TaskContextList getPublicContexts(String url) throws IOException {
-        // TODO Auto-generated method stub
-        return null;
+        final BasicDBObject query = new BasicDBObject();
+        query.put("PUBLIC", "public");
+        return this.getTaskContexts(query, url);
     }
 }
