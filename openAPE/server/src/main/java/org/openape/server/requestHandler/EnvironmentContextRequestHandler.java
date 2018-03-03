@@ -2,6 +2,7 @@ package org.openape.server.requestHandler;
 
 import java.io.IOException;
 
+import org.openape.api.EnvironmentContextList;
 import org.openape.api.Messages;
 import org.openape.api.databaseObjectBase.DatabaseObject;
 import org.openape.api.environmentcontext.EnvironmentContext;
@@ -14,7 +15,7 @@ import org.openape.server.rest.EnvironmentContextRESTInterface;
  * the rest API {@link EnvironmentContextRESTInterface} and uses the server
  * database {@link DatabaseConnection}.
  */
-public class EnvironmentContextRequestHandler {
+public class EnvironmentContextRequestHandler implements ContextRequestHandler {
 
     private static final MongoCollectionTypes COLLECTIONTOUSE = MongoCollectionTypes.ENVIRONMENTCONTEXT;
 
@@ -151,5 +152,23 @@ public class EnvironmentContextRequestHandler {
                     Messages.getString("EnvironmentContextRequestHandler.NoObjectWithThatIDErrorMsg")); //$NON-NLS-1$
         }
         return true;
+    }
+
+    @Override
+    public EnvironmentContextList getAllContexts(String url) throws IOException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public EnvironmentContextList getMyContexts(String userId, String url) throws IOException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public EnvironmentContextList getPublicContexts(String url) throws IOException {
+        // TODO Auto-generated method stub
+        return null;
     }
 }

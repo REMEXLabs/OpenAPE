@@ -3,6 +3,7 @@ package org.openape.server.requestHandler;
 import java.io.IOException;
 
 import org.openape.api.Messages;
+import org.openape.api.TaskContextList;
 import org.openape.api.databaseObjectBase.DatabaseObject;
 import org.openape.api.taskcontext.TaskContext;
 import org.openape.server.database.mongoDB.DatabaseConnection;
@@ -14,7 +15,7 @@ import org.openape.server.rest.TaskContextRESTInterface;
  * rest API {@link TaskContextRESTInterface} and uses the server database
  * {@link DatabaseConnection}.
  */
-public class TaskContextRequestHandler {
+public class TaskContextRequestHandler implements ContextRequestHandler {
 
     private static final MongoCollectionTypes COLLECTIONTOUSE = MongoCollectionTypes.TASKCONTEXT;
 
@@ -149,5 +150,23 @@ public class TaskContextRequestHandler {
                     Messages.getString("TaskContextRequestHandler.NoObjectWithThatIDErrorMsg")); //$NON-NLS-1$
         }
         return true;
+    }
+
+    @Override
+    public TaskContextList getAllContexts(String url) throws IOException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public TaskContextList getMyContexts(String userId, String url) throws IOException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public TaskContextList getPublicContexts(String url) throws IOException {
+        // TODO Auto-generated method stub
+        return null;
     }
 }

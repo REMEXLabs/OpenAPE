@@ -5,6 +5,7 @@ import java.io.IOException;
 import javax.ws.rs.core.MediaType;
 
 import org.openape.api.Messages;
+import org.openape.api.TaskContextList;
 import org.openape.api.taskcontext.TaskContext;
 import org.openape.server.auth.AuthService;
 import org.openape.server.requestHandler.TaskContextRequestHandler;
@@ -15,7 +16,7 @@ import spark.Spark;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
-public class TaskContextRESTInterface extends SuperRestInterface {
+public class TaskContextRESTInterface extends ContextRestInterface {
     private static TaskContext createRequestObejct(final Request req)
             throws IllegalArgumentException, IOException {
         final String contentType = req.contentType();
@@ -202,6 +203,9 @@ public class TaskContextRESTInterface extends SuperRestInterface {
                         return e.getMessage();
                     }
                 });
+        createContextListRestEndpoint(
+                Messages.getString("TaskContextRESTInterface.TastContextURLWithoutID"),
+                requestHandler, auth, TaskContextList.class);
 
     }
 

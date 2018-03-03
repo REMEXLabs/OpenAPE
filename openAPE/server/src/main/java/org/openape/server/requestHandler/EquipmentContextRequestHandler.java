@@ -2,6 +2,7 @@ package org.openape.server.requestHandler;
 
 import java.io.IOException;
 
+import org.openape.api.EquipmentContextList;
 import org.openape.api.Messages;
 import org.openape.api.databaseObjectBase.DatabaseObject;
 import org.openape.api.equipmentcontext.EquipmentContext;
@@ -14,7 +15,7 @@ import org.openape.server.rest.EquipmentContextRESTInterface;
  * the rest API {@link EquipmentContextRESTInterface} and uses the server
  * database {@link DatabaseConnection}.
  */
-public class EquipmentContextRequestHandler {
+public class EquipmentContextRequestHandler implements ContextRequestHandler {
 
     private static final MongoCollectionTypes COLLECTIONTOUSE = MongoCollectionTypes.EQUIPMENTCONTEXT;
 
@@ -151,5 +152,23 @@ public class EquipmentContextRequestHandler {
                     Messages.getString("EquipmentContextRequestHandler.NoObjectWithThatIDErrorMsg")); //$NON-NLS-1$
         }
         return true;
+    }
+
+    @Override
+    public EquipmentContextList getAllContexts(String url) throws IOException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public EquipmentContextList getMyContexts(String userId, String url) throws IOException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public EquipmentContextList getPublicContexts(String url) throws IOException {
+        // TODO Auto-generated method stub
+        return null;
     }
 }
