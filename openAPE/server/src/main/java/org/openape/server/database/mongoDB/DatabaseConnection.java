@@ -451,7 +451,9 @@ public class DatabaseConnection implements ServerMonitorListener {
     }
 
     private void readConfigFile() {
+        System.out.println(MongoConfig.BUNDLE_NAME);
         final String name = MongoConfig.getString("databaseName");//$NON-NLS-1$
+        System.out.println(name);
         if ((name != null) && !name.equals(Messages.getString("DatabaseConnection.EmptyString"))) {//$NON-NLS-1$
             DatabaseConnection.DATABASENAME = name;
         } else {

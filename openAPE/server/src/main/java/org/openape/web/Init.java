@@ -1,6 +1,8 @@
 package org.openape.web;
 
+import org.openape.server.MongoConfig;
 import org.openape.server.admin.AdminInterface;
+import org.openape.server.auth.AuthService;
 import org.openape.server.database.mongoDB.DatabaseConnection;
 import org.openape.server.rest.SuperRestInterface;
 import org.slf4j.Logger;
@@ -13,6 +15,9 @@ public class Init implements SparkApplication {
 
     @Override
     public void init() {
+        MongoConfig.BUNDLE_NAME = "../../config/mongo";
+        AuthService.BUNDLE_NAME= "../../config/auth";
+        System.out.println(MongoConfig.BUNDLE_NAME);
         this.logger.info("Initialising openAPE");
         this.logger.debug("Working directory: " + System.getProperty("user.dir"));
 
@@ -26,7 +31,7 @@ public class Init implements SparkApplication {
             this.logger.error("Admin could not be created or no Admin found. System could not start.");
             return;
         }
-
+        
         // Start rest api.
         new SuperRestInterface();
     }

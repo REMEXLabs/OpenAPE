@@ -36,8 +36,9 @@ import com.google.gson.Gson;
  */
 
 public class AuthService {
+    public static String BUNDLE_NAME = "config/auth";
     private static Logger logger = LoggerFactory.getLogger(AuthService.class);
-    private static final ResourceBundle properties = ResourceBundle.getBundle("config/auth");
+    private static final ResourceBundle properties = ResourceBundle.getBundle(BUNDLE_NAME);
     private static final String JWT_SIGNATURE = AuthService.properties.getString("JwtSignature");
     private static final String EXPIRATION_TIME = AuthService.properties
             .getString("TokenExpirationTimeInMinutes");

@@ -8,9 +8,7 @@ import org.slf4j.LoggerFactory;
 
 public class MongoConfig {
     private static Logger logger = LoggerFactory.getLogger(MongoConfig.class);
-    private static final String BUNDLE_NAME = "config/mongo"; //$NON-NLS-1$
-
-    private static final ResourceBundle RESOURCE_BUNDLE = ResourceBundle.getBundle(MongoConfig.BUNDLE_NAME);
+    public static String BUNDLE_NAME = "config/mongo"; //$NON-NLS-1$
 
     /**
      * Gets a string for the given key from this resource bundle or one of its
@@ -22,8 +20,9 @@ public class MongoConfig {
      *
      */
     public static String getString(final String key) {
+        ResourceBundle resourceBundle = ResourceBundle.getBundle(MongoConfig.BUNDLE_NAME);
         try {
-            final String value = MongoConfig.RESOURCE_BUNDLE.getString(key);
+            final String value = resourceBundle.getString(key);
             MongoConfig.logger
                     .debug("looking for key\"" + key + "\" in " + MongoConfig.BUNDLE_NAME + ", found value: " + value);
             return value;
