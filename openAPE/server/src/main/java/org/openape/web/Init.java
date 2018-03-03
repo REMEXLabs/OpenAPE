@@ -1,5 +1,7 @@
 package org.openape.web;
 
+import java.io.File;
+
 import org.openape.server.MongoConfig;
 import org.openape.server.admin.AdminInterface;
 import org.openape.server.auth.AuthService;
@@ -15,8 +17,8 @@ public class Init implements SparkApplication {
 
     @Override
     public void init() {
-        MongoConfig.BUNDLE_NAME = "../../config/mongo";
-        AuthService.BUNDLE_NAME= "../../config/auth";
+        MongoConfig.BUNDLE_NAME = ".."+File.separator+".."+File.separator+"config"+File.separator+"mongo";
+        AuthService.BUNDLE_NAME= ".."+File.separator+".."+File.separator+"config"+File.separator+"auth";
         System.out.println(MongoConfig.BUNDLE_NAME);
         this.logger.info("Initialising openAPE");
         this.logger.debug("Working directory: " + System.getProperty("user.dir"));
