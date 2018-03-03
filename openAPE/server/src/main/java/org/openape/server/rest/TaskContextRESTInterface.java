@@ -53,7 +53,7 @@ public class TaskContextRESTInterface extends ContextRestInterface {
         // Authentication: Make sure only registered principals (users and
         // admins) can create a new context
         Spark.before(Messages.getString("TaskContextRESTInterface.TastContextURLWithoutID"),
-                auth.authorize("user"));
+                auth.authorize("anonymous"));
         // Authentication: Everyone can access the route for a specific context
         Spark.before(Messages.getString("TaskContextRESTInterface.TastContextURLWithID"),
                 auth.authorize("anonymous"));

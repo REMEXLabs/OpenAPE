@@ -103,9 +103,9 @@ public abstract class ContextList<T extends DatabaseObject > {
     
     public ContextList(final List<T> contexts, final String url, final String contextTypeUri) {
         this.contextUris = new LinkedList<URI>();
-                for (T userContext : contexts) {
+                for (T context : contexts) {
             try {
-                this.contextUris.add(new URI(url + userContext.getId()));
+                this.contextUris.add(new URI(url + "/"+ context.getId()));
             } catch (final URISyntaxException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();

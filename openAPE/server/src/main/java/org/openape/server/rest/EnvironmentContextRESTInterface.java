@@ -55,7 +55,7 @@ public class EnvironmentContextRESTInterface extends ContextRestInterface {
         // admins) can create a new context
         Spark.before(Messages
                 .getString("EnvironmentContextRESTInterface.EnvironmentContextsURLWithoutID"), auth
-                .authorize("user"));
+                .authorize("anonymous"));
         // Authentication: Everyone can access the route for a specific context
         Spark.before(
                 Messages.getString("EnvironmentContextRESTInterface.EnvironmentContextsURLWithID"),

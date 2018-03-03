@@ -54,7 +54,7 @@ public class EquipmentContextRESTInterface extends ContextRestInterface {
         // admins) can create a new context
         Spark.before(
                 Messages.getString("EquipmentContextRESTInterface.EquipmentContextURLWithoutID"),
-                auth.authorize("user"));
+                auth.authorize("anonymous"));
         // Authentication: Everyone can access the route for a specific context
         Spark.before(Messages.getString("EquipmentContextRESTInterface.EquipmentContextURLWithID"),
                 auth.authorize("anonymous"));
