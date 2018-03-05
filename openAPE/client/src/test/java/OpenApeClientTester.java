@@ -8,7 +8,7 @@ public class OpenApeClientTester {
         // TODO Auto-generated method stub
         System.out.println("starte test");
         try {
-            final OpenAPEClient client = new OpenAPEClient("daniel", "ich", "http://localhost:4567");
+            final OpenAPEClient client = new OpenAPEClient("daniel", "ich"); //, "http://localhost:4567");
             final UserContext userContext = client
                     .getUserContext(OpenApeClientTester.userContextId);
             System.out.println(userContext);
