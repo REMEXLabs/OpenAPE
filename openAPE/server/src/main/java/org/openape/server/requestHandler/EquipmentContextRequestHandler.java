@@ -1,20 +1,27 @@
 package org.openape.server.requestHandler;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
+import org.openape.api.EquipmentContextList;
 import org.openape.api.Messages;
+import org.openape.api.UserContextList;
 import org.openape.api.databaseObjectBase.DatabaseObject;
 import org.openape.api.equipmentcontext.EquipmentContext;
+import org.openape.api.usercontext.UserContext;
 import org.openape.server.database.mongoDB.DatabaseConnection;
 import org.openape.server.database.mongoDB.MongoCollectionTypes;
 import org.openape.server.rest.EquipmentContextRESTInterface;
+
+import com.mongodb.BasicDBObject;
 
 /**
  * Class with methods to manage equipment context on the server. It is used by
  * the rest API {@link EquipmentContextRESTInterface} and uses the server
  * database {@link DatabaseConnection}.
  */
-public class EquipmentContextRequestHandler {
+public class EquipmentContextRequestHandler implements ContextRequestHandler {
 
     private static final MongoCollectionTypes COLLECTIONTOUSE = MongoCollectionTypes.EQUIPMENTCONTEXT;
 
@@ -151,5 +158,39 @@ public class EquipmentContextRequestHandler {
                     Messages.getString("EquipmentContextRequestHandler.NoObjectWithThatIDErrorMsg")); //$NON-NLS-1$
         }
         return true;
+    }
+    
+    private EquipmentContextList getEquipmentContexts(final BasicDBObject query, final String url)
+            throws IOException {
+        final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
+
+        final List<DatabaseObject> result = databaseConnection.getDatabaseObjectsByQuery(
+                MongoCollectionTypes.EQUIPMENTCONTEXT, query);
+        final List<EquipmentContext> contexts = new ArrayList<EquipmentContext>();
+
+        for (final DatabaseObject databaseObject : result) {
+            contexts.add((EquipmentContext) databaseObject);
+        }
+        return new EquipmentContextList(contexts, url);
+
+    }
+
+    @Override
+    public EquipmentContextList getAllContexts(String url) throws IOException {
+        return this.getEquipmentContexts(null, url);
+    }
+
+    @Override
+    public EquipmentContextList getMyContexts(String userId, String url) throws IOException {
+        final BasicDBObject query = new BasicDBObject();
+        query.put("implementation-parameters.owner", userId);
+        return this.getEquipmentContexts(query, url);
+    }
+
+    @Override
+    public EquipmentContextList getPublicContexts(String url) throws IOException {
+        final BasicDBObject query = new BasicDBObject();
+        query.put("PUBLIC", "public");
+        return this.getEquipmentContexts(query, url);
     }
 }

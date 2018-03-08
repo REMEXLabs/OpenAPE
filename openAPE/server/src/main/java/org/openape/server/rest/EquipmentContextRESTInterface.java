@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import javax.ws.rs.core.MediaType;
 
+import org.openape.api.EquipmentContextList;
 import org.openape.api.Messages;
 import org.openape.api.equipmentcontext.EquipmentContext;
 import org.openape.server.auth.AuthService;
@@ -15,7 +16,7 @@ import spark.Spark;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
-public class EquipmentContextRESTInterface extends SuperRestInterface {
+public class EquipmentContextRESTInterface extends ContextRestInterface {
     private static EquipmentContext createRequestObejct(final Request req)
             throws IllegalArgumentException, IOException {
         final String contentType = req.contentType();
@@ -53,7 +54,7 @@ public class EquipmentContextRESTInterface extends SuperRestInterface {
         // admins) can create a new context
         Spark.before(
                 Messages.getString("EquipmentContextRESTInterface.EquipmentContextURLWithoutID"),
-                auth.authorize("user"));
+                auth.authorize("anonymous"));
         // Authentication: Everyone can access the route for a specific context
         Spark.before(Messages.getString("EquipmentContextRESTInterface.EquipmentContextURLWithID"),
                 auth.authorize("anonymous"));
@@ -205,6 +206,9 @@ public class EquipmentContextRESTInterface extends SuperRestInterface {
                         return e.getMessage();
                     }
                 });
+        createContextListRestEndpoint(
+                Messages.getString("EquipmentContextRESTInterface.EquipmentContextURLWithoutID"),
+                requestHandler, auth, EquipmentContextList.class);
 
     }
 

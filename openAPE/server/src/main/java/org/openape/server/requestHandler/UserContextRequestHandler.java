@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.bson.types.ObjectId;
 import org.openape.api.Messages;
 import org.openape.api.UserContextList;
 import org.openape.api.databaseObjectBase.DatabaseObject;
@@ -22,7 +21,7 @@ import com.mongodb.BasicDBObject;
  * rest API {@link UserContextRESTInterface} and uses the server database
  * {@link DatabaseConnection}.
  */
-public class UserContextRequestHandler {
+public class UserContextRequestHandler implements ContextRequestHandler {
     private static Logger logger = LoggerFactory.getLogger(UserContextRequestHandler.class);
 
     public static final MongoCollectionTypes COLLECTIONTOUSE = MongoCollectionTypes.USERCONTEXT;
@@ -85,33 +84,25 @@ public class UserContextRequestHandler {
         return true;
     }
 
-    public UserContextList getAllUserContexts(final String url) throws IOException {
-        final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
-        final List<UserContext> contexts = new ArrayList<UserContext>();
-        final List<DatabaseObject> result = databaseConnection.getDatabaseObjectsByQuery(
-                MongoCollectionTypes.USERCONTEXT, null);
-        // parse result from DatabaseObject to UserContext.
-        try {
-            for (final DatabaseObject databaseObject : result) {
-                contexts.add((UserContext) databaseObject);
-            }
-        } catch (final ClassCastException e) {
-            throw new IOException(e.getMessage());
-        }
-        return new UserContextList(contexts, url);
+    @Override
+    public UserContextList getAllContexts(final String url) throws IOException {
+        return this.getUserContexts(null, url);
     }
-/**
- * 
- * @param userId
- * @param url- the URL of the server on which the contexts are located,, usually the server on which this application is running on
- * @return
- * @throws IOException
- */
+
+    /**
+     * 
+     * @param userId
+     * @param url
+     *            - the URL of the server on which the contexts are located,,
+     *            usually the server on which this application is running on
+     * @return
+     * @throws IOException
+     */
+    @Override
     public UserContextList getMyContexts(final String userId, final String url) throws IOException {
-        
         final BasicDBObject query4 = new BasicDBObject();
         query4.put("implementation-parameters.owner", userId);
-                return this.getUserContexts(query4, url);
+        return this.getUserContexts(query4, url);
     }
 
     /**
@@ -154,14 +145,14 @@ public class UserContextRequestHandler {
 
     }
 
-    public UserContextList getUserContexts(final BasicDBObject query, final String url)
+    private UserContextList getUserContexts(final BasicDBObject query, final String url)
             throws IOException {
         final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
 
         final List<DatabaseObject> result = databaseConnection.getDatabaseObjectsByQuery(
                 MongoCollectionTypes.USERCONTEXT, query);
         final List<UserContext> contexts = new ArrayList<UserContext>();
-logger.info("DB: " + result.size() ); // TODO löschen
+        logger.info("DB: " + result.size()); // TODO löschen
 
         for (final DatabaseObject databaseObject : result) {
             contexts.add((UserContext) databaseObject);
@@ -208,8 +199,9 @@ logger.info("DB: " + result.size() ); // TODO löschen
         return true;
     }
 
-	public Object getPublicContexts(String url) throws IOException {
-		 final BasicDBObject query = new BasicDBObject();
+    @Override
+    public UserContextList getPublicContexts(String url) throws IOException {
+        final BasicDBObject query = new BasicDBObject();
         query.put("PUBLIC", "public");
         return this.getUserContexts(query, url);
     }

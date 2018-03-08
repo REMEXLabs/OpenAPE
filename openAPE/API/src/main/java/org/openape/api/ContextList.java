@@ -15,12 +15,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import org.openape.api.databaseObjectBase.DatabaseObject;
-import org.openape.api.usercontext.UserContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @XmlRootElement(name = "response")
@@ -105,9 +103,9 @@ public abstract class ContextList<T extends DatabaseObject > {
     
     public ContextList(final List<T> contexts, final String url, final String contextTypeUri) {
         this.contextUris = new LinkedList<URI>();
-                for (T userContext : contexts) {
+                for (T context : contexts) {
             try {
-                this.contextUris.add(new URI(url + userContext.getId()));
+                this.contextUris.add(new URI(url + "/"+ context.getId()));
             } catch (final URISyntaxException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
