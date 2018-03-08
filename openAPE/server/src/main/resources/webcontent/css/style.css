@@ -6,14 +6,19 @@
 
 .topNavigation {
   background-color: #e31134;
-  overflow: hidden;
+  overflow-x: auto;
+  overflow-y: hidden;
+  white-space: nowrap;
   height: 4em;
   border-bottom: 7px solid #AB112A; }
   .topNavigation .logo {
+  	display: inline-block;
+  	white-space: normal;
+  	vertical-align: top;
     background-color: #e31134;
     color: white;
     width: 15%;
-    float: left;
+    /*float: left;*/
     height: inherit;
     text-align: center;
     padding-top: 0.9em;
@@ -21,8 +26,11 @@
     font-size: 14pt;
     text-shadow: 4px 4px #000; }
   .topNavigation .topNavigationLinks {
+  	display: inline-block;
+  	white-space: normal;
+  	vertical-align: top;
     background-color: #red;
-    float: left;
+    /*float: left;*/
     height: inherit;
     max-height: 2.8em; }
     .topNavigation .topNavigationLinks .navigationLinks {
@@ -49,10 +57,13 @@
       background-color: #AB112A;
       border-bottom: 1px solid black; }
   .topNavigation .userSection {
+  	display: inline-block;
+  	white-space: nowrap;
+  	vertical-align: top;
     background-color: #e31134;
     color: white;
     width: 23%;
-    float: right;
+    /*float: right;*/
     height: 100%;
     height: inherit;
     text-align: center;
@@ -73,9 +84,11 @@
       font-weight: bold;
       background-color: #AB112A; }
     .topNavigation .userSection .userSectionLinks {
+      display: inline-block;
+      vertical-align: top;
       width: 6em;
       padding-top: 1.3em;
-      float: left;
+      /*float: left;*/
       margin-left: 2em;
       height: inherit;
       color: white; }

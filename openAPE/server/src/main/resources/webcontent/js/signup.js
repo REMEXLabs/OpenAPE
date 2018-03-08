@@ -22,6 +22,7 @@ function setUserData(){
 	var username = $("#inputSignupUsername").val();
 	var email = $("#inputSignupEmail").val();
 	var password = $("#inputSignupPassword").val();
+	var passwordRepeat = $("#inputSignupPasswordRepeat").val();
 	var securityQuestion = $("#inputSignupSecQuestion").val();
 	
 	var isUsernameCorrect = true;
@@ -68,6 +69,25 @@ function setUserData(){
 		$('#formGroupSignupPassword').addClass( "has-error has-feedback" );
 	}	
 	
+	if(passwordRepeat!="" && passwordRepeat === password){
+		isPasswordCorrect = true;
+		$('#signupPasswordRepeatErrIcon').hide();
+		$('#formGroupSignupPasswordRepeat').removeClass( "has-error has-feedback" );
+		$('#signupPasswordRepeatErrMessage').empty();
+	} else if(passwordRepeat =="") {
+		isPasswordCorrect = false;
+		$('#signupPasswordRepeatErrIcon').show();
+		$('#signupPasswordRepeatErrMessage').empty();
+		$('#signupPasswordRepeatErrMessage').append("The password can not be empty!");
+		$('#formGroupSignupPasswordRepeat').addClass( "has-error has-feedback" );
+	} else if(passwordRepeat != password){
+		isPasswordCorrect = false;
+		$('#signupPasswordRepeatErrIcon').show();
+		$('#signupPasswordRepeatErrMessage').empty();
+		$('#signupPasswordRepeatErrMessage').append("Passwords must match!");
+		$('#formGroupSignupPasswordRepeat').addClass( "has-error has-feedback" );
+	}
+
 	if(securityQuestion!=""){
 		isSecurityQuestionCorrect = true;
 		$('#signupSecQuestionErrIcon').hide();
