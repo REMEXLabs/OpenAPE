@@ -130,7 +130,7 @@ sh ${openape.installdir}/prepare.sh
           <configuration>
 <serverId>myopenape</serverId>
 <!--            <fromFile>${project.build.directory}/${project.build.finalName}.war</fromFile>-->
-<fromFile>target/server-1.1-SNAPSHOT.war</fromFile>
+<fromFile>target/openape-server.war</fromFile>
             <url>scp://${openape.host}:${openape.installdir}</url>
           </configuration>
         </execution>
@@ -150,6 +150,7 @@ sh ${openape.installdir}/prepare.sh
           </configuration>
         </execution>
 
+<!--
         <execution>
           <id>install-openape</id>
           <phase>install</phase>
@@ -161,13 +162,13 @@ sh ${openape.installdir}/prepare.sh
             <url>scp://${openape.host}:/${openape.installdir}</url>
             <commands>
 <command>cd ${openape.installdir};
-mv server-1.1-SNAPSHOT.war openape.war;
+
 sh install.sh</command>
 
             </commands>
           </configuration>
         </execution>
-
+-->
       </executions>
     </plugin>
 
