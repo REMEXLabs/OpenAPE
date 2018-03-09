@@ -180,7 +180,7 @@ public class SuperRestInterface {
             MyContexts.setupMyContextsVELOCITYInterface(new AdminSectionRequestHandler());
             MyResources.setupMyResourcesVELOCITYInterface(new MyResourcesRequestHandler());
             MyGroups.setupMyGroupsVELOCITYInterface();
-            LegalNotice.setupLegalNoticeVELOCITYInterface();
+            
             Index.setupIndexVELOCITYInterface();
             Tutorials_Workflow.setupTutorialsWorkflowVELOCITYInterface();
             // TODO exception handling

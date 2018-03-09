@@ -14,16 +14,15 @@ public class Tutorials_Workflow extends SuperRestInterface {
     public static void setupTutorialsWorkflowVELOCITYInterface() throws IllegalArgumentException,
             IOException {
 
-        Spark.get("/tutorials_workflow", (request, response) -> {
-            final Map<String, Object> model = new MainComponents().getTemplateComponents();
-
-            return new ModelAndView(model, "velocityTemplates/tutorials_workflow.vm"); // located
-                                                                              // in
-                                                                              // the
-                                                                              // resources
-                                                                              // directory
-            }, new VelocityTemplateEngine());
+        Spark.get("/workflow", (request, response) -> { return getTutorial("workflow.vm");},new VelocityTemplateEngine());
+        Spark.get("/openape_js", (request, response) -> { return getTutorial("openape_js.vm");},new VelocityTemplateEngine());
     }
+    
+    static ModelAndView getTutorial(String fileName) {
+        final Map<String, Object> model = new MainComponents().getTemplateComponents();
+
+            return new ModelAndView(model, "velocityTemplates/tutorials/" + fileName); // located      in the  resources directory
+                 }
 
     public Tutorials_Workflow() throws IllegalArgumentException, IOException {
         super();

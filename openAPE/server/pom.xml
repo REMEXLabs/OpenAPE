@@ -150,7 +150,7 @@ sh ${openape.installdir}/prepare.sh
           </configuration>
         </execution>
 
-<!--
+
         <execution>
           <id>install-openape</id>
           <phase>install</phase>
@@ -168,7 +168,7 @@ sh install.sh</command>
             </commands>
           </configuration>
         </execution>
--->
+
       </executions>
     </plugin>
 
