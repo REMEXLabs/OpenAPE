@@ -16,6 +16,7 @@ public class Tutorials_Workflow extends SuperRestInterface {
 
         Spark.get("/workflow", (request, response) -> { return getTutorial("workflow.vm");},new VelocityTemplateEngine());
         Spark.get("/openape_js", (request, response) -> { return getTutorial("openape_js.vm");},new VelocityTemplateEngine());
+        Spark.get("/userContextTutorial", (request, response) -> { return getTutorial("userContextTutorial.vm");},new VelocityTemplateEngine());
     }
     
     static ModelAndView getTutorial(String fileName) {

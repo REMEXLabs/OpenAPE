@@ -111,7 +111,7 @@ public class UserContext extends DatabaseObject {
     @JsonIgnore
     public static UserContext getObjectFromJson(final String json) throws IllegalArgumentException {
         // User context to build from tree
-        System.out.println("json: " + json);
+        System.out.println("luxm json: " + json);
     	final UserContext userContext = new UserContext();
         try {
             // Get tree from json.
@@ -123,8 +123,14 @@ public class UserContext extends DatabaseObject {
             final JsonNode implemParams = rootObject.get(UserContext.IMPLEMENTATION_PARAMETERS);
             if ((implemParams != null) && !(implemParams instanceof NullNode)) {
                 final ObjectNode implemParamsNode = (ObjectNode) implemParams;
-                userContext.getImplementationParameters().setOwner(
-                        implemParamsNode.get(UserContext.OWNER).textValue());
+                
+                
+                JsonNode ownerParam = implemParamsNode.get(UserContext.OWNER); // TODO really necessary to check tis node? 
+                if ( ownerParam != null) {
+                                userContext.getImplementationParameters().setOwner(
+                        ownerParam.textValue());
+                }
+                
                 userContext.getImplementationParameters().setPublic(
                         implemParamsNode.get(UserContext.PUBLIC).booleanValue());
             }
@@ -138,8 +144,13 @@ public class UserContext extends DatabaseObject {
                     userContext.addContext(context);
                     context.setId(contextID);
                     final ObjectNode contextNode = (ObjectNode) rootObject.get(contextID);
-                    context.setName(contextNode.get(UserContext.NAME).textValue());
-
+                    
+                    
+                    JsonNode nameNode = contextNode.get(UserContext.NAME);
+                    if (nameNode != null) {
+                    context.setName(nameNode.textValue());
+                    }
+                    
                     // add preference objects
                     final ObjectNode preferences = (ObjectNode) contextNode
                             .get(UserContext.PREFERENCES);
@@ -178,6 +189,7 @@ public class UserContext extends DatabaseObject {
             e.printStackTrace();
             throw new IllegalArgumentException(e.getMessage());
         }
+        System.out.println("luxm geparst");
         userContext.validate();
         return userContext;
     }

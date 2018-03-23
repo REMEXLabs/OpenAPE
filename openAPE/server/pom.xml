@@ -17,6 +17,12 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 	<dependencies>
+		<dependency>
+			<groupId>com.sparkjava</groupId>
+			<artifactId>spark-core</artifactId>
+			<version>2.5.4</version>
+		</dependency>
+
 	<!-- https://mvnrepository.com/artifact/com.sparkjava/spark-template-velocity -->
 <dependency>
     <groupId>com.sparkjava</groupId>
@@ -143,8 +149,8 @@ sh ${openape.installdir}/prepare.sh
           </goals>
           <configuration>
 <serverId>myopenape</serverId>
-<fromFile>src/installation/installationfiles/log4j.xml</fromFile>
-<fromFile>src/installation/installationfiles/mongo.properties</fromFile>
+<fromFile>${localConfigDir}/log4j.xml</fromFile>
+<fromFile>${localConfigDir}/mongo.properties</fromFile>
             <url>scp://${openape.host}:${openape.installdir}/installationfiles</url>
 
           </configuration>
