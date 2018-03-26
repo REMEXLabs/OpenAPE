@@ -20,6 +20,8 @@ public class MyContexts extends SuperRestInterface {
 
         Spark.get("/myContexts", (request, response) -> {
 
+        	final String userId = auth.getAuthenticatedUser(req, res).getId();
+        	
             final MainComponents mainController = new MainComponents();
             final Map<String, Object> model = mainController.getTemplateComponents();
 
@@ -38,7 +40,7 @@ public class MyContexts extends SuperRestInterface {
                         new Organism_4_Modals().generateContextModal(destination, "Add"));
                 model.put("dataTable" + idName, new Organism_3_DataTable()
                         .generateAdministrationContextTable(adminsectionRequestHandler,
-                                destination, "myContext"));
+                                destination, "myContext", userId));
             }
 
             return new ModelAndView(model, "velocityTemplates/myContexts.vm");

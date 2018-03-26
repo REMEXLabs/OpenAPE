@@ -12,7 +12,7 @@ import org.openape.ui.velocity.requestHandler.MyResourcesRequestHandler;
 public class Organism_3_DataTable {
     public String generateAdministrationContextTable(
             final AdminSectionRequestHandler adminsectionRequestHandler, final String contextName,
-            final String destination) throws IllegalArgumentException, IOException {
+            final String destination, userId) throws IllegalArgumentException, IOException {
 
         String administrationDatableContextContent = "";
         final String idName = contextName.substring(0, 1).toLowerCase()
