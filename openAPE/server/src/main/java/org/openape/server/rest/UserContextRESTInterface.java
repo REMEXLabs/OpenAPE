@@ -15,11 +15,11 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 
 public class UserContextRESTInterface extends ContextRestInterface {
 
-    private static UserContext createRequestObejct(final Request req)
+    private static UserContext createRequestObject(final Request req)
             throws IllegalArgumentException {
         final String contentType = req.contentType();
         if (contentType.equals(MediaType.APPLICATION_JSON)) {
-            return UserContext.getObjectFromJson(req.body());
+        	            return UserContext.getObjectFromJson(req.body());
         } else if (contentType.equals(MediaType.APPLICATION_XML)) {
             return UserContext.getObjectFromXml(req.body());
         } else {
@@ -72,10 +72,10 @@ public class UserContextRESTInterface extends ContextRestInterface {
                         // only admins and users are allowed to create new
                         // contexts
                         auth.allowAdminAndUser(req, res);
-                        // Try to map the received json object to a userContext
-                        // // object.
+                        // Try to map the received json object to a userContext object
+                        
                         final UserContext receivedUserContext = UserContextRESTInterface
-                                .createRequestObejct(req);
+                                .createRequestObject(req);
                         // Make sure to set the id of the authenticated user as
                         // the ownerID
                         final String id = auth.getAuthenticatedUser(req, res).getId();
@@ -167,7 +167,7 @@ public class UserContextRESTInterface extends ContextRestInterface {
 
                     try {
                         final UserContext receivedUserContext = UserContextRESTInterface
-                                .createRequestObejct(req);
+                                .createRequestObject(req);
                         // Test the object for validity.
                         if (!receivedUserContext.isValid()) {
                             res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);

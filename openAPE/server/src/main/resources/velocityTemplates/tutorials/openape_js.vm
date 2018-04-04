@@ -1,0 +1,116 @@
+<html>
+<head>
+ <title>OpenAPE</title>
+ 
+<!--Vendor Stylesheets -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.6/semantic.min.css">
+
+<!--Custom Stylesheets -->
+ <link rel="stylesheet" href="css/style.css">
+
+<!--Vendor Javascript -->
+ <script src="https://code.jquery.com/jquery-3.2.1.js"></script>
+ <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+ 
+ 
+ <!--Custom Javascript -->
+ <script src="js/openape.js" type="text/javascript"></script>
+ <script src="js/usersection.js" type="text/javascript"></script>
+ <script src="js/navigation.js" type="text/javascript"></script>
+<script src="js/signin.js" type="text/javascript"></script>
+<script src="js/signup.js" type="text/javascript"></script>
+
+</head>
+
+<body>
+
+<div class="wrapper">
+   <div class="header">
+   	$signinModal
+	$signupModal
+	$topNavigation
+	$subSection
+   </div>
+   <div class="body">
+	   <div class="oneContentBlock">
+	   	 <h1>Using openape.js</h1>
+<p>Note: This Tutorial relates to version 1.x of openape.js</p>
+<p>you can use the OpenAPE Java script client to communicate between your application and the OpenAPE server. By doing so you can get all context information that you require to adjust your application to the user's needs and preferences</p>
+
+<p>
+In order to make use of it you need an OpenAPE user account. Usually, you create an account via the OpenAPE web page. However, it is also possible to create a new account with openape.js. Therefore call the function createUser(username, email, password, serverurl). The last parameter is optional and must only be set if you want to use an OpenAPE server other than http://openape.gpii.eu  
+</p>
+
+<h2>Case 1: direct use of user context data</h2>
+<p>Making use of user context data is the simple case. In this case the information contained in in a user context are interpreted by your application and it adjusts the user interface on its own.
+Unless a user context was not created by your client itself, the client usually does not know the Id of the relevant user context. In order to get the Id you can request all user contexts of a user by making use of the function getUserContextList()  
+In a next step you select a user context and adjust your application.<br>
+Finally, if the user changes some settings in the user interface that are relevant to other applications, you might adjust the user context. Therefore you use the function updateUserContext(userContextId, userContext).</p>
+
+<pre><code>
+&lt;script src="js/openape.js" type="text/javascript"&gt;&lt;/script&gt;
+&lt;script&gt;
+var username = "your username";
+var password = "your password";
+openape.initializeLibrary(userName, password);
+
+// Request a list with URLs to your contexts
+var userContextList = openape.getUserContextList();
+
+// select a user context according to your own criteria.
+var id = myApp.selectUserContext(userContextList);
+
+// Get the user context form the OpenAPE server
+var userContext = openape.getUserContext(userContextId);
+
+// use the user context to adjust your application
+myApp.adjust(userContext);
+
+// adjust the userContext
+openape.updateUserContext(userContextId, newUserContext);
+&lt;/script&gt;
+</code></pre>
+
+
+<h2>Case 2: Requesting UI components from the OpenAPE server</h2>
+<p>this is the more advanced case in which the application does not decide on its own about all the adjustments. Instead it requests some recommendations on user interface settings and resources from the OpenAPE server.</p>
+<ol>
+<li>Getting the user context data: Unless a user context was not created by your client itself, the client usually does not know the Id of the relevant user context. In order to get the Id you can request all user contexts of a user by making use of the function getUserContextList()  </li>
+<li>Uploading the different context information to the server.</li>
+<li>Requesting recommendations on user interface settings and/or user interface resources.</li>
+</ol>
+<pre><code>
+&lt;script&gt;
+var username = "your username";
+var password = "your password";
+openape.initializeLibrary(userName, password);
+var userContextList = openape.getUserContextList();
+// select a user context according to your own criteria.
+var userContext = openape.getUserContext(userId);
+
+// upload other context information as needed.
+var equipmentContext = myApp.getEquipmentContextInformation();
+var equipmentContextId = openape.createEquipmentContext(equipmentContext);
+
+var eenvironmentContext = myApp.getEnvironmentContextInformation();
+var environmentContextId = openape.createEnvironmentContext(environmentContext);
+
+var taskContext = myApp.gettaskContextInformation();
+var taskContextId = openape.createtaskContext(taskContext);
+var listing = openape.createListing();
+
+// select the relevant resources
+
+// make use of the resources
+ &lt;/script&gt;
+</code></pre>
+
+		 </div> 
+   	
+   </div>
+   <div id="footer">$footer</div>
+</div>
+</body>
+</html>

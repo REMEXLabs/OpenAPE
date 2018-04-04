@@ -280,7 +280,7 @@
 		 *         information
 		 */
 		objOpenape.getUserContext = function(userContextId, outputType) {
-			return getContext(objOpenape.userContextsPath, userContextId,
+			return getContext(objOpenape.userContextPath, userContextId,
 					outputType);
 		}
 
