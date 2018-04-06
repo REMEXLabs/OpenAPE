@@ -51,6 +51,8 @@ public class Organism_3_DataTable {
                 + "<th>Public</th>" + "<th>Options</th>" + "</tr>" + "</thead>"
                 + "<tbody id='tableContent'>" + administrationDatableContextContent + "</tbody>"
                 + "</table>";
+        // todo debugging
+        logger.info("administrationContextTable: " + administrationContextTable);
         return administrationContextTable;
 
     }

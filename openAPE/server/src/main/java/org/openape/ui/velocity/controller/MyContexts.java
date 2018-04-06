@@ -36,7 +36,7 @@ final CommonProfile profile = auth.getAuthenticatedProfile(request, response);
 String userId = profile.getUsername();
 
 logger.info("userId: " + userId);
-if (userId == null) {
+if (userId != null) {
 	logger.info("no token");
 	final Map<String, Object> model = new HashMap(); 
 	return new ModelAndView(model, "velocityTemplates/myContextsError.vm");
@@ -63,6 +63,7 @@ logger.info("requesting for user with userId: " + userId );
                         .generateAdministrationContextTable(adminsectionRequestHandler,
                                 destination, "myContext", userId));
             }
+
 
             return new ModelAndView(model, "velocityTemplates/myContexts.vm");
 
