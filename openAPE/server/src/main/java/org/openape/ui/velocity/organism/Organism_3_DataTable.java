@@ -8,29 +8,36 @@ import org.openape.ui.velocity.molecules.Molecule_5_DataTableContent;
 import org.openape.ui.velocity.requestHandler.AdminSectionRequestHandler;
 import org.openape.ui.velocity.requestHandler.GroupsRequestHandler;
 import org.openape.ui.velocity.requestHandler.MyResourcesRequestHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Organism_3_DataTable {
+	
+	Logger logger = LoggerFactory.getLogger(Organism_3_DataTable.class );
     public String generateAdministrationContextTable(
-            final AdminSectionRequestHandler adminsectionRequestHandler, final String contextName,
-            final String destination, userId) throws IllegalArgumentException, IOException {
+            final AdminSectionRequestHandler adminsectionRequestHandler, final String contextType,
+            final String destination, final String userId) throws IllegalArgumentException, IOException {
 
+    	
+    	// todo debug
+    	logger.info("requesting table " + destination);
         String administrationDatableContextContent = "";
-        final String idName = contextName.substring(0, 1).toLowerCase()
-                + contextName.substring(1).replace("-", "");
+        final String idName = contextType.substring(0, 1).toLowerCase()
+                + contextType.substring(1).replace("-", "");
 
-        if (contextName == "User-Context") {
+        if (contextType == "User-Context") {
             administrationDatableContextContent = new Molecule_5_DataTableContent()
                     .generateUserContextContent(adminsectionRequestHandler.getAllUsercontexts(),
                             destination);
-        } else if (contextName == "Task-Context") {
+        } else if (contextType == "Task-Context") {
             administrationDatableContextContent = new Molecule_5_DataTableContent()
                     .generateTaskContextContent(adminsectionRequestHandler.getAllTaskContexts(),
                             destination);
-        } else if (contextName == "Equipment-Context") {
+        } else if (contextType == "Equipment-Context") {
             administrationDatableContextContent = new Molecule_5_DataTableContent()
                     .generateEquipmentContextContent(
                             adminsectionRequestHandler.getAllEquipmentContexts(), destination);
-        } else if (contextName == "Environment-Context") {
+        } else if (contextType == "Environment-Context") {
             administrationDatableContextContent = new Molecule_5_DataTableContent()
                     .generateEnvironmentContextContent(
                             adminsectionRequestHandler.getAllEnvironmentContexts(), destination);
@@ -183,4 +190,10 @@ public class Organism_3_DataTable {
         return resourceDataTable;
 
     }
+
+	public Object generateAdministrationPublicContextTable(AdminSectionRequestHandler adminsectionRequestHandler,
+			String destination, String string) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

@@ -170,14 +170,14 @@ public class SuperRestInterface {
                 new ResourceDescriptionRequestHandler(), authService);
 
         try {
-            Administration.setupAdministrationVELOCITYInterface(new AdminSectionRequestHandler());
+            Administration.setupAdministrationVELOCITYInterface(new AdminSectionRequestHandler(), authService);
             GettingStarted.setupGettingStartedVELOCITYInterface();
             Tutorials.setupTutorialsVELOCITYInterface();
             Downloads.setupDownloadsVELOCITYInterface();
             Context.setupContextVELOCITYInterface(new AdminSectionRequestHandler());
             Contact.setupContactVELOCITYInterface();
             MyProfile.setupMyProfileVELOCITYInterface();
-            MyContexts.setupMyContextsVELOCITYInterface(new AdminSectionRequestHandler());
+            MyContexts.setupMyContextsVELOCITYInterface(new AdminSectionRequestHandler(), authService );
             MyResources.setupMyResourcesVELOCITYInterface(new MyResourcesRequestHandler());
             MyGroups.setupMyGroupsVELOCITYInterface();
             LegalNotice.setupLegalNoticeVELOCITYInterface();
