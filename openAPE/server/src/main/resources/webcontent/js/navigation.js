@@ -275,7 +275,7 @@ function openCity(evt, tabName) {
 }
 */
 var processAjaxData = function (response, urlPath){
-//	console.log("response: " + response);
+	
 	
   
 	var newDoc = document.open("text/html", "replace");
