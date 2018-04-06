@@ -1,24 +1,47 @@
 package org.openape.ui.velocity.controller;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 
+import org.openape.api.Messages;
+import org.openape.server.auth.AuthService;
 import org.openape.server.rest.SuperRestInterface;
 import org.openape.ui.velocity.controllerComponents.MainComponents;
 import org.openape.ui.velocity.organism.Organism_3_DataTable;
 import org.openape.ui.velocity.organism.Organism_4_Modals;
 import org.openape.ui.velocity.requestHandler.AdminSectionRequestHandler;
+import org.pac4j.core.profile.CommonProfile;
 
 import spark.ModelAndView;
 import spark.Spark;
 import spark.template.velocity.VelocityTemplateEngine;
 
 public class MyContexts extends SuperRestInterface {
-    public static void setupMyContextsVELOCITYInterface(
-            final AdminSectionRequestHandler adminsectionRequestHandler)
+    private static AuthService auth;
+
+	public static void setupMyContextsVELOCITYInterface(
+            final AdminSectionRequestHandler adminsectionRequestHandler, AuthService authService)
             throws IllegalArgumentException, IOException {
+auth = authService;
+
+
+Spark.before("/myContexts",
+        auth.authorize("anonymous"));
 
         Spark.get("/myContexts", (request, response) -> {
+logger.info("myContexts");
+        	
+final CommonProfile profile = auth.getAuthenticatedProfile(request, response);
+String userId = profile.getUsername();
+
+logger.info("userId: " + userId);
+if (userId != null) {
+	logger.info("no token");
+	final Map<String, Object> model = new HashMap(); 
+	return new ModelAndView(model, "velocityTemplates/myContextsError.vm");
+}
+logger.info("requesting for user with userId: " + userId );
 
             final MainComponents mainController = new MainComponents();
             final Map<String, Object> model = mainController.getTemplateComponents();
@@ -38,8 +61,9 @@ public class MyContexts extends SuperRestInterface {
                         new Organism_4_Modals().generateContextModal(destination, "Add"));
                 model.put("dataTable" + idName, new Organism_3_DataTable()
                         .generateAdministrationContextTable(adminsectionRequestHandler,
-                                destination, "myContext"));
+                                destination, "myContext", userId));
             }
+
 
             return new ModelAndView(model, "velocityTemplates/myContexts.vm");
 

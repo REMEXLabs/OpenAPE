@@ -15,9 +15,12 @@ import org.openape.server.api.group.Group;
 import org.openape.server.database.mongoDB.DatabaseConnection;
 import org.openape.server.requestHandler.ProfileHandler;
 import org.openape.ui.velocity.requestHandler.AdminSectionRequestHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Molecule_5_DataTableContent {
 
+	Logger logger = LoggerFactory.getLogger(Molecule_5_DataTableContent.class) ;
     public String generateAdministrationUserContent(final ArrayList<User> listUsers) {
 
         String tableContent = "";
@@ -331,8 +334,9 @@ public class Molecule_5_DataTableContent {
     }
 
     public String generateUserContextContent(final List<UserContext> listUserContexts,
-            final String destination) throws IOException {
+                		final String destination) throws IOException {
 
+    	logger.info("size: " + listUserContexts.size()	);
         String tableContent = "";
         String buttons = "";
 
@@ -363,7 +367,7 @@ public class Molecule_5_DataTableContent {
                     + userContext.getId() + "</td>"  + "<td id='"+user.getId()+"'>" + user.getUsername() + "</td>" + "<td id='public_"+userContext.getId()+"'>"
                     + userContext.getImplementationParameters().isPublic() + "</td>" + "<td>" + buttons + " </td></tr>";
         }
-
+logger.info("tableContent: " + tableContent);
         return tableContent;
     }
 }

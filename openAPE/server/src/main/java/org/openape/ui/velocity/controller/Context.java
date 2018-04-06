@@ -34,7 +34,7 @@ public class Context extends SuperRestInterface {
                         new Organism_4_Modals().generateViewContextModal(destination));
 
                 model.put("dataTable" + idName, new Organism_3_DataTable()
-                        .generateAdministrationContextTable(adminsectionRequestHandler,
+                        .generateAdministrationPublicContextTable(adminsectionRequestHandler,
                                 destination, "context"));
             }
 
