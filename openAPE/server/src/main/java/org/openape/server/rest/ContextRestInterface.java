@@ -44,7 +44,7 @@ public abstract class ContextRestInterface extends SuperRestInterface {
                 if (owner != null) {
 
                     return createReturnStringListRequest(req, res,
-                            contextListType, ContextRequestHandler.getMyContexts(auth
+                            contextListType, ContextRequestHandler.getMyContextList(auth
                                     .getAuthenticatedUser(req, res).getId(), url));
                 } else {
 

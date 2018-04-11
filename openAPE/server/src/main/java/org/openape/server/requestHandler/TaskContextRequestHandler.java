@@ -179,7 +179,7 @@ public class TaskContextRequestHandler implements ContextRequestHandler {
     }
 
     
-    public TaskContextList getMyContexts(String userId, String url) throws IOException {
+    public TaskContextList getMyContextList(String userId, String url) throws IOException {
         final BasicDBObject query = new BasicDBObject();
         query.put("implementation-parameters.owner", userId);
         return getTaskContexts(query, url);

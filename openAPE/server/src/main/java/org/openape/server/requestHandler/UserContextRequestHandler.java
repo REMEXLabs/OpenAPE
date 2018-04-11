@@ -99,7 +99,7 @@ public class UserContextRequestHandler implements ContextRequestHandler {
      * @throws IOException
      */
     
-    public UserContextList getMyContexts(final String userId, final String url) throws IOException {
+    public UserContextList getMyContextList(final String userId, final String url) throws IOException {
         final BasicDBObject query4 = new BasicDBObject();
         query4.put("implementation-parameters.owner", userId);
         return getUserContexts(query4, url);
