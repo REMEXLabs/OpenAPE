@@ -15,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.mongodb.BasicDBObject;
+import com.mongodb.DBObject;
 
 /**
  * Class with methods to manage user context on the server. It is used by the
@@ -86,7 +87,7 @@ public class UserContextRequestHandler implements ContextRequestHandler {
 
     
     public static UserContextList getCompleteUserContextList(final String url) throws IOException {
-        return getUserContexts(null, url);
+        return getUserContextList(null, url);
     }
 
     /**
@@ -99,10 +100,13 @@ public class UserContextRequestHandler implements ContextRequestHandler {
      * @throws IOException
      */
     
-    public UserContextList getMyContextList(final String userId, final String url) throws IOException {
-        final BasicDBObject query4 = new BasicDBObject();
-        query4.put("implementation-parameters.owner", userId);
-        return getUserContexts(query4, url);
+    
+        public static UserContextList getContextListOfUser(String userId,String url) throws IOException {
+        	
+        	final BasicDBObject query = new BasicDBObject();
+            query.put("implementation-parameters.owner", userId);
+
+    	return getUserContextList(query, url);
     }
 
     /**
@@ -145,19 +149,10 @@ public class UserContextRequestHandler implements ContextRequestHandler {
 
     }
 
-    private static UserContextList getUserContexts(final BasicDBObject query, final String url)
+    private static UserContextList getUserContextList(final BasicDBObject query, final String url)
             throws IOException {
-        final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
-
-        final List<DatabaseObject> result = databaseConnection.getDatabaseObjectsByQuery(
-                MongoCollectionTypes.USERCONTEXT, query);
-        final List<UserContext> contexts = new ArrayList<UserContext>();
-        logger.info("DB: " + result.size()); // TODO löschen
-
-        for (final DatabaseObject databaseObject : result) {
-            contexts.add((UserContext) databaseObject);
-        }
-        return new UserContextList(contexts, url);
+    	List<UserContext> contexts = getUserContexts( query);
+                        return new UserContextList(contexts, url);
 
     }
 
@@ -203,6 +198,27 @@ public class UserContextRequestHandler implements ContextRequestHandler {
     public UserContextList getPublicContextList(String url) throws IOException {
         final BasicDBObject query = new BasicDBObject();
         query.put("PUBLIC", "public");
-        return this.getUserContexts(query, url);
+        return getUserContextList(query, url);
+    }
+    
+    public static List<UserContext> getUserContextsOfUser(String userId) throws IOException{
+    	final BasicDBObject query = new BasicDBObject();
+        query.put("implementation-parameters.owner", userId);
+
+    	return getUserContexts(query);
+    }
+    
+    public static List<UserContext> getUserContexts(BasicDBObject query) throws IOException {
+    	final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
+
+        final List<DatabaseObject> result = databaseConnection.getDatabaseObjectsByQuery(
+                MongoCollectionTypes.USERCONTEXT, query);
+        final List<UserContext> contexts = new ArrayList<UserContext>();
+        
+        for (final DatabaseObject databaseObject : result) {
+            contexts.add((UserContext) databaseObject);
+        }
+
+ return contexts;   	
     }
 }

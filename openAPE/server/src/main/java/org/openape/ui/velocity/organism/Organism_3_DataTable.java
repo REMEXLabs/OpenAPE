@@ -27,7 +27,7 @@ public class Organism_3_DataTable {
 
         if (contextType == "User-Context") {
             administrationDatableContextContent = new Molecule_5_DataTableContent()
-                    .generateUserContextContent(UserContextRequestHandler.getCompleteUserContextList(userId),
+                    .generateUserContextContent(UserContextRequestHandler.getUserContextsOfUser(userId),
                             destination);
         } else if (contextType == "Task-Context") {
             administrationDatableContextContent = new Molecule_5_DataTableContent()
