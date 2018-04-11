@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import org.openape.api.ContextList;
 public interface ContextRequestHandler {
-    public ContextList<?> getAllContexts(String url) throws IOException;
+    public  static 		ContextList getAllContexts(String url) throws IOException;
     /**
      * @param userId
      * @param url
@@ -13,7 +13,7 @@ public interface ContextRequestHandler {
      * @return
      * @throws IOException
      */
-    public ContextList<?> getMyContexts(String userId, String url) throws IOException;
+    public static ContextList<?> getMyContexts(String userId, String url) throws IOException;
     public ContextList<?> getPublicContexts(String url) throws IOException;
     
 }

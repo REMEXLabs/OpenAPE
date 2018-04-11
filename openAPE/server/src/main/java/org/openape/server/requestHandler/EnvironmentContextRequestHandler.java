@@ -160,7 +160,7 @@ public class EnvironmentContextRequestHandler implements ContextRequestHandler {
         return true;
     }
     
-    private EnvironmentContextList getEnvironmentContexts(final BasicDBObject query, final String url)
+    private static EnvironmentContextList getEnvironmentContexts(final BasicDBObject query, final String url)
             throws IOException {
         final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
 
@@ -175,16 +175,16 @@ public class EnvironmentContextRequestHandler implements ContextRequestHandler {
 
     }
 
-    @Override
-    public EnvironmentContextList getAllContexts(String url) throws IOException {
-        return this.getEnvironmentContexts(null, url);
+    
+    public static EnvironmentContextList getAllContexts(String url) throws IOException {
+        return getEnvironmentContexts(null, url);
     }
 
-    @Override
-    public EnvironmentContextList getMyContexts(String userId, String url) throws IOException {
+    
+    public static EnvironmentContextList getMyContexts(String userId, String url) throws IOException {
         final BasicDBObject query = new BasicDBObject();
         query.put("implementation-parameters.owner", userId);
-        return this.getEnvironmentContexts(query, url);
+        return getEnvironmentContexts(query, url);
     }
 
     @Override

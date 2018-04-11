@@ -158,7 +158,7 @@ public class TaskContextRequestHandler implements ContextRequestHandler {
         return true;
     }
     
-    private TaskContextList getTaskContexts(final BasicDBObject query, final String url)
+    private static  TaskContextList getTaskContexts(final BasicDBObject query, final String url)
             throws IOException {
         final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
 
@@ -173,16 +173,16 @@ public class TaskContextRequestHandler implements ContextRequestHandler {
 
     }
 
-    @Override
-    public TaskContextList getAllContexts(String url) throws IOException {
-        return this.getTaskContexts(null, url);
+    
+    public static TaskContextList getAllContexts(String url) throws IOException {
+        return getTaskContexts(null, url);
     }
 
-    @Override
+    
     public TaskContextList getMyContexts(String userId, String url) throws IOException {
         final BasicDBObject query = new BasicDBObject();
         query.put("implementation-parameters.owner", userId);
-        return this.getTaskContexts(query, url);
+        return getTaskContexts(query, url);
     }
 
     @Override

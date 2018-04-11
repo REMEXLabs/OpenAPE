@@ -160,7 +160,7 @@ public class EquipmentContextRequestHandler implements ContextRequestHandler {
         return true;
     }
     
-    private EquipmentContextList getEquipmentContexts(final BasicDBObject query, final String url)
+    private static  EquipmentContextList getEquipmentContexts(final BasicDBObject query, final String url)
             throws IOException {
         final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
 
@@ -175,16 +175,16 @@ public class EquipmentContextRequestHandler implements ContextRequestHandler {
 
     }
 
-    @Override
-    public EquipmentContextList getAllContexts(String url) throws IOException {
-        return this.getEquipmentContexts(null, url);
+    
+    public static EquipmentContextList getAllContexts(String url) throws IOException {
+        return getEquipmentContexts(null, url);
     }
 
-    @Override
-    public EquipmentContextList getMyContexts(String userId, String url) throws IOException {
+    
+    public static EquipmentContextList getMyContexts(String userId, String url) throws IOException {
         final BasicDBObject query = new BasicDBObject();
         query.put("implementation-parameters.owner", userId);
-        return this.getEquipmentContexts(query, url);
+        return getEquipmentContexts(query, url);
     }
 
     @Override

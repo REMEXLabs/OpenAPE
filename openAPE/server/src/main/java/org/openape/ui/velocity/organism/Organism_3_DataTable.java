@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import org.openape.api.user.User;
+import org.openape.server.requestHandler.UserContextRequestHandler;
 import org.openape.ui.velocity.molecules.Molecule_5_DataTableContent;
 import org.openape.ui.velocity.requestHandler.AdminSectionRequestHandler;
 import org.openape.ui.velocity.requestHandler.GroupsRequestHandler;
@@ -19,15 +20,14 @@ public class Organism_3_DataTable {
             final String destination, final String userId) throws IllegalArgumentException, IOException {
 
     	
-    	// todo debug
-    	logger.info("requesting table " + destination);
+    	    	
         String administrationDatableContextContent = "";
         final String idName = contextType.substring(0, 1).toLowerCase()
                 + contextType.substring(1).replace("-", "");
 
         if (contextType == "User-Context") {
             administrationDatableContextContent = new Molecule_5_DataTableContent()
-                    .generateUserContextContent(adminsectionRequestHandler.getAllUsercontexts(),
+                    .generateUserContextContent(UserContextRequestHandler.getAllContexts(userId),
                             destination);
         } else if (contextType == "Task-Context") {
             administrationDatableContextContent = new Molecule_5_DataTableContent()

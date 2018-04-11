@@ -84,9 +84,9 @@ public class UserContextRequestHandler implements ContextRequestHandler {
         return true;
     }
 
-    @Override
-    public UserContextList getAllContexts(final String url) throws IOException {
-        return this.getUserContexts(null, url);
+    
+    public static UserContextList getAllContexts(final String url) throws IOException {
+        return getUserContexts(null, url);
     }
 
     /**
@@ -98,11 +98,11 @@ public class UserContextRequestHandler implements ContextRequestHandler {
      * @return
      * @throws IOException
      */
-    @Override
+    
     public UserContextList getMyContexts(final String userId, final String url) throws IOException {
         final BasicDBObject query4 = new BasicDBObject();
         query4.put("implementation-parameters.owner", userId);
-        return this.getUserContexts(query4, url);
+        return getUserContexts(query4, url);
     }
 
     /**
@@ -145,7 +145,7 @@ public class UserContextRequestHandler implements ContextRequestHandler {
 
     }
 
-    private UserContextList getUserContexts(final BasicDBObject query, final String url)
+    private static UserContextList getUserContexts(final BasicDBObject query, final String url)
             throws IOException {
         final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
 
