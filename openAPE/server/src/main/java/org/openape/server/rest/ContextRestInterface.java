@@ -49,7 +49,7 @@ public abstract class ContextRestInterface extends SuperRestInterface {
                 } else {
 
                     return createReturnStringListRequest(req, res,
-                            contextListType, requestHandler.getPublicContexts(url));
+                            contextListType, requestHandler.getPublicContextList(url));
 
                 }
             }

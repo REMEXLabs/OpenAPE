@@ -14,6 +14,6 @@ public interface ContextRequestHandler {
      * @throws IOException
      */
     public static ContextList<?> getMyContexts(String userId, String url) throws IOException;
-    public ContextList<?> getPublicContexts(String url) throws IOException;
+    public ContextList<?> getPublicContextList(String url) throws IOException;
     
 }

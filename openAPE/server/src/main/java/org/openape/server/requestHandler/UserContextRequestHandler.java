@@ -200,7 +200,7 @@ public class UserContextRequestHandler implements ContextRequestHandler {
     }
 
     @Override
-    public UserContextList getPublicContexts(String url) throws IOException {
+    public UserContextList getPublicContextList(String url) throws IOException {
         final BasicDBObject query = new BasicDBObject();
         query.put("PUBLIC", "public");
         return this.getUserContexts(query, url);

@@ -188,7 +188,7 @@ public class EquipmentContextRequestHandler implements ContextRequestHandler {
     }
 
     @Override
-    public EquipmentContextList getPublicContexts(String url) throws IOException {
+    public EquipmentContextList getPublicContextList(String url) throws IOException {
         final BasicDBObject query = new BasicDBObject();
         query.put("PUBLIC", "public");
         return this.getEquipmentContexts(query, url);

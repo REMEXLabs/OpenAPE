@@ -188,7 +188,7 @@ public class EnvironmentContextRequestHandler implements ContextRequestHandler {
     }
 
     @Override
-    public EnvironmentContextList getPublicContexts(String url) throws IOException {
+    public EnvironmentContextList getPublicContextList(String url) throws IOException {
         final BasicDBObject query = new BasicDBObject();
         query.put("PUBLIC", "public");
         return this.getEnvironmentContexts(query, url);

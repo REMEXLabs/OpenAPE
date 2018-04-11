@@ -186,7 +186,7 @@ public class TaskContextRequestHandler implements ContextRequestHandler {
     }
 
     @Override
-    public TaskContextList getPublicContexts(String url) throws IOException {
+    public TaskContextList getPublicContextList(String url) throws IOException {
         final BasicDBObject query = new BasicDBObject();
         query.put("PUBLIC", "public");
         return this.getTaskContexts(query, url);
