@@ -85,7 +85,7 @@ public class UserContextRequestHandler implements ContextRequestHandler {
     }
 
     
-    public static UserContextList getAllContexts(final String url) throws IOException {
+    public static UserContextList getCompleteUserContextList(final String url) throws IOException {
         return getUserContexts(null, url);
     }
 
