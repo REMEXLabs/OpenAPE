@@ -18,9 +18,13 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 
 /**
- * Class with methods to manage user context on the server. It is used by the
+ * Class with methods to manage user contexts on the server. It is used by the
  * rest API {@link UserContextRESTInterface} and uses the server database
  * {@link DatabaseConnection}.
+ */
+/**
+ * @author Lukas
+ *
  */
 public class UserContextRequestHandler implements ContextRequestHandler {
     private static Logger logger = LoggerFactory.getLogger(UserContextRequestHandler.class);
@@ -194,6 +198,9 @@ public class UserContextRequestHandler implements ContextRequestHandler {
         return true;
     }
 
+    /* (non-Javadoc)
+     * @see org.openape.server.requestHandler.ContextRequestHandler#getPublicContextList(java.lang.String)
+     */
     @Override
     public UserContextList getPublicContextList(String url) throws IOException {
         final BasicDBObject query = new BasicDBObject();
@@ -201,13 +208,26 @@ public class UserContextRequestHandler implements ContextRequestHandler {
         return getUserContextList(query, url);
     }
     
+    /**Returns all contexts of a certain user
+     * @param userId
+     * the userId of the user
+     * @return
+     * @throws IOException
+     */
     public static List<UserContext> getUserContextsOfUser(String userId) throws IOException{
     	final BasicDBObject query = new BasicDBObject();
         query.put("implementation-parameters.owner", userId);
 
     	return getUserContexts(query);
     }
+
     
+    /**Returns a list with all context elements that match the query
+     * @param query
+     * selector for the context elements
+     * @return
+     * @throws IOException
+     */
     public static List<UserContext> getUserContexts(BasicDBObject query) throws IOException {
     	final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
 
