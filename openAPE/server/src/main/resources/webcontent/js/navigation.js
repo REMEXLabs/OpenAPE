@@ -1,4 +1,3 @@
-/*
 $(document).ready(
 		function() {
 			// give the scrollbar padding space if it exists.
@@ -161,7 +160,7 @@ $(document).ready(
 						$('#div_nav_adminsectionGroups').removeClass(
 								"adminsectionNavActive");
 					})
-// define click handlers for navigation bar elements 
+
 			$('#linkGettingStarted').click(function() {
 				window.location = origin + "/gettingStarted";
 			})
@@ -186,8 +185,10 @@ $(document).ready(
 				window.location = origin + "/contact";
 			})
 
-			$('#linkMyContexts').click(requestMyContexts() );
-					
+			$('#linkMyContexts').click(function() {
+				window.location = origin + "/myContexts";
+			})
+
 			$('#linkMyProfile').click(function() {
 				window.location = origin + "/myProfile";
 			})
@@ -273,11 +274,11 @@ function openCity(evt, tabName) {
 		$('#collapseTwo').removeClass("in");
 	}
 }
-*/
+
 var processAjaxData = function (response, urlPath){
 	
 	
-  
+	  
 	var newDoc = document.open("text/html", "replace");
 	newDoc.write(response);
 	newDoc.close();
@@ -288,20 +289,3 @@ var processAjaxData = function (response, urlPath){
 */
 };
 
-var requestMyContexts = function() {
-	//alert("requestMyContexts");
-	var token = localStorage.getItem("token")
-	alert("token: " +token);
-	if (token !== null){
-	$.ajax({
-		type: "GET",
-		beforeSend: function(request) {
-			request.setRequestHeader("Authorization", token )},
-			url: "/myContexts",
-//				success:processAjaxData(response), 
-						}).done( function(response) {
-						processAjaxData(response);	
-						})
-						;
-	}
-};
