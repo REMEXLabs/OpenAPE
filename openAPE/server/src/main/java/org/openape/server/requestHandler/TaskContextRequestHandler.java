@@ -21,7 +21,7 @@ import com.mongodb.BasicDBObject;
  * rest API {@link TaskContextRESTInterface} and uses the server database
  * {@link DatabaseConnection}.
  */
-public class TaskContextRequestHandler implements ContextRequestHandler {
+public class TaskContextRequestHandler extends ContextRequestHandler {
 
     private static final MongoCollectionTypes COLLECTIONTOUSE = MongoCollectionTypes.TASKCONTEXT;
 

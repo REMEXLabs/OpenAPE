@@ -31,13 +31,15 @@ Spark.before("/myContexts",
 
         Spark.get("/myContexts", (request, response) -> {
       	
-final CommonProfile profile = auth.getAuthenticatedProfile(request, response);
-String userId = profile.getUsername();
+//final CommonProfile profile = auth.getAuthenticatedProfile(request, response);
+//String userId = profile.getUsername();
 
+        	final String userId = auth.getAuthenticatedUser(request, response).getId();
+        	
 logger.info("userId: " + userId);
 
 //If no userId is avavailable send error message/ script to resend request with token
-if (userId == null) {
+if (userId.equals("anonymous") ) {
 	logger.info("no token");
 	final Map<String, Object> model = new HashMap(); 
 	return new ModelAndView(model, "velocityTemplates/myContextsError.vm");

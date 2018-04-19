@@ -21,7 +21,7 @@ import com.mongodb.BasicDBObject;
  * the rest API {@link EnvironmentContextRESTInterface} and uses the server
  * database {@link DatabaseConnection}.
  */
-public class EnvironmentContextRequestHandler implements ContextRequestHandler {
+public class EnvironmentContextRequestHandler extends ContextRequestHandler<EnvironmentContext, EnvironmentContextList> {
 
     private static final MongoCollectionTypes COLLECTIONTOUSE = MongoCollectionTypes.ENVIRONMENTCONTEXT;
 
