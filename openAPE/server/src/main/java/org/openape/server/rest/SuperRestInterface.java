@@ -199,7 +199,7 @@ public class SuperRestInterface {
         ResourceRESTInterface.setupResourceRESTInterface(new ResourceRequestHandler(), authService);
         ResourceDescriptionRESTInterface.setupResourceDescriptionRESTInterface(
                 new ResourceDescriptionRequestHandler(), authService);
-        TaskContextRESTInterface.setupTaskContextRESTInterface(new TaskContextRequestHandler(),
+        TaskContextRESTInterface.setupTaskContextRESTInterface(TaskContextRequestHandler.getInstance(),
                 authService);
         UserContextRESTInterface.setupUserContextRESTInterface(UserContextRequestHandler.getInstance(),
                 authService);

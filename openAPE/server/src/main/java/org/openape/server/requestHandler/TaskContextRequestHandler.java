@@ -12,8 +12,9 @@ import org.openape.server.rest.TaskContextRESTInterface;
  * {@link DatabaseConnection}.
  */
 public class TaskContextRequestHandler extends ContextRequestHandler<TaskContext, TaskContextList> {
-
-    private static final MongoCollectionTypes COLLECTIONTOUSE = MongoCollectionTypes.TASKCONTEXT;
+private TaskContextRequestHandler() {
+    super( MongoCollectionTypes.TASKCONTEXT);
+}
 private static TaskContextRequestHandler instance = null;
 
 public static TaskContextRequestHandler getInstance() {
