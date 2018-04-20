@@ -17,7 +17,7 @@ import org.openape.server.rest.UserContextRESTInterface;
 import com.mongodb.BasicDBObject;
 
 public abstract class ContextRequestHandler<T, Y extends ContextList> {
-	public static final MongoCollectionTypes COLLECTIONTOUSE = null;
+	final MongoCollectionTypes COLLECTIONTOUSE = null;
 
 	
     
