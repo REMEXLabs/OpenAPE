@@ -20,8 +20,12 @@ import com.mongodb.DBObject;
 public class UserContextRequestHandler extends ContextRequestHandler<UserContext, UserContextList> {
     static Logger logger = LoggerFactory.getLogger(UserContextRequestHandler.class);
 
-    public static final MongoCollectionTypes COLLECTIONTOUSE = MongoCollectionTypes.USERCONTEXT;
+
     public static UserContextRequestHandler  instance = null;
+    private UserContextRequestHandler() {
+super(    MongoCollectionTypes.USERCONTEXT);    	
+    }
+    
     public static UserContextRequestHandler getInstance() {
     	if (instance == null){
     instance = new UserContextRequestHandler();

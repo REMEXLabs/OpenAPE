@@ -209,7 +209,7 @@ public class SuperRestInterface {
                 new ResourceDescriptionRequestHandler(), authService);
         TaskContextRESTInterface.setupTaskContextRESTInterface(new TaskContextRequestHandler(),
                 authService);
-        UserContextRESTInterface.setupUserContextRESTInterface(new UserContextRequestHandler(),
+        UserContextRESTInterface.setupUserContextRESTInterface(UserContextRequestHandler.getInstance(),
                 authService);
         SuperRestInterface.logger.info("REST API successfully set up");
 

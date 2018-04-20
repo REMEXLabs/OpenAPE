@@ -16,9 +16,11 @@ import org.openape.server.rest.UserContextRESTInterface;
 
 import com.mongodb.BasicDBObject;
 
-public abstract class ContextRequestHandler<T, Y extends ContextList> {
-	final MongoCollectionTypes COLLECTIONTOUSE = null;
-
+public class ContextRequestHandler<T, Y extends ContextList> {
+	MongoCollectionTypes COLLECTIONTOUSE = null;
+public ContextRequestHandler(MongoCollectionTypes collectionToUse) {
+	this.COLLECTIONTOUSE = collectionToUse;
+}
 	
     
     /**
@@ -109,7 +111,7 @@ public abstract class ContextRequestHandler<T, Y extends ContextList> {
 	    // argument exceptions. IO exceptions will just be thrown through.
 	    String id = null;
 	    try {
-	        id = databaseconnection.storeDatabaseObject(UserContextRequestHandler.COLLECTIONTOUSE,
+	        id = databaseconnection.storeDatabaseObject(this.COLLECTIONTOUSE,
 	                (DatabaseObject) userContext);
 	        UserContextRequestHandler.logger.debug("New user context in database with id \"" + id
 	                + "\".");
@@ -136,7 +138,7 @@ public abstract class ContextRequestHandler<T, Y extends ContextList> {
 	    final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
 	
 	    final boolean success = databaseConnection.deleteDatabaseObject(
-	            UserContextRequestHandler.COLLECTIONTOUSE, id);
+	            this.COLLECTIONTOUSE, id);
 	    if (!success) {
 	        throw new IllegalArgumentException(
 	                Messages.getString("UserContextRequestHandler.NoObjectWithThatIDErrorMsg")); //$NON-NLS-1$
@@ -163,7 +165,7 @@ public abstract class ContextRequestHandler<T, Y extends ContextList> {
 	
 	    // Get the requested data.
 	    final DatabaseObject result = databaseConnection.getDatabaseObjectById(
-	            UserContextRequestHandler.COLLECTIONTOUSE, id);
+	            this.COLLECTIONTOUSE, id);
 	
 	    // If the result is null the id is not found.
 	    if (result == null) {
@@ -214,7 +216,7 @@ public abstract class ContextRequestHandler<T, Y extends ContextList> {
 	    boolean success;
 	    try {
 	        success = databaseConnection.updateDatabaseObject(
-	                UserContextRequestHandler.COLLECTIONTOUSE, (DatabaseObject) userContext, id);
+	                this.COLLECTIONTOUSE, (DatabaseObject) userContext, id);
 	    } catch (final ClassCastException e) {
 	        throw new IllegalArgumentException(e.getMessage());
 	    }
