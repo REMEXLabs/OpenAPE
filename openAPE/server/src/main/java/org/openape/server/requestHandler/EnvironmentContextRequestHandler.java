@@ -22,9 +22,9 @@ import com.mongodb.BasicDBObject;
  * database {@link DatabaseConnection}.
  */
 public class EnvironmentContextRequestHandler extends ContextRequestHandler<EnvironmentContext, EnvironmentContextList> {
-
-    private static final MongoCollectionTypes COLLECTIONTOUSE = MongoCollectionTypes.ENVIRONMENTCONTEXT;
-
+private EnvironmentContextRequestHandler() {
+    supr( MongoCollectionTypes.ENVIRONMENTCONTEXT);
+}
     private static EnvironmentContextRequestHandler instance = null;
     public static EnvironmentContextRequestHandler getInstance() {
     	if (instance == null) {
