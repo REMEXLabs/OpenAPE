@@ -15,6 +15,7 @@ import org.openape.server.database.mongoDB.MongoCollectionTypes;
 import org.openape.server.rest.UserContextRESTInterface;
 
 import com.mongodb.BasicDBObject;
+
 public abstract class ContextRequestHandler<T, Y extends ContextList> {
 	public static final MongoCollectionTypes COLLECTIONTOUSE = null;
 
@@ -79,6 +80,7 @@ public abstract class ContextRequestHandler<T, Y extends ContextList> {
 		Y instance = null;
 		try {
 				    instance = (Y) ((Class)((ParameterizedType)this.getClass().getGenericSuperclass()).getActualTypeArguments()[1]).newInstance();
+		instance.addContexts(contexts);
 		} catch (InstantiationException | IllegalAccessException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -86,6 +88,7 @@ public abstract class ContextRequestHandler<T, Y extends ContextList> {
 		return null;
 	
 	}
+	
 	/**
 	 * Method to store a new user context into the server. It is used by the
 	 * rest API {@link UserContextRESTInterface} and uses the server database
@@ -221,5 +224,10 @@ public abstract class ContextRequestHandler<T, Y extends ContextList> {
 	    }
 	    return true;
 	}
-    
+
+public List<T> getPublicContexts() throws IOException {
+	final BasicDBObject query = new BasicDBObject();
+    query.put("PUBLIC", "public");
+    return getContexts(query);
+}
 }

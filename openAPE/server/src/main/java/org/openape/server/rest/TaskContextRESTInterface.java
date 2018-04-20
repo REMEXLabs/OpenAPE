@@ -80,7 +80,7 @@ public class TaskContextRESTInterface extends ContextRestInterface {
                         }
                         // If the object is okay, save it and return the id.
                         final String taskContextId = requestHandler
-                                .createTaskContext(receivedTaskContext);
+                                .createContext(receivedTaskContext);
                         res.status(SuperRestInterface.HTTP_STATUS_CREATED);
                         return taskContextId;
                     } catch (JsonParseException | JsonMappingException | IllegalArgumentException e) {
@@ -105,7 +105,7 @@ public class TaskContextRESTInterface extends ContextRestInterface {
                     try {
                         // if it is successful return task context.
                         final TaskContext taskContext = requestHandler
-                                .getTaskContextById(taskContextId);
+                                .getContextById(taskContextId);
                         // Make sure only admins or the owner can view the
                         // context, except if it is public
                         auth.allowAdminOwnerAndPublic(req, res, taskContext
@@ -146,7 +146,7 @@ public class TaskContextRESTInterface extends ContextRestInterface {
                         }
                         // Check if the task context does exist
                         final TaskContext taskContext = requestHandler
-                                .getTaskContextById(taskContextId);
+                                .getContextById(taskContextId);
                         // Make sure only admins and the owner can update a
                         // context
                         auth.allowAdminAndOwner(req, res, taskContext.getImplementationParameters()
@@ -160,7 +160,7 @@ public class TaskContextRESTInterface extends ContextRestInterface {
                         // be
                         // changed
                         // Perform update
-                        requestHandler.updateTaskContextById(taskContextId, receivedTaskContext);
+                        requestHandler.updateContextById(taskContextId, receivedTaskContext);
                         res.status(SuperRestInterface.HTTP_STATUS_NO_CONTENT);
                         return Messages.getString("TaskContextRESTInterface.EmptyString"); //$NON-NLS-1$ 
                     } catch (JsonParseException | JsonMappingException | IllegalArgumentException e) {
@@ -185,13 +185,13 @@ public class TaskContextRESTInterface extends ContextRestInterface {
                     try {
                         // Check if the user context does exist
                         final TaskContext taskContext = requestHandler
-                                .getTaskContextById(taskContextId);
+                                .getContextById(taskContextId);
                         // Make sure only admins and the owner can delete a
                         // context
                         auth.allowAdminAndOwner(req, res, taskContext.getImplementationParameters()
                                 .getOwner());
                         // if it is successful return empty string.
-                        requestHandler.deleteTaskContextById(taskContextId);
+                        requestHandler.deleteContextById(taskContextId);
                         res.status(SuperRestInterface.HTTP_STATUS_NO_CONTENT);
                         return Messages.getString("TaskContextRESTInterface.EmptyString"); //$NON-NLS-1$
                         // if not return corresponding error status.

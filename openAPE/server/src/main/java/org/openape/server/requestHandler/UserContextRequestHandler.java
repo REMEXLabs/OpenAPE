@@ -21,4 +21,12 @@ public class UserContextRequestHandler extends ContextRequestHandler<UserContext
     static Logger logger = LoggerFactory.getLogger(UserContextRequestHandler.class);
 
     public static final MongoCollectionTypes COLLECTIONTOUSE = MongoCollectionTypes.USERCONTEXT;
+    public static UserContextRequestHandler  instance = null;
+    public static UserContextRequestHandler getInstance() {
+    	if (instance == null){
+    instance = new UserContextRequestHandler();
+    	} 
+    		return instance;
+    	
+    }
 }

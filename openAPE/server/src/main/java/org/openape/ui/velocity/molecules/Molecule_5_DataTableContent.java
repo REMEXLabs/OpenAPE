@@ -336,7 +336,7 @@ public class Molecule_5_DataTableContent {
     public String generateUserContextContent(final List<UserContext> listUserContexts,
                 		final String destination) throws IOException {
 
-    	logger.info("size: " + listUserContexts.size()	);
+    	
         String tableContent = "";
         String buttons = "";
 

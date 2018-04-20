@@ -35,7 +35,7 @@ public abstract class ContextRestInterface extends SuperRestInterface {
             try {
                 auth.allowAdmin(req, res);
                 return createReturnStringListRequest(req, res,
-                        contextListType, ContextRequestHandler.getCompleteContextList(url));
+                        contextListType, requestHandler.getCompleteContextList(url));
             } catch (final UnauthorizedException e) {
 
                 final CommonProfile profile = auth.getAuthenticatedProfile(req, res);
@@ -44,7 +44,7 @@ public abstract class ContextRestInterface extends SuperRestInterface {
                 if (owner != null) {
 
                     return createReturnStringListRequest(req, res,
-                            contextListType, ContextRequestHandler.getContextListOfUser(auth
+                            contextListType, requestHandler.getContextListOfUser(auth
                                     .getAuthenticatedUser(req, res).getId(), url));
                 } else {
 

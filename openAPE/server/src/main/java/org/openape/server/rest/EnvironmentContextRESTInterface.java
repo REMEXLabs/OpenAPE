@@ -84,7 +84,7 @@ public class EnvironmentContextRESTInterface extends ContextRestInterface {
                 }
                 // If the object is okay, save it and return the id.
                 final String environmentContextId = requestHandler
-                        .createEnvironmentContext(receivedEnvironmentContext);
+                        .createContext(receivedEnvironmentContext);
                 res.status(SuperRestInterface.HTTP_STATUS_CREATED);
                 return environmentContextId;
             } catch (JsonParseException | JsonMappingException | IllegalArgumentException e) {
@@ -110,7 +110,7 @@ public class EnvironmentContextRESTInterface extends ContextRestInterface {
                     try {
                         // if it is successful return environment context.
                         final EnvironmentContext environmentContext = requestHandler
-                                .getEnvironmentContextById(environmentContextId);
+                                .getContextById(environmentContextId);
                         // Make sure only admins or the owner can view the
                         // context, except if it is public
                         auth.allowAdminOwnerAndPublic(req, res, environmentContext
@@ -151,7 +151,7 @@ public class EnvironmentContextRESTInterface extends ContextRestInterface {
                         }
                         // Check if the user context does exist
                         final EnvironmentContext environmentContext = requestHandler
-                                .getEnvironmentContextById(environmentContextId);
+                                .getContextById(environmentContextId);
                         // Make sure only admins and the owner can update a
                         // context
                         auth.allowAdminAndOwner(req, res, environmentContext
@@ -165,7 +165,7 @@ public class EnvironmentContextRESTInterface extends ContextRestInterface {
                         // be
                         // changed
                         // Perform update
-                        requestHandler.updateEnvironmentContextById(environmentContextId,
+                        requestHandler.updateContextById(environmentContextId,
                                 receivedEnvironmentContext);
                         res.status(SuperRestInterface.HTTP_STATUS_NO_CONTENT);
                         return Messages.getString("EnvironmentContextRESTInterface.EmptyString"); //$NON-NLS-1$
@@ -191,13 +191,13 @@ public class EnvironmentContextRESTInterface extends ContextRestInterface {
                     try {
                         // Check if the user context does exist
                         final EnvironmentContext environmentContext = requestHandler
-                                .getEnvironmentContextById(environmentContextId);
+                                .getContextById(environmentContextId);
                         // Make sure only admins and the owner can delete a
                         // context
                         auth.allowAdminAndOwner(req, res, environmentContext
                                 .getImplementationParameters().getOwner());
                         // Perform delete and return empty string.
-                        requestHandler.deleteEnvironmentContextById(environmentContextId);
+                        requestHandler.deleteContextById(environmentContextId);
                         res.status(SuperRestInterface.HTTP_STATUS_NO_CONTENT);
                         return Messages.getString("EnvironmentContextRESTInterface.EmptyString"); //$NON-NLS-1$
                         // if not return corresponding error status.
