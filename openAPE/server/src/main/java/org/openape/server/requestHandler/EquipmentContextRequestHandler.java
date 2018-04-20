@@ -24,8 +24,9 @@ import com.mongodb.BasicDBObject;
  * database {@link DatabaseConnection}.
  */
 public class EquipmentContextRequestHandler extends ContextRequestHandler<EquipmentContext,EquipmentContextList> {
-
-    private static final MongoCollectionTypes COLLECTIONTOUSE = MongoCollectionTypes.EQUIPMENTCONTEXT;
+private EquipmentContextRequestHandler() {
+    super( MongoCollectionTypes.EQUIPMENTCONTEXT);
+}
 private static EquipmentContextRequestHandler instance = null;
 
 public static EquipmentContextRequestHandler getInstance() {

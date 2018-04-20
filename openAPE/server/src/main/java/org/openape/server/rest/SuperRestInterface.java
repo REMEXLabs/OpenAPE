@@ -194,7 +194,7 @@ public class SuperRestInterface {
         EnvironmentContextRESTInterface.setupEnvironmentContextRESTInterface(
                  EnvironmentContextRequestHandler.getInstance(), authService);
         EquipmentContextRESTInterface.setupEquipmentContextRESTInterface(
-                new EquipmentContextRequestHandler(), authService);
+                EquipmentContextRequestHandler.getInstance(), authService);
         ListingRESTInterface.setupListingRESTInterface(new ListingRequestHandler());
         ResourceRESTInterface.setupResourceRESTInterface(new ResourceRequestHandler(), authService);
         ResourceDescriptionRESTInterface.setupResourceDescriptionRESTInterface(
