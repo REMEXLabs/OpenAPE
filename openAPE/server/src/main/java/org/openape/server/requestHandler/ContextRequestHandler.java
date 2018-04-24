@@ -85,10 +85,10 @@ public ContextRequestHandler(MongoCollectionTypes collectionToUse) {
 				    instance = (Y) ((Class)((ParameterizedType)this.getClass().getGenericSuperclass()).getActualTypeArguments()[1]).newInstance();
 		instance.addContexts(contexts);
 		} catch (InstantiationException | IllegalAccessException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
-		return null;
+		return instance;
 	
 	}
 	
@@ -188,7 +188,7 @@ public ContextRequestHandler(MongoCollectionTypes collectionToUse) {
 	
 	public Y getPublicContextList(String url) throws IOException {
 	    final BasicDBObject query = new BasicDBObject();
-	    query.put("PUBLIC", true);
+	    query.put("implementation-parameters.public", true);
 	    return getContextList(query, url);
 	}
 	/**
