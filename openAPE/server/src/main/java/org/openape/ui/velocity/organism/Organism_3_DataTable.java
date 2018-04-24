@@ -17,13 +17,13 @@ import org.slf4j.LoggerFactory;
 
 public class Organism_3_DataTable {
 	
-	Logger logger = LoggerFactory.getLogger(Organism_3_DataTable.class );
+	private static Logger logger = LoggerFactory.getLogger(Organism_3_DataTable.class );
 	
     /**TODO comment all parameers
      *creates the HTML table for all  and public contexts 
      * @param adminsectionRequestHandler
      * @param contextType
-     * @param destination 
+     * @param b 
      * indicates if function is called by "myContexts" or "contexts"
      * @param userId
      * @return
@@ -32,7 +32,7 @@ public class Organism_3_DataTable {
      */
     public String generateAdministrationContextTable(
             final AdminSectionRequestHandler adminsectionRequestHandler, final String contextType,
-            final String destination, final String userId) throws IllegalArgumentException, IOException {
+            final boolean  privateContexts, final String userId) throws IllegalArgumentException, IOException {
 
     	
     	    	
@@ -42,10 +42,10 @@ public class Organism_3_DataTable {
 
         
         
-if (contextType.equals("myContexts")) {
-	administrationDatableContextContent 	 = createPrivateTableContent(contextType, destination, userId);
+if (privateContexts) {
+	administrationDatableContextContent 	 = createPrivateTableContent(contextType,  userId);
 } else {
-	administrationDatableContextContent 	 = createPublicTableContent(contextType, destination);
+	administrationDatableContextContent 	 = createPublicTableContent(contextType);
 }
         final String administrationContextTable = ""
                 + "<table id='"
@@ -56,29 +56,29 @@ if (contextType.equals("myContexts")) {
                 + "<tbody id='tableContent'>" + administrationDatableContextContent + "</tbody>"
                 + "</table>";
         // todo debugging
-        logger.info("administrationContextTable: " + administrationContextTable);
+        logger.debug("administrationContextTable: " + administrationContextTable);
         return administrationContextTable;
 
     }
 
-    private String createPublicTableContent(String contextType, String destination) throws IOException {
+    private String createPublicTableContent(String contextType) throws IOException {
     	String administrationDatableContextContent = ""; 
     	if (contextType == "User-Context") {
             administrationDatableContextContent = new Molecule_5_DataTableContent()
                     .generateUserContextContent(UserContextRequestHandler.getInstance().getPublicContexts(),
-                            destination);
+                            false);
         } else if (contextType == "Task-Context") {
             administrationDatableContextContent = new Molecule_5_DataTableContent()
                     .generateTaskContextContent(TaskContextRequestHandler.getInstance().getPublicContexts(),
-                            destination);
+                            false);
         } else if (contextType == "Equipment-Context") {
             administrationDatableContextContent = new Molecule_5_DataTableContent()
                     .generateEquipmentContextContent(
-                            EquipmentContextRequestHandler.getInstance().getPublicContexts(), destination);
+                            EquipmentContextRequestHandler.getInstance().getPublicContexts(), false);
         } else if (contextType == "Environment-Context") {
             administrationDatableContextContent = new Molecule_5_DataTableContent()
                     .generateEnvironmentContextContent(
-                            EnvironmentContextRequestHandler.getInstance().getPublicContexts(), destination);
+                            EnvironmentContextRequestHandler.getInstance().getPublicContexts(), false);
         }
 return administrationDatableContextContent; 
 		
@@ -87,23 +87,23 @@ return administrationDatableContextContent;
 	}
 
 	String administrationDatableContextContent = ""; 
-    private String createPrivateTableContent(String contextType, String destination, String userId) throws IOException{
+    private String createPrivateTableContent(String contextType,  String userId) throws IOException{
         if (contextType == "User-Context") {
             administrationDatableContextContent = new Molecule_5_DataTableContent()
                     .generateUserContextContent(UserContextRequestHandler.getInstance().getContextsOfUser(userId),
-                            destination);
+                            true);
         } else if (contextType == "Task-Context") {
             administrationDatableContextContent = new Molecule_5_DataTableContent()
                     .generateTaskContextContent(TaskContextRequestHandler.getInstance().getContextsOfUser(userId),
-                            destination);
+                            true);
         } else if (contextType == "Equipment-Context") {
             administrationDatableContextContent = new Molecule_5_DataTableContent()
                     .generateEquipmentContextContent(
-                            EquipmentContextRequestHandler.getInstance().getContextsOfUser(userId), destination);
+                            EquipmentContextRequestHandler.getInstance().getContextsOfUser(userId), true);
         } else if (contextType == "Environment-Context") {
             administrationDatableContextContent = new Molecule_5_DataTableContent()
                     .generateEnvironmentContextContent(
-                            EnvironmentContextRequestHandler.getInstance().getContextsOfUser(userId), destination);
+                            EnvironmentContextRequestHandler.getInstance().getContextsOfUser(userId), true);
         }
 return administrationDatableContextContent; 
 		

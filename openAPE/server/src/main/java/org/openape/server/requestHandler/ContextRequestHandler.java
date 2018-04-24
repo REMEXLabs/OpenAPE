@@ -7,16 +7,17 @@ import java.util.List;
 
 import org.openape.api.ContextList;
 import org.openape.api.Messages;
-import org.openape.api.UserContextList;
 import org.openape.api.databaseObjectBase.DatabaseObject;
-import org.openape.api.usercontext.UserContext;
 import org.openape.server.database.mongoDB.DatabaseConnection;
 import org.openape.server.database.mongoDB.MongoCollectionTypes;
 import org.openape.server.rest.UserContextRESTInterface;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.mongodb.BasicDBObject;
 
 public class ContextRequestHandler<T, Y extends ContextList> {
+	private static Logger logger = LoggerFactory.getLogger(ContextRequestHandler.class);
 	MongoCollectionTypes COLLECTIONTOUSE = null;
 public ContextRequestHandler(MongoCollectionTypes collectionToUse) {
 	this.COLLECTIONTOUSE = collectionToUse;
@@ -60,15 +61,15 @@ public ContextRequestHandler(MongoCollectionTypes collectionToUse) {
 	public List<T> getContexts 
 (BasicDBObject query) throws IOException {
 	    	final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
-	
+	logger.info("Requesting "+ COLLECTIONTOUSE);
 	        final List<DatabaseObject> result = databaseConnection.getDatabaseObjectsByQuery(
-	                MongoCollectionTypes.USERCONTEXT, query);
+	               COLLECTIONTOUSE, query);
 	        final List<T> contexts = new ArrayList<T>();
 	        
 	        for (final DatabaseObject databaseObject : result) {
 	            contexts.add((T) databaseObject);
 	        }
-	
+	logger.info("found " + contexts.size() + " contexts");
 	 return contexts;
 	        
 	    }
@@ -187,7 +188,7 @@ public ContextRequestHandler(MongoCollectionTypes collectionToUse) {
 	
 	public Y getPublicContextList(String url) throws IOException {
 	    final BasicDBObject query = new BasicDBObject();
-	    query.put("PUBLIC", "public");
+	    query.put("PUBLIC", true);
 	    return getContextList(query, url);
 	}
 	/**
@@ -228,6 +229,7 @@ public ContextRequestHandler(MongoCollectionTypes collectionToUse) {
 	}
 
 public List<T> getPublicContexts() throws IOException {
+	logger.info("lusm: getPublicContexts");
 	final BasicDBObject query = new BasicDBObject();
     query.put("PUBLIC", "public");
     return getContexts(query);

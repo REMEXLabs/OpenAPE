@@ -86,7 +86,7 @@ public class Administration extends SuperRestInterface {
                     } else {
                         model.put("dataTable" + idName, new Organism_3_DataTable()
                                 .generateAdministrationContextTable(adminsectionRequestHandler,
-                                        destination, "administration", userId));
+                                        destination, true, userId));
                     }
                 }
 

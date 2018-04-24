@@ -64,7 +64,7 @@ if (userId.equals("anonymous") ) {
                         new Organism_4_Modals().generateContextModal(destination, "Add"));
                 model.put("dataTable" + idName, new Organism_3_DataTable()
                         .generateAdministrationContextTable(adminsectionRequestHandler,
-                                destination, "myContext", userId));
+                                destination, true, userId));
             }
 
 

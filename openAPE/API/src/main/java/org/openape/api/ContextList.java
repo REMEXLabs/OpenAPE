@@ -98,12 +98,12 @@ private String url;
     }
 
     public ContextList(){
-
+    	this.contextUris = new LinkedList<URI>();
     }
     
     public ContextList(final List<T> contexts, String url, final String contextTypeUri) {
         this.contextUris = new LinkedList<URI>();
-     url = url;
+     this.url = url;
         addContexts(contexts);   
     }
     public void addContexts(List<T> contexts) {
