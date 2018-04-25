@@ -23,11 +23,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 @XmlRootElement(name = "response")
 @XmlType (propOrder={"totalContexts", "contextUris"})
-public abstract class ContextList<T extends DatabaseObject > {
+public abstract class ContextList<T extends DatabaseObject>  {
 
     private Logger logger = LoggerFactory.getLogger(ContextList.class); 
     private int totalContexts = 0;  
-
+private String url;
     private String contextTypeUri;
     
     @JsonIgnore
@@ -98,16 +98,20 @@ public abstract class ContextList<T extends DatabaseObject > {
     }
 
     public ContextList(){
-
+    	this.contextUris = new LinkedList<URI>();
     }
     
-    public ContextList(final List<T> contexts, final String url, final String contextTypeUri) {
+    public ContextList(final List<T> contexts, String url, final String contextTypeUri) {
         this.contextUris = new LinkedList<URI>();
+     this.url = url;
+        addContexts(contexts);   
+    }
+    public void addContexts(List<T> contexts) {
                 for (T context : contexts) {
             try {
                 this.contextUris.add(new URI(url + "/"+ context.getId()));
             } catch (final URISyntaxException e) {
-                // TODO Auto-generated catch block
+                
                 e.printStackTrace();
             }
         }
@@ -116,4 +120,4 @@ public abstract class ContextList<T extends DatabaseObject > {
         
     }
 
-}
+    }

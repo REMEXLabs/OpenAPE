@@ -7,7 +7,7 @@ import org.openape.api.environmentcontext.EnvironmentContext;
 
 import com.fasterxml.jackson.annotation.JsonSetter;
 
-public class EnvironmentContextList extends ContextList<EnvironmentContext> {
+public class EnvironmentContextList extends ContextList{
 
     public EnvironmentContextList(List<EnvironmentContext> contexts, String url) {
         super(contexts, url, "environment-context-uri");
@@ -26,5 +26,6 @@ public class EnvironmentContextList extends ContextList<EnvironmentContext> {
         setContextUris(environmentContextUris);
     }
 
+	
     
 }

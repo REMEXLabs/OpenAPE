@@ -1,0 +1,23 @@
+<html>
+<head>
+ <title>OpenAPE - My Contexts, please sign in</title>
+ <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+ 
+<!-- Vendor Javascript -->
+<script src="https://code.jquery.com/jquery-3.2.1.js"></script>
+<!-- Custom Javascript --> 
+<!--<script src="js/openape.js" type="text/javascript"></script>-->
+<script src="js/protectedPages.js" type="text/javascript"></script>
+<script>
+$(document).ready(function() {
+requestProtectedPage( window.location );
+});
+</script>
+</head>
+
+<body>
+<div>
+<h1>Please Log in</h1>
+</div>
+</body>
+</html>

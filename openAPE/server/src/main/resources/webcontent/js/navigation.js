@@ -274,3 +274,18 @@ function openCity(evt, tabName) {
 		$('#collapseTwo').removeClass("in");
 	}
 }
+
+var processAjaxData = function (response, urlPath){
+	
+	
+	  
+	var newDoc = document.open("text/html", "replace");
+	newDoc.write(response);
+	newDoc.close();
+	/*
+	$("html").outerHTML = response.html;
+    document.title = "response.pageTitle";
+    window.history.pushState({"html":response.html,"pageTitle":response.pageTitle},"", urlPath);
+*/
+};
+

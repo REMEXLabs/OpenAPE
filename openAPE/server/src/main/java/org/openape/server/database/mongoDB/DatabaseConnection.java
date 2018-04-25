@@ -94,10 +94,10 @@ public class DatabaseConnection implements ServerMonitorListener {
      */
     public static DatabaseConnection getInstance() {
         if (DatabaseConnection.databaseConnectionInstance == null) {
-            DatabaseConnection.logger.info("new database connection required");
+            DatabaseConnection.logger.debug("new database connection required");
             DatabaseConnection.databaseConnectionInstance = new DatabaseConnection();
         } else {
-            DatabaseConnection.logger.info("Found existing database connection.");
+            DatabaseConnection.logger.debug("Found existing database connection.");
         }
         return DatabaseConnection.databaseConnectionInstance;
     }

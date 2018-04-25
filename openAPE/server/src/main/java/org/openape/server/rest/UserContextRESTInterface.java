@@ -7,7 +7,9 @@ import org.openape.api.UserContextList;
 import org.openape.api.usercontext.UserContext;
 import org.openape.server.auth.AuthService;
 import org.openape.server.auth.UnauthorizedException;
+import org.openape.server.requestHandler.ContextRequestHandler;
 import org.openape.server.requestHandler.UserContextRequestHandler;
+
 import spark.Request;
 import spark.Spark;
 import com.fasterxml.jackson.core.JsonParseException;
@@ -93,7 +95,7 @@ public class UserContextRESTInterface extends ContextRestInterface {
 
                         // If the object is okay, save it and return the id.
                         final String userContextId = requestHandler
-                                .createUserContext(receivedUserContext);
+                                .createContext(receivedUserContext);
                         res.status(SuperRestInterface.HTTP_STATUS_CREATED);
                         return userContextId;
                     } catch (UnauthorizedException e) {
@@ -126,7 +128,7 @@ public class UserContextRESTInterface extends ContextRestInterface {
                             .getString("UserContextRESTInterface.IDParam")); //$NON-NLS-1$
                     try { // if it is successful return user context.
                         final UserContext userContext = requestHandler
-                                .getUserContextById(userContextId); // Make sure
+                                .getContextById(userContextId); // Make sure
                                                                     // only
                                                                     // admins or
                                                                     // the owner
@@ -177,7 +179,7 @@ public class UserContextRESTInterface extends ContextRestInterface {
 
                         // Check if the user context does exist
                         final UserContext userContext = requestHandler
-                                .getUserContextById(userContextId); // Make sure
+                                .getContextById(userContextId); // Make sure
                                                                     // only
                                                                     // admins
                                                                     // and the
@@ -205,7 +207,7 @@ public class UserContextRESTInterface extends ContextRestInterface {
                                                                                        // Perform
                                                                                        // the
                                                                                        // update
-                        requestHandler.updateUserContextById(userContextId, receivedUserContext);
+                        requestHandler.updateContextById(userContextId, receivedUserContext);
                         res.status(SuperRestInterface.HTTP_STATUS_OK);
                         return Messages.getString("UserContextRESTInterface.EmptyString"); //$NON-NLS-1$
                     } catch (JsonParseException | JsonMappingException | IllegalArgumentException e) { // If
@@ -240,7 +242,7 @@ public class UserContextRESTInterface extends ContextRestInterface {
                             .getString("UserContextRESTInterface.IDParam")); //$NON-NLS-1$
                     try { // Check if the user context does exist
 
-                        UserContext userContext = requestHandler.getUserContextById(userContextId); // Make
+                        UserContext userContext = requestHandler.getContextById(userContextId); // Make
                                                                                                     // sure
                                                                                                     // only
                                                                                                     // admins
@@ -259,7 +261,7 @@ public class UserContextRESTInterface extends ContextRestInterface {
                                               // return
                                               // empty
                                               // string
-                        requestHandler.deleteUserContextById(userContextId);
+                        requestHandler.deleteContextById(userContextId);
                         res.status(SuperRestInterface.HTTP_STATUS_NO_CONTENT);
                         return Messages.getString("UserContextRESTInterface.EmptyString"); //$NON-NLS-1$ // if not return
                                                                                            // corresponding

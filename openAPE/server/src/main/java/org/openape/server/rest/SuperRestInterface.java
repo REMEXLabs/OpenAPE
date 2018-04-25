@@ -159,25 +159,17 @@ public class SuperRestInterface {
         AdminInterface.setupAdminRestInterface(authService);
         TokenRESTInterface.setupTokenRESTInterface(authService);
         ProfileRESTInterface.setupProfileRESTInterface();
-
-        // Resource endpoints
-        EnvironmentContextRESTInterface.setupEnvironmentContextRESTInterface(
-                new EnvironmentContextRequestHandler(), authService);
-        EquipmentContextRESTInterface.setupEquipmentContextRESTInterface(
-                new EquipmentContextRequestHandler(), authService);
-        ListingRESTInterface.setupListingRESTInterface(new ListingRequestHandler());
-        ResourceDescriptionRESTInterface.setupResourceDescriptionRESTInterface(
-                new ResourceDescriptionRequestHandler(), authService);
+                
 
         try {
-            Administration.setupAdministrationVELOCITYInterface(new AdminSectionRequestHandler());
+            Administration.setupAdministrationVELOCITYInterface(new AdminSectionRequestHandler(), authService);
             GettingStarted.setupGettingStartedVELOCITYInterface();
             Tutorials.setupTutorialsVELOCITYInterface();
             Downloads.setupDownloadsVELOCITYInterface();
             Context.setupContextVELOCITYInterface(new AdminSectionRequestHandler());
             Contact.setupContactVELOCITYInterface();
             MyProfile.setupMyProfileVELOCITYInterface();
-            MyContexts.setupMyContextsVELOCITYInterface(new AdminSectionRequestHandler());
+            MyContexts.setupMyContextsVELOCITYInterface(new AdminSectionRequestHandler(), authService );
             MyResources.setupMyResourcesVELOCITYInterface(new MyResourcesRequestHandler());
             MyGroups.setupMyGroupsVELOCITYInterface();
             
@@ -200,16 +192,16 @@ public class SuperRestInterface {
         }
         // REST-Interfaces defined in ISO/IEC 24752-8
         EnvironmentContextRESTInterface.setupEnvironmentContextRESTInterface(
-                new EnvironmentContextRequestHandler(), authService);
+                 EnvironmentContextRequestHandler.getInstance(), authService);
         EquipmentContextRESTInterface.setupEquipmentContextRESTInterface(
-                new EquipmentContextRequestHandler(), authService);
+                EquipmentContextRequestHandler.getInstance(), authService);
         ListingRESTInterface.setupListingRESTInterface(new ListingRequestHandler());
         ResourceRESTInterface.setupResourceRESTInterface(new ResourceRequestHandler(), authService);
         ResourceDescriptionRESTInterface.setupResourceDescriptionRESTInterface(
                 new ResourceDescriptionRequestHandler(), authService);
-        TaskContextRESTInterface.setupTaskContextRESTInterface(new TaskContextRequestHandler(),
+        TaskContextRESTInterface.setupTaskContextRESTInterface(TaskContextRequestHandler.getInstance(),
                 authService);
-        UserContextRESTInterface.setupUserContextRESTInterface(new UserContextRequestHandler(),
+        UserContextRESTInterface.setupUserContextRESTInterface(UserContextRequestHandler.getInstance(),
                 authService);
         SuperRestInterface.logger.info("REST API successfully set up");
 
