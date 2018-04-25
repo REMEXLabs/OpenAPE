@@ -30,9 +30,11 @@ public abstract class ContextRestInterface extends SuperRestInterface {
          * 24752-8 7.*.6
          */
         Spark.get(path, (req, res) -> {
-            final String url = req.uri().toString();
+            final String url =  req.url().toString();
 
-            try {
+
+
+try {
                 auth.allowAdmin(req, res);
                 return createReturnStringListRequest(req, res,
                         contextListType, requestHandler.getCompleteContextList(url));
