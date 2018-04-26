@@ -15,9 +15,12 @@ import org.openape.server.api.group.Group;
 import org.openape.server.database.mongoDB.DatabaseConnection;
 import org.openape.server.requestHandler.ProfileHandler;
 import org.openape.ui.velocity.requestHandler.AdminSectionRequestHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Molecule_5_DataTableContent {
 
+	Logger logger = LoggerFactory.getLogger(Molecule_5_DataTableContent.class) ;
     public String generateAdministrationUserContent(final ArrayList<User> listUsers) {
 
         String tableContent = "";
@@ -74,7 +77,7 @@ public class Molecule_5_DataTableContent {
     }
 
     public String generateEnvironmentContextContent(
-            final List<EnvironmentContext> listEnvironmentContexts, final String destination) throws IOException {
+            final List<EnvironmentContext> listEnvironmentContexts, final boolean privateContexts) throws IOException {
 
         String tableContent = "";
         String buttons = "";
@@ -83,7 +86,7 @@ public class Molecule_5_DataTableContent {
         	User user = ProfileHandler.getUserById(environmentContext.getImplementationParameters().getOwner());
             // if the user is on the public context site than the view and copy
             // to clipboard buttons will be enabled
-            if (destination == "context") {
+            if (!privateContexts) {
                 buttons = "<button id='"
                         + environmentContext.getId()
                         + "' class='btn btn-md btn-default' data-contexttype='EnvironmentContext' onClick='viewContext(this)' ><div class='glyphicon glyphicon-edit' ></div> View </button>"
@@ -118,14 +121,14 @@ public class Molecule_5_DataTableContent {
     }
 
     public String generateEquipmentContextContent(final List<EquipmentContext> listEquipmentContexts,
-            final String destination) throws IOException {
+            final boolean privateContexts) throws IOException {
 
         String tableContent = "";
         String buttons = "";
 
         for (EquipmentContext equipmentkContext : listEquipmentContexts) {
         	User user = ProfileHandler.getUserById(equipmentkContext.getImplementationParameters().getOwner());
-            if (destination == "context") {
+            if (!privateContexts) {
                 buttons = "<button id='"
                         + equipmentkContext.getId()
                         + "' class='btn btn-md btn-default' data-contexttype='EquipmentContext' onClick='viewContext(this)'><div class='glyphicon glyphicon-edit' ></div> View </button>"
@@ -275,7 +278,7 @@ public class Molecule_5_DataTableContent {
 
             final String buttons = "<button id='"
                     + resourseDescription.getId()
-                    + "' class='btn btn-md btn-default' onClick='editResource(this)' ><div class='glyphicon glyphicon-edit' ></div> Edit </button>"
+                    + "' class='btn btn-md btn-default editResourceBtn' onClick='editResource(this)' ><div class='glyphicon glyphicon-edit' ></div> Edit </button>"
                     + "<button id='delete_"
                     + resourseDescription.getId()
                     + "' class='btn btn-md btn-default' data-resourceDescriptionId='"
@@ -294,14 +297,14 @@ public class Molecule_5_DataTableContent {
     }
 
     public String generateTaskContextContent(final List<TaskContext> listTaskContexts,
-            final String destination) throws IOException {
+            final boolean privateContexts) throws IOException {
 
         String tableContent = "";
         String buttons = "";
 
         for (final TaskContext taskContext : listTaskContexts) {
         	User user = ProfileHandler.getUserById(taskContext.getImplementationParameters().getOwner());
-            if (destination == "context") {
+            if (!privateContexts) {
                 buttons = "<button id='"
                         + taskContext.getId()
                         + "' class='btn btn-md btn-default' data-contexttype='TaskContext' onClick='viewContext(this)' ><div class='glyphicon glyphicon-edit' ></div> View </button>"
@@ -331,14 +334,15 @@ public class Molecule_5_DataTableContent {
     }
 
     public String generateUserContextContent(final List<UserContext> listUserContexts,
-            final String destination) throws IOException {
+                		final boolean privateContexts) throws IOException {
 
+    	
         String tableContent = "";
         String buttons = "";
 
         for (final UserContext userContext : listUserContexts) {
         	User user = ProfileHandler.getUserById(userContext.getImplementationParameters().getOwner());
-            if (destination == "context") {
+            if (!privateContexts) {
                 buttons = "<button id='"
                         + userContext.getId()
                         + "' class='btn btn-md btn-default' data-contexttype='UserContext' onClick='viewContext(this)' ><div class='glyphicon glyphicon-edit' ></div> View </button>"
@@ -363,7 +367,7 @@ public class Molecule_5_DataTableContent {
                     + userContext.getId() + "</td>"  + "<td id='"+user.getId()+"'>" + user.getUsername() + "</td>" + "<td id='public_"+userContext.getId()+"'>"
                     + userContext.getImplementationParameters().isPublic() + "</td>" + "<td>" + buttons + " </td></tr>";
         }
-
+logger.info("tableContent: " + tableContent);
         return tableContent;
     }
 }

@@ -42,7 +42,27 @@
    <div class="body">
 	   <div class="oneContentBlock">
 	   	 <h1>Getting Started</h1> <br>
-			  Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+<h2>Getting started as a user</h2>
+<p>Welcome to OpenAPE! In this section we will explain you how to use OpenAPE as a user who wants to benefit from the auto-personalisation of applications and user interfaces.</p>
+<p>If applications shall adapt to your personal preferences. it is necessary that you provide them some information about your prefered manner of interacting with applications. 
+This can be information about prefered font size, colour schema, the language of the interface or additional help like sign language videos. These information are stored in your personal user context. It is important to know that OpenAPE is open source and is run by the Stuttgart Media University, that has no commercial interest in your data. yor data  <br> 
+In order to define your personal user context, you need an OpenAPE account. Click on "signup" to create your account. <br>
+Having done so, you will get to your OpenAPE profile (this is not yet your user context). Here you can find some information about your OpenAPE account and functions to change your password etc.<br>
+Now, click on "MyContexts". This is the place where your user context information can be stored. You can create a new user context by typing all relevant data in the text field. <br>
+This here is a simple example for a user context in JSON format:
+<pre><cod>
+{
+  "default": {
+    "preferences": 
+      { "http://terms.gpii.net/speech-output": "true" }
+  }
+}
+</code></pre>
+<p> in the Preferences object you can add any kombination of key-value pairs. For Further information on how to create user contexts, please have a look at our <a href="tutorials">tutorials</a> section.
+</p>
+<p>Now you are done with OpenAPE. You can now log in to any application that supports OpenAPE and it will adjust to your preferences defined in the user context. 
+</p>
+
 		</div> 
    </div>
    <div id="footer">$footer</div>

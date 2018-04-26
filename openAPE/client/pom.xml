@@ -41,7 +41,10 @@
     <artifactId>jersey-media-json-jackson</artifactId>
     <version>${jersey2.version}</version>
 </dependency>
-       
 </dependencies>
+
+<build>
+<finalName>openape-client</finalName>
+</build>
 </project>
 

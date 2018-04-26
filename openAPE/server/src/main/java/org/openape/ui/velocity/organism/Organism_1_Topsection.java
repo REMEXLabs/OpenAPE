@@ -11,7 +11,7 @@ public class Organism_1_Topsection {
         final String topNavigationLinks = new Molecule_2_Topnavigation()
                 .generateTopNavigationLinks();
         final String userSection = new Molecule_3_UserSection().generateUsersection();
-        final String topNavigation = "<div class='topNavigation'>" + "<div class='logo'>" + logo
+        final String topNavigation = "<div class='topNavigation' id='topNavigation'>" + "<div class='logo'>" + logo
                 + "</div>" + "<div class='topNavigationLinks' id='topNavigationLinks'>"
                 + topNavigationLinks + "</div>"
                 + "<div align='right' class='userSection' id='userSection'>" //TODO a11y hidden='true'>"

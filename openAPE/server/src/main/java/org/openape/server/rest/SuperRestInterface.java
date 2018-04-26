@@ -41,7 +41,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class SuperRestInterface {
-    static Logger logger = LoggerFactory.getLogger(SuperRestInterface.class);
+    protected static Logger logger = LoggerFactory.getLogger(SuperRestInterface.class);
     public static final int HTTP_STATUS_OK = 200;
     public static final int HTTP_STATUS_CREATED = 201;
     public static final int HTTP_STATUS_NO_CONTENT = 204;
@@ -97,7 +97,7 @@ public class SuperRestInterface {
 
         // before filter enables CORS
         Spark.before("/*", (q, response) -> {
-            SuperRestInterface.logger.info("lusm: " + q.headers("Authorization"));
+            
             SuperRestInterface.logger.debug("Received api call: " + q.protocol() + "" + q.uri());
             response.header("Access-Control-Allow-Origin", "*");
             // response.header("Access-Control-Request-Method",
@@ -159,28 +159,20 @@ public class SuperRestInterface {
         AdminInterface.setupAdminRestInterface(authService);
         TokenRESTInterface.setupTokenRESTInterface(authService);
         ProfileRESTInterface.setupProfileRESTInterface();
-
-        // Resource endpoints
-        EnvironmentContextRESTInterface.setupEnvironmentContextRESTInterface(
-                new EnvironmentContextRequestHandler(), authService);
-        EquipmentContextRESTInterface.setupEquipmentContextRESTInterface(
-                new EquipmentContextRequestHandler(), authService);
-        ListingRESTInterface.setupListingRESTInterface(new ListingRequestHandler());
-        ResourceDescriptionRESTInterface.setupResourceDescriptionRESTInterface(
-                new ResourceDescriptionRequestHandler(), authService);
+                
 
         try {
-            Administration.setupAdministrationVELOCITYInterface(new AdminSectionRequestHandler());
+            Administration.setupAdministrationVELOCITYInterface(new AdminSectionRequestHandler(), authService);
             GettingStarted.setupGettingStartedVELOCITYInterface();
             Tutorials.setupTutorialsVELOCITYInterface();
             Downloads.setupDownloadsVELOCITYInterface();
             Context.setupContextVELOCITYInterface(new AdminSectionRequestHandler());
             Contact.setupContactVELOCITYInterface();
             MyProfile.setupMyProfileVELOCITYInterface();
-            MyContexts.setupMyContextsVELOCITYInterface(new AdminSectionRequestHandler());
+            MyContexts.setupMyContextsVELOCITYInterface(new AdminSectionRequestHandler(), authService );
             MyResources.setupMyResourcesVELOCITYInterface(new MyResourcesRequestHandler());
             MyGroups.setupMyGroupsVELOCITYInterface();
-            LegalNotice.setupLegalNoticeVELOCITYInterface();
+            
             Index.setupIndexVELOCITYInterface();
             Tutorials_Workflow.setupTutorialsWorkflowVELOCITYInterface();
             // TODO exception handling
@@ -200,16 +192,16 @@ public class SuperRestInterface {
         }
         // REST-Interfaces defined in ISO/IEC 24752-8
         EnvironmentContextRESTInterface.setupEnvironmentContextRESTInterface(
-                new EnvironmentContextRequestHandler(), authService);
+                 EnvironmentContextRequestHandler.getInstance(), authService);
         EquipmentContextRESTInterface.setupEquipmentContextRESTInterface(
-                new EquipmentContextRequestHandler(), authService);
+                EquipmentContextRequestHandler.getInstance(), authService);
         ListingRESTInterface.setupListingRESTInterface(new ListingRequestHandler());
         ResourceRESTInterface.setupResourceRESTInterface(new ResourceRequestHandler(), authService);
         ResourceDescriptionRESTInterface.setupResourceDescriptionRESTInterface(
                 new ResourceDescriptionRequestHandler(), authService);
-        TaskContextRESTInterface.setupTaskContextRESTInterface(new TaskContextRequestHandler(),
+        TaskContextRESTInterface.setupTaskContextRESTInterface(TaskContextRequestHandler.getInstance(),
                 authService);
-        UserContextRESTInterface.setupUserContextRESTInterface(new UserContextRequestHandler(),
+        UserContextRESTInterface.setupUserContextRESTInterface(UserContextRequestHandler.getInstance(),
                 authService);
         SuperRestInterface.logger.info("REST API successfully set up");
 

@@ -1,5 +1,6 @@
 package org.openape.server.auth;
 
+
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
@@ -9,6 +10,9 @@ import java.util.ResourceBundle;
 import org.jboss.resteasy.spi.NotFoundException;
 import org.openape.api.auth.TokenResponse;
 import org.openape.api.databaseObjectBase.DatabaseObject;
+
+import com.google.gson.Gson;
+
 import org.openape.api.user.User;
 import org.openape.server.database.mongoDB.DatabaseConnection;
 import org.openape.server.database.mongoDB.MongoCollectionTypes;
@@ -93,6 +97,15 @@ public class AuthService {
             throw new UnauthorizedException("You are not allowed to perform this operation");
         }
     }
+    
+    public void allowAdminAndUser(final Request request, final Response response)
+            throws UnauthorizedException {
+        final CommonProfile profile = this.getAuthenticatedProfile(request, response);
+        if (!this.isAdmin(profile) && !this.isUser(profile)) {
+            throw new UnauthorizedException("You are not allowed to perform this operation");
+        }
+    }
+
 
     /**
      * Check if the authenticated user has either the role `admin` or equals the
@@ -329,6 +342,18 @@ public class AuthService {
     }
 
     /**
+     * Check if the provided profile has the `user` role.
+     *
+     * @param profile
+     * @return True if user role is present, otherwise false.
+     */
+    private boolean isUser(final CommonProfile profile) {
+        return profile.getRoles().contains("user");
+    }
+
+
+    
+    /**
      * Check if the provided profile has either the role `admin` or is equal to
      * the given owner.
      *
@@ -378,4 +403,5 @@ public class AuthService {
         }
     }
 
+	
 }

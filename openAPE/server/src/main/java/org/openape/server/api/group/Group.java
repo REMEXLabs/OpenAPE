@@ -3,6 +3,7 @@ package org.openape.server.api.group;
 import java.util.List;
 
 import org.openape.api.databaseObjectBase.DatabaseObject;
+import org.openape.api.databaseObjectBase.ImplementationParameters;
 import org.openape.api.groups.GroupMembershipStatus;
 import org.openape.server.database.mongoDB.DatabaseConnection;
 
@@ -53,10 +54,16 @@ public class Group extends DatabaseObject {
     private boolean openAccess;
 
     /**
+     * Contains owner.
+     */
+    private ImplementationParameters implementationParameters;
+    
+    /**
      * Empty constructor. It is needed for the object mapping in
      * {@link DatabaseConnection}:
      */
     public Group() {
+        
 
     }
 
@@ -75,8 +82,8 @@ public class Group extends DatabaseObject {
      *            member(s) it can be empty but not null.
      */
     public Group(final String name, final String description, final List<GroupMember> members,
-            final boolean openAccess) {
-        this(null, name, description, members, openAccess);
+            final boolean openAccess, ImplementationParameters implementationParameters) {
+        this(null, name, description, members, openAccess, implementationParameters);
     }
 
     /**
@@ -95,12 +102,14 @@ public class Group extends DatabaseObject {
      *            member(s) it can be empty but not null.
      */
     public Group(final String id, final String name, final String description,
-            final List<GroupMember> members, final boolean openAccess) {
+            final List<GroupMember> members, final boolean openAccess, ImplementationParameters implementationParameters) {
         this.setId(id);
         this.setName(name);
         this.setGroupDescription(description);
         this.setMembers(members);
         this.setOpenAccess(openAccess);
+        this.setImplementationParameters(implementationParameters);
+
     }
 
     private boolean executeIsUserAssigend(final String userId, final GroupMembershipStatus state) {
@@ -252,6 +261,14 @@ public class Group extends DatabaseObject {
      */
     public void setOpenAccess(final boolean openAccess) {
         this.openAccess = openAccess;
+    }
+
+    public ImplementationParameters getImplementationParameters() {
+        return implementationParameters;
+    }
+
+    public void setImplementationParameters(ImplementationParameters implementationParameters) {
+        this.implementationParameters = implementationParameters;
     }
 
 }

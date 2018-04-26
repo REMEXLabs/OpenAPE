@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import javax.ws.rs.core.MediaType;
 
+import org.openape.api.EquipmentContextList;
 import org.openape.api.Messages;
 import org.openape.api.equipmentcontext.EquipmentContext;
 import org.openape.server.auth.AuthService;
@@ -15,7 +16,7 @@ import spark.Spark;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
-public class EquipmentContextRESTInterface extends SuperRestInterface {
+public class EquipmentContextRESTInterface extends ContextRestInterface {
     private static EquipmentContext createRequestObejct(final Request req)
             throws IllegalArgumentException, IOException {
         final String contentType = req.contentType();
@@ -53,7 +54,7 @@ public class EquipmentContextRESTInterface extends SuperRestInterface {
         // admins) can create a new context
         Spark.before(
                 Messages.getString("EquipmentContextRESTInterface.EquipmentContextURLWithoutID"),
-                auth.authorize("user"));
+                auth.authorize("anonymous"));
         // Authentication: Everyone can access the route for a specific context
         Spark.before(Messages.getString("EquipmentContextRESTInterface.EquipmentContextURLWithID"),
                 auth.authorize("anonymous"));
@@ -80,7 +81,7 @@ public class EquipmentContextRESTInterface extends SuperRestInterface {
                         }
                         // If the object is okay, save it and return the id.
                         final String equipmentContextId = requestHandler
-                                .createEquipmentContext(receivedEquipmentContext);
+                                .createContext(receivedEquipmentContext);
                         res.status(SuperRestInterface.HTTP_STATUS_CREATED);
                         return equipmentContextId;
                     } catch (JsonParseException | JsonMappingException | IllegalArgumentException e) {
@@ -106,7 +107,7 @@ public class EquipmentContextRESTInterface extends SuperRestInterface {
                     try {
                         // if it is successful return equipment context.
                         final EquipmentContext equipmentContext = requestHandler
-                                .getEquipmentContextById(equipmentContextId);
+                                .getContextById(equipmentContextId);
                         // Make sure only admins or the owner can view the
                         // context, except if it is public
                         auth.allowAdminOwnerAndPublic(req, res, equipmentContext
@@ -147,7 +148,7 @@ public class EquipmentContextRESTInterface extends SuperRestInterface {
                         }
                         // Check if the user context does exist
                         final EquipmentContext equipmentContext = requestHandler
-                                .getEquipmentContextById(equipmentContextId);
+                                .getContextById(equipmentContextId);
                         // Make sure only admins and the owner can update a
                         // context
                         auth.allowAdminAndOwner(req, res, equipmentContext
@@ -161,7 +162,7 @@ public class EquipmentContextRESTInterface extends SuperRestInterface {
                         // be
                         // changed
                         // Perform update
-                        requestHandler.updateEquipmentContextById(equipmentContextId,
+                        requestHandler.updateContextById(equipmentContextId,
                                 receivedEquipmentContext);
                         res.status(SuperRestInterface.HTTP_STATUS_NO_CONTENT);
                         return Messages.getString("EquipmentContextRESTInterface.EmptyString"); //$NON-NLS-1$
@@ -187,13 +188,13 @@ public class EquipmentContextRESTInterface extends SuperRestInterface {
                     try {
                         // Check if the user context does exist
                         final EquipmentContext equipmentContext = requestHandler
-                                .getEquipmentContextById(equipmentContextId);
+                                .getContextById(equipmentContextId);
                         // Make sure only admins and the owner can delete a
                         // context
                         auth.allowAdminAndOwner(req, res, equipmentContext
                                 .getImplementationParameters().getOwner());
                         // if it is successful return empty string.
-                        requestHandler.deleteEquipmentContextById(equipmentContextId);
+                        requestHandler.deleteContextById(equipmentContextId);
                         res.status(SuperRestInterface.HTTP_STATUS_NO_CONTENT);
                         return Messages.getString("EquipmentContextRESTInterface.EmptyString"); //$NON-NLS-1$
                         // if not return corresponding error status.
@@ -205,6 +206,9 @@ public class EquipmentContextRESTInterface extends SuperRestInterface {
                         return e.getMessage();
                     }
                 });
+        createContextListRestEndpoint(
+                Messages.getString("EquipmentContextRESTInterface.EquipmentContextURLWithoutID"),
+                requestHandler, auth, EquipmentContextList.class);
 
     }
 

@@ -92,7 +92,7 @@ function getTokenForLogin(){
 			}
 		} else {
 			$('#signinMainErrSection').empty();
-			$('#signinMainErrSection').append("User not found");
+			$('#signinMainErrSection').append("<img src='img/attention_icon.png' width='20' height='20'> "+"User not found");
 		}
 	}
 }

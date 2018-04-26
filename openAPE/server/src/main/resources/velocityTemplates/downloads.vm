@@ -35,12 +35,20 @@
 	   	 <div class="oneContentBlock">
 	   	 	   <h1>Downloads</h1> <br>
 
-			<h3 >OpenAPE Java Script Client</h3>
+			<h3 >OpenAPE Java Script Client Version 1.x</h3>
 			If you want to build an adaptive webapplication, you can integrate the
 			OpenAPE Java Script Client in your application to connect to the OpenAPE
 			server and to manage contexts and resources. You can find the Javascript-Library below: <a href="https://github.com/REMEXLabs/OpenAPE/tree/newMaster/javascript%20library/openape"> OpenAPE-Javascript Library</a>
 			
 			<br>
+
+			<h3 >OpenAPE Java Script Client Version 2.x</h3>
+			If you want to build an adaptive webapplication, you can integrate the
+			OpenAPE Java Script Client in your application to connect to the OpenAPE
+			server and to manage contexts and resources. You can find the Javascript-Library below: 
+<a href="https://github.com/REMEXLabs/openape.js"> OpenAPE-Javascript Library</a>
+			
+
 			<br>
 			
 			<h3 >OpenAPE Java Client</h3>  

@@ -26,11 +26,13 @@
  
 <!--Custom Javascript -->
 <script src="js/openape.js" type="text/javascript"></script>
+<script src="js/openape_api.js" type="text/javascript"></script>
 <script src="js/usersection.js" type="text/javascript"></script>
 <script src="js/navigation.js" type="text/javascript"></script>
 <script src="js/signin.js" type="text/javascript"></script>
 <script src="js/signup.js" type="text/javascript"></script>
 <script src="js/datatableResources.js" type="text/javascript"></script>
+<script src="js/resourceGroupManagement.js" type="text/javascript"></script>
 
     <script>
        

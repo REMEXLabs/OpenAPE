@@ -3,6 +3,7 @@ package org.openape.ui.velocity.controller;
 import java.io.IOException;
 import java.util.Map;
 
+import org.openape.server.auth.AuthService;
 import org.openape.server.rest.SuperRestInterface;
 import org.openape.ui.velocity.controllerComponents.MainComponents;
 import org.openape.ui.velocity.organism.Organism_3_DataTable;
@@ -16,12 +17,17 @@ import spark.Spark;
 import spark.template.velocity.VelocityTemplateEngine;
 
 public class Administration extends SuperRestInterface {
-    public static void setupAdministrationVELOCITYInterface(
-            final AdminSectionRequestHandler adminsectionRequestHandler)
+    private static AuthService auth;
+
+	public static void setupAdministrationVELOCITYInterface(
+            final AdminSectionRequestHandler adminsectionRequestHandler, AuthService authService)
             throws IllegalArgumentException, IOException {
-        adminsectionRequestHandler.getAllTaskContexts();
+        auth = authService;
+		adminsectionRequestHandler.getAllTaskContexts();
         Spark.get("/administration", (request, response) -> {
-            // site components
+
+        	final String userId = auth.getAuthenticatedUser(request, response).getId();
+        	// site components
                 final Map<String, Object> model = new MainComponents().getTemplateComponents();
 
                 final String[] destinations = { "User", "User-Context", "Task-Context",
@@ -80,7 +86,7 @@ public class Administration extends SuperRestInterface {
                     } else {
                         model.put("dataTable" + idName, new Organism_3_DataTable()
                                 .generateAdministrationContextTable(adminsectionRequestHandler,
-                                        destination, "administration"));
+                                        destination, true, userId));
                     }
                 }
 

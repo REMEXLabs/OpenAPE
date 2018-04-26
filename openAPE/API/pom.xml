@@ -9,11 +9,13 @@
 		<version>${ProjectVersion}</version>
 	</parent>
 	<artifactId>API</artifactId>
+
 	<url>http://maven.apache.org</url>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 	<dependencies>
+
 		<!-- Don't add a dependency of the server module, cycling dependencies aren't working. --> 
 <!-- Google Java JSON API | https://github.com/google/gson -->
 		<dependency>
@@ -23,4 +25,7 @@
 		</dependency>
 	
 	</dependencies>
+<build>
+<finalName>openape-api</finalName>
+</build>
 </project>

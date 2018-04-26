@@ -4,7 +4,7 @@ public class OpenAPEEndPoints {
 
     // REST endpoints
     public static final String USER_ROLES = "openape/users/:userId/roles";
-    public static final String USER_PASSWORD = "openape/users/:userId/password";
+    public static final String USER_PASSWORD = "/users/:userId/password";
     public static final String USER_ID = ":userid";
     public static final String MY_ID = "/users/openape/myId";
     public static final String USER_DETAILS = "/users/openape/:userId";

@@ -191,7 +191,7 @@ $(document).ready(function() {
      		location.reload();
     		}, 500);
 	})
-	groupTable.column( 0 ).visible( false );
+	//groupTable.column( 0 ).visible( false );
 	
 })
 
@@ -487,7 +487,11 @@ function updateGroupDB(groupId, group) {
 	return status;
 }
 
-
+/**
+ * get Group from server
+ * @param groupId
+ * @returns
+ */
 function getGroupFromDB(groupId) {
 	var objGroup = {};
 	$.ajax({

@@ -14,9 +14,9 @@ public class TokenResponse {
     private String expiresIn;
 
     public TokenResponse() {
-
+    	
     }
-
+    
     public TokenResponse(final String accessToken, final String expiresIn) {
         this.accessToken = accessToken;
         this.expiresIn = expiresIn;
@@ -29,13 +29,12 @@ public class TokenResponse {
     public String getExpiresIn() {
         return this.expiresIn;
     }
-
-    @JsonSetter("access_token")
+@JsonSetter("access_token")
     public void setAccessToken(final String accessToken) {
         this.accessToken = accessToken;
     }
 
-    @JsonSetter("expires_in")
+@JsonSetter("expires_in")
     public void setExpiresIn(final String expiresIn) {
         this.expiresIn = expiresIn;
     }
