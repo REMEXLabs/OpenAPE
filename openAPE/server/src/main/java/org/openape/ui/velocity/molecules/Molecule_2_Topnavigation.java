@@ -11,7 +11,7 @@ public class Molecule_2_Topnavigation {
         for (final Entry<String, String> entry : new Atom_1_NavigationLinks()
                 .generateTopNavigationLinks().entrySet()) {
             topNavigation += "<div class='navigationLinks' id='div" + entry.getKey()
-                    + "'><a href='#' id='link" + entry.getKey() + "'>" + entry.getValue()
+                    + "'><a href='" + entry.getKey()  + "' id='link_" + entry.getKey() + "'>" + entry.getValue()
                     + "</a></div>";
         }
 

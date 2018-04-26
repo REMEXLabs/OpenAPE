@@ -20,7 +20,7 @@ $(document).ready(
 			var token = localStorage.getItem("token");
 			var currentUrl = window.location.protocol + "//"
 					+ window.location.host;
-			var origin = window.origin;
+			var origin = "";// window.origin;
 
 			if (token === null || token === "undefined") {
 				$('.subSection').hide();
@@ -161,30 +161,7 @@ $(document).ready(
 								"adminsectionNavActive");
 					})
 
-			$('#linkGettingStarted').click(function() {
-				window.location = origin + "/gettingStarted";
-			})
-
-			$('#linkTutorials').click(function() {
-				window.location = origin + "/tutorials";
-			})
-
-			$('#linkHome').click(function() {
-				window.location = origin + "/index";
-			})
-
-			$('#linkDownloads').click(function() {
-				window.location = origin + "/downloads";
-			})
-
-			$('#linkContext').click(function() {
-				window.location = origin + "/context";
-			})
-
-			$('#linkContact').click(function() {
-				window.location = origin + "/contact";
-			})
-
+			
 			$('#linkMyContexts').click(function() {
 				window.location = origin + "/myContexts";
 			})
