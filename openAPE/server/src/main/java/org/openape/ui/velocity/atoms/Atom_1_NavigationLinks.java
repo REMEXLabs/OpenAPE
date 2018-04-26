@@ -22,7 +22,7 @@ public class Atom_1_NavigationLinks {
         map.put("GettingStarted", "Getting Started");
         map.put("Tutorials", "Tutorials");
         map.put("Downloads", "Downloads");
-        map.put("Context", "Context");
+        map.put("Contexts", "Contexts");
         map.put("Contact", "Contact");
 
         return map;
