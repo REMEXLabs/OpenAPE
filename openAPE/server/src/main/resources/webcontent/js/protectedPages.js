@@ -8,7 +8,7 @@
 function requestProtectedPage(path) {
 	//
 	var token = localStorage.getItem("token")
-	alert(" token: " +token);
+	
 	if (token !== null){
 	$.ajax({
 		type: "GET",
