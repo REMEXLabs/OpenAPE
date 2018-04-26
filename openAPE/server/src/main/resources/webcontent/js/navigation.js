@@ -20,7 +20,7 @@ $(document).ready(
 			var token = localStorage.getItem("token");
 			var currentUrl = window.location.protocol + "//"
 					+ window.location.host;
-			var origin = "";// window.origin;
+			
 
 			if (token === null || token === "undefined") {
 				$('.subSection').hide();
@@ -163,25 +163,10 @@ $(document).ready(
 
 			
 			$('#linkMyContexts').click(function() {
-				window.location = origin + "/myContexts";
+				requestProtectedPage("myContexts");
 			})
 
-			$('#linkMyProfile').click(function() {
-				window.location = origin + "/myProfile";
-			})
-
-			$('#linkMyResources').click(function() {
-				window.location = origin + "/myResources";
-			})
-
-			$('#linkMyGroups').click(function() {
-				window.location = origin + "/myGroups";
-			})
-
-			$('#linkAdministration').click(function() {
-				window.location = origin + "/administration";
-			})
-		});
+					});
 
 function openCity(evt, tabName) {
 	var currentUrl = window.location.protocol + "//" + window.location.host;
@@ -253,9 +238,6 @@ function openCity(evt, tabName) {
 }
 
 var processAjaxData = function (response, urlPath){
-	
-	
-	  
 	var newDoc = document.open("text/html", "replace");
 	newDoc.write(response);
 	newDoc.close();
