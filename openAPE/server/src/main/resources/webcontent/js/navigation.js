@@ -30,9 +30,9 @@ $(document).ready(
 
 				if (localStorage.getItem("role") === "admin"
 						|| localStorage.getItem("role") !== null) {
-					$('#linkAdministration').show();
+					$('#link_administration').show();
 				} else {
-					$('#linkAdministration').hide();
+					$('#link_administration').hide();
 				}
 			}
 

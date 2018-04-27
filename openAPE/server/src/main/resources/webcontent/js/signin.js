@@ -1,6 +1,6 @@
 $(document).ready(function() {
 	
-	$('#signinSecQuestionErrIcon').hide();
+	
 	$('#signPasswordErrIcon').hide();
 	$('#signinUsernameErrIcon').hide();
 	$('#signin').click(function(){
@@ -19,10 +19,10 @@ $(document).ready(function() {
 function getTokenForLogin(){
 	var username = $('#inputSigninUsername').val();
 	var password = $('#inputSigninPassword').val();
-	var securityQuestion = $('#inputSigninSecQuestion').val();
+	
 	var isUsernameCorrect = true;
 	var isPasswordCorrect = true;
-	var isSecurityQuestionCorrect = true;
+
 	
 	if(username!=""){
 		$('#signinUsernameErrIcon').hide();
@@ -56,43 +56,25 @@ function getTokenForLogin(){
 		$('#signinPasswordErrMessage').append("The password can not be empty!");
 	}
 
-	if(securityQuestion!=""){
-		$('#signinSecQuestionErrIcon').hide();
-		$('#signinSecQuestionErrMessage').hide();
-		$('#signinMainErrSection').empty();
-		$('#formGroupSigninSecQuestion').removeClass( "has-error has-feedback" );
-		isSecurityQuestionCorrect = true;
-	} else {
-		$('#signinSecQuestionErrIcon').show();
-		$('#formGroupSigninSecQuestion').addClass( "has-error has-feedback" );
-		$('#signinMainErrSection').empty();
-		$('#signinSecQuestionErrMessage').show();
-		$('#signinSecQuestionErrMessage').empty();
-		$('#signinSecQuestionErrMessage').append("The security question can not be empty!");
-		isSecurityQuestionCorrect = false;
-	}
 	
 	
-	if(isUsernameCorrect  && isPasswordCorrect && isSecurityQuestionCorrect){
+	// lusm: 0
+	if(isUsernameCorrect  && isPasswordCorrect){
 		var tokenData = openape.initializeLibrary(username, password, "/");
-		
-		if(tokenData.status==200){
+						if(tokenData.status==200){
 			var userID = JSON.parse(openape.getUser().responseText).id;
 			
-			if(securityQuestion == 15){
+			
 				if(userID != undefined){
 					window.location = document.location.origin+"/myProfile";
 				} else {
 				
 				}
-			}  else {
-				$('#signinSecQuestionErrMessage').show();
-				$('#signinSecQuestionErrMessage').empty();
-				$('#signinSecQuestionErrMessage').append("Wrong security question!");
 			}
+		
 		} else {
 			$('#signinMainErrSection').empty();
 			$('#signinMainErrSection').append("<img src='img/attention_icon.png' width='20' height='20'> "+"User not found");
 		}
-	}
-}
+	
+} // function

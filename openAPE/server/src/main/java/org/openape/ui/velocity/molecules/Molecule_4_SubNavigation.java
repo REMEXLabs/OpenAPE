@@ -11,7 +11,8 @@ public class Molecule_4_SubNavigation {
         for (final Entry<String, String> entry : new Atom_1_NavigationLinks()
                 .generateSubNavigationLinks().entrySet()) {
             subNavigation += "<div class='subnav' style='float:left;padding:1em' id='div"
-                    + entry.getKey() + "' hidden='true'><a href='"+ entry.getKey() +"' id='link_" + entry.getKey()
+                    + entry.getKey() // + "' hidden='true'"
+                    		+ "'><a href='"+ entry.getKey() +"' id='link_" + entry.getKey()
                     + "'>" + entry.getValue() + "</a></div>";
         }
 

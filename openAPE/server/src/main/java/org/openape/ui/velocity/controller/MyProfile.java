@@ -16,7 +16,7 @@ public class MyProfile extends SuperRestInterface {
 
         Spark.get("/myProfile", (request, response) -> {
             final MainComponents mainController = new MainComponents();
-            final Map<String, Object> model = mainController.getTemplateComponents();
+            Map<String, Object> model = mainController.getTemplateComponents();
 
             return new ModelAndView(model, "velocityTemplates/myProfile.vm"); // located
                                                                               // in

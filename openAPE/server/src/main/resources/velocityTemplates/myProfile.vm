@@ -38,7 +38,11 @@
    <div class="body">
 	   <div class="oneContentBlock">
 	   	 <h1>My Profile</h1> <br>
-
+<p>Welcome to OpenAPE. on This page you can administer your personal OpenAPE account<p>
+<table>
+<tr> <td>User name:</td> <td> $username </td> </tr>
+<tr> <td>User ID:</td> <td> $userId </td> </tr>
+</table>
 
 <div id=divChangePassword>
 <form>
