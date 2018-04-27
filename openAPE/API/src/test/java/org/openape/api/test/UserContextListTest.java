@@ -1,5 +1,7 @@
 package org.openape.api.test;
 
+import static org.junit.Assert.assertTrue;
+
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
@@ -14,17 +16,21 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class UserContextListTest {
 
-    private Logger logger = LoggerFactory.getLogger(UserContextListTest.class);
+    private static Logger logger = LoggerFactory.getLogger(UserContextListTest.class);
+    
+    @Test public void addingContexts() {
+    	List contexts = createListWithUserContexts();
+    	UserContextList ucl = new UserContextList(contexts, "http://openape.gpii.eu");
+    	assertTrue(contexts.size() == ucl.getTotalContexts() );
+    }
     @Test
-    public void testParsing() throws IOException {
+    public void testParsing() throws Exception {
+        List contexts = createListWithUserContexts();
         
-        UserContext uc = new UserContext();
-        uc.setId("1234567890");
-        List<UserContext> contexts = new LinkedList<>();
-        contexts.add(uc);
         
         
             UserContextList ucl = new UserContextList(contexts, "http://example.com/");
+        ucl.addContexts(contexts);
         
 logger.info(ucl.getXML());
     logger.info(ucl.getJson()  );
@@ -33,5 +39,13 @@ logger.info(ucl.getXML());
     final Object recievedObject = mapper.readValue(ucl.getJson(), UserContextList.class  );
     
     }
+	public static List createListWithUserContexts() {
+		
+		UserContext uc = new UserContext();
+        uc.setId("1234567890");
+        List<UserContext> contexts = new LinkedList<>();
+        contexts.add(uc);        
+		return contexts;
+	}
     
         }
