@@ -34,4 +34,19 @@ public class Preference {
         this.value = value;
     }
 
+	public void setValue(boolean b) {
+		System.out.println(b);;
+		
+	}
+
+	public void setValue(int i) {
+		System.out.println(i);
+		
+	}
+
+	public void setValue(double d) {
+		System.out.println(d);
+		
+	}
+
 }

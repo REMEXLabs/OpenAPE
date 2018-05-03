@@ -55,6 +55,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+import com.fasterxml.jackson.databind.node.JsonNodeType;
 import com.fasterxml.jackson.databind.node.NullNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.node.TextNode;
@@ -192,21 +193,39 @@ public class UserContext extends DatabaseObject {
     }
 
     private static Preference parseAndAddPreference(Context context, ObjectNode preferences, String preferenceKey) {
+    	
+    	System.out.println("key: " + preferenceKey);
     	final Preference preference = new Preference();
         
         preference.setKey(preferenceKey);
-        if (preferences.isTextual() ) {
-        System.out.println("value: " + preferences.get(preferenceKey).textValue());
-        preference.setValue(preferences.get(preferenceKey).textValue());
-        } else if(preferences.isBoolean() ){
-        	preference.setValue(preferences.get(preferenceKey).asBoolean()   );
-        } else if (preferences.isInt() ) {
-        	preference.setValue(preferences.get(preferenceKey).asInt()   );
-        } else if(preferences.isFloatingPointNumber() ) {
-        	preference.setValue(preferences.get(preferenceKey).asDouble()   );
-        }
         
-        context.addPreference(preference);
+        System.out.println("type: " + preferences.get(preferenceKey  ).getNodeType()  );
+        
+        JsonNode nodeToParse = preferences.get(preferenceKey  );
+        
+        switch(nodeToParse.getNodeType()) {
+        case STRING :
+        	preference.setValue(nodeToParse.textValue());
+        	break;
+        case BOOLEAN:
+        	System.out.println("boolean");
+        	preference.setValue(nodeToParse.asBoolean()   );
+        
+        	break;
+        case NUMBER:
+        	if(nodeToParse.isFloatingPointNumber() ) {
+        	System.out.println("doble");
+        	preference.setValue(nodeToParse.asDouble()   );
+        } else {
+        	System.out.println("int");
+        	preference.setValue(nodeToParse.asInt()   );
+        	
+        }
+        	
+        	break;
+        	default:
+        }
+        	context.addPreference(preference);
 		return preference;
 	}
 
