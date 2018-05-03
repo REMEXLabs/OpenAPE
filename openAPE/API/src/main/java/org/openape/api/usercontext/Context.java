@@ -173,5 +173,18 @@ public class Context implements Serializable {
             }
         }
     }
+@JsonIgnore
+	public Preference getPreference(String preferenceTerm) {
+Preference match = null;
+	for (Preference p : preferences) {
+		System.out.println("schleife: " + p.getValue() );
+		if (p.getKey().equals(preferenceTerm) ) {
+			match = p;
+			
+		}
+	}
+	
+		return match;
+	}
 
 }

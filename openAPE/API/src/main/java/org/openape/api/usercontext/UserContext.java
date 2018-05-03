@@ -157,10 +157,7 @@ public class UserContext extends DatabaseObject {
                     final Iterator<String> preferenceIterator = preferences.fieldNames();
                     while (preferenceIterator.hasNext()) {
                         final String preferenceKey = preferenceIterator.next();
-                        final Preference preference = new Preference();
-                        context.addPreference(preference);
-                        preference.setKey(preferenceKey);
-                        preference.setValue(preferences.get(preferenceKey).textValue());
+                    Preference preference = parseAndAddPreference(context,preferences,preferenceKey);                        
                     }
 
                     // add condition objects
@@ -194,7 +191,26 @@ public class UserContext extends DatabaseObject {
         return userContext;
     }
 
-    /**
+    private static Preference parseAndAddPreference(Context context, ObjectNode preferences, String preferenceKey) {
+    	final Preference preference = new Preference();
+        
+        preference.setKey(preferenceKey);
+        if (preferences.isTextual() ) {
+        System.out.println("value: " + preferences.get(preferenceKey).textValue());
+        preference.setValue(preferences.get(preferenceKey).textValue());
+        } else if(preferences.isBoolean() ){
+        	preference.setValue(preferences.get(preferenceKey).asBoolean()   );
+        } else if (preferences.isInt() ) {
+        	preference.setValue(preferences.get(preferenceKey).asInt()   );
+        } else if(preferences.isFloatingPointNumber() ) {
+        	preference.setValue(preferences.get(preferenceKey).asDouble()   );
+        }
+        
+        context.addPreference(preference);
+		return preference;
+	}
+
+	/**
      * Generate the user context from the xml string used in the the front end.
      *
      * @return user context object.
