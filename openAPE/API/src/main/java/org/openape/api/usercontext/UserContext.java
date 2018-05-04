@@ -112,7 +112,7 @@ public class UserContext extends DatabaseObject {
     @JsonIgnore
     public static UserContext getObjectFromJson(final String json) throws IllegalArgumentException {
         // User context to build from tree
-        System.out.println("luxm json: " + json);
+        System.out.println("\n luxm json: " + json);
     	final UserContext userContext = new UserContext();
         try {
             // Get tree from json.
@@ -187,19 +187,19 @@ public class UserContext extends DatabaseObject {
             e.printStackTrace();
             throw new IllegalArgumentException(e.getMessage());
         }
-        System.out.println("luxm geparst");
+        
         userContext.validate();
         return userContext;
     }
 
     private static Preference parseAndAddPreference(Context context, ObjectNode preferences, String preferenceKey) {
     	
-    	System.out.println("key: " + preferenceKey);
+    	
     	final Preference preference = new Preference();
         
         preference.setKey(preferenceKey);
         
-        System.out.println("type: " + preferences.get(preferenceKey  ).getNodeType()  );
+        
         
         JsonNode nodeToParse = preferences.get(preferenceKey  );
         
@@ -208,16 +208,16 @@ public class UserContext extends DatabaseObject {
         	preference.setValue(nodeToParse.textValue());
         	break;
         case BOOLEAN:
-        	System.out.println("boolean");
+        	
         	preference.setValue(nodeToParse.asBoolean()   );
         
         	break;
         case NUMBER:
         	if(nodeToParse.isFloatingPointNumber() ) {
-        	System.out.println("doble");
+
         	preference.setValue(nodeToParse.asDouble()   );
         } else {
-        	System.out.println("int");
+        	
         	preference.setValue(nodeToParse.asInt()   );
         	
         }
@@ -225,6 +225,7 @@ public class UserContext extends DatabaseObject {
         	break;
         	default:
         }
+        System.out.println("check value: " + preference.getValue() );
         	context.addPreference(preference);
 		return preference;
 	}
@@ -261,7 +262,7 @@ public class UserContext extends DatabaseObject {
                         operandElement.setAttribute(UserContext.XSI_TYPE, UserContext.CONDITION);
                         operandElement.setAttribute(UserContext.XMLNS_XSI,
                                 UserContext.HTTP_WWW_W3_ORG_2001_XML_SCHEMA_INSTANCE);
-                        // System.out.println("bla");
+                        
                     }
                 }
             }
@@ -517,8 +518,18 @@ public class UserContext extends DatabaseObject {
             while (pereferenceIterator.hasNext()) {
                 final JsonNode preference = pereferenceIterator.next();
                 final String key = preference.get(UserContext.KEY).textValue();
-                final String value = preference.get(UserContext.VALUE).textValue();
-                newPreferences.put(key, value);
+                System.out.println("serialize: " + key);
+                
+                                JsonNode xyz = preference.get(UserContext.VALUE);
+                if ( xyz.isBoolean()   ) {
+                	newPreferences.put(key, xyz.asBoolean()   );
+                } else if (xyz.isDouble()   ) {
+                	newPreferences.put(key, xyz.asDouble()   );
+            } else if(xyz.isInt()    ) {
+            	newPreferences.put(key, xyz.asInt()   );
+        } else {   
+                newPreferences.put(key, xyz.textValue());
+            }
             }
             contextObject.remove(UserContext.PREFERENCES);
             contextObject.set(UserContext.PREFERENCES, newPreferences);
