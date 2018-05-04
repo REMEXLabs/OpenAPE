@@ -6,11 +6,11 @@ public class Atom_1_NavigationLinks {
     public LinkedHashMap<String, String> generateSubNavigationLinks() {
         final LinkedHashMap<String, String> map = new LinkedHashMap<>();
 
-        map.put("MyProfile", "My Profile");
-        map.put("MyContexts", "My Contexts");
-        map.put("MyResources", "My Resources");
-        map.put("MyGroups", "My Groups");
-        map.put("Administration", "Administration");
+        map.put("myProfile", "My Profile");
+        map.put("myContexts", "My Contexts");
+        map.put("myResources", "My Resources");
+        map.put("myGroups", "My Groups");
+        map.put("administration", "Administration");
 
         return map;
     }
@@ -18,12 +18,12 @@ public class Atom_1_NavigationLinks {
     public LinkedHashMap<String, String> generateTopNavigationLinks() {
         final LinkedHashMap<String, String> map = new LinkedHashMap<>();
 
-        map.put("Home", "Home");
-        map.put("GettingStarted", "Getting Started");
-        map.put("Tutorials", "Tutorials");
-        map.put("Downloads", "Downloads");
-        map.put("Context", "Context");
-        map.put("Contact", "Contact");
+        map.put("Home", "home");
+        map.put("gettingStarted", "Getting Started");
+        map.put("tutorials", "Tutorials");
+        map.put("downloads", "Downloads");
+        map.put("contexts", "Contexts");
+        map.put("contact", "Contact");
 
         return map;
     }
