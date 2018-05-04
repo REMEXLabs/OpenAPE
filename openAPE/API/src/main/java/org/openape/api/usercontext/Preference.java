@@ -3,35 +3,66 @@ package org.openape.api.usercontext;
 import javax.xml.bind.annotation.XmlAttribute;
 
 public class Preference {
-    private String key;
-    private String value;
+	private String key;
+	private Object value;
 
-    public Preference() {
-        super();
-    }
+	public Preference() {
+		super();
+	}
 
-    public Preference(final String key, final String value) {
-        super();
-        this.key = key;
-        this.value = value;
-    }
+	public Preference(final String key, final String value) {
+		super();
+		this.key = key;
+		this.value = value;
+	}
 
-    @XmlAttribute(name = "key")
-    public String getKey() {
-        return this.key;
-    }
+	public Preference(String key, boolean b) {
+		this.key = key;
+		setValue(b);
+	}
 
-    @XmlAttribute(name = "value")
-    public String getValue() {
-        return this.value;
-    }
+	public Preference(String key, double d) {
+		this.key = key;
+		setValue(d);
+	}
+	
+	public Preference(String key, int i) {
+		this.key = key;
+		setValue(i);
+	}
 
-    public void setKey(final String key) {
-        this.key = key;
-    }
 
-    public void setValue(final String value) {
-        this.value = value;
-    }
+	@XmlAttribute(name = "key")
+	public String getKey() {
+		return this.key;
+	}
+
+	@XmlAttribute(name = "value")
+	public Object getValue() {
+		return this.value;
+	}
+
+	public void setKey(final String key) {
+		this.key = key;
+	}
+
+	public void setValue(final String value) {
+		this.value = value;
+	}
+
+	public void setValue(boolean b) {
+
+		value = new Boolean(b);
+	}
+
+	public void setValue(int i) {
+
+		value = new Integer(i);
+	}
+
+	public void setValue(double d) {
+		value = new Double(d);
+
+	}
 
 }

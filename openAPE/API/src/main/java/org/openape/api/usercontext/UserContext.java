@@ -55,6 +55,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+import com.fasterxml.jackson.databind.node.JsonNodeType;
 import com.fasterxml.jackson.databind.node.NullNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.node.TextNode;
@@ -111,7 +112,7 @@ public class UserContext extends DatabaseObject {
     @JsonIgnore
     public static UserContext getObjectFromJson(final String json) throws IllegalArgumentException {
         // User context to build from tree
-        System.out.println("luxm json: " + json);
+        System.out.println("\n luxm json: " + json);
     	final UserContext userContext = new UserContext();
         try {
             // Get tree from json.
@@ -157,10 +158,7 @@ public class UserContext extends DatabaseObject {
                     final Iterator<String> preferenceIterator = preferences.fieldNames();
                     while (preferenceIterator.hasNext()) {
                         final String preferenceKey = preferenceIterator.next();
-                        final Preference preference = new Preference();
-                        context.addPreference(preference);
-                        preference.setKey(preferenceKey);
-                        preference.setValue(preferences.get(preferenceKey).textValue());
+                    Preference preference = parseAndAddPreference(context,preferences,preferenceKey);                        
                     }
 
                     // add condition objects
@@ -189,12 +187,50 @@ public class UserContext extends DatabaseObject {
             e.printStackTrace();
             throw new IllegalArgumentException(e.getMessage());
         }
-        System.out.println("luxm geparst");
+        
         userContext.validate();
         return userContext;
     }
 
-    /**
+    private static Preference parseAndAddPreference(Context context, ObjectNode preferences, String preferenceKey) {
+    	
+    	
+    	final Preference preference = new Preference();
+        
+        preference.setKey(preferenceKey);
+        
+        
+        
+        JsonNode nodeToParse = preferences.get(preferenceKey  );
+        
+        switch(nodeToParse.getNodeType()) {
+        case STRING :
+        	preference.setValue(nodeToParse.textValue());
+        	break;
+        case BOOLEAN:
+        	
+        	preference.setValue(nodeToParse.asBoolean()   );
+        
+        	break;
+        case NUMBER:
+        	if(nodeToParse.isFloatingPointNumber() ) {
+
+        	preference.setValue(nodeToParse.asDouble()   );
+        } else {
+        	
+        	preference.setValue(nodeToParse.asInt()   );
+        	
+        }
+        	
+        	break;
+        	default:
+        }
+        System.out.println("check value: " + preference.getValue() );
+        	context.addPreference(preference);
+		return preference;
+	}
+
+	/**
      * Generate the user context from the xml string used in the the front end.
      *
      * @return user context object.
@@ -226,7 +262,7 @@ public class UserContext extends DatabaseObject {
                         operandElement.setAttribute(UserContext.XSI_TYPE, UserContext.CONDITION);
                         operandElement.setAttribute(UserContext.XMLNS_XSI,
                                 UserContext.HTTP_WWW_W3_ORG_2001_XML_SCHEMA_INSTANCE);
-                        // System.out.println("bla");
+                        
                     }
                 }
             }
@@ -482,8 +518,18 @@ public class UserContext extends DatabaseObject {
             while (pereferenceIterator.hasNext()) {
                 final JsonNode preference = pereferenceIterator.next();
                 final String key = preference.get(UserContext.KEY).textValue();
-                final String value = preference.get(UserContext.VALUE).textValue();
-                newPreferences.put(key, value);
+                System.out.println("serialize: " + key);
+                
+                                JsonNode xyz = preference.get(UserContext.VALUE);
+                if ( xyz.isBoolean()   ) {
+                	newPreferences.put(key, xyz.asBoolean()   );
+                } else if (xyz.isDouble()   ) {
+                	newPreferences.put(key, xyz.asDouble()   );
+            } else if(xyz.isInt()    ) {
+            	newPreferences.put(key, xyz.asInt()   );
+        } else {   
+                newPreferences.put(key, xyz.textValue());
+            }
             }
             contextObject.remove(UserContext.PREFERENCES);
             contextObject.set(UserContext.PREFERENCES, newPreferences);
