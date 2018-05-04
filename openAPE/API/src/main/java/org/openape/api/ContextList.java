@@ -57,29 +57,28 @@ private String url;
      * Generate the xml representation from the object used for the front end.
      *
      * @return xml string.
+     * @throws Exception 
      */
     @JsonIgnore
-    public String getXML() throws IOException {
-        String xmlString = null;
+    public String getXML() throws Exception {
+        String xmlString = "";
         try {
             final JAXBContext context = JAXBContext.newInstance(UserContextList.class);
             final Marshaller marshaller = context.createMarshaller();
             final StringWriter stringWriter = new StringWriter();
+            
             marshaller.marshal(this, stringWriter);
             xmlString = stringWriter.toString();
             logger.info("Org. String:" + xmlString );
             
             xmlString = xmlString.replace("context-uri", contextTypeUri);
 
-            
-
-            
-        } catch (final Exception e) {
+                    } catch (final Exception e) {
             logger.warn(e.toString());
             
-            throw new IOException(e.getMessage());
+            throw e;
         }
-        logger.info("blabla");
+        
         return xmlString;
     }
 
@@ -104,6 +103,7 @@ private String url;
     public ContextList(final List<T> contexts, String url, final String contextTypeUri) {
         this.contextUris = new LinkedList<URI>();
      this.url = url;
+     this.contextTypeUri = contextTypeUri;
         addContexts(contexts);   
     }
     public void addContexts(List<T> contexts) {

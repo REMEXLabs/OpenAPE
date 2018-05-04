@@ -9,9 +9,12 @@ import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.openape.api.auth.TokenResponse;
 import org.openape.api.rest.RESTPaths;
 import org.openape.api.usercontext.Context;
 import org.openape.api.usercontext.UserContext;
+
+import com.google.gson.Gson;
 
 import spark.Spark;
 
@@ -31,8 +34,13 @@ public class ClientTest {
         Spark.staticFileLocation("/webcontent"); // Static files
 
         Spark.get("/hello", (req, res) -> "Hello World");
-        Spark.post(RESTPaths.USER_CONTEXTS, "application/json",
-                (req, res) -> TestServer.createUserContext(req.body(), res));
+        Spark.post(RESTPaths.TOKEN, (req, res) -> {return  new Gson().toJson( new TokenResponse("test", "0")); } );
+        Spark.post(RESTPaths.USER_CONTEXTS, (req,res) -> {
+//        	UserContext.getObjectFromJson(req.body() );
+        	res.header("Location", "http://localhost:4567/testId");
+        	res.status(201);
+        	return "http://localhost:4567/testId";
+        });
         Spark.awaitInitialization();
 
     }
@@ -54,10 +62,11 @@ public class ClientTest {
 
     @Test
     public void testFileDownload() throws URISyntaxException, InterruptedException, MalformedURLException {
-        // Thread.sleep(60000);;
+        
         final OpenAPEClient client = ClientTest.getOpenApeClient();
         final File downloadedFile = client.getResource("http://localhost:4567/test.html",
                 "d:/testCopy.html");
         Assert.assertFalse(downloadedFile.equals(null));
+        downloadedFile.delete();
     }
 }
