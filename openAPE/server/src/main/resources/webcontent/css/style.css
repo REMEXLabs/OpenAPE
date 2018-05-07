@@ -197,6 +197,8 @@ div.tab button.active {
   background-color: #3b3b3b; }
   #footer a {
     color: #e31134; }
+    #footer a:not(:last-of-type) {
+    margin-right: 1em; }
 
 .content {
   padding-bottom: 60px;
