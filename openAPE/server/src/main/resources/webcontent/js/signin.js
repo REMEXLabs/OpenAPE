@@ -10,6 +10,11 @@ $(document).ready(function() {
 		//login();
 	})
 	
+
+	$('#signinModal form').submit(function(){
+		getTokenForLogin();
+	})
+	
 	$('#btnConfirmSignin').click(function(){
 		getTokenForLogin();
 	})
