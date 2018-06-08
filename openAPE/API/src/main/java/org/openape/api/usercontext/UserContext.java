@@ -202,8 +202,15 @@ public class UserContext extends DatabaseObject {
         
         
         JsonNode nodeToParse = preferences.get(preferenceKey  );
-        
-        switch(nodeToParse.getNodeType()) {
+
+        parseNode(preference, nodeToParse);
+        System.out.println("check value: " + preference.getValue() );
+        	context.addPreference(preference);
+		return preference;
+	}
+
+	private static void parseNode(Preference preference, JsonNode nodeToParse) {
+		switch(nodeToParse.getNodeType()) {
         case STRING :
         	preference.setValue(nodeToParse.textValue());
         	break;
@@ -214,7 +221,6 @@ public class UserContext extends DatabaseObject {
         	break;
         case NUMBER:
         	if(nodeToParse.isFloatingPointNumber() ) {
-
         	preference.setValue(nodeToParse.asDouble()   );
         } else {
         	
@@ -225,9 +231,8 @@ public class UserContext extends DatabaseObject {
         	break;
         	default:
         }
-        System.out.println("check value: " + preference.getValue() );
-        	context.addPreference(preference);
-		return preference;
+        
+		
 	}
 
 	/**
@@ -517,19 +522,9 @@ public class UserContext extends DatabaseObject {
             final ObjectNode newPreferences = new ObjectNode(jsonNodeFactory);
             while (pereferenceIterator.hasNext()) {
                 final JsonNode preference = pereferenceIterator.next();
-                final String key = preference.get(UserContext.KEY).textValue();
-                System.out.println("serialize: " + key);
                 
-                                JsonNode xyz = preference.get(UserContext.VALUE);
-                if ( xyz.isBoolean()   ) {
-                	newPreferences.put(key, xyz.asBoolean()   );
-                } else if (xyz.isDouble()   ) {
-                	newPreferences.put(key, xyz.asDouble()   );
-            } else if(xyz.isInt()    ) {
-            	newPreferences.put(key, xyz.asInt()   );
-        } else {   
-                newPreferences.put(key, xyz.textValue());
-            }
+                                termValueToJson(preference, newPreferences);
+                                
             }
             contextObject.remove(UserContext.PREFERENCES);
             contextObject.set(UserContext.PREFERENCES, newPreferences);
@@ -559,7 +554,27 @@ public class UserContext extends DatabaseObject {
         return jsonString;
     }
 
-    /**
+    private void termValueToJson(JsonNode preference, ObjectNode newPreferences) {
+    final String key = preference.get(UserContext.KEY).textValue();
+    System.out.println("serialize: " + key);
+    
+                    JsonNode xyz = preference.get(UserContext.VALUE);
+                    
+
+        if ( xyz.isBoolean()   ) {
+newPreferences.put(key, xyz.asBoolean()   );
+} else if (xyz.isDouble()   ) {
+newPreferences.put(key, xyz.asDouble()   );
+} else if(xyz.isInt()    ) {
+newPreferences.put(key, xyz.asInt()   );
+} else {   
+newPreferences.put(key, xyz.textValue());
+}
+
+		
+	}
+
+	/**
      * Generate the xml representation from the object used for the front end.
      *
      * @return xml string.

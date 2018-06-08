@@ -66,7 +66,7 @@ public class OpenAPEClient {
 			logger.error("Malformed URL: " + uri + "OpeAPE clint can not beinitialized");
 			throw e;
 		}
-
+System.out.println("uri: " + uri);
 		this.webResource = this.client.target(uri);
 
 		// get token for accessing server
