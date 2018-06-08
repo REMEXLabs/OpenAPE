@@ -205,36 +205,10 @@ public class UserContext extends DatabaseObject {
         
         JsonNode nodeToParse = preferences.get(preferenceKey  );
 
-        parseNode(preference, nodeToParse);
+        ContextParsingHelpers.parseNode(preference, nodeToParse);
         System.out.println("check value: " + preference.getValue() );
         	context.addPreference(preference);
 		return preference;
-	}
-
-	private static void parseNode(Preference preference, JsonNode nodeToParse) {
-		switch(nodeToParse.getNodeType()) {
-        case STRING :
-        	preference.setValue(nodeToParse.textValue());
-        	break;
-        case BOOLEAN:
-        	
-        	preference.setValue(nodeToParse.asBoolean()   );
-        
-        	break;
-        case NUMBER:
-        	if(nodeToParse.isFloatingPointNumber() ) {
-        	preference.setValue(nodeToParse.asDouble()   );
-        } else {
-        	
-        	preference.setValue(nodeToParse.asInt()   );
-        	
-        }
-        	
-        	break;
-        	default:
-        }
-        
-		
 	}
 
 	/**
