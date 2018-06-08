@@ -60,15 +60,17 @@ import com.fasterxml.jackson.databind.node.NullNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.node.TextNode;
 
+import utility.ContextParsingHelpers;
+
 /**
  * User context object defined in 7.2.1
  */
 @XmlType(propOrder = { "implementationParameters", "contexts" })
 @XmlRootElement(name = "user-context")
 public class UserContext extends DatabaseObject {
-    private static final String VALUE = "value";
+    public static final String VALUE = "value";
 
-    private static final String KEY = "key";
+    public static final String KEY = "key";
 
     private static final String ID = "id";
 
@@ -523,7 +525,7 @@ public class UserContext extends DatabaseObject {
             while (pereferenceIterator.hasNext()) {
                 final JsonNode preference = pereferenceIterator.next();
                 
-                                termValueToJson(preference, newPreferences);
+                                ContextParsingHelpers.termValueToJson(preference, newPreferences);
                                 
             }
             contextObject.remove(UserContext.PREFERENCES);
@@ -554,27 +556,7 @@ public class UserContext extends DatabaseObject {
         return jsonString;
     }
 
-    private void termValueToJson(JsonNode preference, ObjectNode newPreferences) {
-    final String key = preference.get(UserContext.KEY).textValue();
-    System.out.println("serialize: " + key);
-    
-                    JsonNode node = preference.get(UserContext.VALUE);
-                    
-
-        if ( node.isBoolean()   ) {
-newPreferences.put(key, node.asBoolean()   );
-} else if (node.isDouble()   ) {
-newPreferences.put(key, node.asDouble()   );
-} else if(node.isInt()    ) {
-newPreferences.put(key, node.asInt()   );
-} else {   
-newPreferences.put(key, node.textValue());
-}
-
-		
-	}
-
-	/**
+    /**
      * Generate the xml representation from the object used for the front end.
      *
      * @return xml string.
