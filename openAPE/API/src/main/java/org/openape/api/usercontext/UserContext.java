@@ -558,17 +558,17 @@ public class UserContext extends DatabaseObject {
     final String key = preference.get(UserContext.KEY).textValue();
     System.out.println("serialize: " + key);
     
-                    JsonNode xyz = preference.get(UserContext.VALUE);
+                    JsonNode node = preference.get(UserContext.VALUE);
                     
 
-        if ( xyz.isBoolean()   ) {
-newPreferences.put(key, xyz.asBoolean()   );
-} else if (xyz.isDouble()   ) {
-newPreferences.put(key, xyz.asDouble()   );
-} else if(xyz.isInt()    ) {
-newPreferences.put(key, xyz.asInt()   );
+        if ( node.isBoolean()   ) {
+newPreferences.put(key, node.asBoolean()   );
+} else if (node.isDouble()   ) {
+newPreferences.put(key, node.asDouble()   );
+} else if(node.isInt()    ) {
+newPreferences.put(key, node.asInt()   );
 } else {   
-newPreferences.put(key, xyz.textValue());
+newPreferences.put(key, node.textValue());
 }
 
 		
