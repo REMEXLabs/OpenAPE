@@ -2,7 +2,9 @@ package org.openape.api.usercontext;
 
 import javax.xml.bind.annotation.XmlAttribute;
 
-public class Preference {
+import org.openape.api.contexts.KeyValuePair;
+
+public class Preference implements KeyValuePair {
 	private String key;
 	private Object value;
 
@@ -58,11 +60,18 @@ public class Preference {
 	public void setValue(int i) {
 
 		value = new Integer(i);
+		
 	}
 
 	public void setValue(double d) {
 		value = new Double(d);
 
+	}
+
+	@Override
+	public void setName(String name) {
+		setKey(name);
+		
 	}
 
 }

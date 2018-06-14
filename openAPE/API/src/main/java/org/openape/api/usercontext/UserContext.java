@@ -60,15 +60,17 @@ import com.fasterxml.jackson.databind.node.NullNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.node.TextNode;
 
+import utility.ContextParsingHelpers;
+
 /**
  * User context object defined in 7.2.1
  */
 @XmlType(propOrder = { "implementationParameters", "contexts" })
 @XmlRootElement(name = "user-context")
 public class UserContext extends DatabaseObject {
-    private static final String VALUE = "value";
+    public static final String VALUE = "value";
 
-    private static final String KEY = "key";
+    public static final String KEY = "key";
 
     private static final String ID = "id";
 
@@ -202,29 +204,8 @@ public class UserContext extends DatabaseObject {
         
         
         JsonNode nodeToParse = preferences.get(preferenceKey  );
-        
-        switch(nodeToParse.getNodeType()) {
-        case STRING :
-        	preference.setValue(nodeToParse.textValue());
-        	break;
-        case BOOLEAN:
-        	
-        	preference.setValue(nodeToParse.asBoolean()   );
-        
-        	break;
-        case NUMBER:
-        	if(nodeToParse.isFloatingPointNumber() ) {
 
-        	preference.setValue(nodeToParse.asDouble()   );
-        } else {
-        	
-        	preference.setValue(nodeToParse.asInt()   );
-        	
-        }
-        	
-        	break;
-        	default:
-        }
+        ContextParsingHelpers.parseNode(preference, nodeToParse);
         System.out.println("check value: " + preference.getValue() );
         	context.addPreference(preference);
 		return preference;
@@ -517,19 +498,9 @@ public class UserContext extends DatabaseObject {
             final ObjectNode newPreferences = new ObjectNode(jsonNodeFactory);
             while (pereferenceIterator.hasNext()) {
                 final JsonNode preference = pereferenceIterator.next();
-                final String key = preference.get(UserContext.KEY).textValue();
-                System.out.println("serialize: " + key);
                 
-                                JsonNode xyz = preference.get(UserContext.VALUE);
-                if ( xyz.isBoolean()   ) {
-                	newPreferences.put(key, xyz.asBoolean()   );
-                } else if (xyz.isDouble()   ) {
-                	newPreferences.put(key, xyz.asDouble()   );
-            } else if(xyz.isInt()    ) {
-            	newPreferences.put(key, xyz.asInt()   );
-        } else {   
-                newPreferences.put(key, xyz.textValue());
-            }
+                                ContextParsingHelpers.termValueToJson(preference, newPreferences);
+                                
             }
             contextObject.remove(UserContext.PREFERENCES);
             contextObject.set(UserContext.PREFERENCES, newPreferences);

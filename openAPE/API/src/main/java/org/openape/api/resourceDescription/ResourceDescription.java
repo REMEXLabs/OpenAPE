@@ -52,6 +52,8 @@ import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.NullNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
+import utility.ContextParsingHelpers;
+
 /**
  * Resource description object defined in 7.7.1
  */
@@ -259,7 +261,7 @@ public class ResourceDescription extends DatabaseObject {
                 contextArray.add(propertyArray);
                 // Add name and value to property array.
                 propertyArray.add(property.getName());
-                propertyArray.add(property.getValue());
+                ContextParsingHelpers.propertyValueToJson(propertyArray, property);
                 // Add descriptors to property array, if available.
                 final List<Descriptor> descriptors = property.getDescriptors();
                 for (final Descriptor descriptor : descriptors) {
