@@ -35,6 +35,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 
+import org.openape.api.contexts.ContextObject;
 import org.openape.api.databaseObjectBase.DatabaseObject;
 import org.openape.api.databaseObjectBase.Descriptor;
 import org.openape.api.databaseObjectBase.ImplementationParameters;
@@ -56,14 +57,10 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
  * Equipment context object defined in 7.4.1
  */
 @XmlRootElement(name = "equipment-context")
-public class EquipmentContext extends DatabaseObject {
+public class EquipmentContext extends ContextObject{
     private static final String CONTEXTS_SCHEMA_XSD = "ContextsSchema.xsd";
 
-    private static final String PUBLIC = "public";
-
     private static final String EQUIPMENT_CONTEXT = "equipment-context";
-
-    private static final String IMPLEMENTATION_PARAMETERS = "implementation-parameters";
 
     private static final long serialVersionUID = 4810176872836108065L;
 
@@ -209,16 +206,8 @@ public class EquipmentContext extends DatabaseObject {
         return true;
     }
 
-    private ImplementationParameters implementationParameters = new ImplementationParameters();
-
-    private List<Property> propertys = new ArrayList<Property>();
-
     public EquipmentContext() {
-        this.propertys = new ArrayList<Property>();
-    }
-
-    public void addProperty(final Property property) {
-        this.propertys.add(property);
+       super(EQUIPMENT_CONTEXT);
     }
 
     /**
@@ -233,62 +222,6 @@ public class EquipmentContext extends DatabaseObject {
         return (EquipmentContext.hasEquipmentContextTheSameProperties(compare, this) && EquipmentContext
                 .hasEquipmentContextTheSameProperties(this, compare));
 
-    }
-
-    /**
-     * Generate the json representation from the object used for the front end.
-     * Deletes owner and public field.
-     *
-     * @return json string.
-     */
-    @JsonIgnore
-    public String getForntEndJson() throws IOException {
-        String jsonString = null;
-        try {
-            // Setup document root
-            final JsonNodeFactory jsonNodeFactory = new JsonNodeFactory(false);
-            final ObjectNode root = new ObjectNode(jsonNodeFactory);
-            final ArrayNode contextArray = new ArrayNode(jsonNodeFactory);
-            root.set(EquipmentContext.EQUIPMENT_CONTEXT, contextArray);
-
-            // Add all properties to context array.
-            final List<Property> properties = this.getPropertys();
-            for (final Property property : properties) {
-                final ArrayNode propertyArray = new ArrayNode(jsonNodeFactory);
-                contextArray.add(propertyArray);
-                // Add name and value to property array.
-                propertyArray.add(property.getName());
-                propertyArray.add(property.getValue());
-                // Add descriptors to property array, if available.
-                final List<Descriptor> descriptors = property.getDescriptors();
-                for (final Descriptor descriptor : descriptors) {
-                    final ArrayNode descriptorArray = new ArrayNode(jsonNodeFactory);
-                    propertyArray.add(descriptorArray);
-                    // Add name and value to descriptor array
-                    descriptorArray.add(descriptor.getName());
-                    descriptorArray.add(descriptor.getValue());
-                }
-            }
-            // write out string.
-            final StringWriter stringWriter = new StringWriter();
-            final ObjectMapper mapper = new ObjectMapper();
-            mapper.writeValue(stringWriter, root);
-            jsonString = stringWriter.toString();
-        } catch (final Exception e) {
-            throw new IOException(e.getMessage());
-        }
-        return jsonString;
-    }
-
-    @JsonProperty(value = EquipmentContext.IMPLEMENTATION_PARAMETERS)
-    @XmlElement(name = EquipmentContext.IMPLEMENTATION_PARAMETERS)
-    public ImplementationParameters getImplementationParameters() {
-        return this.implementationParameters;
-    }
-
-    @XmlElement(name = "property")
-    public List<Property> getPropertys() {
-        return this.propertys;
     }
 
     /**
@@ -316,13 +249,5 @@ public class EquipmentContext extends DatabaseObject {
     @JsonIgnore
     public boolean isValid() {
         return true;
-    }
-
-    public void setImplementationParameters(final ImplementationParameters implementationParameters) {
-        this.implementationParameters = implementationParameters;
-    }
-
-    public void setPropertys(final List<Property> propertys) {
-        this.propertys = propertys;
     }
 }

@@ -23,6 +23,7 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 
+import org.openape.api.contexts.KeyValuePair;
 import org.openape.api.environmentcontext.EnvironmentContext;
 import org.openape.api.equipmentcontext.EquipmentContext;
 import org.openape.api.resourceDescription.ResourceDescription;
@@ -34,7 +35,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  * Property Object used by {@link ResourceDescription}, {@link TaskContext},
  * {@link EquipmentContext}, {@link EnvironmentContext}
  */
-public class Property implements Serializable {
+public class Property  implements Serializable, KeyValuePair {
     private static final long serialVersionUID = -6041175371845997239L;
 
     /**
@@ -68,7 +69,7 @@ public class Property implements Serializable {
     }
 
     private String name;
-    private String value;
+    private Object value;
 
     private List<Descriptor> descriptors = new ArrayList<Descriptor>();
 
@@ -81,7 +82,22 @@ public class Property implements Serializable {
         this.value = value;
     }
 
-    public void addDescriptor(final Descriptor descriptor) {
+    public Property(String name, boolean b) {
+		this.name = name;
+		setValue(b);
+	}
+
+	public Property(String name, int i) {
+		this.name = name;
+		setValue(i);
+	}
+
+	public Property(String name, double d) {
+		this.name = name;
+		setValue(d);
+	}
+
+	public void addDescriptor(final Descriptor descriptor) {
         this.descriptors.add(descriptor);
     }
 
@@ -117,7 +133,7 @@ public class Property implements Serializable {
     }
 
     @XmlAttribute(name = "value")
-    public String getValue() {
+    public Object getValue() {
         return this.value;
     }
 
@@ -125,12 +141,30 @@ public class Property implements Serializable {
         this.descriptors = descriptors;
     }
 
-    public void setName(final String name) {
-        this.name = name;
-    }
-
+    
     public void setValue(final String value) {
         this.value = value;
     }
 
+	@Override
+	public void setName(String name) {
+		this.name = name;
+		
+	}
+
+	@Override
+	public void setValue(boolean value) {
+		this.value = new Boolean(value);
+		
+	}
+
+	@Override
+	public void setValue(double value) {
+		this.value = new Double(value);
+		
+	}
+
+	public void setValue(int i) {
+		value = new Integer(i);
+	}
 }
