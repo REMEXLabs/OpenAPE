@@ -8,4 +8,6 @@ public void setValue(boolean asBoolean);
 public void setValue(String textValue);
 
 public void setValue(double asDouble);
+
+public void setValue(int i);
 }

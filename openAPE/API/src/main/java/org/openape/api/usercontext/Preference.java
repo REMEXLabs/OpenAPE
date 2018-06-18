@@ -60,12 +60,12 @@ public class Preference implements KeyValuePair {
 	public void setValue(int i) {
 
 		value = new Integer(i);
-		
+		System.out.println("int");
 	}
 
 	public void setValue(double d) {
 		value = new Double(d);
-
+System.out.println("double");
 	}
 
 	@Override

@@ -34,7 +34,7 @@ public class TestEquipmentContext {
     @Test
     public void testGetJson() throws IOException {
         final EquipmentContext sample = TestEquipmentContext.sampleEquipmentContext();
-        final String json = sample.getForntEndJson();
+        final String json = sample.getFrontendJson();
         System.out.println(json);
         Assert.assertTrue(sample.equals(EquipmentContext.getObjectFromJson(json)));
     }

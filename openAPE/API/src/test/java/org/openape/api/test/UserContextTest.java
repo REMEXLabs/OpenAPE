@@ -43,9 +43,10 @@ public class UserContextTest {
 	@Test
 	public void integerPreferenceJsonParsingTest() {
 		String preferenceTerm = "http://openape.gpii.eu/terms/integerTest";
+		System.out.println("integertest:");
 		UserContext uc = UserContext
 				.getObjectFromJson("{\"default\":{\"preferences\":  { \"" + preferenceTerm + "\":  42} } }");
-		assertEquals(uc.getContext("default").getPreference(preferenceTerm).getValue(), 42);
+		assertEquals(42, uc.getContext("default").getPreference(preferenceTerm).getValue());
 	}
 
 	@Test

@@ -35,7 +35,7 @@ public class EquipmentContextRESTInterface extends ContextRestInterface {
 
         if (contentType != null) {
             if (contentType.equals(MediaType.APPLICATION_JSON)) {
-                return equipmentContext.getForntEndJson();
+                return equipmentContext.getFrontendJson();
             } else if (contentType.equals(MediaType.APPLICATION_XML)) {
                 return equipmentContext.getXML();
             } else {

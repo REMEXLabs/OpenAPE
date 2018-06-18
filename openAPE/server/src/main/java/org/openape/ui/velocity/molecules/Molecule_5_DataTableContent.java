@@ -265,11 +265,11 @@ public class Molecule_5_DataTableContent {
 
             for (final Property property : resourseDescription.getPropertys()) {
                 if (property.getName().contains("format")) {
-                    format = property.getValue();
+                    format = (String) property.getValue();
                 } else if (property.getName().contains("title")) {
-                    title = property.getValue();
+                    title = (String)property.getValue();
                 } else if (property.getName().contains("modified")) {
-                    modified = property.getValue();
+                    modified = (String)property.getValue();
                 } else if (property.getName().contains("resource-uri")) {
                     resourceId = property.getValue().substring(
                             property.getValue().indexOf("resources/") + 10);
