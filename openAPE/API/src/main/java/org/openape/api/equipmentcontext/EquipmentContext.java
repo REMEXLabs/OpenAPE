@@ -16,13 +16,11 @@
 
 package org.openape.api.equipmentcontext;
 
-import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 
 import javax.xml.XMLConstants;
 import javax.xml.bind.Binder;
@@ -52,6 +50,7 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.NullNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import utility.ContextParsingHelpers;
 
 /**
  * Equipment context object defined in 7.4.1
@@ -83,11 +82,11 @@ public class EquipmentContext extends ContextObject{
 
             // get owner and public if available.
             final JsonNode implemParams = rootObject
-                    .get(EquipmentContext.IMPLEMENTATION_PARAMETERS);
+                    .get(ContextObject.IMPLEMENTATION_PARAMETERS);
             if ((implemParams != null) && !(implemParams instanceof NullNode)) {
                 final ObjectNode implemParamsNode = (ObjectNode) implemParams;
                 context.getImplementationParameters().setPublic(
-                        implemParamsNode.get(EquipmentContext.PUBLIC).booleanValue());
+                        implemParamsNode.get(ContextObject.PUBLIC).booleanValue());
             }
 
             // get root node
@@ -184,8 +183,8 @@ public class EquipmentContext extends ContextObject{
      * @param compare
      * @return true, if compare has the same properties as base, false if not.
      */
-    private static boolean hasEquipmentContextTheSameProperties(final EquipmentContext base,
-            final EquipmentContext compare) {
+    private static boolean hasEquipmentContextTheSameProperties(final ContextObject base,
+            final ContextObject compare) {
         for (final Property baseProperty : base.getPropertys()) {
             // Match checks if for each property in this there is one in
             // compare.
@@ -218,31 +217,10 @@ public class EquipmentContext extends ContextObject{
      * @return true if contexts are equal in field values, false else.
      */
     @JsonIgnore
-    public boolean equals(final EquipmentContext compare) {
+    public boolean equals(final ContextObject compare) {
         return (EquipmentContext.hasEquipmentContextTheSameProperties(compare, this) && EquipmentContext
                 .hasEquipmentContextTheSameProperties(this, compare));
 
-    }
-
-    /**
-     * Generate the xml representation from the object used for the front end.
-     *
-     * @return xml string.
-     */
-    @JsonIgnore
-    public String getXML() throws IOException {
-        String xmlString = null;
-        try {
-            final JAXBContext context = JAXBContext.newInstance(EquipmentContext.class);
-            final Marshaller marshaller = context.createMarshaller();
-            final StringWriter stringWriter = new StringWriter();
-            marshaller.marshal(this, stringWriter);
-            xmlString = stringWriter.toString();
-            xmlString = this.getImplementationParameters().removeImplemParams(xmlString);
-        } catch (final Exception e) {
-            throw new IOException(e.getMessage());
-        }
-        return xmlString;
     }
 
     @Override

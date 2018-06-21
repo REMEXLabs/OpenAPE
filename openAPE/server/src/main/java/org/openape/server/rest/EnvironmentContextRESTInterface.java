@@ -36,7 +36,7 @@ public class EnvironmentContextRESTInterface extends ContextRestInterface {
 
         if (contentType != null) {
             if (contentType.equals(MediaType.APPLICATION_JSON)) {
-                return environmentContext.getForntEndJson();
+                return environmentContext.getFrontendJson();
             } else if (contentType.equals(MediaType.APPLICATION_XML)) {
                 return environmentContext.getXML();
             } else {

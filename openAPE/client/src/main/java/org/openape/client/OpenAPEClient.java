@@ -21,8 +21,8 @@ import javax.ws.rs.core.Response;
 import org.openape.api.OpenAPEEndPoints;
 import org.openape.api.PasswordChangeRequest;
 import org.openape.api.auth.TokenResponse;
+import org.openape.api.contexts.ContextObject;
 import org.openape.api.environmentcontext.EnvironmentContext;
-import org.openape.api.equipmentcontext.EquipmentContext;
 import org.openape.api.listing.Listing;
 import org.openape.api.taskcontext.TaskContext;
 import org.openape.api.usercontext.UserContext;
@@ -121,7 +121,7 @@ System.out.println("uri: " + uri);
 		return this.createContext(OpenAPEClient.ENVIRONMENT_CONTEXT_PATH, EnvironmentContext.class);
 	}
 
-	public URI createEquipmentContext(final EquipmentContext equipmentContext) throws URISyntaxException {
+	public URI createEquipmentContext(final ContextObject equipmentContext) throws URISyntaxException {
 		return this.createContext(OpenAPEClient.EQUIPMENT_CONTEXT_PATH, equipmentContext);
 	}
 

@@ -6,12 +6,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.openape.api.databaseObjectBase.DatabaseObject;
 import org.openape.api.databaseObjectBase.Descriptor;
 import org.openape.api.databaseObjectBase.ImplementationParameters;
 import org.openape.api.databaseObjectBase.Property;
 import org.openape.api.taskcontext.TaskContext;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -116,6 +120,53 @@ public abstract class ContextObject extends DatabaseObject {
 
 	public void setPropertys(final List<Property> propertys) {
 	    this.propertys = propertys;
+	}
+
+	public String getContextType() {
+		return contextType;
+	}
+
+	/**
+	 * Generate the xml representation from the object used for the front end.
+	 *
+	 * @return xml string.
+	 */
+	@JsonIgnore
+	public String getXML() throws IOException {
+	    String xmlString = null;
+	    try {
+	
+	        DocumentBuilderFactory dbFactory =
+	                DocumentBuilderFactory.newInstance();
+	                DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+	                Document doc = dBuilder.newDocument();
+	                
+	                // root element
+	                Element rootElement = doc.createElement(this.getContextType() );
+	                doc.appendChild(rootElement);
+	                
+	                for (Property property : this.propertys) {
+	                Element propertyElement = doc.createElement("property");
+	                propertyElement.setAttribute("name", property.getName() );
+	                propertyElement.setAttribute("value", property.getValue(  ).toString() );
+	                
+	                List<Descriptor> descriptors = property.getDescriptors();
+	                
+	                for (Descriptor descriptor : descriptors) {
+	                	Element descriptorElement = doc.createElement("descriptor");
+	                	descriptorElement.setAttribute("name", descriptor.getName());
+	                	descriptorElement.setAttribute("value", descriptor.getValue());
+	                	propertyElement.appendChild(descriptorElement);
+	                	
+	                }
+	                rootElement.appendChild(propertyElement);
+	                }
+	    	xmlString = this.getImplementationParameters().removeImplemParams(xmlString);
+	    } catch (final Exception e) {
+	        e.printStackTrace();
+	    	throw new IOException(e.getMessage());
+	    }
+	    return xmlString;
 	}
 
 }

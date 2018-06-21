@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.openape.api.contexts.ContextObject;
 import org.openape.api.databaseObjectBase.Property;
 import org.openape.api.environmentcontext.EnvironmentContext;
 import org.openape.api.equipmentcontext.EquipmentContext;
@@ -126,7 +127,7 @@ public class Molecule_5_DataTableContent {
         String tableContent = "";
         String buttons = "";
 
-        for (EquipmentContext equipmentkContext : listEquipmentContexts) {
+        for (ContextObject equipmentkContext : listEquipmentContexts) {
         	User user = ProfileHandler.getUserById(equipmentkContext.getImplementationParameters().getOwner());
             if (!privateContexts) {
                 buttons = "<button id='"
@@ -271,8 +272,8 @@ public class Molecule_5_DataTableContent {
                 } else if (property.getName().contains("modified")) {
                     modified = (String)property.getValue();
                 } else if (property.getName().contains("resource-uri")) {
-                    resourceId = property.getValue().substring(
-                            property.getValue().indexOf("resources/") + 10);
+                    resourceId = property.getValue().toString().substring(
+                            property.getValue().toString().indexOf("resources/") + 10);
                 }
             }
 

@@ -76,9 +76,9 @@ public class TaskContext extends ContextObject {
      */
     @JsonIgnore
 //    TODO rename
-    public static ContextObject getObjectFromJson(final String json) throws IllegalArgumentException {
+    public static TaskContext getObjectFromJson(final String json) throws IllegalArgumentException {
         // Context to build from tree
-        final ContextObject context = new TaskContext();
+        final TaskContext context = new TaskContext();
         try {
             // Get tree from json.
             final ObjectMapper mapper = new ObjectMapper();
@@ -134,8 +134,8 @@ public class TaskContext extends ContextObject {
      * @return task context object.
      */
     @JsonIgnore
-    public static ContextObject getObjectFromXml(String xml) throws IllegalArgumentException {
-        ContextObject taskContext = null;
+    public static TaskContext getObjectFromXml(String xml) throws IllegalArgumentException {
+        TaskContext taskContext = null;
         try {
             xml = ImplementationParameters.addPublicAttributeIfMissing(xml);
             final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -170,7 +170,7 @@ public class TaskContext extends ContextObject {
             binder.setSchema(schema);
 
             // unmarshaling xml to JAXB object
-            taskContext = (ContextObject) binder.unmarshal(xmlNode);
+            taskContext = (TaskContext) binder.unmarshal(xmlNode);
 
         } catch (final Exception e) {
             e.printStackTrace();
