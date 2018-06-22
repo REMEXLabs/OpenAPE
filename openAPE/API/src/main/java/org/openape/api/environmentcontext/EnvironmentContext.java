@@ -224,27 +224,6 @@ public class EnvironmentContext extends ContextObject{
 
     }
 
-    /**
-     * Generate the xml representation from the object used for the front end.
-     *
-     * @return xml string.
-     */
-    @JsonIgnore
-    public String getXML() throws IOException {
-        String xmlString = null;
-        try {
-            final JAXBContext context = JAXBContext.newInstance(EnvironmentContext.class);
-            final Marshaller marshaller = context.createMarshaller();
-            final StringWriter stringWriter = new StringWriter();
-            marshaller.marshal(this, stringWriter);
-            xmlString = stringWriter.toString();
-            xmlString = this.getImplementationParameters().removeImplemParams(xmlString);
-        } catch (final Exception e) {
-            throw new IOException(e.getMessage());
-        }
-        return xmlString;
-    }
-
     @Override
     @JsonIgnore
     public boolean isValid() {

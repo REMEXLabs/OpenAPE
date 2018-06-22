@@ -113,6 +113,11 @@ public class Property  implements Serializable, KeyValuePair {
     @JsonIgnore
     public boolean equals(final Property compare) {
         // check if property attributes are equal.
+        if (compare == null) {
+        	return false;
+        }
+
+        try {
         if (!(this.getName().equals(compare.getName()) && this.getValue().equals(compare.getValue()))) {
             return false;
         } else {
@@ -120,6 +125,10 @@ public class Property  implements Serializable, KeyValuePair {
             return (Property.hasPropertyTheSameDescriptors(compare, this)
                     && Property.hasPropertyTheSameDescriptors(this, compare));
         }
+        } catch (NullPointerException e) {
+			return false;
+		}
+        
     }
 
     @XmlElement(name = "descriptor")
@@ -132,7 +141,7 @@ public class Property  implements Serializable, KeyValuePair {
         return this.name;
     }
 
-    @XmlAttribute(name = "value")
+//    @XmlAttribute(name = "value")
     public Object getValue() {
         return this.value;
     }

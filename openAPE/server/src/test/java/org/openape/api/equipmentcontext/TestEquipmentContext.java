@@ -43,8 +43,17 @@ public class TestEquipmentContext {
     public void testGetXML() throws IOException {
         final EquipmentContext equipmentContext = TestEquipmentContext.sampleEquipmentContext();
         final String xml = equipmentContext.getXML();
-        System.out.println(xml);
+        
         Assert.assertTrue(equipmentContext.equals(EquipmentContext.getObjectFromXml(xml)));
     }
 
+    @Test
+    public void testSimpleEqContext() throws IOException {
+    	EquipmentContext context = new EquipmentContext();
+    	Property property = new Property("test", "test");
+    	context.addProperty(property);
+    	String xml= context.getXML();
+    	System.out.println("Simple: " + xml );
+    	EquipmentContext contextFromXml = EquipmentContext.getObjectFromXml(xml);
+    }
 }

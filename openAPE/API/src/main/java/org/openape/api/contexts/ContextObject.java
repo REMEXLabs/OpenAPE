@@ -1,6 +1,8 @@
 package org.openape.api.contexts;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,6 +10,10 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 
 import org.openape.api.databaseObjectBase.DatabaseObject;
 import org.openape.api.databaseObjectBase.Descriptor;
@@ -161,6 +167,22 @@ public abstract class ContextObject extends DatabaseObject {
 	                }
 	                rootElement.appendChild(propertyElement);
 	                }
+	                
+	                		
+	                		
+	                        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+	                        Transformer transformer = transformerFactory.newTransformer();
+	                        DOMSource source = new DOMSource(doc);
+	                
+	                		
+	                       OutputStream outputStream = new ByteArrayOutputStream();
+	                        StreamResult consoleResult = new StreamResult(outputStream);
+	                        		
+	                        transformer.transform(source, consoleResult );
+	                
+	                        
+	                        xmlString = outputStream.toString();
+	                        
 	    	xmlString = this.getImplementationParameters().removeImplemParams(xmlString);
 	    } catch (final Exception e) {
 	        e.printStackTrace();
