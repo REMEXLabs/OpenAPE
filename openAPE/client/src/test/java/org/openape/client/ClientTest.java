@@ -9,6 +9,7 @@ import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.openape.api.OpenAPEEndPoints;
 import org.openape.api.auth.TokenResponse;
 import org.openape.api.rest.RESTPaths;
 import org.openape.api.usercontext.Context;
@@ -35,6 +36,7 @@ public class ClientTest {
 
         Spark.get("/hello", (req, res) -> "Hello World");
         Spark.post(RESTPaths.TOKEN, (req, res) -> {return  new Gson().toJson( new TokenResponse("test", "0")); } );
+        Spark.get(OpenAPEEndPoints.MY_ID, (req,res) -> "123456");
         Spark.post(RESTPaths.USER_CONTEXTS, (req,res) -> {
 //        	UserContext.getObjectFromJson(req.body() );
         	res.header("Location", "http://localhost:4567/testId");
