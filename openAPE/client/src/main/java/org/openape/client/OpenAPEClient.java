@@ -117,7 +117,7 @@ System.out.println("uri: " + uri);
 		return new URI(response.getHeaderString("Location"));
 	}
 
-	public URI createEnvironmentContext(final EnvironmentContext envrionmentContext) throws URISyntaxException {
+	public URI createEnvironmentContext(final ContextObject envrionmentContext) throws URISyntaxException {
 		return this.createContext(OpenAPEClient.ENVIRONMENT_CONTEXT_PATH, EnvironmentContext.class);
 	}
 

@@ -46,25 +46,38 @@ public class Property  implements Serializable, KeyValuePair {
      * @param compare
      * @return true, if compare has the same preferences as base, false if not.
      */
-    private static boolean hasPropertyTheSameDescriptors(final Property base, final Property compare) {
-        for (final Descriptor baseDescriptor : base.getDescriptors()) {
-            // Match checks if for each descriptor in this there is one in
-            // compare.
+    boolean hasPropertyTheSameDescriptors( final Property compare) {
+    	
+    	System.out.println("neu aufgerufen");
+    	List<Descriptor> compareDescriptors = compare.getDescriptors();
+	if (this.descriptors.size() != compareDescriptors.size() ) {
+    		System.out.println("direkt");
+    		return false;
+    	}
+    	if (this.descriptors.size() == 0) {
+    		return true;
+    	}
+    	
+        for (Descriptor baseDescriptor : this.descriptors) {
+            // Match checks if for each descriptor in this there is one in         compare.
             boolean match = false;
-            for (final Descriptor compareDescriptor : compare.getDescriptors()) {
+            
+            for (Descriptor compareDescriptor : compareDescriptors) {
                 // if key fits check if value fits.
-                if (baseDescriptor.getName().equals(compareDescriptor.getName())) {
-                    match = true;
-                    if (!baseDescriptor.getValue().equals(compareDescriptor.getValue())) {
-                        return false;
+                if (baseDescriptor.getName().equals(compareDescriptor.getName() )  && baseDescriptor.getValue().equals(compareDescriptor.getValue())) {
+                    
+                	match = true;
+                    break;
                     }
                 }
-            }
+            
             // no matching preference
-            if (match != true) {
-                return false;
+            if (match == false) {
+                
+            	return false;
             }
         }
+        
         return true;
     }
 
@@ -111,22 +124,30 @@ public class Property  implements Serializable, KeyValuePair {
      *         the same descriptors, false else.
      */
     @JsonIgnore
-    public boolean equals(final Property compare) {
+    public boolean equals(final Object o) {
         // check if property attributes are equal.
-        if (compare == null) {
+        if (o == null || !(o instanceof Property)) {
         	return false;
         }
-
+Property compare = (Property)o;
         try {
-        if (!(this.getName().equals(compare.getName()) && this.getValue().equals(compare.getValue()))) {
-            return false;
+        System.out.println(this.getName());
+        System.out.println(compare.getName() );
+        
+        System.out.println(this.getValue()	);
+        System.out.println(compare.getValue() );
+        	if (!(this.getName().equals(compare.getName()) && this.getValue().equals(compare.getValue()))) {
+                    	System.out.println("falscher Name");
+        	return false;
         } else {
             // check if descriptors are equal
-            return (Property.hasPropertyTheSameDescriptors(compare, this)
-                    && Property.hasPropertyTheSameDescriptors(this, compare));
+            return this.hasPropertyTheSameDescriptors((Property)compare);
+
         }
         } catch (NullPointerException e) {
-			return false;
+			
+        	
+        	return false;
 		}
         
     }
@@ -141,7 +162,15 @@ public class Property  implements Serializable, KeyValuePair {
         return this.name;
     }
 
-//    @XmlAttribute(name = "value")
+    @XmlAttribute(name = "value")
+    public String getValueAsString() {
+    	return value.toString();
+    }
+    
+    public void setValueAsString(String value) {
+    	this. value = value;
+    }
+    
     public Object getValue() {
         return this.value;
     }

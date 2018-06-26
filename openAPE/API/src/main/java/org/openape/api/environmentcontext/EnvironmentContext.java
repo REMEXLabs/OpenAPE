@@ -83,11 +83,11 @@ public class EnvironmentContext extends ContextObject{
 
             // get owner and public if available.
             final JsonNode implemParams = rootObject
-                    .get(EnvironmentContext.IMPLEMENTATION_PARAMETERS);
+                    .get(ContextObject.IMPLEMENTATION_PARAMETERS);
             if ((implemParams != null) && !(implemParams instanceof NullNode)) {
                 final ObjectNode implemParamsNode = (ObjectNode) implemParams;
                 context.getImplementationParameters().setPublic(
-                        implemParamsNode.get(EnvironmentContext.PUBLIC).booleanValue());
+                        implemParamsNode.get(ContextObject.PUBLIC).booleanValue());
             }
 
             // get root node
@@ -176,54 +176,11 @@ public class EnvironmentContext extends ContextObject{
         return environmentContext;
     }
 
-    /**
-     * Checks if a compare environment context has the same properties as a base
-     * context. Does return true if it has MORE contexts.
-     *
-     * @param base
-     * @param compare
-     * @return true, if compare has the same properties as base, false if not.
-     */
-    private static boolean hasEnvironmentContextTheSameProperties(final EnvironmentContext base,
-            final EnvironmentContext compare) {
-        for (final Property baseProperty : base.getPropertys()) {
-            // Match checks if for each property in this there is one in
-            // compare.
-            boolean match = false;
-            for (final Property compareContext : compare.getPropertys()) {
-                // if id fits check if property fits.
-                if (baseProperty.getName().equals(compareContext.getName())) {
-                    if (baseProperty.equals(compareContext)) {
-                        match = true;
-                    }
-                }
-            }
-            // no matching property
-            if (match != true) {
-                return false;
-            }
-        }
-        return true;
-    }
-
     public EnvironmentContext() {
         super(ENVIRONMENT_CONTEXT);
     }
 
-    /**
-     * Checks if environment contexts are equal in field values.
-     *
-     * @param compare
-     *            environment context to compare with.
-     * @return true if contexts are equal in field values, false else.
-     */
-    @JsonIgnore
-    public boolean equals(final EnvironmentContext compare) {
-        return (EnvironmentContext.hasEnvironmentContextTheSameProperties(compare, this) && EnvironmentContext
-                .hasEnvironmentContextTheSameProperties(this, compare));
-
-    }
-
+    
     @Override
     @JsonIgnore
     public boolean isValid() {

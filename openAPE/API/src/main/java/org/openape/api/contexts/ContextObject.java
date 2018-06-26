@@ -191,4 +191,66 @@ public abstract class ContextObject extends DatabaseObject {
 	    return xmlString;
 	}
 
+	/**
+	 * Checks if a compare environment context has the same properties as a base
+	 * context. 
+	 *
+	 * 
+	 * @param compare
+	 * @return true, if compare has the same properties as base, false if not.
+	 */
+	public boolean hasContextTheSameProperties(final ContextObject compare) {
+	    
+		
+		if (this.propertys.size() !=  compare.getPropertys().size()){
+			System.out.println("different size");			
+			return false;
+		}
+				
+	
+			System.out.println("weiter");
+				boolean match = true;
+				for (final Property baseProperty : this.propertys ) {
+	        // Match checks if for each property in this there is one in         compare.
+	        System.out.println("außen");
+					match = false;
+	        for (final Property compareProperty : compare.getPropertys()) {
+	            // if id fits check if property fits.
+	System.out.println("innen");
+	                if (baseProperty.equals(compareProperty)) {
+	                    match = true;
+	                    break;
+	                }
+	            }
+	        
+	        if (!match) {
+	        	return false;
+	        }
+	        
+				}
+	        
+				System.out.println("match= " + match);
+				
+	return match;
+	}
+
+	/**
+	 * Checks if equipment contexts are equal in field values.
+	 *
+	 * @param compare
+	 *            equipment context to compare with.
+	 * @return true if contexts are equal in field values, false else.
+	 */
+	@JsonIgnore
+	public boolean equalContext(final ContextObject compare) {
+	    System.out.println("equals");
+		if (compare == null ) {
+	    	return false;
+	    }
+		
+		return this.hasContextTheSameProperties(compare);
+	            
+	
+	}
+
 }

@@ -83,7 +83,7 @@ public class Molecule_5_DataTableContent {
         String tableContent = "";
         String buttons = "";
 
-        for (final EnvironmentContext environmentContext : listEnvironmentContexts) {
+        for (final ContextObject environmentContext : listEnvironmentContexts) {
         	User user = ProfileHandler.getUserById(environmentContext.getImplementationParameters().getOwner());
             // if the user is on the public context site than the view and copy
             // to clipboard buttons will be enabled
