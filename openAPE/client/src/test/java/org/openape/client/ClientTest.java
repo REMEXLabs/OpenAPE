@@ -46,7 +46,7 @@ public class ClientTest {
     }
 
     private static OpenAPEClient getOpenApeClient() throws MalformedURLException {
-        return new OpenAPEClient(ClientTest.testUser, ClientTest.testPw, "http://localhost:4567/");
+        return new OpenAPEClient(ClientTest.testUser, ClientTest.testPw, "http://localhost:4567");
     }
 
     @Test
