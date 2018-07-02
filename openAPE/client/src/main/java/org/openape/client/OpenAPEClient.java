@@ -67,7 +67,9 @@ public class OpenAPEClient {
 			throw e;
 		}
 System.out.println("uri: " + uri);
-		this.webResource = this.client.target(uri);
+System.out.println("lusm:version: " + this.client.getClass().getPackage().getImplementationVersion());
+System.out.println(this.client.getClass().getPackage().getSpecificationVersion() );
+this.webResource = this.client.target(uri);
 
 		// get token for accessing server
 		this.token = this.getToken(userName, password);
