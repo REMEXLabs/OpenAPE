@@ -37,7 +37,8 @@
 <script src="js/xml2json.js" type="text/javascript"></script>
 <script src="js/datatableContexts.js" type="text/javascript"></script>
 <script src="js/datatableResources.js" type="text/javascript"></script>
-
+<script src="js/remex-cookies.min.js" type="text/javascript"></script>
+<script>let remex_cookies_wp_strings = 'en';</script>
 
 <style>
 /* Absolute Center Spinner */
