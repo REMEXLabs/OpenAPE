@@ -67,8 +67,8 @@ public class OpenAPEClient {
 			throw e;
 		}
 System.out.println("uri: " + uri);
-System.out.println("lusm:version: " + this.client.getClass().getPackage().getImplementationVersion());
-System.out.println(this.client.getClass().getPackage().getSpecificationVersion() );
+
+
 this.webResource = this.client.target(uri);
 
 		// get token for accessing server
@@ -166,7 +166,8 @@ this.webResource = this.client.target(uri);
 		return id;
 	}
 
-	Builder getRequest(final String path) {
+	Builder getRequest
+	(final String path) {
 		OpenAPEClient.logger.debug("Building request for URL: " + path);
 		return this.webResource.path(path).request().header("Authorization", this.token);
 
@@ -242,5 +243,16 @@ logger.info("luxy: IOFehler");
 			return userContext;
 		}
 		return null;
+	}
+
+	public TaskContext getTaskContext(String taskContextId) {
+return 		(TaskContext)this.getContext(OpenAPEEndPoints.TASK_CONTEXTS , taskContextId, TaskContext.class);
+		
+	}
+
+	private <CT> CT getContext(String contextRestEndpoint, String contextId, Class ContextType) {
+Response response = getRequest(contextRestEndpoint + "/" + contextId).get();		
+		checkResponse(response);
+	return (CT) response.readEntity(ContextType);
 	}
 }

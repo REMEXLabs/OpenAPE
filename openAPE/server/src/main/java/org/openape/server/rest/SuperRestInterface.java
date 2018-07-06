@@ -35,6 +35,7 @@ import org.slf4j.LoggerFactory;
 
 import spark.Request;
 import spark.Spark;
+import spark.route.Routes;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -212,6 +213,7 @@ public class SuperRestInterface {
 
         // redirect to index if no path was found in the url
         Spark.redirect.get("/", "/index");
+        
     }
 
 }

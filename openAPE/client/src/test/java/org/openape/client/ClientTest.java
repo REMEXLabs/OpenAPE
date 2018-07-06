@@ -12,6 +12,7 @@ import org.junit.Test;
 import org.openape.api.OpenAPEEndPoints;
 import org.openape.api.auth.TokenResponse;
 import org.openape.api.rest.RESTPaths;
+import org.openape.api.taskcontext.TaskContext;
 import org.openape.api.usercontext.Context;
 import org.openape.api.usercontext.UserContext;
 
@@ -23,6 +24,10 @@ public class ClientTest {
     private static String testUser = "TestUser";
     private static String testPw = "TestPw";
 
+    static String userContextIdJson = "userContextExample1.json";
+	static String taskContextIdJson = "taskContextIdJson";
+	
+    
     @AfterClass
     public static void afterClass() {
         System.out.println("stopping test server");
@@ -63,7 +68,19 @@ public class ClientTest {
 
     }
 
-//    @Test
+    @Test
+    public void testGetUserContext() throws MalformedURLException {
+    	OpenAPEClient c = getOpenApeClient();
+    	UserContext uc = c.getUserContext(userContextIdJson);
+    }
+    
+    @Test
+    public void testGetTaskContext() throws MalformedURLException {
+    	OpenAPEClient c = getOpenApeClient();
+    	TaskContext tc = c.getTaskContext(taskContextIdJson);
+    
+    }
+    @Test
     public void testFileDownload() throws URISyntaxException, InterruptedException, MalformedURLException {
         
         final OpenAPEClient client = ClientTest.getOpenApeClient();
