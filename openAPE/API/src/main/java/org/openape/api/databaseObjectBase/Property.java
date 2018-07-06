@@ -23,6 +23,7 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 
+import org.openape.api.contexts.KeyValuePair;
 import org.openape.api.environmentcontext.EnvironmentContext;
 import org.openape.api.equipmentcontext.EquipmentContext;
 import org.openape.api.resourceDescription.ResourceDescription;
@@ -34,7 +35,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  * Property Object used by {@link ResourceDescription}, {@link TaskContext},
  * {@link EquipmentContext}, {@link EnvironmentContext}
  */
-public class Property implements Serializable {
+public class Property  implements Serializable, KeyValuePair {
     private static final long serialVersionUID = -6041175371845997239L;
 
     /**
@@ -45,30 +46,43 @@ public class Property implements Serializable {
      * @param compare
      * @return true, if compare has the same preferences as base, false if not.
      */
-    private static boolean hasPropertyTheSameDescriptors(final Property base, final Property compare) {
-        for (final Descriptor baseDescriptor : base.getDescriptors()) {
-            // Match checks if for each descriptor in this there is one in
-            // compare.
+    boolean hasPropertyTheSameDescriptors( final Property compare) {
+    	
+    	System.out.println("neu aufgerufen");
+    	List<Descriptor> compareDescriptors = compare.getDescriptors();
+	if (this.descriptors.size() != compareDescriptors.size() ) {
+    		System.out.println("direkt");
+    		return false;
+    	}
+    	if (this.descriptors.size() == 0) {
+    		return true;
+    	}
+    	
+        for (Descriptor baseDescriptor : this.descriptors) {
+            // Match checks if for each descriptor in this there is one in         compare.
             boolean match = false;
-            for (final Descriptor compareDescriptor : compare.getDescriptors()) {
+            
+            for (Descriptor compareDescriptor : compareDescriptors) {
                 // if key fits check if value fits.
-                if (baseDescriptor.getName().equals(compareDescriptor.getName())) {
-                    match = true;
-                    if (!baseDescriptor.getValue().equals(compareDescriptor.getValue())) {
-                        return false;
+                if (baseDescriptor.getName().equals(compareDescriptor.getName() )  && baseDescriptor.getValue().equals(compareDescriptor.getValue())) {
+                    
+                	match = true;
+                    break;
                     }
                 }
-            }
+            
             // no matching preference
-            if (match != true) {
-                return false;
+            if (match == false) {
+                
+            	return false;
             }
         }
+        
         return true;
     }
 
     private String name;
-    private String value;
+    private Object value;
 
     private List<Descriptor> descriptors = new ArrayList<Descriptor>();
 
@@ -81,7 +95,22 @@ public class Property implements Serializable {
         this.value = value;
     }
 
-    public void addDescriptor(final Descriptor descriptor) {
+    public Property(String name, boolean b) {
+		this.name = name;
+		setValue(b);
+	}
+
+	public Property(String name, int i) {
+		this.name = name;
+		setValue(i);
+	}
+
+	public Property(String name, double d) {
+		this.name = name;
+		setValue(d);
+	}
+
+	public void addDescriptor(final Descriptor descriptor) {
         this.descriptors.add(descriptor);
     }
 
@@ -95,15 +124,32 @@ public class Property implements Serializable {
      *         the same descriptors, false else.
      */
     @JsonIgnore
-    public boolean equals(final Property compare) {
+    public boolean equals(final Object o) {
         // check if property attributes are equal.
-        if (!(this.getName().equals(compare.getName()) && this.getValue().equals(compare.getValue()))) {
-            return false;
+        if (o == null || !(o instanceof Property)) {
+        	return false;
+        }
+Property compare = (Property)o;
+        try {
+        System.out.println(this.getName());
+        System.out.println(compare.getName() );
+        
+        System.out.println(this.getValue()	);
+        System.out.println(compare.getValue() );
+        	if (!(this.getName().equals(compare.getName()) && this.getValue().equals(compare.getValue()))) {
+                    	System.out.println("falscher Name");
+        	return false;
         } else {
             // check if descriptors are equal
-            return (Property.hasPropertyTheSameDescriptors(compare, this)
-                    && Property.hasPropertyTheSameDescriptors(this, compare));
+            return this.hasPropertyTheSameDescriptors((Property)compare);
+
         }
+        } catch (NullPointerException e) {
+			
+        	
+        	return false;
+		}
+        
     }
 
     @XmlElement(name = "descriptor")
@@ -117,7 +163,15 @@ public class Property implements Serializable {
     }
 
     @XmlAttribute(name = "value")
-    public String getValue() {
+    public String getValueAsString() {
+    	return value.toString();
+    }
+    
+    public void setValueAsString(String value) {
+    	this. value = value;
+    }
+    
+    public Object getValue() {
         return this.value;
     }
 
@@ -125,12 +179,30 @@ public class Property implements Serializable {
         this.descriptors = descriptors;
     }
 
-    public void setName(final String name) {
-        this.name = name;
-    }
-
+    
     public void setValue(final String value) {
         this.value = value;
     }
 
+	@Override
+	public void setName(String name) {
+		this.name = name;
+		
+	}
+
+	@Override
+	public void setValue(boolean value) {
+		this.value = new Boolean(value);
+		
+	}
+
+	@Override
+	public void setValue(double value) {
+		this.value = new Double(value);
+		
+	}
+
+	public void setValue(int i) {
+		value = new Integer(i);
+	}
 }

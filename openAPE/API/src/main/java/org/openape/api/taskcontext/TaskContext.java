@@ -22,19 +22,19 @@ import java.io.StringWriter;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 
 import javax.xml.XMLConstants;
 import javax.xml.bind.Binder;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 
+import org.openape.api.contexts.ContextObject;
+import org.openape.api.contexts.KeyValuePair;
 import org.openape.api.databaseObjectBase.DatabaseObject;
 import org.openape.api.databaseObjectBase.Descriptor;
 import org.openape.api.databaseObjectBase.ImplementationParameters;
@@ -44,7 +44,6 @@ import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -52,21 +51,23 @@ import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.NullNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
+import utility.ContextParsingHelpers;
+
 /**
  * Task context object defined in 7.3.1
  */
 @XmlRootElement(name = "task-context")
-public class TaskContext extends DatabaseObject {
+public class TaskContext extends ContextObject {
     private static final String CONTEXTS_SCHEMA_XSD = "ContextsSchema.xsd";
 
     private static final String TASK_CONTEXT = "task-context";
 
-    private static final String PUBLIC = "public";
-
-    private static final String IMPLEMENTATION_PARAMETERS = "implementation-parameters";
-
     private static final long serialVersionUID = 3325722856059287182L;
 
+    public TaskContext() {
+		super(TASK_CONTEXT);
+	}
+    
     /**
      * Generate the user context from the json string used in the front or back
      * end. Sets public: false and owner: null.
@@ -74,6 +75,7 @@ public class TaskContext extends DatabaseObject {
      * @return context object.
      */
     @JsonIgnore
+//    TODO rename
     public static TaskContext getObjectFromJson(final String json) throws IllegalArgumentException {
         // Context to build from tree
         final TaskContext context = new TaskContext();
@@ -84,11 +86,11 @@ public class TaskContext extends DatabaseObject {
             final ObjectNode rootObject = (ObjectNode) rootNode;
 
             // get owner and public if available.
-            final JsonNode implemParams = rootObject.get(TaskContext.IMPLEMENTATION_PARAMETERS);
+            final JsonNode implemParams = rootObject.get(ContextObject.IMPLEMENTATION_PARAMETERS);
             if ((implemParams != null) && !(implemParams instanceof NullNode)) {
                 final ObjectNode implemParamsNode = (ObjectNode) implemParams;
                 context.getImplementationParameters().setPublic(
-                        implemParamsNode.get(TaskContext.PUBLIC).booleanValue());
+                        implemParamsNode.get(ContextObject.PUBLIC).booleanValue());
             }
 
             // get root node
@@ -105,7 +107,8 @@ public class TaskContext extends DatabaseObject {
                 final Property property = new Property();
                 context.addProperty(property);
                 property.setName(propertyArray.get(0).textValue());
-                property.setValue(propertyArray.get(1).textValue());
+                ContextParsingHelpers.parseNode((KeyValuePair) property, propertyArray.get(1));
+                propertyArray.get(1);
 
                 // for each descriptor of available, add them to property.
                 for (int i = 2; i < propertyArray.size(); i++) {
@@ -177,151 +180,20 @@ public class TaskContext extends DatabaseObject {
     }
 
     /**
-     * Checks if a compare task context has the same properties as a base
-     * context. Does return true if it has MORE contexts.
-     *
-     * @param base
-     * @param compare
-     * @return true, if compare has the same properties as base, false if not.
-     */
-    private static boolean hasTaskContextTheSameProperties(final TaskContext base,
-            final TaskContext compare) {
-        for (final Property baseProperty : base.getPropertys()) {
-            // Match checks if for each property in this there is one in
-            // compare.
-            boolean match = false;
-            for (final Property compareContext : compare.getPropertys()) {
-                // if id fits check if property fits.
-                if (baseProperty.getName().equals(compareContext.getName())) {
-                    if (baseProperty.equals(compareContext)) {
-                        match = true;
-                    }
-                }
-            }
-            // no matching property
-            if (match != true) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    private ImplementationParameters implementationParameters = new ImplementationParameters();
-
-    private List<Property> propertys = new ArrayList<Property>();
-
-    public TaskContext() {
-        this.propertys = new ArrayList<Property>();
-    }
-
-    public void addProperty(final Property property) {
-        this.propertys.add(property);
-
-    }
-
-    /**
-     * Checks if task contexts are equal in field values.
-     *
-     * @param compare
-     *            task context to compare with.
-     * @return true if contexts are equal in field values, false else.
-     */
-    @JsonIgnore
-    public boolean equals(final TaskContext compare) {
-        return (TaskContext.hasTaskContextTheSameProperties(compare, this) && TaskContext
-                .hasTaskContextTheSameProperties(this, compare));
-
-    }
-
-    /**
      * Generate the json representation from the object used for the front end.
      * Deletes owner and public field.
      *
      * @return json string.
      */
-    @JsonIgnore
-    public String getForntEndJson() throws IOException {
-        String jsonString = null;
-        try {
-            // Setup document root
-            final JsonNodeFactory jsonNodeFactory = new JsonNodeFactory(false);
-            final ObjectNode root = new ObjectNode(jsonNodeFactory);
-            final ArrayNode contextArray = new ArrayNode(jsonNodeFactory);
-            root.set(TaskContext.TASK_CONTEXT, contextArray);
 
-            // Add all properties to context array.
-            final List<Property> properties = this.getPropertys();
-            for (final Property property : properties) {
-                final ArrayNode propertyArray = new ArrayNode(jsonNodeFactory);
-                contextArray.add(propertyArray);
-                // Add name and value to property array.
-                propertyArray.add(property.getName());
-                propertyArray.add(property.getValue());
-                // Add descriptors to property array, if available.
-                final List<Descriptor> descriptors = property.getDescriptors();
-                for (final Descriptor descriptor : descriptors) {
-                    final ArrayNode descriptorArray = new ArrayNode(jsonNodeFactory);
-                    propertyArray.add(descriptorArray);
-                    // Add name and value to descriptor array
-                    descriptorArray.add(descriptor.getName());
-                    descriptorArray.add(descriptor.getValue());
-                }
-            }
-            // write out string.
-            final StringWriter stringWriter = new StringWriter();
-            final ObjectMapper mapper = new ObjectMapper();
-            mapper.writeValue(stringWriter, root);
-            jsonString = stringWriter.toString();
-        } catch (final Exception e) {
-            throw new IOException(e.getMessage());
-        }
-        return jsonString;
-    }
+    
 
-    @JsonProperty(value = TaskContext.IMPLEMENTATION_PARAMETERS)
-    @XmlElement(name = TaskContext.IMPLEMENTATION_PARAMETERS)
-    public ImplementationParameters getImplementationParameters() {
-        return this.implementationParameters;
-    }
-
-    @XmlElement(name = "property")
-    public List<Property> getPropertys() {
-        return this.propertys;
-    }
-
-    /**
-     * Generate the xml representation from the object used for the front end.
-     *
-     * @return xml string.
-     */
-    @JsonIgnore
-    public String getXML() throws IOException {
-        String xmlString = null;
-        try {
-            final JAXBContext context = JAXBContext.newInstance(TaskContext.class);
-            final Marshaller marshaller = context.createMarshaller();
-            final StringWriter stringWriter = new StringWriter();
-            marshaller.marshal(this, stringWriter);
-            xmlString = stringWriter.toString();
-            xmlString = this.getImplementationParameters().removeImplemParams(xmlString);
-        } catch (final Exception e) {
-            throw new IOException(e.getMessage());
-        }
-        return xmlString;
-    }
+    
 
     @Override
     @JsonIgnore
     public boolean isValid() {
         return true;
-    }
-
-    public void setImplementationParameters(final ImplementationParameters implementationParameters) {
-        this.implementationParameters = implementationParameters;
-    }
-
-    public void setPropertys(final List<Property> propertys) {
-        this.propertys = propertys;
     }
 
 }

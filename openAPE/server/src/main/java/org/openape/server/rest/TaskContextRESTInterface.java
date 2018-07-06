@@ -35,7 +35,7 @@ public class TaskContextRESTInterface extends ContextRestInterface {
 
         if (contentType != null) {
             if (contentType.equals(MediaType.APPLICATION_JSON)) {
-                return taskContext.getForntEndJson();
+                return taskContext.getFrontendJson();
             } else if (contentType.equals(MediaType.APPLICATION_XML)) {
                 return taskContext.getXML();
             } else {

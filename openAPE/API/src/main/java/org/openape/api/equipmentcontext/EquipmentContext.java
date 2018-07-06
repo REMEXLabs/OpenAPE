@@ -16,13 +16,11 @@
 
 package org.openape.api.equipmentcontext;
 
-import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 
 import javax.xml.XMLConstants;
 import javax.xml.bind.Binder;
@@ -35,6 +33,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 
+import org.openape.api.contexts.ContextObject;
 import org.openape.api.databaseObjectBase.DatabaseObject;
 import org.openape.api.databaseObjectBase.Descriptor;
 import org.openape.api.databaseObjectBase.ImplementationParameters;
@@ -51,19 +50,16 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.NullNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import utility.ContextParsingHelpers;
 
 /**
  * Equipment context object defined in 7.4.1
  */
 @XmlRootElement(name = "equipment-context")
-public class EquipmentContext extends DatabaseObject {
+public class EquipmentContext extends ContextObject{
     private static final String CONTEXTS_SCHEMA_XSD = "ContextsSchema.xsd";
 
-    private static final String PUBLIC = "public";
-
     private static final String EQUIPMENT_CONTEXT = "equipment-context";
-
-    private static final String IMPLEMENTATION_PARAMETERS = "implementation-parameters";
 
     private static final long serialVersionUID = 4810176872836108065L;
 
@@ -86,11 +82,11 @@ public class EquipmentContext extends DatabaseObject {
 
             // get owner and public if available.
             final JsonNode implemParams = rootObject
-                    .get(EquipmentContext.IMPLEMENTATION_PARAMETERS);
+                    .get(ContextObject.IMPLEMENTATION_PARAMETERS);
             if ((implemParams != null) && !(implemParams instanceof NullNode)) {
                 final ObjectNode implemParamsNode = (ObjectNode) implemParams;
                 context.getImplementationParameters().setPublic(
-                        implemParamsNode.get(EquipmentContext.PUBLIC).booleanValue());
+                        implemParamsNode.get(ContextObject.PUBLIC).booleanValue());
             }
 
             // get root node
@@ -173,156 +169,20 @@ public class EquipmentContext extends DatabaseObject {
             equipmentContext = (EquipmentContext) binder.unmarshal(xmlNode);
 
         } catch (final Exception e) {
-            e.printStackTrace();
+            System.out.println("verdammter Fehler");
+        	e.printStackTrace();
             throw new IllegalArgumentException(e.getMessage());
         }
         return equipmentContext;
     }
 
-    /**
-     * Checks if a compare equipment context has the same properties as a base
-     * context. Does return true if it has MORE contexts.
-     *
-     * @param base
-     * @param compare
-     * @return true, if compare has the same properties as base, false if not.
-     */
-    private static boolean hasEquipmentContextTheSameProperties(final EquipmentContext base,
-            final EquipmentContext compare) {
-        for (final Property baseProperty : base.getPropertys()) {
-            // Match checks if for each property in this there is one in
-            // compare.
-            boolean match = false;
-            for (final Property compareContext : compare.getPropertys()) {
-                // if id fits check if property fits.
-                if (baseProperty.getName().equals(compareContext.getName())) {
-                    if (baseProperty.equals(compareContext)) {
-                        match = true;
-                    }
-                }
-            }
-            // no matching property
-            if (match != true) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    private ImplementationParameters implementationParameters = new ImplementationParameters();
-
-    private List<Property> propertys = new ArrayList<Property>();
-
     public EquipmentContext() {
-        this.propertys = new ArrayList<Property>();
-    }
-
-    public void addProperty(final Property property) {
-        this.propertys.add(property);
-    }
-
-    /**
-     * Checks if equipment contexts are equal in field values.
-     *
-     * @param compare
-     *            equipment context to compare with.
-     * @return true if contexts are equal in field values, false else.
-     */
-    @JsonIgnore
-    public boolean equals(final EquipmentContext compare) {
-        return (EquipmentContext.hasEquipmentContextTheSameProperties(compare, this) && EquipmentContext
-                .hasEquipmentContextTheSameProperties(this, compare));
-
-    }
-
-    /**
-     * Generate the json representation from the object used for the front end.
-     * Deletes owner and public field.
-     *
-     * @return json string.
-     */
-    @JsonIgnore
-    public String getForntEndJson() throws IOException {
-        String jsonString = null;
-        try {
-            // Setup document root
-            final JsonNodeFactory jsonNodeFactory = new JsonNodeFactory(false);
-            final ObjectNode root = new ObjectNode(jsonNodeFactory);
-            final ArrayNode contextArray = new ArrayNode(jsonNodeFactory);
-            root.set(EquipmentContext.EQUIPMENT_CONTEXT, contextArray);
-
-            // Add all properties to context array.
-            final List<Property> properties = this.getPropertys();
-            for (final Property property : properties) {
-                final ArrayNode propertyArray = new ArrayNode(jsonNodeFactory);
-                contextArray.add(propertyArray);
-                // Add name and value to property array.
-                propertyArray.add(property.getName());
-                propertyArray.add(property.getValue());
-                // Add descriptors to property array, if available.
-                final List<Descriptor> descriptors = property.getDescriptors();
-                for (final Descriptor descriptor : descriptors) {
-                    final ArrayNode descriptorArray = new ArrayNode(jsonNodeFactory);
-                    propertyArray.add(descriptorArray);
-                    // Add name and value to descriptor array
-                    descriptorArray.add(descriptor.getName());
-                    descriptorArray.add(descriptor.getValue());
-                }
-            }
-            // write out string.
-            final StringWriter stringWriter = new StringWriter();
-            final ObjectMapper mapper = new ObjectMapper();
-            mapper.writeValue(stringWriter, root);
-            jsonString = stringWriter.toString();
-        } catch (final Exception e) {
-            throw new IOException(e.getMessage());
-        }
-        return jsonString;
-    }
-
-    @JsonProperty(value = EquipmentContext.IMPLEMENTATION_PARAMETERS)
-    @XmlElement(name = EquipmentContext.IMPLEMENTATION_PARAMETERS)
-    public ImplementationParameters getImplementationParameters() {
-        return this.implementationParameters;
-    }
-
-    @XmlElement(name = "property")
-    public List<Property> getPropertys() {
-        return this.propertys;
-    }
-
-    /**
-     * Generate the xml representation from the object used for the front end.
-     *
-     * @return xml string.
-     */
-    @JsonIgnore
-    public String getXML() throws IOException {
-        String xmlString = null;
-        try {
-            final JAXBContext context = JAXBContext.newInstance(EquipmentContext.class);
-            final Marshaller marshaller = context.createMarshaller();
-            final StringWriter stringWriter = new StringWriter();
-            marshaller.marshal(this, stringWriter);
-            xmlString = stringWriter.toString();
-            xmlString = this.getImplementationParameters().removeImplemParams(xmlString);
-        } catch (final Exception e) {
-            throw new IOException(e.getMessage());
-        }
-        return xmlString;
+       super(EQUIPMENT_CONTEXT);
     }
 
     @Override
     @JsonIgnore
     public boolean isValid() {
         return true;
-    }
-
-    public void setImplementationParameters(final ImplementationParameters implementationParameters) {
-        this.implementationParameters = implementationParameters;
-    }
-
-    public void setPropertys(final List<Property> propertys) {
-        this.propertys = propertys;
     }
 }

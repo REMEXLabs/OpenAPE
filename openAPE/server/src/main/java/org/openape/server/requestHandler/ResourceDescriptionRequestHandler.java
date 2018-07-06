@@ -202,11 +202,11 @@ public class ResourceDescriptionRequestHandler {
                 // If a property with the right name is found check if value has
                 // the right pattern.
                 if (!Pattern.matches(ResourceDescriptionRequestHandler.ResourceURIPattern,
-                        property.getValue())) {
+                        property.getValue().toString() )) {
                     throw new IllegalArgumentException(
                             ResourceDescriptionRequestHandler.WrongURIFormatMsg);
                 }
-                resourceID = property.getValue().replaceAll(
+                resourceID = property.getValue().toString().replaceAll(
                         ResourceDescriptionRequestHandler.ResourceURIPatternPrefix, "");
             }
         }

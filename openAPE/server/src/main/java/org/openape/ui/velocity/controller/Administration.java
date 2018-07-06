@@ -24,7 +24,14 @@ public class Administration extends SuperRestInterface {
             throws IllegalArgumentException, IOException {
         auth = authService;
 		adminsectionRequestHandler.getAllTaskContexts();
-        Spark.get("/administration", (request, response) -> {
+		
+		Spark.before("/administration",
+		        auth.authorize("admin"));
+
+		
+		Spark.get("/administration", (request, response) -> {
+
+
 
         	final String userId = auth.getAuthenticatedUser(request, response).getId();
         	// site components

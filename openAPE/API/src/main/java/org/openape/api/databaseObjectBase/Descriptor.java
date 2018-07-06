@@ -18,7 +18,8 @@ public class Descriptor {
 
     @XmlAttribute(name = "name")
     public String getName() {
-        return this.name;
+        
+    	return this.name;
     }
 
     @XmlAttribute(name = "value")

@@ -10,6 +10,10 @@ $(document).ready(function() {
 		$('#signupModal').attr('aria-hidden','false');
 	})
 	
+	$('#signupModal form').submit(function(){
+		setUserData();
+	})
+	
 	$('#btnConfirmSignup').click(function(){
 		setUserData();
 	})

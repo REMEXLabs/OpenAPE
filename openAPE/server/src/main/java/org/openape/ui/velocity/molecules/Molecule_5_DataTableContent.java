@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.openape.api.contexts.ContextObject;
 import org.openape.api.databaseObjectBase.Property;
 import org.openape.api.environmentcontext.EnvironmentContext;
 import org.openape.api.equipmentcontext.EquipmentContext;
@@ -82,7 +83,7 @@ public class Molecule_5_DataTableContent {
         String tableContent = "";
         String buttons = "";
 
-        for (final EnvironmentContext environmentContext : listEnvironmentContexts) {
+        for (final ContextObject environmentContext : listEnvironmentContexts) {
         	User user = ProfileHandler.getUserById(environmentContext.getImplementationParameters().getOwner());
             // if the user is on the public context site than the view and copy
             // to clipboard buttons will be enabled
@@ -126,7 +127,7 @@ public class Molecule_5_DataTableContent {
         String tableContent = "";
         String buttons = "";
 
-        for (EquipmentContext equipmentkContext : listEquipmentContexts) {
+        for (ContextObject equipmentkContext : listEquipmentContexts) {
         	User user = ProfileHandler.getUserById(equipmentkContext.getImplementationParameters().getOwner());
             if (!privateContexts) {
                 buttons = "<button id='"
@@ -265,14 +266,14 @@ public class Molecule_5_DataTableContent {
 
             for (final Property property : resourseDescription.getPropertys()) {
                 if (property.getName().contains("format")) {
-                    format = property.getValue();
+                    format = (String) property.getValue();
                 } else if (property.getName().contains("title")) {
-                    title = property.getValue();
+                    title = (String)property.getValue();
                 } else if (property.getName().contains("modified")) {
-                    modified = property.getValue();
+                    modified = (String)property.getValue();
                 } else if (property.getName().contains("resource-uri")) {
-                    resourceId = property.getValue().substring(
-                            property.getValue().indexOf("resources/") + 10);
+                    resourceId = property.getValue().toString().substring(
+                            property.getValue().toString().indexOf("resources/") + 10);
                 }
             }
 

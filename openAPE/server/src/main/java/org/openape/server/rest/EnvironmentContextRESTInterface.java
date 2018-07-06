@@ -6,6 +6,7 @@ import javax.ws.rs.core.MediaType;
 
 import org.openape.api.EnvironmentContextList;
 import org.openape.api.Messages;
+import org.openape.api.contexts.ContextObject;
 import org.openape.api.environmentcontext.EnvironmentContext;
 import org.openape.server.auth.AuthService;
 import org.openape.server.requestHandler.EnvironmentContextRequestHandler;
@@ -30,13 +31,13 @@ public class EnvironmentContextRESTInterface extends ContextRestInterface {
     }
 
     private static String createReturnString(final Request req,
-            final EnvironmentContext environmentContext) throws IOException,
+            final ContextObject environmentContext) throws IOException,
             IllegalArgumentException {
         final String contentType = req.contentType();
 
         if (contentType != null) {
             if (contentType.equals(MediaType.APPLICATION_JSON)) {
-                return environmentContext.getForntEndJson();
+                return environmentContext.getFrontendJson();
             } else if (contentType.equals(MediaType.APPLICATION_XML)) {
                 return environmentContext.getXML();
             } else {

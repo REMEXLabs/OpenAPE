@@ -16,6 +16,9 @@
    
    	a {
 		color: #e31134;
+      &:not(:last-of-type) {
+         margin-right: 1em;
+      }
 	}
 }
 

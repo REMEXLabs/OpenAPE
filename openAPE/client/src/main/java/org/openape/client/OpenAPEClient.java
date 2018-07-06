@@ -21,8 +21,8 @@ import javax.ws.rs.core.Response;
 import org.openape.api.OpenAPEEndPoints;
 import org.openape.api.PasswordChangeRequest;
 import org.openape.api.auth.TokenResponse;
+import org.openape.api.contexts.ContextObject;
 import org.openape.api.environmentcontext.EnvironmentContext;
-import org.openape.api.equipmentcontext.EquipmentContext;
 import org.openape.api.listing.Listing;
 import org.openape.api.taskcontext.TaskContext;
 import org.openape.api.usercontext.UserContext;
@@ -66,8 +66,10 @@ public class OpenAPEClient {
 			logger.error("Malformed URL: " + uri + "OpeAPE clint can not beinitialized");
 			throw e;
 		}
-
-		this.webResource = this.client.target(uri);
+System.out.println("uri: " + uri);
+System.out.println("lusm:version: " + this.client.getClass().getPackage().getImplementationVersion());
+System.out.println(this.client.getClass().getPackage().getSpecificationVersion() );
+this.webResource = this.client.target(uri);
 
 		// get token for accessing server
 		this.token = this.getToken(userName, password);
@@ -117,11 +119,11 @@ public class OpenAPEClient {
 		return new URI(response.getHeaderString("Location"));
 	}
 
-	public URI createEnvironmentContext(final EnvironmentContext envrionmentContext) throws URISyntaxException {
+	public URI createEnvironmentContext(final ContextObject envrionmentContext) throws URISyntaxException {
 		return this.createContext(OpenAPEClient.ENVIRONMENT_CONTEXT_PATH, EnvironmentContext.class);
 	}
 
-	public URI createEquipmentContext(final EquipmentContext equipmentContext) throws URISyntaxException {
+	public URI createEquipmentContext(final ContextObject equipmentContext) throws URISyntaxException {
 		return this.createContext(OpenAPEClient.EQUIPMENT_CONTEXT_PATH, equipmentContext);
 	}
 
