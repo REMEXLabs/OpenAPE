@@ -186,7 +186,7 @@ div.tab button.active {
 #footer {
   text-align: center;
   border-top: 4px solid #740a1b;
-  padding: 2em;
+  padding: 1em 2em 1em 2em;
   color: white;
   font-weight: bold;
   position: absolute;
