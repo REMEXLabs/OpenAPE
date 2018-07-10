@@ -8,13 +8,61 @@ servers:
   - url: http://openape.gpii.eu
   
 paths:
-  /api/user-contexts:
+  /myid:
+    get:
+      responses:
+        200:
+          description: returns user Id
+          content:
+            text/plain:
+              schema:
+                type: string
+  /openape/groups:
+    get:
+      description: Returns a List to all available OpenAPE groups
+      tags:
+        - OpenAPE
+        - groups
+      responses:
+        200:
+          description: A list of all available groups
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GroupList"
+    post:
+      summary: Creates a new OpenAPE Resource group
+      tags:
+        - OpenAPE
+        - Groups
+      security:
+        - OAuth2:
+          - user
+          - admin
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schema/GroupRequest"
+      responses:
+        201:
+          description: Id of created group
+          content:
+            application/json:                 
+              schema:
+                type: string        
+  /api/user-contexts:  
     get:
       summary: List of URIs to all accessible user contexts
       operationId: getUserContextList
       tags:
         - Usercontext
         - userContextList
+      security:
+        - OAuth2:
+          - default
+          - user
+          - admin
       parameters:
         - name: limit
           in: query
@@ -34,7 +82,7 @@ paths:
           content:
             application/json:    
               schema:
-                $ref: "#/components/schemas/Pets"
+                $ref: "#/components/schemas/UserContextList"
         default:
           description: unexpected error
           content:
@@ -46,9 +94,23 @@ paths:
       operationId: createUserContext
       tags:
         - UserContext
+      security:
+        - OAuth2:
+          - user
+          - admin
       responses:
         201:
-          description: Null response
+          description: user context successfully created
+          content:
+            text/plain:
+              schema:
+                type: string
+        400:
+          description: unauthorized
+          content:
+            text/plain:
+              schema:
+                type: string
         default:
           description: unexpected error
           content:
@@ -74,7 +136,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Pets"
+                $ref: "#/components/schemas/UserContext"
         default:
           description: unexpected error
           content:
@@ -94,14 +156,14 @@ paths:
         - name: userContextId
           in: path
           required: true
-          description: The id of the user context to retrieve
+          description: The id of the user context to update
           schema:
             type: string
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Pets"              
+              $ref: "#/components/schemas/UserContext"              
       responses:
         200:
           description: Null response
@@ -113,6 +175,11 @@ paths:
                 $ref: "#/components/schemas/Error"
     delete:
       description: delete the speciified user context
+      security:
+        - OAuth2:
+          - user
+          - admin
+      
       parameters:
         - name: userContextId
           in: path
@@ -129,7 +196,50 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-                
+  /users:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema: 
+              $ref: "#/components/schemas/User"
+      responses:
+        201:
+          description: returns Id of created user
+          content:
+            text/plain:
+              schema:
+                type: string
+  /users/{userId}/password:
+    put:
+      summary: can be used to change pasword
+      tags:
+        - OpenAPE
+        - User
+      security:
+        - OAuth2:
+          - admin
+          - user
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+      responses:
+        200:
+          description: successful change of password
+          content:
+            text/plain:
+              schema:
+                type: string
+            
+        
 components:
   schemas:
     Pet:
@@ -158,9 +268,20 @@ components:
           format: int32
         message:
           type: string
-    user-context:
+    GroupList:
       type: string
-      description: user context as descripbd in ISO 24752-8
+    GroupRequest:
+      type: string
+    User:
+      type: application/json
+      description: Representation of  an OpenAPE user
+
+    User-context:
+      type: application/json
+      description: user context as described in ISO 24752-8
+    UserContextList:
+      type: application/json
+      description: user context list object as described in ISO 24752-8
   securitySchemes:
     OAuth2:
       type: oauth2
