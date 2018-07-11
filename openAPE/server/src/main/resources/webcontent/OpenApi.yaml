@@ -22,7 +22,7 @@ paths:
       description: Returns a List to all available OpenAPE groups
       tags:
         - OpenAPE
-        - groups
+        - group
       responses:
         200:
           description: A list of all available groups
@@ -48,9 +48,211 @@ paths:
         201:
           description: Id of created group
           content:
-            application/json:                 
+            text/plain:                 
               schema:
-                type: string        
+                type: string
+        400:
+          description: bad request, parsing error
+          content:
+            text/plain:
+              schema:
+                type: string
+  /openape/groups/{groupId}:
+    get:
+      summary: Returns the adressed group information
+      tags:
+        - OpenAPE
+        - Group
+      parameters:
+        - name: groupId
+          in: path
+          description: the Id of the group that shall be adressed
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Ok, deliver group  information
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Group"
+                          
+    put:
+      summary: Updates the adressed group information
+      tags:
+        - OpenAPE
+        - Group
+      parameters:
+        - name: groupId
+          in: path
+          description: the Id of the group that shall be adressed
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Group"
+      responses:
+        200:
+          description: Ok, group information updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Group"
+    delete:
+      summary: Deletes the specified group               
+      tags:
+        - OpenAPE
+        - Group
+      security:
+        - OAuth2:
+          - user
+          - admin
+      parameters:
+        - name: groupId
+          description: The Id of the group that shall be deleted
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Group successfully deleted
+         
+  /openape/groups/{groupId}/members/{userId}:
+    put:
+      summary: add  a user to a group or modify a group member's status
+      tags:
+        - OpenAPE
+        - Group
+      security:
+        - OAuth2:
+          - user
+          - admin
+      parameters:
+        - name: groupId
+          description: The Id of the group that shall be adressed
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: userId
+          description: the Id of the user who wants to become a group membr or whose status shall be updated
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/GroupMemberShipRequest"
+      responses:
+        200:
+          description: Group member successfully modified/added
+        409:
+          description: user already requested group access
+          content:
+            text/plain:
+              schema:
+                type: text
+        404:
+          description: Group does not exist
+          content:
+            text/plain:
+              schema:
+                type: string
+  
+    delete:
+      summary: Remove a member from a group
+      tags:
+        - OpenAPE
+        - Group
+      security:
+        - OAuth2:
+          - user
+          - admin
+      parameters:
+        - name: groupId
+          description: The id of the group that shall be adressed
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: userId
+          description: the Id of the user that shall be removed
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: the group member was successfully removed
+          content:
+            text/plain:
+              schema:
+                type: string
+                
+  /api/resources/{resourceId}:
+    get:
+      summary: Retrieve resource
+      tags:
+        - Resource
+      security:
+        - OAuth2:
+          - default
+          - user
+          - admin
+      parameters:
+        - name: resourceId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: returns the resource
+    delete:
+      summary: deletes an existing resource
+      tags:
+        - Resource
+      security:
+        - OAuth2:
+          - user
+          - admin
+      responses:
+        200:
+          description: Resource successfully removed
+    patch:
+      summary: Modify group memberships
+      tags:
+        - Resource
+        - GroupAccessRight
+      responses:
+        200:
+          description: Ok, Group accessrights successfully updated
+    head:
+      summary: request resource information
+      description: provides resource information like mime type and access rights
+      tags:
+        - Resource
+      responses:
+        200:
+          description: provides the requested information
+    put:
+      summary: updates resource content
+      tags:
+        - Resource
+      requestBody:
+        description: Resource content
+        content:
+          application/octet-stream:
+            schema:
+              type: string
+              format: binary
+      responses:
+        200: 
+          description: Resource successfully updated
+                     
+                
   /api/user-contexts:  
     get:
       summary: List of URIs to all accessible user contexts
@@ -242,6 +444,19 @@ paths:
         
 components:
   schemas:
+    AccessRight:
+      type: object
+      properties:
+        groupId:
+          type: string
+        readRight:
+          type: boolean
+        riteRight:
+          type: boolean
+        updateRight:
+          type: boolean
+        changeeRightRight:
+          type: boolean
     Pet:
       required:
         - id
@@ -269,9 +484,39 @@ components:
         message:
           type: string
     GroupList:
-      type: string
+      type: array
+      items:
+        type: object
+        properties:
+          owner:
+            type: string
+          id:
+            type: string
+          groupName:
+            type: string
+          ref:
+            type: string
+      
+    GroupMembershipRequest:
+      type: object
+      properties:
+        userId:
+          type: string
+        status:
+          type: string
     GroupRequest:
-      type: string
+      type: object
+      properties:
+        groupName: 
+          type: string
+        description:
+          type: string
+        entryRequirements:
+          type: string
+        openAccess:
+          type: boolean
+          
+      
     User:
       type: application/json
       description: Representation of  an OpenAPE user
@@ -282,6 +527,8 @@ components:
     UserContextList:
       type: application/json
       description: user context list object as described in ISO 24752-8
+    Group:
+      type: object
   securitySchemes:
     OAuth2:
       type: oauth2
