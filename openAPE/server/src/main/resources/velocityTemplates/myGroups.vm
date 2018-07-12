@@ -32,6 +32,8 @@
 <script src="js/signup.js" type="text/javascript"></script>
 <script src="js/datatableGroup.js" type="text/javascript"></script>
 <script src="js/resourceGroupManagement.js" type="text/javascript"></script>
+<script src="js/remex-cookies.min.js" type="text/javascript"></script>
+<script>let remex_cookies_wp_strings = 'en';</script>
 
 <style>
 /* Absolute Center Spinner */

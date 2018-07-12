@@ -8,6 +8,8 @@
 <!-- Custom Javascript --> 
 <!--<script src="js/openape.js" type="text/javascript"></script>-->
 <script src="js/protectedPages.js" type="text/javascript"></script>
+<script src="js/remex-cookies.min.js" type="text/javascript"></script>
+<script>let remex_cookies_wp_strings = 'en';</script>
 <script>
 $(document).ready(function() {
 requestProtectedPage( window.location );
