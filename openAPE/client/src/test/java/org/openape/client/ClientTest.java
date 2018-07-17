@@ -25,7 +25,7 @@ public class ClientTest {
     private static String testPw = "TestPw";
 
     static String userContextIdJson = "userContextExample1.json";
-	static String taskContextIdJson = "taskContextIdJson";
+	static String taskContextIdJson = "taskContextExample1.json";
 	
     
     @AfterClass
@@ -78,7 +78,7 @@ public class ClientTest {
     public void testGetTaskContext() throws MalformedURLException {
     	OpenAPEClient c = getOpenApeClient();
     	TaskContext tc = c.getTaskContext(taskContextIdJson);
-    
+    System.out.println("tc: " + tc);
     }
     @Test
     public void testFileDownload() throws URISyntaxException, InterruptedException, MalformedURLException {

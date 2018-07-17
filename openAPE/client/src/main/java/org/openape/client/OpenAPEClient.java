@@ -44,6 +44,7 @@ public class OpenAPEClient {
 	static final String LISTING_PATH = "api/listings";
 	private final Client client;
 	private final WebTarget webResource;
+	private String standardMediaType = MediaType.APPLICATION_JSON;
 	private final String token;
 	private final String userId;
 
@@ -169,7 +170,7 @@ this.webResource = this.client.target(uri);
 	Builder getRequest
 	(final String path) {
 		OpenAPEClient.logger.debug("Building request for URL: " + path);
-		return this.webResource.path(path).request().header("Authorization", this.token);
+		return this.webResource.path(path).request().header("Authorization", this.token).accept(standardMediaType);
 
 	}
 
@@ -217,7 +218,7 @@ logger.info("luxy: IOFehler");
 		final int status = response.getStatus();
 		checkResponse(response);
 		String responseString = response.readEntity(String.class);
-		logger.info("luxm: responseSTring: " + responseString);
+		
 		ObjectMapper mapper = new ObjectMapper();
 		TokenResponse tokenResponse = null;
 		try {
@@ -246,13 +247,19 @@ logger.info("luxy: IOFehler");
 	}
 
 	public TaskContext getTaskContext(String taskContextId) {
-return 		(TaskContext)this.getContext(OpenAPEEndPoints.TASK_CONTEXTS , taskContextId, TaskContext.class);
+
+		return 		TaskContext.getObjectFromJson(getContext(OpenAPEEndPoints.TASK_CONTEXTS , taskContextId));
 		
 	}
 
-	private <CT> CT getContext(String contextRestEndpoint, String contextId, Class ContextType) {
+	private String getContext(String contextRestEndpoint, String contextId) {
 Response response = getRequest(contextRestEndpoint + "/" + contextId).get();		
 		checkResponse(response);
-	return (CT) response.readEntity(ContextType);
+		System.out.println("lusm: " + response.getStatus());
+		System.out.println(response.getMediaType());
+		
+		String body =  response.readEntity(String.class);
+		
+	return body;
 	}
 }

@@ -253,4 +253,5 @@ public abstract class ContextObject extends DatabaseObject {
 	
 	}
 
+	public static abstract <T> T  getObjectFromJson(String string);
 }
