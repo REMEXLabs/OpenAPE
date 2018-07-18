@@ -11,6 +11,8 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.openape.api.OpenAPEEndPoints;
 import org.openape.api.auth.TokenResponse;
+import org.openape.api.environmentcontext.EnvironmentContext;
+import org.openape.api.equipmentcontext.EquipmentContext;
 import org.openape.api.rest.RESTPaths;
 import org.openape.api.taskcontext.TaskContext;
 import org.openape.api.usercontext.Context;
@@ -24,8 +26,10 @@ public class ClientTest {
     private static String testUser = "TestUser";
     private static String testPw = "TestPw";
 
-    static String userContextIdJson = "userContextExample1.json";
-	static String taskContextIdJson = "taskContextExample1.json";
+    static final String environmentContextIdJson = "environmentContextExample1.json";
+    static final String equipmentContextIdJson = "equipmentContextExample1.json";
+    static final String userContextIdJson = "userContextExample1.json";
+	static final String taskContextIdJson = "taskContextExample1.json";
 	
     
     @AfterClass
@@ -64,10 +68,23 @@ public class ClientTest {
         final UserContext userContext = new UserContext();
         userContext.addContext(new Context("testContext", "test"));
         final URI newLocation = client.createUserContext(userContext);
-//        Assert.assertEquals("http://localhost:4567/testId", newLocation.toString());
+        Assert.assertEquals("http://localhost:4567/testId", newLocation.toString());
 
     }
 
+    @Test
+    public void testGetEquipmentContext() throws MalformedURLException {
+    	OpenAPEClient c = getOpenApeClient();
+    	EquipmentContext uc = c.getEquipmentContext(equipmentContextIdJson);
+    }
+    
+    @Test
+    public void testGetEnvironmentContext() throws MalformedURLException {
+    	OpenAPEClient c = getOpenApeClient();
+    	EnvironmentContext uc = c.getEnvironmentContext(environmentContextIdJson);
+    }
+    
+    
     @Test
     public void testGetUserContext() throws MalformedURLException {
     	OpenAPEClient c = getOpenApeClient();

@@ -40,7 +40,7 @@ import javax.xml.transform.stream.StreamResult;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 
-import org.openape.api.databaseObjectBase.DatabaseObject;
+import org.openape.api.contexts.AbstractContext;	
 import org.openape.api.databaseObjectBase.ImplementationParameters;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -67,7 +67,7 @@ import utility.ContextParsingHelpers;
  */
 @XmlType(propOrder = { "implementationParameters", "contexts" })
 @XmlRootElement(name = "user-context")
-public class UserContext extends DatabaseObject {
+public class UserContext extends AbstractContext{
     public static final String VALUE = "value";
 
     public static final String KEY = "key";
@@ -437,7 +437,7 @@ public class UserContext extends DatabaseObject {
      * @return json string.
      */
     @JsonIgnore
-    public String getForntEndJson() throws IOException {
+    public String getFrontendJson() throws IOException {
         String jsonString = null;
         try {
             jsonString = this.getJson(true);

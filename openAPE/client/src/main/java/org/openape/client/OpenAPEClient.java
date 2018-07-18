@@ -21,8 +21,10 @@ import javax.ws.rs.core.Response;
 import org.openape.api.OpenAPEEndPoints;
 import org.openape.api.PasswordChangeRequest;
 import org.openape.api.auth.TokenResponse;
+import org.openape.api.contexts.AbstractContext;
 import org.openape.api.contexts.ContextObject;
 import org.openape.api.environmentcontext.EnvironmentContext;
+import org.openape.api.equipmentcontext.EquipmentContext;
 import org.openape.api.listing.Listing;
 import org.openape.api.taskcontext.TaskContext;
 import org.openape.api.usercontext.UserContext;
@@ -110,7 +112,8 @@ this.webResource = this.client.target(uri);
 
 	private URI createContext(final String path, final Object uploadContext) throws URISyntaxException {
 
-		final Response response = this.webResource.path(path).request(MediaType.APPLICATION_JSON_TYPE)
+		final Response response = getRequest(path).
+				.request(MediaType.APPLICATION_JSON_TYPE)
 				.post(Entity.entity(uploadContext, MediaType.APPLICATION_JSON));
 
 		if (response.getStatus() != 201) {
@@ -151,6 +154,14 @@ this.webResource = this.client.target(uri);
 
 		return this.createContext(OpenAPEClient.USER_CONTEXT_PATH, userContext);
 
+	}
+
+	public boolean updateEnvironmentContext(EnvironmentContext envCtx) {
+		return updateContext(ENVIRONMENT_CONTEXT_PATH,envCtx);
+	}
+	private boolean updateContext(String contextPath, AbstractContext ctx) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 	public void getListing(final String url) {
@@ -234,21 +245,22 @@ logger.info("luxy: IOFehler");
 
 	}
 
-	public UserContext getUserContext(final String userContextId) {
-		final Invocation.Builder invocationBuilder = this.webResource
-				.path(OpenAPEClient.USER_CONTEXT_PATH + userContextId).request();
-		invocationBuilder.header("Authorization", this.token);
-		final Response response = invocationBuilder.get();
-		if (response.getStatus() != 200) {
-			final UserContext userContext = response.readEntity(UserContext.class);
-			return userContext;
-		}
-		return null;
+	public EnvironmentContext getEnvironmentContext(final String environmentContextId) {
+		return EnvironmentContext.getObjectFromJson(getContext(ENVIRONMENT_CONTEXT_PATH, environmentContextId));
 	}
-
+	
+	public EquipmentContext getEquipmentContext(final String equipmentContextId) {
+		return EquipmentContext.getObjectFromJson(getContext(EQUIPMENT_CONTEXT_PATH, equipmentContextId));
+	}
+	
+	
+	
+	public UserContext getUserContext(final String userContextId) {
+		return UserContext.getObjectFromJson(getContext(USER_CONTEXT_PATH, userContextId));
+	}
+	
 	public TaskContext getTaskContext(String taskContextId) {
-
-		return 		TaskContext.getObjectFromJson(getContext(OpenAPEEndPoints.TASK_CONTEXTS , taskContextId));
+		return 		TaskContext.getObjectFromJson(getContext(TASK_CONTEXT_PATH, taskContextId));
 		
 	}
 
@@ -262,4 +274,5 @@ Response response = getRequest(contextRestEndpoint + "/" + contextId).get();
 		
 	return body;
 	}
+	
 }
