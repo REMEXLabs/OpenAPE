@@ -1,0 +1,13 @@
+{
+	"equipment-context": [
+		[ "http://openurc.org/ns/res#friendlyName", "My iPad", 
+			[ "http://www.w3.org/XML/1998/namespace/lang", "en" ]
+		],
+		[ "http://openurc.org/ns/res#friendlyName", "Mein iPad", 
+			[ "http://www.w3.org/XML/1998/namespace/lang", "de" ]
+		],
+		[ "http://openurc.org/ns/res#devicePlatform", "iOS" ],
+		[ "http://openurc.org/ns/res#deviceType", "iPad-3gen" ],
+		[ "http://openurc.org/ns/res#resolution", "1536x2048" ]
+	]
+}
