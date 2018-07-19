@@ -1,0 +1,543 @@
+openapi: "3.0.0"
+info:
+  version: 1.3.2
+  title: OpenAPE
+  license:
+    name: Apache2.0
+servers:
+  - url: http://openape.gpii.eu
+  
+paths:
+  /myid:
+    get:
+      responses:
+        200:
+          description: returns user Id
+          content:
+            text/plain:
+              schema:
+                type: string
+  /openape/groups:
+    get:
+      description: Returns a List to all available OpenAPE groups
+      tags:
+        - OpenAPE
+        - group
+      responses:
+        200:
+          description: A list of all available groups
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GroupList"
+    post:
+      summary: Creates a new OpenAPE Resource group
+      tags:
+        - OpenAPE
+        - Groups
+      security:
+        - OAuth2:
+          - user
+          - admin
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schema/GroupRequest"
+      responses:
+        201:
+          description: Id of created group
+          content:
+            text/plain:                 
+              schema:
+                type: string
+        400:
+          description: bad request, parsing error
+          content:
+            text/plain:
+              schema:
+                type: string
+  /openape/groups/{groupId}:
+    get:
+      summary: Returns the adressed group information
+      tags:
+        - OpenAPE
+        - Group
+      parameters:
+        - name: groupId
+          in: path
+          description: the Id of the group that shall be adressed
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Ok, deliver group  information
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Group"
+                          
+    put:
+      summary: Updates the adressed group information
+      tags:
+        - OpenAPE
+        - Group
+      parameters:
+        - name: groupId
+          in: path
+          description: the Id of the group that shall be adressed
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Group"
+      responses:
+        200:
+          description: Ok, group information updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Group"
+    delete:
+      summary: Deletes the specified group               
+      tags:
+        - OpenAPE
+        - Group
+      security:
+        - OAuth2:
+          - user
+          - admin
+      parameters:
+        - name: groupId
+          description: The Id of the group that shall be deleted
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Group successfully deleted
+         
+  /openape/groups/{groupId}/members/{userId}:
+    put:
+      summary: add  a user to a group or modify a group member's status
+      tags:
+        - OpenAPE
+        - Group
+      security:
+        - OAuth2:
+          - user
+          - admin
+      parameters:
+        - name: groupId
+          description: The Id of the group that shall be adressed
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: userId
+          description: the Id of the user who wants to become a group membr or whose status shall be updated
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/GroupMemberShipRequest"
+      responses:
+        200:
+          description: Group member successfully modified/added
+        409:
+          description: user already requested group access
+          content:
+            text/plain:
+              schema:
+                type: text
+        404:
+          description: Group does not exist
+          content:
+            text/plain:
+              schema:
+                type: string
+  
+    delete:
+      summary: Remove a member from a group
+      tags:
+        - OpenAPE
+        - Group
+      security:
+        - OAuth2:
+          - user
+          - admin
+      parameters:
+        - name: groupId
+          description: The id of the group that shall be adressed
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: userId
+          description: the Id of the user that shall be removed
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: the group member was successfully removed
+          content:
+            text/plain:
+              schema:
+                type: string
+                
+  /api/resources/{resourceId}:
+    get:
+      summary: Retrieve resource
+      tags:
+        - Resource
+      security:
+        - OAuth2:
+          - default
+          - user
+          - admin
+      parameters:
+        - name: resourceId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: returns the resource
+    delete:
+      summary: deletes an existing resource
+      tags:
+        - Resource
+      security:
+        - OAuth2:
+          - user
+          - admin
+      responses:
+        200:
+          description: Resource successfully removed
+    patch:
+      summary: Modify group memberships
+      tags:
+        - Resource
+        - GroupAccessRight
+      responses:
+        200:
+          description: Ok, Group accessrights successfully updated
+    head:
+      summary: request resource information
+      description: provides resource information like mime type and access rights
+      tags:
+        - Resource
+      responses:
+        200:
+          description: provides the requested information
+    put:
+      summary: updates resource content
+      tags:
+        - Resource
+      requestBody:
+        description: Resource content
+        content:
+          application/octet-stream:
+            schema:
+              type: string
+              format: binary
+      responses:
+        200: 
+          description: Resource successfully updated
+                     
+                
+  /api/user-contexts:  
+    get:
+      summary: List of URIs to all accessible user contexts
+      operationId: getUserContextList
+      tags:
+        - Usercontext
+        - userContextList
+      security:
+        - OAuth2:
+          - default
+          - user
+          - admin
+      parameters:
+        - name: limit
+          in: query
+          description: How many items to return at one time (max 100)
+          required: false
+          schema:
+            type: integer
+            format: int32
+      responses:
+        200:
+          description: A list of URIs to user contexts
+          headers:
+            x-next:
+              description: A link to the next page of responses
+              schema:
+                type: string
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/UserContextList"
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    post:
+      summary: Create a new user context
+      operationId: createUserContext
+      tags:
+        - UserContext
+      security:
+        - OAuth2:
+          - user
+          - admin
+      responses:
+        201:
+          description: user context successfully created
+          content:
+            text/plain:
+              schema:
+                type: string
+        400:
+          description: unauthorized
+          content:
+            text/plain:
+              schema:
+                type: string
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /api/user-contexts/{userContextId}:
+    get:
+      summary: Info for a specific user context
+      operationId: getUserContextById
+      tags:
+        - UserContext
+      parameters:
+        - name: userContextId
+          in: path
+          required: true
+          description: The id of the user context to retrieve
+          schema:
+            type: string
+      responses:
+        200:
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserContext"
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    put:
+      description: update the speciified user context
+      tags:
+        - UserContext
+        - update
+      security:
+        - OAuth2:
+          - user
+          - admin
+      parameters:
+        - name: userContextId
+          in: path
+          required: true
+          description: The id of the user context to update
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserContext"              
+      responses:
+        200:
+          description: Null response
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    delete:
+      description: delete the speciified user context
+      security:
+        - OAuth2:
+          - user
+          - admin
+      
+      parameters:
+        - name: userContextId
+          in: path
+          required: true
+          description: The id of the user context to delete
+          schema:
+            type: string
+      responses:
+        200:
+          description: Null response
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /users:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema: 
+              $ref: "#/components/schemas/User"
+      responses:
+        201:
+          description: returns Id of created user
+          content:
+            text/plain:
+              schema:
+                type: string
+  /users/{userId}/password:
+    put:
+      summary: can be used to change pasword
+      tags:
+        - OpenAPE
+        - User
+      security:
+        - OAuth2:
+          - admin
+          - user
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+      responses:
+        200:
+          description: successful change of password
+          content:
+            text/plain:
+              schema:
+                type: string
+            
+        
+components:
+  schemas:
+    AccessRight:
+      type: object
+      properties:
+        groupId:
+          type: string
+        readRight:
+          type: boolean
+        riteRight:
+          type: boolean
+        updateRight:
+          type: boolean
+        changeeRightRight:
+          type: boolean
+    Pet:
+      required:
+        - id
+        - name
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        tag:
+          type: string
+    Pets:
+      type: array
+      items:
+        $ref: "#/components/schemas/Pet"
+    Error:
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+    GroupList:
+      type: array
+      items:
+        type: object
+        properties:
+          owner:
+            type: string
+          id:
+            type: string
+          groupName:
+            type: string
+          ref:
+            type: string
+      
+    GroupMembershipRequest:
+      type: object
+      properties:
+        userId:
+          type: string
+        status:
+          type: string
+    GroupRequest:
+      type: object
+      properties:
+        groupName: 
+          type: string
+        description:
+          type: string
+        entryRequirements:
+          type: string
+        openAccess:
+          type: boolean
+          
+      
+    User:
+      type: application/json
+      description: Representation of  an OpenAPE user
+
+    User-context:
+      type: application/json
+      description: user context as described in ISO 24752-8
+    UserContextList:
+      type: application/json
+      description: user context list object as described in ISO 24752-8
+    Group:
+      type: object
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          tokenUrl: http://openape.gpii.eu/token
+          scopes:
+            default: grants access to all public contexts 
+            user: grants access to private contexts 
+            admin: Grants access to admin operations
+            read: grants read access to resources
+         

@@ -9,6 +9,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.util.List;
+
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
@@ -18,11 +19,14 @@ import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Form;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+
 import org.openape.api.OpenAPEEndPoints;
 import org.openape.api.PasswordChangeRequest;
 import org.openape.api.auth.TokenResponse;
+import org.openape.api.contexts.AbstractContext;
 import org.openape.api.contexts.ContextObject;
 import org.openape.api.environmentcontext.EnvironmentContext;
+import org.openape.api.equipmentcontext.EquipmentContext;
 import org.openape.api.listing.Listing;
 import org.openape.api.taskcontext.TaskContext;
 import org.openape.api.usercontext.UserContext;
@@ -44,6 +48,7 @@ public class OpenAPEClient {
 	static final String LISTING_PATH = "api/listings";
 	private final Client client;
 	private final WebTarget webResource;
+	private String standardMediaType = MediaType.APPLICATION_JSON;
 	private final String token;
 	private final String userId;
 
@@ -67,8 +72,8 @@ public class OpenAPEClient {
 			throw e;
 		}
 System.out.println("uri: " + uri);
-System.out.println("lusm:version: " + this.client.getClass().getPackage().getImplementationVersion());
-System.out.println(this.client.getClass().getPackage().getSpecificationVersion() );
+
+
 this.webResource = this.client.target(uri);
 
 		// get token for accessing server
@@ -99,6 +104,7 @@ this.webResource = this.client.target(uri);
 
 		if (status != 200) {
 			OpenAPEClient.logger.error("Http Status: " + status + "\n" + "Server message: " + response.getStatus());
+			logger.error(response.readEntity(String.class) );
 			return false;
 		}
 
@@ -107,10 +113,11 @@ this.webResource = this.client.target(uri);
 
 	}
 
-	private URI createContext(final String path, final Object uploadContext) throws URISyntaxException {
+	private URI createContext(final String path, final AbstractContext uploadContext) throws URISyntaxException, IOException {
 
-		final Response response = this.webResource.path(path).request(MediaType.APPLICATION_JSON_TYPE)
-				.post(Entity.entity(uploadContext, MediaType.APPLICATION_JSON));
+		final Response response = getRequest(path)
+//				.request(MediaType.APPLICATION_JSON_TYPE)
+				.post(Entity.entity(uploadContext.getFrontendJson()	, MediaType.APPLICATION_JSON));
 
 		if (response.getStatus() != 201) {
 			throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
@@ -119,11 +126,11 @@ this.webResource = this.client.target(uri);
 		return new URI(response.getHeaderString("Location"));
 	}
 
-	public URI createEnvironmentContext(final ContextObject envrionmentContext) throws URISyntaxException {
-		return this.createContext(OpenAPEClient.ENVIRONMENT_CONTEXT_PATH, EnvironmentContext.class);
+	public URI createEnvironmentContext(final ContextObject envrionmentContext) throws URISyntaxException, IOException {
+		return this.createContext(OpenAPEClient.ENVIRONMENT_CONTEXT_PATH, envrionmentContext);
 	}
 
-	public URI createEquipmentContext(final ContextObject equipmentContext) throws URISyntaxException {
+	public URI createEquipmentContext(final ContextObject equipmentContext) throws URISyntaxException, IOException {
 		return this.createContext(OpenAPEClient.EQUIPMENT_CONTEXT_PATH, equipmentContext);
 	}
 
@@ -142,16 +149,63 @@ this.webResource = this.client.target(uri);
 		return null;
 	}
 
-	public URI createTaskContext(final TaskContext taskContext) throws URISyntaxException {
+	public URI createTaskContext(final TaskContext taskContext) throws URISyntaxException, IOException {
 		return this.createContext(OpenAPEClient.TASK_CONTEXT_PATH, taskContext);
 	}
 
-	public URI createUserContext(final UserContext userContext) throws URISyntaxException {
+	public URI createUserContext(final UserContext userContext) throws URISyntaxException, IOException {
 
 		return this.createContext(OpenAPEClient.USER_CONTEXT_PATH, userContext);
 
 	}
 
+	public boolean deleteEquipmentContext(String ctxId) {
+		return deleteContext(EQUIPMENT_CONTEXT_PATH, ctxId);
+	}
+	
+	
+	public boolean deleteEnvironmentContext(String ctxId) {
+		return deleteContext(ENVIRONMENT_CONTEXT_PATH, ctxId);
+	}
+	
+	public boolean deleteTaskContext(String ctxId) {
+		return deleteContext(TASK_CONTEXT_PATH, ctxId);
+	}
+	
+	public boolean deleteUserContext(String ctxId) {
+		return deleteContext(USER_CONTEXT_PATH, ctxId);
+	}
+	
+	
+	private boolean deleteContext(String contextPath, String ctxId) {
+		
+		Response response = getRequest(contextPath + "/" + ctxId).delete();
+		
+		return  checkResponse(response);
+				
+	}
+
+	public boolean updateEnvironmentContext(String ctxId, EnvironmentContext envCtx) throws IOException {
+		return updateContext(ENVIRONMENT_CONTEXT_PATH, ctxId, envCtx);
+	}
+	private boolean updateContext(String contextPath, String ctxId, AbstractContext ctx) throws IOException {
+		Response response = getRequest(contextPath + "/" + ctxId)
+				.put(Entity.entity(ctx.getFrontendJson()	 , MediaType.APPLICATION_JSON));
+		return checkResponse(response);
+	}
+
+	public boolean updateEquipmentContext(String ctxId, EquipmentContext ctx) throws IOException {
+		return updateContext(EQUIPMENT_CONTEXT_PATH, ctxId, ctx);
+	}
+	
+	public boolean updateTaskContext(String ctxId, TaskContext ctx) throws IOException {
+		return updateContext(TASK_CONTEXT_PATH, ctxId, ctx);
+	}
+	
+	public boolean updateUserContext(String ctxId, UserContext ctx) throws IOException {
+		return updateContext(USER_CONTEXT_PATH, ctxId, ctx);
+	}
+	
 	public void getListing(final String url) {
 		final Invocation.Builder invocationBuilder = this.webResource.request();
 
@@ -166,9 +220,10 @@ this.webResource = this.client.target(uri);
 		return id;
 	}
 
-	Builder getRequest(final String path) {
+	Builder getRequest
+	(final String path) {
 		OpenAPEClient.logger.debug("Building request for URL: " + path);
-		return this.webResource.path(path).request().header("Authorization", this.token);
+		return this.webResource.path(path).request().header("Authorization", this.token).accept(standardMediaType);
 
 	}
 
@@ -216,7 +271,7 @@ logger.info("luxy: IOFehler");
 		final int status = response.getStatus();
 		checkResponse(response);
 		String responseString = response.readEntity(String.class);
-		logger.info("luxm: responseSTring: " + responseString);
+		
 		ObjectMapper mapper = new ObjectMapper();
 		TokenResponse tokenResponse = null;
 		try {
@@ -232,15 +287,34 @@ logger.info("luxy: IOFehler");
 
 	}
 
-	public UserContext getUserContext(final String userContextId) {
-		final Invocation.Builder invocationBuilder = this.webResource
-				.path(OpenAPEClient.USER_CONTEXT_PATH + userContextId).request();
-		invocationBuilder.header("Authorization", this.token);
-		final Response response = invocationBuilder.get();
-		if (response.getStatus() != 200) {
-			final UserContext userContext = response.readEntity(UserContext.class);
-			return userContext;
-		}
-		return null;
+	public EnvironmentContext getEnvironmentContext(final String environmentContextId) {
+		return EnvironmentContext.getObjectFromJson(getContext(ENVIRONMENT_CONTEXT_PATH, environmentContextId));
 	}
+	
+	public EquipmentContext getEquipmentContext(final String equipmentContextId) {
+		return EquipmentContext.getObjectFromJson(getContext(EQUIPMENT_CONTEXT_PATH, equipmentContextId));
+	}
+	
+	
+	
+	public UserContext getUserContext(final String userContextId) {
+		return UserContext.getObjectFromJson(getContext(USER_CONTEXT_PATH, userContextId));
+	}
+	
+	public TaskContext getTaskContext(String taskContextId) {
+		return 		TaskContext.getObjectFromJson(getContext(TASK_CONTEXT_PATH, taskContextId));
+		
+	}
+
+	private String getContext(String contextRestEndpoint, String contextId) {
+Response response = getRequest(contextRestEndpoint + "/" + contextId).get();		
+		checkResponse(response);
+		System.out.println("lusm: " + response.getStatus());
+		System.out.println(response.getMediaType());
+		
+		String body =  response.readEntity(String.class);
+		
+	return body;
+	}
+	
 }

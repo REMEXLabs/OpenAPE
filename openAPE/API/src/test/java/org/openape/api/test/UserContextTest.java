@@ -74,7 +74,7 @@ public class UserContextTest {
 				
 		uc.addContext(c);
 		
-		String jsonString = uc.getForntEndJson();
+		String jsonString = uc.getFrontendJson();
 		logger.info(jsonString);
 		assertTrue(jsonString.contains(buildJsonString(preferenceTermText)+ "\"text\"" ) );
 		assertTrue(jsonString.contains(buildJsonString(preferenceTermBoolean)+ true ) );
