@@ -99,6 +99,7 @@ public class SuperRestInterface {
         Spark.before("/*", (q, response) -> {
             
             SuperRestInterface.logger.debug("Received api call: " + q.protocol() + "" + q.uri());
+            logger.debug("authorisation: " + q.headers("authorization") );
             response.header("Access-Control-Allow-Origin", "*");
             // response.header("Access-Control-Request-Method",
             // "GET,PUT,POST,DELETE,OPTIONS");

@@ -14,7 +14,9 @@ import org.openape.server.rest.UserContextRESTInterface;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
+import com.mongodb.DBObject;
 
 public class ContextRequestHandler<T, Y extends ContextList> {
 	private static Logger logger = LoggerFactory.getLogger(ContextRequestHandler.class);
@@ -234,4 +236,22 @@ public List<T> getPublicContexts() throws IOException {
     query.put("PUBLIC", "public");
     return getContexts(query);
 }
+
+
+public Y getOverAllContextListOfUser(String userId,String[][] filters, String url) throws IOException{
+	final BasicDBObject queryPublic = new BasicDBObject();
+    queryPublic.put("PUBLIC", "public");
+	final BasicDBObject queryOwner = new BasicDBObject();
+    queryOwner.put("implementation-parameters.owner", userId);
+    BasicDBList or = new BasicDBList();
+    or.add(queryPublic);
+    or.add(queryOwner);
+    BasicDBObject query = new BasicDBObject("$or", or);
+    for (String[] s: filters) {
+    	query.put(s[0],s[1]);
+    }
+	return getContextList(query,url);
+}
+
+
 }
