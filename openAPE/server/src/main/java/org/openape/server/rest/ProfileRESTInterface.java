@@ -89,10 +89,10 @@ public class ProfileRESTInterface extends SuperRestInterface {
                     }
                 });
 
-        Spark.before(OpenAPEEndPoints.MY_ID, authService.authorize("user"));
+        Spark.before(OpenAPEEndPoints.MY_ID, authService.authorize("anonymous"));
         
         Spark.get(OpenAPEEndPoints.MY_ID, (req, res) -> {
-            SuperRestInterface.logger.info("blablubber");
+            
             logger.debug("lusm: "  + req.headers("authorization"));
             final String id =  authService.getAuthenticatedUser(req, res).getId();
             SuperRestInterface.logger.info("id: " + id);
