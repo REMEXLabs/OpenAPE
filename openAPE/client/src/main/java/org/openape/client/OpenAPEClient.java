@@ -40,6 +40,8 @@ import org.openape.api.usercontext.UserContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
@@ -358,7 +360,7 @@ Response response = getRequest(contextRestEndpoint + "/" + contextId).get();
 
 	
 	
-	private UserContextList getContextlist(String contextPath, Map<String,String> filters, Class<UserContextList> class1) {
+	private ContextList getContextlist(String contextPath, Map<String,String> filters, Class<UserContextList> class1) {
 		String filterString = "";
 		if (filters != null) {
 			
@@ -374,11 +376,26 @@ Response response = getRequest(contextRestEndpoint + "/" + contextId).get();
 		filterString = sb.toString();
 		}
 		
-		Response response = getRequest(contextPath + filterString).get();
+		Response response = getRequest(contextPath + filterString).accept(MediaType.APPLICATION_JSON)
+				.get();
 		checkResponse(response);
 		
-		
-		return response.readEntity(class1); 
+		String responseString = response.readEntity(String.class);
+		ContextList o = null;
+		ObjectMapper mapper = new ObjectMapper();
+		try {
+			o  = mapper.readValue(responseString, class1 );
+		} catch (JsonParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return o;  
 		
 	}
 	

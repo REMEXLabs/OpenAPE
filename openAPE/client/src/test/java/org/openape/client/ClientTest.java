@@ -120,7 +120,7 @@ String body = req.body();
         
         Spark.get("api/user-contexts", (req,res) -> {
         	
-
+logger.info("lusm: requesting user context list");
         	UserContextList data = new UserContextList();
         List<UserContext> contexts = new LinkedList<>();
         UserContext uc = new UserContext();
@@ -130,6 +130,7 @@ String body = req.body();
         	
         	final ObjectMapper mapper = new ObjectMapper();
             final String jsonData = mapper.writeValueAsString(data);
+            logger.info(jsonData);
             return jsonData;
 
         });
