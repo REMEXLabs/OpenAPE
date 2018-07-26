@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 import javax.ws.rs.NotFoundException;
+import javax.ws.rs.core.MediaType;
 
 import org.json.JSONObject;
 import org.openape.api.Messages;
@@ -95,8 +96,11 @@ public class ProfileRESTInterface extends SuperRestInterface {
             
             logger.debug("lusm: "  + req.headers("authorization"));
             final String id =  authService.getAuthenticatedUser(req, res).getId();
-            SuperRestInterface.logger.info("id: " + id);
+            if (req.headers("Accept").equals(MediaType.APPLICATION_JSON)  ) {
+            	return "{\"userId\": \"" + id + "\"}";   	
+            } else
             return id;
+        }
         });
 
         // get user by id
