@@ -32,7 +32,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import utility.ContextParsingHelpers;
 
-public abstract class ContextObject extends DatabaseObject {
+public abstract class ContextObject extends AbstractContext{
 
 	
 	
@@ -60,7 +60,7 @@ public abstract class ContextObject extends DatabaseObject {
      *
      * @return json string.
      */
-    
+    @Override
 @JsonIgnore	
 	public String getFrontendJson() throws IOException {
         String jsonString = null;
@@ -253,4 +253,5 @@ public abstract class ContextObject extends DatabaseObject {
 	
 	}
 
+	public static abstract <T> T  getObjectFromJson(String string);
 }

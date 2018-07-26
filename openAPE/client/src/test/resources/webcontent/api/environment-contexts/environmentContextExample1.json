@@ -1,0 +1,6 @@
+{
+	"environment-context": [
+		[ "http://registry.gpii.net/common/environment/visual.luminance", 5 ],
+		[ "http://terms.gpii.net/time-of-day", "1905" ]
+	]
+}

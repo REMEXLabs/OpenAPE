@@ -1,0 +1,6 @@
+{
+  "default": {
+    "preferences": 
+      { "http://terms.gpii.net/speech-output": true }
+  }
+}

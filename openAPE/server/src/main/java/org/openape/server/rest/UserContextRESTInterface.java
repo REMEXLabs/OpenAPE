@@ -36,7 +36,7 @@ public class UserContextRESTInterface extends ContextRestInterface {
         final String contentType = req.contentType();
         if (contentType != null) {
             if (contentType.equals(MediaType.APPLICATION_JSON)) {
-                return userContext.getForntEndJson();
+                return userContext.getFrontendJson();
             } else if (contentType.equals(MediaType.APPLICATION_XML)) {
                 return userContext.getXML();
             } else {

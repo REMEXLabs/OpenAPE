@@ -44,7 +44,9 @@ class TokenRESTInterface extends SuperRestInterface {
                 // Create an access token from the given username and password
                 try {
                     res.type("application/json");
-                    return authService.getJSONToken(username, password);
+                    String token = authService.getJSONToken(username, password); 
+                    System.out.println("lusm token: " + token);
+                    return token; 
                 } catch (final UnauthorizedException e) {
                     // If user could not get authorized, return Bad Request
                     res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);

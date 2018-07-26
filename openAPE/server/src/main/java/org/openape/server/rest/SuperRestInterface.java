@@ -35,6 +35,7 @@ import org.slf4j.LoggerFactory;
 
 import spark.Request;
 import spark.Spark;
+import spark.route.Routes;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -99,6 +100,7 @@ public class SuperRestInterface {
         Spark.before("/*", (q, response) -> {
             
             SuperRestInterface.logger.debug("Received api call: " + q.protocol() + "" + q.uri());
+            logger.debug("authorisation: " + q.headers("authorization") );
             response.header("Access-Control-Allow-Origin", "*");
             // response.header("Access-Control-Request-Method",
             // "GET,PUT,POST,DELETE,OPTIONS");
@@ -212,6 +214,7 @@ public class SuperRestInterface {
 
         // redirect to index if no path was found in the url
         Spark.redirect.get("/", "/index");
+        
     }
 
 }

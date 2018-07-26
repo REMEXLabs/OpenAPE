@@ -1,0 +1,15 @@
+{
+    "contexts": {
+        "default": {
+            "name": "Default preferences",
+            "preferences": {
+                "http://terms.gpii.net/common/onScreenKeyboardEnabled": true,
+                "http://terms.gpii.net/common/initDelay": 0.120,
+                "http://terms.gpii.net/common/cursorSpeed": 0.850,
+                "http://terms.gpii.net/common/cursorAcceleration": 0.800,
+                "http://terms.gpii.net/common/mouseEmulationEnabled": true,
+                "http://terms.gpii.net/common/unknown": true,
+                "http://terms.gpii.net/applications/org.alsa-project/volume": 14,
+                "http://terms.gpii.net/applications/org.alsa-project/pitch": 100
+            }
+  

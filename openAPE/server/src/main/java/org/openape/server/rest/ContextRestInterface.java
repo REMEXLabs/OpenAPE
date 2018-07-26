@@ -7,6 +7,7 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 
+import org.openape.api.ContextList;
 import org.openape.server.auth.AuthService;
 import org.openape.server.auth.UnauthorizedException;
 import org.openape.server.requestHandler.ContextRequestHandler;
@@ -33,7 +34,14 @@ public abstract class ContextRestInterface extends SuperRestInterface {
             final String url =  req.url().toString();
 
 
-
+String[][] filters = new String[0][0];
+String paramOwner = req.params("userId");
+if (paramOwner != null) {
+	
+	filters = new String[1][2];
+	filters[0][0] = "owner";
+	filters[0][1] = paramOwner;
+}
 try {
                 auth.allowAdmin(req, res);
                 return createReturnStringListRequest(req, res,
@@ -42,18 +50,18 @@ try {
 
                 final CommonProfile profile = auth.getAuthenticatedProfile(req, res);
                 String owner = profile.getUsername();
-
+                ContextList contextList = null;
                 if (owner != null) {
-
-                    return createReturnStringListRequest(req, res,
-                            contextListType, requestHandler.getContextListOfUser(auth
-                                    .getAuthenticatedUser(req, res).getId(), url));
-                } else {
-
-                    return createReturnStringListRequest(req, res,
-                            contextListType, requestHandler.getPublicContextList(url));
-
+                	System.out.println("Nutzer erkannt");            	
+ contextList = requestHandler.getOverAllContextListOfUser(auth
+        .getAuthenticatedUser(req, res).getId(), filters, url);
+                                    } else {
+                                    	System.out.println("anonymer nutzer");
+                                    	contextList = requestHandler.getPublicContextList(url);
                 }
+                return createReturnStringListRequest(req, res,
+                        contextListType, contextList);
+
             }
         });
 
@@ -62,6 +70,7 @@ try {
     public static String createReturnStringListRequest(final Request req, final Response res,
             final Class<?> type, final Object data) {
         String contentType = req.contentType();
+        logger.info("Content type: " + contentType + " instead of " + MediaType.APPLICATION_JSON);
         if (contentType == null) {
             contentType = MediaType.APPLICATION_JSON;
         } // TODO add openApe Setting
