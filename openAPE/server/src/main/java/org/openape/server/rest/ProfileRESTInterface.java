@@ -98,7 +98,7 @@ public class ProfileRESTInterface extends SuperRestInterface {
             final String id =  authService.getAuthenticatedUser(req, res).getId();
             if (req.headers("Accept").equals(MediaType.APPLICATION_JSON)  ) {
             	return "{\"userId\": \"" + id + "\"}";   	
-            } else
+            } else {
             return id;
         }
         });
