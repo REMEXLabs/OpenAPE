@@ -1,16 +1,20 @@
 package org.openape.client;
 
+
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.LinkedList;
+import java.util.List;
 
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.openape.api.OpenAPEEndPoints;
+import org.openape.api.UserContextList;
 import org.openape.api.auth.TokenResponse;
 import org.openape.api.databaseObjectBase.Property;
 import org.openape.api.environmentcontext.EnvironmentContext;
@@ -23,6 +27,7 @@ import org.openape.api.usercontext.UserContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 
 import spark.Spark;
@@ -113,6 +118,21 @@ String body = req.body();
         	return "success";
         });
         
+        Spark.get("api/user-contexts", (req,res) -> {
+        	
+
+        	UserContextList data = new UserContextList();
+        List<UserContext> contexts = new LinkedList<>();
+        UserContext uc = new UserContext();
+        		uc.setId("testId");
+        		contexts.add(uc);
+        	data.addContexts(contexts);	
+        	
+        	final ObjectMapper mapper = new ObjectMapper();
+            final String jsonData = mapper.writeValueAsString(data);
+            return jsonData;
+
+        });
         
         Spark.awaitInitialization();
 
@@ -207,4 +227,10 @@ public void testUpdateTaskContext() throws IOException {
         Assert.assertFalse(downloadedFile.equals(null));
         downloadedFile.delete();
     }
+    
+    @Test
+public void testGetContextList() throws MalformedURLException {
+	OpenAPEClient c = getOpenApeClient();
+	c.getAllAccessibleUserContexts();
+}
 }

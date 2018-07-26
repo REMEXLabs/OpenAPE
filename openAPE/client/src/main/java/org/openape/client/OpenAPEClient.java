@@ -8,7 +8,9 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Files;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -20,8 +22,13 @@ import javax.ws.rs.core.Form;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.openape.api.ContextList;
+import org.openape.api.EnvironmentContextList;
+import org.openape.api.EquipmentContextList;
 import org.openape.api.OpenAPEEndPoints;
 import org.openape.api.PasswordChangeRequest;
+import org.openape.api.TaskContextList;
+import org.openape.api.UserContextList;
 import org.openape.api.auth.TokenResponse;
 import org.openape.api.contexts.AbstractContext;
 import org.openape.api.contexts.ContextObject;
@@ -315,6 +322,64 @@ Response response = getRequest(contextRestEndpoint + "/" + contextId).get();
 		String body =  response.readEntity(String.class);
 		
 	return body;
+	}
+
+	public UserContextList getAllAccessibleUserContexts() {
+		return (UserContextList)getContextlist(USER_CONTEXT_PATH, null , UserContextList.class);
+	}
+
+	public UserContextList getMyUserContextList() {
+		return (UserContextList)getMyContextList(USER_CONTEXT_PATH,  UserContextList.class);
+	}
+
+	public UserContextList getOverallAccessibleUserContextList() {
+		return (UserContextList)getContextlist(USER_CONTEXT_PATH, null , UserContextList.class);
+	}
+
+	public EquipmentContextList getMyEquipmentContextList() {
+		return (EquipmentContextList)getMyContextList(EQUIPMENT_CONTEXT_PATH,  EquipmentContextList.class);
+	}
+
+	public EnvironmentContextList getMyEnvironmentContextList() {
+		return (EnvironmentContextList)getMyContextList(ENVIRONMENT_CONTEXT_PATH,  EnvironmentContextList.class);
+	}
+
+	public TaskContextList getMyTaskrContextList() {
+		return (TaskContextList)getMyContextList(TASK_CONTEXT_PATH,  TaskContextList.class);
+	}
+
+	
+	
+	private ContextList getMyContextList(String path, Class cl) {
+		Map<String, String> filters = new HashMap<String, String>();
+		filters.put("owner", userId );
+		return getContextlist(path,filters  , cl);
+	}
+
+	
+	
+	private UserContextList getContextlist(String contextPath, Map<String,String> filters, Class<UserContextList> class1) {
+		String filterString = "";
+		if (filters != null) {
+			
+			StringBuilder sb = new StringBuilder();
+		sb.append("?");
+		for (String key: filters.keySet() ) {
+			
+			sb.append( key + "=" + filters.get(key) + "&");
+			
+		}
+		
+		sb.deleteCharAt(sb.length()-1);
+		filterString = sb.toString();
+		}
+		
+		Response response = getRequest(contextPath + filterString).get();
+		checkResponse(response);
+		
+		
+		return response.readEntity(class1); 
+		
 	}
 	
 }
