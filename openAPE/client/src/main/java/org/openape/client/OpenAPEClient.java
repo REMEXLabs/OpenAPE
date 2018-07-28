@@ -143,7 +143,7 @@ this.webResource = this.client.target(uri);
 		return this.createContext(OpenAPEClient.EQUIPMENT_CONTEXT_PATH, equipmentContext);
 	}
 
-	public Listing createListing(final URI userContextUri, final URI equipmentContextUri, final URI environMentUri,
+	public URI createListing(final URI userContextUri, final URI equipmentContextUri, final URI environMentUri,
 			final URI taskContextUri) {
 		/*
 		 * Response response = webResource.path(LISTING_PATH).request(MediaType.
@@ -153,7 +153,7 @@ this.webResource = this.client.target(uri);
 		 * if (response.getStatus() != 201){ throw new RuntimeException(
 		 * "Failed : HTTP error code : " + response.getStatus()); }
 		 *
-		 * Listing output = response.readEntity(Listing.class); return output;
+		 * Listing output = response.readEntity(URI.class); return output;
 		 */
 		return null;
 	}
