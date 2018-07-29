@@ -7,7 +7,8 @@ import javassist.NotFoundException;
 
 import org.apache.commons.fileupload.FileItem;
 import org.openape.api.group.GroupAccessRights;
-import org.openape.api.listing.Listing;
+import org.openape.api.listing.ListingRequest;
+import org.openape.api.listing.ListingResponse;
 import org.openape.api.resourceDescription.ResourceObject;
 import org.openape.api.user.User;
 import org.openape.server.auth.UnauthorizedException;
@@ -84,7 +85,7 @@ public class ResourceRequestHandler {
      * @throws IllegalArgumentException
      *             if the id is no valid id or not assigned.
      */
-    public Listing getListingById(final String id) throws IOException, IllegalArgumentException {
+    public ListingResponse getListingById(final String id) throws IOException, IllegalArgumentException {
         final ListingRequestHandler listingRequestHandler = new ListingRequestHandler();
         return listingRequestHandler.getListingById(id);
     }
@@ -114,7 +115,7 @@ public class ResourceRequestHandler {
      *
      * @param listing
      *            listing used to choose a fitting resource. Has to be a valid
-     *            {@link Listing}.
+     *            {@link ListingRequest}.
      * @return requested resource.
      * @throws IOException
      *             if a storage problem still occurs, after to many tries.
@@ -123,7 +124,7 @@ public class ResourceRequestHandler {
      * @throws NotFoundException
       *             if no fitting resource is found.
      */
-    public List<GetResourceReturnType> getResourceByListing(final Listing listing)
+    public List<GetResourceReturnType> getResourceByListing(final ListingResponse listing)
             throws IOException, IllegalArgumentException, NotFoundException {
         return ListingManager.getResourcesFromListing(listing);
     }

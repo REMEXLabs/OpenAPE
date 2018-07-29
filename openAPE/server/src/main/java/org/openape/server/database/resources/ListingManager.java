@@ -5,12 +5,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.openape.api.Messages;
-import org.openape.api.listing.Listing;
+import org.openape.api.listing.ListingRequest;
+import org.openape.api.listing.ListingResponse;
 import org.openape.api.resourceDescription.ResourceDescription;
 
 /**
  * Stub class containing a simple implementation of the algorithm to find
- * fitting resources to a {@link Listing}.
+ * fitting resources to a {@link ListingRequest}.
  */
 public class ListingManager {
     protected static String query = Messages.getString("EmptyString"); //$NON-NLS-1$
@@ -26,14 +27,14 @@ public class ListingManager {
      * @throws IOException
      *             if unable to create resource folder.
      */
-    public static List<GetResourceReturnType> getResourcesFromListing(final Listing listing)
+    public static List<GetResourceReturnType> getResourcesFromListing(final ListingResponse listing)
             throws IOException {
         // reset query
         ListingManager.query = Messages.getString("EmptyString"); //$NON-NLS-1$
         final ResourceList resourceList = ResourceList.getInstance();
         final List<String> allResourceNames = resourceList.getResourceNameList();
         final List<GetResourceReturnType> resources = new ArrayList<GetResourceReturnType>();
-        final ResourceDescription resourceDescription = listing.getResourceDescriptionQurey();
+        final ResourceDescription resourceDescription = null; // TODO fix listing.getResourceDescriptionQurey();
         // if no resource description if found return empty list.
         if (resourceDescription == null) {
             return resources;

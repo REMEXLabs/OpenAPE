@@ -16,7 +16,7 @@ import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.openape.api.Messages;
 import org.openape.api.group.GroupAccessRights;
-import org.openape.api.listing.Listing;
+import org.openape.api.listing.ListingResponse;
 import org.openape.api.resourceDescription.ResourceObject;
 import org.openape.api.user.User;
 import org.openape.server.auth.AuthService;
@@ -210,7 +210,7 @@ public class ResourceRESTInterface extends SuperRestInterface {
             String mimeType = null;
             try {
                 // get listing
-                final Listing listing = requestHandler.getListingById(listingId);
+                final ListingResponse listing = requestHandler.getListingById(listingId);
                 // get the files from server.
                 final List<GetResourceReturnType> serverResponse = requestHandler.getResourceByListing(listing);
                 // get the requested resource.

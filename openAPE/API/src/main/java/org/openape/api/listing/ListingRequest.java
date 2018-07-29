@@ -30,8 +30,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 /**
  * Listing object defined in A.8.2
  */
-@XmlRootElement
-public class Listing extends DatabaseObject {
+@XmlRootElement(name="request")
+public class ListingRequest extends DatabaseObject {
     private static final long serialVersionUID = 6662310079884980939L;
 
     private List<String> userContextUris = new ArrayList<String>();
@@ -71,20 +71,8 @@ public class Listing extends DatabaseObject {
         return true;
     }
 
-    public void setEnvironmantContextUris(final List<String> environmantContextUris) {
-        this.environmantContextUris = environmantContextUris;
-    }
-
-    public void setEquipmentContextUris(final List<String> equipmentContextUris) {
-        this.equipmentContextUris = equipmentContextUris;
-    }
-
     public void setResourceDescriptionQurey(final ResourceDescription resourceDescriptionQurey) {
         this.resourceDescriptionQurey = resourceDescriptionQurey;
-    }
-
-    public void setTaskContextUris(final List<String> taskContextUris) {
-        this.taskContextUris = taskContextUris;
     }
 
     public void setUserContextUris(final List<String> userContextUris) {

@@ -3,7 +3,8 @@ package org.openape.server.rest;
 import java.io.IOException;
 
 import org.openape.api.Messages;
-import org.openape.api.listing.Listing;
+import org.openape.api.listing.ListingRequest;
+import org.openape.api.listing.ListingResponse;
 import org.openape.server.requestHandler.ListingRequestHandler;
 
 import spark.Spark;
@@ -27,8 +28,8 @@ public class ListingRESTInterface extends SuperRestInterface {
                 // Try to map the received json object to a
                 // environmentContext
                 // object.
-                final Listing recievedListing = (Listing) SuperRestInterface
-                        .extractObjectFromRequest(req, Listing.class);
+                final ListingRequest recievedListing = (ListingRequest) SuperRestInterface
+                        .extractObjectFromRequest(req, ListingRequest.class);
                 // Test the object for validity.
                 if (!recievedListing.isValid()) {
                     res.status(SuperRestInterface.HTTP_STATUS_BAD_REQUEST);
@@ -59,7 +60,7 @@ public class ListingRESTInterface extends SuperRestInterface {
                             .getString("ListingRESTInterface.IDParam")); //$NON-NLS-1$
                     try {
                         // if it is successful return listing.
-                        final Listing listing = requestHandler.getListingById(environmentContextId);
+                        final ListingResponse listing = requestHandler.getListingById(environmentContextId);
                         res.status(SuperRestInterface.HTTP_STATUS_OK);
                         res.type(Messages.getString("ListingRESTInterface.JsonMimeType")); //$NON-NLS-1$
                         final ObjectMapper mapper = new ObjectMapper();

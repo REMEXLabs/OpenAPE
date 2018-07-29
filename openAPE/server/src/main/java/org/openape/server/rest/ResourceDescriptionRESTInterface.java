@@ -5,7 +5,8 @@ import java.io.IOException;
 import javax.ws.rs.core.MediaType;
 
 import org.openape.api.Messages;
-import org.openape.api.listing.Listing;
+import org.openape.api.listing.ListingRequest;
+import org.openape.api.listing.ListingResponse;
 import org.openape.api.resourceDescription.ResourceDescription;
 import org.openape.server.auth.AuthService;
 import org.openape.server.auth.UnauthorizedException;
@@ -150,13 +151,12 @@ public class ResourceDescriptionRESTInterface extends SuperRestInterface {
 
                 try {
                     // get listing from id.
-                    final Listing listing = requestHandler.getListingById(listingId);
+                    final ListingResponse listing = requestHandler.getListingById(listingId);
                     // get resource description from listing. If no listing
                     // is found an exception will be thrown.
-                    final ResourceDescription resourceDescription = listing
-                            .getResourceDescriptionQurey();
+                    final ResourceDescription resourceDescription = null; // TODO fixlisting                            .getResource();
                     // json map the resource description, set return status
-                    // and mime type and return the resource description.
+                    // and mime type andx return the resource description.
                     final String jsonData = ResourceDescriptionRESTInterface.createReturnString(
                             req, resourceDescription);
                     res.status(SuperRestInterface.HTTP_STATUS_OK);

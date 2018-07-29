@@ -8,7 +8,8 @@ import java.util.regex.Pattern;
 import org.openape.api.Messages;
 import org.openape.api.databaseObjectBase.DatabaseObject;
 import org.openape.api.databaseObjectBase.Property;
-import org.openape.api.listing.Listing;
+import org.openape.api.listing.ListingRequest;
+import org.openape.api.listing.ListingResponse;
 import org.openape.api.resourceDescription.ResourceDescription;
 import org.openape.server.database.mongoDB.DatabaseConnection;
 import org.openape.server.database.mongoDB.MongoCollectionTypes;
@@ -138,7 +139,7 @@ public class ResourceDescriptionRequestHandler {
      * @throws IllegalArgumentException
      *             if the id is no valid id or not assigned.
      */
-    public Listing getListingById(final String id) throws IOException, IllegalArgumentException {
+    public ListingResponse getListingById(final String id) throws IOException, IllegalArgumentException {
         final ListingRequestHandler listingRequestHandler = new ListingRequestHandler();
         return listingRequestHandler.getListingById(id);
     }

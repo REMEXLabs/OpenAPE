@@ -4,7 +4,8 @@ import java.io.IOException;
 
 import org.openape.api.Messages;
 import org.openape.api.databaseObjectBase.DatabaseObject;
-import org.openape.api.listing.Listing;
+import org.openape.api.listing.ListingRequest;
+import org.openape.api.listing.ListingResponse;
 import org.openape.server.database.mongoDB.DatabaseConnection;
 import org.openape.server.database.mongoDB.MongoCollectionTypes;
 import org.openape.server.rest.ListingRESTInterface;
@@ -95,7 +96,7 @@ public class ListingRequestHandler {
      * @throws IllegalArgumentException
      *             if the id is no valid id or not assigned.
      */
-    public Listing getListingById(final String id) throws IOException, IllegalArgumentException {
+    public ListingResponse getListingById(final String id) throws IOException, IllegalArgumentException {
         // get database connection.
         final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
 
@@ -110,9 +111,9 @@ public class ListingRequestHandler {
         }
 
         // convert into correct type.
-        Listing returnObject;
+        ListingResponse returnObject;
         try {
-            returnObject = (Listing) result;
+            returnObject = (ListingResponse) result;
         } catch (final ClassCastException e) {
             e.printStackTrace();
             throw new IOException(e.getMessage());
