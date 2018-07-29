@@ -34,7 +34,7 @@ import org.openape.api.contexts.AbstractContext;
 import org.openape.api.contexts.ContextObject;
 import org.openape.api.environmentcontext.EnvironmentContext;
 import org.openape.api.equipmentcontext.EquipmentContext;
-import org.openape.api.listing.ListingRequest;
+import org.openape.api.listing.ListingResponse;
 import org.openape.api.taskcontext.TaskContext;
 import org.openape.api.usercontext.UserContext;
 import org.slf4j.Logger;
@@ -158,7 +158,7 @@ this.webResource = this.client.target(uri);
 		return null;
 	}
 
-	public ListingRequest createAndGetListing(URI userContextUri, URI equipmentContextUri, URI environmentContexturi, URI taskContextUri ) {
+	public ListingResponse createAndGetListing(URI userContextUri, URI equipmentContextUri, URI environmentContexturi, URI taskContextUri ) {
 		URI listingUri = createListing(userContextUri, equipmentContextUri, environmentContexturi, taskContextUri);
 	return getListing(listingUri.toString() );
 	}
@@ -220,7 +220,7 @@ this.webResource = this.client.target(uri);
 		return updateContext(USER_CONTEXT_PATH, ctxId, ctx);
 	}
 	
-	public ListingRequest getListing(final String url) {
+	public ListingResponse getListing(final String url) {
 		
 return null;
 	}
