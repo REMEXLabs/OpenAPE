@@ -7,6 +7,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.openape.api.databaseObjectBase.DatabaseObject;
+import org.openape.api.resourceDescription.ResourceDescription;
 
 @XmlRootElement(name="response")
 public class ListingResponse extends DatabaseObject {
@@ -31,5 +32,14 @@ public List<URI> getResource() {
 }
 public void setResource(List<URI> resource) {
 	this.resource = resource;
+}
+
+public ResourceDescription	getResourceDescription(URI resourceDescriptionUri) {
+	String id = resourceDescriptionUri.getPath();
+	return getResourceDescription(id); 
+}
+
+public ResourceDescription	getResourceDescription(String ResourceDescriptionId) {
+	return null;
 }
 }

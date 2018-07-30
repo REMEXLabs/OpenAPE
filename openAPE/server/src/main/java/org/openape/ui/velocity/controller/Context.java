@@ -18,7 +18,7 @@ public class Context extends SuperRestInterface {
             final AdminSectionRequestHandler adminsectionRequestHandler)
             throws IllegalArgumentException, IOException {
 
-        Spark.get("/context", (request, response) -> {
+        Spark.get("/contexts", (request, response) -> {
 
             final MainComponents mainController = new MainComponents();
             final Map<String, Object> model = mainController.getTemplateComponents();

@@ -52,11 +52,11 @@ try {
                 String owner = profile.getUsername();
                 ContextList contextList = null;
                 if (owner != null) {
-                	System.out.println("Nutzer erkannt");            	
+                	
  contextList = requestHandler.getOverAllContextListOfUser(auth
         .getAuthenticatedUser(req, res).getId(), filters, url);
                                     } else {
-                                    	System.out.println("anonymer nutzer");
+                                    	
                                     	contextList = requestHandler.getPublicContextList(url);
                 }
                 return createReturnStringListRequest(req, res,

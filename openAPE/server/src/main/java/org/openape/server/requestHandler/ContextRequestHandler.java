@@ -85,6 +85,7 @@ public ContextRequestHandler(MongoCollectionTypes collectionToUse) {
 		Y instance = null;
 		try {
 				    instance = (Y) ((Class)((ParameterizedType)this.getClass().getGenericSuperclass()).getActualTypeArguments()[1]).newInstance();
+				    instance.setUrl(url);;
 		instance.addContexts(contexts);
 		} catch (InstantiationException | IllegalAccessException e) {
 			

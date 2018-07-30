@@ -329,4 +329,13 @@ public class ResourceDescription extends DatabaseObject {
         this.propertys = propertys;
     }
 
+    @JsonIgnore
+    public Object getPropertyValue(String propertyName) {
+for (Property prop: propertys) {
+	if (prop.getName().equals(propertyName) ) {
+		return prop.getValue();
+	}
+}
+    return null;	
+    }
 }
