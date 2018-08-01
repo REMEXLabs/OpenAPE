@@ -6,6 +6,7 @@ import javax.ws.rs.core.MediaType;
 
 import org.openape.api.EquipmentContextList;
 import org.openape.api.Messages;
+import org.openape.api.OpenAPEEndPoints;
 import org.openape.api.contexts.ContextObject;
 import org.openape.api.equipmentcontext.EquipmentContext;
 import org.openape.server.auth.AuthService;
@@ -83,6 +84,7 @@ public class EquipmentContextRESTInterface extends ContextRestInterface {
                         // If the object is okay, save it and return the id.
                         final String equipmentContextId = requestHandler
                                 .createContext(receivedEquipmentContext);
+                        res.header(OpenAPEEndPoints.LOCATION, req.uri().toString() + "/" + equipmentContextId);
                         res.status(SuperRestInterface.HTTP_STATUS_CREATED);
                         return equipmentContextId;
                     } catch (JsonParseException | JsonMappingException | IllegalArgumentException e) {

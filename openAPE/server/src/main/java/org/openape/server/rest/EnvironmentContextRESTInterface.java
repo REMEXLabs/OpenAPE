@@ -6,6 +6,7 @@ import javax.ws.rs.core.MediaType;
 
 import org.openape.api.EnvironmentContextList;
 import org.openape.api.Messages;
+import org.openape.api.OpenAPEEndPoints;
 import org.openape.api.contexts.ContextObject;
 import org.openape.api.environmentcontext.EnvironmentContext;
 import org.openape.server.auth.AuthService;
@@ -87,6 +88,7 @@ public class EnvironmentContextRESTInterface extends ContextRestInterface {
                 final String environmentContextId = requestHandler
                         .createContext(receivedEnvironmentContext);
                 res.status(SuperRestInterface.HTTP_STATUS_CREATED);
+                res.header(OpenAPEEndPoints.LOCATION, req.uri().toString() + "/" + environmentContextId);
                 return environmentContextId;
             } catch (JsonParseException | JsonMappingException | IllegalArgumentException e) {
                 // If the parse is not successful return bad request

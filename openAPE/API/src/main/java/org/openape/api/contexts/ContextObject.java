@@ -104,6 +104,10 @@ public abstract class ContextObject extends AbstractContext{
 		
 	}
 
+    public void addProperty(String name, String value) {
+    	addProperty(new Property(name,value));
+    }
+    
 	public void addProperty(final Property property) {
 	    this.propertys.add(property);
 	
@@ -253,5 +257,5 @@ public abstract class ContextObject extends AbstractContext{
 	
 	}
 
-	public static abstract <T> T  getObjectFromJson(String string);
+	//public static abstract <T> T  getObjectFromJson(String string);
 }

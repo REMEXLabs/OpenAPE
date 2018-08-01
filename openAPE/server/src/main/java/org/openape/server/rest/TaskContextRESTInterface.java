@@ -5,6 +5,7 @@ import java.io.IOException;
 import javax.ws.rs.core.MediaType;
 
 import org.openape.api.Messages;
+import org.openape.api.OpenAPEEndPoints;
 import org.openape.api.TaskContextList;
 import org.openape.api.taskcontext.TaskContext;
 import org.openape.server.auth.AuthService;
@@ -81,6 +82,7 @@ public class TaskContextRESTInterface extends ContextRestInterface {
                         // If the object is okay, save it and return the id.
                         final String taskContextId = requestHandler
                                 .createContext(receivedTaskContext);
+                        res.header(OpenAPEEndPoints.LOCATION, req.uri().toString() + "/" + taskContextId);
                         res.status(SuperRestInterface.HTTP_STATUS_CREATED);
                         return taskContextId;
                     } catch (JsonParseException | JsonMappingException | IllegalArgumentException e) {

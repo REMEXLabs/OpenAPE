@@ -442,6 +442,7 @@ public class UserContext extends AbstractContext{
         try {
             jsonString = this.getJson(true);
         } catch (final Exception e) {
+        	e.printStackTrace();
             throw new IOException(e.getMessage());
         }
         return jsonString;

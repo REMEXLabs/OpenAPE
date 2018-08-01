@@ -10,6 +10,8 @@ import org.openape.server.database.mongoDB.DatabaseConnection;
 import org.openape.server.database.mongoDB.MongoCollectionTypes;
 import org.openape.server.rest.ListingRESTInterface;
 
+import com.mongodb.BasicDBObject;
+
 /**
  * Class with methods to manage listings on the server. It is used by the rest
  * API {@link ListingRESTInterface} and uses the server database
@@ -42,7 +44,8 @@ public class ListingRequestHandler {
      * @throws IllegalArgumentException
      *             if the parameter is not a complete environment context.
      */
-    public String createListing(final Object listing) throws IOException, IllegalArgumentException {
+    public String createListing(final ListingRequest listingrequest) throws IOException, IllegalArgumentException {
+    	createQueryfromRequest(listingrequest);
         // get database connection.
         final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
         // try to store data. Class cast exceptions will be thrown as illegal
@@ -57,7 +60,13 @@ public class ListingRequestHandler {
         return id;
     }
 
-    /**
+    private void createQueryfromRequest(ListingRequest listingRequest) {
+    	
+    	BasicDBObject taskQuery = getQuery(listingRequest.getTaskContextUris() ) 
+		
+	}
+
+	/**
      * Method to delete an existing listing from the server. It is used by the
      * rest API {@link ListingRESTInterface} and uses the server database
      * {@link DatabaseConnection}.

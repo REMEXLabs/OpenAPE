@@ -302,33 +302,22 @@ logger.info("luxy: IOFehler");
 	}
 
 	public EnvironmentContext getEnvironmentContext(final String environmentContextId) {
-		return EnvironmentContext.getObjectFromJson(getContext(ENVIRONMENT_CONTEXT_PATH, environmentContextId));
+		return (EnvironmentContext)getContext(ENVIRONMENT_CONTEXT_PATH, environmentContextId);
 	}
 	
 	public EquipmentContext getEquipmentContext(final String equipmentContextId) {
-		return EquipmentContext.getObjectFromJson(getContext(EQUIPMENT_CONTEXT_PATH, equipmentContextId));
+		return (EquipmentContext)getContext(EQUIPMENT_CONTEXT_PATH, equipmentContextId);
 	}
 	
 	
 	
 	public UserContext getUserContext(final String userContextId) {
-		return UserContext.getObjectFromJson(getContext(USER_CONTEXT_PATH, userContextId));
+		return (UserContext)getContext(USER_CONTEXT_PATH, userContextId);
 	}
 	
 	public TaskContext getTaskContext(String taskContextId) {
-		return 		TaskContext.getObjectFromJson(getContext(TASK_CONTEXT_PATH, taskContextId));
+		return 		(TaskContext)getContext(TASK_CONTEXT_PATH, taskContextId);
 		
-	}
-
-	private String getContext(String contextRestEndpoint, String contextId) {
-Response response = getRequest(contextRestEndpoint + "/" + contextId).get();		
-		checkResponse(response);
-		System.out.println("lusm: " + response.getStatus());
-		System.out.println(response.getMediaType());
-		
-		String body =  response.readEntity(String.class);
-		
-	return body;
 	}
 
 	public UserContextList getAllAccessibleUserContexts() {
@@ -402,6 +391,52 @@ Response response = getRequest(contextRestEndpoint + "/" + contextId).get();
 		}
 		return o;  
 		
+	}
+
+	public TaskContext getTaskContext(URI taskId) {
+		
+		return (TaskContext) getContext(taskId); 
+	}
+
+	
+	private AbstractContext getContext(URI ctxUri) {
+		String uriPath = ctxUri.getRawPath(); 		
+		int splitter = uriPath.lastIndexOf("/");
+		String id = "";
+		String path = "";
+		return getContext(path, id );
+	}
+
+	private AbstractContext getContext(String path,String id) {
+		
+		Response response = getRequest(path  + "/" + id).get();		
+		checkResponse(response);
+		System.out.println("lusm: " + response.getStatus());
+		System.out.println(response.getMediaType());
+		
+		String body =  response.readEntity(String.class);
+		
+
+		
+		AbstractContext context = null;
+		switch (path) {
+		case ENVIRONMENT_CONTEXT_PATH:
+			context = EnvironmentContext.getObjectFromJson(body);
+			break;
+		
+		case EQUIPMENT_CONTEXT_PATH:
+			context = EquipmentContext.getObjectFromJson(body);
+			break;
+		
+		case USER_CONTEXT_PATH:
+			context = UserContext.getObjectFromJson(body);
+			break;
+		
+		case TASK_CONTEXT_PATH:
+			context = TaskContext.getObjectFromJson(body);
+			break;
+			}
+		return context;
 	}
 	
 }

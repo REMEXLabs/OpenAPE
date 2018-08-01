@@ -58,7 +58,7 @@ import utility.ContextParsingHelpers;
  */
 @XmlRootElement(name = "task-context")
 public class TaskContext extends ContextObject {
-    private static final String CONTEXTS_SCHEMA_XSD = "ContextsSchema.xsd";
+    public static final String CONTEXTS_SCHEMA_XSD = "ContextsSchema.xsd";
 
     private static final String TASK_CONTEXT = "task-context";
 

@@ -153,10 +153,8 @@ public class SuperRestInterface {
         // Test endpoint to see if server runs. Invoke locally:
         // http://localhost:4567/hello
         Spark.get(Messages.getString("UserContextRESTInterface.HelloWorldURL"), //$NON-NLS-1$
-                (request, response) -> Messages.getString("UserContextRESTInterface.HelloWorld")); //$NON-NLS-1$
+                (request, response) -> Messages.getString("UserContextRESTInterface.HelloWorld" + "says openape")); //$NON-NLS-1$
 
-        Spark.get(Messages.getString("SuperRestInterface.HelloWorldURL"), //$NON-NLS-1$
-                (request, response) -> Messages.getString("SuperRestInterface.HelloWorld")); //$NON-NLS-1$
         // Endpoint to receive tokens
         AdminInterface.setupAdminRestInterface(authService);
         TokenRESTInterface.setupTokenRESTInterface(authService);

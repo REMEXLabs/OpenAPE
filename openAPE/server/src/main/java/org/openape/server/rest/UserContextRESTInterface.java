@@ -3,6 +3,7 @@ package org.openape.server.rest;
 import java.io.IOException;
 import javax.ws.rs.core.MediaType;
 import org.openape.api.Messages;
+import org.openape.api.OpenAPEEndPoints;
 import org.openape.api.UserContextList;
 import org.openape.api.usercontext.UserContext;
 import org.openape.server.auth.AuthService;
@@ -96,7 +97,8 @@ public class UserContextRESTInterface extends ContextRestInterface {
                         // If the object is okay, save it and return the id.
                         final String userContextId = requestHandler
                                 .createContext(receivedUserContext);
-                        res.status(SuperRestInterface.HTTP_STATUS_CREATED);
+                        res.header(OpenAPEEndPoints.LOCATION, req.uri().toString() + "/" + id);	
+                        		                        res.status(SuperRestInterface.HTTP_STATUS_CREATED);
                         return userContextId;
                     } catch (UnauthorizedException e) {
                         res.status(SuperRestInterface.HTTP_STATUS_UNAUTHORIZED);

@@ -19,6 +19,7 @@ public class OpenAPEEndPoints {
     public static final String UserContext = "api/user-contexts";
 	public static final String TASK_CONTEXTS = "api/task-contexts";
 	public static final String ENVIRONMENT_CONTEXTS = "api/environment-contexts";
+	public static final String LOCATION = "location";
 
     public static String userDoesNotExist(final String userId) {
         return "User with Id \"" + userId + "\" does not exist.";
