@@ -1,15 +1,22 @@
 package org.openape.server.requestHandler;
 
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.LinkedList;
+import java.util.List;
 
 import org.openape.api.Messages;
+import org.openape.api.contexts.ContextObject;
 import org.openape.api.databaseObjectBase.DatabaseObject;
+import org.openape.api.databaseObjectBase.Property;
 import org.openape.api.listing.ListingRequest;
 import org.openape.api.listing.ListingResponse;
 import org.openape.server.database.mongoDB.DatabaseConnection;
 import org.openape.server.database.mongoDB.MongoCollectionTypes;
 import org.openape.server.rest.ListingRESTInterface;
 
+import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 
 /**
@@ -45,9 +52,24 @@ public class ListingRequestHandler {
      *             if the parameter is not a complete environment context.
      */
     public String createListing(final ListingRequest listingrequest) throws IOException, IllegalArgumentException {
-    	createQueryfromRequest(listingrequest);
+BasicDBObject query =    	 createQueryfromRequest(listingrequest);
         // get database connection.
         final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
+        List<DatabaseObject> resourceDescriptionList  = databaseConnection.getDatabaseObjectsByQuery(MongoCollectionTypes.RESOURCEDESCRIPTION , query);
+        		List<URI> resourceDescriptionUris = new LinkedList<>();
+        for (DatabaseObject o: resourceDescriptionList) {
+        	URI uri = null;
+			try {
+				uri = new URI( Messages.getString("ListingRESTInterface.ListingURLWithoutID") + "/" + o.getId()	);
+			} catch (URISyntaxException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+        resourceDescriptionUris.add(uri);
+        }
+        		
+        		ListingResponse listing = new ListingResponse();
+        listing.setResource(resourceDescriptionUris);
         // try to store data. Class cast exceptions will be thrown as illegal
         // argument exceptions. IO exceptions will just be thrown through.
         String id = null;
@@ -60,9 +82,33 @@ public class ListingRequestHandler {
         return id;
     }
 
-    private void createQueryfromRequest(ListingRequest listingRequest) {
+    private BasicDBObject createQueryfromRequest(ListingRequest listingRequest) {
     	
-    	BasicDBObject taskQuery = getQuery(listingRequest.getTaskContextUris() ) 
+    	BasicDBObject taskQuery = getQuery(listingRequest.getTaskContextUris(), MongoCollectionTypes.TASKCONTEXT ); 
+		return taskQuery;
+	}
+
+	private BasicDBObject getQuery(List<String> contextUris, MongoCollectionTypes collection) {
+		BasicDBList or = new BasicDBList();
+		
+		for (String uri: contextUris) {
+			String id = uri.substring(uri.lastIndexOf("/") + 1, uri.length());
+			ContextObject context;
+			List<Property> propertyList = new LinkedList<>();
+			try {
+				context = (ContextObject) DatabaseConnection.getInstance().getDatabaseObjectById(collection, id);
+				propertyList = context.getPropertys();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			for (Property property:  propertyList ) {
+				or.add(new BasicDBList().put(	property.getName(), 				property.getValue()) );
+			}
+			
+		}
+		return  new BasicDBObject("$or", or);
+				
 		
 	}
 
