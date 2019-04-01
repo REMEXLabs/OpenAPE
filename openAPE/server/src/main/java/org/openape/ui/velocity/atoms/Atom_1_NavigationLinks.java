@@ -18,7 +18,7 @@ public class Atom_1_NavigationLinks {
     public LinkedHashMap<String, String> generateTopNavigationLinks() {
         final LinkedHashMap<String, String> map = new LinkedHashMap<>();
 
-        map.put("Home", "home");
+        map.put("index", "Home");
         map.put("gettingStarted", "Getting Started");
         map.put("tutorials", "Tutorials");
         map.put("downloads", "Downloads");
