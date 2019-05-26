@@ -3,12 +3,11 @@
     <modelVersion>4.0.0</modelVersion>
     <properties>
         <jersey2.version>2.25.1</jersey2.version>
-
     </properties>
 
     <parent>
         <groupId>openape</groupId>
-        <version>${ProjectVersion}</version>
+        <version>${revision}</version>
         <artifactId>framework</artifactId>
     </parent>
     <artifactId>client</artifactId>

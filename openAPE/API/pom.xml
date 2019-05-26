@@ -6,7 +6,7 @@
     <parent>
         <groupId>openape</groupId>
         <artifactId>framework</artifactId>
-        <version>${ProjectVersion}</version>
+        <version>${revision}</version>
     </parent>
     <artifactId>API</artifactId>
 

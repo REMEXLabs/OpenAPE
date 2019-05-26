@@ -4,16 +4,15 @@
     <modelVersion>4.0.0</modelVersion>
 
     <properties>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
-        <ProjectVersion>1.3.3</ProjectVersion>
+        <revision>1.3.1</revision>
         <PAC4JVersion>2.0.0-RC2</PAC4JVersion>
     </properties>
     <groupId>openape</groupId>
     <artifactId>framework</artifactId>
-    <version>${ProjectVersion}</version>
+    <version>${revision}</version>
     <packaging>pom</packaging>
     <name>openape</name>
+
     <dependencies>
         <dependency>
             <groupId>javax.ws.rs</groupId>
