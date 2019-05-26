@@ -78,7 +78,11 @@ try {
             try {
                 final ObjectMapper mapper = new ObjectMapper();
 
-                final String jsonData = mapper.writeValueAsString(data);
+                String jsonData = mapper.writeValueAsString(data);
+
+                // TODO remove hotfix here
+                jsonData = jsonData.replace("null/", "");
+
                 return jsonData;
             } catch (final JsonProcessingException e) {
                 // TODO Auto-generated catch block

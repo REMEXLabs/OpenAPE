@@ -253,5 +253,8 @@ public abstract class ContextObject extends AbstractContext{
 	
 	}
 
-	public static abstract <T> T  getObjectFromJson(String string);
+	public static <T> T getObjectFromJson(String string) {
+		System.out.println("You probably didn't want to call getObjectFromJson:");
+		return null;
+	}
 }

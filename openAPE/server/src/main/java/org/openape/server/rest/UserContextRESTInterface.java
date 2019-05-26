@@ -139,7 +139,7 @@ public class UserContextRESTInterface extends ContextRestInterface {
                                                                     // context,
                                                                     // except if
                                                                     // it
-                                                                    // ispublic
+                                                                    // is public
 
                         auth.allowAdminOwnerAndPublic(req, res, userContext
                                 .getImplementationParameters().getOwner(), userContext

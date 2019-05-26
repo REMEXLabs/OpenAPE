@@ -213,6 +213,7 @@ public class SuperRestInterface {
         }
 
         // redirect to index if no path was found in the url
+        // TODO imprive redirect
         Spark.redirect.get("/", "/index");
         
     }
