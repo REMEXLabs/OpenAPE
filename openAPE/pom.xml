@@ -156,7 +156,7 @@
                 <artifactId>maven-jar-plugin</artifactId>
                 <version>2.6</version>
                 <configuration>
-                    <fileName>openape+${artifactId}</fileName>
+                    <finalName>openape+${artifactId}</finalName>
                     <archive>
                         <manifest>
 
