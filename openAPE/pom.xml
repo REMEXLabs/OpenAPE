@@ -13,6 +13,14 @@
     <packaging>pom</packaging>
     <name>openape</name>
 
+    <distributionManagement>
+        <repository>
+            <id>local-maven-repo</id>
+            <!-- note the '..' as this is resolved for each module separately -->
+            <url>file:///${project.basedir}/../local-mvn-repo/</url>
+        </repository>
+    </distributionManagement>
+
     <dependencies>
         <dependency>
             <groupId>javax.ws.rs</groupId>
@@ -155,7 +163,6 @@
                 <artifactId>maven-jar-plugin</artifactId>
                 <version>2.6</version>
                 <configuration>
-                    <finalName>openape+${project.artifactId}</finalName>
                     <archive>
                         <manifest>
 
@@ -197,7 +204,6 @@
     <modules>
         <module>API</module>
         <module>server</module>
-
         <module>client</module>
     </modules>
 </project>

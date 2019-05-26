@@ -11,13 +11,13 @@
         <artifactId>framework</artifactId>
     </parent>
     <artifactId>client</artifactId>
-    <name>client</name>
+
 
     <dependencies>
         <dependency>
             <groupId>openape</groupId>
-            <artifactId>API</artifactId>
-            <version>${project.version}</version>
+            <artifactId>api</artifactId>
+            <version>${project.parent.version}</version>
         </dependency>
 
 
@@ -57,9 +57,5 @@
 
 
     </dependencies>
-
-    <build>
-        <finalName>openape-client</finalName>
-    </build>
 </project>
 
