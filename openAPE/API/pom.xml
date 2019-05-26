@@ -1,31 +1,31 @@
 <?xml version="1.0"?>
 <project
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
-	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-	<modelVersion>4.0.0</modelVersion>
-	<parent>
-		<groupId>openape</groupId>
-		<artifactId>framework</artifactId>
-		<version>${ProjectVersion}</version>
-	</parent>
-	<artifactId>API</artifactId>
+        xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+        xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>openape</groupId>
+        <artifactId>framework</artifactId>
+        <version>${ProjectVersion}</version>
+    </parent>
+    <artifactId>API</artifactId>
 
-	<url>http://maven.apache.org</url>
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	</properties>
-	<dependencies>
+    <url>http://maven.apache.org</url>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+    <dependencies>
 
-		<!-- Don't add a dependency of the server module, cycling dependencies aren't working. --> 
-<!-- Google Java JSON API | https://github.com/google/gson -->
-		<dependency>
-			<groupId>com.google.code.gson</groupId>
-			<artifactId>gson</artifactId>
-			<version>2.2.4</version>
-		</dependency>
-	
-	</dependencies>
-<build>
-<finalName>openape-api</finalName>
-</build>
+        <!-- Don't add a dependency of the server module, cycling dependencies aren't working. -->
+        <!-- Google Java JSON API | https://github.com/google/gson -->
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.2.4</version>
+        </dependency>
+
+    </dependencies>
+    <build>
+        <finalName>openape-api</finalName>
+    </build>
 </project>

@@ -1,217 +1,215 @@
 <?xml version="1.0"?>
 
 <project
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
-	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-	<modelVersion>4.0.0</modelVersion>
-	<parent>
-		<groupId>openape</groupId>
-		<artifactId>framework</artifactId>
-		<version>${ProjectVersion}</version>
-	</parent>
-	<artifactId>server</artifactId>
-	<name>server</name>
-	<packaging>war</packaging>
-	<url>http://maven.apache.org</url>
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	</properties>
-	<dependencies>
-		<dependency>
-			<groupId>com.sparkjava</groupId>
-			<artifactId>spark-core</artifactId>
-			<version>2.5.4</version>
-		</dependency>
+        xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+        xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>openape</groupId>
+        <artifactId>framework</artifactId>
+        <version>${ProjectVersion}</version>
+    </parent>
+    <artifactId>server</artifactId>
+    <name>server</name>
+    <packaging>war</packaging>
+    <url>http://maven.apache.org</url>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+    <dependencies>
+        <dependency>
+            <groupId>com.sparkjava</groupId>
+            <artifactId>spark-core</artifactId>
+            <version>2.5.4</version>
+        </dependency>
 
-	<!-- https://mvnrepository.com/artifact/com.sparkjava/spark-template-velocity -->
-<dependency>
-    <groupId>com.sparkjava</groupId>
-    <artifactId>spark-template-velocity</artifactId>
-    <version>2.7.1</version>
-</dependency>
-	
-		<dependency>
-			<groupId>openape</groupId>
-			<artifactId>API</artifactId>
-			<version>${project.version}</version>
-		</dependency>
+        <!-- https://mvnrepository.com/artifact/com.sparkjava/spark-template-velocity -->
+        <dependency>
+            <groupId>com.sparkjava</groupId>
+            <artifactId>spark-template-velocity</artifactId>
+            <version>2.7.1</version>
+        </dependency>
 
-		<!-- https://mvnrepository.com/artifact/com.thetransactioncompany/cors-filter -->
-		<dependency>
-			<groupId>com.thetransactioncompany</groupId>
-			<artifactId>cors-filter</artifactId>
-			<version>2.5</version>
-		</dependency>
-		<!-- https://mvnrepository.com/artifact/commons-fileupload/commons-fileupload -->
-		<dependency>
-			<groupId>commons-fileupload</groupId>
-			<artifactId>commons-fileupload</artifactId>
-			<version>1.2</version>
-		</dependency>
-		<dependency>
-			<groupId>commons-io</groupId>
-			<artifactId>commons-io</artifactId>
-			<version>1.4</version>
-		</dependency>
+        <dependency>
+            <groupId>openape</groupId>
+            <artifactId>API</artifactId>
+            <version>${project.version}</version>
+        </dependency>
 
-
-
-		
-<!-- Google Java JSON API | https://github.com/google/gson -->
-		<dependency>
-			<groupId>com.google.code.gson</groupId>
-			<artifactId>gson</artifactId>
-			<version>2.2.4</version>
-		</dependency>
-		<dependency>
-			<groupId>org.mongodb</groupId>
-			<artifactId>mongodb-driver</artifactId>
-			<version>3.3.0</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.jboss.resteasy</groupId>
-			<artifactId>resteasy-jaxrs</artifactId>
-			<version>2.3.3.Final</version>
-		</dependency>
-
-	</dependencies>
+        <!-- https://mvnrepository.com/artifact/com.thetransactioncompany/cors-filter -->
+        <dependency>
+            <groupId>com.thetransactioncompany</groupId>
+            <artifactId>cors-filter</artifactId>
+            <version>2.5</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/commons-fileupload/commons-fileupload -->
+        <dependency>
+            <groupId>commons-fileupload</groupId>
+            <artifactId>commons-fileupload</artifactId>
+            <version>1.2</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>1.4</version>
+        </dependency>
 
 
-	<build>
-<finalName>openape-server</finalName>
-		<resources>
-			<resource>
-				<directory>src/main/resources</directory>
-			</resource>
-		</resources>
+        <!-- Google Java JSON API | https://github.com/google/gson -->
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.2.4</version>
+        </dependency>
+        <dependency>
+            <groupId>org.mongodb</groupId>
+            <artifactId>mongodb-driver</artifactId>
+            <version>3.3.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jboss.resteasy</groupId>
+            <artifactId>resteasy-jaxrs</artifactId>
+            <version>2.3.3.Final</version>
+        </dependency>
+
+    </dependencies>
 
 
-
-<extensions>
-    <extension>
-      <groupId>org.apache.maven.wagon</groupId>
-      <artifactId>wagon-ssh</artifactId>
-      <version>3.0.0</version>
-   </extension>
-  </extensions>
-
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-war-plugin</artifactId>
-				<version>2.6</version>
-				<configuration>
-     <finalName>openape</finalName>
-					<webXml>src\main\webapp\WEB-INF\web.xml</webXml>
-					
-					<archive>
-						<manifest>
-							<addClasspath>true</addClasspath>
-							<classpathPrefix>lib/</classpathPrefix>
-						</manifest>
-					</archive>
-					<webResources>
-						<resource>
-							<!-- this is relative to the pom.xml directory -->
-							<directory>${project.basedir}/src/main/resources
-							</directory>
-						</resource>
-					</webResources>
-				</configuration>
-			</plugin>
-
-    <plugin>
-      <groupId>org.codehaus.mojo</groupId>
-      <artifactId>wagon-maven-plugin</artifactId>
-      <version>1.0</version>
-      <executions>
-        <execution>
-          <id>upload-openape-prepare</id>
-          <phase>install</phase>
-          <goals>
-            <goal>upload</goal>
-          </goals>
-          <configuration>
-<serverId>myopenape</serverId>
-            <fromDir>src/installation</fromDir>
-<includes></includes>
-<excludes/>
-
-            <url>scp://${openape.host}</url>
-<toDir>${openape.installdir}</toDir>
-          </configuration>
-        </execution>
-
-        <execution>
-          <id>exec-prepare-openape</id>
-          <phase>install</phase>
-          <goals>
-            <goal>sshexec</goal>
-          </goals>
-          <configuration>
-            <serverId>myopenape</serverId>
-            <url>scp:${openape.host}</url>
-            <commands>
-<command>cd ${openape.installdir};
-sh ${openape.installdir}/prepare.sh
-</command>
-            </commands>
-          </configuration>
-        </execution>
-
-        <execution>
-          <id>upload-openape-install</id>
-          <phase>install</phase>
-          <goals>
-            <goal>upload-single</goal>
-          </goals>
-          <configuration>
-<serverId>myopenape</serverId>
-<!--            <fromFile>${project.build.directory}/${project.build.finalName}.war</fromFile>-->
-<fromFile>target/openape-server.war</fromFile>
-            <url>scp://${openape.host}:${openape.installdir}</url>
-          </configuration>
-        </execution>
-
-        <execution>
-          <id>upload-openape-installationfiles</id>
-          <phase>install</phase>
-          <goals>
-            <goal>upload-single</goal>
-          </goals>
-          <configuration>
-<serverId>myopenape</serverId>
-<fromFile>${localConfigDir}/log4j.xml</fromFile>
-<fromFile>${localConfigDir}/mongo.properties</fromFile>
-            <url>scp://${openape.host}:${openape.installdir}/installationfiles</url>
-
-          </configuration>
-        </execution>
+    <build>
+        <finalName>openape-server</finalName>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+            </resource>
+        </resources>
 
 
-        <execution>
-          <id>install-openape</id>
-          <phase>install</phase>
-          <goals>
-            <goal>sshexec</goal>
-          </goals>
-          <configuration>
-            <serverId>myopenape</serverId>
-            <url>scp://${openape.host}:/${openape.installdir}</url>
-            <commands>
-<command>cd ${openape.installdir};
+        <extensions>
+            <extension>
+                <groupId>org.apache.maven.wagon</groupId>
+                <artifactId>wagon-ssh</artifactId>
+                <version>3.0.0</version>
+            </extension>
+        </extensions>
 
-sh install.sh</command>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>2.6</version>
+                <configuration>
+                    <finalName>openape</finalName>
+                    <webXml>src\main\webapp\WEB-INF\web.xml</webXml>
 
-            </commands>
-          </configuration>
-        </execution>
+                    <archive>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                            <classpathPrefix>lib/</classpathPrefix>
+                        </manifest>
+                    </archive>
+                    <webResources>
+                        <resource>
+                            <!-- this is relative to the pom.xml directory -->
+                            <directory>${project.basedir}/src/main/resources
+                            </directory>
+                        </resource>
+                    </webResources>
+                </configuration>
+            </plugin>
 
-      </executions>
-    </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>wagon-maven-plugin</artifactId>
+                <version>1.0</version>
+                <executions>
+                    <execution>
+                        <id>upload-openape-prepare</id>
+                        <phase>install</phase>
+                        <goals>
+                            <goal>upload</goal>
+                        </goals>
+                        <configuration>
+                            <serverId>myopenape</serverId>
+                            <fromDir>src/installation</fromDir>
+                            <includes></includes>
+                            <excludes/>
 
-  </plugins>
-</build>
+                            <url>scp://${openape.host}</url>
+                            <toDir>${openape.installdir}</toDir>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>exec-prepare-openape</id>
+                        <phase>install</phase>
+                        <goals>
+                            <goal>sshexec</goal>
+                        </goals>
+                        <configuration>
+                            <serverId>myopenape</serverId>
+                            <url>scp:${openape.host}</url>
+                            <commands>
+                                <command>cd ${openape.installdir};
+                                    sh ${openape.installdir}/prepare.sh
+                                </command>
+                            </commands>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>upload-openape-install</id>
+                        <phase>install</phase>
+                        <goals>
+                            <goal>upload-single</goal>
+                        </goals>
+                        <configuration>
+                            <serverId>myopenape</serverId>
+                            <!--            <fromFile>${project.build.directory}/${project.build.finalName}.war</fromFile>-->
+                            <fromFile>target/openape-server.war</fromFile>
+                            <url>scp://${openape.host}:${openape.installdir}</url>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>upload-openape-installationfiles</id>
+                        <phase>install</phase>
+                        <goals>
+                            <goal>upload-single</goal>
+                        </goals>
+                        <configuration>
+                            <serverId>myopenape</serverId>
+                            <fromFile>${localConfigDir}/log4j.xml</fromFile>
+                            <fromFile>${localConfigDir}/mongo.properties</fromFile>
+                            <url>scp://${openape.host}:${openape.installdir}/installationfiles</url>
+
+                        </configuration>
+                    </execution>
+
+
+                    <execution>
+                        <id>install-openape</id>
+                        <phase>install</phase>
+                        <goals>
+                            <goal>sshexec</goal>
+                        </goals>
+                        <configuration>
+                            <serverId>myopenape</serverId>
+                            <url>scp://${openape.host}:/${openape.installdir}</url>
+                            <commands>
+                                <command>cd ${openape.installdir};
+
+                                    sh install.sh
+                                </command>
+
+                            </commands>
+                        </configuration>
+                    </execution>
+
+                </executions>
+            </plugin>
+
+        </plugins>
+    </build>
 
 </project>

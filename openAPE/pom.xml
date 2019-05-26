@@ -1,180 +1,180 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
-	<properties>
-		<maven.compiler.source>1.8</maven.compiler.source>
-		<maven.compiler.target>1.8</maven.compiler.target>
-		<ProjectVersion>1.3.3</ProjectVersion>
-		<PAC4JVersion>2.0.0-RC2</PAC4JVersion>
-	</properties>
-	<groupId>openape</groupId>
-	<artifactId>framework</artifactId>
-	<version>${ProjectVersion}</version>
-	<packaging>pom</packaging>
-	<name>openape</name>
-	<dependencies>
-		<dependency>
-			<groupId>javax.ws.rs</groupId>
-			<artifactId>javax.ws.rs-api</artifactId>
-			<version>2.0</version>
-		</dependency>
+    <properties>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <ProjectVersion>1.3.3</ProjectVersion>
+        <PAC4JVersion>2.0.0-RC2</PAC4JVersion>
+    </properties>
+    <groupId>openape</groupId>
+    <artifactId>framework</artifactId>
+    <version>${ProjectVersion}</version>
+    <packaging>pom</packaging>
+    <name>openape</name>
+    <dependencies>
+        <dependency>
+            <groupId>javax.ws.rs</groupId>
+            <artifactId>javax.ws.rs-api</artifactId>
+            <version>2.0</version>
+        </dependency>
 
-		<!-- https://mvnrepository.com/artifact/com.sun.xml.bind/jaxb-impl -->
-		<dependency>
-			<groupId>com.sun.xml.bind</groupId>
-			<artifactId>jaxb-impl</artifactId>
-			<version>2.2.11</version>
-		</dependency>
-		<dependency>
-			<groupId>com.sun.xml.bind</groupId>
-			<artifactId>jaxb-core</artifactId>
-			<version>2.2.11</version>
-		</dependency>
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.12</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.sparkjava</groupId>
-			<artifactId>spark-core</artifactId>
-			<version>2.5.4</version>
-<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-log4j12</artifactId>
-			<version>1.7.4	</version>
-		</dependency>
-		<!-- add log4j to classpath --> <!-- does the logging -->
-		<dependency>
-			<groupId>log4j</groupId>
-			<artifactId>log4j</artifactId>
-			<version>1.2.16</version>
-		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.json/json -->
-		<dependency>
-			<groupId>org.json</groupId>
-			<artifactId>json</artifactId>
-			<version>20160810</version>
-		</dependency>
-		<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core -->
-		<dependency>
-			<groupId>com.fasterxml.jackson.core</groupId>
-			<artifactId>jackson-core</artifactId>
-			<version>2.8.7</version>
-		</dependency>
-		<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
-		<dependency>
-			<groupId>com.fasterxml.jackson.core</groupId>
-			<artifactId>jackson-databind</artifactId>
-			<version>2.8.7</version>
-		</dependency>
+        <!-- https://mvnrepository.com/artifact/com.sun.xml.bind/jaxb-impl -->
+        <dependency>
+            <groupId>com.sun.xml.bind</groupId>
+            <artifactId>jaxb-impl</artifactId>
+            <version>2.2.11</version>
+        </dependency>
+        <dependency>
+            <groupId>com.sun.xml.bind</groupId>
+            <artifactId>jaxb-core</artifactId>
+            <version>2.2.11</version>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.sparkjava</groupId>
+            <artifactId>spark-core</artifactId>
+            <version>2.5.4</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>1.7.4</version>
+        </dependency>
+        <!-- add log4j to classpath --> <!-- does the logging -->
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>1.2.16</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.json/json -->
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20160810</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <version>2.8.7</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.8.7</version>
+        </dependency>
 
-		<dependency>
-			<groupId>com.google.guava</groupId>
-			<artifactId>guava</artifactId>
-			<version>19.0</version>
-		</dependency>
-		<!-- PAC4J Spark | https://github.com/pac4j/spark-pac4j -->
-		<dependency>
-			<groupId>org.pac4j</groupId>
-			<artifactId>spark-pac4j</artifactId>
-			<version>${PAC4JVersion}</version>
-		</dependency>
-		<!-- PAC4J HTTP Client API | http://www.pac4j.org/docs/clients/http.html -->
-		<dependency>
-			<groupId>org.pac4j</groupId>
-			<artifactId>pac4j-http</artifactId>
-			<version>${PAC4JVersion}</version>
-		</dependency>
-		<!-- PAC4J JWT Authenticator | http://www.pac4j.org/docs/authenticators/jwt.html -->
-		<dependency>
-			<groupId>org.pac4j</groupId>
-			<artifactId>pac4j-jwt</artifactId>
-			<version>${PAC4JVersion}</version>
-		</dependency>
-	</dependencies>
-
-
-	<build>
-		<plugins>
-
-<plugin>
-    <groupId>org.apache.maven.plugins</groupId>
-    <artifactId>maven-surefire-plugin</artifactId>
-<version>2.22.0</version>
-    <configuration>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>19.0</version>
+        </dependency>
+        <!-- PAC4J Spark | https://github.com/pac4j/spark-pac4j -->
+        <dependency>
+            <groupId>org.pac4j</groupId>
+            <artifactId>spark-pac4j</artifactId>
+            <version>${PAC4JVersion}</version>
+        </dependency>
+        <!-- PAC4J HTTP Client API | http://www.pac4j.org/docs/clients/http.html -->
+        <dependency>
+            <groupId>org.pac4j</groupId>
+            <artifactId>pac4j-http</artifactId>
+            <version>${PAC4JVersion}</version>
+        </dependency>
+        <!-- PAC4J JWT Authenticator | http://www.pac4j.org/docs/authenticators/jwt.html -->
+        <dependency>
+            <groupId>org.pac4j</groupId>
+            <artifactId>pac4j-jwt</artifactId>
+            <version>${PAC4JVersion}</version>
+        </dependency>
+    </dependencies>
 
 
-        <trimStackTrace>false</trimStackTrace>
-       <reuseForks>false</reuseForks>
-        <forkCount>1</forkCount>
+    <build>
+        <plugins>
 
-    </configuration>
-</plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.22.0</version>
+                <configuration>
 
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jar-plugin</artifactId>
-				<version>2.6</version>
-				<configuration>
-<fileName>openape+${artifactId}</fileName>
-					<archive>
-						<manifest>
 
-              <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
-							<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                    <trimStackTrace>false</trimStackTrace>
+                    <reuseForks>false</reuseForks>
+                    <forkCount>1</forkCount>
 
-							<addClasspath>true</addClasspath>
-							<classpathPrefix>lib/</classpathPrefix>
+                </configuration>
+            </plugin>
 
-							<mainClass>org.openape.server.RestServer</mainClass>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>2.6</version>
+                <configuration>
+                    <fileName>openape+${artifactId}</fileName>
+                    <archive>
+                        <manifest>
 
-						</manifest>
-					</archive>
-				</configuration>
-			</plugin>
+                            <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+                            <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
 
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-dependency-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>copy-dependencies</id>
-						<phase>prepare-package</phase>
-						<goals>
-							<goal>copy-dependencies</goal>
-							<goal>sources</goal>
-						</goals>
-						<configuration>
-							<outputDirectory>${project.build.directory}/lib</outputDirectory>
-							<overWriteReleases>false</overWriteReleases>
-							<overWriteSnapshots>false</overWriteSnapshots>
-							<overWriteIfNewer>true</overWriteIfNewer>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.3</version>
-				<configuration>
-					<source>1.8</source>
-					<target>1.8</target>
-				</configuration>
-			</plugin>
+                            <addClasspath>true</addClasspath>
+                            <classpathPrefix>lib/</classpathPrefix>
 
-		</plugins>
-	</build>
-	<modules>
-		<module>API</module>
-		<module>server</module>
+                            <mainClass>org.openape.server.RestServer</mainClass>
 
-		<module>client</module>
-	</modules>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>copy-dependencies</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                            <goal>sources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/lib</outputDirectory>
+                            <overWriteReleases>false</overWriteReleases>
+                            <overWriteSnapshots>false</overWriteSnapshots>
+                            <overWriteIfNewer>true</overWriteIfNewer>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.3</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+
+        </plugins>
+    </build>
+    <modules>
+        <module>API</module>
+        <module>server</module>
+
+        <module>client</module>
+    </modules>
 </project>
