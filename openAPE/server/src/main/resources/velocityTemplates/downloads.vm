@@ -52,13 +52,6 @@
 			
 
 			<br>
-			
-			<h3 >OpenAPE Java Client</h3>  
-			If you want to build an adaptive Java -based application, integrate the Java
-			client into your application to connect to the OpenAPE server and to manage
-			contexts and resources.
-			
-			<br>
 			<br>
 			<h3 >OpenAPE Server</h3>
 			If you want to deploy your own OpenAPE server, use the following link (Note:
