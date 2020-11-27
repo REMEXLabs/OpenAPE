@@ -1,6 +1,6 @@
 package org.openape.api.databaseObjectBase;
 
-import javax.xml.bind.annotation.XmlAttribute;
+import jakarta.xml.bind.annotation.XmlAttribute;
 
 public class Descriptor {
     private String name;
@@ -18,7 +18,7 @@ public class Descriptor {
 
     @XmlAttribute(name = "name")
     public String getName() {
-        
+
     	return this.name;
     }
 

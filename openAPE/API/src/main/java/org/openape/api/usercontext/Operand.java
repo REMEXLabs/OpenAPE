@@ -2,7 +2,7 @@ package org.openape.api.usercontext;
 
 import java.io.Serializable;
 
-import javax.xml.bind.annotation.XmlAttribute;
+import jakarta.xml.bind.annotation.XmlAttribute;
 
 public class Operand implements Serializable {
     private static final long serialVersionUID = 5069543268247907871L;

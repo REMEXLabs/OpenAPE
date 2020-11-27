@@ -19,8 +19,8 @@ package org.openape.api.listing;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlRootElement;
 
 import org.openape.api.databaseObjectBase.DatabaseObject;
 import org.openape.api.resourceDescription.ResourceDescription;
