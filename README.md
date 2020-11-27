@@ -1,7 +1,6 @@
 # OpenAPE
 
 ## Introduction 
-
 OpenAPE is a settings-based personalization framework to cover three important scenarios:
 
 The bread and butter scenario is to **infer settings** for an application a user might not have met yet, for example using an Android phone for the first time with only using Windows PCs so far. In this use case, OpenAPE will try to find other users who have similar settings, but also have settings for the new target device or application. To do so, OpenAPE deploys various machine learning techniques, such as clustering existing users and creating virtual user profiles for these clusters. The fundamental assumption here is that users will adapt their device to their needs or preferences and thus settings applied by a users can be considered verified.
@@ -10,7 +9,8 @@ Quite similar to settings-adaptation scenario is **inferring content**. When cou
 
 Finally, as a mix of the above use cases, OpenAPE could be used to **transfer rules and scripts to a user**, based on their preferences. Consider, for example, a smart home where the configuration for dimming lights in the evening or altering the lighting colour are complex, even time-dependent scripts. These scripts could be shipped to a user similar to simple content, but they have many configuration dimensions themselves, such as scaling with preferred light intensity etc.
 
-## Licence and Copyright 
+## Related projects
+A client written in JavaScript can be found here: [REMEXLabs/openape.js](https://github.com/REMEXLabs/openape.js) 
 
 Copyright: 2016-2020 Research group REMEX, Hochschule der Medien (Stuttgart, Germany).
 

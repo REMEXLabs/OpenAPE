@@ -1,34 +1,33 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<properties>
-		<jersey2.version>2.25.1</jersey2.version>
-		
-	</properties>
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <properties>
+        <jersey2.version>2.25.1</jersey2.version>
+    </properties>
 
-	<parent>
-		<groupId>openape</groupId>
-		<version>${ProjectVersion}</version>
-		<artifactId>framework</artifactId>
-	</parent>
-	<artifactId>client</artifactId>
-	<name>client</name>
-
-	<dependencies>
-		<dependency>
-			<groupId>openape</groupId>
-			<artifactId>API</artifactId>
-			<version>${project.version}</version>
-		</dependency>
+    <parent>
+        <groupId>openape</groupId>
+        <version>${revision}</version>
+        <artifactId>framework</artifactId>
+    </parent>
+    <artifactId>client</artifactId>
 
 
-<dependency>
-    <groupId>org.glassfish.jersey.core</groupId>
-    <artifactId>jersey-server</artifactId>
+    <dependencies>
+        <dependency>
+            <groupId>openape</groupId>
+            <artifactId>api</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>org.glassfish.jersey.core</groupId>
+            <artifactId>jersey-server</artifactId>
             <version>${jersey2.version}</version>
-</dependency>
+        </dependency>
 
- 	<dependency>
+        <dependency>
             <groupId>org.glassfish.jersey.containers</groupId>
             <artifactId>jersey-container-servlet</artifactId>
             <version>${jersey2.version}</version>
@@ -38,29 +37,25 @@
             <artifactId>jersey-server</artifactId>
             <version>${jersey2.version}</version>
         </dependency>
- 	<dependency>
+        <dependency>
             <groupId>org.glassfish.jersey.media</groupId>
             <artifactId>jersey-media-multipart</artifactId>
             <version>${jersey2.version}</version>
         </dependency>
- 
- <dependency>
-    <groupId>org.glassfish.jersey.media</groupId>
-    <artifactId>jersey-media-json-jackson</artifactId>
-    <version>${jersey2.version}</version>
-</dependency>
-<!-- Google Java JSON API | https://github.com/google/gson -->
-		<dependency>
-			<groupId>com.google.code.gson</groupId>
-			<artifactId>gson</artifactId>
-			<version>2.2.4</version>
-		</dependency>
-	
 
-</dependencies>
+        <dependency>
+            <groupId>org.glassfish.jersey.media</groupId>
+            <artifactId>jersey-media-json-jackson</artifactId>
+            <version>${jersey2.version}</version>
+        </dependency>
+        <!-- Google Java JSON API | https://github.com/google/gson -->
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.2.4</version>
+        </dependency>
 
-<build>
-<finalName>openape-client</finalName>
-</build>
+
+    </dependencies>
 </project>
 

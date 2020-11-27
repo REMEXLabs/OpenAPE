@@ -37,9 +37,9 @@
 	   <div class="oneContentBlock">
 	   	 <h1>Tutorials</h1> <br>
 	   	 <ul>
-   <li>Documentation: <a href="ApiReDoc.html">API Documentation</a></li>
-			<li>Workflow model: <a href="/workflow">Workflow model </a></li>
-			<li>Tutorial: <a href="/openape_js">Making your application adaptive with openape.js  </a></li>
+   <li>Documentation: <a href="https://docs.openape.gpii.eu/">OpenAPI Documentation (Swagger)</a></li>
+			<li>Workflow model: <a href="/workflow">Workflow model</a></li>
+			<li>Tutorial: <a href="/openape_js">Making your application adaptive with openape.js </a></li>
 <li>Tutorial: <a href="userContextTutorial">Creating user contexts</a></li>
 		</ul>
 		</div> 
