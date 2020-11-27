@@ -112,17 +112,17 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.3</version>
+                <version>3.8.1</version>
                 <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
+                    <source>11</source>
+                    <target>11</target>
                 </configuration>
             </plugin>
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-enforcer-plugin</artifactId>
-                <version>3.0.0-M2</version>
+                <version>3.0.0-M3</version>
 
                 <executions>
                     <execution>
@@ -133,12 +133,12 @@
                         <configuration>
                             <rules>
                                 <requireMavenVersion>
-                                    <version>[3.6, 3.7)</version>
+                                    <version>3.6</version>
                                     <message>You need to use Maven 3.6!</message>
                                 </requireMavenVersion>
                                 <requireJavaVersion>
-                                    <version>[1.8, 1.9)</version>
-                                    <message>You need to use JDK 1.8!</message>
+                                    <version>11</version>
+                                    <message>You need to use JDK 11!</message>
                                 </requireJavaVersion>
                             </rules>
                         </configuration>
