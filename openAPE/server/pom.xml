@@ -81,7 +81,7 @@
 
 
     <build>
-        <finalName>${project.groupId}:${project.artifactId}:${project.version}</finalName>
+        <finalName>${project.artifactId}</finalName>
 
         <resources>
             <resource>
