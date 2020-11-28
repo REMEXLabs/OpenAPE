@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Map;
 
 import org.openape.server.rest.SuperRestInterface;
+import org.openape.ui.velocity.OpenApeVelocityEngine;
 import org.openape.ui.velocity.controllerComponents.MainComponents;
 
 import spark.ModelAndView;
@@ -23,7 +24,7 @@ public class GettingStarted extends SuperRestInterface {
                                                                                    // the
                                                                                    // resources
                                                                                    // directory
-            }, new VelocityTemplateEngine());
+            }, new OpenApeVelocityEngine());
     }
 
     public GettingStarted() throws IllegalArgumentException, IOException {

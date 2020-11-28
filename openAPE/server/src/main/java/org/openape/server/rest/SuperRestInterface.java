@@ -98,7 +98,7 @@ public class SuperRestInterface {
 
         // before filter enables CORS
         Spark.before("/*", (q, response) -> {
-            
+
             SuperRestInterface.logger.debug("Received api call: " + q.protocol() + "" + q.uri());
             logger.debug("authorisation: " + q.headers("authorization") );
             response.header("Access-Control-Allow-Origin", "*");
@@ -137,7 +137,7 @@ public class SuperRestInterface {
          * response.header("Access-Control-Allow-Headers", "*");
          * response.header("Access-Control-Max-Age", "1728000");
          * response.header("Cache-Control", "no-cache");
-         * 
+         *
          * });
          */
         Spark.get("api", (request, response) -> new API());
@@ -161,7 +161,7 @@ public class SuperRestInterface {
         AdminInterface.setupAdminRestInterface(authService);
         TokenRESTInterface.setupTokenRESTInterface(authService);
         ProfileRESTInterface.setupProfileRESTInterface();
-                
+
 
         try {
             Administration.setupAdministrationVELOCITYInterface(new AdminSectionRequestHandler(), authService);
@@ -174,7 +174,7 @@ public class SuperRestInterface {
             MyContexts.setupMyContextsVELOCITYInterface(new AdminSectionRequestHandler(), authService );
             MyResources.setupMyResourcesVELOCITYInterface(new MyResourcesRequestHandler());
             MyGroups.setupMyGroupsVELOCITYInterface();
-            
+
             Index.setupIndexVELOCITYInterface();
             Tutorials_Workflow.setupTutorialsWorkflowVELOCITYInterface();
             // TODO exception handling
@@ -212,10 +212,9 @@ public class SuperRestInterface {
             TestRESTInterface.setupTestRESTInterface();
         }
 
-        // redirect to index if no path was found in the url
-        // TODO imprive redirect
-        Spark.redirect.get("/", "/index");
-        
+        // redirect old index to root
+        Spark.redirect.get("/index", "/");
+
     }
 
 }

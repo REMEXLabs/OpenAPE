@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Map;
 
 import org.openape.server.rest.SuperRestInterface;
+import org.openape.ui.velocity.OpenApeVelocityEngine;
 import org.openape.ui.velocity.controllerComponents.MainComponents;
 import org.openape.ui.velocity.organism.Organism_3_DataTable;
 import org.openape.ui.velocity.organism.Organism_4_Modals;
@@ -43,7 +44,7 @@ public class Context extends SuperRestInterface {
                                                                             // the
                                                                             // resources
                                                                             // directory
-            }, new VelocityTemplateEngine());
+            }, new OpenApeVelocityEngine());
     }
 
     public Context() throws IllegalArgumentException, IOException {
