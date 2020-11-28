@@ -1,0 +1,13 @@
+[Unit]
+Description=OpenAPE Swagger Service
+After=network.target
+
+[Service]
+Environment=NODE_PORT=3013
+Type=simple
+User=gpiiadmin
+ExecStart=/usr/bin/node /var/www/vhosts/gpii.eu/docs.openape.gpii.eu/app.js
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

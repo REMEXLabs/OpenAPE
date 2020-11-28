@@ -1,0 +1,13 @@
+{
+  "name": "openape-swagger-docs",
+  "version": "1.4.0",
+  "private": true,
+  "scripts": {
+    "start": "node ./app.js"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "replace-in-file": "^6.1.0",
+    "swagger-ui-dist": "^3.37.2"
+  }
+}
