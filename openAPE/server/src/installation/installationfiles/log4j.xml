@@ -15,7 +15,7 @@
 
 
   <root>
-    <priority value="ALL"/>
+    <priority value="DEBUG"/>
     <appender-ref ref="MeinAppender" />
   </root>
 
