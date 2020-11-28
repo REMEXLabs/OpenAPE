@@ -20,8 +20,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlAttribute;
+import jakarta.xml.bind.annotation.XmlElement;
 
 import org.openape.api.contexts.KeyValuePair;
 import org.openape.api.environmentcontext.EnvironmentContext;
@@ -47,7 +47,7 @@ public class Property  implements Serializable, KeyValuePair {
      * @return true, if compare has the same preferences as base, false if not.
      */
     boolean hasPropertyTheSameDescriptors( final Property compare) {
-    	
+
     	System.out.println("neu aufgerufen");
     	List<Descriptor> compareDescriptors = compare.getDescriptors();
 	if (this.descriptors.size() != compareDescriptors.size() ) {
@@ -57,27 +57,27 @@ public class Property  implements Serializable, KeyValuePair {
     	if (this.descriptors.size() == 0) {
     		return true;
     	}
-    	
+
         for (Descriptor baseDescriptor : this.descriptors) {
             // Match checks if for each descriptor in this there is one in         compare.
             boolean match = false;
-            
+
             for (Descriptor compareDescriptor : compareDescriptors) {
                 // if key fits check if value fits.
                 if (baseDescriptor.getName().equals(compareDescriptor.getName() )  && baseDescriptor.getValue().equals(compareDescriptor.getValue())) {
-                    
+
                 	match = true;
                     break;
                     }
                 }
-            
+
             // no matching preference
             if (match == false) {
-                
+
             	return false;
             }
         }
-        
+
         return true;
     }
 
@@ -133,7 +133,7 @@ Property compare = (Property)o;
         try {
         System.out.println(this.getName());
         System.out.println(compare.getName() );
-        
+
         System.out.println(this.getValue()	);
         System.out.println(compare.getValue() );
         	if (!(this.getName().equals(compare.getName()) && this.getValue().equals(compare.getValue()))) {
@@ -145,11 +145,11 @@ Property compare = (Property)o;
 
         }
         } catch (NullPointerException e) {
-			
-        	
+
+
         	return false;
 		}
-        
+
     }
 
     @XmlElement(name = "descriptor")
@@ -166,11 +166,11 @@ Property compare = (Property)o;
     public String getValueAsString() {
     	return value.toString();
     }
-    
+
     public void setValueAsString(String value) {
     	this. value = value;
     }
-    
+
     public Object getValue() {
         return this.value;
     }
@@ -179,7 +179,7 @@ Property compare = (Property)o;
         this.descriptors = descriptors;
     }
 
-    
+
     public void setValue(final String value) {
         this.value = value;
     }
@@ -187,19 +187,19 @@ Property compare = (Property)o;
 	@Override
 	public void setName(String name) {
 		this.name = name;
-		
+
 	}
 
 	@Override
 	public void setValue(boolean value) {
 		this.value = new Boolean(value);
-		
+
 	}
 
 	@Override
 	public void setValue(double value) {
 		this.value = new Double(value);
-		
+
 	}
 
 	public void setValue(int i) {

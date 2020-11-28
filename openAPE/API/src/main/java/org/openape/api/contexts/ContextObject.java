@@ -7,7 +7,7 @@ import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlElement;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.Transformer;
@@ -34,8 +34,8 @@ import utility.ContextParsingHelpers;
 
 public abstract class ContextObject extends AbstractContext{
 
-	
-	
+
+
 	protected static final String PUBLIC = "public";
 	protected static final String IMPLEMENTATION_PARAMETERS = "implementation-parameters";
 	private ImplementationParameters implementationParameters = new ImplementationParameters();
@@ -45,15 +45,15 @@ public abstract class ContextObject extends AbstractContext{
 	public ContextObject() {
         this.propertys = new ArrayList<Property>();
 	}
-	
+
 	public ContextObject(String contextType) {
 		this();
 		this.contextType = contextType;
 
-		
+
 	}
-	
-	
+
+
 	/**
      * Generate the json representation from the object used for the front end.
      * Deletes owner and public field.
@@ -61,7 +61,7 @@ public abstract class ContextObject extends AbstractContext{
      * @return json string.
      */
     @Override
-@JsonIgnore	
+@JsonIgnore
 	public String getFrontendJson() throws IOException {
         String jsonString = null;
         try {
@@ -80,7 +80,7 @@ public abstract class ContextObject extends AbstractContext{
                 propertyArray.add(property.getName());
                 // todo
                 ContextParsingHelpers.propertyValueToJson(propertyArray,property);
-                
+
                 // Add descriptors to property array, if available.
                 final List<Descriptor> descriptors = property.getDescriptors();
                 for (final Descriptor descriptor : descriptors) {
@@ -101,12 +101,12 @@ public abstract class ContextObject extends AbstractContext{
         }
         return jsonString;
 
-		
+
 	}
 
 	public void addProperty(final Property property) {
 	    this.propertys.add(property);
-	
+
 	}
 
 	@JsonProperty(value = TaskContext.IMPLEMENTATION_PARAMETERS)
@@ -141,48 +141,48 @@ public abstract class ContextObject extends AbstractContext{
 	public String getXML() throws IOException {
 	    String xmlString = null;
 	    try {
-	
+
 	        DocumentBuilderFactory dbFactory =
 	                DocumentBuilderFactory.newInstance();
 	                DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
 	                Document doc = dBuilder.newDocument();
-	                
+
 	                // root element
 	                Element rootElement = doc.createElement(this.getContextType() );
 	                doc.appendChild(rootElement);
-	                
+
 	                for (Property property : this.propertys) {
 	                Element propertyElement = doc.createElement("property");
 	                propertyElement.setAttribute("name", property.getName() );
 	                propertyElement.setAttribute("value", property.getValue(  ).toString() );
-	                
+
 	                List<Descriptor> descriptors = property.getDescriptors();
-	                
+
 	                for (Descriptor descriptor : descriptors) {
 	                	Element descriptorElement = doc.createElement("descriptor");
 	                	descriptorElement.setAttribute("name", descriptor.getName());
 	                	descriptorElement.setAttribute("value", descriptor.getValue());
 	                	propertyElement.appendChild(descriptorElement);
-	                	
+
 	                }
 	                rootElement.appendChild(propertyElement);
 	                }
-	                
-	                		
-	                		
+
+
+
 	                        TransformerFactory transformerFactory = TransformerFactory.newInstance();
 	                        Transformer transformer = transformerFactory.newTransformer();
 	                        DOMSource source = new DOMSource(doc);
-	                
-	                		
+
+
 	                       OutputStream outputStream = new ByteArrayOutputStream();
 	                        StreamResult consoleResult = new StreamResult(outputStream);
-	                        		
+
 	                        transformer.transform(source, consoleResult );
-	                
-	                        
+
+
 	                        xmlString = outputStream.toString();
-	                        
+
 	    	xmlString = this.getImplementationParameters().removeImplemParams(xmlString);
 	    } catch (final Exception e) {
 	        e.printStackTrace();
@@ -193,21 +193,21 @@ public abstract class ContextObject extends AbstractContext{
 
 	/**
 	 * Checks if a compare environment context has the same properties as a base
-	 * context. 
+	 * context.
 	 *
-	 * 
+	 *
 	 * @param compare
 	 * @return true, if compare has the same properties as base, false if not.
 	 */
 	public boolean hasContextTheSameProperties(final ContextObject compare) {
-	    
-		
+
+
 		if (this.propertys.size() !=  compare.getPropertys().size()){
-			System.out.println("different size");			
+			System.out.println("different size");
 			return false;
 		}
-				
-	
+
+
 			System.out.println("weiter");
 				boolean match = true;
 				for (final Property baseProperty : this.propertys ) {
@@ -222,15 +222,15 @@ public abstract class ContextObject extends AbstractContext{
 	                    break;
 	                }
 	            }
-	        
+
 	        if (!match) {
 	        	return false;
 	        }
-	        
+
 				}
-	        
+
 				System.out.println("match= " + match);
-				
+
 	return match;
 	}
 
@@ -247,10 +247,10 @@ public abstract class ContextObject extends AbstractContext{
 		if (compare == null ) {
 	    	return false;
 	    }
-		
+
 		return this.hasContextTheSameProperties(compare);
-	            
-	
+
+
 	}
 
 	public static <T> T getObjectFromJson(String string) {

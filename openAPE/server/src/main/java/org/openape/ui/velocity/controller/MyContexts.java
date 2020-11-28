@@ -7,6 +7,7 @@ import java.util.Map;
 import org.openape.api.Messages;
 import org.openape.server.auth.AuthService;
 import org.openape.server.rest.SuperRestInterface;
+import org.openape.ui.velocity.OpenApeVelocityEngine;
 import org.openape.ui.velocity.controllerComponents.MainComponents;
 import org.openape.ui.velocity.organism.Organism_3_DataTable;
 import org.openape.ui.velocity.organism.Organism_4_Modals;
@@ -30,18 +31,18 @@ Spark.before("/myContexts",
         auth.authorize("anonymous"));
 
         Spark.get("/myContexts", (request, response) -> {
-      	
+
 //final CommonProfile profile = auth.getAuthenticatedProfile(request, response);
 //String userId = profile.getUsername();
 
         	final String userId = auth.getAuthenticatedUser(request, response).getId();
-        	
+
 logger.info("userId: " + userId);
 
 //If no userId is avavailable send error message/ script to resend request with token
 if (userId.equals("anonymous") ) {
 	logger.info("no token");
-	final Map<String, Object> model = new HashMap(); 
+	final Map<String, Object> model = new HashMap();
 	return new ModelAndView(model, "velocityTemplates/myContextsError.vm");
 }
 
@@ -70,7 +71,7 @@ if (userId.equals("anonymous") ) {
 
             return new ModelAndView(model, "velocityTemplates/myContexts.vm");
 
-        }, new VelocityTemplateEngine());
+        }, new OpenApeVelocityEngine());
     }
 
     public MyContexts() throws IllegalArgumentException, IOException {

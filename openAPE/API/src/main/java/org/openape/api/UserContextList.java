@@ -2,7 +2,7 @@ package org.openape.api;
 
 import java.net.URI;
 import java.util.List;
-import javax.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.XmlRootElement;
 import org.openape.api.usercontext.UserContext;
 import com.fasterxml.jackson.annotation.JsonSetter;
 

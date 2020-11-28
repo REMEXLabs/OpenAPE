@@ -25,12 +25,12 @@ import java.util.Iterator;
 import java.util.List;
 
 import javax.xml.XMLConstants;
-import javax.xml.bind.Binder;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.Marshaller;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
+import jakarta.xml.bind.Binder;
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.Marshaller;
+import jakarta.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.XmlType;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.Transformer;
@@ -40,7 +40,7 @@ import javax.xml.transform.stream.StreamResult;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 
-import org.openape.api.contexts.AbstractContext;	
+import org.openape.api.contexts.AbstractContext;
 import org.openape.api.databaseObjectBase.ImplementationParameters;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -126,14 +126,14 @@ public class UserContext extends AbstractContext{
             final JsonNode implemParams = rootObject.get(UserContext.IMPLEMENTATION_PARAMETERS);
             if ((implemParams != null) && !(implemParams instanceof NullNode)) {
                 final ObjectNode implemParamsNode = (ObjectNode) implemParams;
-                
-                
-                JsonNode ownerParam = implemParamsNode.get(UserContext.OWNER); // TODO really necessary to check tis node? 
+
+
+                JsonNode ownerParam = implemParamsNode.get(UserContext.OWNER); // TODO really necessary to check tis node?
                 if ( ownerParam != null) {
                                 userContext.getImplementationParameters().setOwner(
                         ownerParam.textValue());
                 }
-                
+
                 userContext.getImplementationParameters().setPublic(
                         implemParamsNode.get(UserContext.PUBLIC).booleanValue());
             }
@@ -147,20 +147,20 @@ public class UserContext extends AbstractContext{
                     userContext.addContext(context);
                     context.setId(contextID);
                     final ObjectNode contextNode = (ObjectNode) rootObject.get(contextID);
-                    
-                    
+
+
                     JsonNode nameNode = contextNode.get(UserContext.NAME);
                     if (nameNode != null) {
                     context.setName(nameNode.textValue());
                     }
-                    
+
                     // add preference objects
                     final ObjectNode preferences = (ObjectNode) contextNode
                             .get(UserContext.PREFERENCES);
                     final Iterator<String> preferenceIterator = preferences.fieldNames();
                     while (preferenceIterator.hasNext()) {
                         final String preferenceKey = preferenceIterator.next();
-                    Preference preference = parseAndAddPreference(context,preferences,preferenceKey);                        
+                    Preference preference = parseAndAddPreference(context,preferences,preferenceKey);
                     }
 
                     // add condition objects
@@ -189,20 +189,20 @@ public class UserContext extends AbstractContext{
             e.printStackTrace();
             throw new IllegalArgumentException(e.getMessage());
         }
-        
+
         userContext.validate();
         return userContext;
     }
 
     private static Preference parseAndAddPreference(Context context, ObjectNode preferences, String preferenceKey) {
-    	
-    	
+
+
     	final Preference preference = new Preference();
-        
+
         preference.setKey(preferenceKey);
-        
-        
-        
+
+
+
         JsonNode nodeToParse = preferences.get(preferenceKey  );
 
         ContextParsingHelpers.parseNode(preference, nodeToParse);
@@ -243,7 +243,7 @@ public class UserContext extends AbstractContext{
                         operandElement.setAttribute(UserContext.XSI_TYPE, UserContext.CONDITION);
                         operandElement.setAttribute(UserContext.XMLNS_XSI,
                                 UserContext.HTTP_WWW_W3_ORG_2001_XML_SCHEMA_INSTANCE);
-                        
+
                     }
                 }
             }
@@ -498,9 +498,9 @@ public class UserContext extends AbstractContext{
             final ObjectNode newPreferences = new ObjectNode(jsonNodeFactory);
             while (pereferenceIterator.hasNext()) {
                 final JsonNode preference = pereferenceIterator.next();
-                
+
                                 ContextParsingHelpers.termValueToJson(preference, newPreferences);
-                                
+
             }
             contextObject.remove(UserContext.PREFERENCES);
             contextObject.set(UserContext.PREFERENCES, newPreferences);

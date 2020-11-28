@@ -1,12 +1,13 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <properties>
-        <revision>1.3.1</revision>
+        <revision>1.4.0</revision>
         <PAC4JVersion>2.0.0-RC2</PAC4JVersion>
-    </properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
     <groupId>openape</groupId>
     <artifactId>framework</artifactId>
     <version>${revision}</version>
@@ -28,17 +29,18 @@
             <version>2.0</version>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/com.sun.xml.bind/jaxb-impl -->
-        <dependency>
-            <groupId>com.sun.xml.bind</groupId>
-            <artifactId>jaxb-impl</artifactId>
-            <version>2.2.11</version>
-        </dependency>
-        <dependency>
-            <groupId>com.sun.xml.bind</groupId>
-            <artifactId>jaxb-core</artifactId>
-            <version>2.2.11</version>
-        </dependency>
+		<dependency>
+			<groupId>jakarta.xml.bind</groupId>
+			<artifactId>jakarta.xml.bind-api</artifactId>
+			<version>3.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.sun.xml.bind</groupId>
+			<artifactId>jaxb-impl</artifactId>
+			<version>3.0.0</version>
+			<scope>runtime</scope>
+		</dependency>
+
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
@@ -112,17 +114,17 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.3</version>
+                <version>3.8.1</version>
                 <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
+                    <source>11</source>
+                    <target>11</target>
                 </configuration>
             </plugin>
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-enforcer-plugin</artifactId>
-                <version>3.0.0-M2</version>
+                <version>3.0.0-M3</version>
 
                 <executions>
                     <execution>
@@ -133,12 +135,12 @@
                         <configuration>
                             <rules>
                                 <requireMavenVersion>
-                                    <version>[3.6, 3.7)</version>
+                                    <version>3.6</version>
                                     <message>You need to use Maven 3.6!</message>
                                 </requireMavenVersion>
                                 <requireJavaVersion>
-                                    <version>[1.8, 1.9)</version>
-                                    <message>You need to use JDK 1.8!</message>
+                                    <version>11</version>
+                                    <message>You need to use JDK 11!</message>
                                 </requireJavaVersion>
                             </rules>
                         </configuration>
@@ -161,7 +163,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
-                <version>2.6</version>
+                <version>3.2.0</version>
                 <configuration>
                     <archive>
                         <manifest>
@@ -182,6 +184,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
+				<version>3.1.2</version>
                 <executions>
                     <execution>
                         <id>copy-dependencies</id>

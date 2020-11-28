@@ -81,7 +81,6 @@
 
 
     <build>
-        <finalName>${project.groupId}:${project.artifactId}:${project.version}</finalName>
 
         <resources>
             <resource>
@@ -89,37 +88,11 @@
             </resource>
         </resources>
 
-
-        <extensions>
-            <extension>
-                <groupId>org.apache.maven.wagon</groupId>
-                <artifactId>wagon-ssh</artifactId>
-                <version>3.0.0</version>
-            </extension>
-        </extensions>
-
         <plugins>
-            <plugin>
-                <groupId>com.webcohesion.enunciate</groupId>
-                <artifactId>enunciate-maven-plugin</artifactId>
-                <version>2.11.1</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>docs</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <configFile>enunciate.xml</configFile>
-                    <docsDir>${project.build.directory}</docsDir>
-                </configuration>
-            </plugin>
-
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
-                <version>2.6</version>
+                <version>3.3.1</version>
                 <configuration>
                     <webXml>src\main\webapp\WEB-INF\web.xml</webXml>
 
@@ -137,97 +110,6 @@
                         </resource>
                     </webResources>
                 </configuration>
-            </plugin>
-
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>wagon-maven-plugin</artifactId>
-                <version>1.0</version>
-                <executions>
-                    <execution>
-                        <id>upload-openape-prepare</id>
-                        <phase>install</phase>
-                        <goals>
-                            <goal>upload</goal>
-                        </goals>
-                        <configuration>
-                            <serverId>myopenape</serverId>
-                            <fromDir>src/installation</fromDir>
-                            <includes></includes>
-                            <excludes/>
-
-                            <url>scp://${openape.host}</url>
-                            <toDir>${openape.installdir}</toDir>
-                        </configuration>
-                    </execution>
-
-                    <execution>
-                        <id>exec-prepare-openape</id>
-                        <phase>install</phase>
-                        <goals>
-                            <goal>sshexec</goal>
-                        </goals>
-                        <configuration>
-                            <serverId>myopenape</serverId>
-                            <url>scp:${openape.host}</url>
-                            <commands>
-                                <command>cd ${openape.installdir};
-                                    sh ${openape.installdir}/prepare.sh
-                                </command>
-                            </commands>
-                        </configuration>
-                    </execution>
-
-                    <execution>
-                        <id>upload-openape-install</id>
-                        <phase>install</phase>
-                        <goals>
-                            <goal>upload-single</goal>
-                        </goals>
-                        <configuration>
-                            <serverId>myopenape</serverId>
-                            <!--            <fromFile>${project.build.directory}/${project.build.finalName}.war</fromFile>-->
-                            <fromFile>target/openape-server.war</fromFile>
-                            <url>scp://${openape.host}:${openape.installdir}</url>
-                        </configuration>
-                    </execution>
-
-                    <execution>
-                        <id>upload-openape-installationfiles</id>
-                        <phase>install</phase>
-                        <goals>
-                            <goal>upload-single</goal>
-                        </goals>
-                        <configuration>
-                            <serverId>myopenape</serverId>
-                            <fromFile>${localConfigDir}/log4j.xml</fromFile>
-                            <fromFile>${localConfigDir}/mongo.properties</fromFile>
-                            <url>scp://${openape.host}:${openape.installdir}/installationfiles</url>
-
-                        </configuration>
-                    </execution>
-
-
-                    <execution>
-                        <id>install-openape</id>
-                        <phase>install</phase>
-                        <goals>
-                            <goal>sshexec</goal>
-                        </goals>
-                        <configuration>
-                            <serverId>myopenape</serverId>
-                            <url>scp://${openape.host}:/${openape.installdir}</url>
-                            <commands>
-                                <command>cd ${openape.installdir};
-
-                                    sh install.sh
-                                </command>
-
-                            </commands>
-                        </configuration>
-                    </execution>
-
-                </executions>
             </plugin>
 
         </plugins>

@@ -1,0 +1,568 @@
+swagger: "2.0"
+
+info:
+  version: 1.4.0
+  title: OpenAPE API
+  license:
+    name: Apache 2.0
+    url: https://github.com/REMEXLabs/OpenAPE/blob/master/openAPE/license.txt
+  contact:
+    name: Prof. Dr. Gottfried Zimmermann
+    email: gzimmermann@hdm-stuttgart.de
+
+  description: For techical support contact [Sebastian Koch](mailto:kochs@hdm-stuttgart.de).
+schemes:
+  - https
+host: openape.gpii.eu
+basePath: /
+
+paths: 
+  /token:
+    post:
+      tags:
+        - Authentication
+      summary: Authenticate your app
+      description: "For most interactions you will need to first authenticate yourself with the server."
+      consumes: 
+        - multipart/form-data
+      parameters:
+        - in: formData
+          name: grant_type
+          description: Only supports password grants right now.
+          type: string
+          enum: ["password"]
+        - in: formData
+          name: username
+          description: Your username (not email) as created on the website.
+          type: string
+        - in: formData
+          name: password
+          description: Your password
+          type: string
+        
+          
+          
+         
+      
+      responses: 
+        200: 
+          description: An access token.
+          schema:
+            type: object
+            properties:
+              access_token: 
+                type: string
+                example: eyJhbGciOiJIUzI1NiJ...
+              expires_in:
+                type: string
+                example: "1440"
+            required:
+              - access_token
+              - expires_in
+
+        400: 
+          description: Invalid request or incorrect login data.
+          schema:
+            type: object
+            properties:
+              error: 
+                type: string
+                example: invalid_grant
+              error_description:
+                type: string
+                example: Invalid or expired credentials
+            required:
+              - error
+              - error_description
+  
+  # user contexts
+  /api/user-contexts:
+    post:
+      tags:
+        - UserContexts
+        - Create
+      summary: Create a user context
+      consumes: 
+        - application/json
+      parameters:
+        - in: body
+          name: data
+          description: Create a new user context
+          schema:
+            $ref : '#/definitions/UserContext'
+      responses:
+        201:
+          description: User context created with the returned id.
+          schema:
+            type: string
+            example: "5ceabe8138cf011dfabf6549"
+        400:
+          description: Most likely a misformed JSON.
+          schema:
+            type: string
+            example: "No content to map due to end-of-input at [Source: ; line: 1, column: 0]"
+        401:
+          description: Invalid token
+          schema:
+            type: string
+            example: You are not an admin or user
+    get:
+      tags:
+        - UserContexts
+        - List
+      summary: Get the ids of your user contexts.
+      description: This includes public as well as your private contexts.
+      responses:
+        200:
+          description: A list of context ids.
+          schema:
+            type: object
+            properties:
+              totalContexts: 
+                type: string
+                example: 10
+              user-context-uris:
+                type: array
+                items: 
+                  type: string
+                  example: "5ceabd9238cf011dfabf6546"
+          
+            
+  /api/user-contexts/{context-id}:
+    get:
+      tags:
+        - UserContexts
+        - Get
+      summary: Get a single user context
+      parameters: 
+        - in: path
+          name: context-id
+          type: string
+          required: true
+      responses:
+          200:
+            description: A user context.
+            schema:
+              $ref : '#/definitions/UserContext'
+          404:
+            description: Invalid id or invalid token.
+            schema:
+              type: string
+              example: "invalid hexadecimal representation of an ObjectId: [5ccff42c38cf011dfabf6487s]"
+              
+    delete:
+      tags:
+        - UserContexts
+        - Delete
+      summary: Delete a user context
+      parameters: 
+        - in: path
+          name: context-id
+          type: string
+          required: true
+      responses:
+          204:
+            description: User context with the given id deleted.
+          404:
+            description: Invalid or non-existing id.
+            schema:
+              type: string
+              example: "No object with that id."
+          405:
+            description: Invalid token.
+            
+    put:
+      tags:
+        - UserContexts
+        - Update
+      summary: Update a user context
+      description: OpenAPE **does not** support delta-updates. The context is replaced when using this method!
+      parameters: 
+        - in: path
+          name: context-id
+          type: string
+          required: true
+      responses:
+          200:
+            description: User context with the given id updated.
+          400:
+            description: Invalid or non-existing id.
+            schema:
+              type: string
+              example: "No object with that id."
+          405:
+            description: Invalid token.
+              
+    
+  # task contexts
+  /api/task-contexts:
+    post:
+      tags:
+        - TaskContexts
+        - Create
+      summary: Create a task context
+      consumes: 
+        - application/json
+      parameters:
+        - in: body
+          name: data
+          description: Create a new task context
+          schema:
+            $ref : '#/definitions/TaskContext'
+      responses:
+        201:
+          description: Task context created with the returned id.
+          schema:
+            type: string
+            example: "5ceabe8138cf011dfabf6549"
+        400:
+          description: Most likely a misformed JSON.
+          schema:
+            type: string
+            example: "No content to map due to end-of-input at [Source: ; line: 1, column: 0]"
+        401:
+          description: Invalid token
+          schema:
+            type: string
+            example: You are not an admin or user
+    get:
+      tags:
+        - TaskContexts
+        - List
+      summary: Get the ids of your task contexts.
+      description: This includes public as well as your private contexts.
+      responses:
+        200:
+          description: A list of context ids.
+          schema:
+            type: object
+            properties:
+              totalContexts: 
+                type: string
+                example: 10
+              user-context-uris:
+                type: array
+                items: 
+                  type: string
+                  example: "5ceabd9238cf011dfabf6546"
+          
+             
+  /api/task-contexts/{context-id}:
+    get:
+      tags:
+        - TaskContexts
+        - Get
+      summary: Get a single task context
+      parameters: 
+        - in: path
+          name: context-id
+          type: string
+          required: true
+      responses:
+          200:
+            description: A task context.
+            schema:
+              $ref : '#/definitions/TaskContext'
+          404:
+            description: Invalid id or invalid token.
+            schema:
+              type: string
+              example: "invalid hexadecimal representation of an ObjectId: [5ccff42c38cf011dfabf6487s]"
+              
+    delete:
+      tags:
+        - TaskContexts
+        - Delete
+      summary: Delete a task context
+      parameters: 
+        - in: path
+          name: context-id
+          type: string
+          required: true
+      responses:
+          204:
+            description: Task context with the given id deleted.
+          404:
+            description: Invalid or non-existing id.
+            schema:
+              type: string
+              example: "No object with that id."
+          405:
+            description: Invalid token.
+            
+    put:
+      tags:
+        - TaskContexts
+        - Update
+      summary: Update a task context
+      description: OpenAPE **does not** support delta-updates. The context is replaced when using this method!
+      parameters: 
+        - in: path
+          name: context-id
+          type: string
+          required: true
+      responses:
+          200:
+            description: Task context with the given id updated.
+          400:
+            description: Invalid or non-existing id.
+            schema:
+              type: string
+              example: "No object with that id."
+          405:
+            description: Invalid token.
+
+  # equipment contexts
+  /api/equipment-contexts:
+    post:
+      tags:
+        - EquipmentContexts
+        - Create
+      summary: Create a equipment context
+      consumes: 
+        - application/json
+      parameters:
+        - in: body
+          name: data
+          description: Create a new equipment context
+          schema:
+            $ref : '#/definitions/EquipmentContext'
+      responses:
+        201:
+          description: Equipment context created with the returned id.
+          schema:
+            type: string
+            example: "5ceabe8138cf011dfabf6549"
+        400:
+          description: Most likely a misformed JSON.
+          schema:
+            type: string
+            example: "No content to map due to end-of-input at [Source: ; line: 1, column: 0]"
+        401:
+          description: Invalid token
+          schema:
+            type: string
+            example: You are not an admin or user
+    get:
+      tags:
+        - EquipmentContexts
+        - List
+      summary: Get the ids of your equipment contexts.
+      description: This includes public as well as your private contexts.
+      responses:
+        200:
+          description: A list of context ids.
+          schema:
+            type: object
+            properties:
+              totalContexts: 
+                type: string
+                example: 10
+              user-context-uris:
+                type: array
+                items: 
+                  type: string
+                  example: "5ceabd9238cf011dfabf6546"
+          
+             
+  /api/equipment-contexts/{context-id}:
+    get:
+      tags:
+        - EquipmentContexts
+        - Get
+      summary: Get a single equipment context
+      parameters: 
+        - in: path
+          name: context-id
+          type: string
+          required: true
+      responses:
+          200:
+            description: A equipment context.
+            schema:
+              $ref : '#/definitions/EquipmentContext'
+          404:
+            description: Invalid id or invalid token.
+            schema:
+              type: string
+              example: "invalid hexadecimal representation of an ObjectId: [5ccff42c38cf011dfabf6487s]"
+              
+    delete:
+      tags:
+        - EquipmentContexts
+        - Delete
+      summary: Delete a equipment context
+      parameters: 
+        - in: path
+          name: context-id
+          type: string
+          required: true
+      responses:
+          204:
+            description: Equipment context with the given id deleted.
+          404:
+            description: Invalid or non-existing id.
+            schema:
+              type: string
+              example: "No object with that id."
+          405:
+            description: Invalid token.
+            
+    put:
+      tags:
+        - EquipmentContexts
+        - Update
+      summary: Update a equipment context
+      description: OpenAPE **does not** support delta-updates. The context is replaced when using this method!
+      parameters: 
+        - in: path
+          name: context-id
+          type: string
+          required: true
+      responses:
+          200:
+            description: Equipment context with the given id updated.
+          400:
+            description: Invalid or non-existing id.
+            schema:
+              type: string
+              example: "No object with that id."
+          405:
+            description: Invalid token.  
+              
+  # environment contexts
+  /api/environment-contexts:
+    post:
+      tags:
+        - EvironmentContexts
+        - Create
+      summary: Create a environment context
+      consumes: 
+        - application/json
+      parameters:
+        - in: body
+          name: data
+          description: Create a new environment context
+          schema:
+            $ref : '#/definitions/EnvironmentContext'
+      responses:
+        201:
+          description: Environment context created with the returned id.
+          schema:
+            type: string
+            example: "5ceabe8138cf011dfabf6549"
+        400:
+          description: Most likely a misformed JSON.
+          schema:
+            type: string
+            example: "No content to map due to end-of-input at [Source: ; line: 1, column: 0]"
+        401:
+          description: Invalid token
+          schema:
+            type: string
+            example: You are not an admin or user
+    get:
+      tags:
+        - EvironmentContexts
+        - List
+      summary: Get the ids of your environment contexts.
+      description: This includes public as well as your private contexts.
+      responses:
+        200:
+          description: A list of context ids.
+          schema:
+            type: object
+            properties:
+              totalContexts: 
+                type: string
+                example: 10
+              user-context-uris:
+                type: array
+                items: 
+                  type: string
+                  example: "5ceabd9238cf011dfabf6546"
+          
+             
+  /api/environment-contexts/{context-id}:
+    get:
+      tags:
+        - EvironmentContexts
+        - Get
+      summary: Get a single environment context
+      parameters: 
+        - in: path
+          name: context-id
+          type: string
+          required: true
+      responses:
+          200:
+            description: A environment context.
+            schema:
+              $ref : '#/definitions/EnvironmentContext'
+          404:
+            description: Invalid id or invalid token.
+            schema:
+              type: string
+              example: "invalid hexadecimal representation of an ObjectId: [5ccff42c38cf011dfabf6487s]"
+              
+    delete:
+      tags:
+        - EvironmentContexts
+        - Delete
+      summary: Delete a environment context
+      parameters: 
+        - in: path
+          name: context-id
+          type: string
+          required: true
+      responses:
+          204:
+            description: Environment context with the given id deleted.
+          404:
+            description: Invalid or non-existing id.
+            schema:
+              type: string
+              example: "No object with that id."
+          405:
+            description: Invalid token.
+            
+    put:
+      tags:
+        - EvironmentContexts
+        - Update
+      summary: Update a environment context
+      description: OpenAPE **does not** support delta-updates. The context is replaced when using this method!
+      parameters: 
+        - in: path
+          name: context-id
+          type: string
+          required: true
+      responses:
+          200:
+            description: Environment context with the given id updated.
+          400:
+            description: Invalid or non-existing id.
+            schema:
+              type: string
+              example: "No object with that id."
+          405:
+            description: Invalid token.        
+                        
+definitions:
+  UserContext:
+    description: 'Any valid user context object.'
+  TaskContext:
+    description: 'Any valid task context object.'
+  EquipmentContext:
+    description: 'Any valid equipment context object.'
+  EnvironmentContext:
+    description: 'Any valid environment context object.'
+externalDocs:
+  description: REST interface is based on ISO/IEC 24752-8
+  url: https://www.iso.org/standard/70272.html
+    
+    
+
+                        
+
+              

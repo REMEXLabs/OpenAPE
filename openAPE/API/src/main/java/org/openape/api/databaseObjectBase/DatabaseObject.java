@@ -18,7 +18,7 @@ package org.openape.api.databaseObjectBase;
 
 import java.io.Serializable;
 
-import javax.xml.bind.annotation.XmlTransient;
+import jakarta.xml.bind.annotation.XmlTransient;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 

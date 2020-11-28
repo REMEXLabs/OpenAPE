@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.openape.server.auth.AuthService;
 import org.openape.server.rest.SuperRestInterface;
+import org.openape.ui.velocity.OpenApeVelocityEngine;
 import org.openape.ui.velocity.controllerComponents.MainComponents;
 import org.openape.ui.velocity.organism.Organism_3_DataTable;
 import org.openape.ui.velocity.organism.Organism_4_Modals;
@@ -24,11 +25,11 @@ public class Administration extends SuperRestInterface {
             throws IllegalArgumentException, IOException {
         auth = authService;
 		adminsectionRequestHandler.getAllTaskContexts();
-		
+
 		Spark.before("/administration",
 		        auth.authorize("admin"));
 
-		
+
 		Spark.get("/administration", (request, response) -> {
 
 
@@ -102,7 +103,7 @@ public class Administration extends SuperRestInterface {
                                                                                        // the
                                                                                        // resources
                                                                                        // directory
-            }, new VelocityTemplateEngine());
+            }, new OpenApeVelocityEngine());
     }
 
     public Administration() throws IllegalArgumentException, IOException {

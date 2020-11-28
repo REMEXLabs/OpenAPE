@@ -3,9 +3,9 @@ package org.openape.server.rest;
 import java.io.StringWriter;
 
 import javax.ws.rs.core.MediaType;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.JAXBException;
+import jakarta.xml.bind.Marshaller;
 
 import org.openape.api.ContextList;
 import org.openape.server.auth.AuthService;
@@ -37,7 +37,7 @@ public abstract class ContextRestInterface extends SuperRestInterface {
 String[][] filters = new String[0][0];
 String paramOwner = req.params("userId");
 if (paramOwner != null) {
-	
+
 	filters = new String[1][2];
 	filters[0][0] = "owner";
 	filters[0][1] = paramOwner;
@@ -52,7 +52,7 @@ try {
                 String owner = profile.getUsername();
                 ContextList contextList = null;
                 if (owner != null) {
-                	System.out.println("Nutzer erkannt");            	
+                	System.out.println("Nutzer erkannt");
  contextList = requestHandler.getOverAllContextListOfUser(auth
         .getAuthenticatedUser(req, res).getId(), filters, url);
                                     } else {

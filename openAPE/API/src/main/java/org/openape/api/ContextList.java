@@ -7,12 +7,12 @@ import java.net.URISyntaxException;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.Marshaller;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.Marshaller;
+import jakarta.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlElementWrapper;
+import jakarta.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.XmlType;
 
 import org.openape.api.databaseObjectBase.DatabaseObject;
 import org.slf4j.Logger;
@@ -25,14 +25,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @XmlType (propOrder={"totalContexts", "contextUris"})
 public abstract class ContextList<T extends DatabaseObject>  {
 
-    private Logger logger = LoggerFactory.getLogger(ContextList.class); 
-    private int totalContexts = 0;  
+    private Logger logger = LoggerFactory.getLogger(ContextList.class);
+    private int totalContexts = 0;
 private String url;
     private String contextTypeUri;
-    
+
     @JsonIgnore
     private List<URI> contextUris;
-    
+
 
     @XmlElementWrapper(name = "context-uris")
     @XmlElement(name =  "uri")
@@ -40,7 +40,7 @@ private String url;
         return contextUris;
     }
 
-    
+
     public void setContextUris(List<URI> contextUris) {
         this.contextUris = contextUris;
     }
@@ -52,12 +52,12 @@ private String url;
     public void setTotalContexts(final int totalContexts) {
         this.totalContexts = totalContexts;
     }
-    
+
     /**
      * Generate the xml representation from the object used for the front end.
      *
      * @return xml string.
-     * @throws Exception 
+     * @throws Exception
      */
     @JsonIgnore
     public String getXML() throws Exception {
@@ -66,25 +66,25 @@ private String url;
             final JAXBContext context = JAXBContext.newInstance(UserContextList.class);
             final Marshaller marshaller = context.createMarshaller();
             final StringWriter stringWriter = new StringWriter();
-            
+
             marshaller.marshal(this, stringWriter);
             xmlString = stringWriter.toString();
             logger.info("Org. String:" + xmlString );
-            
+
             xmlString = xmlString.replace("context-uri", contextTypeUri);
 
                     } catch (final Exception e) {
             logger.warn(e.toString());
-            
+
             throw e;
         }
-        
+
         return xmlString;
     }
 
     /**
      * Generates json string from Object.
-     * @param uc 
+     * @param uc
      * @throws ClassCastException
      * @throws IOException
      *             , JsonProcessingException
@@ -99,25 +99,25 @@ private String url;
     public ContextList(){
     	this.contextUris = new LinkedList<URI>();
     }
-    
+
     public ContextList(final List<T> contexts, String url, final String contextTypeUri) {
         this.contextUris = new LinkedList<URI>();
      this.url = url;
      this.contextTypeUri = contextTypeUri;
-        addContexts(contexts);   
+        addContexts(contexts);
     }
     public void addContexts(List<T> contexts) {
                 for (T context : contexts) {
             try {
                 this.contextUris.add(new URI(url + "/"+ context.getId()));
             } catch (final URISyntaxException e) {
-                
+
                 e.printStackTrace();
             }
         }
         this.totalContexts = this.contextUris.size();
         this.contextTypeUri = contextTypeUri;
-        
+
     }
 
     }
