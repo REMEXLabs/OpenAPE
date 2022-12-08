@@ -6,7 +6,7 @@
     "start": "node ./app.js"
   },
   "dependencies": {
-    "express": "^4.17.1",
+    "express": "^4.18.2",
     "replace-in-file": "^6.1.0",
     "swagger-ui-dist": "^3.37.2"
   }
